@@ -1,30 +1,21 @@
 # Obtaining the non-printed parts
 Make sure you have all the necessary parts and tools before you start.  The parts should all be listed in the bill of materials below, which is currently a work in progress (eventually it will be produced automatically, which should help it to stay accurate).  We recommend reading through all the instructions and checking that the quantities shown here add up correctly, until auto-generation is working.  Printed parts are described in the [next section](./0_printing.md).
 
-## Fixing hardware:
-*   3x [M3x25mm hexagon head screws](./parts/fixings/m3x25mm_hexagonhead_screw.md), stainless steel
-*   3x [M3 brass nut](./parts/fixings/m3_brass_nut.md)
-*   1x [M3 steel nut](./parts/fixings/m3_steel_nut.md) (using brass is also fine)
-*   8x [M3 stainless steel washer](./parts/fixings/m3_washer.md)
-*   3-14x [M3x8mm cap head screw](./parts/fixings/m3x8mm_caphead_screw.md) (some ar optional, for sample clips and sample riser, but you will need at least three)
-*   2-4x [M2x6mm cap head screws](./parts/fixings/m2x6mm_caphead_screw.md) 
-*   6x [M4x6mm button head screws](./parts/fixings/m4x6mm_buttonhead_screw.md) (optional, for motors)
-*   3x [Viton O-ring, 30x2mm](./parts/fixings/viton_o_ring_30mm_inner_diameter_2mm_cross_section.md) (NB: get some spares!)
+## Partes para fijación:
+*   3x [Tornillos allen M3x25 mm](./parts/fixings/m3x25mm_hexagonhead_screw.md), stainless steel
+*   4x [Tuerca M3 de latón o acero](./parts/fixings/m3_brass_nut.md)
+*   8x [Arandela M3 de acero](./parts/fixings/m3_washer.md)
+*   5x [Tornillos allen M3x8 mm](./parts/fixings/m3x8mm_caphead_screw.md) (some ar optional, for sample clips and sample riser, but you will need at least three)
+*   4x [Tornillos allen M2x6 mm](./parts/fixings/m2x6mm_caphead_screw.md) 
+*   3x [O-rings de 30x2 mm](./parts/fixings/viton_o_ring_30mm_inner_diameter_2mm_cross_section.md) (NB: get some spares!)
 
-## Electronic parts:
-*   [5mm White LED](./parts/electronics/white_led.md)
-*   [60 Ohm resistor](./parts/electronics/60_ohm_resistor.md)
-*   [Stranded wire](./parts/electronics/stranded_wire.md)
-*   [2-way JST header connector](./parts/electronics/2_way_jst_header.md) (so long as you have some way of lighting up the LED, it doesn't much matter)
-*   [Raspbery Pi camera module](./parts/electronics/raspberry_pi_camera.md) (v2, though v1 works too)
-*   [Raspberry Pi](./parts/electronics/raspberry_pi.md) (with associated power supply, keyboard, monitor, etc.)
-*   3x [28BYJ-48 micro stepper motors](./parts/electronics/stepper_motors.md) (optional)
-*   [Motor driver board](./parts/electronics/motor_driver.md) for the above (optional)
+## Partes electrónicas:
+*   [LED blanco de alta luminosidad de 5mm](https://articulo.mercadolibre.com.ar/MLA-619433772-pack-50-led-5mm-blanco-alta-luminosidad-_JM?quantity=1)
+*   [Raspbery Pi Zero con módulo de cámara](https://articulo.mercadolibre.com.ar/MLA-756108400-raspberry-pi-zero-w-kit-e14-rs-rpi0w-base-_JM) (v2, though v1 works too)
+*   [Memoria micro sd de 16 gb](https://articulo.mercadolibre.com.ar/MLA-631744587-memoria-micro-sd-hc-16-gb-kingston-clase-10-tienda-_JM?quantity=1)
+*   [Cable HDMI]()
+*   [Monitor LCD o LED con entrada HDMI]()
 
-## Optical parts:
-*   [13mm diameter, 5mm focal length plastic condenser lens](./parts/optics/condenser_lens.md) (optional, strongly recommended for high resolution optics)
-*   [12.7mm diameter, 50mm focal length achromatic lens](./parts/optics/tube_lens.md) (for high resolution optics only)
-*   [RMS threaded, finite-conjugates microscope objective](./parts/optics/microscope_objective.md) (for high resolution optics only)
 
 ## Tools:
 *   2.5mm hex key
