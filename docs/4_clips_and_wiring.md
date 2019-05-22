@@ -1,46 +1,45 @@
-# Sample mounting and wiring
+# Montaje y conexiones
 
-# Requirements
+# Requisitos
 All the parts you need are shown below:
 
-![Parts needed for this section](./images/clips_and_wiring_parts.jpg)
+![Partes requeridas](./images/clips_and_wiring_parts.jpg)
 
-## Parts
-*   1 Microscope body, with 3 assembled actuators, an optics module, and the illumination attached.
-*   2 [M3x8mm cap head screws](./parts/fixings/m3x8mm_caphead_screw.md) 
-*   [Sample clips](./parts/printed/sample_clips.md)
-*   [Raspberry Pi](./parts/electronics/raspberry_pi.md)
+## Partes
+*   1 Cuerpo de microscopio, con 3 ejes armados, un módulo óptico y la iluminación conectada.
+*   2 [Tornillos M3x8mm con cabeza ](./parts/fixings/m3x8mm_caphead_screw.md)
+*   [Muestras](./parts/printed/sample_clips.md)
+*   [Raspberry Pi Zero W](./parts/electronics/raspberry_pi.md)
 
-## Tools
-*   A 2.5mm ball-ended hex key
+## Herramientas
+*   llave allen de 2.5mm cabeza redondeada
 
+# Instrucciones de construcción
+## Paso 1
+Conectá el cable LED al conector GPIO de la Raspberry Pi, a las líneas de 0v y 5v. Estos son los segundos y terceros pines de la parte superior del conector, en el borde exterior, pines número 4 y 6.
 
-# Assembly Instructions
-## Step 1
-Plug the LED cable into the GPIO connector on the Raspberry Pi, to the 0v and 5v lines.  These are the second and third pins from the top of the connector, on the outside edge - pins number 4 and 6.
-
-Plug in the camera to the camera connector as described in the [Raspberry Pi learning materials](https://projects.raspberrypi.org/en/projects/getting-started-with-picamera) (the connector is next to the Ethernet port, and the contacts on the cable face the port, i.e. they face away from the tab on the plug).
+Enchufá la cámara al conector de la cámara como se describe en [Materiales de aprendizaje con raspberrypi ] (https://projects.raspberrypi.org/en/projects/getting-started-with-picamera) (el conector está al lado del puerto Ethernet , y los contactos en el cable están orientados hacia el puerto, es decir, están alejados de la pestaña del enchufe).
 ![Raspberry Pi GPIO pins](./images/LED_wiring.jpg)
 ![Raspberry Pi GPIO pins](./images/camera_wiring.jpg)
 
-## Step 2
-If you are using a tall optics module, e.g. if you are using a plan corrected objective, you may need to fit a [sample riser](./parts/printed/sample_riser.md) between the microscope body and the microscope slide.  This is not necessary if you are using the basic optics module.
+## Paso 2
+Si estás utilizando un módulo de óptica alta, por ejemplo, Si estás utilizando un objetivo corregido del plan, es posible que deberías ajustar un [tubo ascendente de muestra](./parts/printed/sample_riser.md) entre el cuerpo del microscopio y el portaobjetos. Esto no es necesario si estás utilizando el módulo de óptica básica.
 
-## Step 3
-Fit the optics module onto the microscope - it slides in from the bottom as shown.  The screw sticking out the side fits into the "keyhole" shaped slot in the microscope body.
-![Insert the optics module](./images/insert_optics_module.jpg)
+## Paso 3
+Colocá el módulo óptico en el microscopio, se desliza desde la parte inferior como se muestra. El tornillo que sobresale del lado encaja en la ranura con forma de "ojo de cerradura" en el cuerpo del microscopio.
+![Insertando el módulo de óptica](./images/insert_optics_module.jpg)
 
-## Step 4
-Tighten the screw to hold the optics module in place.  You can reach the screw with a ball-ended hex key, through the hole near the Z axis, as shown below:
-![Tighten the screw to secure the optics module](./images/screw_on_optics_module.jpg)
+## Paso 4
+Ajustá el tornillo para mantener el módulo óptico en su lugar. Puede alcanzar el tornillo con una llave hexagonal con extremo de bola, a través del orificio cerca del eje Z, como se muestra a continuación:
+[Tighten the screw to secure the optics module](./images/screw_on_optics_module.jpg)
 
-## Step 3
-After this, there are only the sample clips to go.  Exactly where you place these will depend on the samples you intend to use, but in any case you simply push the M3 screws into the clips, then screw down into the holes on the stage.
-![](./images/sample_clips.jpg)
+## Paso 5
+Después de esto, solo quedan los clips de muestra para poner. El lugar exacto donde los coloque dependerá de las muestras que vayas a utilizar, pero en cualquier caso, simplemente presioná los tornillos M3 en los clips y luego en los orificios del porta objetos.
+[](./images/sample_clips.jpg)
 
-## Step 4
-Your microscope is now complete - happy observing!
-You might want to consult the [camera module documentation](http://www.raspberrypi.org/documentation/usage/camera/) or [raspicam documentation](http://www.raspberrypi.org/documentation/usage/camera/raspicam/README.md) if you need a hand setting up the camera.
+## Paso 6
+El microscopio está completo!
+Es posible que desee consultar la [documentación del módulo de cámara] (http://www.raspberrypi.org/documentation/usage/camera/) o [documentación de raspicam] (http://www.raspberrypi.org/documentation/usage/camera /raspicam/README.md) si necesitás una mano para configurar la cámara.
 ![](./images/microscope_complete_1.jpg)
 ![](./images/microscope_complete_2.jpg)
 ![](./images/microscope_complete_3.jpg)
