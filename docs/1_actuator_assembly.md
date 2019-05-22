@@ -1,9 +1,8 @@
 # Construccion del actuador
 There is one "actuator column" for each of the three axes of the OpenFlexure Microscope stage, to allow you to move the sample in X and Y, or focus the microscope by moving in Z.  It consists of a plastic gear that fits onto an M3 screw, which then pulls up on a brass nut.  Elastic bands pull down on the nut, tensioning the system.  The elastic band tightens up the mechanism, allowing us to move up and down smoothly.  Without the elastic band, you will only be able to move in one half of the microscope's range of travel, and the mechanism will be more wobbly.
 
-# Requirements
-All the parts you need for this step are in the picture below:
-
+# Requerimientos
+Todas las partes que necesitas están aquí
 ![Partes requeridas](./images/actuator_assembly_parts.jpg)
 
 ## Partes
