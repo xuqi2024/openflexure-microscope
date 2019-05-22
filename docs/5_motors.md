@@ -1,59 +1,57 @@
-# Motor assembly
-The OpenFlexure Microscope can be motorised, to allow you to run automated experiments.  In order to do this, you will need to fit stepper motors to the X, Y, and Z axes.
+# Ensamble del motor
+El microscopio OpenFlexure puede ser motorizado, para permitir ejecutar experimentos automatizados. Para hacer esto, deberá ajustar los motores paso a paso a los ejes X, Y y Z.
 
-# Requirements
-You will need the parts shown in the picture below:
-
+# Requisitos
+Necesitará las partes que se muestran en la siguiente imagen:
 ![Parts required for this step](./images/motors_parts.jpg)
 
-## Parts
-*   1 Microscope, with actuators already assembled
-*   [Small printed gears](./parts/printed/small_gears.md)
-*   3 [28BYJ-48 micro geared stepper motors](./parts/electronics/stepper_motors.md)
-*   6 [M4x6mm button head screws](./parts/fixings/m4x6mm_buttonhead_screw.md)
-*   1 [Motor board case](./parts/printed/motor_driver_case.md)
-*   1 [Motor driver board](./parts/electronics/motor_driver.md)
-*   1 Short mini USB lead
-*   2 Small cable ties
+## Partes
+* 1 Microscopio, con actuadores ya montados.
+* [Pequeños engranajes impresos](./ parts / printed / small_gears.md)
+* 3 [28BYJ-48 micro motores paso a paso reductores](./ parts / electronics / stepper_motors.md)
+* 6 [Tornillos de cabeza de botón M4x6mm](./ parts / fixings / m4x6mm_buttonhead_screw.md)
+* 1 [Caja de la placa del motor](./ parts / printed / motor_driver_case.md)
+* 1 [Placa de controlador de motor](./ parts / electronics / motor_driver.md)
+* 1 cable mini USB corto
+* 2 pequeños sujetacables
 
-## Tools
-*   1 2.5mm hex key
-*   3cm insulating tape
+## Herramientas
+* 1 llave allen de 2,5 mm
+* Cinta aislante de 3cm.
 
 
-# Assembly Instructions
-## Step 1
-First, fit the gears onto the motors.  The gears are printed with a circular bottom - place them on the table, circular side down.  They should be a tight fit onto the motor shaft - if they are not, place some insulating tape, sticky side up, on top of the gear as shown.
+# Instrucciones para construcción
+## Paso 1
+Primero, colocá los engranajes en los motores. Los engranajes están impresos con un fondo circular; colocalos sobre la mesa, con el lado circular hacia abajo. Deben quedar ajustados al eje del motor; si no lo están, ponele un poquito de cinta aislante, con el lado pegado hacia arriba, encima del engranaje, como se muestra.
 
-![A motor and gear, ready for assembly](./images/motors_tape.jpg)
+![Motor y engranaje, terminados](./images/motors_tape.jpg)
 
-## Step 2
-Now, fit the gear (and tape) onto the motor shaft - with the gear on the table, press the shaft into the hole.  NB you need to line the flat sides of the shaft up with the hole - it is not circular.
+## Paso 2
+Ahora, colocá el engranaje (y la cinta) en el eje del motor; con el engranaje en la mesa, presioná el eje en el orificio. NB: debe alinear los lados planos del eje con el orificio, no es circular.
 
-![A motor with the gear on its shaft](./images/motors_gear.jpg)
+![Motor con eje completo](./images/motors_gear.jpg)
 
-## Step 3
-Repeat steps 1 and 2 for all three motors.
+## Paso 3
+Repetí los pasos 1 y 2 para los tres motores.
 
-## Step 4
-Fit each of the three motors onto the microscope body using two M4 screws.  It is possible that this step will be easier if you tap the holes in the microscope body first.  The screws should be done up tightly, otherwise the motor will wobble.
+## Paso 4
+Ajustá cada uno de los tres motores en el cuerpo del microscopio con dos tornillos M4. Es posible que este paso sea más fácil si ajustás primero los orificios en el cuerpo del microscopio. Los tornillos deben estar bien ajustados, de lo contrario el motor se tambaleará.
 
-![A motor screwed onto the microscope body](./images/motors_mount.jpg)
+![Motor ajustado en el cuerpo del microscopio](./images/motors_mount.jpg)
 
-## Step 5
-Fit the mini USB lead to the motor board, and fit the motor board into the case as shown.
+## Paso 5
+Ajuste el cable mini USB a la placa del motor y coloque la placa del motor en la caja como se muestra.
 
-![The motor board, in its case](./images/motors_board_in_base.jpg)
+![La placa del motor, en su caja](./images/motors_board_in_base.jpg)
 
-## Step 6
-Connect the cables from the motors to the motor board as shown.
+## Paso 6
+Conecte los cables de los motores a la placa del motor como se muestra.
 
-![Motors connected to the motor board](./images/motors_wiring.jpg)
+![Motores conectados al controlador](./images/motors_wiring.jpg)
 
-## Step 7
-Finally, sit the microscope on top of the motor board case, and tidy up the wiring using the cable ties.  You can more securely attach the motor board to the microscope using M3 screws at the corners, but you might want to wait until you have tested it in case you need to swap the wiring around.
+## Paso 7
+Finalmente, colocá el microscopio en la parte superior de la caja del tablero del motor y ordená el cableado utilizando las precintos. Puede fijar de forma más segura la placa del motor al microscopio con tornillos M3 en las esquinas, pero es posible que tengas que esperar hasta que lo haya probado en caso de que necesite cambiar el cableado.
+![El Microscopio completo con los motores](./images/motors_assembled.jpg)
 
-![The microscope complete with assembled motors](./images/motors_assembled.jpg)
-
-## Step 8
-Congratulations, you have fitted the motors.  You will need to upload the motor controller firmware using the Arduino IDE.  Currently, the [firmware resides on github](https://github.com/rwb27/openflexure_nano_motor_controller).
+## Paso 8
+Muy bien!!! Colocaste los motores. Ahora hay que cargar el firmware del controlador del motor utilizando el IDE de Arduino. Actualmente, el [firmware reside en github] (https://github.com/rwb27/openflexure_nano_motor_controller).
