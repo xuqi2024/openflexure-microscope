@@ -1,6 +1,5 @@
-# Obtaining the non-printed parts
-Make sure you have all the necessary parts and tools before you start.  The parts should all be listed in the bill of materials below, which is currently a work in progress (eventually it will be produced automatically, which should help it to stay accurate).  We recommend reading through all the instructions and checking that the quantities shown here add up correctly, until auto-generation is working.  Printed parts are described in the [next section](./0_printing.md).
-
+# Obtención de las piezas no impresas.
+Asegurate de tener todas las piezas y herramientas necesarias antes de comenzar. Todas las partes deben estar listadas en la lista de materiales a continuación, que actualmente es un trabajo en progreso (eventualmente se producirá automáticamente, lo que debería ayudarlo a mantenerse exacto). Recomendamos leer todas las instrucciones y verificar que las cantidades que se muestran aquí se suman correctamente, hasta que la generación automática esté funcionando. Las piezas impresas se describen en la [siguiente sección] (./ 0_printing.md).
 ## Partes para fijación:
 *   3x [Tornillos allen de acero inoxidable de M3x25 mm]()
 *   4x [Tuerca M3 de latón o acero]()
