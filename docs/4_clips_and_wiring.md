@@ -1,8 +1,7 @@
 # Montaje y conexiones
 
 # Requisitos
-All the parts you need are shown below:
-
+Todas las partes requeridas se encuentran aquí
 ![Partes requeridas](./images/clips_and_wiring_parts.jpg)
 
 ## Partes
