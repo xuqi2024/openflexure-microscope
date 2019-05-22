@@ -1,50 +1,50 @@
-# Printing the plastic parts
-First, you will need to print or obtain the 3D printed parts.  These have been designed with some care to print reliably on most RepRap-style printers, without support material.  It's important to read through the notes before, as there are multiple versions of the STL files to choose from, so it's not a good idea just to pick all the parts in the folder.  The printed parts are described in their own pages, with details of how to pick the version of that part, for the parts with multiple versions.  A full list of links is at the bottom.
+# Imprimiendo las partes plásticas
+Primero, deberás imprimir u obtener las piezas impresas en 3D. Se han diseñado con cierto cuidado para imprimir de manera confiable en la mayoría de las impresoras de estilo RepRap, sin material de soporte. Es importante leer las notas antes, ya que hay varias versiones de los archivos STL para elegir, por lo que no es una buena idea elegir todas las partes de la carpeta. Las partes impresas se describen en sus propias páginas, con detalles de cómo escoger la versión de esa parte, para las partes con múltiples versiones. Una lista completa de enlaces está en la parte inferior.
 
-## Print settings
-I usually print with a layer size of 0.24mm on my Ormerod, which takes 10 hours for the main body.  "low" quality on an Ultimaker 2 (0.15mm layers) produces similar results in about 10 hours.  Our Prusa i3 Mk3 takes a similar time using 0.2mm layers, or 0.3mm layers if we want to go even faster (8 hours or less).
+## Ajustes de Impresora 3D
+Normalmente imprimo con un tamaño de capa de 0.24 mm en mi Ormerod, que toma 10 horas para el cuerpo principal. La "baja" calidad en un Ultimaker 2 (capas de 0.15 mm) produce resultados similares en aproximadamente 10 horas. Nuestra Prusa i3 Mk3 toma un tiempo similar usando capas de 0.2mm, o capas de 0.3mm si queremos ir aún más rápido (8 horas o menos).
 
-> **Warning:** The microscope is designed to print without support material.  If you use support material it will require a lot of cleaning up, and you may well damage the parts.
+>** Advertencia: ** El microscopio está diseñado para imprimir sin material de soporte. Si utilizás material de soporte, necesitarás una gran cantidad de limpieza y podrías dañar las piezas.
 
-The parts are all designed to print without support material or adhesion layer.  If you do use an adhesion layer, many of the moving parts will be rendered useless by a brim (particularly on the main body), and require lots of work with a craft knife to sort them out.  While there are no cantilevered parts that really need support, there are a few bridges; it might be a good idea to print the ``just_leg_test.stl`` file first, to make sure your printer can print them.  There are some versions of the main body that include a baked-in brim in the STL file, see [``main_body.scad``](../openscad/main_body.scad).  This brim does a better job of not fouling the mechanism than most slicers, and is a good option if the part won't stick without a brim.  Most of the other parts are possible to clean up after printing with a brim, so you may wish to use one, particularly for the smaller parts like sample clips.
+Todas las piezas están diseñadas para imprimir sin material de soporte o capa de adhesión. Si utilizás una capa de adherencia, muchas de las partes móviles se volverán inútiles con un borde (especialmente en el cuerpo principal), y requerirán mucho trabajo con una cuchilla manual para clasificarlas. Si bien no hay partes sueltas que realmente necesiten soporte, hay algunos salvatajes; Puede ser una buena idea imprimir primero el archivo `` just_leg_test.stl`` para asegurarse de que la impresora pueda imprimirlos. Hay algunas versiones del cuerpo principal que incluyen un borde horneado en el archivo STL, consulte [`` main_body.scad``] (../ openscad / main_body.scad). Esta ala hace un mejor trabajo de no ensuciar el mecanismo que la mayoría de los rebanadores, y es una buena opción si la pieza no se adhiere sin un borde. La mayoría de las otras partes se pueden limpiar después de imprimirlas con un ala, por lo que es posible que debas utilizar una, especialmente para las partes más pequeñas, como los clips de muestra.
 
-If your printer has a standard-sized bed (180mmx180mm should be fine) then it should be possible to print the complete microscope in one go.  I do this if I'm using a machine that is well calibrated and reliable.  However, I find that it's often more reliable to print in batches (as small parts at the edge of the print bed can detach and cause it to fail).  I would recommend: 
+Si su impresora tiene una cama de tamaño estándar (180 mm x 180 mm debería estar bien), entonces debería ser posible imprimir el microscopio completo de una sola vez. Hace esto si estás usando una máquina que está bien calibrada y es confiable. Sin embargo, yo encuentro que a menudo es más confiable imprimir en lotes (ya que las partes pequeñas en el borde de la cama de impresión pueden desprenderse y hacer que falle). Yo recomendaria:
 
-*   Batch 1: Microscope, illumination and Optics module (this is the longer print, with taller objects)
-*   Batch 2: Feet, gears, camera cover, camera board gripper, camera lens remover, gear riser
+* Lote 1: módulo de microscopio, iluminación y óptica (esta es la impresión más larga, con objetos más altos)
+* Lote 2: Pies, engranajes, cubierta de cámara, agarrador de tablero de cámara, removedor de lente de cámara, elevador de engranaje
 
-There is a test file that prints a single leg of the microscope - ``just_leg_test.stl``. It's worth printing this first to check your settings are OK.
+Hay un archivo de prueba que imprime una sola pata del microscopio: `` just_leg_test.stl``. Vale la pena imprimir esto primero para comprobar que la configuración sea correcta.
 
-The optics module needs to print with some fine detail, so the dovetail meshes nicely with the stage.  A good way to ensure this is to print it at the same time as other parts - either print more than one optics module at a time, or print it at the same time as the microscope body.  This slows down the time for each layer, and means the plastic can cool more completely before the layer on top is deposited, resulting in a higher-quality part.  The optics module is best printed in black to cut down on stray light inside the tube - though it will still work in other colours.
+El módulo óptico necesita imprimir con algunos detalles finos, por lo que la cola de soprte se adapta muy bien al escenario. Una buena manera de asegurarse de esto es imprimirlo al mismo tiempo que otras partes, ya sea imprimir más de un módulo óptico a la vez o imprimirlo al mismo tiempo que el cuerpo del microscopio. Esto ralentiza el tiempo para cada capa, y significa que el plástico puede enfriarse más completamente antes de que se deposite la capa en la parte superior, lo que resulta en una pieza de mayor calidad. El módulo óptico se imprime mejor en negro para reducir la luz dispersa dentro del tubo, aunque aún funcionaría en otros colores.
 
-## Standard builds of the microscope
-The list of parts below is pretty extensive and tries to explain all the various options - however, if you just want to build a "normal" version of the microscope, there are two versions we'd reccommend:
+## Estructuras estándar del microscopio.
+La lista de partes a continuación es bastante extensa y trata de explicar todas las distintas opciones. Sin embargo, si solo querés crear una versión "normal" del microscopio, hay dos versiones que recomendaríamos:
 
-### Webcam-based microscope
-The basic version of the microscope uses a webcam lens instead of a microscope objective - you still get a really nice focusing/sample translation stage, but with basic options.  This version is great for school or hobby use, gets a resolution of about 2um or better, and is the cheapest to build.  This is the version we usually build at workshops.  For each microscope, you will need to print one copy of each of the following files:
+### Microscopio basado en WebCam
+La versión básica del microscopio usa una lente de cámara web en lugar de un objetivo de microscopio: aún se obtiene una etapa de traducción de muestra / enfoque realmente agradable, pero con opciones básicas. Esta versión es ideal para el uso de la escuela o los hobbies, tiene una resolución de aproximadamente 2um o mejor y es la más barata de construir. Esta es la versión que usualmente construimos en los talleres. Para cada microscopio, deberás imprimir una copia de cada uno de los siguientes archivos:
 
-* ``actuator_assembly_tools.stl``
-* ``picamera_2_gripper.stl``
-* [optional] ``picamera_2_lens_gripper.stl`` (only needed if your camera didn't come with a tool to remove the lens) 
-* ``main_body_LS65.stl``.
-* ``feet.stl``
-* ``gears.stl``
-* ``illumination_dovetail.stl``
-* ``condenser.stl``
-* ``sample_clips.stl``
-* ``camera_platform_picamera_2_LS65.stl``
-* ``lens_spacer_picamera_2_pilens_LS65.stl``
-* ``microscope_stand.stl`` (or ``back_foot.stl``)
+* `` actuator_assembly_tools.stl``
+* `` picamera_2_gripper.stl``
+* [opcional] `` picamera_2_lens_gripper.stl`` (solo es necesario si su cámara no viene con una herramienta para quitar la lente)
+* `` main_body_LS65.stl``.
+* `` feet.stl``
+* `` gears.stl``
+* `` illumination_dovetail.stl``
+* `` condenser.stl``
+* `` sample_clips.stl``
+* `` camera_platform_picamera_2_LS65.stl``
+* `` lens_spacer_picamera_2_pilens_LS65.stl``
+* `` microscope_stand.stl`` (o `` back_foot.stl``)
 
-This will need the nuts, bolts, etc. described below, plus a Raspberry Pi computer (any model will do) and Raspberry Pi camera module.  No other optical bits are required, except an LED for illumination.  If you want to mount the Raspberry Pi underneath the microscope (our preferred option), print ``microscope_stand.stl`` instead.  If your Raspberry Pi is in a case already, you should print ``back_foot.stl`` so the microscope sits flat on a table.  Newer camera modules include a white circular tool for unscrewing the lens.  If you don't have one, you will need to print the lens gripper (marked as optional).
+Esto necesitará las tuercas, tornillos, etc. descritos a continuación, además de una computadora Raspberry Pi (cualquier modelo funcionará) y el módulo de la cámara Raspberry Pi. No se requieren otros bits ópticos, excepto un LED para la iluminación. Si desea montar la Raspberry Pi debajo del microscopio (nuestra opción preferida), imprima `` microscope_stand.stl`` en su lugar. Si su Raspberry Pi ya está en un estuche, debe imprimir `` back_foot.stl`` para que el microscopio quede plano sobre una mesa. Los módulos de cámara más nuevos incluyen una herramienta circular blanca para desenroscar la lente. Si no tiene uno, deberá imprimir la pinza de la lente (marcada como opcional).
 
-### High resolution microscope
-The version of the microscope used for scientific or medical research generally requires a conventional objective lens.  Most of the parts are the same, but the optics and sample mount are different.  You will need one copy of each of the following files:
+### Microscopio De alta resolución
+La versión del microscopio utilizado para la investigación científica o médica generalmente requiere una lente de objetivo convencional. La mayoría de las piezas son iguales, pero la óptica y el soporte de muestra son diferentes. Necesitará una copia de cada uno de los siguientes archivos:
 
 * ``actuator_assembly_tools.stl``
 * ``lens_tool.stl``
 * ``picamera_2_gripper.stl``
-* [optional] ``picamera_2_lens_gripper.stl`` (only needed if your camera didn't come with a tool to remove the lens) 
+* [optional] ``picamera_2_lens_gripper.stl`` (solo es necesario si tu cámara no viene con una herramienta para quitar la lente)
 * ``main_body_LS65-M.stl``.
 * ``feet.stl``
 * ``gears.stl``
@@ -53,66 +53,66 @@ The version of the microscope used for scientific or medical research generally 
 * ``sample_clips.stl``
 * ``optics_picamera_2_rms_f50d13_LS65.stl``
 * ``microscope_stand.stl``
-* ``sample_riser_LS10.stl`` (assuming you have a microscope objective with a 45mm parfocal distance)
+* ``sample_riser_LS10.stl`` (Suponiendo que tengas un objetivo de microscopio con una distancia parfocal de 45 mm)
 
-**For motorised operation you will also need**
+** Para operación motorizada también necesitarás **
 * ``small_gears.stl``
 * ``motor_driver_case.stl``
 
-Additionally, you will need:
-* an RMS threaded, finite-conjugates objective lens.  These can be obtained from e.g. AliExpress.  Depending on whether it is 35mm or 45mm from the "shoulder" of the lens to the sample, you may or may not need the sample riser.  We almost always use 45mm "plan" corrected lenses, which do require the riser.
-* a 12.7mm diameter, 50mm focal length achromatic lens, e.g. ThorLabs ac127-050-a or generic equivalent.
-* a 13mm diameter, 5mm focal length PMMA lens for the condenser (sold as LED lenses in bulk)
-* three 28BYJ-48 stepper motors and a [sangaboard](https://github.com/rwb27/openflexure_nano_motor_controller/) driver, or other suitable electronics.
+Además, necesitarás:
+* Un objetivo RMS roscado, con lentes finitas conjugadas. Estos se pueden obtener de, por ejemplo, AliExpress. Dependiendo de si es de 35 mm o 45 mm desde la "punta" de la lente a la muestra, puede que necesite o no la tarjeta vertical de muestra. Casi siempre usamos lentes corregidos de "plan" de 45 mm, que requieren el elevador.
+* una lente acromática de longitud focal de 12,7 mm de diámetro y 50 mm, p. ej. ThorLabs ac127-050-a o equivalente genérico.
+* una lente PMMA de 13 mm de diámetro y 5 mm de longitud focal para el condensador (se vende como lentes LED a granel)
+* tres motores paso a paso 28BYJ-48 y un controlador [sangaboard] (https://github.com/rwb27/openflexure_nano_motor_controller/), u otro dispositivo electrónico adecuado.
 
-## Printed parts
-The best way to obtain these files is from the latest [release](https://gitlab.com/openflexure/openflexure-microscope/tags), or from the files associated with a particular commit on GitLab.com.
+## Partes Impresas
+La mejor manera de obtener estos archivos es desde el último [lanzamiento] (https://gitlab.com/openflexure/openflexure-microscope/tags), o desde los archivos asociados con un compromiso en particular en GitLab.com.
 
 **Plastic tools:**
-* [band and nut insertion tools](./parts/printed_tools/actuator_assembly_tools.md) ``actuator_assembly_tools.stl``
-* [tool to insert](./parts/printed_tools/lens_tool.md) the 13mm diameter condenser lens and/or tube lens: ``lens_tool.stl``
-* [jig to hold the camera board](./parts/printed_tools/picamera_2_tools.md) while you unscrew the lens ``picamera_2_gripper.stl``
-* [optional] [tool to unscrew the camera's lens](./parts/printed_tools/picamera_2_tools.md) (only needed if your camera didn't come with one) ``picamera_2_lens_gripper.stl``
+* [herramientas de inserción de bandas y tuercas](./ parts / printed_tools / actuator_assembly_tools.md) `` actuator_assembly_tools.stl``
+* [herramienta para insertar](./ parts / printed_tools / lens_tool.md) la lente de condensador de 13 mm de diámetro y / o la lente de tubo: `` lens_tool.stl``
+* [plantilla para sujetar la placa de la cámara](./ parts / printed_tools / picamera_2_tools.md) mientras desenroscas la lente `` picamera_2_gripper.stl``
+* [opcional] [herramienta para desenroscar la lente de la cámara](./ parts / printed_tools / picamera_2_tools.md) (solo es necesaria si su cámara no vino con una) `` picamera_2_lens_gripper.stl``
 
-**Components:**
-* [body of the microscope](./parts/printed/main_body.md): ``main_body_<stage size><height>[-M].stl``.
-* 3 [feet](./parts/printed/feet.md): ``feet.stl`` or ``feet_tall.stl`` (contains all 3)
-* 3 [large gears](./parts/printed/gears.md): ``gears.stl`` (contains all 3)
-* illumination:
- - [vertical dovetail](./parts/printed/illumination_dovetail.md): ``illumination_dovetail.stl``
- - [condenser arm](./parts/printed/condenser.md): ``condenser.stl``
-* 2 [sample clips](./parts/printed/sample_clips.md): ``sample_clips.stl`` (contains both)
-* optics module (you need one of the two options below):
- - old-style [optics module](./parts/printed/optics_module_casing.md) (one part, best with RMS objectives): ``optics_<camera>_<lens>_<stage size><height>.stl``
- - platform-style optics module (two parts, best with webcam lenses): 
-  * [camera platform](./parts/printed/camera_platform.md): ``camera_platform_<camera>_<stage size><height>.stl``
-  * [lens spacer](./parts/printed/lens_spacer.md): ``lens_spacer_<camera>_<lens>_<stage_size><height>.stl``
-* [optional] camera cover: ``picamera_2_cover.stl``
-* [optional] 3 [small gears](./parts/printed/small_gears.md) for motors: ``small_gears.stl`` (contains all 3)
-* [optional] [riser for the sample](./parts/printed/sample_riser.md): ``sample_riser_<stage size><thickness>.stl``
-* [optional] slide holder that works better if using immersion oil: ``slide_riser_LS10.stl``
-* [optional] [base to hold a Raspberry Pi](./parts/printed/microscope_stand.md): ``microscope_stand.stl``
-* [optional] [base to hold the motor driver](./parts/printed/motor_driver_case.md) (fits under the base that holds the Pi): ``motor_driver_case.stl``
-* [optional] [back foot](./parts/printed/back_foot.md), in case you are not using the microscope stand: ``back_foot.stl``
+** Componentes: **
+* [cuerpo del microscopio](./ parts / printed / main_body.md): `` main_body_ <tamaño del escenario> <helera> [-M] .stl``.
+* 3 [pies](./partes/impresos /pies.md): `` feet.stl`` o `` feet_tall.stl`` (contiene los 3)
+* 3 [engranajes grandes](./ parts / printed / gears.md): `` gears.stl`` (contiene los 3)
+* iluminación:
+ - [cola de milano vertical](./ parts / printed / illumination_dovetail.md): `` illumination_dovetail.stl``
+ - [brazo del condensador](./ parts / printed / condenser.md): `` condenser.stl``
+* 2 [clips de muestra](./ parts / printed / sample_clips.md): `` sample_clips.stl`` (contiene ambos)
+* módulo de óptica(necesita una de las dos opciones a continuación):
+ - estilo antiguo [módulo óptico](./ parts / printed / optics_module_casing.md) (una parte, mejor con objetivos RMS): `` optics_ <camera> _ <lens> _ <stage stage> <height> .stl` `
+ - Módulo óptico de estilo plataforma (dos partes, mejor con lentes de webcam):
+  * [plataforma de la cámara](./ parts / printed / camera_platform.md): `` camera_platform_ <camera> _ <tamaño del escenario> <height> .stl``
+  * [espaciador de lente](./ parts / printed / lens_spacer.md): `` lens_spacer_ <camera> _ <lens> _ <stage_size> <height> .stl``
+* [opcional] cubierta de la cámara: `` picamera_2_cover.stl``
+* [opcional] 3 [engranajes pequeños](./ parts / printed / small_gears.md) para motores: `` small_gears.stl`` (contiene los 3)
+* [opcional] [riser para la muestra](./ parts / printed / sample_riser.md): `` sample_riser_ <tamaño de etapa> <grosor> .stl``
+* [opcional] soporte de diapositivas que funciona mejor si se usa aceite de inmersión: `` slide_riser_LS10.stl``
+* [opcional] [base para contener una Raspberry Pi](./ parts / printed / microscope_stand.md): `` microscope_stand.stl``
+* [opcional] [base para mantener el controlador del motor](./ parts / printed / motor_driver_case.md) (encaja debajo de la base que contiene la Pi): `` motor_driver_case.stl``
+* [opcional] [pie trasero](./ parts / printed / back_foot.md), en caso de que no estés utilizando el soporte del microscopio: `` back_foot.stl``
 
-In the filenames above, where there are multiple versions, parameters are included in angle brackets:
-* ``<stage size>`` selects the size of the platform - but currently only ``LS`` is supported.
-* ``<height>`` is the height from the bottom of the main body to the top of the stage in mm, currently either ``65`` or ``75``. 
-* Usually the above two parameters occur next to each other, so you will see ``LS65``.  I pretty much only use ``65`` as standard, and if I am using an objective (which is the norm) I add a 10mm riser.
-* ``<camera>`` is the camera you are using, either ``picamera_2`` for the Raspberry Pi camera module v2, ``c270`` for the Logitech C270, or ``m12`` for a camera with a screw-on M12 lens mount.
-* ``<lens>`` is the lens you are using, either ``pilens``, ``c270_lens``, or ``m12_lens`` if you are using the lens that came with your camera.  To use a finite-conjugate, RMS threaded objective lens, you should specify ``rms_f50d13`` (for a 50mm focal length, 12.7mm diameter tube lens, e.g. ThorLabs ac127-050-a).  You can also specify ``rms_f40d16`` (to use a Comar tube lens, focal length 40mm, diameter 16mm) but this is deprecated as the images weren't as good. 
-* ``<thickness>`` is the thickness of a stage riser - the amount it adds to the height.  Usually a 10mm riser is used with a 65mm body to allow a 45mm parfocal distance objective to be used, currently only LS10 is reccommended.
-Optional bits of filenames are in square brackets above:
-* ``-M`` in the body name means it has motor lugs to allow 28BYJ-48 stepper motors to be fitted
-* ``_tall`` on the illumination or the feet means the body sits 26mm off the ground rather than 15mm, to give clearance for larger camera modules.  This is only useful if you are not using the microscope stand.
 
-Currently, there are two reccommended versions of the body; ``LS65`` and ``LS65-M``.  The only difference is that the ``-M`` version can be fitted with motors.  To build the high-resolution version of the microscope, use the 10mm thick sample riser ``sample_riser_LS10.stl``, and ``optics_picamera_2_rms_f50d13_LS65.stl``.  To build the low-resolution version, don't use the sample riser, and instead use ``camera_platform_picamera_2_LS65.stl`` and ``lens_spacer_picamera_2_pilens_LS65.stl``.  In both cases, it's best to print the microscope stand, and use the standard-height feet.
+En los nombres de archivo anteriores, donde hay varias versiones, los parámetros se incluyen entre paréntesis <>:
+* `` <stage size> `` selecciona el tamaño de la plataforma, pero actualmente solo se admite `` LS``.
+* `` <height> `` es la altura desde la parte inferior del cuerpo principal a la parte superior del escenario en mm, actualmente ya sea `` 65`` o `` 75``.
+* Por lo general, los dos parámetros anteriores aparecen uno junto al otro, por lo que verás `` LS65``. Prácticamente yo solo uso `` 65`` como estándar, y si estoy usando un objetivo (que es la norma) agrego un elevador de 10 mm.
+* `` <camera> `` es la cámara que está usando, ya sea `` picamera_2`` para el módulo de cámara Raspberry Pi v2, `` c270`` para Logitech C270, o `` m12`` para una cámara con una Montura de lente M12 a rosca.
+* `` <lens> `` es la lente que estás utilizando, ya sea `` pilens``, `` c270_lens`` o `` m12_lens`` si está usando la lente que viene con su cámara. Para usar una lente objetiva de rosca RMS conjugada finita, tenes que especificar `` rms_f50d13`` (para una lente de tubo de 12,7 mm de diámetro focal, distancia focal de 50 mm, por ejemplo, ThorLabs ac127-050-a). También podes especificar `` rms_f40d16`` (para usar una lente de tubo Comar, longitud focal 40 mm, diámetro 16 mm) pero esto está obsoleto porque las imágenes no fueron tan buenas.
+* `` <thickness> `` es el grosor de una plataforma, la cantidad que se agrega a la altura. Por lo general, se utiliza un elevador de 10 mm con un cuerpo de 65 mm para permitir el uso de un objetivo de distancia parfocal de 45 mm, actualmente solo se recomienda LS10.
+Los bits opcionales de los nombres de archivo están entre corchetes arriba:
+* `` -M`` en el nombre del cuerpo significa que tiene terminales de motor para permitir que se instalen los motores paso a paso 28BYJ-48
+* `` _tall`` en la iluminación o en los pies significa que el cuerpo se sienta a 26 mm del suelo en lugar de 15 mm, para dejar espacio para los módulos de cámara más grandes. Esto solo es útil si no estás utilizando el soporte del microscopio.
 
-## Clean-up of printed parts
-If you printed the parts yourself, start by opening out the three holes in the microscope body with a drill as shown.  Make sure to go all the way through.  If you don't have a drill, you can improvise by screwing in an M3 screw all the way, then forcibly rotating it with a screwdriver or the supplied nut.  Also, remove any loose strings of plastic from the underside of the sample stage, using a pair of pliers. The last step shouldn't be necessary if your machine is calibrated nicely for printing bridges.
+Actualmente, hay dos versiones recomendadas del cuerpo; `` LS65`` y `` LS65-M``. La única diferencia es que la versión `` -M`` puede equiparse con motores. Para construir la versión de alta resolución del microscopio, use la columna de muestra de 10 mm de espesor `` sample_riser_LS10.stl``, y `` optics_picamera_2_rms_f50d13_LS65.stl``. Para compilar la versión de baja resolución, no use el riser de muestra, y en su lugar use `` camera_platform_picamera_2_LS65.stl`` y `` lens_spacer_picamera_2_pilens_LS65.stl``. En ambos casos, es mejor imprimir el soporte del microscopio y usar los pies de altura estándar.
 
+## Limpieza de partes impresas
+Si imprimiste las partes vos, comenzá abriendo los tres orificios en el cuerpo del microscopio con un taladro como se muestra. Asegurate de ir todo el camino a través. Si no tenes un taladro, podes improvisar atornillando completamente un tornillo M3, luego girándolo a la fuerza con un destornillador o con la tuerca suministrada. Además, quitá las cuerdas sueltas de plástico de la parte inferior de la etapa de la muestra, utilizando un par de alicates. El último paso no debería ser necesario si tu máquina está bien calibrada para "imprimir puentes".
 ![Opening out the holes for the actuators](./images/main_body_drill.jpg)
 
-There are also ties between the actuator column casing and the central actuator column that holds the brass nut - these need to be snapped, as described in the instructions later on.  There may also be short ties between the two thinner pairs of legs and the "wall" running around the microscope - these should also be snapped with a knife.  The "ladder" like structure between each pair of legs is also only there for support during printing - it does no harm to leave it in place, but if you cut the "rungs" out, it will allow the stage to move a little more freely.
+También hay vínculos entre la carcasa de la columna del actuador y la columna del actuador central que sujeta la tuerca de latón, que deben romperse, como se describe más adelante en las instrucciones. También puede haber ataduras cortas entre los dos pares de patas más delgadas y la "pared" que corre alrededor del microscopio, que también deben cortarse con un cuchillo. La estructura de "escalera" entre cada par de patas también está ahí solo para soporte durante la impresión; no hace daño dejarla en su lugar, pero si cortás los "peldaños", permitirá que la plataforma se mueva un poco más libremente.
 
-Once you have your printed parts, you can start by [assembling the actuators](./1_actuator_assembly.md).
+Una vez que tenga sus piezas impresas, puede comenzar [ensamblando los actuadores](./ 1_actuator_assembly.md).
