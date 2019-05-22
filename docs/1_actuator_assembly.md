@@ -1,67 +1,67 @@
-# Actuator assembly
+# Construccion del actuador
 There is one "actuator column" for each of the three axes of the OpenFlexure Microscope stage, to allow you to move the sample in X and Y, or focus the microscope by moving in Z.  It consists of a plastic gear that fits onto an M3 screw, which then pulls up on a brass nut.  Elastic bands pull down on the nut, tensioning the system.  The elastic band tightens up the mechanism, allowing us to move up and down smoothly.  Without the elastic band, you will only be able to move in one half of the microscope's range of travel, and the mechanism will be more wobbly.
 
 # Requirements
 All the parts you need for this step are in the picture below:
 
-![Parts required for this step](./images/actuator_assembly_parts.jpg)
+![Partes requeridas](./images/actuator_assembly_parts.jpg)
 
-## Parts
-*   3x [M3x25mm hexagon head screws](./parts/fixings/m3x25mm_hexagonhead_screw.md), stainless steel
-*   3x [M3 brass nut](./parts/fixings/m3_brass_nut.md)
-*   6x [M3 stainless steel washers](./parts/fixings/m3_washer.md)
-*   3x [Viton O-ring, 30x2mm](./parts/fixings/viton_o_ring_30mm_inner_diameter_2mm_cross_section.md) (NB: get some spares!)
-*   3 [Plastic gears](./parts/printed/gears.md)
-*   1 set of [Microscope Feet](./parts/printed/feet.md) (NB there are different feet for X/Y axes and for the Z axis).
-*   light grease (if available)
+## Partes
+*   3x [Tornillos M3x25mm cabeza hexagonal](./parts/fixings/m3x25mm_hexagonhead_screw.md), de acero
+*   3x [Tuercas M3  ](./parts/fixings/m3_brass_nut.md)
+*   6x [Arandelas para M3 de acero inoxidable](./parts/fixings/m3_washer.md)
+*   3x [O-ring tipo Viton, 30x2mm](./parts/fixings/viton_o_ring_30mm_inner_diameter_2mm_cross_section.md) (Por las dudas 4, uno se puede romper...)
+*   3 [Engranajes de plástico](./parts/printed/gears.md)
+*   1 set de un [Pie de microscopio](./parts/printed/feet.md) (NB Hay diferentes versiones del pie X/Y que encajan con el Z).
+*   Grasa liviana (NO grafitada)
 
-## Tools
-*   [Nut and O ring insertion tools](./parts/actuator_assembly_tools.md)
-*   Craft knife
+## Herramientas
+*   [Tuecas M3 y la pieza de insercion de O-rings](./parts/actuator_assembly_tools.md)
+*   Cuchillo de artesanía
 
-# Assembly Instructions
-There are three actuator columns on the microscope, for X, Y, and Z.  Follow these instructions for each column in turn.
+# Instrucciones de armado
+Hay 3 pivotes en columna dentro del microscopio, para X,Y y Z.
+Deberás seguir las instrucciones adecuadamente, de lo contrario tendrás problemas durante la construcción
 
-## Step 1
-We need to place a nut inside the actuator.  Insert it from the side, through the slot in the actuator column, and push it into place with the [nut insertion tool](./parts/nut_insertion_tool).  Take care to insert the nut corner-first (i.e. with flat sides parallel to the tool), otherwise it will jam.
+## Paso 1
+Primero hay que colocar una tuerca dentro del pivote. Deberás inserarla desde un lado, dentro del pivote de la columna, y empujarlo con la [Herramienta de insercion de tuercas](./parts/nut_insertion_tool) que previamente tendrás impresa. Tene cuidado de insertar la tuerca primero en la esquina (es decir, con lados planos paralelos a la herramienta), de lo contrario se atascará.
 
-![putting the nut into the actuator column](./images/actuator_assembly_nut_insertion_1.jpg)
-![The slot in the body now looks like this](./images/insert_nut_here.jpg)
+![poniendo la tuerna en la columna del pivote](./images/actuator_assembly_nut_insertion_1.jpg)
+![El lugar de inserción ahora se ve así](./images/insert_nut_here.jpg)
 
-## Step 2
-Next, take a screw, and push it into a plastic gear, so that the head of the screw is embedded in the plastic.  Then, thread two washers onto the screw where it sticks out of the gear.  Put a very small blob of light oil or grease (if available) on the screw thread.  Put the screw into the hole at the top of the column, and screw it into the nut that is now inside the actuator.  The two washers should sit between the gear and the microscope body
+## Paso 2
+Luego, agarrá un tornillo y empujalo en un engranaje de plástico, de modo que la cabeza del tornillo quede incrustada en el plástico. Luego, enroscá dos arandelas en el tornillo donde sobresale el engranaje. Colocá una gota muy pequeña de aceite ligero o grasa (si está disponible) en la rosca del tornillo. Colocá el tornillo en el orificio en la parte superior de la columna y atornillalo en la tuerca que ahora se encuentra dentro del actuador. Las dos arandelas deben quedar entre el engranaje y el cuerpo del microscopio.
+![Construyendo el engranaje de plastico](./images/actuator_assembly_screw_in_1.jpg)
+![El engranaje, con tornillos y arandelas](./images/screw_gear_and_washers.jpg)
 
-![assembling the screw into the actuator column](./images/actuator_assembly_screw_in_1.jpg)
-![The gear, with the screw and washers in place](./images/screw_gear_and_washers.jpg)
+## Paso 3
+Girá el microscopio y, utilizando la "herramienta de banda elástica"(pieza de insercion de O-rings) o un cuchillo de artesanía, encaje los dos soportes de plástico delgados, como se muestra, si están presentes.
+![Removiendo los hilos que sostienen el la columna del pivote durante la impresión](./images/actuator_assembly_snap_supports_1.jpg)
 
-## Step 3
-Turn the microscope over and, using the elastic band tool or a craft knife, snap the two thin plastic supports as shown if they are present.
-![removing the ties that support the actuator column during printing](./images/actuator_assembly_snap_supports_1.jpg)
+## Paso 4
+Enganchá una de los O-rings de Viton sobre la herramienta de banda elástica y pasá la herramienta a través del pie como se muestra. Debería terminar con un lazo de banda elástica que pase sobre cada extremo en forma de horquilla de la herramienta de inserción. El lado plano de la herramienta debe estar en el exterior, de modo que los canales en ambos extremos estén orientados hacia el centro del pie. Asegurate de elegir el pie derecho; el eje central (Z) tiene un pie más pequeño. El ángulo de los pies es diferente, si el pie no se alinea con la parte exterior de la carcasa del microscopio, es posible que estes utilizando el pie incorrecto.
 
-## Step 4
-Hook one of the Viton bands over the elastic band tool, and pass the tool through the foot as shown.  You should end up with one loop of elastic band passing over each fork-shaped end of the insertion tool.  The flat side of the tool should be on the outside, so that the channels in either end face towards the centre of the foot.  Make sure you pick the right foot - the middle axis (Z) has a smaller foot.  The angle of the feet is different, if the foot doesn't line up with the outside of the microscope casing, you may be using the wrong one.
+Puede que te resulte más fácil colocar la banda a través del pie, luego insertá la herramienta y enganchá la banda en cualquiera de los extremos; de cualquier forma, debe terminar con la banda, el pie y la herramienta dispuestos como se muestran en las imágenes.
 
-You may find it easier to put the band through the foot, then insert the tool and hook the band over either end - either way you should end up with the band, foot, and tool arranged as shown in the pictures.
+![La banda elástica en la herramienta de inserción, que pasa a través del pie.](./images/band_insertion_through_foot_1.jpg)
+![Insertando las bandas elásticas](./images/band_insertion_through_foot_2.jpg)
 
-![The elastic band on the insertion tool, passed through the foot](./images/band_insertion_through_foot_1.jpg)
-![Inserting the elastic bands](./images/band_insertion_through_foot_2.jpg)
+## Paso 5
+Colocá el pie sobre el cuerpo, teniendo cuidado de que esté en el lugar correcto (los dos pivotes exteriores tienen partes inferiores inclinadas, pero las partes superiores planas, el eje central Z tiene una parte superior inclinada y una parte inferior plana). También tené cuidado de ponerlos en el camino correcto; la parte abierta del pie apunta hacia el módulo óptico en el centro del microscopio.
 
-## Step 5
-Place the foot on the body, taking care that it's in the right place (the outer two actuators have sloping bottoms, but flat tops, the central Z axis has a sloping top and a flat bottom). You must also take care to put them on the right way round; the open part of the foot points towards the optics module in the centre of the microscope.
+![Pie Encastrado dentro del microscopio](./images/insert_feet.jpg)
 
-![Feet fitted into the microscope](./images/insert_feet.jpg)
- 
-Push the insertion tool in until the band clicks into place.  Use the nut insertion tool to hold the actuator in place while you do this.  It might help to unscrew the gear a bit (so you can see some of the screw thread between the body and the gear) and push down on the gear.  When you push the band in, it should click twice - once for each side.  If you don't manage to hook both sides on, you may need to completely remove the band and try again - a wooden skewer, or small flat-bladed screwdriver works well to unhook the band without damaging it.
- 
-What's happening here is that the elastic band is pushed over little hooks inside the actuator column, near the top, and the click is the band popping into place.  The band pulls down on the actuator, so after it's in place the gear should turn with a little more resistance - this is important for the microscope to work properly.
+Empujá la herramienta de inserción hasta que la banda encaje en su lugar. Usá la herramienta de inserción de tuercas para mantener el pivote en su lugar mientras haces esto. Podría ayudar desenroscar un poco el engranaje (para que puedas ver algo de la rosca entre el cuerpo y el engranaje) y empujar el engranaje hacia abajo. Cuando empuja la banda hacia adentro, debería hacer clic dos veces, una para cada lado. Si no logras enganchar ambos lados, es posible que deba quitar la banda por completo y volver a intentarlo: un pinche de madera o un pequeño destornillador de punta plana funcionan bien para desenganchar la banda sin dañarla.
 
-![Putting in the Viton o ring](./images/band_insertion_body_1.jpg)
-![Putting in the Viton o ring](./images/band_insertion_body_2.jpg)
-![The bands and feet in place in the microscope body](./images/insert_bands.jpg)
+Lo que está sucediendo aquí es que la banda elástica se empuja sobre pequeños ganchos dentro de la columna del pivote, cerca de la parte superior, y el clic es la banda que se coloca en su lugar. La banda tira del actuador hacia abajo, por lo que, una vez que está en su lugar, el engranaje gira con un poco más de resistencia; esto es importante para que el microscopio funcione correctamente.
 
-## Step 6
-You should now have the band pulling both sides of the actuator down as shown.
-![The Viton o ring, in place in the microscope's foot.](./images/band_insertion_finished_bottom.jpg)
+![Poniendo el O-ring Viton](./images/band_insertion_body_1.jpg)
+![Poniendo el O-ring Viton](./images/band_insertion_body_2.jpg)
+![Las bandas elasticas y el pie, en el cuerpo del microscopio](./images/insert_bands.jpg)
 
-## Step 7
-Congratulations, you've assembled the actuator!  There are three to do, so you may now need to go back and make the next one.
+## Paso 6
+Ahora deberías tener la banda elástica tirando de ambos lados del pivote, así como se muestra.
+![El O-ring vitton en el lugar del pie del microscopio.](./images/band_insertion_finished_bottom.jpg)
+
+## Paso 7
+Felicitaciones, has completado el actuador!
