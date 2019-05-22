@@ -1,5 +1,5 @@
 # Obtención de las piezas no impresas.
-Asegurate de tener todas las piezas y herramientas necesarias antes de comenzar. Todas las partes deben estar listadas en la lista de materiales a continuación, que actualmente es un trabajo en progreso (eventualmente se producirá automáticamente, lo que debería ayudarlo a mantenerse exacto). Recomendamos leer todas las instrucciones y verificar que las cantidades que se muestran aquí se suman correctamente, hasta que la generación automática esté funcionando. Las piezas impresas se describen en la [siguiente sección] (./ 0_printing.md).
+Asegurate de tener todas las piezas y herramientas necesarias antes de comenzar. Todas las partes deben estar listadas en la lista de materiales a continuación, que actualmente es un trabajo en progreso (eventualmente se producirá automáticamente, lo que debería ayudarlo a mantenerse exacto). Recomendamos leer todas las instrucciones y verificar que las cantidades que se muestran aquí se suman correctamente, hasta que la generación automática esté funcionando. Las piezas impresas se describen en la [siguiente sección](./ 0_printing.md).
 ## Partes para fijación:
 *   3x [Tornillos allen de acero inoxidable de M3x25 mm]()
 *   4x [Tuerca M3 de latón o acero]()
