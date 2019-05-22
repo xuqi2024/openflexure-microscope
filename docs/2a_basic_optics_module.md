@@ -1,83 +1,80 @@
-# Basic optics module
-The simplest option for the microscope optics is to use a webcam lens.  This is an old photographers' trick, where a wide angle lens is turned backwards and used as a macro lens, so the side that would have pointed at the camera sensor now points at the sample.  Because webcams have very small pixels, using a webcam in reverse makes quite a good microscope objective.  This version of the optics module turns the Raspberry Pi camera into a microscope with a field of view about 400um across and a resolution of around 2um.
+# Módulo de Óptica básico
+La opción más simple para la óptica del microscopio es usar una lente de una webcam. Este es un viejo truco de los fotógrafos, donde una lente de gran angular se gira hacia atrás y se usa como una lente macro, por lo que el lado que habría apuntado al sensor de la cámara ahora apunta a la muestra. Debido a que las webcam tienen píxeles muy pequeños, usar una webcam en reversa es un buen objetivo de microscopio. Esta versión del módulo óptico convierte a la cámara de la Raspberry Pi en un microscopio con un campo de visión de aproximadamente 400um y una resolución de aproximadamente 2um.
 
-# Requirements
-You will need the parts shown in the picture below:
-
-![Parts required for this step](./images/basic_optics_module_parts.jpg)
+# Requisitos
+Necesitarás las partes descritas aquí
+![Partes requeridas](./images/basic_optics_module_parts.jpg)
 
 ## Parts
-*   1 [Camera platform](./parts/printed/camera_platform.md)
-*   1 [Lens extension tube](./parts/printed/lens_spacer.md)
-*   1 [Raspberry Pi camera module](./parts/electronics/raspberry_pi_camera.md) (ideally v2, though v1 should also work) - you could substitute a 6-LED webcam for an even lower-cost solution.
-*   1 [M3 steel nut](./parts/fixings/m3_steel_nut.md)
-*   1 [M3x10mm cap head screw](./parts/fixings/m3x8mm_caphead_screw.md)
-*   2 [M2x6mm cap head screws](./parts/fixings/m2x6mm_caphead_screw.md)
+*   1 [Plataforma de camara](./parts/printed/camera_platform.md)
+*   1 [Tubo extensor de lente](./parts/printed/lens_spacer.md)
+*   1 [Modulo de cámara raspberry pi](./parts/electronics/raspberry_pi_camera.md) (idealmente v2, aunque v1 también debería funcionar): puede sustituir una cámara web de 6 LED por una solución aún más económica.
+*   1 [Tuerca de acero M3 ](./parts/fixings/m3_steel_nut.md)
+*   1 [Tornillo M3x10mm con cabeza](./parts/fixings/m3x8mm_caphead_screw.md)
+*   2 [Tornillos M2x6mm con cabeza](./parts/fixings/m2x6mm_caphead_screw.md)
 
-## Tools
-*   1 2.5mm hex key
-*   1 1.5mm hex key
-*   1 scalpel or craft knife (optional)
-*   1 lens removal tool (supplied with the camera)
+## Herramientas requeridas
+*   1 llave allen de 2.5mm
+*   1 llave allen de 1.5mm
+*   1 bisturí o cuchillo artesanal (opcional)
+*   1 Herramienta de extracción de lentes (Opcional para imprimir)
 *   1 printed [board gripper](./parts/printed_tools/picamera_2_tools.md)
 
-# Assembly Instructions
-## Step 1
-First, get the necessary tools and parts: the optics module plastic parts (the lens spacer and the camera platform), the Raspberry Pi camera module, the tools for removing the camera lens, two M2 screws to secure the camera.  Depending on print quality, you might also need a sharp craft knife or some tape.
- 
-NB the lens removal tools, board gripper, and optics module are all specific to the camera you're using.  This version of the instructions is for version 2 of the camera board, version 1 of the Rasbperry Pi camera module will also work, but you will need to remove the lens with pliers or tweezers instead.  Version 2 of the camera module ships with a lens removal tool included, which is a white disc of plastic with a hole in the centre.  This is better than the printed lens removal tool, if it's available.
+# Instrucciones de Ensamblaje
+## Paso 1
+Primero, tene a mano todas las herramientas y piezas necesarias: las piezas de plástico del módulo óptico (el espaciador de la lente y la plataforma de la cámara), el módulo de la cámara de Raspberry Pi, las herramientas para quitar la lente de la cámara, dos tornillos M2 para asegurar la cámara. Dependiendo de la calidad de impresión, es posible que también necesite una cuchilla afilada o algo de cinta.
+ 
+NOTA: las herramientas de extracción de la lente, la pinza de la placa y el módulo óptico son específicos de la cámara que está utilizando. Esta versión de las instrucciones es para la versión 2 de la placa de la cámara, la versión 1 del módulo de la cámara de Rasbperry Pi también funcionará, pero tendrá que quitar la lente con pinzas u otra cosa. La versión 2 del módulo de la cámara se envía con una herramienta de extracción de lentes incluida, que es un disco blanco de plástico con un orificio en el centro. Esto es mejor que la herramienta de eliminación de lentes impresas, si está disponible.
 
-If you are using the 6-LED USB webcam (available for around £3 from eBay or AliExpress) you will need to skip some of these steps and also disassemble the plastic casing to extract the circuit board for the camera.  You can simply unscrew the webcam lens and tape or glue it upside down onto the holder, which is fixed onto the circuit board.  There is a camera platform STL for the 6-LED camera in the build, substitute this for the Raspberry Pi camera platform part.
+Si estás utilizando la cámara web USB de 6 LED (aproximadamente £ 3 en eBay o AliExpress), deberás saltarte algunos de estos pasos y también desmontar la carcasa de plástico para extraer la placa de circuito de la cámara. Simplemente podes desenroscar la lente de la cámara web y pegarla con cinta adhesiva o pegarla al revés, que estría fijada en la placa del circuito. Hay una plataforma de cámara STL para la cámara de 6 LED en la compilación, en este caso, sustituila por la parte de la plataforma de la cámara de Raspberry Pi.
 
-## Step 2
-We need to remove the lens from the camera.  To do this, you need the two plastic tools (the board gripper and the lens remover) as well as the camera module.  It's best to make sure you have completed the steps up to this point before removing the lens, to minimise the amount of time the sensor is exposed to air and dust.
+## Paso 2
+Necesitamos quitar la lente de la cámara. Para hacer esto, necesitás las dos herramientas de plástico (la pinza de la placa y el removedor de lentes) así como el módulo de la cámara. Es mejor asegurarse de haber completado los pasos hasta este punto antes de retirar la lente, para minimizar la cantidad de tiempo que el sensor está expuesto al aire y al polvo.
 
-> **WARNING!** The camera board is static sensitive.  Take the usual anti-static precautions (ideally use an anti-static wristband connected to ground, but at the very least make sure you touch an earthed object, such as a metal pipe, before working on the camera module.
+> **Advertencia!!** La placa de la cámara es sensible a la estática. Tomá las precauciones antiestáticas habituales (idealmente usá una pulsera antiestática conectada a tierra, pero al menos asegúrese de tocar un objeto con conexión a tierra, como un tubo de metal, antes de trabajar con el módulo de la cámara).
 
-## Step 3
-Remove the protective film from the camera lens.
+## Paso 3
+Remover el film protector de la lente
 
-![Removing the protective film from the lens](./images/picam2_film_removal.jpg)
+![Quitando el film protector de la lente](./images/picam2_film_removal.jpg)
 
-## Step 4
-There is a small ribbon cable connecting the camera to the PCB that is very easy to break.  There is a square plastic jig that fits over the camera and PCB (the "camera board gripper"), which stops the camera twisting and damaging the ribbon cable.  Fit this over the camera as shown.  Note that the part for v2 of the camera board will sort-of fit v1, but you need to be a little more careful as it's not a perfect fit.
+## Paso 4
+Hay un pequeño cable de cinta que conecta la cámara al PCB que es muy fácil de romper. Hay una plantilla de plástico cuadrada que se coloca sobre la cámara y el PCB (la "pinza de la placa de la cámara"), que impide que la cámara se retuerza y dañe el cable de cinta. Ajustá esto sobre la cámara como se muestra. Tené en cuenta que la parte para la versión v2 de la placa de la cámara encajará en cierto modo en la versión v1, pero tenes que ser un poco más cuidadoso, ya que no es el ajuste perfecto.
 
-![The board gripper](./images/picam2_board_gripper_1.jpg)
-![Gripping the camera to prevent damage to the ribbon cable](./images/picam2_board_gripper_2.jpg)
+![Grip de la placa](./images/picam2_board_gripper_1.jpg)
+![Tomá la cámara para evitar daños en el cable](./images/picam2_board_gripper_2.jpg)
 
-## Step 5
-Next, unscrew the lens from the camera module.  Use the plastic tool to grip the lens module.  This is a small circular part with four prongs that fits over the lens of the camera board (version 2 only) as shown.  To remove the lens, push the removal tool onto the lens (just the top part, with the little plastic flanges) and turn anticlockwise to remove it.
- 
-The printed tool only works if the prongs are pointing anticlockwise, so make sure it's the right way round.  It's important to use the board gripper to hold the camera chip in place and prevent damage to the delicate ribbon cable.  After you've removed the lens, check that the little black or orange ribbon cable connecting the camera module (the black square of plastic from which you unscrewed the lens) to the PCB is still connected - pop it back in by pushing it with a finger if needed.
+## Paso 5
+A continuación, desenroscá la lente del módulo de la cámara. Utilizá la herramienta de plástico para agarrar el módulo de la lente. Esta es una pequeña parte circular con cuatro puntas que se ajustan a la lente de la placa de la cámara (solo en la versión 2) como se muestra. Para retirar la lente, empujá la herramienta de extracción sobre la lente (solo la parte superior, con las pequeñas bridas de plástico) y girala en sentido antihorario para retirarla.
+ 
+La herramienta impresa solo funciona si las puntas apuntan en sentido contrario a las agujas del reloj, así que asegurate de que sea la forma correcta. Es importante usar la pinza para sujetar el chip de la cámara en su lugar y evitar dañar el delicado cable. Después de haber quitado la lente, comprobá que el cable de cinta negro o naranja que conecta el módulo de la cámara (el cuadrado negro de plástico del que desenroscó la lente) todavía está conectado al PCB. Volvé a insertarlo empujándolo con un dedo si es necesario.
 
-Once you've removed the lens, be sure to place the camera face down on the desk, or put a piece of tape over the square black lens holder; this will help stop dust settling on the sensor, which is extremely hard to clean.
+Una vez que hayas retirado la lente, asegurate de colocar la cámara boca abajo sobre el escritorio, o coloque un trozo de cinta sobre el soporte cuadrado negro para lentes; Esto ayudará a evitar que el polvo se acumule en el sensor, que es extremadamente difícil de limpiar.
+![Remover la lente](./images/picam2_lens_removal.jpg)
 
-![Lens removal](./images/picam2_lens_removal.jpg)
+## Paso 6
+Antes de ensamblar las piezas en el soporte, asegurate de que esté libre de polvo soplando un poco de aire a través de él, y verifique que no haya cuerdas de plástico en el orificio central a través del soporte.
 
-## Step 6
-Before assembling the parts into the holder, make sure it's free from dust by blowing some air through it, and check there are no strings of plastic in the central hole through the mount.
+## Paso 7
+A continuación, colocá la lente en el tubo de extensión de plástico. La lente debe entrar con el lado que estaba al lado del sensor de la cámara en la parte superior, y el lado que estaba mirando hacia afuera (el que tiene un pequeño orificio en el plástico negro) hacia el tubo de extensión. Esto solo debería ajustarse a presión, pero puede requerir un poco de fuerza o requerir una capa de cinta alrededor de la lente para que se ajuste bien (según la impresora). Si envolvés la cinta alrededor de la lente, cortá cualquier cinta que sobresalga sobre la lente con un bisturí o una cuchilla afilada.
 
-## Step 7
-Next, put the lens into the plastic extension tube.  The lens should go in with the side that was next to the camera sensor on top, and the side that was facing outwards (the one with a small hole in the black plastic) facing into the extension tube.  This should just push-fit, but may take a small amount of force, or  require a layer of tape wrapped around the lens to make it fit tightly (depending on your printer).  If you wrap tape around the lens, trim off any tape that protrudes above the lens with a scalpel or sharp craft knife.
-
-![The lens in the extension tube](./images/insert_camera_lens.jpg)
+![La Lente en el tubo de extensión](./images/insert_camera_lens.jpg)
 ![](./images/lens_insertion_2.jpg)
 ![](./images/lens_insertion_3.jpg)
 
-## Step 8
-Fit the extension tube onto the camera board, then put the camera board and extension tube onto the camera platform.  Secure it in place with two M2 screws, which go through the extension tube and the camera board, and into the platform.  You can use two more M2 screws if available to make the joint stronger.
+## Paso 8
+Colocá el tubo de extensión en la placa de la cámara, luego colocá la placa de la cámara y el tubo de extensión en la plataforma de la cámara. Atornillalo en su lugar con dos tornillos M2, que pasan a través del tubo de extensión y la placa de la cámara, y en la plataforma. Podrías usar dos tornillos M2 más, si están disponibles, para fortalecer más la unión.
 
 ![](./images/mount_to_camera_platform.jpg)
 
-## Step 9
-Slide a nut into the nut trap on the side of the camera platform.  This probably doesn't need a tool, but you could use a 2.5mm hex key to push it in.
+## Paso 9
+Deslizá una tuerca en la "trampa" de la tuerca en el lado de la plataforma de la cámara. Probablemente esto no necesite una herramienta, pero podrías usar una llave hexagonal de 2.5 mm para empujarla.
 
 ![](./images/slide_in_nut_camera_platform.jpg)
 
-## Step 10
-Screw the M3 screw into the nut, so that it sticks out the side of the camera platform.
+## Paso 10
+Atornilla el tornillo M3 en la tuerca, así se pega en la plataforma de la cámara...
 ![](./images/camera_platform_mounting_screw.jpg)
 
-## Step 11
-Well done - you have assembled the optics module.
-
+## Paso 11
+Felicitaciones, armaste el módulo óptico!
