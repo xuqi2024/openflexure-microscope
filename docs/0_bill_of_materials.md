@@ -25,4 +25,4 @@ Asegurate de tener todas las piezas y herramientas necesarias antes de comenzar.
 
 No olvids la raspberry pi, el módulo de la cámara y la pantalla asociada, la fuente de alimentación, la tarjeta SD, el teclado, el mouse, etc. (No los he enumerado explícitamente, pero son necesarios para ejecutar la RPi). Además, si utilizas el módulo óptico de alta resolución o queres agregar motores, necesitará piezas adicionales.
 
-Mientras espera que lleguen las piezas que ha solicitado, intente la siguiente sección sobre [impresión de piezas de plástico] (./ 0_printing.md).
+Mientras espera que lleguen las piezas que ha solicitado, intente la siguiente sección sobre [impresión de piezas de plástico](./ 0_printing.md).
