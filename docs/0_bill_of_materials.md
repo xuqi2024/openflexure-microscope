@@ -10,7 +10,7 @@ Asegurate de tener todas las piezas y herramientas necesarias antes de comenzar.
 
 ## Partes electrónicas:
 *   [LED blanco de alta luminosidad de 5mm](https://articulo.mercadolibre.com.ar/MLA-619433772-pack-50-led-5mm-blanco-alta-luminosidad-_JM?quantity=1)
-*   [Raspbery Pi Zero con módulo de cámara](https://articulo.mercadolibre.com.ar/MLA-756108400-raspberry-pi-zero-w-kit-e14-rs-rpi0w-base-_JM) (v2, though v1 works too)
+*   [Raspbery Pi Zero con módulo de cámara](https://articulo.mercadolibre.com.ar/MLA-756108400-raspberry-pi-zero-w-kit-e14-rs-rpi0w-base-_JM) (Version v2, aunque la versión v1 también funciona)
 *   [Memoria micro sd de 16 gb](https://articulo.mercadolibre.com.ar/MLA-631744587-memoria-micro-sd-hc-16-gb-kingston-clase-10-tienda-_JM?quantity=1)
 *   [Cable HDMI]()
 *   [Monitor LCD o LED con entrada HDMI]()
