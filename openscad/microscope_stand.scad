@@ -13,7 +13,7 @@ t = 1.5;
 raspi_z = 5;
 raspi_board = [85, 58, 19]; //this is wrong, should be 85, 56, 19
 
-h = raspi_z + raspi_board[2] + 5;
+h = raspi_z + raspi_board[2] + 5; //+5 need to be change to -7 for low costmicroscope stand 
 
 module foot_footprint(tilt=0){
     // the footprint of one foot/actuator column
@@ -41,6 +41,7 @@ module pi_connectors(){
         // micro-SD card
         translate([0,raspi_board[1]/2+6,0]) cube([80,12,8], center=true);
         translate([-4,raspi_board[1]/2,0]) cube([16,12,20], center=true);
+       // translate([32-25/2,20,-5/2])cube([100,26,21]); // you need to uncomment this and comment the other above to use for low cost microscope.
     }
 }
 
@@ -51,7 +52,7 @@ module pi_hole_frame(){
 
 module pi_support_frame(){
     // position supports for each of the pi's mounting screws
-    pi_frame() translate([3.5,3.5]) repeat([58,0,0],2) repeat([0,49,0], 2) children();
+    pi_frame() translate([3.5,3.5]) repeat([58,0,0],2) repeat([0,49,0], 2) children();// on repeat([0,49,0], 2) changed to repeat([0,47,0], 2)to make the holes of moter case be aligned well with holes in sanga board, for pi need to be([0,49,0], 2) on repeat([0,47,0], 2).
 }
 module pi_supports(){
     // pillars into which the pi can be screwed (holes are hollowed out later)
