@@ -146,12 +146,15 @@ module bucket_base_stackable(h=h){
 }
 module top_casing_block(h=h, os=0, legs=true, lugs=true){
     // The "bucket" baseplate before holes and supports (i.e. a solid object)
+    // The child should be a 2D object, the (outside) footprint of the block
+    // Multiple children will produce slightly unpredictable results!
+    // By default it's best to use top_casing_block(...) footprint();
     bottom = os<0?1:0;
     top_h = os<0?d:2*t;
     union(){
-        translate([0,0,bottom]) linear_extrude(h+d-bottom) offset(os) footprint();
+        translate([0,0,bottom]) linear_extrude(h+d-bottom) offset(os) children();
         hull_from(){
-            translate([0,0,h]) linear_extrude(2*d) offset(os) footprint(); //top of the box
+            translate([0,0,h]) linear_extrude(2*d) offset(os) children(); //top of the box
             
             for(a=[0,180]) translate([0,0,h+foot_height]) linear_extrude(top_h) difference(){
                 offset(os*2+t) microscope_bottom(lugs=lugs, feet=false, legs=legs);
@@ -159,18 +162,19 @@ module top_casing_block(h=h, os=0, legs=true, lugs=true){
             }
             //if(legs) translate([0,0,h+foot_height-t]) linear_extrude(t+top_h) offset(os+1.5+t) microscope_legs();
         }
-        translate([0,0,h+foot_height]) linear_extrude(2*t-2*os) offset(os+t) microscope_bottom(lugs=true);
+        translate([0,0,h+foot_height]) linear_extrude(2*t-2*os) offset(os+t) microscope_bottom(lugs=true, feet=false);
     }
 }
 
 module bucket_base_with_microscope_top(h=h){
     // A bucket base for the microscope, without cut-outs
+    // NB use footprint() as the child module to get a standard base.
     difference(){
-        top_casing_block(h=h, os=0, legs=true);
+        top_casing_block(h=h, os=0, legs=true) children();
         
         difference(){
             // we hollow out the casing, but not underneath the legs or lugs.
-            top_casing_block(h=h, os=-t, legs=false, lugs=false);
+            top_casing_block(h=h, os=-t, legs=false, lugs=false) children();
             for(p=base_mounting_holes) hull(){
                 // double-subtract under the mounting holes to make attachment points
                 translate(p+[0,0,h+foot_height-4]) cylinder(r=4,h=4);
@@ -217,7 +221,7 @@ module microscope_stand(){
     // A stand for the microscope, with integrated Raspberry Pi
     difference(){
         union(){
-            bucket_base_with_microscope_top();
+            bucket_base_with_microscope_top() footprint();
     
             // supports for the pi circuit board
             pi_supports();
