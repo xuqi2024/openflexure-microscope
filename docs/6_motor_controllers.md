@@ -21,9 +21,9 @@ The microscope software should recognise a supported Sangaboard is connected, an
 
 ### PCB + Arduino Nano (Sangaboard v0.2)
 
-This option aims to be a super-simple motor controller board, based on an Arduino Nano and a couple of Darlington pair ICs. It owes quite a bit to [Fergus Riche's motor board](https://github.com/fr293/motor_board), the hardware developed by [OpenScope](http://2015.igem.org/Team:Cambridge-JIC) and the Arduino-based motor controller used by a number of summer students working with Richard Bowman in Cambridge, particularly James Sharkey. 
+This option aims to be a super-simple motor controller board, based on an Arduino Nano and a couple of Darlington pair ICs. It owes quite a bit to [Fergus Riche's motor board](https://github.com/fr293/motor_board), the hardware developed by [OpenScope](http://2015.igem.org/Team:Cambridge-JIC) and the Arduino-based motor controller used by a number of summer students working with Richard Bowman in Cambridge, particularly James Sharkey.
 
-The PCB design, bill of materials, and purchase links for both are available via [KitSpace](https://kitspace.org/boards/github.com/rwb27/openflexure_nano_motor_controller/).
+The PCB design, bill of materials, and purchase links for both are available via [Kitspace](https://kitspace.org/boards/github.com/rwb27/openflexure_nano_motor_controller/).
 
 A circuit schematic can be found [here](./images/sangaboard_v2_schematic.png)
 
@@ -32,9 +32,7 @@ A circuit schematic can be found [here](./images/sangaboard_v2_schematic.png)
 
 A fully-custom, Arduino-like board can also be used to drive the microscope motors. The Sangabord v0.3 design integrates everything onto a single PCB, removing the need to plug in a separate Arduino.
 
-The design is fully open, so you can order your own custom board using the PCB designs available [here](https://gitlab.com/bath_open_instrumentation_group/sangaboard/tree/master/pcb_design).
-
-Alternatively, the board will be added to KitSpace soon, and should hopefully be available for purchase from a few outlets in the future.
+The PCB design, bill of materials, and purchase links for both are also available via [Kitspace](https://kitspace.org/boards/github.com/bath_open_instrumentation_group/sangaboard).
 
 If building or ordering your own custom board, you will first need to [burn the bootloader to the board](https://gitlab.com/bath_open_instrumentation_group/sangaboard/blob/master/Bootloader/README.md), before [flashing the Sangabord firmware](https://gitlab.com/bath_open_instrumentation_group/sangaboard/blob/master/arduino_code/README.md).
 
