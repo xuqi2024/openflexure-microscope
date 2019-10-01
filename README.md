@@ -53,4 +53,4 @@ Most of the Openflexure Microscope stuff lives on GitHub, under [my account](htt
 * Some [characterisation scripts for analysing images of the USAF resolution test target](https://github.com/rwb27/usaf_analysis/)
 
 ## Compiling from source
-If you want to print the current development version, you can compile the STL from the OpenSCAD files - but please still consult the documentation for quantities and tips on print settings, etc.  You can use GNU Make to generate all the STL files (just run ``make all`` in the root directory of the repository).  More instructions, including hints for Windows users, are available in [COMPILE.md](COMPILE.md).
+If you want to print the current development version, you can compile the STL from the OpenSCAD files - but please still consult the documentation for quantities and tips on print settings, etc.  You can use GNU Make to generate all the STL files (run ``python generate_makefile.py`` and then ``make`` in the root directory of the repository).  More instructions, including hints for Windows users, are available in [COMPILE.md](COMPILE.md).
