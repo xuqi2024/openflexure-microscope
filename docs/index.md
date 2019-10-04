@@ -1,4 +1,4 @@
-# The OpenFlexure Microscope - Assembly Instructions
+# OpenFlexure Microscope - Assembly Instructions
 The OpenFlexure Microscope is a 3D printable microscope, with a very precise mechanical translation stage.  It can be fitted with basic webcam-based optics, or more expensive optics based on a traditional microscope objective for higher image quality.  It can also be motorised.  These instructions will take you through how to assemble the microscope optical and mechanical parts.
 
 ## Printing the parts

@@ -1,16 +1,98 @@
-image: ubuntu:18.04
-before_script:
-  - apt-get update -qq
-  - apt-get -y -qq install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates make
-  - add-apt-repository -y ppa:openscad/releases
-  - apt-get update -qq
-  - apt-get install -y -qq openscad
+stages:
+    - build
+    - deploy
 
-STLs:
+# Build STL files
+build:
+    stage: build
+    image: ubuntu:18.04
+    
+    before_script:
+      - apt-get update -qq
+      - apt-get -y -qq install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates make
+      - add-apt-repository -y ppa:openscad/releases
+      - apt-get update -qq
+      - apt-get install -y -qq openscad
+    
+    script:
+      # Build STL files with OpenSCAD
+      - mkdir -p /root/.local/share
+      - python3 ./generate_makefile.py
+      - make -j7
+    
+    artifacts:
+      expire_in: 1 week
+      name: "${CI_PROJECT_NAME}-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}"
+      paths:
+        - builds/
+
+    only:
+      - tags
+      - merge_requests
+      - web
+
+
+# Build docs
+build-docs:
+    stage: build
+    image: ubuntu:18.04
+
+    before_script:
+      - apt-get update -qq
+      - apt-get -y -qq install software-properties-common
+      - apt-get -y -qq install git git-lfs
+
+    script:
+      # Build documentation
+      # TODO: Implement git-building to render .md to .html
+      - git lfs install
+      - git lfs fetch
+      - git lfs checkout
+
+      - python3 ./build_docs.py
+
+    artifacts:
+      expire_in: 1 week
+      name: "${CI_PROJECT_NAME}-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}-docs"
+      paths:
+        - builds/
+
+    only:
+      - tags
+      - merge_requests
+      - web
+
+
+# Deploy to builds.openflexure.org
+deploy:
+  stage: deploy
+  dependencies:
+    - build
+    - build-docs
+  image: ubuntu:latest
+
+  before_script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY_BATH_OPENFLEXURE_BASE64" | base64 --decode)
+    - mkdir -p ~/.ssh
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+
   script:
-    - mkdir -p /root/.local/share
-    - make -j7
-  artifacts:
-    name: "${CI_PROJECT_NAME}-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}"
-    paths:
-      - builds/
+    # Install rsync if not already installed
+    - 'which rsync || ( apt-get update -y && apt-get install rsync -y )'
+
+    # Upload the builds folder to openflexure-microscope builds 
+    - rsync -hrvz -e ssh builds/ ci-user@openflexure.bath.ac.uk:/var/www/build/openflexure-microscope/${CI_COMMIT_REF_NAME} --delete
+
+    # Zip the builds folder and upload it to the openflexure-microscope build root
+    - 'which zip || ( apt-get update -y && apt-get install zip -y )'
+    - (cd builds && zip -r "../${CI_PROJECT_NAME}-${CI_COMMIT_REF_NAME}.zip" .) 
+    - rsync -hrvz -e ssh "${CI_PROJECT_NAME}-${CI_COMMIT_REF_NAME}.zip" ci-user@openflexure.bath.ac.uk:/var/www/build/openflexure-microscope/
+
+    # Run update-latest.py on the build server
+    - ssh -t ci-user@openflexure.bath.ac.uk "/var/www/build/update-latest.py"
+
+  only:
+    - tags
+    - web

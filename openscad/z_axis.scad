@@ -204,7 +204,7 @@ module z_motor_clearance(){
 module z_axis_casing(condenser_mount=false){
     // Casing for the Z axis - needs to have the axis subtracted from it
     intersection(){
-        linear_extrude(h=999) minkowski(){
+        linear_extrude(height=999) minkowski(){
             circle(r=wall_t+1);
             hull() projection() z_axis_struts();
         }

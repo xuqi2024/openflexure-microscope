@@ -16,4 +16,7 @@ builds/
 docs/Output/
 Makefile
 
+# Ignore IDE files
+.vscode/
+
 .DS_Store

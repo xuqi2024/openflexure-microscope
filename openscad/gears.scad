@@ -128,7 +128,7 @@ module motor_clearance(h=15){
     // NB does not include cable clearance, I assume that goes on the outside.
     // The centre of the body is at the origin, NB this is NOT the shaft location.
     // The shaft is not included.
-    linear_extrude(h=h){
+    linear_extrude(height=h){
         circle(r=14+1.5);
         hull() reflect([1,0]) translate([35/2,0]) circle(r=4.5);
     }
