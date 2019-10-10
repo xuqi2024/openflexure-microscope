@@ -125,3 +125,5 @@ endstop_hole_offset=0;
 //the stage can move ~3mm in each direction, so the actuator only moves
 //~1.7 mm
 avoid_objective_xyfoot_offset=xy_actuator_travel-1.8;
+
+fl_cube_w = 16; //width of the fluorescence filter cube

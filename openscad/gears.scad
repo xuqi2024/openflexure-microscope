@@ -110,7 +110,7 @@ module thumbwheel(r=10,h=5,knobble_r=1,knobble_angle=45,chamfer=0.5){
             for( n = [0 : n_lobe-1] )
             {
                 deg = 360*n/n_lobe;
-                translate([lobe_r*sin(deg),lobe_r*cos(deg),base_h]){cone_cyl(r=lobe_r,lobe_h=5);}
+                translate([lobe_r*sin(deg),lobe_r*cos(deg),base_h]){cone_cyl(r=lobe_r,h=lobe_h);}
             }
         }
         translate([0,0,1.5]) nut(3,shaft=true,fudge=1.2,h=999);

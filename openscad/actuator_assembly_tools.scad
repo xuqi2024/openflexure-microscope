@@ -149,7 +149,7 @@ module band_tool_2(handle=true){
             }
             //cut out to get nice rounded corners at the bottom of the slot for the hook
             hull() reflect([1,0,0]) prong_frame(){
-                translate(blade_anchor + [-2.25,3,h]) sphere(r=1.5,h=99);
+                translate(blade_anchor + [-2.25,3,h]) sphere(r=1.5);
                 translate(blade_anchor + [-1.5,10,0.5]) cube([1.5/2,999,999]);
             }
         }

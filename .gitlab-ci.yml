@@ -19,6 +19,7 @@ build:
       # Build STL files with OpenSCAD
       - mkdir -p /root/.local/share
       - ./build.py
+      - rm builds/*.stl.d
 
     artifacts:
       expire_in: 1 week

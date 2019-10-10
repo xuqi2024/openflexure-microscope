@@ -20,6 +20,7 @@ use <./z_axis.scad>;
 use <./gears.scad>;
 use <./wall.scad>;
 use <./main_body_transforms.scad>;
+use <./reflection_illuminator.scad>;
 include <./microscope_parameters.scad>; //All the geometric variables are now in here.
 
 
@@ -113,7 +114,8 @@ module xy_limit_switch_mount(d=3.3*2, h=6){
 
 
 // The "wall" that forms most of the microscope's structure
-module wall_inside_xy_stage(){
+module wall_inside_xy_stage(beamsplitter=false){
+    front_wall_height = beamsplitter ? zawall_h : wall_h;
     // First, go around the inside of the legs, under the stage.
     // This starts at the Z nut seat.  I've split it into two
     // blocks, because the shape is not convex so the base
@@ -125,9 +127,10 @@ module wall_inside_xy_stage(){
         inner_wall_vertex(45, -leg_outer_w/2, zawall_h);
         z_anchor_wall_vertex();
         inner_wall_vertex(135, leg_outer_w/2, zawall_h);
-        inner_wall_vertex(135, -leg_outer_w/2, wall_h);
-        inner_wall_vertex(-135, leg_outer_w/2, wall_h);
-    }
+        inner_wall_vertex(135, -leg_outer_w/2, front_wall_height);
+        inner_wall_vertex(-135, leg_outer_w/2, front_wall_height);
+    };    
+
 }
 
 module wall_outside_xy_actuators(){
@@ -158,6 +161,21 @@ module wall_between_actuators(){
     hull(){
         y_actuator_wall_vertex();
         translate([0,z_nut_y+ss_outer()[1]/2-wall_t/2,0]) wall_vertex();
+    }
+}
+
+// Cut out hole for reflection illuminator
+module fl_cube_cutout(){
+    // size of cutout for fl cube
+    top_cutout_w = 17.8; // As big as we can get at height 'wall_h' without bridging a corner
+    mid_cutout_w = illuminator_width() + 1;
+    bottom_cutout_w = illuminator_width() + 4;
+
+    // Create a trapezoid with min width (cube_width) at top
+    hull() {
+        translate([-(bottom_cutout_w)/2, -49, -0.5]) cube([bottom_cutout_w, 49, 1]);
+        translate([-(mid_cutout_w)/2, -49, 10]) cube([mid_cutout_w, 49, 1]); // Highest we usually need
+        translate([-top_cutout_w/2, -49, wall_h]) cube([top_cutout_w, 49, 1]);
     }
 }
 
@@ -216,7 +234,7 @@ union(){
 		union(){
             ////////////// Reinforcing wall and base /////////////////
             //Add_hull_base generates the flat base of the structure.  
-            add_hull_base(base_t) wall_inside_xy_stage();
+            add_hull_base(base_t) wall_inside_xy_stage(beamsplitter=beamsplitter);
             // add mounts for the optical end-stops for X and Y
             reflect([1,0,0]) hull(){
                 inner_wall_vertex(45, -9, zawall_h);
@@ -241,6 +259,11 @@ union(){
                     
 		}
         //////  Things we need to cut out holes for... ///////////
+        // Beamsplitter cube
+        if (beamsplitter) {
+            fl_cube_cutout();
+        }
+
         // XY actuator cut-outs
 		each_actuator(){
 			actuator_silhouette(xy_actuator_travel+actuator[2]);
