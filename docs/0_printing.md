@@ -5,9 +5,11 @@ First, you will need to print or obtain the 3D printed parts.  These have been d
 The best way to obtain these files is from the latest [release](https://gitlab.com/openflexure/openflexure-microscope/tags).
 
 ## Standard builds of the microscope
+
 The list of parts below is pretty extensive and tries to explain all the various options - however, if you just want to build a "normal" version of the microscope, there are two versions we'd reccommend:
 
 ### Webcam-based microscope
+
 The basic version of the microscope uses a webcam lens instead of a microscope objective - you still get a really nice focusing/sample translation stage, but with basic options.  This version is great for school or hobby use, gets a resolution of about 2um or better, and is the cheapest to build.  This is the version we usually build at workshops.  For each microscope, you will need to print one copy of each of the following files:
 
 **Plastic tools:**
@@ -18,56 +20,67 @@ The basic version of the microscope uses a webcam lens instead of a microscope o
 
 **Components:**
 
-* [body of the microscope](./parts/printed/main_body.md): ``main_body_<stage size><height>.stl``.
+* [body of the microscope](./parts/printed/main_body.md): ``main_body_LS65-M.stl`` or ``main_body_LS65-M_brim.stl``.
 * 3 [feet](./parts/printed/feet.md): ``feet.stl`` or ``feet_tall.stl`` (contains all 3)
 * 3 [large gears](./parts/printed/gears.md): ``gears.stl`` (contains all 3)
 * illumination:
- - [vertical dovetail](./parts/printed/illumination_dovetail.md): ``illumination_dovetail.stl``
- - [condenser arm](./parts/printed/condenser.md): ``condenser.stl``
+  * [vertical dovetail](./parts/printed/illumination_dovetail.md): ``illumination_dovetail.stl``
+  * [condenser arm](./parts/printed/condenser.md): ``condenser.stl``
 * 2 [sample clips](./parts/printed/sample_clips.md): ``sample_clips.stl`` (contains both)
-* ``camera_platform_picamera_2_LS65.stl``
-* ``lens_spacer_picamera_2_pilens_LS65.stl``
 * platform-style optics module (two parts, best with webcam lenses):
-  - [camera platform](./parts/printed/camera_platform.md): ``camera_platform_<camera>_<stage size><height>.stl``
-  - [lens spacer](./parts/printed/lens_spacer.md): ``lens_spacer_<camera>_<lens>_<stage_size><height>.stl``
-* ``microscope_stand.stl`` (or ``back_foot.stl``)
+  * [camera platform](./parts/printed/camera_platform.md): ``camera_platform_<camera>_<stage size><height>.stl``
+  * [lens spacer](./parts/printed/lens_spacer.md): ``lens_spacer_<camera>_<lens>_<stage_size><height>.stl``
+* [microscope stand](./parts/printed/microscope_stand.md) or back foot
+  * ``microscope_stand_no_pi_.stl`` or ``microscope_stand-30.stl`` (holds Raspberry Pi) or ``back_foot.stl``
 
-This will need the nuts, bolts, etc. described below, plus a Raspberry Pi computer (any model will do) and Raspberry Pi camera module.  No other optical bits are required, except an LED for illumination.  If you want to mount the Raspberry Pi underneath the microscope (our preferred option), print ``microscope_stand.stl`` instead.  If your Raspberry Pi is in a case already, you should print ``back_foot.stl`` so the microscope sits flat on a table.  Newer camera modules include a white circular tool for unscrewing the lens.  If you don't have one, you will need to print the lens gripper (marked as optional).
+This will need the nuts, bolts, etc. described below, plus a camera module (for example a Raspberry Pi camera), and an option Raspberry Pi.  No other optical bits are required, except an LED for illumination.  
+
+If you want to mount a Raspberry Pi underneath the microscope (our preferred option), print ``microscope_stand.stl`` instead.  If your Raspberry Pi is in a case already, you should print ``back_foot.stl`` so the microscope sits flat on a table.  Newer Raspberry Pi camera modules include a white circular tool for unscrewing the lens.  If you don't have one, you will need to print the lens gripper (marked as optional).
 
 ### High resolution microscope
+
 The version of the microscope used for scientific or medical research generally requires a conventional objective lens.  Most of the parts are the same, but the optics and sample mount are different.  You will need one copy of each of the following files:
 
 **Plastic tools:**
 
 * [band and nut insertion tools](./parts/printed_tools/actuator_assembly_tools.md) ``actuator_assembly_tools.stl``
 * [tool to insert](./parts/printed_tools/lens_tool.md) the 13mm diameter condenser lens and/or tube lens: ``lens_tool.stl``
+* [optional] ``picamera_2_lens_gripper.stl`` (only needed if your camera didn't come with a tool to remove the lens)
 
 **Components:**
 
-* ``picamera_2_gripper.stl``
-* [optional] ``picamera_2_lens_gripper.stl`` (only needed if your camera didn't come with a tool to remove the lens)
-* [body of the microscope](./parts/printed/main_body.md): ``main_body_LS65-M.stl``.
+* [body of the microscope](./parts/printed/main_body.md) (beamsplitter-compatible): ``main_body_LS65-M-BS.stl`` or ``main_body_LS65-M-BS_brim.stl``.
 * 3 [feet](./parts/printed/feet.md): ``feet.stl`` or ``feet_tall.stl`` (contains all 3)
 * 3 [large gears](./parts/printed/gears.md): ``gears.stl`` (contains all 3)
 * illumination:
- - [vertical dovetail](./parts/printed/illumination_dovetail.md): ``illumination_dovetail.stl``
- - [condenser arm](./parts/printed/condenser.md): ``condenser.stl``
+  * [vertical dovetail](./parts/printed/illumination_dovetail.md): ``illumination_dovetail.stl``
+  * [condenser arm](./parts/printed/condenser.md): ``condenser.stl``
 * 2 [sample clips](./parts/printed/sample_clips.md): ``sample_clips.stl`` (contains both)
-* [optics module](./parts/printed/optics_module_casing.md):  ``optics_picamera_2_rms_f50d13_LS65.stl``
-* [base to hold a Raspberry Pi](./parts/printed/microscope_stand.md): ``microscope_stand.stl``
+* [optics module](./parts/printed/optics_module_casing.md):         
+  * ``optics_picamera_2_rms_f50d13.stl`` (transmission illumination)
+  * ``optics_picamera_2_rms_f50d13_beamsplitter.stl`` (reflection illumination)
+* [microscope stand](./parts/printed/microscope_stand.md): ``microscope_stand-30.stl`` or ``microscope_stand-30-BS.stl`` (supports reflection illumination)
 * [riser for the sample](./parts/printed/sample_riser.md):  ``sample_riser_LS10.stl`` (assuming you have a microscope objective with a 45mm parfocal distance)
 
-**For motorised operation you will also need**
+**For motorised operation you will also need:**
+
 * 3 [small gears](./parts/printed/small_gears.md) for motors: ``small_gears.stl`` (contains all 3)
 * [base to hold the motor driver](./parts/printed/motor_driver_case.md) (fits under the base that holds the Pi): ``motor_driver_case.stl``
 
-Additionally, you will need:
+**For reflection illumination you will also need:**
+
+* [filter cube](./parts/printed/fl_cube.md): ``fl_cube.stl``
+* [reflection illuminator](./parts/printed/reflection_illuminator.md): ``reflection_illuminator.stl``
+
+**Additionally, you will need:**
+
 * an RMS threaded, finite-conjugates [objective lens](parts/optics/objective.md).  These can be obtained from e.g. AliExpress.  Depending on whether it is 35mm or 45mm from the "shoulder" of the lens to the sample, you may or may not need the sample riser.  We almost always use 45mm "plan" corrected lenses, which do require the riser.
 * a 12.7mm diameter, 50mm focal length [achromatic lens](parts/optics/tube_lens.md), e.g. ThorLabs ac127-050-a or generic equivalent.
 * a 13mm diameter, 5mm focal length PMMA plano convex lens for the [condenser lens](parts/optics/condenser_lens.md) (sold as LED lenses in bulk)
 * [motors](./parts/stepper_motors.md) and [motor driver electronics](6_motor_controllers.md)
 
 ## Print settings
+
 I usually print with a layer size of 0.24mm on my Ormerod, which takes 10 hours for the main body.  "low" quality on an Ultimaker 2 (0.15mm layers) produces similar results in about 10 hours.  Our Prusa i3 Mk3 takes a similar time using 0.2mm layers, or 0.3mm layers if we want to go even faster (8 hours or less).
 
 > **Warning:** The microscope is designed to print without support material.  If you use support material it will require a lot of cleaning up, and you may well damage the parts.
