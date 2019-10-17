@@ -1,0 +1,5 @@
+# Lens Spacer
+This part mounts the lens to the camera board, inverted and spaced away from the sensor, and is the counterpart to the [camera platform](./camera_platform.md).  If you are using the lens that came with your webcam, you should probably use this option for the optics module - the one-piece [optics module casing](./optics_module_casing.md) replaces this part if you are building a high resolution microscope.
+
+## STL File
+The STL file for this part is called ``lens_spacer_<camera>_<lens>_LS65.stl`` where ``<camera>`` is currently only ``picamera_2`` and ``<lens>`` is currently only ``pilens``.  An alternative version for an M12 lens and the 6-LED webcam is available from STICLab.  This allows it to be used with either the $3 6-LED webcams favoured by various low-cost instruments, or the Raspberry Pi camera module.

@@ -77,7 +77,7 @@ The version of the microscope used for scientific or medical research generally 
 * an RMS threaded, finite-conjugates [objective lens](parts/optics/objective.md).  These can be obtained from e.g. AliExpress.  Depending on whether it is 35mm or 45mm from the "shoulder" of the lens to the sample, you may or may not need the sample riser.  We almost always use 45mm "plan" corrected lenses, which do require the riser.
 * a 12.7mm diameter, 50mm focal length [achromatic lens](parts/optics/tube_lens.md), e.g. ThorLabs ac127-050-a or generic equivalent.
 * a 13mm diameter, 5mm focal length PMMA plano convex lens for the [condenser lens](parts/optics/condenser_lens.md) (sold as LED lenses in bulk)
-* [motors](./parts/stepper_motors.md) and [motor driver electronics](6_motor_controllers.md)
+* [motors](./parts/electronics/stepper_motors.md) and [motor driver electronics](6_motor_controllers.md)
 
 ## Print settings
 

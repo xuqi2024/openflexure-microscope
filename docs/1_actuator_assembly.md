@@ -16,14 +16,14 @@ All the parts you need for this step are in the picture below:
 *   light grease (if available)
 
 ## Tools
-*   [Nut and O ring insertion tools](./parts/actuator_assembly_tools.md)
+*   [Nut and O ring insertion tools](./parts/printed_tools/actuator_assembly_tools.md)
 *   Craft knife
 
 # Assembly Instructions
 There are three actuator columns on the microscope, for X, Y, and Z.  Follow these instructions for each column in turn.
 
 ## Step 1
-We need to place a nut inside the actuator.  Insert it from the side, through the slot in the actuator column, and push it into place with the [nut insertion tool](./parts/nut_insertion_tool).  Take care to insert the nut corner-first (i.e. with flat sides parallel to the tool), otherwise it will jam.
+We need to place a nut inside the actuator.  Insert it from the side, through the slot in the actuator column, and push it into place with the [nut insertion tool](./parts/printed_tools/actuator_assembly_tools.md).  Take care to insert the nut corner-first (i.e. with flat sides parallel to the tool), otherwise it will jam.
 
 ![putting the nut into the actuator column](./images/actuator_assembly_nut_insertion_1.jpg)
 ![The slot in the body now looks like this](./images/insert_nut_here.jpg)

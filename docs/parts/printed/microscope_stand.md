@@ -4,5 +4,5 @@ The stand will hold the microscope flat on a table, and can also house a Raspber
 ## STL Files
 There are three versions:
 * ``microscope_stand_30.stl`` holds a Raspberry Pi.
-* ``microscope_stand_30-BS.stl`` holds a Raspberry Pi and supports the [reflection illuminator](./reflection_illuminator).
+* ``microscope_stand_30-BS.stl`` holds a Raspberry Pi and supports the [reflection illuminator](./reflection_illuminator.md).
 * ``microscope_stand_no_pi`` is less tall, and doesn't hold the Pi.
