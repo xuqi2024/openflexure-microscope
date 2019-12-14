@@ -32,7 +32,7 @@ A circuit schematic can be found [here](./images/sangaboard_v2_schematic.png ':i
 
 A fully-custom, Arduino-like board can also be used to drive the microscope motors. The Sangabord v0.3 design integrates everything onto a single PCB, removing the need to plug in a separate Arduino.
 
-The PCB design, bill of materials, and purchase links for both are also available via [Kitspace](https://kitspace.org/boards/github.com/bath_open_instrumentation_group/sangaboard).
+The PCB design, bill of materials, and purchase links for both are also available via [Kitspace](https://kitspace.org/boards/gitlab.com/bath_open_instrumentation_group/sangaboard/).
 
 If building or ordering your own custom board, you will first need to [burn the bootloader to the board](https://gitlab.com/bath_open_instrumentation_group/sangaboard/blob/master/Bootloader/README.md), before [flashing the Sangabord firmware](https://gitlab.com/bath_open_instrumentation_group/sangaboard/blob/master/arduino_code/README.md).
 
