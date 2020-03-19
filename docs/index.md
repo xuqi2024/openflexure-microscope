@@ -1,4 +1,4 @@
-# The OpenFlexure Microscope - Assembly Instructions
+# OpenFlexure Microscope - Assembly Instructions
 The OpenFlexure Microscope is a 3D printable microscope, with a very precise mechanical translation stage.  It can be fitted with basic webcam-based optics, or more expensive optics based on a traditional microscope objective for higher image quality.  It can also be motorised.  These instructions will take you through how to assemble the microscope optical and mechanical parts.
 
 ## Printing the parts
@@ -6,13 +6,14 @@ Before we start, a note on printing - there are many possible versions of the mi
 
 ## Contents
 Assembly is broken up into several steps:
-* [Obtaining non-printed parts](./0_bill_of_materials.md)
-* [Printing parts](./0_printing.md)
-* [Assembling the actuators](./1_actuator_assembly.md) deals with the mechanism for moving the stage.
-* The optics module comes next, either the [basic optics module](./2a_basic_optics_module.md) or the [high resolution optics module](./2b_high_resolution_optics_module.md) depending on your needs.
-* [Illumination](./3_illumination.md) covers attaching the condenser.
-* [Sample clips and wiring](./4_clips_and_wiring.md) completes the microscope.
-* [Motors](./5_motors.md) can be added for automatic control.
+* [**Obtaining non-printed parts**](./0_bill_of_materials.md)
+* [**Printing parts**](./0_printing.md)
+* [**Assembling the actuators**](./1_actuator_assembly.md) deals with the mechanism for moving the stage.
+* The optics module comes next, either the [**basic optics module**](./2a_basic_optics_module.md) or the [**high resolution optics module**](./2b_high_resolution_optics_module.md) depending on your needs.
+* [**Illumination**](./3_illumination.md) covers attaching the condenser for transmission illumination. [**Reflection illumination**](./3b_illumination_reflection.md) covers optional reflection illumination.
+* [**Sample clips and wiring**](./4_clips_and_wiring.md) completes the microscope.
+* [**Motors**](./5_motors.md) can be added for automatic control.
+* [**Motor controller boards**](./6_motor_controllers.md) are required for driving motors.
 
 Happy building!
 

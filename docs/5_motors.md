@@ -56,4 +56,4 @@ Finally, sit the microscope on top of the motor board case, and tidy up the wiri
 ![The microscope complete with assembled motors](./images/motors_assembled.jpg)
 
 ## Step 8
-Congratulations, you have fitted the motors.  You will need to upload the motor controller firmware using the Arduino IDE.  Currently, the [firmware resides on github](https://github.com/rwb27/openflexure_nano_motor_controller).
+Congratulations, you have fitted the motors.  You will need to upload the motor controller firmware using the Arduino IDE.  The [firmware and instructions can be found on GitLab](https://gitlab.com/bath_open_instrumentation_group/sangaboard).

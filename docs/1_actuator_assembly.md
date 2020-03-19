@@ -16,14 +16,14 @@ All the parts you need for this step are in the picture below:
 *   light grease (if available)
 
 ## Tools
-*   [Nut and O ring insertion tools](./parts/actuator_assembly_tools.md)
+*   [Nut and O ring insertion tools](./parts/printed_tools/actuator_assembly_tools.md)
 *   Craft knife
 
 # Assembly Instructions
 There are three actuator columns on the microscope, for X, Y, and Z.  Follow these instructions for each column in turn.
 
 ## Step 1
-We need to place a nut inside the actuator.  Insert it from the side, through the slot in the actuator column, and push it into place with the [nut insertion tool](./parts/nut_insertion_tool).  Take care to insert the nut corner-first (i.e. with flat sides parallel to the tool), otherwise it will jam.
+We need to place a nut inside the actuator.  Insert it from the side, through the slot in the actuator column, and push it into place with the [nut insertion tool](./parts/printed_tools/actuator_assembly_tools.md).  Take care to insert the nut corner-first (i.e. with flat sides parallel to the tool), otherwise it will jam.
 
 ![putting the nut into the actuator column](./images/actuator_assembly_nut_insertion_1.jpg)
 ![The slot in the body now looks like this](./images/insert_nut_here.jpg)
@@ -41,7 +41,7 @@ Turn the microscope over and, using the elastic band tool or a craft knife, snap
 ## Step 4
 Hook one of the Viton bands over the elastic band tool, and pass the tool through the foot as shown.  You should end up with one loop of elastic band passing over each fork-shaped end of the insertion tool.  The flat side of the tool should be on the outside, so that the channels in either end face towards the centre of the foot.  Make sure you pick the right foot - the middle axis (Z) has a smaller foot.  The angle of the feet is different, if the foot doesn't line up with the outside of the microscope casing, you may be using the wrong one.
 
-You may find it easier to put the band through the foot, then insert the tool and hook the band over either end - either way you should end up with the band, foot, and tool arranged as shown in the pictures.
+You may find it easier to put the band through the foot, then insert the tool and hook the band over either end - either way you should end up with the band, foot, and tool arranged as shown in the pictures. The band tool holder can be placed on the short end of the band insertion tool to hold it at the correct angle and increase the area to push against.
 
 ![The elastic band on the insertion tool, passed through the foot](./images/band_insertion_through_foot_1.jpg)
 ![Inserting the elastic bands](./images/band_insertion_through_foot_2.jpg)

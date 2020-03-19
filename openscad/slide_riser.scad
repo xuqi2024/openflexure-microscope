@@ -55,8 +55,9 @@ module slide_riser(){
         //mounting for clip
         translate(clip_pivot + [0,0,h-2]) cylinder(r=4,h=999);
         translate(clip_pivot + [0,0,0.5]) cylinder(d=3*0.95,h=999);
-        //hole for spring
-        translate(clip_pivot + [10,-4,h-5]) rotate([-75,0,0]) cylinder(d=4.5,h=999);
+        //hole for spring and M3 partial threaded screw
+        translate(clip_pivot + [13,-8,h-5]) rotate([-90,0,0]) cylinder(d=4.8,h=999);
+        translate(clip_pivot + [13,-800,h-5]) rotate([-90,0,0]) cylinder(d=2.6,h=999);
         
         //mounting holes at the side
         //translate([size[0]/2,0,h/2]) repeat([0,8,0], floor(size[1]/8-1), center=true){
@@ -78,20 +79,15 @@ module slide_clip(){
                 translate([0,slide[1]/2+1,0]) cylinder(r=2,h=2);
                 translate(clip_pivot + [0,0,0]) cylinder(r=3.7,h=2);
                 translate(clip_pivot + [10-1,travel+1.5,0]) cylinder(r=1.5,h=2);
-                translate(clip_pivot + [5+1,travel,-8]) cube([8,3,8+2]);
-                
-                //this stops it rotating too far
-                translate(clip_pivot) rotate(15){
-                    translate([-5-3,size[1]/2 - clip_pivot[1],-2]) cube([3,3,4]);
-                }
+                translate(clip_pivot + [5+1,travel,-8]) cube([13,3,8+2]);
             }
             //this is the pivot
             translate(clip_pivot + [0,0,h-2]) cylinder(r=3.7,h=4);
         }
         //hole for pivot screw
         translate(clip_pivot) cylinder(d=3*1.1,h=999,center=true);
-        //screw seat
-        translate(clip_pivot + [10,travel,h-4]) rotate([75,0,0]) cylinder(d=4.5,h=3,center=true);
+        //window for spring screw
+        translate(clip_pivot + [12.5,travel,h-4.5]) rotate([0,0,0]) cube([10,6.002,5], center=true);
     }
 }
 use <main_body.scad>;

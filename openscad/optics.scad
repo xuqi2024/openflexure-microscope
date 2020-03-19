@@ -33,11 +33,12 @@ dt_bottom = -2; //where the dovetail starts (<0 to allow some play)
 camera_mount_top = dt_bottom - 3 - (optics=="rms_f50d13"?8:0) - (optics=="rms_infinity_f50d13"?20:0); //the 50mm tube lens requires the camera to stick out the bottom.
 bottom = camera_mount_top-camera_mount_height(); //nominal distance from PCB to microscope bottom
 fl_cube_bottom = optics=="rms_f50d13"?-8:0; //bottom of the fluorescence filter cube
-fl_cube_w = 16; //width of the fluorescence filter cube
 fl_cube_top = fl_cube_bottom + fl_cube_w + 2.7; //top of fluorescence cube
 fl_cube_top_w = fl_cube_w - 2.7;
 d = 0.05;
 $fn=24;
+
+function fl_cube_width() = fl_cube_w;
 
 module fl_cube_cutout(taper=true){
     // A cut-out that enables a filter cube to be inserted.
@@ -82,151 +83,6 @@ module lens_gripper(lens_r=10,h=6,lens_h=3.5,base_r=-1,t=0.65,solid=false, flare
     // The gripping occurs lens_h above the base, and it flares out
     // again both above and below this.
     trylinder_gripper(inner_r=lens_r, h=h, grip_h=lens_h, base_r=base_r, t=t, solid=solid, flare=flare);
-}
-
-module chamfer_bottom_edge(chamfer=0.3, h=0.5){
-    difference(){
-        children();
-        
-        minkowski(){
-            cylinder(r1=2*chamfer, r2=0, h=2*h, center=true);
-            linear_extrude(d) difference(){
-                square(9999, center=true);
-                projection(cut=true) translate([0,0,-d]) hull() children();
-            }
-        }
-    }
-}
-        
-module fl_cube_outer(){
-    // The outer body for fl_cube()
-    roc = 0.6;
-    w = fl_cube_w;
-    foot = roc*0.7;
-    bottom_t = roc*3;
-    $fn=8;
-    chamfer_bottom_edge() union(){
-        reflect([1,0,0]){
-            // outer "arms" that are responsible for the tight fit
-            sequential_hull(){
-                translate([w/2-2-roc*0.8/sqrt(2), w+2-roc*1.2, 0]) cylinder(r=roc, h=w);
-                translate([w/2-roc, w-roc/sqrt(2), 0]) cylinder(r=roc, h=w);
-                translate([w/2-roc, foot+bottom_t+roc, 0]) cylinder(r=roc, h=w);
-            }
-            translate([w/2-3*roc, foot+bottom_t+roc, 0]) difference(){
-                // the curved bits at the bottom
-                resize([0,(bottom_t+roc)*2,0]) cylinder(r=3*roc, h=w, $fn=24);
-                // cut out the inner radius
-                cylinder(r=roc, h=999, center=true);
-                // restrict it to a quarter-turn
-                mirror([1,0,0]) translate([-roc,0,-99]) cube(999);
-                mirror([1,0,0]) translate([0,-roc,-99]) cube(999);
-            }
-        }
-        // join the two arms together at the bottom
-        translate([0,foot+bottom_t/2, w/2]) cube([w - roc*3*2 + 2*d, bottom_t, w], center=true);
-        
-        // feet at the bottom (and also in the middle of the top part)
-        for(p = [[-w/2+roc*3, roc, roc+0.5], 
-                 [w/2-roc*3, roc, roc+0.5], 
-                 [0, roc, w-roc],
-                 [w/2-2-roc*0.3/sqrt(2), w+2-roc*1.2, w/2],
-                 [-(w/2-2-roc*0.3/sqrt(2)), w+2-roc*1.0, w/2]
-                ]){
-            translate(p) sphere(r=roc,$fn=8);
-        }
-    }
-}
-module fl_cube(){
-    // Filter cube that slots into a suitably-modified optics module
-    // This prints with the Y axis vertical - to save rotating all the
-    // cylinders, it's written here as printed.
-    roc = 0.6;
-    w = fl_cube_w;
-    foot = roc*0.7;
-    bottom_t = roc*3;
-    dichroic = [12,16,1.1];
-    dichroic_t = dichroic[2];
-    emission_filter = [10,14,1.5];
-    beamsplit = [0, w/2+2, w/2];
-    inner_w = w - 6*roc;
-    bottom = bottom_t + foot;
-    $fn=8;
-    difference(){
-        union(){
-            fl_cube_outer();
-            
-            // mount for 45 degree dichroic, with bottom retaining clip
-            by = beamsplit[1] + dichroic[1]/2/sqrt(2) + 0.3; //coated tip of dichroic + wiggle room
-            bz = beamsplit[2] - dichroic[1]/2/sqrt(2) + 0.3; //coated tip of dichroic + wiggle room
-            bby = beamsplit[1] + dichroic[1]/2/sqrt(2) - dichroic[2]/sqrt(2); //back tip of dichroic
-            bbz = beamsplit[2] - dichroic[1]/2/sqrt(2) - dichroic[2]/sqrt(2); //back tip of dichroic
-            sequential_hull(){
-                translate([-inner_w/2, bottom, 0]) cube([inner_w, d, beamsplit[2] + beamsplit[1] - bottom - dichroic_t*sqrt(2)]); // tall back of triangle
-                translate([-inner_w/2, bby, 0]) cube([inner_w, d, bbz]); //pointy end of triangle
-                translate([-inner_w/2+2, by, 0]) cube([inner_w-4, 1.5, bz]); //far end
-                translate([-inner_w/2+2, by, bz]) cube([inner_w-4, 1.5, d]); //start of retaining clip
-                translate([-inner_w/2, by - 4, 4 + 2*dichroic_t]) cube([inner_w, 2, d]); //end of retaining clip
-                translate([-inner_w/2, by - 5, 4 + 2*dichroic_t]) cube([inner_w, 2, 1]); //overhanging bit
-            }
-            
-            // attachment for the excitation filter and LED
-            reflect([1,0,0]) translate([-w/2, bottom + 4, w]) sequential_hull(){
-                depth = w-bottom-4-roc;
-                translate([0,0,-roc]) cube([2*roc, depth, d]); 
-                translate([0.5,0,roc]) cube([2*roc, depth, 1.5]);
-                translate([0.5+2*roc + 1.5 - 0.2*(1+sqrt(2)),0,roc+1.5-0.2]) rotate([-90,0,0]) cylinder(r=0.2, h=depth);//cube([2*roc + 1.5, depth, d]);
-            }
-        }
-        // hole for the beam
-        translate(beamsplit) rotate([90,0,0]) cylinder(r=5,h=999, center=true, $fn=32);
-        // hole for the emission filter
-        translate([-emission_filter[0]/2, bottom - roc*1.5, beamsplit[2]-emission_filter[1]/2]) cube([emission_filter[0], emission_filter[2], 999]);
-        // access hole for the dichroic
-        translate(beamsplit) rotate([-45,0,0]) translate([0,-dichroic[1]/2,0]) scale([1.1,1,1.9]) cube(dichroic, center=true);
-    }
-}
-
-module fl_led_mount(){
-    // This part clips on to the filter cube, to allow a light source (generally LED) to be coupled in using the beamsplitter.
-    roc = 0.6;
-    w = fl_cube_w - 1; //nominal width of the mount (is the width between the outsides of the dovetail clip points)
-    dovetail_pinch = fl_cube_w - 4*roc - 1 - 3; //width between the pinch-points of the dovetail
-    h = fl_cube_w - 1; //should probably be fl_cube_w
-    led_z = fl_cube_w/2;//+2;
-    filter = [10,14,1.5];
-    beamsplit = [0, 0, w/2]; //NB different to fl_cube because we're printing with z=z here.
-    $fn=8;
-    front_t = 2;
-    back_y = fl_cube_w/2 + roc + 1.5; //flat of dovetail (we actually start 1.5mm behind this)
-    led_y = back_y+3; //don't worry about precise imaging (is this OK?)
-    front_y = led_y + front_t;
-    led_d = 5;
-    
-    union() translate([0,0,0]){
-        difference(){
-            union(){
-                translate([0, back_y, 0]) mirror([0,1,0]) dovetail_m([w, 1, h], t=2*roc);
-                hull(){
-                    translate([-w/2,back_y,0]) cube([w,d,h]);
-                    reflect([1,0,0]) translate([w/2-3*roc, front_y - 3*roc, 0]) cylinder(r=3*roc, h=h, $fn=16);
-                }
-                hull(){
-                    l=3.5;
-                    translate([-w/2+2.5,back_y-1.5+d,led_z-led_d/2-2-l]) cube([w-5,d,led_d+4+l]);
-                    translate([-w/2+2.5,back_y-1.5+d-l,led_z-led_d/2-2]) cube([w-5,d,led_d+4]);
-                }
-            }
-            
-            // add a hole for the LED
-            translate([0,led_y,led_z]){
-                cylinder_with_45deg_top(h=999, r=led_d/2*1.05, $fn=16, extra_height=0, center=true); //LED
-                cylinder_with_45deg_top(h=999, r=(led_d+1)/2*1.05, $fn=16, extra_height=0);
-            }
-        }
-        
-
-    }
 }
 
 module camera_mount_top(){
@@ -356,7 +212,7 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
             camera_mount_body(body_r=lens_assembly_base_r, bottom_r=10.5, body_top=lens_assembly_z, dt_top=dovetail_top,fluorescence=fluorescence, dovetail=dovetail);
             // camera cut-out and hole for the beam
             if(fluorescence){
-                optical_path_fl(tube_lens_aperture, lens_assembly_z, fluorescence=fluorescence);
+                optical_path_fl(tube_lens_aperture, lens_assembly_z);
             }else{
                 optical_path(tube_lens_aperture, lens_assembly_z);
             }
@@ -534,19 +390,18 @@ difference(){
             objective_parfocal_distance=35,
             fluorescence=beamsplitter,
             gripper_t=0.65,
-            tube_length=tube_length//9999 //use 150 for standard finite-conjugate objectives (cheap ones) or 9999 for infinity-corrected lenses (usually more expensive).
+            tube_length=150
         );
         if(sample_z < 60 || objective_mount_y < 12) echo("Warning: RMS objectives won't fit in small microscope frames!");
     }else if(optics=="rms_f50d13" || optics=="rms_infinity_f50d13"){
         // Optics module for RMS objective using ThorLabs ac127-050-a doublet tube lens
-        tube_length=(optics=="rms_f50d13" ? 150 : 99999);
         optics_module_rms(
             tube_lens_ffd=47, 
             tube_lens_f=50, 
             tube_lens_r=12.7/2+0.1, 
             objective_parfocal_distance=35,
             fluorescence=beamsplitter,
-            tube_length=tube_length //use 150 for standard finite-conjugate objectives (cheap ones) or 9999 for infinity-corrected lenses (usually more expensive).
+            tube_length=(optics=="rms_f50d13" ? 150 : 99999) //use 150 for standard finite-conjugate objectives (cheap ones) or 9999 for infinity-corrected lenses (usually more expensive).
         );
         if(sample_z < 60 || objective_mount_y < 12) echo("Warning: RMS objectives won't fit in small microscope frames!");
     }else if(optics=="m12_lens"){
@@ -557,18 +412,12 @@ difference(){
             lens_h = 5.5
         );
         if(objective_mount_y < 10) echo("Warning: M12 lenses won't fit in small frames");
-    }else if(optics=="beamsplitter_cube"){
-        translate([0,0,-fl_cube_w/2]) fl_cube();
-    }else if(optics=="beamsplitter_led_mount"){
-        mirror([0,1,0]) fl_led_mount();
     }
     
     //picam_cover();
     //translate([0,objective_mount_y-7,0]) rotate([90,0,0]) cylinder(r=999,h=999,$fn=8);
     //mirror([0,0,1]) cylinder(r=999,h=999,$fn=8);
     //C270 lens could be a trylinder gripper, with lens_r=12.0, lens_h=1 and a pedestal that is smaller than the gripper by more than the usual amount (say 1mm space)
-    //#translate([0,0,fl_cube_bottom]) rotate([90,0,0]) translate([0,0,-fl_cube_w/2]) fl_cube();
-    //mirror([0,1,0]) fl_led_mount();
     //translate([0,0,21]) mirror([0,0,1]) cylinder(r=999,h=999);
 }
 //condenser();

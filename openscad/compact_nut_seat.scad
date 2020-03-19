@@ -106,7 +106,7 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
         // NB this is raised up from the bottom so it stays within the shaft - this may need to change depending on the length of screw we use...
         if(!no_voids) rotate([tilt,0,0]) translate([0,0,lever_tip]){
             cylinder(r=shaft_r, h=999);
-            translate([0,0,-lever_tip+1]) cylinder(r1=0, r=shaft_r, h=lever_tip-1); //pointy bottom (stronger)
+            translate([0,0,-lever_tip+1]) cylinder(r1=0, r2=shaft_r, h=lever_tip-1); //pointy bottom (stronger)
         }
         
         // space for lever and flexure

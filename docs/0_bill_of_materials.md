@@ -24,7 +24,7 @@ Make sure you have all the necessary parts and tools before you start.  The part
 ## Optical parts:
 *   [13mm diameter, 5mm focal length plastic condenser lens](./parts/optics/condenser_lens.md) (optional, strongly recommended for high resolution optics)
 *   [12.7mm diameter, 50mm focal length achromatic lens](./parts/optics/tube_lens.md) (for high resolution optics only)
-*   [RMS threaded, finite-conjugates microscope objective](./parts/optics/microscope_objective.md) (for high resolution optics only)
+*   [RMS threaded, finite-conjugates microscope objective](./parts/optics/objective.md) (for high resolution optics only)
 
 ## Tools:
 *   2.5mm hex key

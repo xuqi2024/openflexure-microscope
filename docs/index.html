@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>OpenFlexure Documentation</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="Description">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css">
+  <style>
+    :root {
+      --theme-color: #c5247f;
+      --sidebar-name-text-align: left;
+    }
+    a {
+      color: var(--theme-color)
+    }
+    .markdown-section img {
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), 0 2px 5px rgba(0, 0, 0, 0.12);
+      border-radius: 4px;
+    }
+  </style>
+  
+</head>
+
+<body>
+  <nav>
+    <a href="https://openflexure.org">OpenFlexure Homepage</a>
+  </nav>
+  <div id="app"></div>
+  <script>
+    window.$docsify = {
+      homepage: 'index.md',
+      loadSidebar: '_navigation.md',
+      relativePath: true,
+      subMaxLevel: 3,
+      auto2top: true,
+      name: 'OpenFlexure Documentation',
+      nameLink: '#/',
+      themeColor: '#c5247f'
+    }
+  </script>
+  <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
+</body>
+</html>

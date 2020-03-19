@@ -201,10 +201,17 @@ module z_motor_clearance(){
     }
 }
 
+module top_of_z_axis_casing(){
+    // The top of the Z axis casing, in case you want to join things onto it
+    translate([-z_anchor_w/2-1.5, z_anchor_y - 1, z_flexures_z2]) cube([z_anchor_w+3, d, d]);
+    translate([0,z_nut_y,0]) rotate(180) 
+                    motor_lugs(h=actuator_h + z_actuator_travel, angle=180, tilt=-z_actuator_tilt);
+}
+
 module z_axis_casing(condenser_mount=false){
     // Casing for the Z axis - needs to have the axis subtracted from it
     intersection(){
-        linear_extrude(h=999) minkowski(){
+        linear_extrude(height=999) minkowski(){
             circle(r=wall_t+1);
             hull() projection() z_axis_struts();
         }
@@ -216,9 +223,7 @@ module z_axis_casing(condenser_mount=false){
     }
     if(condenser_mount) hull(){
         // At the bottom, connect to the top of the housing and the motor lugs
-        translate([-z_anchor_w/2-1.5, z_anchor_y - 1, z_flexures_z2]) cube([z_anchor_w+3, d, d]);
-        translate([0,z_nut_y,0]) rotate(180) 
-                     motor_lugs(h=actuator_h + z_actuator_travel, angle=180, tilt=-z_actuator_tilt);
+        top_of_z_axis_casing();
         // The top is a flat shape that the illumination arm screws onto.
         each_illumination_arm_screw() mirror([0,0,1]) cylinder(r=5,h=7);
     }
@@ -244,7 +249,7 @@ module z_actuator_column(){
     translate([0,z_nut_y,0]) actuator_column(actuator_h, tilt=z_actuator_tilt, join_to_casing=true);
 }
 
-module z_actuator_housing(){
+module z_actuator_housing(motor_lugs=motor_lugs){
     // This houses the actuator column and provides screw seat/motor lugs
     translate([0,z_nut_y,0]) screw_seat(h=actuator_h, 
                                         tilt=z_actuator_tilt, 
@@ -262,20 +267,27 @@ module z_actuator_cutout(){
 //legs
 // for(a=[-45,45]) rotate(a) translate([-leg_outer_w/2,leg_r,0]) cube([leg_outer_w, 4, sample_z]);
 
+include_z_axis_mechanism = true;
+include_z_axis_casing_outer = true;
+include_z_axis_casing_cutout = true;
+include_z_axis_actuator_housing = true;
+
 // These are the moving parts of the axis
-//objective_mount();
-//z_axis_flexures();
-//z_axis_struts();
-//z_actuator_column();
+if(include_z_axis_mechanism){
+    objective_mount();
+    z_axis_flexures();
+    z_axis_struts();
+    z_actuator_column();
+}
 
 // The casing needs to have voids subtracted from it to fit the moving bits in
 difference(){
-    z_axis_casing(condenser_mount=true);
-    z_axis_casing_cutouts();
+    if(include_z_axis_casing_outer) z_axis_casing(condenser_mount=true);
+    if(include_z_axis_casing_cutout) z_axis_casing_cutouts();
 }
 
 // We add on the actuator housing last, because it's got the clearance subtracted already.
-//z_actuator_housing();
+if(include_z_axis_actuator_housing) z_actuator_housing();
 //*/
 // This is what fits onto it
 //translate([0,-1.5,0])

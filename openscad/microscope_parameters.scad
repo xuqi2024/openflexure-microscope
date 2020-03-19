@@ -30,14 +30,15 @@ $fn=32;
 // These are the most useful parameters to change!
 big_stage = true; //this option is obsolete and must now always be true...
 motor_lugs = true;
-version_numstring = "5.20.1";
+version_numstring = "6.0.0";
 camera = "picamera_2"; //see cameras/camera.scad for valid values
 optics = "rms_f50d13"; //see optics.scad for valid values
 led_r = 4.5/2; //size of the LED used for illumination
 endstops = false; //whether to build mounts for optical endstops inside the microscope.
 feet_endstops = false; //whether to include cut-outs for endstop switches in the feet. 
 beamsplitter = false; //enables a cut-out in some optics modules for a beamsplitter
-
+smart_brim_r = 5;
+enable_smart_brim = false;
 
 // This sets the basic geometry of the microscope
 sample_z = big_stage?65:40; // height of the top of the stage
@@ -124,3 +125,5 @@ endstop_hole_offset=0;
 //the stage can move ~3mm in each direction, so the actuator only moves
 //~1.7 mm
 avoid_objective_xyfoot_offset=xy_actuator_travel-1.8;
+
+fl_cube_w = 16; //width of the fluorescence filter cube

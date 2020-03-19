@@ -1,4 +1,4 @@
-// A "bucket" base for the microscope to raise it up and house
+// A "bucket" base for the microscope to raise it up and houseto make a nice bridge above sd card cutout
 // the electronics.
 
 use <utilities.scad>;
@@ -34,13 +34,12 @@ module pi_connectors(){
     pi_frame(){
         // USB/network ports
         translate([raspi_board[0]/2,-1,1]) cube(raspi_board + [2,2,-1]);
-        // micro-USB power
-        translate([10.6-10/2, -99, -2]) cube([10,100,8]);
-        // HDMI
-        translate([32-25/2, -99, -2]) cube([25,100,18]);
-        // micro-SD card
-        translate([0,raspi_board[1]/2+6,0]) cube([80,12,8], center=true);
-        translate([-4,raspi_board[1]/2,0]) cube([16,12,20], center=true);
+
+        // micro-USB power and HDMI
+        translate([24-(40/2), -100, -2]) cube([46,100,14]);
+
+        // micro-SD card cutout
+        translate([-25,raspi_board[1]/2-16,-10]) cube([30,30,16]);
     }
 }
 
@@ -204,7 +203,14 @@ module mounting_holes(){
     // NB the bottom hole is larger to allow for screwing through it, the top 
     // is approximately "self tapping" (a triangular hole, to allow for some 
     // space for swarf).
-    each_actuator() translate([0, actuating_nut_r, 0]){
+    mirror([1,0,0]) leg_frame(45)
+    translate([0, actuating_nut_r, 0]){
+        cylinder(d=4.4, h=20, center=true);
+        rotate(90) trylinder_selftap(3, h=999, center=true);
+    }
+    // this hole is moved out of the way of the sd-card cutout
+    leg_frame(45)
+    translate([-10, actuating_nut_r-1, 0]){
         cylinder(d=4.4, h=20, center=true);
         rotate(90) trylinder_selftap(3, h=999, center=true);
     }
@@ -221,6 +227,17 @@ module microscope_stand(){
     
             // supports for the pi circuit board
             pi_supports();
+
+            // extra material on top of the sd card cutout
+            pi_frame() {
+                rotate(-16) translate([-23.90,raspi_board[1]/2-23,6 + raspi_z]) linear_extrude(height=18.0) {
+                    polygon(points=[[3,0], [3.2, 0], [3.2, 35], [3, 35], [-1, 15]]);
+                }
+            }
+        }
+        // shave some of the extra material off to make a nice bridge above sd card cutout
+        pi_frame() {
+            rotate([0, -6, 0]) rotate(-16) translate([-32.90,raspi_board[1]/2-25, raspi_z]) cube([11.5, 35, 27]);
         }
         
         // space for pi connectors
@@ -230,6 +247,9 @@ module microscope_stand(){
         pi_support_frame() trylinder_selftap(2.5, h=999, center=true);
         
         mounting_holes();
+        
+        // if we are building for reflection illumination, cut out the front to allow access
+        if(beamsplitter) translate([0,0,h+foot_height]) rotate([90,0,0]) cylinder(d=30,h=999);
         
     }
 }
@@ -290,3 +310,4 @@ module motor_driver_case(){
 
 //motor_driver_case();
 microscope_stand();
+

@@ -17,7 +17,7 @@ swing_a = 30; //angle through which the tool swings
 sso = ss_outer(25); //outer size of screw seat
 handle_w = shaft_d+4; //width of the "handle" part
 handle_l = sso[0]/2+gap; //length of handle part
-
+holder_height = 20; //height of the band insertion tool holder
 
 module tool_handle(){
     w = handle_w; //width of the handle
@@ -108,7 +108,7 @@ module band_tool(){
     }
 }
 
-band_tool_l = sso[2]/2+foot_height;
+band_tool_l = sso[2]/2+foot_height+holder_height;
 band_tool_w = ns[0]-0.5;
 band_tool_h = 4;
 
@@ -149,7 +149,7 @@ module band_tool_2(handle=true){
             }
             //cut out to get nice rounded corners at the bottom of the slot for the hook
             hull() reflect([1,0,0]) prong_frame(){
-                translate(blade_anchor + [-2.25,3,h]) sphere(r=1.5,h=99);
+                translate(blade_anchor + [-2.25,3,h]) sphere(r=1.5);
                 translate(blade_anchor + [-1.5,10,0.5]) cube([1.5/2,999,999]);
             }
         }
@@ -191,5 +191,27 @@ module double_ended_band_tool(bent=false){
     }
 }
 
-double_ended_band_tool(bent=false);
-translate([10,0,0]) nut_tool();
+holder_offset = 1.7;
+
+module band_tool_holder(){
+    //the holder is built from the difference between two minkowski sums of the band insertion tool
+    difference() {
+        minkowski() {
+            hull() double_ended_band_tool(bent=true);
+            scale ([0.7,1,1]) sphere(r = holder_offset);
+        }
+        union(){
+            minkowski() {
+                hull() double_ended_band_tool(bent=true);
+                scale ([0.7,1,1]) sphere(r = holder_offset-0.8);
+                }
+            translate ([-999/2,-999/2,holder_height]) cube([999,999,999], center = false);
+        }
+    }
+}
+
+translate ([12,0,-holder_offset]) double_ended_band_tool(bent=false);
+
+band_tool_holder();
+
+translate([0,40,0]) nut_tool();

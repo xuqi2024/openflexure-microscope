@@ -31,6 +31,7 @@ function gear_c2c_distance() = c2c_distance;
 function gear_ratio() = ratio;
 function small_gear_spacing() = c2c_distance/(ratio + 1)*2 + 4;
 function large_gear_spacing() = c2c_distance/(1/ratio + 1)*2 + 4;
+function thumbwheel_spacing() = 44;
 
 //pitch radius = Nteeth * circular_pitch / 360
 //pitch radius is centre of gear to meshing point
@@ -94,20 +95,31 @@ module small_gear(){
 
 
 module thumbwheel(r=10,h=5,knobble_r=1,knobble_angle=45,chamfer=0.5){
-    knobble_length=knobble_r * sin(knobble_angle) * 2;
-    n_knobbles = floor(2*3.141*r/knobble_length);
-    difference(){
-        intersection(){
-            union(){
-                for(i=[1:n_knobbles]) rotate(i/n_knobbles*360){
-                    translate([0,r-knobble_r,0]) cylinder(r=knobble_r,h=h,$fn=16);
-                }
-                cylinder(r=r-knobble_r,h=h,$fn=n_knobbles);
+    lobe_r = 10;
+    lobe_h = 5;
+    base_low_r = 10;
+    base_up_r = 12;
+    base_h = 12.5;
+    n_lobe = 6;
+
+    difference()
+    {
+        union()
+        {
+            cylinder(r1=base_low_r,r2=base_up_r,h=base_h);
+            for( n = [0 : n_lobe-1] )
+            {
+                deg = 360*n/n_lobe;
+                translate([lobe_r*sin(deg),lobe_r*cos(deg),base_h]){cone_cyl(r=lobe_r,h=lobe_h);}
             }
-            cylinder(r1=r-knobble_r-chamfer, r2=r-knobble_r-chamfer+999,h=999,$fn=n_knobbles);
-            translate([0,0,h-999])cylinder(r2=r-knobble_r, r1=r-knobble_r+999,h=999,$fn=n_knobbles);
         }
         translate([0,0,1.5]) nut(3,shaft=true,fudge=1.2,h=999);
+    }
+
+    module cone_cyl(r=5,h=5)
+    {
+        cylinder(r=r,h=h);
+        translate([0,0,-h]){cylinder(r1=.1,r2=r,h=h);}
     }
 }
 
@@ -116,7 +128,7 @@ module motor_clearance(h=15){
     // NB does not include cable clearance, I assume that goes on the outside.
     // The centre of the body is at the origin, NB this is NOT the shaft location.
     // The shaft is not included.
-    linear_extrude(h=h){
+    linear_extrude(height=h){
         circle(r=14+1.5);
         hull() reflect([1,0]) translate([35/2,0]) circle(r=4.5);
     }
@@ -140,3 +152,4 @@ module motor_and_gear_clearance(gear_h=10, h=999){
 //thumbwheel();
 //motor_and_gear_clearance();
 repeat([0,large_gear_spacing(),0],3,center=true) large_gear();
+//repeat([0,thumbwheel_spacing(),0],3,center=true) thumbwheel();
