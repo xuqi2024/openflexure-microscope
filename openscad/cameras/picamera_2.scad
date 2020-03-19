@@ -71,7 +71,7 @@ module picam2_cutout( beam_length=15){
             //cut-out for camera
             translate([0,0,-d]) cube([cw+0.5,cw+0.5,d],center=true); //wider at bottom
             translate([0,0,0.5]) cube([cw,cw,d],center=true);
-            translate([0,0,ch/2]) cube([cw,cw,ch],center=true);
+            translate([0,0,ch/2]) cube([cw,cw,ch],center=true);//for pi-camera its positionia is as it and for dashcam fit position its need to be [cw+6,cw+6,ch]
             cylinder(r=hole_r, h=2*picamera_2_camera_mount_height(), center=true);
         }
             
@@ -82,6 +82,7 @@ module picam2_cutout( beam_length=15){
         dz = mh-fh-0.75; // extra height above the flex for the sloping "roof"
         rw = cw - 2*dz; 
         hull(){
+            //For dashcam-camera position to be centered these two line need to be comment and for pi-camera position need to be as it is.
             translate([0,0,-d]) linear_extrude(fh) picam2_flex_and_components(cw);
             translate([0,0,-d]) linear_extrude(fh+dz) offset(-dz) picam2_flex_and_components(cw);
         }
@@ -99,7 +100,10 @@ module picam2_cutout( beam_length=15){
         reflect([1,0,0]) translate([sx,0,0]) rotate(60){
             //cylinder(r1=3, r2=0,h=4, center=true); //chamfered bottom
             //deformable_hole_trylinder(1.5/2,2.1/2,h=12, center=true);
-            cylinder(r1=3.1, r2=1.1, h=5, $fn=3, center=true);
+           cylinder(r1=3.1, r2=1.1, h=5, $fn=3, center=true);
+            //These two line below of translate are for dashcam-camera position  of screw holes inorder to use this you might need to comment reflect([1,0,0]) translate([sx,0,0])and cylinder(r1=3.1, r2=1.1, h=5, $fn=3, center=true);
+                       //translate([sx-1.5,-6,0]) cylinder(r1=3.1, r2=1.1, h=6, $fn=3, center=true);
+              // translate([-sx+1,5.5,0]) cylinder(r1=3.1, r2=1.1, h=6, $fn=3, center=true);   
             cylinder(r=1.1, h=20, $fn=3, center=true);
         }
 	}
