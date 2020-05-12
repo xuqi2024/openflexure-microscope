@@ -26,5 +26,8 @@ build.ninja
 
 .DS_Store
 
-#Kate files
+# Kate files
 *.backup
+
+# Python virtualenvironment
+.venv/

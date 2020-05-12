@@ -180,9 +180,8 @@ module fl_cube_cutout(){
 }
 
 ///////////////////// MAIN STRUCTURE STARTS HERE ///////////////
-exterior_brim(r=enable_smart_brim ? smart_brim_r : 0)
-difference(){
-union(){
+module main_body(){
+    // This module represents the main body of the microscope, including the positioning mechanism.
 
 	//legs (incl. actuators)
 	reflect([1,0,0]) leg_frame(135) leg();
@@ -321,8 +320,15 @@ union(){
         z_axis_clearance(); //make sure the actuator can get in ok!
     }
 }
-//reflect([1,0,0]) translate([13.5,0,0]) rotate([0,90,0]) cylinder(r=999,h=999,$fn=4);
-//rotate([90,0,0]) cylinder(r=999,h=999,$fn=4);
-//translate([0,0,50]) cylinder(r=999,h=999,$fn=4);
-}
 //%rotate(180) translate([0,2.5,-2]) cube([25,24,2],center=true);
+
+// If this file is "included" rather than "used", render the main body.
+exterior_brim(r=enable_smart_brim ? smart_brim_r : 0){
+    difference(){
+        main_body();
+        
+        //reflect([1,0,0]) translate([13.5,0,0]) rotate([0,90,0]) cylinder(r=999,h=999,$fn=4);
+        //rotate([90,0,0]) cylinder(r=999,h=999,$fn=4);
+        //translate([0,0,50]) cylinder(r=999,h=999,$fn=4);
+    }
+}

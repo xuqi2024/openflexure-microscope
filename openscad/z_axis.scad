@@ -188,12 +188,12 @@ module objective_mounting_screw_access(){
     }
 }
 
-module z_motor_clearance(){
+module z_motor_clearance(motor_h=999){
     // clearance for the motor and gears, to be subtracted from the condenser mount
     // This also labels it as "Z"
     translate([0,z_nut_y,0]) rotate([z_actuator_tilt,0,0]) {
         translate([0,0,actuator_h+z_actuator_travel+2-1]) rotate(180){
-            motor_and_gear_clearance(gear_h=11);
+            motor_and_gear_clearance(gear_h=11, h=motor_h);
             linear_extrude(1, center=true) translate([0,15]) {
                 text("Z", size=10, font="Sans", halign="center", valign="baseline");
             }

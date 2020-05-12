@@ -78,7 +78,7 @@ module dovetail_clip(size=[10,2,10],dt=1.5,t=2,back_t=0,slope_front=0,solid_bott
     // see dovetail_clip_cutout - most of the options are just passed through.
 	difference(){
 		translate([-size[0]/2,0,0]) cube(size);
-		dovetail_clip_cutout(size-[0,back_t+d,0],dt=dt,t=t,h=999,slope_front=slope_front,solid_bottom=solid_bottom);
+		dovetail_clip_cutout(size-[0,back_t+d,0],dt=dt,t=t,slope_front=slope_front,solid_bottom=solid_bottom);
 	}
 }
 
