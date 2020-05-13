@@ -20,60 +20,85 @@
 
 
 use <../utilities.scad>;
+d = 0.05; // a small distance, to get rid of ambiguities
 
-// Camera geometry (mostly of the bottom of the lens mount)
-lens_holder_tube_r = 13.5/2; // the tube into which the lens screws
-lens_holder_tube_h = 12.6; // the height of the tube above the PCB
-lens_holder_clearance = 0.35; // extra space around the camera to make sure it fits
-lens_holder_box_h = 3.6;
-lens_holder_box = [2,2,0] * lens_holder_tube_r + [0,0,1] * lens_holder_box_h; // box at the bottom of the tube
-lens_holder_mounting_screw_y = 9; // position of the lugs for mounting screws
-lens_holder_mounting_screw_lug_r = 2.2; // size of above.
-camera_component_clearance = 1; // it's easiest to have the PCB slightly below the mount
+function range_tour_camera_mount_height() = 4.5;
+bottom = range_tour_camera_mount_height() * -1;
 
-d=0.05; //small distance!
-$fn=32;
+function range_tour_camera_sensor_height() = 2; //Height of the sensor above the PCB
 
-function range_tour_camera_sensor_height() = 0.5; //Height of the sensor above the PCB
 
-function range_tour_camera_mount_height()=4;
-
-module range_tour_camera_mount(){
-    h = range_tour_camera_mount_height();
-    sy = lens_holder_mounting_screw_y;
-    sr = lens_holder_mounting_screw_lug_r+0.5;
-    box_w = 13.2 + 1; //make it slightly fatter so it grips the bed more
-    sensor_w = 10 + 0.8; //reasonably tight fit around sensor
-    solder_w = (box_w-1.2*2); //the solder terminals need some give
-    translate([0,0,-h]) difference(){
-        linear_extrude(h+d) difference(){
-            union(){
-                square(box_w, center=true);
-                hull() reflect([0,1]) translate([0,sy]) circle(r=sr, $fn=16);
-            }
-            //screws
-            reflect([0,1]) translate([0,sy]) circle(d=1.5, $fn=16);
-            //sensor
-            //square(sensor_w, center=true);
-        }
-        //chamfer the screw holes
-        reflect([0,1,0]) translate([0,sy,0]){
-            cylinder(r1=3, r2=0,h=4, center=true);
-            deformable_hole_trylinder(1.5/2,2.1/2,h=12, center=true);
-        }
-        // enlarge the cut out for the sensor
-        // NB the solder terminals will distort the thin bottom, this
-        // is intentional, to help with bed adhesion
-        cube([sensor_w, sensor_w, 2],center=true);
+module range_tour_led(){
+    // components on the PCB to cut out - may be vestigial (left over from pi camera)
+    translate([5,10]) square([3.5,2]);
+    translate([6,8]) square([3.5,2]);
+}
+    
+module range_tour_cutout( beam_length=15){
+    // This module is designed to be subtracted from the bottom of a shape.
+    // The z=0 plane should be the print bed.
+    // It includes cut-outs for the components on the PCB, so the board sits flush with the bottom of the mount.
+    cw = 8.5 + 1.0 + 6; //size of camera box sides (NB deliberately loose fitting)
+    ch=2.9; //height of camera box (including foam support)
+    camera = [cw,cw,ch]; //size of camera box
+    hole_r = 4.3; //size of camera aperture
+	union(){
         sequential_hull(){
-            translate([0,0,0.7]) cube([solder_w,solder_w,d],center=true);
-            translate([0,0,0.7+(solder_w-sensor_w)/2]) cube([sensor_w, sensor_w, d],center=true);
-            translate([0,0,2]) cube([sensor_w, sensor_w, d],center=true);
-            translate([0,0,h+d]) cylinder(r=5,h=d);
+            //cut-out for camera
+            translate([0,0,ch/2]) cube(camera,center=true);//cut-out for sensor
+            cylinder(r=hole_r, h=2*range_tour_camera_mount_height(), center=true);
+        }
+            
+        //clearance for the ribbon cable at top of camera
+        fh=2.5; // the height of the flex
+        dz = range_tour_camera_mount_height()-fh-0.75; // extra height above the flex for the sloping "roof"
+        //clearance for the LED/resistor (I am not sure this is needed any more)
+        hull(){
+            translate([0,0,-d]) linear_extrude(fh) range_tour_led();
+            translate([0,0,-d]) linear_extrude(fh+dz) offset(-dz) range_tour_led();
+        }
+        
+        //beam clearance
+        cylinder(r=hole_r, h=beam_length);
+        
+        // screw holes for mounting (should match the screw holes in range_tour_bottom_mounting_posts)
+        translate([9,-6,0]) cylinder(r1=3.1, r2=1.1, h=6, $fn=3, center=true);
+        translate([-9.5,5.5,0]) cylinder(r1=3.1, r2=1.1, h=6, $fn=3, center=true);   
+	}
+}
+//range_tour_cutout();
+
+module range_tour_board(h=d){
+    // a rounded rectangle with the dimensions of the picamera board v2
+    // centred on the origin
+    b = 24;
+    w = 25;
+    roc = 2;
+    linear_extrude(h) hull(){
+        reflect([1,0]) reflect([0,1]) translate([w/2-roc, b/2-roc]) circle(r=roc,$fn=12);
+    }
+}
+
+module range_tour_camera_mount(counterbore=false){
+    // A mount for the pi camera v2
+    // This should finish at z=0+d, with a surface that can be
+    // hull-ed onto the lens assembly.
+    b = 24;
+    w = 25;
+    difference(){
+        rotate(45) translate([0,2.4,0]) sequential_hull(){
+            translate([0,0,bottom]) range_tour_board(h=d);
+            translate([0,0,-1]) range_tour_board(h=d);
+            translate([0,0,0]) cube([w-(-1.5-bottom)*2,b,d],center=true);
+        }
+        rotate(45) translate([0,0,bottom]) range_tour_cutout();
+        if(counterbore){
+            translate([0,0,bottom-1]) range_tour_bottom_mounting_posts(height=999, radius=1, cutouts=false);
+            translate([0,0,bottom+1])  range_tour_bottom_mounting_posts(height=999, radius=2.7, cutouts=false);
         }
     }
 }
-range_tour_camera_mount();
+
 module range_tour_bottom_mounting_posts(height=-1, radius=-1, outers=true, cutouts=true){
     // posts to mount to pi camera from below
     r = radius > 0 ? radius : 2;
