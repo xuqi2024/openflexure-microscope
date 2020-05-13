@@ -30,7 +30,8 @@ use <./range_tour_dashcam.scad>;
 // dodgy ad-hoc script, and is probably the best compromise.  The ternary operator
 // is necessary as proper if statements aren't currently allowed in OpenSCAD functions.
 
-// See the function below for valid values of "camera".
+// See the functions below for valid values of "camera".
+// Each of the included files above defines the functions for one camera.
 
 function camera_mount_height() =
     // the height of the camera mount - above this comes the optics module.

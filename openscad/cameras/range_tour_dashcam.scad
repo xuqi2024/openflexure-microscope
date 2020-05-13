@@ -39,7 +39,7 @@ function range_tour_camera_sensor_height() = 0.5; //Height of the sensor above t
 function range_tour_camera_mount_height()=4;
 
 module range_tour_camera_mount(){
-    h = m12_camera_mount_height();
+    h = range_tour_camera_mount_height();
     sy = lens_holder_mounting_screw_y;
     sr = lens_holder_mounting_screw_lug_r+0.5;
     box_w = 13.2 + 1; //make it slightly fatter so it grips the bed more
@@ -73,7 +73,7 @@ module range_tour_camera_mount(){
         }
     }
 }
-//camera_mount();
+range_tour_camera_mount();
 module range_tour_bottom_mounting_posts(height=-1, radius=-1, outers=true, cutouts=true){
     // posts to mount to pi camera from below
     r = radius > 0 ? radius : 2;
@@ -87,4 +87,5 @@ module range_tour_bottom_mounting_posts(height=-1, radius=-1, outers=true, cutou
         }
     }
 }
-//translate([0,0,-1]) picam_pcb_bottom();
+
+//range_tour_bottom_mounting_posts();
