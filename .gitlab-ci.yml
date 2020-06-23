@@ -15,7 +15,7 @@ build:
       - apt-get update -qq
       - apt-get install -y -qq openscad
       - pip3 install -r requirements.txt
-      - cd build_system && wget https://cloud.monostable.co.uk/ninja_hashed && chmod +x ninja_hashed
+      - wget https://cloud.monostable.co.uk/ninja_hashed -O build_system/ninja_hashed && chmod +x build_system/ninja_hashed
 
     script:
       # Build STL files with OpenSCAD
