@@ -10,7 +10,7 @@ build:
 
     before_script:
       - apt-get update -qq
-      - apt-get -y -qq install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates python3-pip
+      - apt-get -y -qq install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates python3-pip wget
       - add-apt-repository -y ppa:openscad/releases
       - apt-get update -qq
       - apt-get install -y -qq openscad
