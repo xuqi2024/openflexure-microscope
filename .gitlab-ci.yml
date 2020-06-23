@@ -14,18 +14,18 @@ build:
       - apt-get update -qq
       - apt-get install -y -qq openscad
       - pip3 install -r requirements.txt
+      - cd build_system && wget https://cloud.monostable.co.uk/ninja_hashed && chmod +x ninja_hashed
 
     script:
       # Build STL files with OpenSCAD
       - mkdir -p /root/.local/share
-      - ./build.py --generate-stl-options-json
+      - ./build.py --hashed --generate-stl-options-json
 
     artifacts:
       expire_in: 1 week
       name: "${CI_PROJECT_NAME}-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}"
       paths:
-        - builds/*.stl
-        - builds/*.json
+        - builds/
 
     only:
       - tags
@@ -83,6 +83,9 @@ deploy:
   script:
     # Install rsync if not already installed
     - 'which rsync || ( apt-get update -y && apt-get install rsync -y )'
+
+    # remove all the ninja specific files
+    - rm -f builds/*.d builds/.ninja_*
 
     # Upload the builds folder to openflexure-microscope builds
     - rsync -hrvz -e ssh builds/ ci-user@openflexure.bath.ac.uk:/var/www/build/openflexure-microscope/${CI_COMMIT_REF_NAME} --delete

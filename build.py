@@ -5,7 +5,9 @@ import sys
 from ninja import Writer, ninja as run_build
 import os
 import sys
+from argparse import ArgumentParser
 from build_system.json_generator import JsonGenerator
+from build_system.hashed_build import run_hashed_build
 
 stl_presets = [
     {
@@ -187,15 +189,27 @@ build_dir = "builds"
 build_file = open("build.ninja", "w")
 ninja = Writer(build_file, width=120)
 
-generate_stl_options = (
-    len(sys.argv) > 1 and sys.argv[1] == "--generate-stl-options-json"
-)
+def parse_arguments():
+    p = ArgumentParser(description="Build the OpenFlexure Microscope Openscad files to STL files.")
+    p.add_argument(
+        "--generate-stl-options-json",
+        help="Generate a stl_options.json to use with the stl-selector",
+        action="store_true",
+    )
+    p.add_argument(
+        "--hashed",
+        help="Use a special fork of ninja that hashes inputs instead of relying on timestamps",
+        action="store_true",
+    )
+    args = p.parse_args()
+    # remove these arguments as the rest are passed on to the ninja executable
+    sys.argv = list(filter(lambda arg: arg != "--generate-stl-options-json" and arg != "--hashed", sys.argv))
+    return args
 
-if generate_stl_options:
+args = parse_arguments()
+
+if args.generate_stl_options_json:
     json_generator = JsonGenerator(build_dir, option_docs, stl_presets, required_stls)
-    # ninja looks at the arguments and would get confused if we didn't remove
-    # the `--generate-stl-options-json`
-    sys.argv.pop()
 
 
 if sys.platform.startswith("darwin"):
@@ -265,7 +279,7 @@ def openscad(
     if select_stl_if is None:
         select_stl_if = {}
 
-    if generate_stl_options:
+    if args.generate_stl_options_json:
         json_generator.register(
             output,
             input,
@@ -612,7 +626,10 @@ openscad(
 
 build_file.close()
 
-if generate_stl_options:
+if args.generate_stl_options_json:
     json_generator.write()
 
-run_build()
+if args.hashed:
+    run_hashed_build()
+else:
+    run_build()
