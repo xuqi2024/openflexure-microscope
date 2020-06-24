@@ -30,7 +30,7 @@ $fn=32;
 // These are the most useful parameters to change!
 big_stage = true; //this option is obsolete and must now always be true...
 motor_lugs = true;
-version_numstring = "6.0.0";
+version_numstring = "6.1.2";
 camera = "picamera_2"; //see cameras/camera.scad for valid values
 optics = "rms_f50d13"; //see optics.scad for valid values
 led_r = 4.5/2; //size of the LED used for illumination

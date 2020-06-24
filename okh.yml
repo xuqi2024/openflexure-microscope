@@ -36,7 +36,7 @@ contact:
     - platform: Twitter
       user-handle: @OpenFlexure
 
-version: 6.1.1
+version: 6.1.2
 
 development-stage: stable
 

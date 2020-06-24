@@ -210,8 +210,8 @@ module band_tool_holder(){
     }
 }
 
-translate ([12,0,-holder_offset]) double_ended_band_tool(bent=false);
+translate ([12,0,0]) double_ended_band_tool(bent=false);
 
-band_tool_holder();
+translate ([0,0,holder_offset]) band_tool_holder();
 
 translate([0,40,0]) nut_tool();

@@ -1,15 +1,20 @@
 # OpenFlexure Microscope
 The OpenFlexure Microscope is a  3D printable microscope, including a precise mechanical stage to move the sample and focus the optics.  There are many different options for the optics, ranging from a webcam lens to a 100x, oil immersion objective.
 
-![A trio of microscope](https://openflexure.org/assets/MicroscopeBlenderTrio.png)
+![A trio of microscopes](https://openflexure.org/assets/MicroscopeBlenderTrio.png)
 
 The trick of making a microscope out of a webcam has been around for a little while, and produces good results.  However, getting a nice mechanical stage to focus the microscope and move around on the sample is tricky.  This project is a 3D printable design that enables very fine (sub-micron) mechanical positioning of the sample and the lens, with surprisingly good mechanical stability.  It's discussed in various [media articles](https://gitlab.com/openflexure/openflexure-microscope/wikis/Media-Articles) and a [paper in Review of Scientific Instruments](http://dx.doi.org/10.1063/1.4941068) (open access).
 
+## Building a microscope
+For up-to-date build instructions and STL files, please head to the [build a microscope page].
+
+[build a microscope page]: https://openflexure.org/projects/microscope/build
+
 ## Instructions
-The editable instructions are MarkDown format, in the [docs folder](./docs/), and the latest release docs [can be viewed on here](https://build.openflexure.org/openflexure-microscope/latest/docs).
+The editable instructions are MarkDown format, in the [docs folder](./docs/), and the latest release docs will be compiled into a web page linked from the [build a microscope page].
 
 ## Printing it yourself
-To build the microscope, go to [the tags page](https://gitlab.com/openflexure/openflexure-microscope/tags) and download the zip file containing the STL files from the latest release.  Don't just print everything from the folder, as there are a number of different configurations possible.  The [assembly instructions](https://build.openflexure.org/openflexure-microscope/latest/docs) contain instructions on what parts to print and how to build it.
+To build the microscope, go to the [build a microscope page] and check the instructions on printing.  Don't just print everything from the zip file download, as there are a number of different configurations possible - we're working on an automatic way to let you download just the right files.  The [assembly instructions](https://build.openflexure.org/openflexure-microscope/latest/docs) contain instructions on what parts to print and how to build it.
 
 If you've built one, let us know - add yourself to the [wiki page of builds](https://gitlab.com/openflexure/openflexure-microscope/wikis/Assembly-Logs) or submit an [issue](https://gitlab.com/openflexure/openflexure-microscope/issues/new) marked as a build report.  This is a really helpful thing to do even if you don't suggest improvements or flag up problems.
 
@@ -32,7 +37,13 @@ This project is open so that anyone can get involved, and you don't have to lear
 Things in need of attention are currently described in [issues](https://gitlab.com/openflexure/openflexure-microscope/issues/) so have a look there if you'd like to work on something but aren't sure what.
 
 ## Developing
-If you want to play with the OpenSCAD files or change the documentation, you should fork the repository.  You can edit the documentation online in GitLab, or clone the repository if you want to edit the OpenSCAD files.  NB you'll need to clone the whole repository as the OpenSCAD files are dependent on each other.
+If you want to play with the OpenSCAD files or change the documentation, you should fork the repository.  You can edit the documentation online in GitLab, or clone the repository if you want to edit the OpenSCAD files.  NB you'll need to clone the whole repository as the OpenSCAD files are dependent on each other.  
+
+### Development environment
+We mostly use VSCode to edit the OpenSCAD files, and then use OpenSCAD with the editor hidden and the "automatic reload and compile" option ticked.  This is much nicer for a big multi-file project like the microscope than relying on OpenSCAD's built-in editor, and also works nicely with version control.  NB you can edit ``microscope_parameters.scad`` to change which options you build in the OpenSCAD window, but it's best not to commit changes to that file unless you need to change the default values.
+
+### Automatic builds
+The build system is based on Python and Ninja, see [compiling](COMPILE.md) for more details.
 
 ### Release flow
 We use GitLab CI to manage builds and deployment. 

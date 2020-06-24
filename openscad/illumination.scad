@@ -81,7 +81,7 @@ lens_assembly_z = 30;
 dt_clip = [front_dovetail_w, 16, lens_assembly_z]; //size of the dovetail clip
 arm_end_y = front_dovetail_y-dt_clip[1]-4;
 
-module tall_condenser(){
+module tall_condenser(bottom=true){
     difference(){
         union(){
 
@@ -96,7 +96,7 @@ module tall_condenser(){
             translate([-dt_clip[0]/2,arm_end_y,0]) cube([dt_clip[0], 4, dt_clip[2]]);
             
             // the dovetail clip
-            translate([0,front_dovetail_y, 0]) mirror([0,1,0]) dovetail_clip(dt_clip, slope_front=2, solid_bottom=0.2);
+            translate([0,front_dovetail_y, 0]) mirror([0,1,0]) dovetail_clip(dt_clip, slope_front=2, solid_bottom=bottom?0.2:0);
             
             
             translate([0,0,lens_assembly_z]){

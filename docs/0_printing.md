@@ -1,8 +1,11 @@
 # Printing the plastic parts
 
-First, you will need to print or obtain the 3D printed parts.  These have been designed with some care to print reliably on most RepRap-style printers, without support material.  It's important to read through the notes before, as there are multiple versions of the STL files to choose from, so it's not a good idea just to pick all the parts in the folder.  The printed parts are described in their own pages, with details of how to pick the version of that part, for the parts with multiple versions.
+First, you will need to print or obtain the 3D printed parts.  These have been designed with some care to print reliably on most RepRap-style printers, using regular PLA filament without support material.  It's important to read through the notes before, as there are multiple versions of the STL files to choose from, so it's not a good idea just to pick all the parts in the folder.  The printed parts are described in their own pages, with details of how to pick the version of that part, for the parts with multiple versions.
 
-The best way to obtain these files is from the latest [release](https://gitlab.com/openflexure/openflexure-microscope/tags).
+The best way to obtain these files is from the [build a microscope] page, which links to our [build server].
+
+[build server]: https://build.openflexure.org/openflexure-microscope/latest/
+[build a microscope]: https://openflexure.org/projects/microscope/build
 
 ## Standard builds of the microscope
 
@@ -81,16 +84,15 @@ The version of the microscope used for scientific or medical research generally 
 
 ## Print settings
 
-I usually print with a layer size of 0.24mm on my Ormerod, which takes 10 hours for the main body.  "low" quality on an Ultimaker 2 (0.15mm layers) produces similar results in about 10 hours.  Our Prusa i3 Mk3 takes a similar time using 0.2mm layers, or 0.3mm layers if we want to go even faster (8 hours or less).
+I usually print using PLA filament with a layer size of 0.2mm, on either a Prusa i3 MK3 or an Ultimaker 2+, which takes 10 hours for the main body.  "low" quality on an Ultimaker 2 (0.15mm layers) produces similar results in about 12 hours.  Sometimes we use 0.3mm layers if we want to go even faster (8 hours or less) on our Prusa - this is unreliable on the Ultimaker.  You should be able to use pretty much any fused filament fabrication printer (i.e. any of the printers that use PLA filament).
 
 > **Warning:** The microscope is designed to print without support material.  If you use support material it will require a lot of cleaning up, and you may well damage the parts.
 
-The parts are all designed to print without support material or adhesion layer.  If you do use an adhesion layer, many of the moving parts will be rendered useless by a brim (particularly on the main body), and require lots of work with a craft knife to sort them out.  While there are no cantilevered parts that really need support, there are a few bridges; it might be a good idea to print the ``just_leg_test.stl`` file first, to make sure your printer can print them.  There are some versions of the main body that include a baked-in brim in the STL file, see [``main_body.scad``](https://gitlab.com/openflexure/openflexure-microscope/blob/master/openscad/main_body.scad).  This brim does a better job of not fouling the mechanism than most slicers, and is a good option if the part won't stick without a brim.  Most of the other parts are possible to clean up after printing with a brim, so you may wish to use one, particularly for the smaller parts like sample clips.
+The main body is designed to print without support material or adhesion layer.  If you do use an adhesion layer, many of the moving parts can be rendered useless by a brim on the main body.  It's possible to remove the brim with a craft knife, but it's very easy to damage the mechanism while doing so.  See below for our "smart brim" which should stick better to the print bed, while also being easier to remove.  This brim does a better job of not fouling the mechanism than most slicers, and is a good option if the part won't stick without a brim - see the next section.  Most of the other parts are possible to clean up after printing with a brim, so you may wish to use one, particularly for the smaller parts like sample clips.
 
-If your printer has a standard-sized bed (180mmx180mm should be fine) then it should be possible to print the complete microscope in one go.  I do this if I'm using a machine that is well calibrated and reliable.  However, I find that it's often more reliable to print in batches (as small parts at the edge of the print bed can detach and cause it to fail).  I would recommend:
+  There are no cantilevered parts that really need support, but there are a few bridges; it might be a good idea to print the ``just_leg_test.stl`` file first, to make sure your printer can print them.  Using support material is likely to be a problem, as it will end up in places where it's hard to remove, and you are very likely to damage the mechanism while removing it.
 
-*   Batch 1: Microscope, illumination and Optics module (this is the longer print, with taller objects)
-*   Batch 2: Feet, gears, camera cover, camera board gripper, camera lens remover, gear riser
+If your printer has a standard-sized bed (180mmx180mm should be fine) then it should be possible to print the complete microscope in one go, with the exception of the bases that hold the electronics.  I do this if I'm using a machine that is well calibrated and reliable.  However, I find that it's often more reliable to print in batches (as small parts at the edge of the print bed can detach and cause it to fail).  If I need to use a brim, we generally print the main body separately using the "smart brim" and the other small parts in a separate run.  I would recommend:
 
 There is a test file that prints a single leg of the microscope - ``just_leg_test.stl``. It's worth printing this first to check your settings are OK.
 
