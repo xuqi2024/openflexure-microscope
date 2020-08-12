@@ -143,17 +143,19 @@ module camera_mount_body(
                     translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=tiny();
                     if(dovetail) translate([0,0,dt_bottom]) objective_fitting_base(params);
                     if(fluorescence){ 
-                      rotate(fl_cube_rotation){
-                       fl_cube_casing();
-                       fl_screw_holes(d = 4, h =8);
-                    }
+                        if(delta_stage == true){
+                            rotate(-60) fl_cube_casing();
+                        }else{
+                            fl_cube_casing();
+                        }
                     }
                 }
                 union(){
-                    if(fluorescence){ 
-                       rotate(fl_cube_rotation){
+                    #if(fluorescence){ 
+                        if(delta_stage == true){
+                            rotate(-60) fl_cube_casing();
+                        }else{
                             fl_cube_casing();
-                            fl_screw_holes(d = 4, h =8);
                         }
                     }
 
