@@ -37,6 +37,7 @@ led_r = 4.5/2; //size of the LED used for illumination
 endstops = false; //whether to build mounts for optical endstops inside the microscope.
 feet_endstops = false; //whether to include cut-outs for endstop switches in the feet. 
 beamsplitter = false; //enables a cut-out in some optics modules for a beamsplitter
+delta_stage = false; // whether the optics module is designed for the delta stage (affects camera rotation and beamsplitter orientation)
 smart_brim_r = 5;
 enable_smart_brim = false;
 

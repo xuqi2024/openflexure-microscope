@@ -84,7 +84,12 @@ module optical_path_fl(lens_aperture_r, lens_z){
     union(){
         translate([0,0,camera_mount_top-d]) lighttrap_sqylinder(r1=5, f1=0,
                 r2=0, f2=fl_cube_w-4, h=fl_cube_bottom-camera_mount_top+2*d); //beam path to bottom of cube
-        rotate(180) fl_cube_cutout(); //filter cube
+        if(delta_stage == true){
+            rotate(120) fl_cube_cutout(); //filter cube
+        }else{
+            rotate(180) fl_cube_cutout();
+        }
+        
         translate([0,0,fl_cube_top-d]) lighttrap_sqylinder(r1=1.5, f1=fl_cube_w-4-3, r2=lens_aperture_r, f2=0, h=lens_z-fl_cube_top+4*d); //beam path
         translate([0,0,lens_z]) cylinder(r=lens_aperture_r,h=2*d); //lens
     }
