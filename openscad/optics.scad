@@ -133,10 +133,23 @@ module camera_mount_body(
                 hull(){
                     translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=d);
                     if(dovetail) translate([0,0,dt_bottom]) objective_fitting_base();
-                    if(fluorescence) fl_cube_casing();
+                    if(fluorescence){ 
+                        if(delta_stage == true){
+                            rotate(-60) fl_cube_casing();
+                        }else{
+                            fl_cube_casing();
+                        }
+                    }
                 }
                 union(){
-                    if(fluorescence) fl_cube_casing();
+                    #if(fluorescence){ 
+                        if(delta_stage == true){
+                            rotate(-60) fl_cube_casing();
+                        }else{
+                            fl_cube_casing();
+                        }
+                    }
+
                     translate([0,0,body_top]) cylinder(r=body_r,h=d);
                     if(dovetail) translate([0,0,dt_top]) objective_fitting_base();
                 }
