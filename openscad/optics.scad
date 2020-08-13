@@ -122,12 +122,13 @@ module camera_mount_body(
     // Make a camera mount, with a cylindrical body and a dovetail.
     // Just add a lens mount on top for a complete optics module!
     dt_h=dt_top-dt_bottom;
+    camera_mount_rotation = delta_stage ? -45 : 0; // The angle of the camera mount (the ribbon cables exits at 135* from dovetail for '0*' &  180* from dovetail for '-45*')
     fl_cube_rotation = delta_stage ? -60 :0; // The angle of the block to hold the fl cube (0* for the fl cube exiting at 180* from the dovetail and -60* for the fl cube exiting at 120* from the dovetail)
     union(){
         difference(){
             // This is the main body of the mount
             sequential_hull(){
-                translate([0,0,camera_mount_top]) camera_mount_top();
+                rotate(camera_mount_rotation)translate([0,0,camera_mount_top]) camera_mount_top();
                 hull(){
                     translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=d);
                     if(dovetail) translate([0,0,dt_bottom]) objective_fitting_base();
@@ -159,7 +160,7 @@ module camera_mount_body(
         }
         
         // add the camera mount
-        translate([0,0,camera_mount_top]) camera_mount();
+        rotate(camera_mount_rotation)translate([0,0,camera_mount_top]) camera_mount();
     }
 }
 
