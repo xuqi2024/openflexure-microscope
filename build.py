@@ -107,7 +107,12 @@ option_docs = [
                 "description": "The Logitech C270 webcam",
             },
             {"key": "m12", "title": "M12 Camera", "description": "A M12 CCTV camera"},
-            {"key": "6led", "title": "6 LED", "description": "USB 6 LED Webcam"},
+            {"key": "6led", "title": "6 LED", "description": "A cheap USB '6 LED' Webcam"},
+            {
+                "key": "dashcam",
+                "title": "Dash CAM",
+                "description": "A cheap dash cam where a screen and camera are sold as one , e.g. RangeTour B90s",
+            },
         ],
     },
     {
@@ -174,8 +179,8 @@ option_docs = [
 # used to disable option combinations that result in essential parts
 # missing
 required_stls = [
-    # you need an optics module or a lens spacer
-    r"^(optics_|lens_spacer).*\.stl",
+    # you need an optics module or a lens spacer, also called mount in some files
+    r"^(optics_|lens_spacer|(.*cam_mount_)).*\.stl",
     # you need a main microscope body
     r"^main_body_.*\.stl",
     # you need some feet
@@ -627,6 +632,27 @@ openscad(
     "reflection_illuminator.scad",
     select_stl_if={"reflection_illumination": True},
 )
+
+
+### prebuilt STL files designed using a CAD program
+
+ninja.rule("copy", command="cp $in $out")
+
+
+def copy_stl(stl_file, select_stl_if):
+    output = os.path.join(build_dir, stl_file)
+    input = os.path.join("prebuilt_stl_files", stl_file)
+    if generate_stl_options:
+        json_generator.register(output, input, select_stl_if=select_stl_if)
+    ninja.build(output, rule="copy", inputs=input)
+
+
+for stl_file in ["6ledcam_mount_top.stl", "6ledcam_mount_bottom.stl"]:
+    copy_stl(stl_file, select_stl_if={"camera": "6led"})
+
+for stl_file in ["dashcam_mount_top.stl", "dashcam_mount_thread.stl"]:
+    copy_stl(stl_file, select_stl_if={"camera": "dashcam"})
+
 
 ###############
 ### RUN BUILD

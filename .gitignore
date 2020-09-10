@@ -1,6 +1,9 @@
 # Don't take stl files
 *.stl
 
+# Except the ones we prebuilt
+!prebuilt_stl_files/*.stl
+
 # Ignore gcode files
 *.g
 *.gcode
