@@ -438,6 +438,17 @@ openscad(
     select_stl_if={"pi_in_base": False, "base": "bucket"},
 )
 
+# Motor driver electronics case
+for motor_driver_electronics in ["sangaboard", "arduino_nano"]:
+    outputs = f"{build_dir}/motor_driver_case_{motor_driver_electronics}.stl"
+    parameters = {"motor_driver_electronics": motor_driver_electronics}
+    
+    ninja.build(
+        outputs,
+        rule="openscad",
+        inputs="openscad/motor_driver_case.scad",
+        variables={"parameters": parameters_to_string(parameters)},
+    )
 
 ########
 ### FEET
@@ -569,7 +580,21 @@ for riser_type in ["sample", "slide"]:
 ###############
 ### SMALL PARTS
 
-parts = ["actuator_assembly_tools", "condenser", "illumination_dovetail", "lens_tool"]
+parts = [
+    "actuator_assembly_tools",
+    "actuator_drilling_jig",
+    "actuator_tension_band",
+    "back_foot",
+    "condenser",
+    "gears",
+    "illumination_dovetail",
+    "lens_tool",
+    "sample_clips",
+    "small_gears",
+    "thumbwheels",
+    "fl_cube",
+    "reflection_illuminator",
+]
 
 for part in parts:
     output = f"{part}.stl"

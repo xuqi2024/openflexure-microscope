@@ -1,0 +1,28 @@
+# see https://developers.zenodo.org/#deposit-metadata
+title: OpenFlexure Microscope 3D Files
+upload_type: other
+description: 'Design files for the OpenFlexure Microscope: A 3D-printed, customisable, open-source optical microscope with a precision moveable stage using flexure hinges.'
+creators:
+  - name: 'Bowman, Richard'
+    affiliation: 'University of Bath'
+    orcid: '0000-0002-0167-4969'
+  - name: 'Stirling, Julian'
+    affiliation: 'University of Bath'
+    orcid: '0000-0002-8270-9237'
+  - name: 'Collins, Joel T.'
+    affiliation: 'University of Bath'
+    orcid: '0000-0002-9382-7511'
+  - name: 'Meng, Qingxin'
+    affiliation: 'University of Bath'
+  - name: 'Sanga, Valerian L.'
+    affiliation: 'STICLab'
+    orcid: '0000-0001-8421-4134'
+  - name: 'Nyakyi, Paul T.'
+    affiliation: 'STICLab'
+  - name: 'Mwakajinga, Grace A'
+    affiliation: 'STICLab'
+  - name: 'McDermott, Samuel'
+    affiliation: 'University of Cambridge'
+    orcid: '0000-0003-2736-5467'
+  - name: 'Bumke, Kaspar'
+    affiliation: 'University of Bath'

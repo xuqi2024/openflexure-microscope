@@ -1,6 +1,7 @@
 stages:
     - build
     - deploy
+    - zenodo
 
 
 
@@ -110,6 +111,39 @@ deploy:
     # Run update-latest.py on the build server
     - ssh -t ci-user@openflexure.bath.ac.uk "/var/www/build/update-latest.py"
 
+  artifacts:
+    expire_in: 1 week
+    name: "${CI_PROJECT_NAME}-${CI_COMMIT_REF_NAME}.zip"
+    paths:
+      - "${CI_PROJECT_NAME}-${CI_COMMIT_REF_NAME}.zip"
+
+  only:
+    - tags
+    - web
+
+
+zenodo:
+  stage: zenodo
+  image: ubuntu:18.04
+  dependencies:
+    - deploy
+  before_script:
+    - apt-get update -qq
+    - apt-get -y -qq install git python3-pip
+    - pip3 install -r scripts/zenodo/requirements.txt
+  variables:
+    ZENODO_USE_SANDBOX: "false"
+  script:
+    - mv "${CI_PROJECT_NAME}-${CI_COMMIT_REF_NAME}.zip" "${CI_PROJECT_NAME}-${CI_COMMIT_REF_NAME}-outputs.zip"
+    - git archive "${CI_COMMIT_REF_NAME}" --format=zip --output="${CI_PROJECT_NAME}-${CI_COMMIT_REF_NAME}-source.zip"
+    - python3 scripts/zenodo/upload_to_zenodo.py "${CI_PROJECT_NAME}-${CI_COMMIT_REF_NAME}-source.zip" "${CI_PROJECT_NAME}-${CI_COMMIT_REF_NAME}-outputs.zip"
+  artifacts:
+    # this is only a small html link, let's just keep it forever
+    # gitlab doesn't understand "expire_in: never" yet though
+    expire_in: 100000 years
+    name: zenodo-${CI_PROJECT_NAME}-${CI_COMMIT_REF_NAME}-link.html
+    paths:
+      - zenodo-link.html
   only:
     - tags
     - web

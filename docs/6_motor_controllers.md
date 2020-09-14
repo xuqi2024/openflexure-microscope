@@ -18,6 +18,8 @@ Most recommended [motors](./5_motors.md) will come packaged with a simple driver
 
 ![Simple motor controller with Arduino](./images/sangaboard_simple.png)
 
+The motor order is x-motor, y-motor, z-motor from top to bottom of this diagram.
+
 Then, use the Arduino IDE to upload the [Sangaboard arduino sketch], and connect the Arduino to your microscope's Raspberry Pi via its USB port.
 
 > **Warning:** Do not attempt to power the motors from the Raspberry Pi's pins. They can draw far more than the maximum current the Pi will safely supply. Always use a separate power supply for the motors.

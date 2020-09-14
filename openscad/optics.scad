@@ -32,11 +32,13 @@ use <cameras/camera.scad>; // this will define the 2 functions and 1 module for 
 dt_bottom = -2; //where the dovetail starts (<0 to allow some play)
 camera_mount_top = dt_bottom - 3 - (optics=="rms_f50d13"?8:0) - (optics=="rms_infinity_f50d13"?20:0); //the 50mm tube lens requires the camera to stick out the bottom.
 bottom = camera_mount_top-camera_mount_height(); //nominal distance from PCB to microscope bottom
-fl_cube_bottom = optics=="rms_f50d13"?-8:0; //bottom of the fluorescence filter cube
+fl_cube_bottom = bottom + camera_sensor_height() + 7.5; //bottom of the fluorescence filter cube (0 except for the RMS f=50mm modules where it's -8 or -20)
 fl_cube_top = fl_cube_bottom + fl_cube_w + 2.7; //top of fluorescence cube
 fl_cube_top_w = fl_cube_w - 2.7;
 d = 0.05;
 $fn=24;
+
+if(beamsplitter) echo(str("fl_cube_bottom: ", fl_cube_bottom, " for optics module: ", camera, "_", optics));
 
 function fl_cube_width() = fl_cube_w;
 
@@ -57,6 +59,17 @@ module fl_cube_cutout(taper=true){
             
     }
 }
+module fl_cube_casing(){
+    // A solid object, big enough to contain the fluorescence cube cutout.
+    minkowski(){
+        difference(){
+            fl_cube_cutout();
+            translate([-999, fl_cube_w/2, -999]) cube(999*2);
+        }
+        cylinder(r=1.6, h=0.5);
+    }
+}
+
 module optical_path(lens_aperture_r, lens_z){
     // The cut-out part of a camera mount, consisting of
     // a feathered cylindrical beam path.  Camera mount is now cut out
@@ -112,21 +125,13 @@ module camera_mount_body(
             // This is the main body of the mount
             sequential_hull(){
                 translate([0,0,camera_mount_top]) camera_mount_top();
-                translate([0,0,dt_bottom]) hull(){
-                    cylinder(r=bottom_r,h=d);
-                    if(dovetail) objective_fitting_base();
-                    if(fluorescence) cube([1,1,0]*(fl_cube_w+2) + [0,0,d], center=true);
-                }
-                translate([0,0,dt_bottom]) hull(){
-                    cylinder(r=bottom_r,h=d);
-                    if(fluorescence) cube([1,1,0]*(fl_cube_w+2) + [0,0,d], center=true);
-                    if(dovetail) objective_fitting_base();
+                hull(){
+                    translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=d);
+                    if(dovetail) translate([0,0,dt_bottom]) objective_fitting_base();
+                    if(fluorescence) fl_cube_casing();
                 }
                 union(){
-                    if(fluorescence) translate([0,0,fl_cube_bottom + fl_cube_w]){
-                        cube([1,1,0]*(fl_cube_w+2) + [0,0,d], center=true);
-                        cylinder(r=body_r,h=d);
-                    }
+                    if(fluorescence) fl_cube_casing();
                     translate([0,0,body_top]) cylinder(r=body_r,h=d);
                     if(dovetail) translate([0,0,dt_top]) objective_fitting_base();
                 }

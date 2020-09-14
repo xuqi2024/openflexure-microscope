@@ -2,14 +2,13 @@
 
 First, you will need to print or obtain the 3D printed parts.  These have been designed with some care to print reliably on most RepRap-style printers, using regular PLA filament without support material.  It's important to read through the notes before, as there are multiple versions of the STL files to choose from, so it's not a good idea just to pick all the parts in the folder.  The printed parts are described in their own pages, with details of how to pick the version of that part, for the parts with multiple versions.
 
-The best way to obtain these files is from the [build a microscope] page, which links to our [build server].
+The best way to obtain these files is from the [build a microscope] page.
 
-[build server]: https://build.openflexure.org/openflexure-microscope/latest/
 [build a microscope]: https://openflexure.org/projects/microscope/build
 
 ## Standard builds of the microscope
 
-The list of parts below is pretty extensive and tries to explain all the various options - however, if you just want to build a "normal" version of the microscope, there are two versions we'd reccommend:
+If you just want to build a standard version of the microscope please check print the files in the sections "Webcam-based microscope" or "High resolution microscope". A more extensive list of all available parts is at the bottom of this page if you are customising the microscope.
 
 ### Webcam-based microscope
 
@@ -32,11 +31,11 @@ The basic version of the microscope uses a webcam lens instead of a microscope o
 * 2 [sample clips](./parts/printed/sample_clips.md): ``sample_clips.stl`` (contains both)
 * platform-style optics module (two parts, best with webcam lenses):
   * [camera platform](./parts/printed/camera_platform.md): ``camera_platform_<camera>_<stage size><height>.stl``
-  * [lens spacer](./parts/printed/lens_spacer.md): ``lens_spacer_<camera>_<lens>_<stage_size><height>.stl``
+  * [lens spacer](./parts/printed/lens_spacer.md): ``lens_spacer_<camera>_<lens>_<stage_size><height>.stl`` - **Print this in black!**
 * [microscope stand](./parts/printed/microscope_stand.md) or back foot
   * ``microscope_stand_no_pi_.stl`` or ``microscope_stand-30.stl`` (holds Raspberry Pi) or ``back_foot.stl``
 
-This will need the nuts, bolts, etc. described below, plus a camera module (for example a Raspberry Pi camera), and an option Raspberry Pi.  No other optical bits are required, except an LED for illumination.  
+This will need the nuts, bolts, etc. described on [the bill of materials page](./0_bill_of_materials.md), plus a camera module (for example a Raspberry Pi camera), and an option Raspberry Pi.  No other optical bits are required, except an LED for illumination.  
 
 If you want to mount a Raspberry Pi underneath the microscope (our preferred option), print ``microscope_stand.stl`` instead.  If your Raspberry Pi is in a case already, you should print ``back_foot.stl`` so the microscope sits flat on a table.  Newer Raspberry Pi camera modules include a white circular tool for unscrewing the lens.  If you don't have one, you will need to print the lens gripper (marked as optional).
 
@@ -60,8 +59,8 @@ The version of the microscope used for scientific or medical research generally 
   * [condenser arm](./parts/printed/condenser.md): ``condenser.stl``
 * 2 [sample clips](./parts/printed/sample_clips.md): ``sample_clips.stl`` (contains both)
 * [optics module](./parts/printed/optics_module_casing.md):         
-  * ``optics_picamera_2_rms_f50d13.stl`` (transmission illumination)
-  * ``optics_picamera_2_rms_f50d13_beamsplitter.stl`` (reflection illumination)
+  * ``optics_picamera_2_rms_f50d13.stl`` (transmission illumination) **Print this in black!**
+  * ``optics_picamera_2_rms_f50d13_beamsplitter.stl`` (reflection illumination) **Print this in black!**
 * [microscope stand](./parts/printed/microscope_stand.md): ``microscope_stand-30.stl`` or ``microscope_stand-30-BS.stl`` (supports reflection illumination)
 * [riser for the sample](./parts/printed/sample_riser.md):  ``sample_riser_LS10.stl`` (assuming you have a microscope objective with a 45mm parfocal distance)
 
@@ -142,7 +141,7 @@ There are also ties between the actuator column casing and the central actuator 
 Once you have your printed parts, you can start by [assembling the actuators](./1_actuator_assembly.md).
 
 
-## Extra details
+## Extra details for custom microscopes
 
 You can safely ignore this section if you are building one of the two standard builds listed above. If you are building a customized versions and need to understand all of your options, read on.
 
