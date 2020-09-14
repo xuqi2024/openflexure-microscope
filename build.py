@@ -40,7 +40,7 @@ stl_presets = [
         "title": "Low Cost with Webcam",
         "description": "The cheapest possible option using a computer webcam.",
         "parameters": {
-            "optics": "m12_lens",
+            "optics": "6led_lens",
             "camera": "6led",
             "motorised": False,
             "base": "feet",
@@ -85,6 +85,16 @@ option_docs = [
                 "description": "A typical M12 CCTV lens",
             },
             {
+                "key": "6led_lens",
+                "title": "6LED Camera Lens",
+                "description": "The lens that comes with a cheap '6LED' camera.",
+            },
+            {
+                "key": "dashcam_lens",
+                "title": "Dashcam Lens",
+                "description": "The lens that comes with the camera of a cheap dashcam e.g. the RangeTour B90 (though it may be sold under different names)."
+            },
+            {
                 "key": "rms_f40d16",
                 "title": "RMS F40D16",
                 "description": "An RMS-threaded microscope objective with 160mm tube length, and a 16mm diameter, 40mm focal length lens (no longer recommended due to poor quality at the edges of the image)",
@@ -111,7 +121,7 @@ option_docs = [
             {
                 "key": "dashcam",
                 "title": "Dash CAM",
-                "description": "A cheap dash cam where a screen and camera are sold as one , e.g. RangeTour B90s",
+                "description": "A cheap dash cam where a screen and camera are sold as one , e.g. RangeTour B90s (it may be sold under different names)",
             },
         ],
     },
@@ -640,18 +650,18 @@ ninja.rule("copy", command="cp $in $out")
 
 
 def copy_stl(stl_file, select_stl_if):
+    if generate_stl_options:
+        json_generator.register(output=stl_file, input=stl_file, select_stl_if=select_stl_if)
     output = os.path.join(build_dir, stl_file)
     input = os.path.join("prebuilt_stl_files", stl_file)
-    if generate_stl_options:
-        json_generator.register(output, input, select_stl_if=select_stl_if)
     ninja.build(output, rule="copy", inputs=input)
 
 
 for stl_file in ["6ledcam_mount_top.stl", "6ledcam_mount_bottom.stl"]:
-    copy_stl(stl_file, select_stl_if={"camera": "6led"})
+    copy_stl(stl_file, select_stl_if={"camera": "6led", "optics": "6led_lens"})
 
 for stl_file in ["dashcam_mount_top.stl", "dashcam_mount_thread.stl"]:
-    copy_stl(stl_file, select_stl_if={"camera": "dashcam"})
+    copy_stl(stl_file, select_stl_if={"camera": "dashcam", "optics": "dashcam_lens"})
 
 
 ###############
