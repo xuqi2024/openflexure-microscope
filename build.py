@@ -92,7 +92,7 @@ option_docs = [
             {
                 "key": "dashcam_lens",
                 "title": "Dashcam Lens",
-                "description": "The lens that comes with the camera of a cheap dashcam e.g. the RangeTour B90 (though it may be sold under different names)."
+                "description": "The lens that comes with the camera of a cheap dashcam e.g. the RangeTour B90 (though it may be sold under different names).",
             },
             {
                 "key": "rms_f40d16",
@@ -117,7 +117,11 @@ option_docs = [
                 "description": "The Logitech C270 webcam",
             },
             {"key": "m12", "title": "M12 Camera", "description": "A M12 CCTV camera"},
-            {"key": "6led", "title": "6 LED", "description": "A cheap USB '6 LED' Webcam"},
+            {
+                "key": "6led",
+                "title": "6 LED",
+                "description": "A cheap USB '6 LED' Webcam",
+            },
             {
                 "key": "dashcam",
                 "title": "Dash CAM",
@@ -649,9 +653,11 @@ openscad(
 ninja.rule("copy", command="cp $in $out")
 
 
-def copy_stl(stl_file, select_stl_if):
+def copy_stl(stl_file, select_stl_if=None):
     if generate_stl_options:
-        json_generator.register(output=stl_file, input=stl_file, select_stl_if=select_stl_if)
+        json_generator.register(
+            output=stl_file, input=stl_file, select_stl_if=select_stl_if
+        )
     output = os.path.join(build_dir, stl_file)
     input = os.path.join("prebuilt_stl_files", stl_file)
     ninja.build(output, rule="copy", inputs=input)
@@ -662,6 +668,9 @@ for stl_file in ["6ledcam_mount_top.stl", "6ledcam_mount_bottom.stl"]:
 
 for stl_file in ["dashcam_mount_top.stl", "dashcam_mount_thread.stl"]:
     copy_stl(stl_file, select_stl_if={"camera": "dashcam", "optics": "dashcam_lens"})
+
+
+copy_stl("just_leg_test.stl")
 
 
 ###############
