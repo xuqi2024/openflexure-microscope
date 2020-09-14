@@ -382,7 +382,7 @@ optics_versions = [
 ] + [(camera, lens) for camera in cameras for lens in rms_lenses]
 
 # Generate a list of lenses to use elsewhere
-all_lenses = list(set([l for c, l in optics_versions]))
+all_lenses = list(set([l for c, l in optics_versions]).union({'dashcam_lens', '6ledcam_lens'}))
 
 for sample_z in sample_z_options:
     for (camera, lens) in optics_versions:
