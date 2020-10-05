@@ -382,7 +382,9 @@ optics_versions = [
 ] + [(camera, lens) for camera in cameras for lens in rms_lenses]
 
 # Generate a list of lenses to use elsewhere
-all_lenses = list(set([l for c, l in optics_versions]).union({'dashcam_lens', '6ledcam_lens'}))
+all_lenses = list(
+    set(l for c, l in optics_versions).union({"dashcam_lens", "6led_lens"})
+)
 
 for sample_z in sample_z_options:
     for (camera, lens) in optics_versions:
@@ -477,7 +479,7 @@ for foot_height in [15, 26]:
     if foot_height == 26:
         select_stl_if = {
             "base": "feet",
-            "optics": {"rms_f50d13", "rms_infinity_f50d13", "rms_f40d16"},
+            "optics": set(rms_lenses),
         }
         openscad(
             f"back_foot_tall.stl",
@@ -489,16 +491,12 @@ for foot_height in [15, 26]:
         select_stl_if = [
             {
                 "base": "bucket",
-                "optics": {
-                    "c270_lens",
-                    "m12_lens",
-                    "pilens",
-                    "rms_f40d16",
-                    "rms_f50d13",
-                    "rms_infinity_f50d13",
-                },
+                "optics": set(all_lenses),
             },
-            {"base": "feet", "optics": {"c270_lens", "m12_lens", "pilens"}},
+            {
+                "base": "feet",
+                "optics": set(l for l in all_lenses if l not in rms_lenses),
+            },
         ]
         openscad(
             f"back_foot.stl",
