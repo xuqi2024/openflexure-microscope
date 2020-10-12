@@ -674,7 +674,7 @@ openscad(
 if args.include_prebuilt_stl_files:
     ninja.rule("copy", command="cp $in $out")
 
-    def copy_stl(stl_file, select_stl_if):
+    def copy_stl(stl_file, select_stl_if=None):
         if args.generate_stl_options_json:
             json_generator.register(
                 output=stl_file, input=stl_file, select_stl_if=select_stl_if
@@ -691,8 +691,8 @@ if args.include_prebuilt_stl_files:
             stl_file, select_stl_if={"camera": "dashcam", "optics": "dashcam_lens"}
         )
 
+    copy_stl("just_leg_test.stl")
 
-copy_stl("just_leg_test.stl")
 
 
 ###############
