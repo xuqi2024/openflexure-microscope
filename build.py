@@ -532,7 +532,6 @@ for stage_size in stage_size_options:
                 output,
                 "camera_platform.scad",
                 parameters,
-                select_stl_if={"riser": "no riser"},
             )
 
 
