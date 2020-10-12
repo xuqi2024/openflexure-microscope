@@ -230,7 +230,7 @@ args = parser.parse_args()
 
 # ninja looks at the arguments and would get confused if we didn't remove
 # the `--generate-stl-options-json` and other options
-sys.argv = sys.argv[1:]
+sys.argv = sys.argv[:1]
 
 
 if args.generate_stl_options_json:
