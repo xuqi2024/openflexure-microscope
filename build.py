@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
-import sys
-
+import argparse
 from ninja import Writer, ninja as run_build
 import os
 import sys
+
 from build_system.json_generator import JsonGenerator
 
 stl_presets = [
@@ -212,15 +212,29 @@ build_dir = "builds"
 build_file = open("build.ninja", "w")
 ninja = Writer(build_file, width=120)
 
-generate_stl_options = (
-    len(sys.argv) > 1 and sys.argv[1] == "--generate-stl-options-json"
-)
 
-if generate_stl_options:
+parser = argparse.ArgumentParser(
+    description="Run the OpenSCAD build for the Openflexure Microscope."
+)
+parser.add_argument(
+    "--generate-stl-options-json",
+    help="Generate a JSON file for the web STL selector.",
+    action="store_true",
+)
+parser.add_argument(
+    "--include-prebuilt-stl-files",
+    help="Copy over STL files from prebuilt_stl_files/ into the builds/ folder.",
+    action="store_true",
+)
+args = parser.parse_args()
+
+# ninja looks at the arguments and would get confused if we didn't remove
+# the `--generate-stl-options-json` and other options
+sys.argv = sys.argv[1:]
+
+
+if args.generate_stl_options_json:
     json_generator = JsonGenerator(build_dir, option_docs, stl_presets, required_stls)
-    # ninja looks at the arguments and would get confused if we didn't remove
-    # the `--generate-stl-options-json`
-    sys.argv.pop()
 
 
 if sys.platform.startswith("darwin"):
@@ -290,7 +304,7 @@ def openscad(
     if select_stl_if is None:
         select_stl_if = {}
 
-    if generate_stl_options:
+    if args.generate_stl_options_json:
         json_generator.register(
             output,
             input,
@@ -657,24 +671,25 @@ openscad(
 
 ### prebuilt STL files designed using a CAD program
 
-ninja.rule("copy", command="cp $in $out")
+if args.include_prebuilt_stl_files:
+    ninja.rule("copy", command="cp $in $out")
 
+    def copy_stl(stl_file, select_stl_if):
+        if args.generate_stl_options_json:
+            json_generator.register(
+                output=stl_file, input=stl_file, select_stl_if=select_stl_if
+            )
+        output = os.path.join(build_dir, stl_file)
+        input = os.path.join("prebuilt_stl_files", stl_file)
+        ninja.build(output, rule="copy", inputs=input)
 
-def copy_stl(stl_file, select_stl_if=None):
-    if generate_stl_options:
-        json_generator.register(
-            output=stl_file, input=stl_file, select_stl_if=select_stl_if
+    for stl_file in ["6ledcam_mount_top.stl", "6ledcam_mount_bottom.stl"]:
+        copy_stl(stl_file, select_stl_if={"camera": "6led", "optics": "6led_lens"})
+
+    for stl_file in ["dashcam_mount_top.stl", "dashcam_mount_thread.stl"]:
+        copy_stl(
+            stl_file, select_stl_if={"camera": "dashcam", "optics": "dashcam_lens"}
         )
-    output = os.path.join(build_dir, stl_file)
-    input = os.path.join("prebuilt_stl_files", stl_file)
-    ninja.build(output, rule="copy", inputs=input)
-
-
-for stl_file in ["6ledcam_mount_top.stl", "6ledcam_mount_bottom.stl"]:
-    copy_stl(stl_file, select_stl_if={"camera": "6led", "optics": "6led_lens"})
-
-for stl_file in ["dashcam_mount_top.stl", "dashcam_mount_thread.stl"]:
-    copy_stl(stl_file, select_stl_if={"camera": "dashcam", "optics": "dashcam_lens"})
 
 
 copy_stl("just_leg_test.stl")
@@ -685,7 +700,7 @@ copy_stl("just_leg_test.stl")
 
 build_file.close()
 
-if generate_stl_options:
+if args.generate_stl_options_json:
     json_generator.write()
 
 run_build()

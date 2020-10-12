@@ -22,7 +22,7 @@ build:
       - git lfs checkout
       # Build STL files with OpenSCAD
       - mkdir -p /root/.local/share
-      - ./build.py --generate-stl-options-json
+      - ./build.py --generate-stl-options-json --include-prebuilt-stl-files
 
     artifacts:
       expire_in: 1 week
