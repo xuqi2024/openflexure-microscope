@@ -12,10 +12,14 @@ build:
       - apt-get -y -qq install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates python3-pip
       - add-apt-repository -y ppa:openscad/releases
       - apt-get update -qq
-      - apt-get install -y -qq openscad
+      - apt-get install -y -qq openscad git git-lfs
       - pip3 install -r requirements.txt
 
     script:
+      - git lfs install
+      - git config --local lfs.fetchexclude "/docs,/design_files"
+      - git lfs fetch
+      - git lfs checkout
       # Build STL files with OpenSCAD
       - mkdir -p /root/.local/share
       - ./build.py --generate-stl-options-json
