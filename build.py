@@ -186,6 +186,12 @@ option_docs = [
         "advanced": True,
         "description": "Use the optics module with the Raspberry Pi lens rather than the lens spacer. Using the lens spacer is recommended for most uses.",
     },
+    {
+        "key": "legacy_picamera_tools",
+        "default": False,
+        "advanced": True,
+        "description": "Include tools for older picameras where the lenses are glued in.",
+    },
 ]
 
 # additional constraints on what is required to build a working microscope
@@ -561,14 +567,18 @@ for stage_size in stage_size_options:
 ##################
 ### PICAMERA TOOLS
 
-picamera_2_tools = ["cover", "gripper", "lens_gripper"]
-for tool in picamera_2_tools:
+picamera_2_legacy_tools = ["gripper", "lens_gripper"]
+for tool in picamera_2_legacy_tools:
     output = f"picamera_2_{tool}.stl"
     input = f"cameras/picamera_2_{tool}.scad"
-
     parameters = {"camera": "picamera_2"}
+    openscad(output, input, parameters, select_stl_if={"legacy_picamera_tools": True})
 
-    openscad(output, input, parameters)
+
+output = "picamera_2_cover.stl"
+input = "cameras/picamera_2_cover.scad"
+parameters = {"camera": "picamera_2"}
+openscad(output, input, parameters)
 
 
 #################
