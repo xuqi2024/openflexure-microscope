@@ -41,8 +41,8 @@ stl_presets = [
         "title": "Low Cost with Webcam",
         "description": "The cheapest possible option using a computer webcam.",
         "parameters": {
-            "optics": "6led_lens",
-            "camera": "6led",
+            "optics": "6ledcam_lens",
+            "camera": "6ledcam",
             "motorised": False,
             "base": "feet",
             "riser": "no riser",
@@ -87,7 +87,7 @@ option_docs = [
                 "description": "A typical M12 CCTV lens",
             },
             {
-                "key": "6led_lens",
+                "key": "6ledcam_lens",
                 "title": "6LED Camera Lens",
                 "description": "The lens that comes with a cheap '6LED' camera.",
             },
@@ -120,7 +120,7 @@ option_docs = [
             },
             {"key": "m12", "title": "M12 Camera", "description": "A M12 CCTV camera"},
             {
-                "key": "6led",
+                "key": "6ledcam",
                 "title": "6 LED",
                 "description": "A cheap USB '6 LED' Webcam",
             },
@@ -405,7 +405,7 @@ optics_versions = [
 
 # Generate a list of lenses to use elsewhere
 all_lenses = list(
-    set(l for c, l in optics_versions).union({"dashcam_lens", "6led_lens"})
+    set(l for c, l in optics_versions).union({"dashcam_lens", "6ledcam_lens"})
 )
 
 for sample_z in sample_z_options:
@@ -540,7 +540,7 @@ for foot_height in [15, 26]:
 
 camera_platform_versions = [
     ("picamera_2", "pilens"),
-    ("6led", "6led_lens"),
+    ("6ledcam", "6ledcam_lens"),
     ("dashcam", "dashcam_lens"),
 ]
 
@@ -692,13 +692,19 @@ if args.include_prebuilt_stl_files:
         input = os.path.join("prebuilt_stl_files", stl_file)
         ninja.build(output, rule="copy", inputs=input)
 
-    for stl_file in ["6ledcam_mount_top.stl", "6ledcam_mount_bottom.stl"]:
-        copy_stl(stl_file, select_stl_if={"camera": "6led", "optics": "6led_lens"})
-
-    for stl_file in ["dashcam_mount_top.stl", "dashcam_mount_thread.stl"]:
+    for camera in ["6ledcam", "dashcam"]:
         copy_stl(
-            stl_file, select_stl_if={"camera": "dashcam", "optics": "dashcam_lens"}
+            f"{camera}_mount_top.stl",
+            select_stl_if={"camera": camera, "optics": f"{camera}_lens"},
         )
+
+    copy_stl(
+        "dashcam_and_6ledcam_mount_bottom.stl",
+        select_stl_if=[
+            {"camera": "dashcam", "optics": "dashcam_lens"},
+            {"camera": "6ledcam", "optics": "6ledcam_lens"},
+        ],
+    )
 
     copy_stl("just_leg_test.stl")
 
