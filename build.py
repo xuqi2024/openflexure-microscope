@@ -224,8 +224,8 @@ parser.add_argument(
     action="store_true",
 )
 parser.add_argument(
-    "--include-prebuilt-stl-files",
-    help="Copy over STL files from prebuilt_stl_files/ into the builds/ folder.",
+    "--include-extra-files",
+    help="Copy over STL files from openflexure-microscope-extra/ into the builds/ folder.",
     action="store_true",
 )
 args = parser.parse_args()
@@ -678,9 +678,9 @@ openscad(
 )
 
 
-### prebuilt STL files designed using a CAD program
+### prebuilt STL files from openflexure-microscope-extra
 
-if args.include_prebuilt_stl_files:
+if args.include_extra_files:
     ninja.rule("copy", command="cp $in $out")
 
     def copy_stl(stl_file, select_stl_if=None):
@@ -689,7 +689,7 @@ if args.include_prebuilt_stl_files:
                 output=stl_file, input=stl_file, select_stl_if=select_stl_if
             )
         output = os.path.join(build_dir, stl_file)
-        input = os.path.join("prebuilt_stl_files", stl_file)
+        input = os.path.join("openflexure-microscope-extra", stl_file)
         ninja.build(output, rule="copy", inputs=input)
 
     for camera in ["6ledcam", "dashcam"]:
