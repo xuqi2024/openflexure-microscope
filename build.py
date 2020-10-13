@@ -33,6 +33,7 @@ stl_presets = [
             "motorised": False,
             "base": "bucket",
             "pi_in_base": True,
+            "riser": "no riser",
         },
     },
     {
@@ -44,6 +45,7 @@ stl_presets = [
             "camera": "6led",
             "motorised": False,
             "base": "feet",
+            "riser": "no riser",
         },
     },
 ]
@@ -574,6 +576,7 @@ for stage_size in stage_size_options:
                 "camera": "picamera_2",
                 "reflection_illumination": False,
                 "use_pilens_optics_module": False,
+                "riser": "no riser",
             },
         )
 
