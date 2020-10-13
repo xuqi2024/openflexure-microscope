@@ -537,17 +537,23 @@ for foot_height in [15, 26]:
 ###################
 ### CAMERA PLATFORM
 
+
+camera_platform_versions = [
+    ("picamera_2", "pilens"),
+    ("6led", "6led_lens"),
+    ("dashcam", "dashcam_lens"),
+]
+
 for stage_size in stage_size_options:
     for sample_z in sample_z_options:
-        for version in ["picamera_2", "6led"]:
-            output = "camera_platform_{version}_{stage_size}{sample_z}.stl".format(
-                version=version, stage_size=stage_size, sample_z=sample_z
-            )
+        for camera, optics in camera_platform_versions:
+            output = f"camera_platform_{camera}_{stage_size}{sample_z}.stl"
 
             parameters = {
                 **stage_parameters(stage_size, sample_z),
-                "optics": "pilens" if version == "picamera_2" else "m12_lens",
-                "camera": version,
+                "optics": optics,
+                "camera": camera,
+                "riser": "no riser",
             }
 
             openscad(
@@ -695,7 +701,6 @@ if args.include_prebuilt_stl_files:
         )
 
     copy_stl("just_leg_test.stl")
-
 
 
 ###############
