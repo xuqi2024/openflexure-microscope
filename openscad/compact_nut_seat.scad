@@ -55,6 +55,25 @@ module nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=-1){
         
 }
 
+
+module m3_nut_trap_with_shaft(slot_angle=0,tilt=0)
+{
+    // Nut trap for an M3 nut with a screw from the top this is a solid
+    // Object difference it from your part.
+    // Trap starts at z=1mm and ends at 7.5mm
+    // We recommend have the outer stucture occupies the space from z = 0-9mm
+
+
+    // nut trap
+    
+    rotate([tilt,0,0])rotate([0,0,slot_angle]) translate([0,0,1]) union()
+    {
+        nut_trap_and_slot(nut_size, nut_slot);
+        cylinder(r=shaft_r, h=999, $fn=16);
+    }
+
+}
+
 module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casing=true, no_voids=false){
     // An "actuator column", a nearly-vertical tower, with a nut trap and hooks
     // for elastic bands at the top, usually attached to a flexure at the bottom.
