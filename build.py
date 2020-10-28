@@ -330,15 +330,15 @@ def openscad(
     )
 
 
-def stage_parameters(stage_size, sample_z):
+def stage_parameters(stage_size, nominal_height):
     """
-    Return common stage parameters for a given size and sample z
+    Return common stage parameters for a given size and nominal height
 
     Arguments:
         stage_size {str} -- Stage size, e.g. "LS"
-        sample_z {int} -- Sample z position, default 65
+        nominal_height {int} -- height at top of leg, default 65
     """
-    return {"big_stage": stage_size == "LS", "sample_z": sample_z}
+    return {"big_stage": stage_size == "LS", "nominal_height": nominal_height}
 
 
 ################################
@@ -346,12 +346,12 @@ def stage_parameters(stage_size, sample_z):
 
 # All available microscope sizes
 stage_size_options = ["LS"]
-sample_z_options = [65]
+nominal_height_options = [65]
 # All permutations of microscope size
 microscope_size_options = [
-    f"{stage_size}{sample_z}"
+    f"{stage_size}{nominal_height}"
     for stage_size in stage_size_options
-    for sample_z in sample_z_options
+    for nominal_height in nominal_height_options
 ]
 
 
@@ -359,21 +359,21 @@ microscope_size_options = [
 ### MICROSCOPE BODY
 
 for stage_size in stage_size_options:
-    for sample_z in sample_z_options:
+    for nominal_height in nominal_height_options:
         for beamsplitter in [True, False]:
             for brim in [True, False]:
                 motors = True  # Right now we never need to remove motor lugs
 
-                output = "main_body_{stage_size}{sample_z}{motors}{beamsplitter}{brim}.stl".format(
+                output = "main_body_{stage_size}{nominal_height}{motors}{beamsplitter}{brim}.stl".format(
                     stage_size=stage_size,
-                    sample_z=sample_z,
+                    nominal_height=nominal_height,
                     motors="-M" if motors else "",
                     beamsplitter="-BS" if beamsplitter else "",
                     brim="_brim" if brim else "",
                 )
 
                 parameters = {
-                    **stage_parameters(stage_size, sample_z),
+                    **stage_parameters(stage_size, nominal_height),
                     "motor_lugs": motors,
                     "enable_smart_brim": brim,
                 }
@@ -411,7 +411,7 @@ all_lenses = list(
     set(l for c, l in optics_versions).union({"dashcam_lens", "6ledcam_lens"})
 )
 
-for sample_z in sample_z_options:
+for nominal_height in nominal_height_options:
     for (camera, lens) in optics_versions:
         beamsplitter_options = [True, False] if lens in rms_lenses else [False]
 
@@ -422,7 +422,7 @@ for sample_z in sample_z_options:
                 beamsplitter="_beamsplitter" if beamsplitter else "",
             )
 
-            parameters = {"sample_z": sample_z, "optics": lens, "camera": camera}
+            parameters = {"nominal_height": nominal_height, "optics": lens, "camera": camera}
             openscad_only = {"beamsplitter": beamsplitter}
             select_stl_if = {"reflection_illumination": beamsplitter}
 
@@ -561,12 +561,12 @@ camera_platform_versions = [
 ]
 
 for stage_size in stage_size_options:
-    for sample_z in sample_z_options:
+    for nominal_height in nominal_height_options:
         for camera, optics in camera_platform_versions:
-            output = f"camera_platform_{camera}_{stage_size}{sample_z}.stl"
+            output = f"camera_platform_{camera}_{stage_size}{nominal_height}.stl"
 
             parameters = {
-                **stage_parameters(stage_size, sample_z),
+                **stage_parameters(stage_size, nominal_height),
                 "camera": camera,
             }
 
@@ -586,12 +586,12 @@ for stage_size in stage_size_options:
 ### LENS SPACER
 
 for stage_size in stage_size_options:
-    for sample_z in sample_z_options:
-        output = "lens_spacer_picamera_2_pilens_{stage_size}{sample_z}.stl".format(
-            stage_size=stage_size, sample_z=sample_z
+    for nominal_height in nominal_height_options:
+        output = "lens_spacer_picamera_2_pilens_{stage_size}{nominal_height}.stl".format(
+            stage_size=stage_size, nominal_height=nominal_height
         )
 
-        parameters = {**stage_parameters(stage_size, sample_z), "optics": "pilens"}
+        parameters = {**stage_parameters(stage_size, nominal_height), "optics": "pilens"}
 
         openscad(
             output,

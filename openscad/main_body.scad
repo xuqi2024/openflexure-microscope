@@ -28,6 +28,7 @@ module leg(brace=stage_flex_w){
     // The legs support the stage - this is either used directly
     // or via "actuator" to make the legs with levers
     fw=stage_flex_w;
+    
 	union(){
        	//leg
 		reflect([1,0,0]){
@@ -46,7 +47,7 @@ module leg(brace=stage_flex_w){
                              //value produces two distinct flexures.
 			for(i=[0,1]) translate([0,0,zs[i]]){
 				translate([-d,0,0]) hull() repeat([0,bs[i],0],2) //solid part
-                        cube([leg_middle_w/2+d,leg[1],stage_t-0.2*leg[1]]);
+                        cube([leg_middle_w/2+d,leg[1],leg_block_t-0.2*leg[1]]);
 				translate([-d,0,0]) repeat([0,bs[i],0],2) //flexures
                         cube([leg_middle_w/2+zflex_l+leg[0],leg[1],zflex_t]);
 			}
@@ -219,7 +220,7 @@ module main_body(){
             translate([0,0,flex_z2+0.5+0.5]) rotate(45) hole_from_bottom(hole_r,h=999);
             hull() each_leg() cube([leg_middle_w-2*stage_flex_w,d,999],center=true);
         }
-		each_leg() translate([0,-zflex_l-4,flex_z2+1.5]) repeat([leg_middle_w/2,0,0],3,center=true) trylinder_selftap(3,h=999); //mounting holes
+		each_leg() translate([0,-zflex_l-4,nominal_height]) m3_nut_trap_with_shaft(0,0); //mounting holes
 	}
 	
 	//z axis

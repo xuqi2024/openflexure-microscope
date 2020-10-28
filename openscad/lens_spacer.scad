@@ -60,7 +60,7 @@ module lens_extension(
     // This optics module grips a single lens at the top.
     lens_aperture = lens_r - 1.5; // clear aperture of the lens
     pedestal_h = 4; // extra height on the gripper, to allow it to flex
-    lens_z = sample_z - parfocal_distance; //axial position of lens
+    lens_z = nominal_height - parfocal_distance; //axial position of lens
         
     // having calculated where the lens should go, now make the mount:
     lens_assembly_z = lens_z - pedestal_h; //height of lens assembly
