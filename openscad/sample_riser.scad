@@ -27,8 +27,7 @@ module simple_riser(h=10){
     // Make the stage thicker by height h, to raise up the slide
     // NB you'll need to raise the illumination too!
     difference(){
-		hull() each_leg() translate([0,-zflex_l-d,h/2]) cube([leg_middle_w+2*zflex_l,2*d,h],center=true); //hole in the stage
-        cylinder(r=hole_r,h=999,center=true);
+		xy_stage(h=h,on_buildplate=true);
 		each_leg() reflect([1,0,0]) translate([leg_middle_w/2,-zflex_l-4,min(5, h-3)]){
             cylinder(r=3/2*1.2,h=999, center=true); //mounting holes
             //Counterbore slightly elongated to remove thin area that prints badly
@@ -42,4 +41,5 @@ module simple_riser(h=10){
         each_leg() translate([0,-zflex_l-4,0]) trylinder_selftap(3,h=999,center=true);
 	}
 }
+
 simple_riser(h=h);

@@ -72,6 +72,7 @@ echo(str("Compiling OpenFlexure Microscope ",version_string));
 
 leg_block_t = 5; // Thickness of the block at the top and bottom of the leg
 stage_t = sample_height-nominal_height + leg_block_t; //thickness of the XY stage (at thickest point, most is 1mm less)
+stage_hole_inset = zflex_l+4; // how far the holes on the XY stage are inset from leg_r
 flex_z1 = 0;      // z position of lower flexures for XY axis
 flex_z2 = nominal_height-leg_block_t; //height of upper XY flexures
 z_strut_t = 6;  // (z) thickness of struts for Z axis
