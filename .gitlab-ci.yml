@@ -23,7 +23,12 @@ build:
       - git clone --depth=1 https://gitlab.com/openflexure/openflexure-microscope-extra
       # Build STL files with OpenSCAD
       - mkdir -p /root/.local/share
-      - ./build.py --hashed --generate-stl-options-json --include-extra-files
+      - ./build.py $HASHED --generate-stl-options-json --include-extra-files
+
+    parallel:
+      matrix:
+        - HASHED: ""
+        - HASHED: "--hashed"
 
     artifacts:
       expire_in: 1 week
