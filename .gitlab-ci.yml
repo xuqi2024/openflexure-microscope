@@ -27,8 +27,7 @@ build:
 
     parallel:
       matrix:
-        - HASHED: ""
-        - HASHED: "--hashed"
+        - HASHED: ["", "--hashed"]
 
     artifacts:
       expire_in: 1 week
