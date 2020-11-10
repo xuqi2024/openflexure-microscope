@@ -15,14 +15,15 @@ build:
       - apt-get -y -qq install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates python3-pip wget
       - add-apt-repository -y ppa:openscad/releases
       - apt-get update -qq
-      - apt-get install -y -qq openscad
+      - apt-get install -y -qq openscad git
       - pip3 install -r requirements.txt
       - wget https://cloud.monostable.co.uk/ninja_hashed -O build_system/ninja_hashed && chmod +x build_system/ninja_hashed
 
     script:
+      - git clone --depth=1 https://gitlab.com/openflexure/openflexure-microscope-extra
       # Build STL files with OpenSCAD
       - mkdir -p /root/.local/share
-      - ./build.py --hashed --generate-stl-options-json
+      - ./build.py --hashed --generate-stl-options-json --include-extra-files
 
     artifacts:
       expire_in: 1 week

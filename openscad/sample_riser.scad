@@ -31,9 +31,15 @@ module simple_riser(h=10){
         cylinder(r=hole_r,h=999,center=true);
 		each_leg() reflect([1,0,0]) translate([leg_middle_w/2,-zflex_l-4,min(5, h-3)]){
             cylinder(r=3/2*1.2,h=999, center=true); //mounting holes
-            cylinder(r=3*1.2,h=999); //mounting holes
+            //Counterbore slightly elongated to remove thin area that prints badly
+            hull()
+            {
+                cylinder(r=3*1.2,h=999); //counterbore
+                translate([0,1,0])cylinder(r=3*1.2,h=999);
+            }
         }
-        each_leg() translate([0,-zflex_l-4,0]) cylinder(r=3/2*0.95, h=999, center=true);
+        //For sample clips
+        each_leg() translate([0,-zflex_l-4,0]) trylinder_selftap(3,h=999,center=true);
 	}
 }
 simple_riser(h=h);

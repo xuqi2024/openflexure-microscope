@@ -6,7 +6,7 @@ Make sure you have all the necessary parts and tools before you start.  The part
 *   3x [M3 brass nut](./parts/fixings/m3_brass_nut.md)
 *   1x [M3 steel nut](./parts/fixings/m3_steel_nut.md) (using brass is also fine)
 *   8x [M3 stainless steel washer](./parts/fixings/m3_washer.md)
-*   3-14x [M3x8mm cap head screw](./parts/fixings/m3x8mm_caphead_screw.md) (some ar optional, for sample clips and sample riser, but you will need at least three)
+*   3-14x [M3x8mm cap head screw](./parts/fixings/m3x8mm_caphead_screw.md) (some are optional, for sample clips and sample riser, but you will need at least three)
 *   2-4x [M2x6mm cap head screws](./parts/fixings/m2x6mm_caphead_screw.md) 
 *   6x [M4x6mm button head screws](./parts/fixings/m4x6mm_buttonhead_screw.md) (optional, for motors)
 *   3x [Viton O-ring, 30x2mm](./parts/fixings/viton_o_ring_30mm_inner_diameter_2mm_cross_section.md) (NB: get some spares!)

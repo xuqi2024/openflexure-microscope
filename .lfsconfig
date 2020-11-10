@@ -1,3 +1,3 @@
 [lfs]
-	fetchexclude = "/docs,/docs/original_images,/design_files"
+	fetchexclude = "/docs/original_images,/design_files"
 

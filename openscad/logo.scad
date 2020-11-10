@@ -47,8 +47,8 @@ module oshw_logo(){
     linear_extrude(1) translate([-17.5,-16]) resize([35,0],auto=true) import("oshw_gear.dxf");
 }
 
-module openflexure_emblem(h=1, resize=[0,0]){
-    linear_extrude(h) import("openflexure_emblem.dxf");
+module openflexure_emblem(h=1, scale_factor=1){
+    linear_extrude(h) scale(scale_factor) import("openflexure_emblem.dxf");
 }
 module openflexure_logo(h=1, resize=[0,0]){
     // The full logo, including text

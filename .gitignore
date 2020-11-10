@@ -31,3 +31,6 @@ build.ninja
 
 # Python virtualenvironment
 .venv/
+
+# Python cache
+__pycache__

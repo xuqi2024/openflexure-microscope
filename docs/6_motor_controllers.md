@@ -18,7 +18,7 @@ Most recommended [motors](./5_motors.md) will come packaged with a simple driver
 
 ![Simple motor controller with Arduino](./images/sangaboard_simple.png)
 
-The motor order is x-motor, y-motor, z-motor from top to bottom of this diagram.
+The motor order is x-motor, y-motor, z-motor from top to bottom of this diagram. Since the driver board accepts 5v-12v, You can power it with a 5v power supply, which can be easily made from a USB cable with a USB charger. Cut open a USB cable, connect the Vcc wire (usually the red wire) to the positive pins, and the GND wire (usually the black wire) to the negative pins, confirm you have the right wires using a multimeter. You can then power it with a USB charger.
 
 Then, use the Arduino IDE to upload the [Sangaboard arduino sketch], and connect the Arduino to your microscope's Raspberry Pi via its USB port.
 

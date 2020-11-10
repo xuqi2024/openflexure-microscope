@@ -11,6 +11,7 @@
 ******************************************************************/
 
 use <./utilities.scad>;
+use <./logo.scad>;
 include <./microscope_parameters.scad>;
 use <./dovetail.scad>;
 use <./z_axis.scad>;
@@ -43,6 +44,14 @@ module illumination_arm(){
     dt_z = sample_z + 12; // z position and height of the dovetail
     dt_h = h + bottom_z - dt_z;
     
+    //top and bottom of y position of the sloped back
+    bot_y = illumination_arm_screws[0][1]+4+1;
+    top_y = front_dovetail_y+10;
+    back_angle = atan((top_y-bot_y)/(h-3));
+    logo_z = bottom_z+3+h/2;
+    logo_y = (top_y+bot_y)/2;
+
+    translate([-11,logo_y,logo_z])rotate([90-back_angle,0,0])openflexure_emblem(scale_factor=.1);
     translate([0,front_dovetail_y,dt_z]) mirror([0,1,0]) dovetail_m([front_dovetail_w, 10, h-smooth_h]);
     
     difference(){
