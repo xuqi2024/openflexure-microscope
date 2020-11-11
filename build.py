@@ -709,8 +709,6 @@ if args.include_extra_files:
         ],
     )
 
-    copy_stl("just_leg_test.stl")
-
 
 ###############
 ### RUN BUILD
