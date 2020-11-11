@@ -169,7 +169,7 @@ module rms_mount_and_tube_lens_gripper(){
 }
 
 module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20, 
-    tube_lens_r=16/2+0.2, objective_parfocal_distance=35, tube_length=150, fluorescence=false, gripper_t=1, dovetail=true){
+    tube_lens_r=16/2+0.2, objective_parfocal_distance=45, tube_length=150, fluorescence=false, gripper_t=1, dovetail=true){
     // This optics module takes an RMS objective and a tube length correction lens.
     // important parameters are below:
         
@@ -180,8 +180,8 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
     tube_lens_aperture = tube_lens_r - 1.5; // clear aperture of the tube lens
     pedestal_h = 2; // height of tube lens above bottom of lens assembly (to allow for flex)
 
-    //NOTE: leg_height is set in microscope_parameters.scad
-    dovetail_top = min(27, leg_height-objective_parfocal_distance-0.5); //height of the top of the dovetail, i.e. the position of the objective's "shoulder"
+    //NOTE: sample_z is set in microscope_parameters.scad
+    dovetail_top = min(27, sample_z-objective_parfocal_distance-0.5); //height of the top of the dovetail, i.e. the position of the objective's "shoulder"
     //tube_length (argument) is the distance behind the objective's "shoulder" where the image is formed.  This should be infinity (safe to use 9999) for infinity-corrected lenses, or 150 for 160mm tube length objectives (the image is formed ~10mm from the end of the tube).
     
     ///////////////// Lens position calculation //////////////////////////
@@ -197,7 +197,7 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
     // the solution to this, if b=fo-dos and a=ft, is:
     // dts = 1/2 * (sqrt(b) * sqrt(4*a+b) - b)
     a = tube_lens_f;
-    dos = leg_height - objective_parfocal_distance - bottom - camera_sensor_height(); //distance from the sensor to the objective shoulder
+    dos = sample_z - objective_parfocal_distance - bottom - camera_sensor_height(); //distance from the sensor to the objective shoulder
     echo("Objective to sensor:",dos);
     b = tube_length - dos;
     dts = 1/2 * (sqrt(b) * sqrt(4*a+b) - b);
@@ -209,7 +209,7 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
     // having calculated where the lens should go, now make the mount:
     lens_assembly_z = tube_lens_z - pedestal_h; //height of lens assembly
     lens_assembly_base_r = rms_r+1; //outer size of the lens grippers
-    lens_assembly_h = leg_height-lens_assembly_z-objective_parfocal_distance; //the
+    lens_assembly_h = sample_z-lens_assembly_z-objective_parfocal_distance; //the
         //objective sits parfocal_distance below the sample
     union(){
         // The bottom part is just a camera mount with a flat top
@@ -301,9 +301,9 @@ module optics_module_trylinder(
     // This optics module grips a single lens at the top.
     lens_aperture = lens_r - 1.5; // clear aperture of the lens
     pedestal_h = 4; // extra height on the gripper, to allow it to flex
-    dovetail_top = min(27, leg_height-parfocal_distance+lens_h-1); //height of the top of the dovetail
+    dovetail_top = min(27, sample_z-parfocal_distance+lens_h-1); //height of the top of the dovetail
     
-    lens_z = leg_height - parfocal_distance; //axial position of lens
+    lens_z = sample_z - parfocal_distance; //axial position of lens
         
     // having calculated where the lens should go, now make the mount:
     lens_assembly_z = lens_z - pedestal_h; //height of lens assembly
@@ -393,7 +393,7 @@ difference(){
             tube_lens_ffd=38, 
             tube_lens_f=40, 
             tube_lens_r=16/2+0.1, 
-            objective_parfocal_distance=35,
+            objective_parfocal_distance=45,
             fluorescence=beamsplitter,
             gripper_t=0.65,
             tube_length=150
@@ -405,7 +405,7 @@ difference(){
             tube_lens_ffd=47, 
             tube_lens_f=50, 
             tube_lens_r=12.7/2+0.1, 
-            objective_parfocal_distance=35,
+            objective_parfocal_distance=45,
             fluorescence=beamsplitter,
             tube_length=(optics=="rms_f50d13" ? 150 : 99999) //use 150 for standard finite-conjugate objectives (cheap ones) or 9999 for infinity-corrected lenses (usually more expensive).
         );
