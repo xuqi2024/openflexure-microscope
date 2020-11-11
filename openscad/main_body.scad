@@ -242,7 +242,7 @@ module main_body(){
 	// XY stage
 	difference(){
 		translate([0,0,flex_z2]) xy_stage(h=stage_t);
-		each_leg() translate([0,-stage_hole_inset,nominal_height]) m3_nut_trap_with_shaft(0,0); //mounting holes
+		each_leg() translate([0,-stage_hole_inset,leg_height]) m3_nut_trap_with_shaft(0,0); //mounting holes
 	}
 	
 	//z axis
@@ -324,7 +324,7 @@ module main_body(){
         back_foot_mounting_screw(h=18,d=3*0.95,center=true);
         
         //////////////// logo and version string /////////////////////
-        size = big_stage?0.25:0.2;
+        size = 0.25;
         place_on_wall() translate([9,wall_h-2-15*size,-0.5]) 
         scale([size,size,10]) openflexure_logo();
         

@@ -264,7 +264,7 @@ module z_actuator_cutout(){
 
 // "scenery" so we can see how it fits with the rest of the microscope
 //legs
-// for(a=[-45,45]) rotate(a) translate([-leg_outer_w/2,leg_r,0]) cube([leg_outer_w, 4, nominal_height]);
+// for(a=[-45,45]) rotate(a) translate([-leg_outer_w/2,leg_r,0]) cube([leg_outer_w, 4, leg_height]);
 
 include_z_axis_mechanism = true;
 include_z_axis_casing_outer = true;

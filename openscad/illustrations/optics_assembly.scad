@@ -34,7 +34,7 @@ module cutaway(){
     }
 }
 
-condenser_z = nominal_height + 21 + 12;
+condenser_z = leg_height + 21 + 12;
 
 if(mounts) cutaway(){
     // Optics module for RMS objective, using Comar 40mm singlet tube lens

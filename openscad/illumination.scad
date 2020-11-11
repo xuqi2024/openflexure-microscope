@@ -41,7 +41,7 @@ module illumination_arm(){
     bottom_z = illumination_arm_screws[0][2]; // z position where we mount it
     h = 50;
     smooth_h = 15;
-    dt_z = nominal_height + 12; // z position and height of the dovetail
+    dt_z = leg_height + 12; // z position and height of the dovetail
     dt_h = h + bottom_z - dt_z;
     
     //top and bottom of y position of the sloped back

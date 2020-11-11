@@ -7,9 +7,9 @@ Curently, the OpenFlexure microscope will work with:
 
 The way this is done is that ``optics.scad`` includes ``camera.scad``, which defines the important functions/modules for interfacing with the camera.  These are then used to make the optics module accordingly.  The variable ``camera`` (defined in ``microscope_parameters.scad`` or on the command line). Those functions are:
 
-* ``camera_mount_height()``: a function that returns the height of the mount (above this height, we will make the optics module - this is the distance below the ground plane of the microscope body that the camera PCB will sit).
+* ``camera_mount()``: a module that builds a mount for the camera, this is never printed on its own. It is the mounting section of any optics module or lens spacer.   The camera is centred on the origin. The top of the mount is at z=0.
+* ``camera_mount_height()``: a function that returns the height of the camera mount.
 * ``camera_sensor_height()``: the distance above the PCB that the camera sensor sits - it's used in the optics module to calculate the position of the lens.
-* ``camera_mount()``: a module that builds a mount for the camera.  If you print this on its own, it should create a flat(ish) structure, ``camera_mount_height()`` high, that fits onto the camera, with the sensor centred on the origin.
 
 There are 3 options for the camera:
 * picamera_2: mount for Raspberry Pi camera v2
