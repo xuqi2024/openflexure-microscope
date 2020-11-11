@@ -69,7 +69,7 @@ module camera_platform(
     }
 }
 
-spacer_z = sample_z - (lens_parfocal_distance()+camera_sensor_height()+lens_spacing())
+spacer_z = sample_z - (lens_parfocal_distance()+camera_sensor_height()+lens_spacing());
 platform_h = spacer_z-5;  // -5 as board is 1mm thick mounting posts are 4mm thick
 if(platform_h < z_flexures_z2) echo("Platform height too low for z-axis mounting");
 camera_platform(5, platform_h);
