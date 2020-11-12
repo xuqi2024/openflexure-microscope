@@ -621,7 +621,7 @@ openscad(
 ###############
 ### SMALL PARTS
 
-parts = ["actuator_assembly_tools", "condenser", "illumination_dovetail", "lens_tool"]
+parts = ["actuator_assembly_tools", "condenser", "illumination_dovetail", "lens_tool", "just_nut_trap_test"]
 
 for part in parts:
     output = f"{part}.stl"
