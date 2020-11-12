@@ -53,7 +53,7 @@ z_strut_l = 18; //length of struts supporting Z carriage
 objective_mount_y = 18; // y position of clip for optics
 objective_mount_nose_w = 6; // width of the pointy end of the mount
 condenser_clip_w = 14; // width of the dovetail clip for the condenser
-foot_height=feet_endstops?15:15; //the endstops need a bit of extra height (or not)
+foot_height=15;
 
 // These variables set the dimensions of flexures
 // You might want to tweak them if your material (or printer)

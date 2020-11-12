@@ -7,6 +7,8 @@ import sys
 
 from build_system.json_generator import JsonGenerator
 
+#TODO: Remove base=feet option. We have killed the back foot, and will use the short base in future.
+
 stl_presets = [
     {
         "key": "high_resolution_raspberry_pi",
@@ -470,56 +472,6 @@ for motor_driver_electronics in ["sangaboard", "arduino_nano"]:
         variables={"parameters": parameters_to_string(parameters)},
     )
 
-########
-### FEET
-
-for foot_height in [15, 26]:
-
-    # Figure out some nice names for foot heights
-    if foot_height == 26:
-        version_name = "_tall"
-    elif foot_height == 15:
-        version_name = ""
-    else:
-        version_name = f"_{foot_height}"
-
-    openscad_only_parameters = {"foot_height": foot_height}
-
-    if foot_height == 26:
-        select_stl_if = {
-            "base": "feet",
-            "optics": set(rms_lenses),
-        }
-        openscad(
-            "back_foot_tall.stl",
-            "back_foot.scad",
-            openscad_only_parameters=openscad_only_parameters,
-            select_stl_if=select_stl_if,
-        )
-    elif foot_height == 15:
-        select_stl_if = [
-            {
-                "base": "bucket",
-                "optics": set(all_lenses),
-            },
-            {
-                "base": "feet",
-                "optics": set(l for l in all_lenses if l not in rms_lenses),
-            },
-        ]
-        openscad(
-            f"back_foot.stl",
-            "back_foot.scad",
-            openscad_only_parameters=openscad_only_parameters,
-            select_stl_if=select_stl_if[1],
-        )
-    openscad(
-        "feet{version}.stl".format(version=version_name),
-        "feet.scad",
-        openscad_only_parameters=openscad_only_parameters,
-        select_stl_if=select_stl_if,
-    )
-
 
 ###################
 ### CAMERA PLATFORM
@@ -607,7 +559,7 @@ openscad(
 ###############
 ### SMALL PARTS
 
-parts = ["actuator_assembly_tools", "condenser", "illumination_dovetail", "lens_tool", "just_nut_trap_test"]
+parts = ["actuator_assembly_tools", "condenser", "illumination_dovetail", "lens_tool", "just_nut_trap_test", "feet"]
 
 for part in parts:
     output = f"{part}.stl"
