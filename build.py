@@ -361,7 +361,6 @@ for sample_z in sample_z_options:
         "main_body.scad",
         parameters,
         openscad_only_parameters=openscad_only,
-        select_stl_if=select_stl_if,
     )
 
 
@@ -423,7 +422,7 @@ for sample_z in sample_z_options:
 
 # Stand with pi
 for stand_height in [30, 45]:
-    beamsplitter = True:
+    beamsplitter = True
     output = "microscope_stand_{stand_height}{beamsplitter}.stl".format(
         stand_height=stand_height, beamsplitter="-BS" if beamsplitter else ""
     )
@@ -458,6 +457,7 @@ openscad(
     select_stl_if={"pi_in_base": False, "base": "bucket"},
 )
 
+#TODO: Make sure these are selectable from STL select
 # Motor driver electronics case
 for motor_driver_electronics in ["sangaboard", "arduino_nano"]:
     outputs = f"{build_dir}/motor_driver_case_{motor_driver_electronics}.stl"
@@ -627,12 +627,6 @@ openscad(
 )
 
 openscad("fl_cube.stl", "fl_cube.scad", select_stl_if={"reflection_illumination": True})
-
-openscad(
-    "motor_driver_case.stl",
-    "motor_driver_case.scad",
-    select_stl_if={"motorised": True, "base": "bucket"},
-)
 
 openscad("small_gears.stl", "small_gears.scad", select_stl_if={"motorised": True})
 

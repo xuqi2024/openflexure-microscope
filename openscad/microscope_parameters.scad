@@ -35,9 +35,9 @@ optics = "rms_f50d13"; //see optics.scad for valid values
 led_r = 4.5/2; //size of the LED used for illumination
 endstops = false; //whether to build mounts for optical endstops inside the microscope.
 feet_endstops = false; //whether to include cut-outs for endstop switches in the feet. 
-beamsplitter = false; //enables a cut-out in some optics modules for a beamsplitter
+beamsplitter = true; //enables a cut-out in some optics modules for a beamsplitter
 smart_brim_r = 5;
-enable_smart_brim = false;
+enable_smart_brim = true;
 
 // This sets the basic geometry of the microscope
 sample_z = 75; // z position of sample
