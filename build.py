@@ -55,11 +55,6 @@ stl_presets = [
 
 option_docs = [
     {
-        "key": "enable_smart_brim",
-        "default": True,
-        "description": "Add a smart brim to the main body that helps with 3D-printer bed adhesion but doesn't gunk up the spaces needed for the flexure hinges.",
-    },
-    {
         "key": "optics",
         "default": "rms_f50d13",
         "description": "The type of lens you'd like to use on your microscope.",
@@ -345,38 +340,36 @@ microscope_size_options = [f"{sample_z}" for sample_z in sample_z_options]
 
 
 for sample_z in sample_z_options:
-    for beamsplitter in [True, False]:
-        for brim in [True, False]:
-            motors = True  # Right now we never need to remove motor lugs
+    beamsplitter = True
+    motors = True  # Right now we never need to remove motor lugs
+    brim = True #Only compile with brim
+    output = "main_body_{sample_z}{motors}{beamsplitter}{brim}.stl".format(
+        sample_z=sample_z,
+        motors="-M" if motors else "",
+        beamsplitter="-BS" if beamsplitter else "",
+        brim="_brim" if brim else "",
+    )
 
-            output = "main_body_{sample_z}{motors}{beamsplitter}{brim}.stl".format(
-                sample_z=sample_z,
-                motors="-M" if motors else "",
-                beamsplitter="-BS" if beamsplitter else "",
-                brim="_brim" if brim else "",
-            )
-
-            parameters = {
-                "sample_z": sample_z,
-                "motor_lugs": motors,
-                "enable_smart_brim": brim,
-            }
-            openscad_only = {"beamsplitter": beamsplitter}
-            select_stl_if = {"reflection_illumination": beamsplitter}
-
-            openscad(
-                output,
-                "main_body.scad",
-                parameters,
-                openscad_only_parameters=openscad_only,
-                select_stl_if=select_stl_if,
-            )
+    parameters = {
+        "sample_z": sample_z,
+        "motor_lugs": motors,
+        "enable_smart_brim": brim,
+    }
+    openscad_only = {"beamsplitter": beamsplitter}
+    openscad(
+        output,
+        "main_body.scad",
+        parameters,
+        openscad_only_parameters=openscad_only,
+        select_stl_if=select_stl_if,
+    )
 
 
 #################
 ### OPTICS MODULE
 
-cameras = ["picamera_2", "logitech_c270", "m12"]
+# TODO: reinstate `logitech_c270` if it can be made compatible.
+cameras = ["picamera_2", "m12"]
 
 rms_lenses = [
     "rms_f40d16",
@@ -384,16 +377,11 @@ rms_lenses = [
     "rms_infinity_f50d13",
 ]  # NB: Only RMS lenses are compatible with the beamsplitter
 
-optics_versions = [
-    ("picamera_2", "pilens"),
-    ("logitech_c270", "c270_lens"),
-    ("m12", "m12_lens"),
-] + [(camera, lens) for camera in cameras for lens in rms_lenses]
-
 # Generate a list of lenses to use elsewhere
-all_lenses = list(
-    set(l for c, l in optics_versions).union({"dashcam_lens", "6ledcam_lens"})
-)
+all_lenses = rms_lenses + ["pilens", "dashcam_lens", "6ledcam_lens"]
+#TODO: reinstate "c270_lens", "m12_lens" once the have a compatible optics module
+
+optics_versions = [(camera, lens) for camera in cameras for lens in rms_lenses]
 
 for sample_z in sample_z_options:
     for (camera, lens) in optics_versions:
@@ -435,33 +423,32 @@ for sample_z in sample_z_options:
 
 # Stand with pi
 for stand_height in [30, 45]:
-    for beamsplitter in [True, False]:
-        output = "microscope_stand_{stand_height}{beamsplitter}.stl".format(
-            stand_height=stand_height, beamsplitter="-BS" if beamsplitter else ""
-        )
+    beamsplitter = True:
+    output = "microscope_stand_{stand_height}{beamsplitter}.stl".format(
+        stand_height=stand_height, beamsplitter="-BS" if beamsplitter else ""
+    )
 
-        openscad_only = {"beamsplitter": beamsplitter}
+    openscad_only = {"beamsplitter": beamsplitter}
 
-        if stand_height == 45:
-            compatible_lenses = ["rms_infinity_f50d13"]
-        else:
-            compatible_lenses = [l for l in all_lenses if l != "rms_infinity_f50d13"]
+    if stand_height == 45:
+        compatible_lenses = ["rms_infinity_f50d13"]
+    else:
+        compatible_lenses = [l for l in all_lenses if l != "rms_infinity_f50d13"]
 
-        openscad(
-            output,
-            "microscope_stand.scad",
-            openscad_only_parameters=openscad_only,
-            file_local_parameters={"h": stand_height},
-            select_stl_if=[
-                {
-                    "pi_in_base": True,
-                    "base": "bucket",
-                    "reflection_illumination": beamsplitter,
-                    "optics": optics,
-                }
-                for optics in compatible_lenses
-            ],
-        )
+    openscad(
+        output,
+        "microscope_stand.scad",
+        openscad_only_parameters=openscad_only,
+        file_local_parameters={"h": stand_height},
+        select_stl_if=[
+            {
+                "pi_in_base": True,
+                "base": "bucket",
+                "optics": optics,
+            }
+            for optics in compatible_lenses
+        ],
+    )
 
 # Stand without pi
 openscad(
@@ -537,11 +524,9 @@ for foot_height in [15, 26]:
 ###################
 ### CAMERA PLATFORM
 
-
+#TODO: Add stands in for 6ledcam, dashcam, m12 once they are supported
 camera_platform_versions = [
-    ("picamera_2", "pilens"),
-    ("6ledcam", "6ledcam_lens"),
-    ("dashcam", "dashcam_lens"),
+    ("picamera_2", "pilens")
 ]
 
 
@@ -569,7 +554,7 @@ for sample_z in sample_z_options:
 
 ###############
 ### LENS SPACER
-
+#TODO: Add lens spacer for m12 once it is supported
 
 for sample_z in sample_z_options:
     output = f"lens_spacer_picamera_2_pilens_{sample_z}.stl"
@@ -598,6 +583,7 @@ for tool in picamera_2_legacy_tools:
     input = f"cameras/picamera_2_{tool}.scad"
     parameters = {"camera": "picamera_2"}
     openscad(output, input, parameters, select_stl_if={"legacy_picamera_tools": True})
+
 
 
 output = "picamera_2_cover.stl"
