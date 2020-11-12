@@ -238,8 +238,7 @@ module z_axis_casing_cutouts(){
     z_actuator_cutout();
     z_motor_clearance();
     reflect([1,0,0]) right_illumination_arm_screw(){
-        trylinder_selftap(3, h=16, center=true); 
-        hull() rotate(110) repeat([100,0,0],2) translate([0,0,-6]) cylinder(d=6.9,h=2.8,$fn=6);
+        rotate(-20) translate([0,0,-9]) m3_nut_trap_with_shaft(0,0);
     }
 }
 
@@ -265,7 +264,7 @@ module z_actuator_cutout(){
 
 // "scenery" so we can see how it fits with the rest of the microscope
 //legs
-// for(a=[-45,45]) rotate(a) translate([-leg_outer_w/2,leg_r,0]) cube([leg_outer_w, 4, sample_z]);
+// for(a=[-45,45]) rotate(a) translate([-leg_outer_w/2,leg_r,0]) cube([leg_outer_w, 4, leg_height]);
 
 include_z_axis_mechanism = true;
 include_z_axis_casing_outer = true;

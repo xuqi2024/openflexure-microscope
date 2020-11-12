@@ -14,99 +14,84 @@
 
 
 use <utilities.scad>;
+use <main_body.scad>;
+use <sample_clips.scad>;
+use <main_body_transforms.scad>;
 include <microscope_parameters.scad>;
+
 
 sep = 26;
 $fn=24;
 
 slide = [75.8,25.8,1.0];
-h = 10;
-size = slide + [1,1,0]*8*2 + [0,0,h+1];
-clip_pivot = [20,size[1]/2+1,0];
 
-module slide_riser(){
+
+
+module slide_riser_base(h, thickness, y_space){
     difference(){
-        union(){
-            translate([-size[0],-size[1],0]/2) cube(size);
-            hull(){
-                translate(clip_pivot) cylinder(r=5,h=h);
-                translate([clip_pivot[0],0,0]) cylinder(r=5,h=h);
-            }
-        }
         
-        //cut-out for slide
-        hull() translate([-999/2,-slide[1]/2,h]){
-            translate(-[1,1,0]*slide[2]/2) cube([999,999,d]);
-            translate([1,1,2]*999+[0,0,slide[2]]) cube([999,999,d]);
+        xy_stage(h=thickness,on_buildplate=true);
+
+        //angled cut-out for slide
+        hull() translate([0,0,h]){
+            translate([0,-slide[2],d/2]) cube([slide[0],slide[1],d], center=true);
+            translate([0,999-slide[2],999+d/2]) cube([slide[0],slide[1],d], center=true);
         }
+        //extra cutout on clip side
+        translate([-999/2,0,h]) cube([999,slide[1]/2+y_space,999]);
         
         //cut-out for middle of slide (immersion oil, etc.)
         translate([-999/2,-slide[1]/2+2, h-2]) cube([999,slide[1]-4,999]);
-        
-        //mounting holes
-        reflect([1,0,0]) reflect([0,1,0]) rotate(-45) translate([leg_middle_w/2,leg_r-zflex_l-4,2]){
-            cylinder(r=3/2*1.15,h=999,center=true); //mounting holes
-            cylinder(r=3*1.15,h=999); //mounting holes
-        }
-        
-        //central hole
-        cylinder(r=hole_r,h=999,center=true, $fn=32);
-        
-        //mounting for clip
-        translate(clip_pivot + [0,0,h-2]) cylinder(r=4,h=999);
-        translate(clip_pivot + [0,0,0.5]) cylinder(d=3*0.95,h=999);
-        //hole for spring and M3 partial threaded screw
-        translate(clip_pivot + [13,-8,h-5]) rotate([-90,0,0]) cylinder(d=4.8,h=999);
-        translate(clip_pivot + [13,-800,h-5]) rotate([-90,0,0]) cylinder(d=2.6,h=999);
-        
-        //mounting holes at the side
-        //translate([size[0]/2,0,h/2]) repeat([0,8,0], floor(size[1]/8-1), center=true){
-        //   rotate([0,90,0]) cylinder(r=3/2*0.95, h=16,center=true);
-        //}
-        
-    } 
-       
-}
-
-module slide_clip(){
-    travel = 3;
-    difference(){
-        union(){
-            //this part contacts the slide
-            translate([0,slide[1]/2+1,h]) cylinder(r1=3,r2=5,h=2);
-            //this is the arm, incl. spring seat
-            translate([0,0,h]) add_hull_base(2){
-                translate([0,slide[1]/2+1,0]) cylinder(r=2,h=2);
-                translate(clip_pivot + [0,0,0]) cylinder(r=3.7,h=2);
-                translate(clip_pivot + [10-1,travel+1.5,0]) cylinder(r=1.5,h=2);
-                translate(clip_pivot + [5+1,travel,-8]) cube([13,3,8+2]);
-            }
-            //this is the pivot
-            translate(clip_pivot + [0,0,h-2]) cylinder(r=3.7,h=4);
-        }
-        //hole for pivot screw
-        translate(clip_pivot) cylinder(d=3*1.1,h=999,center=true);
-        //window for spring screw
-        translate(clip_pivot + [12.5,travel,h-4.5]) rotate([0,0,0]) cube([10,6.002,5], center=true);
     }
 }
-use <main_body.scad>;
 
-module simple_riser(h=10){
-    // Make the stage thicker by height h, to raise up the slide
-    // NB you'll need to raise the illumination too!
+
+module slide_riser(h=.6, thickness=4){
+    y_space = 1.5;
+    clip_l = 30;
+    clip_w = 7;
+    clip_r = 12;
+    clip_overlap = 5; //this is reduced by the tilt!
+    clip_y = clip_overlap+y_space;
+    clip_angle_h = 1+h+slide[2];
+    handle_end = 75;
     difference(){
-		hull() each_leg() translate([0,-zflex_l-d,h/2]) cube([leg_middle_w+2*zflex_l,2*d,h],center=true); //hole in the stage
-        cylinder(r=hole_r,h=999,center=true);
-		each_leg() reflect([1,0,0]) translate([leg_middle_w/2,-zflex_l-4,3.5]){
-            cylinder(r=3/2*1.2,h=999, center=true); //mounting holes
-            cylinder(r=3*1.2,h=999); //mounting holes
+        union(){
+            difference(){
+                union(){
+                    slide_riser_base(h,thickness, y_space);
+                    translate([-999+30,slide[1]/2+y_space,0]) cube([999,9,12]);
+                }
+
+                translate([-slide[1]/2+2,0, -1]) cube([slide[1]-4,999,clip_w+3]);
+                //
+                //mounting holes
+                each_leg() translate([0,-stage_hole_inset,0]){
+                    cylinder(r=3/2*1.15,h=999,center=true); //mounting holes
+                    translate([0,0,thickness+d])cylinder(r=3*1.15,h=999); //mounting holes
+                } 
+            }
+            translate([-clip_l+4,slide[1]/2+y_space,0]){
+                difference(){
+                    translate([0,0,clip_w/2])rotate([-90,0,0])rotate([0,0,-90]){
+                            sample_clip([0,clip_l,-clip_y], w=clip_w, roc=clip_r);
+                    }
+                    translate([0,-clip_y+clip_angle_h,0])rotate([45,0,0])translate([clip_l,-5,0])cube([10,10,10], center=true);
+                    
+                }
+                translate([-999+7,slide[1]/2+y_space+clip_r-2,0]) cube([999,9,7]);
+            }
         }
-        each_leg() translate([0,-zflex_l-4,0]) cylinder(r=3/2*0.95, h=999, center=true);
-	}
+        // cut off end of the super long handles
+        translate([-999/2-handle_end,0,0])cube([999,999,999],center=true);
+    }
 }
-//simple_riser();
-slide_riser();
-translate([-25,10,h+2]) translate(clip_pivot) rotate([180,0,22]) translate(-clip_pivot) slide_clip();
-//rotate([180,0,0]) 
-//slide_clip();
+
+
+h=.6;
+slide_riser(h);
+
+
+
+// Comment this back in to see slide position
+// translate([0,0,h+slide[2]/2]) cube(slide,center=true);

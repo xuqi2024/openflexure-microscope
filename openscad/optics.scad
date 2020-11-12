@@ -29,9 +29,9 @@ use <thorlabs_threads.scad>;
 
 use <cameras/camera.scad>; // this will define the 2 functions and 1 module for the camera mount, using the camera defined in the "camera" parameter.
 
-dt_bottom = -2; //where the dovetail starts (<0 to allow some play)
-camera_mount_top = dt_bottom - 3 - (optics=="rms_f50d13"?8:0) - (optics=="rms_infinity_f50d13"?20:0); //the 50mm tube lens requires the camera to stick out the bottom.
-bottom = camera_mount_top-camera_mount_height(); //nominal distance from PCB to microscope bottom
+dt_bottom = -2; //bottom of dovetail (<0 to allow some play)
+camera_mount_top_z = dt_bottom - 3 - (optics=="rms_f50d13"?8:0) - (optics=="rms_infinity_f50d13"?20:0); //the 50mm tube lens requires the camera to stick out the bottom.
+bottom = camera_mount_top_z-camera_mount_height(); //nominal distance from PCB to microscope bottom
 fl_cube_bottom = bottom + camera_sensor_height() + 7.5; //bottom of the fluorescence filter cube (0 except for the RMS f=50mm modules where it's -8 or -20)
 fl_cube_top = fl_cube_bottom + fl_cube_w + 2.7; //top of fluorescence cube
 fl_cube_top_w = fl_cube_w - 2.7;
@@ -75,15 +75,15 @@ module optical_path(lens_aperture_r, lens_z){
     // a feathered cylindrical beam path.  Camera mount is now cut out
     // of the camera mount body already.
     union(){
-        translate([0,0,camera_mount_top-d]) lighttrap_cylinder(r1=5, r2=lens_aperture_r, h=lens_z-camera_mount_top+2*d); //beam path
+        translate([0,0,camera_mount_top_z-d]) lighttrap_cylinder(r1=5, r2=lens_aperture_r, h=lens_z-camera_mount_top_z+2*d); //beam path
         translate([0,0,lens_z]) cylinder(r=lens_aperture_r,h=2*d); //lens
     }
 }
 module optical_path_fl(lens_aperture_r, lens_z){
     // The cut-out part of a camera mount, with a space to slot in a filter cube.
     union(){
-        translate([0,0,camera_mount_top-d]) lighttrap_sqylinder(r1=5, f1=0,
-                r2=0, f2=fl_cube_w-4, h=fl_cube_bottom-camera_mount_top+2*d); //beam path to bottom of cube
+        translate([0,0,camera_mount_top_z-d]) lighttrap_sqylinder(r1=5, f1=0,
+                r2=0, f2=fl_cube_w-4, h=fl_cube_bottom-camera_mount_top_z+2*d); //beam path to bottom of cube
         rotate(180) fl_cube_cutout(); //filter cube
         translate([0,0,fl_cube_top-d]) lighttrap_sqylinder(r1=1.5, f1=fl_cube_w-4-3, r2=lens_aperture_r, f2=0, h=lens_z-fl_cube_top+4*d); //beam path
         translate([0,0,lens_z]) cylinder(r=lens_aperture_r,h=2*d); //lens
@@ -98,7 +98,7 @@ module lens_gripper(lens_r=10,h=6,lens_h=3.5,base_r=-1,t=0.65,solid=false, flare
     trylinder_gripper(inner_r=lens_r, h=h, grip_h=lens_h, base_r=base_r, t=t, solid=solid, flare=flare);
 }
 
-module camera_mount_top(){
+module camera_mount_top_slice(){
     // A thin slice of the top of the camera mount
     linear_extrude(d) projection(cut=true) camera_mount();
 }
@@ -124,7 +124,7 @@ module camera_mount_body(
         difference(){
             // This is the main body of the mount
             sequential_hull(){
-                translate([0,0,camera_mount_top]) camera_mount_top();
+                translate([0,0,camera_mount_top_z]) camera_mount_top_slice();
                 hull(){
                     translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=d);
                     if(dovetail) translate([0,0,dt_bottom]) objective_fitting_base();
@@ -151,7 +151,7 @@ module camera_mount_body(
         }
         
         // add the camera mount
-        translate([0,0,camera_mount_top]) camera_mount();
+        translate([0,0,camera_mount_top_z]) camera_mount();
     }
 }
 
@@ -169,7 +169,7 @@ module rms_mount_and_tube_lens_gripper(){
 }
 
 module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20, 
-    tube_lens_r=16/2+0.2, objective_parfocal_distance=35, tube_length=150, fluorescence=false, gripper_t=1, dovetail=true){
+    tube_lens_r=16/2+0.2, objective_parfocal_distance=45, tube_length=150, fluorescence=false, gripper_t=1, dovetail=true){
     // This optics module takes an RMS objective and a tube length correction lens.
     // important parameters are below:
         
@@ -179,7 +179,8 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
     //tube_lens_f (argument) is the nominal focal length of the tube lens.
     tube_lens_aperture = tube_lens_r - 1.5; // clear aperture of the tube lens
     pedestal_h = 2; // height of tube lens above bottom of lens assembly (to allow for flex)
-    //sample_z (microscope_parameters.scad) // height of the sample above the bottom of the microscope (depends on size of microscope)
+
+    //NOTE: sample_z is set in microscope_parameters.scad
     dovetail_top = min(27, sample_z-objective_parfocal_distance-0.5); //height of the top of the dovetail, i.e. the position of the objective's "shoulder"
     //tube_length (argument) is the distance behind the objective's "shoulder" where the image is formed.  This should be infinity (safe to use 9999) for infinity-corrected lenses, or 150 for 160mm tube length objectives (the image is formed ~10mm from the end of the tube).
     
@@ -392,7 +393,7 @@ difference(){
             tube_lens_ffd=38, 
             tube_lens_f=40, 
             tube_lens_r=16/2+0.1, 
-            objective_parfocal_distance=35,
+            objective_parfocal_distance=45,
             fluorescence=beamsplitter,
             gripper_t=0.65,
             tube_length=150
@@ -404,7 +405,7 @@ difference(){
             tube_lens_ffd=47, 
             tube_lens_f=50, 
             tube_lens_r=12.7/2+0.1, 
-            objective_parfocal_distance=35,
+            objective_parfocal_distance=45,
             fluorescence=beamsplitter,
             tube_length=(optics=="rms_f50d13" ? 150 : 99999) //use 150 for standard finite-conjugate objectives (cheap ones) or 9999 for infinity-corrected lenses (usually more expensive).
         );

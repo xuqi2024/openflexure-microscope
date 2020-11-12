@@ -28,6 +28,7 @@ module leg(brace=stage_flex_w){
     // The legs support the stage - this is either used directly
     // or via "actuator" to make the legs with levers
     fw=stage_flex_w;
+    
 	union(){
        	//leg
 		reflect([1,0,0]){
@@ -46,7 +47,7 @@ module leg(brace=stage_flex_w){
                              //value produces two distinct flexures.
 			for(i=[0,1]) translate([0,0,zs[i]]){
 				translate([-d,0,0]) hull() repeat([0,bs[i],0],2) //solid part
-                        cube([leg_middle_w/2+d,leg[1],stage_t-0.2*leg[1]]);
+                        cube([leg_middle_w/2+d,leg[1],leg_block_t-0.2*leg[1]]);
 				translate([-d,0,0]) repeat([0,bs[i],0],2) //flexures
                         cube([leg_middle_w/2+zflex_l+leg[0],leg[1],zflex_t]);
 			}
@@ -179,6 +180,36 @@ module fl_cube_cutout(){
     }
 }
 
+
+module xy_stage(h=10,on_buildplate=false){
+    // This module is the outer shape of the XY stage.
+    // A square without corners, and a hole through middle.
+    // The size in XY is set by microscope_parameters.scad,
+    // the thickness (z) is set by input h
+    // The boolean value on_buildplate sets wether the stage is printed on the
+    // buildplate. If true, the bottom is flat, if false the bottom is made from
+    // bridges round the edge, that then work inwards.
+    difference(){
+        side_length = leg_middle_w+2*zflex_l;
+        cut_out_side_length = leg_middle_w-2*stage_flex_w;
+        thickness = on_buildplate?h:h-1;
+        z = on_buildplate?0:1;
+		hull() each_leg() translate([0,-zflex_l-d,z+thickness/2]) cube([side_length,2*d,thickness],center=true);
+        if (on_buildplate){
+            cylinder(r=hole_r,h=999,center=true,$fn=32);
+        }else{
+            intersection(){
+                // This cuts out the hole in the stage, starting from a square.
+                // The intersection restricts it to the space between the bridges, to avoid any
+                // holes in the sides of the stage.
+                translate([0,0,1]) rotate(45) hole_from_bottom(hole_r,h=999);
+                hull() each_leg() cube([cut_out_side_length,d,999],center=true);
+            }
+        }
+	}
+}
+
+
 ///////////////////// MAIN STRUCTURE STARTS HERE ///////////////
 module main_body(){
     // This module represents the main body of the microscope, including the positioning mechanism.
@@ -208,18 +239,10 @@ module main_body(){
 		hull() each_leg() cube([leg_middle_w-2*stage_flex_w,d,999],center=true);
 	}
 
-	//stage
-   // this must get built up carefully: we start with the bridges round the edge, then work inwards.
+	// XY stage
 	difference(){
-		hull() each_leg() translate([0,-zflex_l-d,flex_z2+1+(stage_t-1)/2]) cube([leg_middle_w+2*zflex_l,2*d,stage_t-1],center=true); //hole in the stage
-        intersection(){
-            // This cuts out the hole in the stage, starting from a square.
-            // The intersection restricts it to the space between the bridges, to avoid any
-            // holes in the sides of the stage.
-            translate([0,0,flex_z2+0.5+0.5]) rotate(45) hole_from_bottom(hole_r,h=999);
-            hull() each_leg() cube([leg_middle_w-2*stage_flex_w,d,999],center=true);
-        }
-		each_leg() translate([0,-zflex_l-4,flex_z2+1.5]) repeat([leg_middle_w/2,0,0],3,center=true) trylinder_selftap(3,h=999); //mounting holes
+		translate([0,0,flex_z2]) xy_stage(h=stage_t);
+		each_leg() translate([0,-stage_hole_inset,leg_height]) m3_nut_trap_with_shaft(0,0); //mounting holes
 	}
 	
 	//z axis
@@ -301,7 +324,7 @@ module main_body(){
         back_foot_mounting_screw(h=18,d=3*0.95,center=true);
         
         //////////////// logo and version string /////////////////////
-        size = big_stage?0.25:0.2;
+        size = 0.25;
         place_on_wall() translate([9,wall_h-2-15*size,-0.5]) 
         scale([size,size,10]) openflexure_logo();
         

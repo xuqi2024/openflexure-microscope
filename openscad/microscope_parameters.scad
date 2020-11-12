@@ -28,7 +28,6 @@ d = 0.05;
 $fn=32;
 
 // These are the most useful parameters to change!
-big_stage = true; //this option is obsolete and must now always be true...
 motor_lugs = true;
 version_numstring = "6.1.3";
 camera = "picamera_2"; //see cameras/camera.scad for valid values
@@ -41,14 +40,17 @@ smart_brim_r = 5;
 enable_smart_brim = false;
 
 // This sets the basic geometry of the microscope
-sample_z = big_stage?65:40; // height of the top of the stage
-leg_r = big_stage?30:25; // radius of innermost part of legs (stage size)
-hole_r = big_stage?20:10; // size of hole in the stage
-xy_lever_ratio = big_stage?4.0/7.0:1.0; // mechanical advantage of actuator over stage - can be used to trade speed and precision
+sample_z = 75; // z position of sample
+leg_height = sample_z-10; // height of the top of the leg. Shorter by 10 to give space to insert nuts.
+
+leg_r = 30; // radius on which the innermost part of legs sit. (This sets the stage size)
+hole_r = 20; // size of hole in the stage
+xy_lever_ratio = 4.0/7.0; // mechanical advantage of actuator over stage - can be used to trade speed and precision
 z_lever_ratio = 1.0; // as above, for Z axis (must be >1)
+
 // The variables below affect the position of the objective mount
-z_strut_l = big_stage?18:15; //length of struts supporting Z carriage
-objective_mount_y = big_stage?18:12; // y position of clip for optics
+z_strut_l = 18; //length of struts supporting Z carriage
+objective_mount_y = 18; // y position of clip for optics
 objective_mount_nose_w = 6; // width of the pointy end of the mount
 condenser_clip_w = 14; // width of the dovetail clip for the condenser
 foot_height=feet_endstops?15:15; //the endstops need a bit of extra height (or not)
@@ -64,12 +66,15 @@ zflex = [stage_flex_w, zflex_l, zflex_t]; // the above in new-style format
 flex_a = 0.15;    // sine of the angle through which flexures can be bent
 
 // Compile a sensible version string
-version_string = str("v",version_numstring, big_stage?"-LS":"-SS", sample_z, motor_lugs?"-M":"");
+version_string = str("v",version_numstring, sample_z, motor_lugs?"-M":"");
 echo(str("Compiling OpenFlexure Microscope ",version_string));
 
-stage_t=5; //thickness of the XY stage (at thickest point, most is 1mm less)
+
+leg_block_t = 5; // Thickness of the block at the top and bottom of the leg
+stage_t = sample_z-leg_height + leg_block_t; //thickness of the XY stage (at thickest point, most is 1mm less)
+stage_hole_inset = zflex_l+4; // how far the holes on the XY stage are inset from leg_r
 flex_z1 = 0;      // z position of lower flexures for XY axis
-flex_z2 = sample_z-stage_t; //height of upper XY flexures
+flex_z2 = leg_height-leg_block_t; //height of upper XY flexures
 z_strut_t = 6;  // (z) thickness of struts for Z axis
 z_flex_w = 4;   // width of struts for Z axis
 leg = [4,stage_flex_w,flex_z2+zflex_t]; // size of vertical legs
@@ -83,8 +88,8 @@ actuating_nut_r = (flex_z2 - flex_z1)*xy_lever_ratio; // distance from leg_r to 
 xy_actuator_travel = actuating_nut_r*0.15; // distance moved by XY axis actuators
 
 // Z axis
-z_flexures_z1 = 8; // height of the lower Z flexure
-z_flexures_z2 = min(sample_z - 12, 35); // " upper "
+z_flexures_z1 = 8; // height of the lower flexure on z actuator
+z_flexures_z2 = min(leg_height - 12, 35); // height of the upper flexure on z actuator
 objective_mount_back_y = objective_mount_y + 2; //back of objective mount
 z_anchor_y = objective_mount_back_y + z_strut_l + 2*zflex[1]; // fixed end of the flexure-hinged lever that actuates the Z axis
 z_anchor_w = 20; //width of the Z anchor
@@ -107,15 +112,15 @@ illumination_clip_y = (-(leg_r-zflex_l-wall_t/2+leg_outer_w/2)/sqrt(2)
                       // illumination/back foot.  This is set to
                       // coincide with the wall between the back
                       // two legs. TODO: remove this
-illumination_arm_screws = [[20,z_nut_y,sample_z-2],[-20,z_nut_y,sample_z-2], 
-                           [0,(leg_r + leg_outer_w)/sqrt(2) + 4,sample_z-2]];
+illumination_arm_screws = [[20,z_nut_y,leg_height-2],[-20,z_nut_y,leg_height-2], 
+                           [0,(leg_r + leg_outer_w)/sqrt(2) + 4,leg_height-2]];
                       // positions of screws that mount the adjustable version of the 
                       // illumination arm
 condenser_clip_y = -8; //position of dovetail for old condenser assembly TODO: rename this
 base_mounting_holes = [[-20,z_nut_y-4,0],
                        [20,z_nut_y-4,0],
-                       [-z_flexure_x-4,big_stage?-8:-4,0],
-                       [z_flexure_x+4,big_stage?-8:-4,0]]; 
+                       [-z_flexure_x-4,-8,0],
+                       [z_flexure_x+4,-8,0]]; 
                        // holes to screw the microscope to a baseplate
 
 endstop_extra_ringheight=feet_endstops?1:0;

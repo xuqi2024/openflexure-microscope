@@ -20,7 +20,7 @@ stl_presets = [
             "base": "bucket",
             "pi_in_base": True,
             "microscope_stand:h": 30,
-            "riser": "sample",
+            "riser": "no riser",
         },
     },
     {
@@ -141,8 +141,8 @@ option_docs = [
     },
     {
         "key": "riser",
-        "default": "sample",
-        "description": "Type of riser to use on top of the stage for optics that require it. The slide riser is custom made for microscope slides. The sample riser is more versatile and can also hold slides using the set of included sample clips.",
+        "default": "no riser",
+        "description": "Type of riser to use on top of the stage for optics that require it. The slide riser is custom made for reproducable placement of microscope slides.",
     },
     {
         "key": "base",
@@ -330,63 +330,47 @@ def openscad(
     )
 
 
-def stage_parameters(stage_size, sample_z):
-    """
-    Return common stage parameters for a given size and sample z
-
-    Arguments:
-        stage_size {str} -- Stage size, e.g. "LS"
-        sample_z {int} -- Sample z position, default 65
-    """
-    return {"big_stage": stage_size == "LS", "sample_z": sample_z}
-
-
 ################################
 ### GENERAL, WIDELY USED OPTIONS
 
 # All available microscope sizes
-stage_size_options = ["LS"]
-sample_z_options = [65]
+sample_z_options = [75]
 # All permutations of microscope size
-microscope_size_options = [
-    f"{stage_size}{sample_z}"
-    for stage_size in stage_size_options
-    for sample_z in sample_z_options
-]
+microscope_size_options = [f"{sample_z}" for sample_z in sample_z_options]
+
 
 
 ###################
 ### MICROSCOPE BODY
 
-for stage_size in stage_size_options:
-    for sample_z in sample_z_options:
-        for beamsplitter in [True, False]:
-            for brim in [True, False]:
-                motors = True  # Right now we never need to remove motor lugs
 
-                output = "main_body_{stage_size}{sample_z}{motors}{beamsplitter}{brim}.stl".format(
-                    stage_size=stage_size,
-                    sample_z=sample_z,
-                    motors="-M" if motors else "",
-                    beamsplitter="-BS" if beamsplitter else "",
-                    brim="_brim" if brim else "",
-                )
+for sample_z in sample_z_options:
+    for beamsplitter in [True, False]:
+        for brim in [True, False]:
+            motors = True  # Right now we never need to remove motor lugs
 
-                parameters = {
-                    **stage_parameters(stage_size, sample_z),
-                    "motor_lugs": motors,
-                    "enable_smart_brim": brim,
-                }
-                openscad_only = {"beamsplitter": beamsplitter}
-                select_stl_if = {"reflection_illumination": beamsplitter}
+            output = "main_body_{sample_z}{motors}{beamsplitter}{brim}.stl".format(
+                sample_z=sample_z,
+                motors="-M" if motors else "",
+                beamsplitter="-BS" if beamsplitter else "",
+                brim="_brim" if brim else "",
+            )
 
-                openscad(
-                    output,
-                    "main_body.scad",
-                    parameters,
-                    openscad_only_parameters=openscad_only,
-                    select_stl_if=select_stl_if,
-                )
+            parameters = {
+                "sample_z": sample_z,
+                "motor_lugs": motors,
+                "enable_smart_brim": brim,
+            }
+            openscad_only = {"beamsplitter": beamsplitter}
+            select_stl_if = {"reflection_illumination": beamsplitter}
+
+            openscad(
+                output,
+                "main_body.scad",
+                parameters,
+                openscad_only_parameters=openscad_only,
+                select_stl_if=select_stl_if,
+            )
 
 
 #################
@@ -560,51 +544,49 @@ camera_platform_versions = [
     ("dashcam", "dashcam_lens"),
 ]
 
-for stage_size in stage_size_options:
-    for sample_z in sample_z_options:
-        for camera, optics in camera_platform_versions:
-            output = f"camera_platform_{camera}_{stage_size}{sample_z}.stl"
 
-            parameters = {
-                **stage_parameters(stage_size, sample_z),
-                "camera": camera,
-            }
+for sample_z in sample_z_options:
+    for camera, optics in camera_platform_versions:
+        output = f"camera_platform_{camera}_{sample_z}.stl"
 
-            select_stl_if = {
-                "riser": "no riser",
-                "optics": optics,
-            }
+        parameters = {
+            "sample_z": sample_z,
+            "camera": camera,
+            "optics": optics,
+        }
 
-            openscad(
-                output,
-                "camera_platform.scad",
-                parameters=parameters,
-                select_stl_if=select_stl_if
-            )
+        select_stl_if = {
+            "riser": "no riser",
+            "optics": optics,
+        }
+
+        openscad(
+            output,
+            "camera_platform.scad",
+            parameters,
+        )
 
 
 ###############
 ### LENS SPACER
 
-for stage_size in stage_size_options:
-    for sample_z in sample_z_options:
-        output = "lens_spacer_picamera_2_pilens_{stage_size}{sample_z}.stl".format(
-            stage_size=stage_size, sample_z=sample_z
-        )
 
-        parameters = {**stage_parameters(stage_size, sample_z), "optics": "pilens"}
+for sample_z in sample_z_options:
+    output = f"lens_spacer_picamera_2_pilens_{sample_z}.stl"
 
-        openscad(
-            output,
-            "lens_spacer.scad",
-            parameters,
-            select_stl_if={
-                "camera": "picamera_2",
-                "reflection_illumination": False,
-                "use_pilens_optics_module": False,
-                "riser": "no riser",
-            },
-        )
+    parameters = {"sample_z": sample_z, "optics": "pilens"}
+
+    openscad(
+        output,
+        "lens_spacer.scad",
+        parameters,
+        select_stl_if={
+            "camera": "picamera_2",
+            "reflection_illumination": False,
+            "use_pilens_optics_module": False,
+            "riser": "no riser",
+        },
+    )
 
 
 ##################
@@ -625,27 +607,21 @@ openscad(output, input, parameters, select_stl_if={"optics": set(rms_lenses)})
 
 
 #################
-### SAMPLE RISERS
+### SLIDE RISER
 
-for riser_type in ["sample", "slide"]:
-    output = f"{riser_type}_riser_LS10.stl"
-    input = f"{riser_type}_riser.scad"
-
-    parameters = {"big_stage": True}
-
-    openscad(
-        output,
-        input,
-        parameters,
-        file_local_parameters={"h": 10},
-        select_stl_if={"riser": riser_type},
-    )
+openscad(
+    "slide_riser.stl",
+    "slide_riser.scad",
+    parameters,
+    file_local_parameters={"h": 10},
+    select_stl_if={"riser": "slide"},
+)
 
 
 ###############
 ### SMALL PARTS
 
-parts = ["actuator_assembly_tools", "condenser", "illumination_dovetail", "lens_tool"]
+parts = ["actuator_assembly_tools", "condenser", "illumination_dovetail", "lens_tool", "just_nut_trap_test"]
 
 for part in parts:
     output = f"{part}.stl"

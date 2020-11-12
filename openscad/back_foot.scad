@@ -44,7 +44,7 @@ clip_t = 2; //thickness of arms for the dovetail clip
 hole_h = max(stage_clearance, b); //height of cut-out above clip
 dt_taper = 2; //size of sloping part at top/bottom of dovetail
 
-module back_foot(clip_y=illumination_clip_y,stage_clearance=6,sample_z=sample_z){
+module back_foot(clip_y=illumination_clip_y,stage_clearance=6){
     // Arm that clips on to the microscope, providing the back foot
     // and illumination mount
     w = clip_w; //width (size in x direction)
