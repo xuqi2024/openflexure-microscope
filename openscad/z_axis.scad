@@ -225,7 +225,7 @@ module z_axis_casing(condenser_mount=false){
         // At the bottom, connect to the top of the housing and the motor lugs
         top_of_z_axis_casing();
         // The top is a flat shape that the illumination arm screws onto.
-        each_illumination_arm_screw() mirror([0,0,1]) cylinder(r=5,h=7);
+        each_illumination_dovetail_screw() mirror([0,0,1]) cylinder(r=5,h=7);
     }
     
 }
@@ -237,7 +237,7 @@ module z_axis_casing_cutouts(){
     objective_mounting_screw_access();
     z_actuator_cutout();
     z_motor_clearance();
-    reflect([1,0,0]) right_illumination_arm_screw(){
+    reflect([1,0,0]) right_illumination_dovetail_screw(){
         rotate(-20) translate([0,0,-9]) m3_nut_trap_with_shaft(0,0);
     }
 }
