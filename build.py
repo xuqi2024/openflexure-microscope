@@ -20,7 +20,7 @@ stl_presets = [
             "base": "bucket",
             "pi_in_base": True,
             "microscope_stand:h": 30,
-            "riser": "sample",
+            "riser": "no riser",
         },
     },
     {
@@ -141,8 +141,8 @@ option_docs = [
     },
     {
         "key": "riser",
-        "default": "sample",
-        "description": "Type of riser to use on top of the stage for optics that require it. The slide riser is custom made for microscope slides. The sample riser is more versatile and can also hold slides using the set of included sample clips.",
+        "default": "no riser",
+        "description": "Type of riser to use on top of the stage for optics that require it. The slide riser is custom made for reproducable placement of microscope slides.",
     },
     {
         "key": "base",
@@ -552,6 +552,7 @@ for sample_z in sample_z_options:
         parameters = {
             "sample_z": sample_z,
             "camera": camera,
+            "optics": optics,
         }
 
         select_stl_if = {
@@ -570,22 +571,22 @@ for sample_z in sample_z_options:
 ### LENS SPACER
 
 
-    for sample_z in sample_z_options:
-        output = f"lens_spacer_picamera_2_pilens_{sample_z}.stl"
+for sample_z in sample_z_options:
+    output = f"lens_spacer_picamera_2_pilens_{sample_z}.stl"
 
-        parameters = {"sample_z": sample_z, "optics": "pilens"}
+    parameters = {"sample_z": sample_z, "optics": "pilens"}
 
-        openscad(
-            output,
-            "lens_spacer.scad",
-            parameters,
-            select_stl_if={
-                "camera": "picamera_2",
-                "reflection_illumination": False,
-                "use_pilens_optics_module": False,
-                "riser": "no riser",
-            },
-        )
+    openscad(
+        output,
+        "lens_spacer.scad",
+        parameters,
+        select_stl_if={
+            "camera": "picamera_2",
+            "reflection_illumination": False,
+            "use_pilens_optics_module": False,
+            "riser": "no riser",
+        },
+    )
 
 
 ##################
@@ -606,19 +607,15 @@ openscad(output, input, parameters)
 
 
 #################
-### SAMPLE RISERS
+### SLIDE RISER
 
-for riser_type in ["sample", "slide"]:
-    output = f"{riser_type}_riser_LS10.stl"
-    input = f"{riser_type}_riser.scad"
-
-    openscad(
-        output,
-        input,
-        parameters,
-        file_local_parameters={"h": 10},
-        select_stl_if={"riser": riser_type},
-    )
+openscad(
+    "slide_riser.stl",
+    "slide_riser.scad",
+    parameters,
+    file_local_parameters={"h": 10},
+    select_stl_if={"riser": "slide"},
+)
 
 
 ###############
