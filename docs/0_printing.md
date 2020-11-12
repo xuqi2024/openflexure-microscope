@@ -2,9 +2,9 @@
 
 First, you will need to print or obtain the 3D printed parts.  These have been designed with some care to print reliably on most RepRap-style printers, using regular PLA filament without support material.  It's important to read through the notes before, as there are multiple versions of the STL files to choose from, so it's not a good idea just to pick all the parts in the folder.  The printed parts are described in their own pages, with details of how to pick the version of that part, for the parts with multiple versions.
 
-The best way to obtain these files is from the [build a microscope] page.
+The best way to obtain these files is from the [microscope STL configurator] page.
 
-[build a microscope]: https://openflexure.org/projects/microscope/build
+[microscope STL configurator]: https://microscope-stls.openflexure.org
 
 ## Standard builds of the microscope
 
@@ -35,7 +35,7 @@ The basic version of the microscope uses a webcam lens instead of a microscope o
 * [microscope stand](./parts/printed/microscope_stand.md) or back foot
   * ``microscope_stand_no_pi_.stl`` or ``microscope_stand-30.stl`` (holds Raspberry Pi) or ``back_foot.stl``
 
-This will need the nuts, bolts, etc. described on [the bill of materials page](./0_bill_of_materials.md), plus a camera module (for example a Raspberry Pi camera), and an option Raspberry Pi.  No other optical bits are required, except an LED for illumination.  
+This will need the nuts, bolts, etc. described on [the bill of materials page](./0_bill_of_materials.md), plus a camera module (for example a Raspberry Pi camera), and an option Raspberry Pi.  No other optical bits are required, except an LED for illumination.
 
 If you want to mount a Raspberry Pi underneath the microscope (our preferred option), print ``microscope_stand.stl`` instead.  If your Raspberry Pi is in a case already, you should print ``back_foot.stl`` so the microscope sits flat on a table.  Newer Raspberry Pi camera modules include a white circular tool for unscrewing the lens.  If you don't have one, you will need to print the lens gripper (marked as optional).
 
@@ -58,7 +58,7 @@ The version of the microscope used for scientific or medical research generally 
   * [vertical dovetail](./parts/printed/illumination_dovetail.md): ``illumination_dovetail.stl``
   * [condenser arm](./parts/printed/condenser.md): ``condenser.stl``
 * 2 [sample clips](./parts/printed/sample_clips.md): ``sample_clips.stl`` (contains both)
-* [optics module](./parts/printed/optics_module_casing.md):         
+* [optics module](./parts/printed/optics_module_casing.md):
   * ``optics_picamera_2_rms_f50d13.stl`` (transmission illumination) **Print this in black!**
   * ``optics_picamera_2_rms_f50d13_beamsplitter.stl`` (reflection illumination) **Print this in black!**
 * [microscope stand](./parts/printed/microscope_stand.md): ``microscope_stand-30.stl`` or ``microscope_stand-30-BS.stl`` (supports reflection illumination)

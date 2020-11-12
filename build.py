@@ -475,7 +475,7 @@ openscad(
 for motor_driver_electronics in ["sangaboard", "arduino_nano"]:
     outputs = f"{build_dir}/motor_driver_case_{motor_driver_electronics}.stl"
     parameters = {"motor_driver_electronics": motor_driver_electronics}
-    
+
     ninja.build(
         outputs,
         rule="openscad",
@@ -603,7 +603,7 @@ for tool in picamera_2_legacy_tools:
 output = "picamera_2_cover.stl"
 input = "cameras/picamera_2_cover.scad"
 parameters = {"camera": "picamera_2"}
-openscad(output, input, parameters)
+openscad(output, input, parameters, select_stl_if={"optics": set(rms_lenses)})
 
 
 #################
@@ -671,6 +671,13 @@ openscad(
     "reflection_illuminator.stl",
     "reflection_illuminator.scad",
     select_stl_if={"reflection_illumination": True},
+)
+
+
+openscad(
+    "just_leg_test.stl",
+    "just_leg_test.scad",
+    openscad_only_parameters={"big_stage": False},
 )
 
 

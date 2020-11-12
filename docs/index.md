@@ -2,7 +2,10 @@
 The OpenFlexure Microscope is a 3D printable microscope, with a very precise mechanical translation stage.  It can be fitted with basic webcam-based optics, or more expensive optics based on a traditional microscope objective for higher image quality.  It can also be motorised.  These instructions will take you through how to assemble the microscope optical and mechanical parts.
 
 ## Printing the parts
-Before we start, a note on printing - there are many possible versions of the microscope, so don't just print everything in the folder of STL files.  [Printing parts](./0_printing.md) describes the parts you will need to print for various different configurations.
+
+Configure your microscope hardware and download the STL files through the [microscope STL configurator] page. [Printing parts](./0_printing.md) describes the parts and print settings in more detail.
+
+[microscope STL configurator]: https://microscope-stls.openflexure.org
 
 ## Contents
 Assembly is broken up into several steps:
