@@ -47,22 +47,26 @@ module wall_vertex(r=wall_t/2, h=wall_h, x_tilt=0, y_tilt=0){
     // the legs
     smatrix(xz=tan(y_tilt), yz=-tan(x_tilt)) cylinder(r=r, h=h, $fn=8);
 }
-module inner_wall_vertex(leg_angle, x, h=wall_h, y_tilt=-999, y=-zflex_l-wall_t/2){
+module inner_wall_vertex(leg_angle, x, h=wall_h, thick=false){
     // A thin cylinder, close to one of the legs.  It
     // tilts inwards to clear the leg.  These form the
-    // stiffening "wall" that runs around the base of 
-    // the legs
+    // corners of the stiffening "wall" that runs around
+    // the base of the legs
     
-    // leg_angle specifies the leg, x is the X position
-    // of the vertex in that leg frame.  h is its height,
-    // y and y_tilt override position and angle in y
+    // leg_angle specifies which leg the wall is for
+    // (the legs are at +/-45 and +/-150 deg)
+    // x is the X position before rotation through leg_angle
+    // h is the wall height.
+    // If thick = true then the wall is double thickness.
     
     // unless specified, tilt the leg so the wall at the
     // edge is vertical (i.e. the bit at 45 degrees to
     // the leg frame)
-    y_tilt = (y_tilt==-999) ? (x>0?6:-6) : y_tilt;
+    y_tilt = x>0?6:-6;
+    y=-zflex_l-wall_t/2;
+    r = thick?wall_t:wall_t/2;
     leg_frame(leg_angle) translate([x,y,0]){
-            wall_vertex(h=h,x_tilt=6,y_tilt=y_tilt);
+            wall_vertex(r=r,h=h,x_tilt=6,y_tilt=y_tilt);
     }
 }
 
