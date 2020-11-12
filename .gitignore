@@ -34,3 +34,6 @@ build.ninja
 
 # Python cache
 __pycache__
+
+# Ignore the openflexure microscope extra folder if cloned in to test ninja build
+openflexure-microscope-extra/

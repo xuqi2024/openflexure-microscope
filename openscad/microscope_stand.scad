@@ -26,7 +26,7 @@ wall_thickness = 1.5; //default 1.5 - 2.35 is good for ABS
 raspi_support = 4.0;
 
 //TODO: move the pi-specific stuff into its own file
-raspi_board = [85, 58, 19]; //this is wrong, should be 85, 56, 19
+raspi_board = [85, 56, 19]; //this is wrong, should be 85, 56, 19
 
 include_breadboard_holes = true;
 
@@ -39,7 +39,7 @@ driver_width = 32.0;
 driver_length = 35.0;
 driver_support = 4.0;
 
-box_h = bottom_thickness + raspi_support + raspi_board[2] + 5;
+base_height = tall_bucket_base?45:30;
 
 module foot_footprint(tilt=0){
     // the footprint of one foot/actuator column
@@ -161,14 +161,14 @@ module footprint_after_pi_cutouts(){
     }
 }
 
-module bucket_base_stackable(local_h=box_h){
+module bucket_base_stackable(h=base_height){
     // The stackable "bucket" before holes and supports
     difference(){
         union(){
             sequential_hull(){
                 translate([0,0,0]) linear_extrude(d) offset(0) footprint();
-                translate([0,0,local_h-6]) linear_extrude(d) offset(0) footprint();
-                translate([0,0,local_h-d]) linear_extrude(inset_depth) offset(wall_thickness) footprint();
+                translate([0,0,h-6]) linear_extrude(d) offset(0) footprint();
+                translate([0,0,h-d]) linear_extrude(inset_depth) offset(wall_thickness) footprint();
             }
             
         }
@@ -176,18 +176,18 @@ module bucket_base_stackable(local_h=box_h){
         // hollow out the inside
         sequential_hull(){
             translate([0,0,bottom_thickness]) linear_extrude(d) offset(-wall_thickness) footprint();
-            translate([0,0,local_h-10]) linear_extrude(d) offset(-wall_thickness) footprint();
-            translate([0,0,local_h-d]) linear_extrude(d) difference(){
+            translate([0,0,h-10]) linear_extrude(d) offset(-wall_thickness) footprint();
+            translate([0,0,h-d]) linear_extrude(d) difference(){
                 offset(-3.0) footprint();
                 translate([-99, illumination_clip_y-14+10-999]) square(999);
                 each_actuator() translate([-99, actuating_nut_r-5]) square(999);
             }
-            translate([0,0,local_h]) linear_extrude(999) offset(0) footprint();
+            translate([0,0,h]) linear_extrude(999) offset(0) footprint();
         }
     }
 }
 
-module top_casing_block(local_h=box_h, os=0, legs=true, lugs=true){
+module top_casing_block(h=base_height, os=0, legs=true, lugs=true){
     // The "bucket" baseplate before holes and supports (i.e. a solid object)
     bottom = os<0?bottom_thickness:0;
     top_h = os<0?d:inset_depth;
@@ -196,39 +196,39 @@ module top_casing_block(local_h=box_h, os=0, legs=true, lugs=true){
             // The bottom part has a slightly cropped footprint, so the bridge over the SD card
             // can be straight.
             translate([0,0,bottom]) linear_extrude(d) offset(os) footprint_after_pi_cutouts();
-            translate([0,0,min(sd_card_cutout_top, local_h)]) linear_extrude(d) offset(os) footprint_after_pi_cutouts();
-            translate([0,0,local_h]) linear_extrude(d) offset(os) footprint();
+            translate([0,0,min(sd_card_cutout_top, h)]) linear_extrude(d) offset(os) footprint_after_pi_cutouts();
+            translate([0,0,h]) linear_extrude(d) offset(os) footprint();
         }
         hull_from(){
-            translate([0,0,local_h]) linear_extrude(2*d) offset(os) footprint();
+            translate([0,0,h]) linear_extrude(2*d) offset(os) footprint();
             
             //for(a=[0,180]) // I'm sure there used to be a good reason to do this in two stages, but
             // I cannot now remember what it was, and it seems to make no difference...
             // I think there was some strange issue with badly-formed meshes...
-            translate([0,0,local_h+foot_height]) linear_extrude(top_h) difference(){
+            translate([0,0,h+foot_height]) linear_extrude(top_h) difference(){
                 offset(os*2+wall_thickness) microscope_bottom(lugs=lugs, feet=false, legs=legs);
                 //rotate(a) translate([-999,0]) square(999*2);
             }
-            //if(legs) translate([0,0,local_h+foot_height-t]) linear_extrude(t+top_h) offset(os+1.5+t) microscope_legs();
+            //if(legs) translate([0,0,h+foot_height-t]) linear_extrude(t+top_h) offset(os+1.5+t) microscope_legs();
         }
-        if (os<0) translate([0,0,local_h+foot_height]) linear_extrude(2*inset_depth) offset(0) microscope_bottom(lugs=true);  
+        if (os<0) translate([0,0,h+foot_height]) linear_extrude(2*inset_depth) offset(0) microscope_bottom(lugs=true);  
     }
 }
 
-module bucket_base_with_microscope_top(local_h=box_h){
+module bucket_base_with_microscope_top(h=base_height){
     // A bucket base for the microscope, without cut-outs
     difference() {
         union() {
             difference(){
-                top_casing_block(local_h=local_h, os=0, legs=true);
+                top_casing_block(h=h, os=0, legs=true);
         
                 difference(){
                     // we hollow out the casing, but not underneath the legs or lugs.
-                    top_casing_block(local_h=local_h, os=-wall_thickness, legs=false, lugs=false);
+                    top_casing_block(h=h, os=-wall_thickness, legs=false, lugs=false);
                     for(p=base_mounting_holes) hull(){
                         // double-subtract under the mounting holes to make attachment points
-                        translate(p+[0,0,local_h+foot_height-4]) cylinder(r=4,h=4);
-                        translate(p*1.2 + [0,0,local_h+foot_height-4-norm(p)*0.3]) cylinder(r=4,h=4+norm(p)*0.3);
+                        translate(p+[0,0,h+foot_height-4]) cylinder(r=4,h=4);
+                        translate(p*1.2 + [0,0,h+foot_height-4-norm(p)*0.3]) cylinder(r=4,h=4+norm(p)*0.3);
                     }
                 }
   
@@ -236,14 +236,14 @@ module bucket_base_with_microscope_top(local_h=box_h){
         }   
      
         // cut-outs so the feet and legs can protrude downwards
-        translate([0,0,local_h+foot_height]) feet_in_place(grow_r=allow_space, grow_h=allow_space);
+        translate([0,0,h+foot_height]) feet_in_place(grow_r=allow_space, grow_h=allow_space);
         intersection(){
-            translate([0,0,local_h+foot_height+allow_space]) feet_in_place(grow_r=1.5*allow_space, grow_h=4*allow_space);
-            translate([0,0,local_h+foot_height]) cylinder(r=999,h=999,$fn=4);
+            translate([0,0,h+foot_height+allow_space]) feet_in_place(grow_r=1.5*allow_space, grow_h=4*allow_space);
+            translate([0,0,h+foot_height]) cylinder(r=999,h=999,$fn=4);
         }
-        translate([0,0,local_h+foot_height-allow_space]) linear_extrude(999) offset(1.5) microscope_legs();
+        translate([0,0,h+foot_height-allow_space]) linear_extrude(999) offset(1.5) microscope_legs();
         for(p=base_mounting_holes) if(p[0]>0) reflect([1,0,0]){ 
-            translate(p+[0,0,local_h+foot_height]) cylinder(r=3/2*1.7,h=20,$fn=3, center=true); //TODO: better self-tapping holes
+            translate(p+[0,0,h+foot_height]) cylinder(r=3/2*1.7,h=20,$fn=3, center=true); //TODO: better self-tapping holes
             // NB the reflect ensures that the triangular holes work for both y>0 lugs.
             // otherwise the x<0 one snaps when you screw into it.
             // TODO: nut traps underneath these holes
@@ -280,7 +280,7 @@ module mounting_holes(){
     }
 }
 
-module microscope_stand(){
+module microscope_stand(h=base_height){
     // A stand for the microscope, with integrated Raspberry Pi
     difference(){
         union(){
@@ -309,23 +309,16 @@ module microscope_stand(){
         mounting_holes();
         
         // if we are building for reflection illumination, cut out the front to allow access
-        if(beamsplitter) translate([0,0,local_h+foot_height]) rotate([90,0,0]) cylinder(d=30,h=999);
+        if(beamsplitter) translate([0,0,h+foot_height]) rotate([90,0,0]) cylinder(d=30,h=999);
         
     }
 }
 
 module sangaboard_connectors(){
+    //Create cutouts for sangaboard connectors
     pi_frame(){
-        // USB/network ports
         translate([raspi_board[0]/2,-1,1]) cube(raspi_board + [2,2,-1]);
-        // micro-USB power
-        //translate([10.6-10/2, -99, -2]) cube([10,100,8]);
-        // HDMI
         translate([10, -99, -2]) cube([35,100,18]);
-        // micro-SD card
-        //translate([0,raspi_board[1]/2+6,0]) cube([80,12,8], center=true);
-        //translate([-4,raspi_board[1]/2,0]) cube([16,12,20], center=true);
-       // translate([32-25/2,20,-5/2])cube([100,26,21]); // you need to uncomment this and comment the other above to use for low cost microscope.
     }
 }
 
@@ -417,7 +410,7 @@ module motor_driver_case(){
             translate([0,0,bottom_thickness+raspi_support]) sangaboard_connectors();
     
         // motor cables
-            translate([0,z_nut_y,box_h]) cube([20,50,15],center=true);
+            translate([0,z_nut_y,base_height]) cube([20,50,15],center=true);
         
             mounting_holes();
         }
@@ -428,10 +421,5 @@ module motor_driver_case(){
 }
 
 
-//top_shell();
-//feet_in_place();
-//footprint();
-
-//motor_driver_case();
 microscope_stand();
 

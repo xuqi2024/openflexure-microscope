@@ -110,8 +110,10 @@ class JsonGenerator:
                 # make sure it's the same as the set of used options
                 if set(opts) != changeable_options[k]:
                     raise Exception(
-                        "Options used does not equal documented options from option_docs, difference: "
-                        + str(set(opts).symmetric_difference(changeable_options[k]))
+                        "\nOptions compiled is not equal to documented options for:\n"
+                        f"key: {k}\n"
+                        f"documented option: {sorted(list(opts))}\n"
+                        f"STL options: {sorted(list(changeable_options[k]))}"
                     )
 
                 # replace the set with the list so we take on the ordering from option_docs

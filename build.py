@@ -19,10 +19,9 @@ stl_presets = [
             "camera": "picamera_2",
             "reflection_illumination": False,
             "motorised": True,
-            "base": "bucket",
             "pi_in_base": True,
-            "microscope_stand:h": 30,
-            "riser": "no riser",
+            "tall_bucket_base": False,
+            "slide_riser": False,
         },
     },
     {
@@ -34,10 +33,9 @@ stl_presets = [
             "use_pilens_optics_module": False,
             "camera": "picamera_2",
             "motorised": False,
-            "base": "bucket",
             "pi_in_base": True,
-            "microscope_stand:h": 30,
-            "riser": "no riser",
+            "tall_bucket_base": False,
+            "slide_riser": False,
         },
     },
     {
@@ -48,13 +46,13 @@ stl_presets = [
             "optics": "6ledcam_lens",
             "camera": "6ledcam",
             "motorised": False,
-            "base": "feet",
-            "microscope_stand:h": 30,
-            "riser": "no riser",
+            "pi_in_base": False,
+            "slide_riser": False,
         },
     },
 ]
 
+#TODO: Stop commenting out options and just put in a flag
 option_docs = [
     {
         "key": "optics",
@@ -76,16 +74,16 @@ option_docs = [
                 "title": "Pi Lens",
                 "description": "The lens included with the Raspberry Pi camera module, v1 or v2 (either will fit)",
             },
-            {
-                "key": "c270_lens",
-                "title": "C270 Lens",
-                "description": "The lens included with the Logitech C270 webcam",
-            },
-            {
-                "key": "m12_lens",
-                "title": "M12 Lens",
-                "description": "A typical M12 CCTV lens",
-            },
+            #{
+            #    "key": "c270_lens",
+            #    "title": "C270 Lens",
+            #    "description": "The lens included with the Logitech C270 webcam",
+            #},
+            #{
+            #    "key": "m12_lens",
+            #    "title": "M12 Lens",
+            #    "description": "A typical M12 CCTV lens",
+            #},
             {
                 "key": "6ledcam_lens",
                 "title": "6LED Camera Lens",
@@ -113,11 +111,11 @@ option_docs = [
                 "title": "Pi Camera",
                 "description": "The Raspberry Pi camera module, version 1 or 2",
             },
-            {
-                "key": "logitech_c270",
-                "title": "Logitech C270",
-                "description": "The Logitech C270 webcam",
-            },
+            #{
+            #    "key": "logitech_c270",
+            #    "title": "Logitech C270",
+            #    "description": "The Logitech C270 webcam",
+            #},
             {"key": "m12", "title": "M12 Camera", "description": "A M12 CCTV camera"},
             {
                 "key": "6ledcam",
@@ -137,14 +135,10 @@ option_docs = [
         "description": "Use unipolar stepper motors and a motor controller PCB to move the stage. The alternative is to use hand-actuated thumbwheels.",
     },
     {
-        "key": "riser",
-        "default": "no riser",
-        "description": "Type of riser to use on top of the stage for optics that require it. The slide riser is custom made for reproducable placement of microscope slides.",
-    },
-    {
-        "key": "base",
-        "default": "bucket",
-        "description": "Whether to use a bucket base style microscope stand. The alternative is to let it rest on its feet without housing any electronics inside it.",
+        "key": "slide_riser",
+        "default": False,
+        "advanced": True,
+        "description": "Also include slide riser an alternative to the standard sample clips.",
     },
     {
         "key": "reflection_illumination",
@@ -171,10 +165,10 @@ option_docs = [
         "description": "Use the normal motor gears instead of the thumbwheels with the hand-actuated version of the microscope.",
     },
     {
-        "key": "microscope_stand:h",
-        "description": "Height of the microscope bucket base stand in mm.  The default 30mm height should be fine, unless you're using an infinity-corrected optics module in which case you should select 45mm, to allow it to protrude further below the bottom of the main body.",
+        "key": "tall_bucket_base",
+        "description": "The tall bucket base is only needed if using the and infinity corrected RMS objective.",
         "advanced": True,
-        "default": 30,
+        "default": True,
     },
     {
         "key": "include_actuator_tension_band",
@@ -247,7 +241,7 @@ else:
 
 ninja.rule(
     "openscad",
-    command=f"{executable} $parameters $in -o $out -d $out.d",
+    command=f"{executable} --hardwarnings $parameters $in -o $out -d $out.d",
     depfile="$out.d",
 )
 
@@ -402,13 +396,10 @@ for sample_z in sample_z_options:
             if lens == "pilens":
                 select_stl_if["use_pilens_optics_module"] = True
 
-            if lens not in rms_lenses:
-                select_stl_if["riser"] = "no riser"
-
             if lens == "rms_infinity_f50d13":
-                select_stl_if["microscope_stand:h"] = 45
+                select_stl_if["tall_bucket_base"] = True
             else:
-                select_stl_if["microscope_stand:h"] = 30
+                select_stl_if["tall_bucket_base"] = False
 
             openscad(
                 output,
@@ -423,32 +414,26 @@ for sample_z in sample_z_options:
 ### MICROSCOPE STAND
 
 # Stand with pi
-for stand_height in [30, 45]:
-    beamsplitter = True
-    output = "microscope_stand_{stand_height}{beamsplitter}.stl".format(
-        stand_height=stand_height, beamsplitter="-BS" if beamsplitter else ""
-    )
+for tall_base in [True, False]:
 
-    openscad_only = {"beamsplitter": beamsplitter}
-
-    if stand_height == 45:
+    if tall_base:
+        output = "microscope_stand_tall.stl"
         compatible_lenses = ["rms_infinity_f50d13"]
     else:
+        output = "microscope_stand.stl"
         compatible_lenses = [l for l in all_lenses if l != "rms_infinity_f50d13"]
+    parameters = {"tall_bucket_base": tall_base}
+
+    select_stl_if = []
+    for optics in compatible_lenses:
+        select_stl_if.append({"pi_in_base": True, "optics": optics})
+
 
     openscad(
         output,
         "microscope_stand.scad",
-        openscad_only_parameters=openscad_only,
-        file_local_parameters={"h": stand_height},
-        select_stl_if=[
-            {
-                "pi_in_base": True,
-                "base": "bucket",
-                "optics": optics,
-            }
-            for optics in compatible_lenses
-        ],
+        parameters,
+        select_stl_if=select_stl_if,
     )
 
 # Stand without pi
@@ -456,7 +441,7 @@ openscad(
     "microscope_stand_no_pi.stl",
     input="microscope_stand_no_pi.scad",
     parameters={},
-    select_stl_if={"pi_in_base": False, "base": "bucket"},
+    select_stl_if={"pi_in_base": False},
 )
 
 #TODO: Make sure these are selectable from STL select
@@ -493,7 +478,6 @@ for sample_z in sample_z_options:
         }
 
         select_stl_if = {
-            "riser": "no riser",
             "optics": optics,
         }
 
@@ -521,7 +505,6 @@ for sample_z in sample_z_options:
             "camera": "picamera_2",
             "reflection_illumination": False,
             "use_pilens_optics_module": False,
-            "riser": "no riser",
         },
     )
 
@@ -550,9 +533,7 @@ openscad(output, input, parameters, select_stl_if={"optics": set(rms_lenses)})
 openscad(
     "slide_riser.stl",
     "slide_riser.scad",
-    parameters,
-    file_local_parameters={"h": 10},
-    select_stl_if={"riser": "slide"},
+    select_stl_if={"slide_riser": True},
 )
 
 
@@ -597,7 +578,7 @@ openscad(
     ],
 )
 
-openscad("sample_clips.stl", "sample_clips.scad", select_stl_if={"riser": "sample"})
+openscad("sample_clips.stl", "sample_clips.scad")
 
 openscad(
     "reflection_illuminator.stl",
@@ -633,15 +614,14 @@ if args.include_extra_files:
             select_stl_if={
                 "camera": camera,
                 "optics": f"{camera}_lens",
-                "riser": "no riser",
             },
         )
 
     copy_stl(
         "dashcam_and_6ledcam_mount_bottom.stl",
         select_stl_if=[
-            {"camera": "dashcam", "optics": "dashcam_lens", "riser": "no riser"},
-            {"camera": "6ledcam", "optics": "6ledcam_lens", "riser": "no riser"},
+            {"camera": "dashcam", "optics": "dashcam_lens"},
+            {"camera": "6ledcam", "optics": "6ledcam_lens"},
         ],
     )
 

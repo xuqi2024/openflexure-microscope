@@ -132,3 +132,5 @@ endstop_hole_offset=0;
 avoid_objective_xyfoot_offset=xy_actuator_travel-1.8;
 
 fl_cube_w = 16; //width of the fluorescence filter cube
+
+tall_bucket_base = false; //If true creates a taller bucket base for the infinity corrected optics.
