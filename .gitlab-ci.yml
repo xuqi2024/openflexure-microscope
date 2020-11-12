@@ -20,7 +20,7 @@ build:
       - git clone --depth=1 https://gitlab.com/openflexure/openflexure-microscope-extra
       # Build STL files with OpenSCAD
       - mkdir -p /root/.local/share
-      - ./build.py
+      - ./build.py --generate-stl-options-json --include-extra-files
 
     artifacts:
       expire_in: 1 week
