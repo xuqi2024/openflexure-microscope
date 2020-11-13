@@ -10,8 +10,7 @@ The selection for which extra STLs are coppied in is in build_stsyem/stl_copy
 '''
 
 import argparse
-from ninja import ninja
-from build_system.run_ninja import MicroscopeBuildWriter
+from build_system.run_ninja import MicroscopeBuildWriter, run_ninja
 
 parser = argparse.ArgumentParser(
     description="Run the OpenSCAD build for the Openflexure Microscope."
@@ -28,8 +27,9 @@ parser.add_argument(
 )
 args = parser.parse_args()
 
+#Use ninja to write a build.ninja file which specifies all the STLs to build
 with MicroscopeBuildWriter("builds", "build.ninja", args.generate_stl_options_json) as mbw:
     mbw.generate(args.include_extra_files)
 
-# Build "ninja.build" file we just created
-ninja()
+# Run the "ninja.build" file we just created, to generate STLs
+run_ninja()

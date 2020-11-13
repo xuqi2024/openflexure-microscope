@@ -50,12 +50,12 @@ option_docs = [
         "options": [
             {
                 "key": "rms_f50d13",
-                "title": "RMS F50D13",
+                "title": "RMS Objective and f50d13 lens",
                 "description": "An RMS-threaded microscope objective with 160mm tube length, and a 12.7mm diameter, 50mm focal length achromatic doublet lens.",
             },
             {
                 "key": "rms_infinity_f50d13",
-                "title": "RMS Infinity F50D13",
+                "title": "RMS Infinity Objective and f50d13 lens",
                 "description": "An RMS-threaded, infinity-corrected microscope objective with a 12.7mm diameter, 50mm focal length achromatic doublet lens.",
             },
             {
@@ -83,11 +83,11 @@ option_docs = [
                 "title": "Dashcam Lens",
                 "description": "The lens that comes with the camera of a cheap dashcam e.g. the RangeTour B90 (though it may be sold under different names).",
             },
-            {
-                "key": "rms_f40d16",
-                "title": "RMS F40D16",
-                "description": "An RMS-threaded microscope objective with 160mm tube length, and a 16mm diameter, 40mm focal length lens (no longer recommended due to poor quality at the edges of the image)",
-            },
+            #{
+            #    "key": "rms_f40d16",
+            #    "title": "RMS F40D16",
+            #    "description": "An RMS-threaded microscope objective with 160mm tube length, and a 16mm diameter, 40mm focal length lens (no longer recommended due to poor quality at the edges of the image)",
+            #},
         ],
     },
     {
@@ -122,6 +122,23 @@ option_docs = [
         "key": "motorised",
         "default": True,
         "description": "Use unipolar stepper motors and a motor controller PCB to move the stage. The alternative is to use hand-actuated thumbwheels.",
+    },
+    {
+        "key": "motor_driver_electronics",
+        "default": "sangaboard",
+        "description": "The type of electronics used to drive the motors",
+        "options": [
+            {
+                "key": "sangaboard",
+                "title": "Sangaboard",
+                "description": "A v0.3 Sangaboard. (Custom board)",
+            },
+            {
+                "key": "arduino_nano",
+                "title": "Ardunio Nano",
+                "description": "Homemade driver using Arduino Nano and the driver boards that come with the motors.",
+            },
+        ]
     },
     {
         "key": "slide_riser",

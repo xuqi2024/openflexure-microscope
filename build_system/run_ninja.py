@@ -1,7 +1,10 @@
-
+'''
+In this submodule we create a class that can writes and "ninja.build" file. There
+is also a function "run_ninja()" which runs this file.
+'''
 import sys
 import os
-from ninja import Writer
+from ninja import Writer, ninja
 
 from .util import parameters_to_string
 from .json_generator import JsonGenerator
@@ -9,6 +12,15 @@ from .stl_options import stl_presets, option_docs, required_stls
 from .stl_generator import generate_stls
 from .stl_copy import copy_extra_stls
 
+def run_ninja():
+    '''
+    This runs the ninja on the `ninja.build` file. We have to purge sys.args as
+    part of this due to the strange way ninja works.
+    '''
+    #The python ninja function jsut wraps the C execution. This reads the args
+    # so we have to clear them. This is horrible
+    sys.argv = [sys.argv[0]]
+    ninja()
 
 class MicroscopeBuildWriter():
     def __init__(self, build_dir, build_filename, generate_stl_options_json=False):
