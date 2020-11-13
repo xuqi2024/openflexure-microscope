@@ -1,6 +1,6 @@
 /******************************************************************
 *                                                                 *
-* OpenFlexure Microscope: Illumination arm                        *
+* OpenFlexure Microscope: Dovetail                                *
 *                                                                 *
 * This is part of the OpenFlexure microscope, an open-source      *
 * microscope and 3-axis translation stage.  It gets really good   *

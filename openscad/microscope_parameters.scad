@@ -35,9 +35,9 @@ optics = "rms_f50d13"; //see optics.scad for valid values
 led_r = 4.5/2; //size of the LED used for illumination
 endstops = false; //whether to build mounts for optical endstops inside the microscope.
 feet_endstops = false; //whether to include cut-outs for endstop switches in the feet. 
-beamsplitter = false; //enables a cut-out in some optics modules for a beamsplitter
+beamsplitter = true; //enables a cut-out in some optics modules for a beamsplitter
 smart_brim_r = 5;
-enable_smart_brim = false;
+enable_smart_brim = true;
 
 // This sets the basic geometry of the microscope
 sample_z = 75; // z position of sample
@@ -53,7 +53,7 @@ z_strut_l = 18; //length of struts supporting Z carriage
 objective_mount_y = 18; // y position of clip for optics
 objective_mount_nose_w = 6; // width of the pointy end of the mount
 condenser_clip_w = 14; // width of the dovetail clip for the condenser
-foot_height=feet_endstops?15:15; //the endstops need a bit of extra height (or not)
+foot_height=15;
 
 // These variables set the dimensions of flexures
 // You might want to tweak them if your material (or printer)
@@ -82,7 +82,7 @@ leg_middle_w = 12; // width of the middle part of each leg
 actuator_h = 25; //height of the actuator columns
 dz = 0.5; //small increment in Z (~ 2 layers)
 
-leg_outer_w = leg_middle_w + 2*zflex_l + 2*leg[0]; // overall width of parallelogram legs that support the stagef
+leg_outer_w = leg_middle_w + 2*zflex_l + 2*leg[0]; // overall width of parallelogram legs that support the stage
 actuator = [3*1.2+2*2,(flex_z2 - flex_z1)*xy_lever_ratio,6]; // dimensions of the core part of the actuating levers for X and Y - NB should match the column_base_r in compact_nut_seat.scad
 actuating_nut_r = (flex_z2 - flex_z1)*xy_lever_ratio; // distance from leg_r to the actuating nut/screw for the XY axes
 xy_actuator_travel = actuating_nut_r*0.15; // distance moved by XY axis actuators
@@ -112,7 +112,7 @@ illumination_clip_y = (-(leg_r-zflex_l-wall_t/2+leg_outer_w/2)/sqrt(2)
                       // illumination/back foot.  This is set to
                       // coincide with the wall between the back
                       // two legs. TODO: remove this
-illumination_arm_screws = [[20,z_nut_y,leg_height-2],[-20,z_nut_y,leg_height-2], 
+illumination_dovetail_screws = [[20,z_nut_y,leg_height-2],[-20,z_nut_y,leg_height-2], 
                            [0,(leg_r + leg_outer_w)/sqrt(2) + 4,leg_height-2]];
                       // positions of screws that mount the adjustable version of the 
                       // illumination arm
@@ -132,3 +132,5 @@ endstop_hole_offset=0;
 avoid_objective_xyfoot_offset=xy_actuator_travel-1.8;
 
 fl_cube_w = 16; //width of the fluorescence filter cube
+
+tall_bucket_base = false; //If true creates a taller bucket base for the infinity corrected optics.

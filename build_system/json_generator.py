@@ -17,7 +17,7 @@ class JsonGenerator:
     def register(
         self,
         output,
-        input,
+        input_file,
         parameters=None,
         file_local_parameters=None,
         select_stl_if=None,
@@ -28,7 +28,7 @@ class JsonGenerator:
         Arguments:
             self {JsonGenerator}
             output {str} -- file path of the output stl file
-            input {str} -- file path of the input scad file
+            input_file {str} -- file path of the input scad file
             parameters {dict} -- values of globally used parameters
             file_local_parameters {dict} -- values of parameters only used for this specific scad file
             openscad_only_parameters {dict} -- values of parameters only used by openscad, ignored for stl selection
@@ -52,7 +52,7 @@ class JsonGenerator:
         for select in ssif:
             # prefix any file-local parameters with the input file name so they
             # don't overwrite any global parameters
-            prefix = os.path.splitext(input)[0] + ":"
+            prefix = os.path.splitext(input_file)[0] + ":"
             flp_prefixed = {}
             for k, v in file_local_parameters.items():
                 flp_prefixed[prefix + k] = v
@@ -62,7 +62,7 @@ class JsonGenerator:
             )
             stl_option_params = {**parameters, **select, **flp_prefixed}
             self._stl_options.append(
-                {"stl": output, "input": input, "parameters": stl_option_params}
+                {"stl": output, "input_file": input_file, "parameters": stl_option_params}
             )
 
     def write(self):
@@ -110,8 +110,10 @@ class JsonGenerator:
                 # make sure it's the same as the set of used options
                 if set(opts) != changeable_options[k]:
                     raise Exception(
-                        "Options used does not equal documented options from option_docs, difference: "
-                        + str(set(opts).symmetric_difference(changeable_options[k]))
+                        "\nOptions compiled is not equal to documented options for:\n"
+                        f"key: {k}\n"
+                        f"documented option: {sorted(list(opts))}\n"
+                        f"STL options: {sorted(list(changeable_options[k]))}"
                     )
 
                 # replace the set with the list so we take on the ordering from option_docs

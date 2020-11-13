@@ -155,18 +155,6 @@ module camera_mount_body(
     }
 }
 
-module rms_mount_and_tube_lens_gripper(){
-    // This assembly holds an RMS objective and a correcting
-    // "tube" lens.  I dont think this is used any more...
-    union(){
-        lens_gripper(lens_r=rms_r, lens_h=lens_assembly_h-2.5,h=lens_assembly_h, base_r=lens_assembly_base_r);
-        lens_gripper(lens_r=tube_lens_r, lens_h=3.5,h=6);
-        difference(){
-            cylinder(r=tube_lens_aperture + 1.0,h=2);
-            cylinder(r=tube_lens_aperture,h=999,center=true);
-        }
-    }
-}
 
 module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20, 
     tube_lens_r=16/2+0.2, objective_parfocal_distance=45, tube_length=150, fluorescence=false, gripper_t=1, dovetail=true){
@@ -209,8 +197,10 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
     // having calculated where the lens should go, now make the mount:
     lens_assembly_z = tube_lens_z - pedestal_h; //height of lens assembly
     lens_assembly_base_r = rms_r+1; //outer size of the lens grippers
-    lens_assembly_h = sample_z-lens_assembly_z-objective_parfocal_distance; //the
-        //objective sits parfocal_distance below the sample
+
+    //the objective sits parfocal_distance below the sample
+    lens_assembly_h = sample_z-lens_assembly_z-objective_parfocal_distance; 
+
     union(){
         // The bottom part is just a camera mount with a flat top
         difference(){
@@ -244,8 +234,7 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
                 }
             }
             translate([0,0,lens_assembly_h-5]) inner_thread(radius=radius,threads_per_mm=pitch,thread_base_width = 0.60,thread_length=5);
-            // gripper for the objective (disabled in favour of the thread)
-            //lens_gripper(lens_r=rms_r, lens_h=lens_assembly_h-2.5,h=lens_assembly_h, base_r=lens_assembly_base_r, t=gripper_t);
+
             // gripper for the tube lens
             lens_gripper(lens_r=tube_lens_r, lens_h=pedestal_h+1,h=pedestal_h+1+2.5, t=gripper_t);
             // pedestal to raise the tube lens up within the gripper
@@ -258,136 +247,11 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
 }
 
 
-module rms_camera_tube(tube_length=150){
-    // This optics module takes an RMS objective and a tube length correction lens.
-    // important parameters are below:
-        
-    rms_r = 20/2; //radius of RMS thread, to be gripped by the mount
-    //tube_lens_r (argument) is the radius of the tube lens
-    //tube_lens_ffd (argument) is the front focal distance (from flat side to focus) - measure this, or take it from the lens spec. sheet
-    //tube_lens_f (argument) is the nominal focal length of the tube lens.
-    //tube_length (argument) is the distance behind the objective's "shoulder" where the image is formed.  This should be 150 for 160mm tube length objectives (the image is formed ~10mm from the end of the tube).
-    
-    
-    lens_assembly_z = bottom + tube_length - 10; //height of lens assembly
-    lens_assembly_base_r = rms_r+1; //outer size of the lens grippers
-    lens_assembly_h = 10; //the
-        //objective sits parfocal_distance below the sample
-    union(){
-        // The bottom part is just a camera mount with a flat top
-        difference(){
-            // camera mount with a body that's shorter than the dovetail
-            camera_mount_body(body_r=lens_assembly_base_r, bottom_r=10.5, body_top=lens_assembly_z, dt_top=lens_assembly_z+5,fluorescence=false, dt_waist=false);
-            // camera cut-out and hole for the beam
-            optical_path(6, lens_assembly_z);
-            // make sure it makes contact with the lens gripper, but
-            // doesn't foul the inside of it
-            translate([0,0,lens_assembly_z]) lens_gripper(lens_r=rms_r-d, lens_h=lens_assembly_h-2.5,h=lens_assembly_h, base_r=lens_assembly_base_r-d, solid=true); //same as the big gripper below
-            
-        }
-        // A pair of nested lens grippers to hold the objective
-        translate([0,0,lens_assembly_z]){
-            // gripper for the objective
-            lens_gripper(lens_r=rms_r, lens_h=lens_assembly_h-2.5,h=lens_assembly_h, base_r=lens_assembly_base_r);
-        }
-    }
-}
-
-module optics_module_trylinder(
-        lens_r = 14/2, //radius of lens
-        parfocal_distance = 20, //distance from back of lens to sample
-        lens_h = 5.5 //height of lens (will be gripped 1mm below)
-    ){
-    // This optics module grips a single lens at the top.
-    lens_aperture = lens_r - 1.5; // clear aperture of the lens
-    pedestal_h = 4; // extra height on the gripper, to allow it to flex
-    dovetail_top = min(27, sample_z-parfocal_distance+lens_h-1); //height of the top of the dovetail
-    
-    lens_z = sample_z - parfocal_distance; //axial position of lens
-        
-    // having calculated where the lens should go, now make the mount:
-    lens_assembly_z = lens_z - pedestal_h; //height of lens assembly
-    lens_assembly_base_r = lens_r+1; //outer size of the lens grippers
-    lens_assembly_h = lens_h + pedestal_h; //the
-                                            //lens sits parfocal_distance below the sample
-    union(){
-        // The bottom part is just a camera mount with a flat top
-        difference(){
-            // camera mount with a body that's shorter than the dovetail
-            camera_mount_body(body_r=lens_assembly_base_r, bottom_r=7, body_top=lens_assembly_z, dt_top=min(lens_assembly_z, z_flexures_z2));
-            // camera cut-out and hole for the beam
-            optical_path(lens_aperture, lens_assembly_z);
-        }
-        // A lens gripper to hold the objective
-        translate([0,0,lens_assembly_z]){
-            // gripper
-            trylinder_gripper(inner_r=lens_r, grip_h=lens_assembly_h-1.5,h=lens_assembly_h, base_r=lens_assembly_base_r, flare=0.4, squeeze=lens_r*0.15);
-            // pedestal to raise the tube lens up within the gripper
-            difference(){
-                cylinder(r=lens_aperture + 1.0,h=pedestal_h);
-                cylinder(r=lens_aperture,h=999,center=true);
-            }
-        }
-    }
-}
-
-module condenser(){
-    // A simple one-lens condenser, re-imaging the LED onto the sample.
-    lens_z = 17;
-    pedestal_h = 3;
-    lens_r = 13/2;
-    aperture_r = lens_r-1.1;
-    lens_t = 1;
-    base_r = lens_r+2;
-    union(){
-        //lens gripper to hold the plastic asphere
-        translate([0,0,lens_z-pedestal_h]){
-            // gripper
-            trylinder_gripper(inner_r=lens_r, grip_h=pedestal_h + lens_t/3,h=pedestal_h+lens_t+1.5, base_r=base_r, flare=0.5);
-            // pedestal to raise the tube lens up within the gripper
-            difference(){
-                cylinder(r=aperture_r+0.8,h=pedestal_h);
-                cylinder(r=aperture_r,h=999,center=true);
-            }
-        }
-        //bottom part
-        difference(){
-            union(){
-                cylinder(r=base_r, h=lens_z-pedestal_h+d);
-                //dovetail
-                translate([0,condenser_clip_y,0]) mirror([0,1,0]) dovetail_m([condenser_clip_w,4,lens_z-pedestal_h]);
-            }
-            
-            //LED
-            deformable_hole_trylinder(led_r,led_r+0.7,h=20, center=true);
-            cylinder(r=led_r+1.0,h=2,center=true);
-            translate([0,0,2-d]) cylinder(r1=led_r+1.0, r2=led_r,h=2,center=true);
-            
-            //beam
-            translate([0,0,5]) cylinder(r1=led_r,r2=aperture_r,h=lens_z-5);
-        }
-    }
-}
 //optics="beamsplitter_led_mount";
 //optics="rms_f50d13";
 //camera="picamera2";
 difference(){
-    if(optics=="pilens"){
-        // Optics module for picamera v2 lens, using trylinder
-        optics_module_trylinder(
-            lens_r = 3, 
-            parfocal_distance = 6,
-            lens_h = 2.5
-        );
-        if(sample_z > 40) echo("Warning: using the pi camera lens with a tall stage gives fuzzy images!");
-    }else if(optics=="c270_lens"){
-        // Optics module for logitech C270 lens
-        optics_module_trylinder(
-            lens_r = 6,
-            parfocal_distance = 6, //NB with 6 here the PCB is a bit low
-            lens_h = 2
-        );
-    }else if(optics=="rms_f40d16"){
+    if(optics=="rms_f40d16"){
         // Optics module for RMS objective, using Comar 40mm singlet tube lens
         optics_module_rms(
             tube_lens_ffd=38, 
@@ -410,20 +274,5 @@ difference(){
             tube_length=(optics=="rms_f50d13" ? 150 : 99999) //use 150 for standard finite-conjugate objectives (cheap ones) or 9999 for infinity-corrected lenses (usually more expensive).
         );
         if(sample_z < 60 || objective_mount_y < 12) echo("Warning: RMS objectives won't fit in small microscope frames!");
-    }else if(optics=="m12_lens"){
-        // Optics module for USB camera's M12 lens
-        optics_module_trylinder(
-            lens_r = 14/2,
-            parfocal_distance = 21, //22 for high-res lens
-            lens_h = 5.5
-        );
-        if(objective_mount_y < 10) echo("Warning: M12 lenses won't fit in small frames");
     }
-    
-    //picam_cover();
-    //translate([0,objective_mount_y-7,0]) rotate([90,0,0]) cylinder(r=999,h=999,$fn=8);
-    //mirror([0,0,1]) cylinder(r=999,h=999,$fn=8);
-    //C270 lens could be a trylinder gripper, with lens_r=12.0, lens_h=1 and a pedestal that is smaller than the gripper by more than the usual amount (say 1mm space)
-    //translate([0,0,21]) mirror([0,0,1]) cylinder(r=999,h=999);
 }
-//condenser();

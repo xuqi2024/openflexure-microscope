@@ -15,9 +15,7 @@
 use <./utilities.scad>;
 use <./compact_nut_seat.scad>;
 use <./logo.scad>;
-use <./dovetail.scad>;
 use <./z_axis.scad>;
-use <./gears.scad>;
 use <./wall.scad>;
 use <./main_body_transforms.scad>;
 use <./reflection_illuminator.scad>;
@@ -93,10 +91,6 @@ module actuator_silhouette(h=999){
     }
 }
 
-module back_foot_mounting_screw(d=3*0.95, h=16, center=true){
-    translate([0,illumination_clip_y+3,0]) cylinder(d=d, h=h,center=center);
-}
-
 module mounting_hole_lugs(){
     // lugs either side of the XY table to bolt the microscope down
     //these are to mount onto the baseplate 
@@ -115,21 +109,23 @@ module xy_limit_switch_mount(d=3.3*2, h=6){
 
 
 // The "wall" that forms most of the microscope's structure
-module wall_inside_xy_stage(beamsplitter=false){
-    front_wall_height = beamsplitter ? zawall_h : wall_h;
+module wall_inside_xy_stage(){
+
     // First, go around the inside of the legs, under the stage.
     // This starts at the Z nut seat.  I've split it into two
     // blocks, because the shape is not convex so the base
     // would be bigger than the walls otherwise.
     reflect([1,0,0]) sequential_hull(){
-        //inner_wall_vertex(-45, -leg_outer_w/2-wall_t/2, zbwall_h);
         mirror([1,0,0]) z_bridge_wall_vertex();
         z_bridge_wall_vertex();
         inner_wall_vertex(45, -leg_outer_w/2, zawall_h);
         z_anchor_wall_vertex();
         inner_wall_vertex(135, leg_outer_w/2, zawall_h);
-        inner_wall_vertex(135, -leg_outer_w/2, front_wall_height);
-        inner_wall_vertex(-135, leg_outer_w/2, front_wall_height);
+        //The wall that has the reflection illumination cut-out is double thickness
+        // to improve stiffness
+        inner_wall_vertex(135, -(leg_outer_w/2-wall_t/2), zawall_h, thick=true);
+        inner_wall_vertex(-135, leg_outer_w/2-wall_t/2, zawall_h, thick=true);
+
     };    
 
 }
@@ -256,7 +252,7 @@ module main_body(){
 		union(){
             ////////////// Reinforcing wall and base /////////////////
             //Add_hull_base generates the flat base of the structure.  
-            add_hull_base(base_t) wall_inside_xy_stage(beamsplitter=beamsplitter);
+            add_hull_base(base_t) wall_inside_xy_stage();
             // add mounts for the optical end-stops for X and Y
             reflect([1,0,0]) hull(){
                 inner_wall_vertex(45, -9, zawall_h);
@@ -272,19 +268,12 @@ module main_body(){
                 wall_vertex(h=base_t);
             }
             mounting_hole_lugs(); //lugs to bolt the microscope down
-            
-            //screw supports for adjustment of condenser angle/position
-            // (only useful if screws=true in the illumination arm)
-            back_foot_mounting_screw(h=10,d=6,center=false);
-            // clip for illumination/back foot (if not using screws)
-            translate([0,illumination_clip_y,0]) mirror([0,1,0]) dovetail_m([12,2,12]);
                     
 		}
         //////  Things we need to cut out holes for... ///////////
-        // Beamsplitter cube
-        if (beamsplitter) {
-            fl_cube_cutout();
-        }
+
+        // Cut-out for reflection optics
+        fl_cube_cutout();
 
         // XY actuator cut-outs
 		each_actuator(){
@@ -313,15 +302,11 @@ module main_body(){
             }
 		}
         
-        //post mounting holes 
+        //post mounting holes (2 near z actuator, 2 in mounting lugs)
         for(p=base_mounting_holes) translate(p){ 
              cylinder(r=3/2*1.1,h=50,center=true); 
              translate([0,0,3]) cylinder(r=3*1.1, h=22); 
         }
-        
-        // screw holes for adjustment of condenser angle/position
-        // (only useful if screws=true in the illumination arm)
-        back_foot_mounting_screw(h=18,d=3*0.95,center=true);
         
         //////////////// logo and version string /////////////////////
         size = 0.25;
@@ -343,15 +328,10 @@ module main_body(){
         z_axis_clearance(); //make sure the actuator can get in ok!
     }
 }
-//%rotate(180) translate([0,2.5,-2]) cube([25,24,2],center=true);
+
 
 // If this file is "included" rather than "used", render the main body.
 exterior_brim(r=enable_smart_brim ? smart_brim_r : 0){
-    difference(){
-        main_body();
-        
-        //reflect([1,0,0]) translate([13.5,0,0]) rotate([0,90,0]) cylinder(r=999,h=999,$fn=4);
-        //rotate([90,0,0]) cylinder(r=999,h=999,$fn=4);
-        //translate([0,0,50]) cylinder(r=999,h=999,$fn=4);
-    }
+    main_body();
 }
+

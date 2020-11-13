@@ -269,7 +269,8 @@ module lighttrap_cylinder(r1,r2,h,ridge=1.5){
     //r1 is the outer radius of the bottom
     //r2 is the inner radius of the top
     //NB for a straight-sided cylinder, r2==r1-ridge
-    n_cones = floor(h/ridge);
+
+    n_cones = max(floor(h/ridge),1);//there must be at least one cone or we divide by zero
     cone_h = h/n_cones;
     
 	for(i = [0 : n_cones - 1]){
@@ -290,7 +291,8 @@ module lighttrap_sqylinder(r1,f1,r2,f2,h,ridge=1.5){
     //NB for a straight-sided cylinder, r2==r1-ridge
     //Also, the ridges are made by varying r, not f.  This means there's a minimum r1
     //which is the value of ridge.
-    n_cones = floor(h/ridge);
+
+    n_cones = max(floor(h/ridge),1); //there must be at least one cone or we divide by zero
     cone_h = h/n_cones;
     
 	for(i = [0 : n_cones - 1]){

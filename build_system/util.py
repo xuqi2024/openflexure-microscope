@@ -62,3 +62,26 @@ def merge_dicts(d1, d2):
                 merged[k].add(v)
 
     return merged
+
+
+
+def parameters_to_string(parameters):
+    """
+    Build an OpenScad parameter arguments string from a variable name and value
+
+    Arguments:
+        parameters {dict} -- Dictionary of parameters
+    """
+    strings = []
+    for name in parameters:
+        value = parameters[name]
+        # Convert bools to lowercase
+        if type(value) == bool:
+            value = str(value).lower()
+        # Wrap strings in quotes
+        elif type(value) == str:
+            value = f'"{value}"'
+
+        strings.append("-D '{}={}'".format(name, value))
+
+    return " ".join(strings)

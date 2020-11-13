@@ -51,7 +51,9 @@ module slide_riser(h=.6, thickness=4){
     clip_l = 30;
     clip_w = 7;
     clip_r = 12;
-    clip_overlap = 5; //this is reduced by the tilt!
+    // Distance clip overlaps with slide position.
+    // This is reduced by the tilted cutout:
+    clip_overlap = 5; 
     clip_y = clip_overlap+y_space;
     clip_angle_h = 1+h+slide[2];
     handle_end = 75;
@@ -60,17 +62,21 @@ module slide_riser(h=.6, thickness=4){
             difference(){
                 union(){
                     slide_riser_base(h,thickness, y_space);
+                    // This is the bar that froms the stationary handle.
+                    // It is very long and will be cut down later.
                     translate([-999+30,slide[1]/2+y_space,0]) cube([999,9,12]);
                 }
 
+                //space for clip to push through
                 translate([-slide[1]/2+2,0, -1]) cube([slide[1]-4,999,clip_w+3]);
-                //
-                //mounting holes
+
+                //counter bored mounting holesmounting holes
                 each_leg() translate([0,-stage_hole_inset,0]){
-                    cylinder(r=3/2*1.15,h=999,center=true); //mounting holes
-                    translate([0,0,thickness+d])cylinder(r=3*1.15,h=999); //mounting holes
+                    cylinder(r=3/2*1.15,h=999,center=true);
+                    translate([0,0,thickness+d])cylinder(r=3*1.15,h=999);
                 } 
             }
+            //Clip and handle
             translate([-clip_l+4,slide[1]/2+y_space,0]){
                 difference(){
                     translate([0,0,clip_w/2])rotate([-90,0,0])rotate([0,0,-90]){
@@ -90,8 +96,6 @@ module slide_riser(h=.6, thickness=4){
 
 h=.6;
 slide_riser(h);
-
-
 
 // Comment this back in to see slide position
 // translate([0,0,h+slide[2]/2]) cube(slide,center=true);
