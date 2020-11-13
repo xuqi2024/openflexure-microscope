@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 import argparse
 from ninja import Writer, ninja as run_build
@@ -6,202 +6,7 @@ import os
 import sys
 
 from build_system.json_generator import JsonGenerator
-
-#TODO: Remove base=feet option. We have killed the back foot, and will use the short base in future.
-
-stl_presets = [
-    {
-        "key": "high_resolution_raspberry_pi",
-        "title": "High Resolution with Raspberry Pi",
-        "description": "A microscope using the Raspberry Pi camera and  high resolution optics, as used for medical work.",
-        "parameters": {
-            "optics": "rms_f50d13",
-            "camera": "picamera_2",
-            "reflection_illumination": False,
-            "motorised": True,
-            "pi_in_base": True,
-            "tall_bucket_base": False,
-            "slide_riser": False,
-        },
-    },
-    {
-        "key": "basic_raspberry_pi",
-        "title": "Basic with Raspberry Pi",
-        "description": "A basic microscope using the Raspberry Pi camera and simple optics. Best suited for low resolution microscopy and educational workshops.",
-        "parameters": {
-            "optics": "pilens",
-            "use_pilens_optics_module": False,
-            "camera": "picamera_2",
-            "motorised": False,
-            "pi_in_base": True,
-            "tall_bucket_base": False,
-            "slide_riser": False,
-        },
-    },
-    {
-        "key": "low_cost_webcam",
-        "title": "Low Cost with Webcam",
-        "description": "The cheapest possible option using a computer webcam.",
-        "parameters": {
-            "optics": "6ledcam_lens",
-            "camera": "6ledcam",
-            "motorised": False,
-            "pi_in_base": False,
-            "slide_riser": False,
-        },
-    },
-]
-
-#TODO: Stop commenting out options and just put in a flag
-option_docs = [
-    {
-        "key": "optics",
-        "default": "rms_f50d13",
-        "description": "The type of lens you'd like to use on your microscope.",
-        "options": [
-            {
-                "key": "rms_f50d13",
-                "title": "RMS F50D13",
-                "description": "An RMS-threaded microscope objective with 160mm tube length, and a 12.7mm diameter, 50mm focal length achromatic doublet lens.",
-            },
-            {
-                "key": "rms_infinity_f50d13",
-                "title": "RMS Infinity F50D13",
-                "description": "An RMS-threaded, infinity-corrected microscope objective with a 12.7mm diameter, 50mm focal length achromatic doublet lens.",
-            },
-            {
-                "key": "pilens",
-                "title": "Pi Lens",
-                "description": "The lens included with the Raspberry Pi camera module, v1 or v2 (either will fit)",
-            },
-            #{
-            #    "key": "c270_lens",
-            #    "title": "C270 Lens",
-            #    "description": "The lens included with the Logitech C270 webcam",
-            #},
-            #{
-            #    "key": "m12_lens",
-            #    "title": "M12 Lens",
-            #    "description": "A typical M12 CCTV lens",
-            #},
-            {
-                "key": "6ledcam_lens",
-                "title": "6LED Camera Lens",
-                "description": "The lens that comes with a cheap '6LED' camera.",
-            },
-            {
-                "key": "dashcam_lens",
-                "title": "Dashcam Lens",
-                "description": "The lens that comes with the camera of a cheap dashcam e.g. the RangeTour B90 (though it may be sold under different names).",
-            },
-            {
-                "key": "rms_f40d16",
-                "title": "RMS F40D16",
-                "description": "An RMS-threaded microscope objective with 160mm tube length, and a 16mm diameter, 40mm focal length lens (no longer recommended due to poor quality at the edges of the image)",
-            },
-        ],
-    },
-    {
-        "key": "camera",
-        "default": "picamera_2",
-        "description": "The type of camera to use with your microscope.",
-        "options": [
-            {
-                "key": "picamera_2",
-                "title": "Pi Camera",
-                "description": "The Raspberry Pi camera module, version 1 or 2",
-            },
-            #{
-            #    "key": "logitech_c270",
-            #    "title": "Logitech C270",
-            #    "description": "The Logitech C270 webcam",
-            #},
-            {"key": "m12", "title": "M12 Camera", "description": "A M12 CCTV camera"},
-            {
-                "key": "6ledcam",
-                "title": "6LED",
-                "description": "A cheap USB '6 LED' Webcam",
-            },
-            {
-                "key": "dashcam",
-                "title": "Dashcam",
-                "description": "A cheap dash cam where a screen and camera are sold as one , e.g. RangeTour B90s (it may be sold under different names as well)",
-            },
-        ],
-    },
-    {
-        "key": "motorised",
-        "default": True,
-        "description": "Use unipolar stepper motors and a motor controller PCB to move the stage. The alternative is to use hand-actuated thumbwheels.",
-    },
-    {
-        "key": "slide_riser",
-        "default": False,
-        "advanced": True,
-        "description": "Also include slide riser an alternative to the standard sample clips.",
-    },
-    {
-        "key": "reflection_illumination",
-        "default": False,
-        "advanced": True,
-        "description": "Enable the microscope modifications required for reflection illumination and fluorescence microscopy.",
-    },
-    {
-        "key": "pi_in_base",
-        "default": True,
-        "advanced": True,
-        "description": "Whether you'd like to house a Raspberry Pi in the bucket base.",
-    },
-    {
-        "key": "include_actuator_drilling_jig",
-        "description": "This part is very much optional, and is only useful for cleaning up slightly dodgy prints, if the 3mm hole in the actuator has printed too small.",
-        "advanced": True,
-        "default": False,
-    },
-    {
-        "key": "use_motor_gears_for_hand_actuation",
-        "default": False,
-        "advanced": True,
-        "description": "Use the normal motor gears instead of the thumbwheels with the hand-actuated version of the microscope.",
-    },
-    {
-        "key": "tall_bucket_base",
-        "description": "The tall bucket base is only needed if using the and infinity corrected RMS objective.",
-        "advanced": True,
-        "default": True,
-    },
-    {
-        "key": "include_actuator_tension_band",
-        "default": False,
-        "advanced": True,
-        "description": "Include some bands, to replace the o-rings, that need to be printed in TPU filament.",
-    },
-    {
-        "key": "use_pilens_optics_module",
-        "default": False,
-        "advanced": True,
-        "description": "Use the optics module with the Raspberry Pi lens rather than the lens spacer. Using the lens spacer is recommended for most uses.",
-    },
-    {
-        "key": "legacy_picamera_tools",
-        "default": False,
-        "advanced": True,
-        "description": "Include tools for older picameras where the lenses are glued in.",
-    },
-]
-
-# additional constraints on what is required to build a working microscope
-# that are not already expressed through openscad parameters, these are
-# used to disable option combinations that result in essential parts
-# missing
-required_stls = [
-    # you need an optics module or a lens spacer, also called mount in some files
-    r"^(optics_|lens_spacer|(.*cam_mount_)).*\.stl",
-    # you need a main microscope body
-    r"^main_body_.*\.stl",
-    # you need some feet
-    r"^feet.*\.stl",
-]
+from build_system.stl_options import stl_presets, option_docs, required_stls
 
 build_dir = "builds"
 
@@ -244,6 +49,7 @@ ninja.rule(
     command=f"{executable} --hardwarnings $parameters $in -o $out -d $out.d",
     depfile="$out.d",
 )
+ninja.rule("copy", command="cp $in $out")
 
 
 def parameters_to_string(parameters):
@@ -270,7 +76,7 @@ def parameters_to_string(parameters):
 
 def openscad(
     output,
-    input,
+    input_file,
     parameters=None,
     file_local_parameters=None,
     openscad_only_parameters=None,
@@ -283,7 +89,7 @@ def openscad(
 
     Arguments:
         output {str} -- file path of the output stl file
-        input {str} -- file path of the input scad file
+        input_file {str} -- file path of the input scad file
         parameters {dict} -- values of globally used parameters
         file_local_parameters {dict} -- values of parameters only used for this specific scad file
         openscad_only_parameters {dict} -- values of parameters only used by openscad, ignored for stl selection
@@ -303,7 +109,7 @@ def openscad(
     if args.generate_stl_options_json:
         json_generator.register(
             output,
-            input,
+            input_file,
             parameters=parameters,
             file_local_parameters=file_local_parameters,
             select_stl_if=select_stl_if,
@@ -312,7 +118,7 @@ def openscad(
     ninja.build(
         os.path.join(build_dir, output),
         rule="openscad",
-        inputs=os.path.join("openscad/", input),
+        inputs=os.path.join("openscad/", input_file),
         variables={
             "parameters": parameters_to_string(
                 {**parameters, **file_local_parameters, **openscad_only_parameters}
@@ -321,310 +127,190 @@ def openscad(
     )
 
 
-################################
-### GENERAL, WIDELY USED OPTIONS
-
-# All available microscope sizes
-sample_z_options = [75]
-# All permutations of microscope size
-microscope_size_options = [f"{sample_z}" for sample_z in sample_z_options]
-
-
 
 ###################
-### MICROSCOPE BODY
-
-
-for sample_z in sample_z_options:
-    beamsplitter = True
-    motors = True  # Right now we never need to remove motor lugs
-    brim = True #Only compile with brim
-    output = "main_body_{sample_z}{motors}{beamsplitter}{brim}.stl".format(
-        sample_z=sample_z,
-        motors="-M" if motors else "",
-        beamsplitter="-BS" if beamsplitter else "",
-        brim="_brim" if brim else "",
-    )
-
-    parameters = {
-        "sample_z": sample_z,
-        "motor_lugs": motors,
-        "enable_smart_brim": brim,
-    }
-    openscad_only = {"beamsplitter": beamsplitter}
-    openscad(
-        output,
-        "main_body.scad",
-        parameters,
-        openscad_only_parameters=openscad_only,
-    )
-
-
-#################
-### OPTICS MODULE
+# SPLIT ME HERE!!
 
 # TODO: reinstate `logitech_c270` if it can be made compatible.
-cameras = ["picamera_2", "m12"]
+CAMERAS = ["picamera_2", "m12"]
 
-rms_lenses = [
-    "rms_f40d16",
-    "rms_f50d13",
-    "rms_infinity_f50d13",
-]  # NB: Only RMS lenses are compatible with the beamsplitter
-
-# Generate a list of lenses to use elsewhere
-all_lenses = rms_lenses + ["pilens", "dashcam_lens", "6ledcam_lens"]
-#TODO: reinstate "c270_lens", "m12_lens" once the have a compatible optics module
-
-optics_versions = [(camera, lens) for camera in cameras for lens in rms_lenses]
-
-for sample_z in sample_z_options:
-    for (camera, lens) in optics_versions:
-        beamsplitter_options = [True, False] if lens in rms_lenses else [False]
-
-        for beamsplitter in beamsplitter_options:
-            output = "optics_{camera}_{lens}{beamsplitter}.stl".format(
-                camera=camera,
-                lens=lens,
-                beamsplitter="_beamsplitter" if beamsplitter else "",
-            )
-
-            parameters = {"sample_z": sample_z, "optics": lens, "camera": camera}
-            openscad_only = {"beamsplitter": beamsplitter}
-            select_stl_if = {"reflection_illumination": beamsplitter}
-
-            if lens == "pilens":
-                select_stl_if["use_pilens_optics_module"] = True
-
-            if lens == "rms_infinity_f50d13":
-                select_stl_if["tall_bucket_base"] = True
-            else:
-                select_stl_if["tall_bucket_base"] = False
-
-            openscad(
-                output,
-                "optics.scad",
-                parameters,
-                openscad_only_parameters=openscad_only,
-                select_stl_if=select_stl_if,
-            )
-
-
-####################
-### MICROSCOPE STAND
-
-# Stand with pi
-for tall_base in [True, False]:
-
-    if tall_base:
-        output = "microscope_stand_tall.stl"
-        compatible_lenses = ["rms_infinity_f50d13"]
-    else:
-        output = "microscope_stand.stl"
-        compatible_lenses = [l for l in all_lenses if l != "rms_infinity_f50d13"]
-    parameters = {"tall_bucket_base": tall_base}
-
-    select_stl_if = []
-    for optics in compatible_lenses:
-        select_stl_if.append({"pi_in_base": True, "optics": optics})
-
-
-    openscad(
-        output,
-        "microscope_stand.scad",
-        parameters,
-        select_stl_if=select_stl_if,
-    )
-
-# Stand without pi
-openscad(
-    "microscope_stand_no_pi.stl",
-    input="microscope_stand_no_pi.scad",
-    parameters={},
-    select_stl_if={"pi_in_base": False},
-)
-
-#TODO: Make sure these are selectable from STL select
-# Motor driver electronics case
-for motor_driver_electronics in ["sangaboard", "arduino_nano"]:
-    outputs = f"{build_dir}/motor_driver_case_{motor_driver_electronics}.stl"
-    parameters = {"motor_driver_electronics": motor_driver_electronics}
-
-    ninja.build(
-        outputs,
-        rule="openscad",
-        inputs="openscad/motor_driver_case.scad",
-        variables={"parameters": parameters_to_string(parameters)},
-    )
-
-
-###################
-### CAMERA PLATFORM
+# NOTE: "rms_f40d16" not built as standard now as we do not regularly check it. Still in OpenSCAD incase needed.
+RMS_OPTICS = ["rms_f50d13", "rms_infinity_f50d13"]
+# TODO: reinstate "c270_lens", "m12_lens" once the have a compatible optics module
+SIMPLE_OPTICS = ["pilens", "dashcam_lens", "6ledcam_lens"]
+# Generate a list of optics options for later
+ALL_OPTICS = RMS_OPTICS + SIMPLE_OPTICS
 
 #TODO: Add stands in for 6ledcam, dashcam, m12 once they are supported
-camera_platform_versions = [
-    ("picamera_2", "pilens")
-]
+# These are (camera, lens) tuples
+PLATFORM_OPTICS_MODULE_OPTIONS = [("picamera_2", "pilens")]
+
+MOTOR_DRIVER_ELECTRONICS = ["sangaboard", "arduino_nano"]
 
 
-for sample_z in sample_z_options:
-    for camera, optics in camera_platform_versions:
-        output = f"camera_platform_{camera}_{sample_z}.stl"
+def generate_rms_optics_modules():
+    for camera in CAMERAS:
+        for optics in RMS_OPTICS:
+            for beamsplitter in [True,False]:
+                bs_text = "_beamsplitter" if beamsplitter else "",
+                output = f"optics_{camera}_{optics}{bs_text}.stl"
 
-        parameters = {
-            "sample_z": sample_z,
-            "camera": camera,
-            "optics": optics,
-        }
+                parameters = {"optics": optics, "camera": camera}
+                openscad_only = {"beamsplitter": beamsplitter}
+                select_stl_if = {"reflection_illumination": beamsplitter}
 
-        select_stl_if = {
-            "optics": optics,
-        }
+                if optics == "rms_infinity_f50d13":
+                    select_stl_if["tall_bucket_base"] = True
+                else:
+                    select_stl_if["tall_bucket_base"] = False
 
-        openscad(
-            output,
-            "camera_platform.scad",
-            parameters,
+                openscad(
+                    output,
+                    "optics.scad",
+                    parameters,
+                    openscad_only_parameters=openscad_only,
+                    select_stl_if=select_stl_if,
+                )
+
+def generate_platform_optics_modules():
+    '''This gereates both the lens spacers and the camera platforms'''
+    for camera, optics in PLATFORM_OPTICS_MODULE_OPTIONS:
+        parameters = {"camera": camera, "optics": optics}
+        select_stl_if = {"reflection_illumination": False}
+
+        output = f"camera_platform_{camera}_{optics}.stl"
+        openscad(output, "camera_platform.scad", parameters, select_stl_if=select_stl_if)
+
+        output = f"lens_spacer_{camera}_{optics}.stl"
+        openscad(output, "lens_spacer.scad", parameters, select_stl_if=select_stl_if)
+
+def generate_no_pi_stand():
+    '''Stand without pi'''
+    select_stl_if = []
+    for optics in SIMPLE_OPTICS:
+        select_stl_if.append({"pi_in_base": False, "optics": optics})
+
+    openscad("microscope_stand_no_pi.stl",
+             "microscope_stand_no_pi.scad",
+             select_stl_if=select_stl_if)
+
+def generate_stand_with_pi():
+    '''Two heights of stand  with pi'''
+    for tall_base in [True, False]:
+
+        if tall_base:
+            output = "microscope_stand_tall.stl"
+            compatible_lenses = ALL_OPTICS
+        else:
+            output = "microscope_stand.stl"
+            compatible_lenses = [l for l in ALL_OPTICS if l != "rms_infinity_f50d13"]
+        parameters = {"tall_bucket_base": tall_base}
+
+        select_stl_if = []
+        for optics in compatible_lenses:
+            select_stl_if.append({"pi_in_base": True, "optics": optics})
+
+        openscad(output,
+                 "microscope_stand.scad",
+                 parameters,
+                 select_stl_if=select_stl_if)
+
+def generate_motor_buckets():
+    '''Motor driver electronics case'''
+    for board_type in MOTOR_DRIVER_ELECTRONICS:
+
+        parameters = {"motor_driver_electronics": board_type}
+
+        openscad(f"motor_driver_case_{board_type}.stl",
+                 "motor_driver_case.scad",
+                 parameters,
+                 select_stl_if={"motorised": True})
+
+def generate_bases():
+    generate_no_pi_stand()
+    generate_stand_with_pi()
+    generate_motor_buckets()
+
+def generate_gears_and_thumwheels():
+    small_gear_selected = {"motorised": True}
+    large_gear_selected = [{"motorised": True},
+                           {"motorised": False, "use_motor_gears_for_hand_actuation": True}]
+    thumbwheels_selected = {"motorised": False, "use_motor_gears_for_hand_actuation": False}
+
+    openscad("small_gears.stl", "small_gears.scad", select_stl_if=small_gear_selected)
+    openscad("gears.stl", "gears.scad",select_stl_if=large_gear_selected)
+    openscad("thumbwheels.stl", "thumbwheels.scad", select_stl_if=thumbwheels_selected)
+
+def generate_picamera_2_legacy_tools():
+    picamera_2_legacy_tools = ["gripper", "lens_gripper"]
+    for tool in picamera_2_legacy_tools:
+        output = f"picamera_2_{tool}.stl"
+        input_file = f"cameras/picamera_2_{tool}.scad"
+        parameters = {"camera": "picamera_2"}
+        openscad(output, input_file, parameters, select_stl_if={"legacy_picamera_tools": True})
+
+
+def generate_small_parts():
+    generate_picamera_2_legacy_tools()
+    openscad("slide_riser.stl", "slide_riser.scad", select_stl_if={"slide_riser": True})
+    openscad("actuator_assembly_tools.stl", "actuator_assembly_tools.scad")
+    openscad("condenser.stl", "condenser.scad")
+    openscad("illumination_dovetail.stl", "illumination_dovetail.scad")
+    openscad("lens_tool.stl", "lens_tool.scad")
+    openscad("just_nut_trap_test.stl", "just_nut_trap_test.scad")
+    openscad("feet.stl", "feet.scad")
+    openscad("sample_clips.stl", "sample_clips.scad")
+    openscad("fl_cube.stl", "fl_cube.scad", select_stl_if={"reflection_illumination": True})
+
+    openscad("picamera_2_cover.stl",
+             "cameras/picamera_2_cover.scad",
+             {"camera": "picamera_2"},
+             select_stl_if={"optics": set(RMS_OPTICS)})
+    openscad("actuator_tension_band.stl",
+             "actuator_tension_band.scad",
+             select_stl_if={"include_actuator_tension_band": True})
+    openscad("actuator_drilling_jig.stl",
+             "actuator_drilling_jig.scad",
+             select_stl_if={"include_actuator_drilling_jig": True})
+    openscad("reflection_illuminator.stl",
+             "reflection_illuminator.scad",
+             select_stl_if={"reflection_illumination": True})
+    openscad("just_leg_test.stl",
+             "just_leg_test.scad",
+             openscad_only_parameters={"big_stage": False})
+
+def generate_stls():
+    openscad("main_body.stl", "main_body.scad")
+    generate_rms_optics_modules()
+    generate_platform_optics_modules()
+    generate_bases()
+    generate_gears_and_thumwheels()
+    generate_small_parts()
+
+def copy_stl(stl_file, select_stl_if=None):
+    if args.generate_stl_options_json:
+        json_generator.register(
+            output=stl_file, input_file=stl_file, select_stl_if=select_stl_if
         )
+    output = os.path.join(build_dir, stl_file)
+    input_file = os.path.join("openflexure-microscope-extra", stl_file)
+    ninja.build(output, rule="copy", inputs=input_file)
 
-
-###############
-### LENS SPACER
-#TODO: Add lens spacer for m12 once it is supported
-
-for sample_z in sample_z_options:
-    output = f"lens_spacer_picamera_2_pilens_{sample_z}.stl"
-
-    parameters = {"sample_z": sample_z, "optics": "pilens"}
-
-    openscad(
-        output,
-        "lens_spacer.scad",
-        parameters,
-        select_stl_if={
-            "camera": "picamera_2",
-            "reflection_illumination": False,
-            "use_pilens_optics_module": False,
-        },
-    )
-
-
-##################
-### PICAMERA TOOLS
-
-picamera_2_legacy_tools = ["gripper", "lens_gripper"]
-for tool in picamera_2_legacy_tools:
-    output = f"picamera_2_{tool}.stl"
-    input = f"cameras/picamera_2_{tool}.scad"
-    parameters = {"camera": "picamera_2"}
-    openscad(output, input, parameters, select_stl_if={"legacy_picamera_tools": True})
-
-
-
-output = "picamera_2_cover.stl"
-input = "cameras/picamera_2_cover.scad"
-parameters = {"camera": "picamera_2"}
-openscad(output, input, parameters, select_stl_if={"optics": set(rms_lenses)})
-
-
-#################
-### SLIDE RISER
-
-openscad(
-    "slide_riser.stl",
-    "slide_riser.scad",
-    select_stl_if={"slide_riser": True},
-)
-
-
-###############
-### SMALL PARTS
-
-parts = ["actuator_assembly_tools", "condenser", "illumination_dovetail", "lens_tool", "just_nut_trap_test", "feet"]
-
-for part in parts:
-    output = f"{part}.stl"
-    input = f"{part}.scad"
-    openscad(output, input)
-
-openscad(
-    "actuator_tension_band.stl",
-    "actuator_tension_band.scad",
-    select_stl_if={"include_actuator_tension_band": True},
-)
-
-openscad(
-    "actuator_drilling_jig.stl",
-    "actuator_drilling_jig.scad",
-    select_stl_if={"include_actuator_drilling_jig": True},
-)
-
-openscad("fl_cube.stl", "fl_cube.scad", select_stl_if={"reflection_illumination": True})
-
-openscad("small_gears.stl", "small_gears.scad", select_stl_if={"motorised": True})
-
-openscad(
-    "thumbwheels.stl",
-    "thumbwheels.scad",
-    select_stl_if={"motorised": False, "use_motor_gears_for_hand_actuation": False},
-)
-
-openscad(
-    "gears.stl",
-    "gears.scad",
-    select_stl_if=[
-        {"motorised": True},
-        {"motorised": False, "use_motor_gears_for_hand_actuation": True},
-    ],
-)
-
-openscad("sample_clips.stl", "sample_clips.scad")
-
-openscad(
-    "reflection_illuminator.stl",
-    "reflection_illuminator.scad",
-    select_stl_if={"reflection_illumination": True},
-)
-
-
-openscad(
-    "just_leg_test.stl",
-    "just_leg_test.scad",
-    openscad_only_parameters={"big_stage": False},
-)
-
-
-### prebuilt STL files from openflexure-microscope-extra
-
-if args.include_extra_files:
-    ninja.rule("copy", command="cp $in $out")
-
-    def copy_stl(stl_file, select_stl_if=None):
-        if args.generate_stl_options_json:
-            json_generator.register(
-                output=stl_file, input=stl_file, select_stl_if=select_stl_if
-            )
-        output = os.path.join(build_dir, stl_file)
-        input = os.path.join("openflexure-microscope-extra", stl_file)
-        ninja.build(output, rule="copy", inputs=input)
+def copy_extra_stls():
+    
 
     for camera in ["6ledcam", "dashcam"]:
-        copy_stl(
-            f"{camera}_mount_top.stl",
-            select_stl_if={
-                "camera": camera,
-                "optics": f"{camera}_lens",
-            },
-        )
 
-    copy_stl(
-        "dashcam_and_6ledcam_mount_bottom.stl",
-        select_stl_if=[
-            {"camera": "dashcam", "optics": "dashcam_lens"},
-            {"camera": "6ledcam", "optics": "6ledcam_lens"},
-        ],
-    )
+        select_mount_top = {"camera": camera, "optics": f"{camera}_lens"}
+        copy_stl(f"{camera}_mount_top.stl", select_stl_if=select_mount_top)
 
+    select_mount_bottom = [{"camera": "dashcam", "optics": "dashcam_lens"},
+                           {"camera": "6ledcam", "optics": "6ledcam_lens"}]
+    copy_stl("dashcam_and_6ledcam_mount_bottom.stl", select_stl_if=select_mount_bottom)
+
+generate_stls()
+if args.include_extra_files:
+    copy_extra_stls()
 
 ###############
 ### RUN BUILD

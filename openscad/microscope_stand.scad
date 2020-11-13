@@ -26,7 +26,7 @@ wall_thickness = 1.5; //default 1.5 - 2.35 is good for ABS
 raspi_support = 4.0;
 
 //TODO: move the pi-specific stuff into its own file
-raspi_board = [85, 56, 19]; //this is wrong, should be 85, 56, 19
+raspi_board = [85, 56, 19];
 
 include_breadboard_holes = true;
 
