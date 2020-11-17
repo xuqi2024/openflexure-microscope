@@ -4,23 +4,11 @@ is also a function "run_ninja()" which runs this file.
 '''
 import sys
 import os
-from ninja import Writer, ninja
+from ninja import Writer
 
 from .util import parameters_to_string
 from .json_generator import JsonGenerator
 from .stl_options import stl_presets, option_docs, required_stls
-from .stl_generator import generate_stls
-from .stl_copy import copy_extra_stls
-
-def run_ninja():
-    '''
-    This runs the ninja on the `ninja.build` file. We have to purge sys.args as
-    part of this due to the strange way ninja works.
-    '''
-    #The python ninja function jsut wraps the C execution. This reads the args
-    # so we have to clear them. This is horrible
-    sys.argv = [sys.argv[0]]
-    ninja()
 
 class MicroscopeBuildWriter():
     def __init__(self, build_dir, build_filename, generate_stl_options_json=False):
@@ -34,12 +22,17 @@ class MicroscopeBuildWriter():
             self._json_generator = None
 
     def __enter__(self):
+        # Create the ninja build file
         self._build_file = open(self._build_filename, "w")
         self._ninja = Writer(self._build_file, width=120)
         self._create_rules()
         return self
 
-    def __exit__(self, *args, **kwargs):
+    def __exit__(self, *_):
+        # Write to JSON file etc if needed
+        if self._json_generator is not None:
+            self._json_generator.write()
+        # Close the Ninja build file
         self._build_file.close()
 
     def _create_rules(self):
@@ -53,15 +46,6 @@ class MicroscopeBuildWriter():
             depfile="$out.d",
         )
         self._ninja.rule("copy", command="cp $in $out")
-
-    def generate(self, include_extra_files):
-        if self._ninja is None:
-            raise IOError("Build file has not been opened. Use MicroscopeBuildWriter as a context manager.")
-        generate_stls(self)
-        if include_extra_files:
-            copy_extra_stls(self)
-        if self._json_generator is not None:
-            self._json_generator.write()
 
     def openscad(
         self,
@@ -116,11 +100,3 @@ class MicroscopeBuildWriter():
             },
         )
 
-    def copy_stl(self, stl_file, select_stl_if=None):
-        if self._json_generator is not None:
-            self._json_generator.register(
-                output=stl_file, input_file=stl_file, select_stl_if=select_stl_if
-            )
-        output = os.path.join(self._build_dir, stl_file)
-        input_file = os.path.join("openflexure-microscope-extra", stl_file)
-        self._ninja.build(output, rule="copy", inputs=input_file)

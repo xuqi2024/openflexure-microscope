@@ -143,7 +143,7 @@ def generate_small_parts(writer):
                     "just_leg_test.scad",
                     openscad_only_parameters={"big_stage": False})
 
-def generate_stls(writer):
+def add_stls_to_writer(writer):
     writer.openscad("main_body.stl", "main_body.scad")
     generate_rms_optics_modules(writer)
     generate_platform_optics_modules(writer)
