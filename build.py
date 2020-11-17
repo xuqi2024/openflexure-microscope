@@ -4,9 +4,9 @@
 This is the main build script for the open flexure microscope. Run
 `./build.py -h` to see options.
 
-The selection for which STLs are generated is in build_stsyem/stl_generator
-The options for the STL selector are in build_stsyem/stl_options
-The selection for which extra STLs are coppied in is in build_stsyem/stl_copy
+The selection for which STLs are generated is in build_system/stl_generator
+The options for the STL selector are in build_system/stl_options
+The selection for which extra STLs are copied in is in build_system/stl_copy
 '''
 
 import argparse
