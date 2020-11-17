@@ -19,7 +19,6 @@ stl_presets = [
         "description": "A basic microscope using the Raspberry Pi camera and simple optics. Best suited for low resolution microscopy and educational workshops.",
         "parameters": {
             "optics": "pilens",
-            "use_pilens_optics_module": False,
             "camera": "picamera_2",
             "motorised": False,
             "pi_in_base": True,
@@ -181,12 +180,6 @@ option_docs = [
         "default": False,
         "advanced": True,
         "description": "Include some bands, to replace the o-rings, that need to be printed in TPU filament.",
-    },
-    {
-        "key": "use_pilens_optics_module",
-        "default": False,
-        "advanced": True,
-        "description": "Use the optics module with the Raspberry Pi lens rather than the lens spacer. Using the lens spacer is recommended for most uses.",
     },
     {
         "key": "legacy_picamera_tools",
