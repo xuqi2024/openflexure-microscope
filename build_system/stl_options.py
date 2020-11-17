@@ -173,7 +173,7 @@ option_docs = [
         "key": "tall_bucket_base",
         "description": "The tall bucket base is only needed if using the and infinity corrected RMS objective.",
         "advanced": True,
-        "default": True,
+        "default": False,
     },
     {
         "key": "include_actuator_tension_band",
