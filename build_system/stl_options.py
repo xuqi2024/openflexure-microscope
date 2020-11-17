@@ -204,7 +204,7 @@ required_stls = [
     # you need an optics module or a lens spacer, also called mount in some files
     r"^(optics_|lens_spacer|(.*cam_mount_)).*\.stl",
     # you need a main microscope body
-    r"^main_body_.*\.stl",
+    r"^main_body\.stl",
     # you need some feet
     r"^feet.*\.stl",
 ]
