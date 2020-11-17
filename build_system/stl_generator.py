@@ -19,7 +19,7 @@ def generate_rms_optics_modules(writer):
     for camera in CAMERAS:
         for optics in RMS_OPTICS:
             for beamsplitter in [True,False]:
-                bs_text = "_beamsplitter" if beamsplitter else "",
+                bs_text = "_beamsplitter" if beamsplitter else ""
                 output = f"optics_{camera}_{optics}{bs_text}.stl"
 
                 parameters = {"optics": optics, "camera": camera}
