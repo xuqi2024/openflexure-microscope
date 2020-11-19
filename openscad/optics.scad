@@ -87,7 +87,7 @@ module optical_path(lens_aperture_r, lens_z){
 }
 module optical_path_fl(lens_aperture_r, lens_z){
     // The cut-out part of a camera mount, with a space to slot in a filter cube.
-    rotation = delta_stage ? 120 : 180; // The angle that the fl module exits from (0* is the dovetail)
+    rotation = delta_stage ? 180 : 120; // The angle that the fl module exits from (0* is the dovetail)
     rotate(rotation){
         union(){
             translate([0,0,camera_mount_top-tiny()]) lighttrap_sqylinder(r1=5, f1=0, r2=0, f2=fl_cube_w-4, h=fl_cube_bottom-camera_mount_top+2*tiny()); //beam path to bottom of cube
@@ -129,8 +129,8 @@ module camera_mount_body(
     // Make a camera mount, with a cylindrical body and a dovetail.
     // Just add a lens mount on top for a complete optics module!
     dt_h=dt_top-dt_bottom;
-    camera_mount_rotation = delta_stage ? -45 : 0; // The angle of the camera mount (the ribbon cables exits at 135* from dovetail for '0*' &  180* from dovetail for '-45*')
-    fl_cube_rotation = delta_stage ? -60 :0; // The angle of the block to hold the fl cube (0* for the fl cube exiting at 180* from the dovetail and -60* for the fl cube exiting at 120* from the dovetail)
+    camera_mount_rotation = delta_stage ? -45:0; // The angle of the camera mount (the ribbon cables exits at 135* from dovetail for '0*' &  180* from dovetail for '-45*')
+    fl_cube_rotation = delta_stage ?  0:-60; // The angle of the block to hold the fl cube (0* for the fl cube exiting at 180* from the dovetail and -60* for the fl cube exiting at 120* from the dovetail)
     union(){
         difference(){
             // This is the main body of the mount
