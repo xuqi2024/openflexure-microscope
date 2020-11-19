@@ -72,7 +72,7 @@ module fl_cube_casing(){
 module fl_screw_holes(d,h){
     reflect()
         union(){
-            translate([fl_cube_w/2+5,0,fl_cube_bottom+fl_cube_w])rotate([90,0,0]) trylinder_selftap(d, h);
+            translate([fl_cube_w/2+5,0,fl_cube_bottom+fl_cube_w/2])rotate([90,0,0]) trylinder_selftap(d, h);
         }
 }
 
@@ -140,12 +140,18 @@ module camera_mount_body(
                     translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=tiny();
                     if(dovetail) translate([0,0,dt_bottom]) objective_fitting_base(params);
                     if(fluorescence){ 
-                        rotate(fl_cube_rotation) fl_cube_casing();
+                       rotate(fl_cube_rotation){}
+                        fl_cube_casing();
+                        fl_screw_holes(d = 5, h =10);
                     }
                 }
                 union(){
                     if(fluorescence){ 
-                        rotate(fl_cube_rotation) fl_cube_casing();
+                        rotate(fl_cube_rotation){
+                            fl_cube_casing();
+                            translate([0,-1,0])fl_screw_holes(d = 4, h =10);
+                        }
+
                     }
 
                     translate([0,0,body_top]) cylinder(r=body_r,h=tiny());
@@ -165,11 +171,11 @@ module camera_mount_body(
             // screw holes  and faceplate for fl module
             if(fluorescence){ 
                 rotate(fl_cube_rotation){
-                    translate([0,-2.5,0])fl_screw_holes(d = 2.5, h = 6);
-                    hull(){
-                        translate([0,-fl_cube_w,fl_cube_bottom+fl_cube_w/2+2])cube([fl_cube_w+15,fl_cube_w,fl_cube_w+4],center=true);
-                        translate([0,-fl_cube_w-5,fl_cube_bottom++fl_cube_w/2+8])cube([fl_cube_w+20,fl_cube_w,fl_cube_w+4],center = true);
-                    }
+                    translate([0,-0.5,0])fl_screw_holes(d = 2.5, h = 8);
+                        hull(){
+                            translate([0,-fl_cube_w,fl_cube_bottom+fl_cube_w/2])cube([fl_cube_w+15,fl_cube_w,fl_cube_w],center=true);
+                            translate([0,-fl_cube_w-5,fl_cube_bottom++fl_cube_w/2+5])cube([fl_cube_w+20,fl_cube_w,fl_cube_w],center = true);
+                            }
                 }
             }
         }
