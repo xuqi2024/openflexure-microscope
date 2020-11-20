@@ -47,7 +47,7 @@ module fl_led_mount(led_d=5){
 
 module lens_holder(led_d=3.5){
     // A simple one-lens condenser, re-imaging the LED onto the sample.
-    led_h = 7;              //distance from bottom to the top of the LED
+    led_h = 2;              //distance from bottom to the top of the LED
     aperture_h = 2;
     aperture_to_lens = 6.5; //distance from aperture stop to lens
     aperture_stop_r = 0.6;
