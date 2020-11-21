@@ -101,7 +101,7 @@ module lens_holder(led_d=3.5){
             trylinder_selftap(nominal_d = 3, h = lens_z-pedestal_h - 1);
         }
         //screws for slip plate
-        translate([0,base_r+0.1,(lens_z-pedestal_h)/2])
+        translate([0,base_r,(lens_z-pedestal_h)/2])
         rotate([90,0,0])
         reflect(){
             translate([w/2-2,0,0])rotate([0,0,-30])trylinder_selftap(nominal_d = 2.5, h = 6);
@@ -124,29 +124,55 @@ module field_stop(aperture=[3,4], illuminator_d=2*base_r, h=5){
 }
 
 // Function we can import to get width of illuminator holder
-<<<<<<< HEAD
-function illuminator_width() = (2*base_r) + 3;
-=======
 function illuminator_width() = 17;
 
 module slip_plate(w){
-    translate([-w/2,8,-2]){
+    translate([0,8,-(base_r-fl_cube_w/2)-2]){
         difference(){
-            translate([0.5,0.5,0])minkowski() {
-                cube([w-1,40-1,1]);
-                translate([0,0,0])cylinder(r=0.5,h=1);
+            union(){
+                translate([-w/2+0.5,0.5,0]){
+                    minkowski() {
+                        cube([w-1,40-1,1]);
+                        translate([0,0,0])cylinder(r=0.5,h=1);
+                    }
+                }
+                reflect([90,0,0]){
+                translate([(fl_cube_w/2+5),0,0]){
+                    hull(){
+                        translate([0,0,fl_cube_w/2+(base_r-fl_cube_w/2)+2]){
+                            rotate([-90,0,0]){
+                                    cylinder(r=2, h= 5);
+                            }
+                        }   
+                        translate([0,0,2]){
+                            #rotate([-90,0,0]){
+                                    cylinder(r=2, h= 5);
+                            }
+                        } 
+                        translate([-5,0,0.5]){
+                            #rotate([-90,0,0]){
+                                    cylinder(r=0.5, h= 5);
+                            }
+                        }    
+                    }
+                }
+                }
             }
-            
-            translate([w/2,0,0])reflect(){
+            reflect([90,0,0]){
                 hull(){
                     translate([w/2-2,10,0])cylinder(r=1.25,h = 5);
                     translate([w/2-2,38,0])cylinder(r=1.25,h = 5);
                 }
+                translate([(fl_cube_w/2+5),0,fl_cube_w/2+(base_r-fl_cube_w/2)+2]){
+                    rotate([-90,60,0]){
+                        trylinder_selftap(nominal_d = 2.5,h= 6);
+                    }
+                }   
+
             }
         }
     }
 }
->>>>>>> 025f179... Add slip plate
 
 // Geometry of illuminator holder
 module illuminator_holder(){
@@ -187,10 +213,14 @@ module illuminator_holder(){
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 //translate([30,30,0]) rotate(90) illuminator_holder();
 =======
 translate([30,30,0]) rotate(90) illuminator_holder();
 >>>>>>> 025f179... Add slip plate
+=======
+translate([30,30,(base_r-fl_cube_w/2)+2]) rotate(90) illuminator_holder();
+>>>>>>> ead0158... Add screw holes for attachment to optics unit
 //translate([-30,0,0]) field_stop();
 lens_holder();
 
