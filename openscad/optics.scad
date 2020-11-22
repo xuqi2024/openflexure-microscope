@@ -36,6 +36,8 @@ fl_cube_bottom = bottom + camera_sensor_height() + 7.5; //bottom of the fluoresc
 fl_cube_top = fl_cube_bottom + fl_cube_w + 2.7; //top of fluorescence cube
 fl_cube_top_w = fl_cube_w - 2.7;
 $fn=24;
+beamsplitter = true;
+delta_stage =true;
 
 if(beamsplitter) echo(str("fl_cube_bottom: ", fl_cube_bottom, " for optics module: ", camera, "_", optics));
 
@@ -90,7 +92,7 @@ module optical_path_fl(lens_aperture_r, lens_z){
     rotation = delta_stage ? 180 : 120; // The angle that the fl module exits from (0* is the dovetail)
     rotate(rotation){
         union(){
-            translate([0,0,camera_mount_top-tiny()]) lighttrap_sqylinder(r1=5, f1=0, r2=0, f2=fl_cube_w-4, h=fl_cube_bottom-camera_mount_top+2*tiny()); //beam path to bottom of cube
+            translate([0,0,camera_mount_top_z-tiny()]) lighttrap_sqylinder(r1=5, f1=0, r2=0, f2=fl_cube_w-4, h=fl_cube_bottom-camera_mount_top+2*tiny()); //beam path to bottom of cube
             fl_cube_cutout(); //filter cube
             translate([0,0,fl_cube_top-tiny()]) lighttrap_sqylinder(r1=1.5, f1=fl_cube_w-4-3, r2=lens_aperture_r, f2=0, h=lens_z-fl_cube_top+4*tiny()); //beam path
             translate([0,0,lens_z]) cylinder(r=lens_aperture_r,h=2*tiny()); //lens
@@ -135,7 +137,7 @@ module camera_mount_body(
         difference(){
             // This is the main body of the mount
             sequential_hull(){
-                translate([0,0,camera_mount_top_z]) camera_mount_top_slice();
+                rotate(camera_mount_rotation)translate([0,0,camera_mount_top_z]) camera_mount_top_slice();
                 hull(){
                     translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=tiny();
                     if(dovetail) translate([0,0,dt_bottom]) objective_fitting_base(params);
