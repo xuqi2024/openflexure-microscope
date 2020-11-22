@@ -111,7 +111,7 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
                 } 
             }
             // join the column to the casing, for strength during printing...
-            if(join_to_casing) translate([0,0,lever_tip+zflex[2]+3]){
+            if(join_to_casing) translate([0,0,lever_tip+flex_dims()[2]+3]){
                 cube([ss_outer()[0]-wall_t, 1, 0.5], center=true);
                 //translate([-1/2,0,-0.25]) cube([1, ss_outer()[1]/2-wall_t/2, 0.5]); //this was too short...
             }
@@ -129,14 +129,14 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
         }
         
         // space for lever and flexure
-        translate([-99, -zflex[1]/2, zflex[2]]) sequential_hull(){
-            cube([999,zflex[1],lever_tip]);
-            translate([0,-999,999]) cube([999,zflex[1],lever_tip]);
+        translate([-99, -flex_dims()[1]/2, flex_dims()[2]]) sequential_hull(){
+            cube([999,flex_dims()[1],lever_tip]);
+            translate([0,-999,999]) cube([999,flex_dims()[1],lever_tip]);
         }
         
         // tiny holes, to increase the perimeter of the bottom bit and make it
         // stronger
-        translate([-d,0,zflex[2]]) cube([2*d, 10, 4]);
+        translate([-d,0,flex_dims()[2]]) cube([2*d, 10, 4]);
         // cut off at the bottom
         mirror([0,0,1]) cylinder(r=999,h=999,$fn=4);
     }
@@ -147,9 +147,9 @@ module actuator_end_cutout(lever_tip=3-0.5 ){
     // This shape cuts off the end of an actuator, leaving a thin strip to
     // connect to the actuator column (the flexure).
     sequential_hull(){
-        translate([-999,-zflex[1]/2,zflex[2]]) cube([2,2,2]*999);
-        translate([-999,-zflex[1]/2,zflex[2]+lever_tip]) cube([2,2,2]*999);
-        translate([-999,-zflex[1]/2-999,zflex[2]+999]) cube([2,2,2]*999);
+        translate([-999,-flex_dims()[1]/2,flex_dims()[2]]) cube([2,2,2]*999);
+        translate([-999,-flex_dims()[1]/2,flex_dims()[2]+lever_tip]) cube([2,2,2]*999);
+        translate([-999,-flex_dims()[1]/2-999,flex_dims()[2]+999]) cube([2,2,2]*999);
     }
 }
 
@@ -257,26 +257,26 @@ module tilted_actuator(pivot_z, pivot_w, lever, column_h=actuator_h, base_w = co
     // A lever with its pivot wide and high, actuated by the above actuator
     pw = pivot_w;
     pz = pivot_z;
-    nut_y = zflex[1] + sqrt(lever*lever - pivot_z*pivot_z);
+    nut_y = flex_dims()[1] + sqrt(lever*lever - pivot_z*pivot_z);
     tip_h = 3;
     difference(){
         reflect([1,0,0]){
             // pivot flexures
-            translate([-pw/2, -d, pz]) cube(zflex + [0,2*d,0]);
+            translate([-pw/2, -d, pz]) cube(flex_dims() + [0,2*d,0]);
             // arms linking flexures to actuator column
             sequential_hull(){
-                translate([-pw/2, zflex[1], pz]) cube(zflex);
+                translate([-pw/2, flex_dims()[1], pz]) cube(flex_dims());
                 union(){
-                    translate([-base_w/2, zflex[1], 0]) cube([base_w, d, 5]);
+                    translate([-base_w/2, flex_dims()[1], 0]) cube([base_w, d, 5]);
                     translate([-column_base_r, nut_y-12, 0]) cube([2*column_base_r, d, 5]);
                 }
                 translate([0, nut_y, 0]) cylinder(r=column_base_r, h=5);
             }
         }
         // cut-out to form the flexure for the column
-        translate([-99, nut_y - zflex[1]/2, zflex[2]]) cube([1,1,1]*999);
+        translate([-99, nut_y - flex_dims()[1]/2, flex_dims()[2]]) cube([1,1,1]*999);
         hull() repeat([0,-5,5],2) {
-            translate([-99, nut_y - zflex[1]/2, tip_h]) cube([1,1,1]*999);
+            translate([-99, nut_y - flex_dims()[1]/2, tip_h]) cube([1,1,1]*999);
         }
     }
     translate([0, nut_y, 0]) actuator_column(column_h, -asin(pivot_z/lever), flip_nut_slot=true);
@@ -286,27 +286,27 @@ module untilted_actuator(pushstick_z, pivot_w, lever, column_h=actuator_h, pushs
     // A lever with its pivot at the bottom, actuated by a column at the end.
     pw = pivot_w;
     pz = pushstick_z;
-    nut_y = zflex[1] + lever;
+    nut_y = flex_dims()[1] + lever;
     tip_h = 3;
     base_w = 2*column_base_r;
     difference(){
         reflect([1,0,0]){
             // pivot flexures
-            translate([-pw/2, -d, 0]) cube(zflex + [0,2*d,0]);
+            translate([-pw/2, -d, 0]) cube(flex_dims() + [0,2*d,0]);
             // arms linking flexures to actuator column
             sequential_hull(){
                 union(){
-                    translate([-pushstick_w/2, zflex[1], pz]) cube(zflex);
-                    translate([-pw/2, zflex[1], 0]) cube(zflex);
+                    translate([-pushstick_w/2, flex_dims()[1], pz]) cube(flex_dims());
+                    translate([-pw/2, flex_dims()[1], 0]) cube(flex_dims());
                 }
                 translate([-base_w/2, nut_y - 20, 0]) cube([base_w, 8, 5]);
                 translate([0, nut_y, 0]) cylinder(r=column_base_r, h=5);
             }
         }
         // cut-out to form the flexure for the column
-        translate([-99, nut_y - zflex[1]/2, zflex[2]]) cube([1,1,1]*999);
+        translate([-99, nut_y - flex_dims()[1]/2, flex_dims()[2]]) cube([1,1,1]*999);
         hull() repeat([0,-5,5],2) {
-            translate([-99, nut_y - zflex[1]/2, tip_h]) cube([1,1,1]*999);
+            translate([-99, nut_y - flex_dims()[1]/2, tip_h]) cube([1,1,1]*999);
         }
     }
     translate([0, nut_y, 0]) actuator_column(column_h, 0);
@@ -340,7 +340,7 @@ module flexure_anchor_cutout(h=999,w=999, extend_back=999){
     intersection(){
         mirror([0,1,0]) hull() reflect([1,0,0]){
             translate([0,extend_back,h/2]) cube([999,d,d]);
-            translate([0,0,zflex[2]]) mirror([0,0,1]) cube(999);
+            translate([0,0,flex_dims()[2]]) mirror([0,0,1]) cube(999);
         }
         
         cube([999,w,h],center=true);
@@ -350,7 +350,7 @@ module flexure_anchor_cutout(h=999,w=999, extend_back=999){
 module actuator_shroud_shell(h, w1, w2, lever, tilted=false, extend_back=d, ac_h=actuator_h, motor_lugs=motor_lugs){
     // A cover for an actuator as defined above.
     ns_h = ac_h + lever * flex_a + 1.5; //internal height of nut seat
-    nut_y = zflex[1] + (tilted ? sqrt(lever*lever - h*h) : lever);
+    nut_y = flex_dims()[1] + (tilted ? sqrt(lever*lever - h*h) : lever);
     tilt = tilted?-asin(h/lever):0;
 
     difference(){
@@ -372,13 +372,13 @@ module actuator_shroud_core(h, w1, w2, lever, tilted=false, extend_back=d, ac_h=
     // The inside of a cover for an actuator as defined above.
     // It's split like this for ease of combining them together.
     ns_h = ac_h + lever * flex_a + 1.5; //internal height of nut seat
-    nut_y = zflex[1] + (tilted ? sqrt(lever*lever - h*h) : lever);
+    nut_y = flex_dims()[1] + (tilted ? sqrt(lever*lever - h*h) : lever);
     tilt = tilted?-asin(h/lever):0;
     
     difference(){
         actuator_void(h, w1, w2, lever, tilted, extend_back); //cut out so it's hollow
         if(tilted){ //make the void smaller so we get an anchor
-            translate([0,0,h+zflex[2]]) mirror([0,0,1]) flexure_anchor_cutout(h=2*(h-pushstick_h), extend_back=extend_back);
+            translate([0,0,h+flex_dims()[2]]) mirror([0,0,1]) flexure_anchor_cutout(h=2*(h-pushstick_h), extend_back=extend_back);
         }else{
             flexure_anchor_cutout(h=2*(h-pushstick_h), extend_back=extend_back);
         }

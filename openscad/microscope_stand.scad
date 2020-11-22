@@ -41,6 +41,9 @@ driver_support = 4.0;
 
 base_height = tall_bucket_base?45:30;
 
+//the y poistion where the base forms a point
+base_corner_y = (-(leg_r-flex_dims()[1]-wall_t/2+leg_outer_w/2)/sqrt(2)-wall_t/2-15);
+
 module foot_footprint(tilt=0){
     // the footprint of one foot/actuator column
     projection(cut=true) translate([0,0,-1]) screw_seat_shell(tilt=tilt);
@@ -96,14 +99,10 @@ module hull_from(){
     }
 }
 
-module microscope_bottom(enlarge_legs=1.5, illumination_clip_void=true, lugs=true, feet=true, legs=true){
+module microscope_bottom(enlarge_legs=1.5, lugs=true, feet=true, legs=true){
     // a 2D representation of the bottom of the microscope
-    hull(){
-        projection(cut=true) translate([0,0,-tiny()]) wall_inside_xy_stage();
-        if(illumination_clip_void){
-            translate([0, illumination_clip_y-14]) square([12, tiny()], center=true);
-        }
-    }
+    hull()projection(cut=true) translate([0,0,-tiny()]) wall_inside_xy_stage();
+
     hull() reflect([1,0,0]) projection(cut=true) translate([0,0,-tiny()]){
         wall_outside_xy_actuators();
         wall_between_actuators();
@@ -147,7 +146,7 @@ module feet_in_place(grow_r=1, grow_h=2){
 
 module footprint(){
     hull(){
-        translate([-2, illumination_clip_y-14]) square(4);
+        translate([-2, base_corner_y]) square(4);
         each_actuator() translate([0, actuating_nut_r]) foot_footprint();
         translate([0, z_nut_y]) foot_footprint(tilt=z_actuator_tilt);
         offset(wall_thickness) pi_footprint();
@@ -179,7 +178,7 @@ module bucket_base_stackable(h=base_height){
             translate([0,0,h-10]) linear_extrude(tiny()) offset(-wall_thickness) footprint();
             translate([0,0,h-tiny()]) linear_extrude(tiny()) difference(){
                 offset(-3.0) footprint();
-                translate([-99, illumination_clip_y-14+10-999]) square(999);
+                translate([-99, base_corner_y+10-999]) square(999);
                 each_actuator() translate([-99, actuating_nut_r-5]) square(999);
             }
             translate([0,0,h]) linear_extrude(999) offset(0) footprint();
@@ -274,7 +273,7 @@ module mounting_holes(){
         cylinder(d=4.4, h=20, center=true);
         rotate(90) trylinder_selftap(3, h=999, center=true);
     }
-    translate([0, illumination_clip_y-14+7, 0]){
+    translate([0, base_corner_y+7, 0]){
         cylinder(d=4.4, h=20, center=true);
         rotate(30) trylinder_selftap(3, h=999, center=true);
     }

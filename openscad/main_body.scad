@@ -22,18 +22,18 @@ use <./reflection_illuminator.scad>;
 include <./microscope_parameters.scad>; //All the geometric variables are now in here.
 
 
-module leg(brace=stage_flex_w){
+module leg(brace=flex_dims()[0]){
     // The legs support the stage - this is either used directly
     // or via "actuator" to make the legs with levers
-    fw=stage_flex_w;
+    fw=flex_dims()[0];
     
 	union(){
        	//leg
 		reflect([1,0,0]){
 			//vertical legs
-			translate([leg_middle_w/2+zflex_l,0,0]) hull(){
-				cube(leg);
-				cube([leg[0],fw+brace,tiny()]); //extend it to be a triangle
+			translate([leg_middle_w/2+flex_dims()[1],0,0]) hull(){
+				cube(leg_dims());
+				cube([leg_dims()[0],fw+brace,tiny()]); //extend it to be a triangle
 			}
 
             //flexure bridges between the legs
@@ -45,9 +45,9 @@ module leg(brace=stage_flex_w){
                              //value produces two distinct flexures.
 			for(i=[0,1]) translate([0,0,zs[i]]){
 				translate([-tiny(),0,0]) hull() repeat([0,bs[i],0],2) //solid part
-                        cube([leg_middle_w/2+tiny(),leg[1],leg_block_t-0.2*leg[1]]);
+                        cube([leg_middle_w/2+tiny(),leg_dims()[1],leg_block_t-0.2*leg_dims()[1]]);
 				translate([-tiny(),0,0]) repeat([0,bs[i],0],2) //flexures
-                        cube([leg_middle_w/2+zflex_l+leg[0],leg[1],zflex_t]);
+                        cube([leg_middle_w/2+flex_dims()[1]+leg_dims()[0],leg_dims()[1],flex_dims()[2]]);
 			}
 		}
         
@@ -55,7 +55,7 @@ module leg(brace=stage_flex_w){
 		if(flex_z2-flex_z1 > 2*bridge_dz){
 			n=floor((flex_z2-flex_z1)/bridge_dz);
 			dz=(flex_z2-flex_z1)/n;
-			translate([0,leg[1]/2,flex_z1+dz]) repeat([0,0,dz],n-1) cube([leg_outer_w,2,0.5],center=true);
+			translate([0,leg_dims()[1]/2,flex_z1+dz]) repeat([0,0,dz],n-1) cube([leg_outer_w,2,0.5],center=true);
 		}
 	}
 }
@@ -64,7 +64,7 @@ module actuator(){
     // No longer includes the flexible nut seat actuating column.
     // TODO: find the code that unifies this with leg()
 	brace=20;
-    fw=stage_flex_w;
+    fw=flex_dims()[0];
     w = actuator[0];
     union(){
         leg(brace=brace);
@@ -86,7 +86,7 @@ module actuator_silhouette(h=999){
     // This defines the cut-out from the base structure for the XY
     // actuators.
     linear_extrude(2*h,center=true) minkowski(){
-        circle(r=zflex_l,$fn=12);
+        circle(r=flex_dims()[1],$fn=12);
         projection() actuator();
     }
 }
@@ -104,7 +104,7 @@ module mounting_hole_lugs(){
 
 module xy_limit_switch_mount(d=3.3*2, h=6){
     // A mount for the XY limit switch (M3)
-    leg_frame(45) translate([-9, -zflex_l-zawall_h*sin(6)-3.3+1, zawall_h-6]) cylinder(d=d,h=h);
+    leg_frame(45) translate([-9, -flex_dims()[1]-zawall_h*sin(6)-3.3+1, zawall_h-6]) cylinder(d=d,h=h);
 }
 
 
@@ -186,11 +186,11 @@ module xy_stage(h=10,on_buildplate=false){
     // buildplate. If true, the bottom is flat, if false the bottom is made from
     // bridges round the edge, that then work inwards.
     difference(){
-        side_length = leg_middle_w+2*zflex_l;
-        cut_out_side_length = leg_middle_w-2*stage_flex_w;
+        side_length = leg_middle_w+2*flex_dims()[1];
+        cut_out_side_length = leg_middle_w-2*flex_dims()[0];
         thickness = on_buildplate?h:h-1;
         z = on_buildplate?0:1;
-		hull() each_leg() translate([0,-zflex_l-tiny(),z+thickness/2]) cube([side_length,2*tiny(),thickness],center=true);
+		hull() each_leg() translate([0,-flex_dims()[1]-tiny(),z+thickness/2]) cube([side_length,2*tiny(),thickness],center=true);
         if (on_buildplate){
             cylinder(r=hole_r,h=999,center=true,$fn=32);
         }else{
@@ -224,21 +224,21 @@ module xy_positioning_system() {
     }
 	//flexures connecting bottoms of legs to centre
 	each_leg() reflect([1,0,0]) translate([0,0,flex_z1]){
-        w=stage_flex_w;
+        w=flex_dims()[0];
         translate([leg_middle_w/2-w,0,0.5]) hull()
-			repeat([1,-1,0]*(zflex_l+wall_t/2),2) cube([w,tiny(),zflex_t]);
+			repeat([1,-1,0]*(flex_dims()[1]+wall_t/2),2) cube([w,tiny(),flex_dims()[2]]);
     }
     //tie the legs to the wall (built later) during printing
     reflect([1,0,0]) leg_frame(135) reflect([1,0,0]) {
-        translate([leg_middle_w/2+zflex[1]+zflex[0]/2, -wall_h*0.7*tan(6)-1-zflex[1], wall_h*0.7]) cube([1, wall_h*0.7*tan(6)+2+zflex[1], 0.5]);
+        translate([leg_middle_w/2+flex_dims()[1]+flex_dims()[0]/2, -wall_h*0.7*tan(6)-1-flex_dims()[1], wall_h*0.7]) cube([1, wall_h*0.7*tan(6)+2+flex_dims()[1], 0.5]);
     }
 
 	// flexures between legs and stage
     // NB these connect the legs together, and pass all the way under the stage.  This
     // is important, if they get cut then the bridges will fail!
 	difference(){
-		hull() each_leg() translate([0,0,flex_z2+zflex_t/2+0.5]) cube([leg_middle_w,tiny(),zflex_t],center=true);
-		hull() each_leg() cube([leg_middle_w-2*stage_flex_w,tiny(),999],center=true);
+		hull() each_leg() translate([0,0,flex_z2+flex_dims()[2]/2+0.5]) cube([leg_middle_w,tiny(),flex_dims()[2]],center=true);
+		hull() each_leg() cube([leg_middle_w-2*flex_dims()[0],tiny(),999],center=true);
 	}
 
 	// XY stage
@@ -267,10 +267,9 @@ module central_optics_cut_out() {
     intersection(){
         sequential_hull(){
             h=999;
-            aw = 2*column_base_radius() + 3;
             translate([0,z_flexure_x+1.5-14/2,0]) cube([14,2*tiny(),h],center=true);
-            translate([0,0,0]) cube([2*(z_flexure_x-z_flex_w),1,h],center=true);
-            translate([0,8-(z_flexure_x-z_flex_w-tiny()),0]) cube([16,2*tiny(),h],center=true);
+            translate([0,0,0]) cube([2*(z_flexure_x-flex_dims()[0]),1,h],center=true);
+            translate([0,8-(z_flexure_x-flex_dims()[0]-tiny()),0]) cube([16,2*tiny(),h],center=true);
         }
         // Limit the height so it slopes up gently to allow for
         // actuator travel, etc.
