@@ -264,21 +264,11 @@ module xy_positioning_system() {
 
 module central_optics_cut_out() {
     // Central cut-out for optics
-    intersection(){
-        sequential_hull(){
-            h=999;
-            aw = 2*column_base_radius() + 3;
-            translate([0,z_flexure_x+1.5-14/2,0]) cube([14,2*d,h],center=true);
-            translate([0,0,0]) cube([2*(z_flexure_x-z_flex_w),1,h],center=true);
-            translate([0,8-(z_flexure_x-z_flex_w-d),0]) cube([16,2*d,h],center=true);
-        }
-        // Limit the height so it slopes up gently to allow for
-        // actuator travel, etc.
-        sequential_hull(){
-            translate([0,-999,0]) cube([999,d,z_strut_t+1]*2,center=true);
-            cube([999,d,z_strut_t+1]*2,center=true);
-            translate([0,z_nut_y,0]) cube([999,d,z_strut_t+z_actuator_travel+1]*2,center=true);
-        }
+    sequential_hull(){
+        h=base_t*3;
+        translate([0,z_flexure_x+1.5-14/2,0]) cube([14,2*d,h],center=true);
+        translate([0,0,0]) cube([2*(z_flexure_x-z_flex_w),1,h],center=true);
+        translate([0,8-(z_flexure_x-z_flex_w-d),0]) cube([16,2*d,h],center=true);
     }
 }
 
