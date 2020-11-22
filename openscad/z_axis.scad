@@ -48,10 +48,10 @@ module objective_mount(){
     difference(){
         hull(){
             // the back of the mount
-            translate([-w/2,objective_mount_back_y+5,0]) cube([w,d,h]);
+            translate([-w/2,objective_mount_back_y+5,0]) cube([w,tiny(),h]);
             //hull() reflect([1,0,0]) z_bridge_wall_vertex();
             // the front of the mount (this makes contact with the optics module)
-            each_om_contact_plane() translate([0,overlap-d,0]) cube([2*roc,d,h]);
+            each_om_contact_plane() translate([0,overlap-tiny(),0]) cube([2*roc,tiny(),h]);
         }
         
         // bolt slot to mount objective
@@ -66,7 +66,7 @@ module objective_mount(){
         objective_fitting_wedge(h=999,nose_shift=-0.25,center=true);
         
         // cut-outs for flexures to attach
-        hull() reflect([1,0,0]) translate([1, d, -4])  z_axis_flexures(h=5+8);
+        hull() reflect([1,0,0]) translate([1, tiny(), -4])  z_axis_flexures(h=5+8);
         
         // cut out the back so it fits in the available space
         reflect([1,0,0]) translate([-z_flexure_x,0,-99]) rotate(45) cube(999);
@@ -93,7 +93,7 @@ module objective_fitting_wedge(h=z_flexures_z2+4, nose_shift=0.2, center=false){
     // to make a mount for the optics module, use nose_shift < 0
     nw = objective_mount_nose_w; //width of the pointy end
     translate([0,objective_mount_y,0]) mirror([0,1,0]) hull(){
-        translate([-nw/2-nose_shift,nose_shift,center?-h/2:0]) cube([nw+2*nose_shift,d,h]);
+        translate([-nw/2-nose_shift,nose_shift,center?-h/2:0]) cube([nw+2*nose_shift,tiny(),h]);
         reflect([1,0,0]) translate([-nw/2-5+sqrt(2), 5+sqrt(2), 0]) 
                 cylinder(r=2, h=h, $fn=16, center=center);
     }
@@ -125,8 +125,8 @@ module z_axis_flexure(h=zflex[2], z=0){
     // The parts that bend as the Z axis is moved
     union(){
         reflect([1,0,0]) hull(){
-            translate([-zflex[0]-1,objective_mount_back_y-d,z]) cube([zflex[0],d,h]);
-            translate([-z_anchor_w/2,z_anchor_y,z]) cube([zflex[0],d,h]);
+            translate([-zflex[0]-1,objective_mount_back_y-tiny(),z]) cube([zflex[0],tiny(),h]);
+            translate([-z_anchor_w/2,z_anchor_y,z]) cube([zflex[0],tiny(),h]);
         }
     }
 }
@@ -154,7 +154,7 @@ module z_axis_struts(){
         sequential_hull(){
             translate([0, z_nut_y, 0]) cylinder(d=w, h=lever_h);
             translate([0, z_anchor_y + w/2 + 2, 0]) cylinder(d=w, h=z_flexures_z1+2*dz);
-            translate([-w/2, z_anchor_y - zflex[0] - d, z_flexures_z1 + dz]) cube([w,d, 5-d]);
+            translate([-w/2, z_anchor_y - zflex[0] - tiny(), z_flexures_z1 + dz]) cube([w,tiny(), 5-tiny()]);
         }
         translate([0, z_nut_y, 0]) actuator_end_cutout();
     }
@@ -184,7 +184,7 @@ module objective_mounting_screw_access(){
     //        rotate([-75,0,0]) cylinder(h=999, d=8, $fn=16);
     translate([0,objective_mount_back_y, z_flexures_z2/2]) hull(){
         rotate([-90,0,15]) cylinder(h=999, d=8, $fn=16);
-        translate([0,0,6]) rotate([-90,0,0]) cylinder(h=d, d=4, $fn=16);
+        translate([0,0,6]) rotate([-90,0,0]) cylinder(h=tiny(), d=4, $fn=16);
     }
 }
 
@@ -203,7 +203,7 @@ module z_motor_clearance(motor_h=999){
 
 module top_of_z_axis_casing(){
     // The top of the Z axis casing, in case you want to join things onto it
-    translate([-z_anchor_w/2-1.5, z_anchor_y - 1, z_flexures_z2]) cube([z_anchor_w+3, d, d]);
+    translate([-z_anchor_w/2-1.5, z_anchor_y - 1, z_flexures_z2]) cube([z_anchor_w+3, tiny(), tiny()]);
     translate([0,z_nut_y,0]) rotate(180) 
                     motor_lugs(h=actuator_h + z_actuator_travel, angle=180, tilt=-z_actuator_tilt);
 }
@@ -258,7 +258,7 @@ module z_actuator_housing(motor_lugs=motor_lugs){
 }
 module z_actuator_cutout(){
     // This chops out a void for the actuator column
-    translate([0,z_nut_y,0]) screw_seat_outline(h=999,adjustment=-d,center=true, tilt=z_actuator_tilt);
+    translate([0,z_nut_y,0]) screw_seat_outline(h=999,adjustment=-tiny(),center=true, tilt=z_actuator_tilt);
 }
 
 
