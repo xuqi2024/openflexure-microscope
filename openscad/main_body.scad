@@ -256,11 +256,10 @@ module xy_positioning_system() {
     }
 
     // add mounts for the optical endstops for X and Y
-    if (endstops)
-        reflect([1,0,0]) hull(){
-            inner_wall_vertex(45, -9, zawall_h);
-            xy_limit_switch_mount();
-        }
+    reflect([1,0,0]) hull(){
+        inner_wall_vertex(45, -9, zawall_h);
+        xy_limit_switch_mount();
+    }
 }
 
 module central_optics_cut_out() {
