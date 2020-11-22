@@ -317,7 +317,7 @@ module internal_xy_structure(){
         reflection_illuminator_cutout();
     }
     //mounts for the optical endstops for X and
-    reflect([1,0,0]) hull(){
+    if (endstops) reflect([1,0,0]) hull(){
         inner_wall_vertex(45, -9, zawall_h);
         xy_limit_switch_mount();
     }
