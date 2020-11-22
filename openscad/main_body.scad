@@ -289,7 +289,6 @@ module main_body(){
                 h=999;
                 aw = 2*column_base_radius() + 3;
                 translate([0,z_flexure_x+1.5-14/2,0]) cube([14,2*d,h],center=true);
-                translate([0,0,0]) cube([2*(z_flexure_x+0.5),1,h],center=true);
                 translate([0,0,0]) cube([2*(z_flexure_x-z_flex_w),1,h],center=true);
                 translate([0,8-(z_flexure_x-z_flex_w-d),0]) cube([16,2*d,h],center=true);
             }
