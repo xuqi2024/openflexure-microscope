@@ -207,7 +207,7 @@ module xy_stage(h=10,on_buildplate=false){
 
 
 ///////////////////// MAIN STRUCTURE STARTS HERE ///////////////
-module main_body(){
+module xy_positioning_system() {
     // This module represents the main body of the microscope, including the positioning mechanism.
 
 	//legs (incl. actuators)
@@ -215,6 +215,12 @@ module main_body(){
 	each_actuator(){
         actuator();
 		translate([0,actuating_nut_r,0]) actuator_column(h=actuator_h, join_to_casing=true);
+    }
+	//Actuator housings (screw seats and motor mounts)
+    xy_labels=["X","Y"];
+    xy_angles=[-45,45];
+	for(i=[0:1]) leg_frame(xy_angles[i]) translate([0,actuating_nut_r,0]){
+        screw_seat(h=actuator_h, travel=xy_actuator_travel, motor_lugs=motor_lugs, extra_entry_h=actuator[2]+2, label=xy_labels[i]);
     }
 	//flexures connecting bottoms of legs to centre
 	each_leg() reflect([1,0,0]) translate([0,0,flex_z1]){
@@ -240,24 +246,60 @@ module main_body(){
 		translate([0,0,flex_z2]) xy_stage(h=stage_t);
 		each_leg() translate([0,-stage_hole_inset,leg_height]) m3_nut_trap_with_shaft(0,0); //mounting holes
 	}
-	
+    ////////////// Reinforcing wall and base /////////////////
+    //Add_hull_base generates the flat base of the structure.
+    difference() {
+        add_hull_base(base_t) wall_inside_xy_stage();
+        central_optics_cut_out();
+        // Cut-out for reflection optics
+        fl_cube_cutout();
+    }
+
+    // add mounts for the optical endstops for X and Y
+    reflect([1,0,0]) hull(){
+        inner_wall_vertex(45, -9, zawall_h);
+        xy_limit_switch_mount();
+    }
+}
+
+module central_optics_cut_out() {
+    // Central cut-out for optics
+    intersection(){
+        sequential_hull(){
+            h=999;
+            aw = 2*column_base_radius() + 3;
+            translate([0,z_flexure_x+1.5-14/2,0]) cube([14,2*d,h],center=true);
+            translate([0,0,0]) cube([2*(z_flexure_x-z_flex_w),1,h],center=true);
+            translate([0,8-(z_flexure_x-z_flex_w-d),0]) cube([16,2*d,h],center=true);
+        }
+        // Limit the height so it slopes up gently to allow for
+        // actuator travel, etc.
+        sequential_hull(){
+            translate([0,-999,0]) cube([999,d,z_strut_t+1]*2,center=true);
+            cube([999,d,z_strut_t+1]*2,center=true);
+            translate([0,z_nut_y,0]) cube([999,d,z_strut_t+z_actuator_travel+1]*2,center=true);
+        }
+    }
+}
+
+module main_body(){
+// This module represents the main body of the microscope, including the positioning mechanism.
+
 	//z axis
     z_axis_flexures();
     z_axis_struts();
     objective_mount();
     z_actuator_column();
+    difference(){
+        z_actuator_housing();
+        z_axis_clearance(); //make sure the actuator can get in ok!
+    }
+
+    xy_positioning_system();
 
 	//base
 	difference(){
 		union(){
-            ////////////// Reinforcing wall and base /////////////////
-            //Add_hull_base generates the flat base of the structure.  
-            add_hull_base(base_t) wall_inside_xy_stage();
-            // add mounts for the optical end-stops for X and Y
-            reflect([1,0,0]) hull(){
-                inner_wall_vertex(45, -9, zawall_h);
-                xy_limit_switch_mount();
-            }
             add_hull_base(base_t) {
                 // Next, link the XY actuators to the wall
                 reflect([1,0,0]) wall_inside_xy_actuators();
@@ -268,12 +310,9 @@ module main_body(){
                 wall_vertex(h=base_t);
             }
             mounting_hole_lugs(); //lugs to bolt the microscope down
-                    
 		}
-        //////  Things we need to cut out holes for... ///////////
 
-        // Cut-out for reflection optics
-        fl_cube_cutout();
+        //////  Things we need to cut out holes for... ///////////
 
         // XY actuator cut-outs
 		each_actuator(){
@@ -283,49 +322,22 @@ module main_body(){
 		// Cut-outs for the Z axis
 		z_axis_casing_cutouts();
 
-		// Central cut-out for optics
-        intersection(){
-            sequential_hull(){
-                h=999;
-                aw = 2*column_base_radius() + 3;
-                translate([0,z_flexure_x+1.5-14/2,0]) cube([14,2*d,h],center=true);
-                translate([0,0,0]) cube([2*(z_flexure_x-z_flex_w),1,h],center=true);
-                translate([0,8-(z_flexure_x-z_flex_w-d),0]) cube([16,2*d,h],center=true);
-            }
-            // Limit the height so it slopes up gently to allow for
-            // actuator travel, etc.
-            sequential_hull(){
-                translate([0,-999,0]) cube([999,d,z_strut_t+1]*2,center=true);
-                cube([999,d,z_strut_t+1]*2,center=true);
-                translate([0,z_nut_y,0]) cube([999,d,z_strut_t+z_actuator_travel+1]*2,center=true);
-            }
-		}
-        
+        central_optics_cut_out();
+
         //post mounting holes (2 near z actuator, 2 in mounting lugs)
         for(p=base_mounting_holes) translate(p){ 
              cylinder(r=3/2*1.1,h=50,center=true); 
              translate([0,0,3]) cylinder(r=3*1.1, h=22); 
         }
-        
+
         //////////////// logo and version string /////////////////////
         size = 0.25;
         place_on_wall() translate([9,wall_h-2-15*size,-0.5]) 
         scale([size,size,10]) openflexure_logo();
-        
+
         mirror([1,0,0]) place_on_wall() translate([8,wall_h-2-15*size,-0.5]) 
         scale([size,size,10]) oshw_logo_and_text(version_numstring);
 	} ///////// End of things to chop out of base/walls ///////
-    
-	//Actuator housings (screw seats and motor mounts)
-    xy_labels=["X","Y"];
-    xy_angles=[-45,45];
-	for(i=[0:1]) leg_frame(xy_angles[i]) translate([0,actuating_nut_r,0]){
-        screw_seat(h=actuator_h, travel=xy_actuator_travel, motor_lugs=motor_lugs, extra_entry_h=actuator[2]+2, label=xy_labels[i]);
-    }
-    difference(){
-        z_actuator_housing();
-        z_axis_clearance(); //make sure the actuator can get in ok!
-    }
 }
 
 
