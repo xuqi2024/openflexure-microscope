@@ -31,7 +31,7 @@ difference(){
     //void for the actuator column
     minkowski(){
         actuator_column(h=actuator_h+1, no_voids=true, flip_nut_slot=true);
-        cylinder(r=0.5, h=d, $fn=8);
+        cylinder(r=0.5, h=tiny(), $fn=8);
     }
     //clearance for the lever
     translate([-cr,0,0]) mirror([0,1,0]) cube([cr*2,999,999]);

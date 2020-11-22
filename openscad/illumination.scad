@@ -65,13 +65,9 @@ module illumination_dovetail(){
         sequential_hull(){
             translate([-front_dovetail_w/2,front_dovetail_y-2,dt_z]) cube([front_dovetail_w, 15+2, 1]);
             hull(){
-                each_illumination_dovetail_screw(middle=false) cyl_slot(r=4, h=3+d, dy=3);
-                middle_illumination_dovetail_screw() scale([1,0.5,1]) cylinder(r=4, h=d);
+                each_illumination_dovetail_screw(middle=false) cyl_slot(r=4, h=3+tiny(), dy=3);
+                middle_illumination_dovetail_screw() scale([1,0.5,1]) cylinder(r=4, h=tiny());
             }
-            //translate([0,0,dt_z-bottom_z-4]) hull(){
-            //    each_illumination_dovetail_screw(middle=false) cyl_slot(r=4, h=d, dy=3);
-            //    middle_illumination_dovetail_screw() scale([1,0.5,1]) cylinder(r=4, h=d);
-            //}
             translate([-front_dovetail_w/2,front_dovetail_y+2,dt_z]) cube([front_dovetail_w, 10-2, dt_h]);
         }
         
@@ -107,7 +103,7 @@ module tall_condenser(bottom=true){
             
             // add a bottom
             hull() reflect([1,0,0]){
-                translate([0,0,-10]) cylinder(r=base_r, h=lens_assembly_z+d+10);
+                translate([0,0,-10]) cylinder(r=base_r, h=lens_assembly_z+tiny()+10);
                 translate([-dt_clip[0]/2, dovetail_end_y,0]) cube([dt_clip[0], 2, lens_assembly_z]);
             }
             
@@ -127,13 +123,13 @@ module tall_condenser(bottom=true){
         }
         
         // hole for the beam passing through the lens
-        translate([0,0,9]) lighttrap_cylinder(r1=led_r+1.5, r2=aperture_r,h=lens_assembly_z-9+d);
+        translate([0,0,9]) lighttrap_cylinder(r1=led_r+1.5, r2=aperture_r,h=lens_assembly_z-9+tiny());
         translate([0,0,lens_assembly_z]) cylinder(r=aperture_r,h=999);
         
         // hole for the LED
         //LED
         deformable_hole_trylinder(led_r,led_r+0.7,h=20, center=true);
         cylinder(r=led_r+1.0,h=2,center=true);
-        translate([0,0,2-d]) cylinder(r1=led_r+1.0, r2=led_r,h=2,center=true);
+        translate([0,0,2-tiny()]) cylinder(r1=led_r+1.0, r2=led_r,h=2,center=true);
     }
 }

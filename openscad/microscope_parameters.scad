@@ -24,7 +24,8 @@
 *                                                                 *
 ******************************************************************/
 
-d = 0.05;
+// this is a tiny distance. Used to be a parameter d in the code but that caused confusion with diameters
+function tiny() = 0.05;
 $fn=32;
 
 // These are the most useful parameters to change!

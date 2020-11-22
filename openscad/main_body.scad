@@ -33,7 +33,7 @@ module leg(brace=stage_flex_w){
 			//vertical legs
 			translate([leg_middle_w/2+zflex_l,0,0]) hull(){
 				cube(leg);
-				cube([leg[0],fw+brace,d]); //extend it to be a triangle
+				cube([leg[0],fw+brace,tiny()]); //extend it to be a triangle
 			}
 
             //flexure bridges between the legs
@@ -44,9 +44,9 @@ module leg(brace=stage_flex_w){
                              //the width of the flexure, while a larger 
                              //value produces two distinct flexures.
 			for(i=[0,1]) translate([0,0,zs[i]]){
-				translate([-d,0,0]) hull() repeat([0,bs[i],0],2) //solid part
-                        cube([leg_middle_w/2+d,leg[1],leg_block_t-0.2*leg[1]]);
-				translate([-d,0,0]) repeat([0,bs[i],0],2) //flexures
+				translate([-tiny(),0,0]) hull() repeat([0,bs[i],0],2) //solid part
+                        cube([leg_middle_w/2+tiny(),leg[1],leg_block_t-0.2*leg[1]]);
+				translate([-tiny(),0,0]) repeat([0,bs[i],0],2) //flexures
                         cube([leg_middle_w/2+zflex_l+leg[0],leg[1],zflex_t]);
 			}
 		}
@@ -96,7 +96,7 @@ module mounting_hole_lugs(){
     //these are to mount onto the baseplate 
     for(p=base_mounting_holes) {
         if(p[1]<0 && p[0]>0) reflect([1,0,0]) hull(){
-            translate([z_flexure_x,0,0]) rotate(-120) cube([10,d,10]);
+            translate([z_flexure_x,0,0]) rotate(-120) cube([10,tiny(),10]);
             translate(p) cylinder(r=4*1.1,h=3);
         }
     }
@@ -190,7 +190,7 @@ module xy_stage(h=10,on_buildplate=false){
         cut_out_side_length = leg_middle_w-2*stage_flex_w;
         thickness = on_buildplate?h:h-1;
         z = on_buildplate?0:1;
-		hull() each_leg() translate([0,-zflex_l-d,z+thickness/2]) cube([side_length,2*d,thickness],center=true);
+		hull() each_leg() translate([0,-zflex_l-tiny(),z+thickness/2]) cube([side_length,2*tiny(),thickness],center=true);
         if (on_buildplate){
             cylinder(r=hole_r,h=999,center=true,$fn=32);
         }else{
@@ -199,7 +199,7 @@ module xy_stage(h=10,on_buildplate=false){
                 // The intersection restricts it to the space between the bridges, to avoid any
                 // holes in the sides of the stage.
                 translate([0,0,1]) rotate(45) hole_from_bottom(hole_r,h=999);
-                hull() each_leg() cube([cut_out_side_length,d,999],center=true);
+                hull() each_leg() cube([cut_out_side_length,tiny(),999],center=true);
             }
         }
 	}
@@ -226,7 +226,7 @@ module xy_positioning_system() {
 	each_leg() reflect([1,0,0]) translate([0,0,flex_z1]){
         w=stage_flex_w;
         translate([leg_middle_w/2-w,0,0.5]) hull()
-			repeat([1,-1,0]*(zflex_l+wall_t/2),2) cube([w,d,zflex_t]);
+			repeat([1,-1,0]*(zflex_l+wall_t/2),2) cube([w,tiny(),zflex_t]);
     }
     //tie the legs to the wall (built later) during printing
     reflect([1,0,0]) leg_frame(135) reflect([1,0,0]) {
@@ -237,8 +237,8 @@ module xy_positioning_system() {
     // NB these connect the legs together, and pass all the way under the stage.  This
     // is important, if they get cut then the bridges will fail!
 	difference(){
-		hull() each_leg() translate([0,0,flex_z2+zflex_t/2+0.5]) cube([leg_middle_w,d,zflex_t],center=true);
-		hull() each_leg() cube([leg_middle_w-2*stage_flex_w,d,999],center=true);
+		hull() each_leg() translate([0,0,flex_z2+zflex_t/2+0.5]) cube([leg_middle_w,tiny(),zflex_t],center=true);
+		hull() each_leg() cube([leg_middle_w-2*stage_flex_w,tiny(),999],center=true);
 	}
 
 	// XY stage
@@ -268,16 +268,16 @@ module central_optics_cut_out() {
         sequential_hull(){
             h=999;
             aw = 2*column_base_radius() + 3;
-            translate([0,z_flexure_x+1.5-14/2,0]) cube([14,2*d,h],center=true);
+            translate([0,z_flexure_x+1.5-14/2,0]) cube([14,2*tiny(),h],center=true);
             translate([0,0,0]) cube([2*(z_flexure_x-z_flex_w),1,h],center=true);
-            translate([0,8-(z_flexure_x-z_flex_w-d),0]) cube([16,2*d,h],center=true);
+            translate([0,8-(z_flexure_x-z_flex_w-tiny()),0]) cube([16,2*tiny(),h],center=true);
         }
         // Limit the height so it slopes up gently to allow for
         // actuator travel, etc.
         sequential_hull(){
-            translate([0,-999,0]) cube([999,d,z_strut_t+1]*2,center=true);
-            cube([999,d,z_strut_t+1]*2,center=true);
-            translate([0,z_nut_y,0]) cube([999,d,z_strut_t+z_actuator_travel+1]*2,center=true);
+            translate([0,-999,0]) cube([999,tiny(),z_strut_t+1]*2,center=true);
+            cube([999,tiny(),z_strut_t+1]*2,center=true);
+            translate([0,z_nut_y,0]) cube([999,tiny(),z_strut_t+z_actuator_travel+1]*2,center=true);
         }
     }
 }
@@ -317,7 +317,7 @@ module main_body(){
         // XY actuator cut-outs
 		each_actuator(){
 			actuator_silhouette(xy_actuator_travel+actuator[2]);
-			translate([0,actuating_nut_r,0]) screw_seat_outline(h=999,adjustment=-d,center=true);
+			translate([0,actuating_nut_r,0]) screw_seat_outline(h=999,adjustment=-tiny(),center=true);
 		}
 		// Cut-outs for the Z axis
 		z_axis_casing_cutouts();

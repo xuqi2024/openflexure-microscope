@@ -78,13 +78,13 @@ module pi_hole_frame(){
 
 module pi_support_frame(){
     // position supports for each of the pi's mounting screws
-    pi_frame() translate([3.5,3.5,bottom_thickness-d]) repeat([58,0,0],2) repeat([0,49,0], 2) children();
+    pi_frame() translate([3.5,3.5,bottom_thickness-tiny()]) repeat([58,0,0],2) repeat([0,49,0], 2) children();
 }
 
 module pi_supports(){
     // pillars into which the pi can be screwed (holes are hollowed out later)
     difference(){
-        pi_support_frame() cylinder(h=raspi_support+d, d=7);
+        pi_support_frame() cylinder(h=raspi_support+tiny(), d=7);
     }
 }
 
@@ -99,12 +99,12 @@ module hull_from(){
 module microscope_bottom(enlarge_legs=1.5, illumination_clip_void=true, lugs=true, feet=true, legs=true){
     // a 2D representation of the bottom of the microscope
     hull(){
-        projection(cut=true) translate([0,0,-d]) wall_inside_xy_stage();
+        projection(cut=true) translate([0,0,-tiny()]) wall_inside_xy_stage();
         if(illumination_clip_void){
-            translate([0, illumination_clip_y-14]) square([12, d], center=true);
+            translate([0, illumination_clip_y-14]) square([12, tiny()], center=true);
         }
     }
-    hull() reflect([1,0,0]) projection(cut=true) translate([0,0,-d]){
+    hull() reflect([1,0,0]) projection(cut=true) translate([0,0,-tiny()]){
         wall_outside_xy_actuators();
         wall_between_actuators();
     }
@@ -113,7 +113,7 @@ module microscope_bottom(enlarge_legs=1.5, illumination_clip_void=true, lugs=tru
         translate([0, z_nut_y]) foot_footprint(tilt=z_actuator_tilt);
     }
     
-    if(lugs) projection(cut=true) translate([0,0,-d]) mounting_hole_lugs();
+    if(lugs) projection(cut=true) translate([0,0,-tiny()]) mounting_hole_lugs();
     
     if(legs) offset(enlarge_legs) microscope_legs();
 }
@@ -121,8 +121,8 @@ module microscope_bottom(enlarge_legs=1.5, illumination_clip_void=true, lugs=tru
 module microscope_legs(){
     difference(){
         each_leg() union(){
-            projection(cut=true) translate([0,0,-d]) leg();
-            projection(cut=true) translate([0,-5,-d]) leg();
+            projection(cut=true) translate([0,0,-tiny()]) leg();
+            projection(cut=true) translate([0,-5,-tiny()]) leg();
         }
         translate([-999,0]) square(999*2);
     }
@@ -166,18 +166,18 @@ module bucket_base_stackable(h=base_height){
     difference(){
         union(){
             sequential_hull(){
-                translate([0,0,0]) linear_extrude(d) offset(0) footprint();
-                translate([0,0,h-6]) linear_extrude(d) offset(0) footprint();
-                translate([0,0,h-d]) linear_extrude(inset_depth) offset(wall_thickness) footprint();
+                translate([0,0,0]) linear_extrude(tiny()) offset(0) footprint();
+                translate([0,0,h-6]) linear_extrude(tiny()) offset(0) footprint();
+                translate([0,0,h-tiny()]) linear_extrude(inset_depth) offset(wall_thickness) footprint();
             }
             
         }
         
         // hollow out the inside
         sequential_hull(){
-            translate([0,0,bottom_thickness]) linear_extrude(d) offset(-wall_thickness) footprint();
-            translate([0,0,h-10]) linear_extrude(d) offset(-wall_thickness) footprint();
-            translate([0,0,h-d]) linear_extrude(d) difference(){
+            translate([0,0,bottom_thickness]) linear_extrude(tiny()) offset(-wall_thickness) footprint();
+            translate([0,0,h-10]) linear_extrude(tiny()) offset(-wall_thickness) footprint();
+            translate([0,0,h-tiny()]) linear_extrude(tiny()) difference(){
                 offset(-3.0) footprint();
                 translate([-99, illumination_clip_y-14+10-999]) square(999);
                 each_actuator() translate([-99, actuating_nut_r-5]) square(999);
@@ -190,17 +190,17 @@ module bucket_base_stackable(h=base_height){
 module top_casing_block(h=base_height, os=0, legs=true, lugs=true){
     // The "bucket" baseplate before holes and supports (i.e. a solid object)
     bottom = os<0?bottom_thickness:0;
-    top_h = os<0?d:inset_depth;
+    top_h = os<0?tiny():inset_depth;
     union(){
         sequential_hull(){
             // The bottom part has a slightly cropped footprint, so the bridge over the SD card
             // can be straight.
-            translate([0,0,bottom]) linear_extrude(d) offset(os) footprint_after_pi_cutouts();
-            translate([0,0,min(sd_card_cutout_top, h)]) linear_extrude(d) offset(os) footprint_after_pi_cutouts();
-            translate([0,0,h]) linear_extrude(d) offset(os) footprint();
+            translate([0,0,bottom]) linear_extrude(tiny()) offset(os) footprint_after_pi_cutouts();
+            translate([0,0,min(sd_card_cutout_top, h)]) linear_extrude(tiny()) offset(os) footprint_after_pi_cutouts();
+            translate([0,0,h]) linear_extrude(tiny()) offset(os) footprint();
         }
         hull_from(){
-            translate([0,0,h]) linear_extrude(2*d) offset(os) footprint();
+            translate([0,0,h]) linear_extrude(2*tiny()) offset(os) footprint();
             
             //for(a=[0,180]) // I'm sure there used to be a good reason to do this in two stages, but
             // I cannot now remember what it was, and it seems to make no difference...
@@ -324,13 +324,13 @@ module sangaboard_connectors(){
 
 module sangaboard_support_frame(){
     // position supports for each of the sangaboard's mounting screws
-    pi_frame() translate([3.5,3.5,bottom_thickness-d]) repeat([57,0,0],2) repeat([0,47,0], 2) children();
+    pi_frame() translate([3.5,3.5,bottom_thickness-tiny()]) repeat([57,0,0],2) repeat([0,47,0], 2) children();
 }
 
 module sangaboard_supports(){
     // pillars into which the pi can be screwed
     difference(){
-        sangaboard_support_frame() cylinder(h=raspi_support+d, d=7);
+        sangaboard_support_frame() cylinder(h=raspi_support+tiny(), d=7);
         // holes for the sangaboard go all the way through
         sangaboard_support_frame() trylinder_selftap(3, h=999, center=true); //these screws are M2.5, not M3
     }
@@ -339,23 +339,23 @@ module sangaboard_supports(){
 module nano_supports(){
 //supports for the three motor driver boards
     difference(){
-        pi_frame() rotate([0,0,40]) translate([5,-6,bottom_thickness-d]) {
-            translate([2.5,2.5,0]) cylinder(h=driver_support+d, d=7);
-            translate([driver_width-2.5,2.5,0]) cylinder(h=driver_support+d, d=7);
-            translate([driver_width+3.0,12.5,0]) cylinder(h=driver_support+d, d=7);
-            translate([2*driver_width-2.0,12.5,0]) cylinder(h=driver_support+d, d=7);
-            translate([2*driver_width+3.5,2.5,0]) cylinder(h=driver_support+d, d=7);
-            translate([3*driver_width-1.5,2.5,0]) cylinder(h=driver_support+d, d=7);   
-            translate([2.5,driver_length-2.5,0]) cylinder(h=driver_support+d, d=7);
-            translate([driver_width-2.5,driver_length-2.5,0]) cylinder(h=driver_support+d, d=7);
-            translate([driver_width+3.0,driver_length+7.5,0]) cylinder(h=driver_support+d, d=7);
-            translate([2*driver_width-2.0,driver_length+7.5,0]) cylinder(h=driver_support+d, d=7);
-            translate([2*driver_width+3.5,driver_length-2.5,0]) cylinder(h=driver_support+d, d=7); 
-            translate([3*driver_width-1.5,driver_length-2.5,0]) cylinder(h=driver_support+d, d=7);
+        pi_frame() rotate([0,0,40]) translate([5,-6,bottom_thickness-tiny()]) {
+            translate([2.5,2.5,0]) cylinder(h=driver_support+tiny(), d=7);
+            translate([driver_width-2.5,2.5,0]) cylinder(h=driver_support+tiny(), d=7);
+            translate([driver_width+3.0,12.5,0]) cylinder(h=driver_support+tiny(), d=7);
+            translate([2*driver_width-2.0,12.5,0]) cylinder(h=driver_support+tiny(), d=7);
+            translate([2*driver_width+3.5,2.5,0]) cylinder(h=driver_support+tiny(), d=7);
+            translate([3*driver_width-1.5,2.5,0]) cylinder(h=driver_support+tiny(), d=7);   
+            translate([2.5,driver_length-2.5,0]) cylinder(h=driver_support+tiny(), d=7);
+            translate([driver_width-2.5,driver_length-2.5,0]) cylinder(h=driver_support+tiny(), d=7);
+            translate([driver_width+3.0,driver_length+7.5,0]) cylinder(h=driver_support+tiny(), d=7);
+            translate([2*driver_width-2.0,driver_length+7.5,0]) cylinder(h=driver_support+tiny(), d=7);
+            translate([2*driver_width+3.5,driver_length-2.5,0]) cylinder(h=driver_support+tiny(), d=7); 
+            translate([3*driver_width-1.5,driver_length-2.5,0]) cylinder(h=driver_support+tiny(), d=7);
         }
 
 //screw holes in the driver board support posts
-        pi_frame() rotate([0,0,40]) translate([5,-6,bottom_thickness-d]) {
+        pi_frame() rotate([0,0,40]) translate([5,-6,bottom_thickness-tiny()]) {
             translate([2.5,2.5,0]) trylinder_selftap(3, h=999, center=true);
             translate([driver_width-2.5,2.5,0]) trylinder_selftap(3, h=999, center=true);
             translate([driver_width+3.0,12.5,0]) trylinder_selftap(3, h=999, center=true);
@@ -374,29 +374,29 @@ module nano_supports(){
 //supports for an arduino nano    
     difference(){
         //two posts with rounded tops and a base
-        pi_frame() rotate([0,0,40]) translate([8.5,-21.5,bottom_thickness-d]) {
-            translate([49.5-nano_length/2,-6.5,0]) cylinder(h=nano_width+2.4+d, d=5);
-            translate([49.5-nano_length/2,-6.5,nano_width+2.4+d]) sphere(r=2.5);
-            translate([50.5+nano_length/2,-6.5,0]) cylinder(h=nano_width+d+2.4, d=5);
-            translate([50.5+nano_length/2,-6.5,nano_width+2.4+d]) sphere(r=2.5);
+        pi_frame() rotate([0,0,40]) translate([8.5,-21.5,bottom_thickness-tiny()]) {
+            translate([49.5-nano_length/2,-6.5,0]) cylinder(h=nano_width+2.4+tiny(), d=5);
+            translate([49.5-nano_length/2,-6.5,nano_width+2.4+tiny()]) sphere(r=2.5);
+            translate([50.5+nano_length/2,-6.5,0]) cylinder(h=nano_width+tiny()+2.4, d=5);
+            translate([50.5+nano_length/2,-6.5,nano_width+2.4+tiny()]) sphere(r=2.5);
             translate([49.5-nano_length/2,-9.0,0]) cube([nano_length+1,5,2]);
         }
 
-        pi_frame() rotate([0,0,40]) translate([8.5,-21.5,bottom_thickness-d]) {
+        pi_frame() rotate([0,0,40]) translate([8.5,-21.5,bottom_thickness-tiny()]) {
             //carve out for nano board
             hull(){
-                translate([52.1-nano_length/2,-9.5,2+d]) cube([nano_length-4.2,6,0.1]);             
-                translate([49.8-nano_length/2,-9.5,5+d]) cube([nano_length+0.4,6,nano_width-5.6]); 
-                translate([52.1-nano_length/2,-9.5,nano_width+2.3+d]) cube([nano_length-4.2,6,0.1]);  
+                translate([52.1-nano_length/2,-9.5,2+tiny()]) cube([nano_length-4.2,6,0.1]);             
+                translate([49.8-nano_length/2,-9.5,5+tiny()]) cube([nano_length+0.4,6,nano_width-5.6]); 
+                translate([52.1-nano_length/2,-9.5,nano_width+2.3+tiny()]) cube([nano_length-4.2,6,0.1]);  
             }
             //carve out for usb module
             hull(){
-                translate([39.8-nano_length/2,-12.5-1.7/2,nano_width-0.7+d]) cube([20,4.3,0.1]); 
-                translate([39.8-nano_length/2,-12.5-1.7/2,7.5+d]) cube([20,6,nano_width-10.6]); 
-                translate([39.8-nano_length/2,-12.5-1.7/2,5+d]) cube([20,4.3,0.1]); 
+                translate([39.8-nano_length/2,-12.5-1.7/2,nano_width-0.7+tiny()]) cube([20,4.3,0.1]); 
+                translate([39.8-nano_length/2,-12.5-1.7/2,7.5+tiny()]) cube([20,6,nano_width-10.6]); 
+                translate([39.8-nano_length/2,-12.5-1.7/2,5+tiny()]) cube([20,4.3,0.1]); 
             }
             //actual slot for the nano
-            translate([49.8-nano_length/2,-6.5-1.7/2,2+d]) cube([nano_length+0.4,1.7,nano_width+0.4]); 
+            translate([49.8-nano_length/2,-6.5-1.7/2,2+tiny()]) cube([nano_length+0.4,1.7,nano_width+0.4]); 
         }
     }
 }       
