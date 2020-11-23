@@ -141,17 +141,16 @@ module slip_plate(w){
                     hull(){
                         translate([0,0,(base_r-fl_cube_w/2)+2]){
                             rotate([-90,0,0]){
-                                    cylinder(r=2, h= 5);
+                                    cylinder(r=2, h= 2);
                             }
                         }   
                         translate([0,0,2]){
-                            #rotate([-90,0,0]){
-                                    cylinder(r=2, h= 5);
+                            rotate([-90,0,0]){
+                                    cylinder(r=2, h= 2);
                             }
                         } 
-                        translate([-5,0,0.5]){
-                            #rotate([-90,0,0]){
-                                    cylinder(r=0.5, h= 5);
+                            rotate([-90,0,0]){
+                                    cylinder(r=0.5, h= 2);
                             }
                         }    
                     }
