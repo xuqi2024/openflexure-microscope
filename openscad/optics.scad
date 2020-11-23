@@ -73,9 +73,9 @@ module fl_cube_casing(){
 module fl_screw_holes(d,h){
     reflect([1,0,0]){
         union(){
-            translate([fl_cube_w/2+5,0,fl_cube_bottom+fl_cube_w/2])rotate([90,0,0]) trylinder_selftap(d, h);
+            translate([fl_cube_w/2+3,0,fl_cube_bottom+fl_cube_w])rotate([90,0,0]) trylinder_selftap(d, h);
         }
-}
+    }
 }
 
 module optical_path(lens_aperture_r, lens_z){

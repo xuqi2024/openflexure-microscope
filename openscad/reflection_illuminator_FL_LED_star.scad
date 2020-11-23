@@ -137,7 +137,7 @@ module slip_plate(w){
                     }
                 }
                 reflect([90,0,0]){
-                translate([(fl_cube_w/2+5),0,0]){
+                translate([(fl_cube_w/2+3),0,0]){
                     hull(){
                         translate([0,0,(base_r-fl_cube_w/2)+2]){
                             rotate([-90,0,0]){
@@ -149,6 +149,7 @@ module slip_plate(w){
                                     cylinder(r=2, h= 2);
                             }
                         } 
+                        translate([-4,0,0.5]){
                             rotate([-90,0,0]){
                                     cylinder(r=0.5, h= 2);
                             }
@@ -162,7 +163,7 @@ module slip_plate(w){
                     translate([w/2-2,10,0])cylinder(r=1.3,h = 5);
                     translate([w/2-2,37,0])cylinder(r=1.3,h = 5);
                 }
-                translate([(fl_cube_w/2+5),0,fl_cube_w/2+(base_r-fl_cube_w/2)+2]){
+                translate([(fl_cube_w/2+3),0,(base_r-fl_cube_w/2)+2]){
                     rotate([-90,60,0]){
                         trylinder_selftap(nominal_d = 2.5,h= 6);
                     }
