@@ -22,11 +22,11 @@ $fn=32;
 
 
 module sample_clip(sample,t=2.5,w=6,roc=-1,slope=30){
-    roc = roc>0 ? roc : sample[2]/2 + sample[1]*sin(slope) - t/2; //radius of curvature
-    a = sqrt(pow(sample[1], 2) + pow(sample[2] - roc - t/2, 2));
+    roc = roc>0 ? roc : sample.z/2 + sample.y*sin(slope) - t/2; //radius of curvature
+    a = sqrt(pow(sample.y, 2) + pow(sample.z - roc - t/2, 2));
       //a is the distance from the contact-point cylinder to the 
       //centre of the curved part
-    angle = acos( (roc + t/2) / a ) + atan((sample[2] - roc - t/2)/sample[1]); //angle through which we must rotate the join between
+    angle = acos( (roc + t/2) / a ) + atan((sample.z - roc - t/2)/sample.y); //angle through which we must rotate the join between
     //curved part and straight part
     echo("angle set to:",angle);
     /*angle = 75; //angle of straight part to the vertical
@@ -44,8 +44,8 @@ module sample_clip(sample,t=2.5,w=6,roc=-1,slope=30){
             }
             sequential_hull(){
                 translate([0,0,roc+t]) rotate([0,90,0]) rotate(angle) translate([0,roc+t/2,0]) cylinder(r=t/2,h=w,center=true);
-                translate([0,sample[1],sample[2]+t/2]) rotate([0,90,0]) cylinder(r=t/2,h=w,center=true);
-                translate([0,sample[1]+t,sample[2]+t]) rotate([0,90,0]) cylinder(r=t/2,h=w,center=true);
+                translate([0,sample.y,sample.z+t/2]) rotate([0,90,0]) cylinder(r=t/2,h=w,center=true);
+                translate([0,sample.y+t,sample.z+t]) rotate([0,90,0]) cylinder(r=t/2,h=w,center=true);
             }
             
         }

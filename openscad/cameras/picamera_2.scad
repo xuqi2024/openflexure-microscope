@@ -194,7 +194,7 @@ lens_unscrew_r = 5.5/2; //size of the bit we unscrew
 module generous_camera_bits(){
     //The other stuff on the PCB (mostly the ribbon cable)
     camera = [8.5,8.5,2.3]; //size of camera box
-	cw = camera[0]+1; //side length of camera box at bottom (slightly larger)
+	cw = camera.x+1; //side length of camera box at bottom (slightly larger)
 	union(){
 		//ribbon cable at top of camera
         sequential_hull(){
@@ -211,18 +211,18 @@ module picamera_2_gripper(){
     // this little bit of plastic grips the plastic camera housing
     // and allows you to safely unscrew the lens
     // it protects the (surprisingly delicate) flex that connects the camera to the PCB.
-    outer = pcb+[4,-5,camera_housing[2]]; //size of the tool
+    outer = pcb+[4,-5,camera_housing.z]; //size of the tool
     difference(){
-        translate([0,-1,outer[2]/2]) cube(outer, center=true);
+        translate([0,-1,outer.z/2]) cube(outer, center=true);
         
         //central hole for the camera housing
         translate([0,camera_housing_y,0]) cube(camera_housing + [0,0,999],center=true);
         
         //cut-outs for the other bits (cable etc.)
-        translate([0,camera_housing_y,camera_housing[2]]) rotate([180,0,0]) generous_camera_bits();
+        translate([0,camera_housing_y,camera_housing.z]) rotate([180,0,0]) generous_camera_bits();
         
         //indent for PCB
-        translate([0,0,outer[2]]) cube(pcb + [0,0,pcb[2]],center=true);
+        translate([0,0,outer.z]) cube(pcb + [0,0,pcb.z],center=true);
     
     }
 }

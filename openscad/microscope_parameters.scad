@@ -75,16 +75,16 @@ echo(str("Compiling OpenFlexure Microscope ",version_string));
 
 leg_block_t = 5; // Thickness of the block at the top and bottom of the leg
 stage_t = sample_z-leg_height + leg_block_t; //thickness of the XY stage (at thickest point, most is 1mm less)
-stage_hole_inset = flex_dims()[1]+4; // how far the holes on the XY stage are inset from leg_r
+stage_hole_inset = flex_dims().y+4; // how far the holes on the XY stage are inset from leg_r
 flex_z1 = 0;      // z position of lower flexures for XY axis
 flex_z2 = leg_height-leg_block_t; //height of upper XY flexures
 z_strut_t = 6;  // (z) thickness of struts for Z axis
-function leg_dims() = [4,flex_dims()[0],flex_z2+flex_dims()[2]]; // size of vertical legs
+function leg_dims() = [4,flex_dims().x,flex_z2+flex_dims().z]; // size of vertical legs
 leg_middle_w = 12; // width of the middle part of each leg
 actuator_h = 25; //height of the actuator columns
 dz = 0.5; //small increment in Z (~ 2 layers)
 
-leg_outer_w = leg_middle_w + 2*flex_dims()[1] + 2*leg_dims()[0]; // overall width of parallelogram legs that support the stage
+leg_outer_w = leg_middle_w + 2*flex_dims().y + 2*leg_dims().x; // overall width of parallelogram legs that support the stage
 actuator = [3*1.2+2*2,(flex_z2 - flex_z1)*xy_lever_ratio,6]; // dimensions of the core part of the actuating levers for X and Y - NB should match the column_base_r in compact_nut_seat.scad
 actuating_nut_r = (flex_z2 - flex_z1)*xy_lever_ratio; // distance from leg_r to the actuating nut/screw for the XY axes
 xy_actuator_travel = actuating_nut_r*0.15; // distance moved by XY axis actuators
@@ -93,15 +93,15 @@ xy_actuator_travel = actuating_nut_r*0.15; // distance moved by XY axis actuator
 z_flexures_z1 = 8; // height of the lower flexure on z actuator
 z_flexures_z2 = min(leg_height - 12, 35); // height of the upper flexure on z actuator
 objective_mount_back_y = objective_mount_y + 2; //back of objective mount
-z_anchor_y = objective_mount_back_y + z_strut_l + 2*flex_dims()[1]; // fixed end of the flexure-hinged lever that actuates the Z axis
+z_anchor_y = objective_mount_back_y + z_strut_l + 2*flex_dims().y; // fixed end of the flexure-hinged lever that actuates the Z axis
 z_anchor_w = 20; //width of the Z anchor
-zll = (z_strut_l + flex_dims()[1])*z_lever_ratio; //required actuator lever length
+zll = (z_strut_l + flex_dims().y)*z_lever_ratio; //required actuator lever length
 zfz = z_flexures_z1; // shorthand for the next line only!
-z_nut_y = z_anchor_y - flex_dims()[1]/2 + sqrt(zll*zll - zfz*zfz);
+z_nut_y = z_anchor_y - flex_dims().y/2 + sqrt(zll*zll - zfz*zfz);
 z_actuator_travel = zll*0.15; // distance moved by the Z actuator
 z_actuator_tilt = -asin(z_flexures_z1/zll); //angle of the Z actuator
 
-z_flexure_x = (leg_r-flex_dims()[1]-max(5,leg_dims()[2]*0.1))*sqrt(2); // x position of the outside of the Z-axis static anchors (either side of the XY stage, on the X axis) (no longer used by Z axis but still in use elsewhere.)
+z_flexure_x = (leg_r-flex_dims().y-max(5,leg_dims().z*0.1))*sqrt(2); // x position of the outside of the Z-axis static anchors (either side of the XY stage, on the X axis) (no longer used by Z axis but still in use elsewhere.)
 
 bridge_dz = 10; // spacing between thin links on legs
 base_t=1; // thickness of the flat base of the structure

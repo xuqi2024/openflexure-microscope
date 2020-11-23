@@ -63,7 +63,7 @@ module inner_wall_vertex(leg_angle, x, h=wall_h, thick=false){
     // edge is vertical (i.e. the bit at 45 degrees to
     // the leg frame)
     y_tilt = x>0?6:-6;
-    y=-flex_dims()[1]-wall_t/2;
+    y=-flex_dims().y-wall_t/2;
     r = thick?wall_t:wall_t/2;
     leg_frame(leg_angle) translate([x,y,0]){
             wall_vertex(r=r,h=h,x_tilt=6,y_tilt=y_tilt);
@@ -89,6 +89,6 @@ module z_anchor_wall_vertex(){
 module y_actuator_wall_vertex(x=1){
     // A wall vertex for the y actuator.  x=-1,1 picks the side
     // of the actuator where the vertex is placed.
-    leg_frame(45) translate([x*(ss_outer()[0]/2-wall_t/2),
+    leg_frame(45) translate([x*(ss_outer().x/2-wall_t/2),
                              actuating_nut_r, 0]) wall_vertex();
 }

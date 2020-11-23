@@ -22,7 +22,7 @@ difference(){
 }
 color("pink", 1.0) actuator_column(25, 0, join_to_casing=false);
 
-color("green", 1.0) translate([ss_outer(0)[0]/2-2, 0, -30]) rotate([90,0,-90]) band_tool();
+color("green", 1.0) translate([ss_outer(0).x/2-2, 0, -30]) rotate([90,0,-90]) band_tool();
 
 module viton_band_in_situ_vertical(h=25, foot_z=-8){
     band_d=2;

@@ -17,7 +17,7 @@
 
 d=0.05;
 
-function zeroz(size) = [size[0], size[1], 0]; //set the Z component of a 3-vector to 0
+function zeroz(size) = [size.x, size.y, 0]; //set the Z component of a 3-vector to 0
 
 module reflect(axis){ //reflects its children about the origin, but keeps the originals
 	children();
@@ -124,9 +124,9 @@ module pinch_y(d, screw_l=999, counterbore_l=999, nut_l=-1, gap=[], t=2,extra_he
     nut_l = nut_l<0 ? d : nut_l; //default nut height
     gap = len(gap)==3 ? gap : [4*d, d, 4*d];
     union(){
-        translate([0,gap[1]/2+t]) screw_y(d,h=counterbore_l,shaft=true,shaft_length=2*screw_l,extra_height=extra_height);
+        translate([0,gap.y/2+t]) screw_y(d,h=counterbore_l,shaft=true,shaft_length=2*screw_l,extra_height=extra_height);
         cube(gap,center=true);
-        translate([0,-gap[1]/2-t]) mirror([0,1,0]) nut_y(d, h=nut_l,center=false,shaft=false,top_access=top_access);
+        translate([0,-gap.y/2-t]) mirror([0,1,0]) nut_y(d, h=nut_l,center=false,shaft=false,top_access=top_access);
     }
 }
 //pinch_y(4,screw_l=10,t=4,top_access=true);
@@ -142,7 +142,7 @@ module chamfered_hole(r=10, h=10, chamfer=1,center=false){
 
 module unrotate(rotation){
 	//undo a previous rotation, NB this is NOT the same as rotate(-rotation) due to ordering.
-	rotate([0,0,-rotation[2]]) rotate([0,-rotation[1],0]) rotate([-rotation[0],0,0]) children();
+	rotate([0,0,-rotation.z]) rotate([0,-rotation.y,0]) rotate([-rotation.x,0,0]) children();
 }
 
 module smatrix(xx=1,yy=1,zz=1,xy=0,xz=0,yx=0,yz=0,zx=0,zy=0, xt=0, yt=0, zt=0){
@@ -255,7 +255,7 @@ module hole_from_bottom(r, h, base_w=-1, dz=0.5, big_bottom=true){
     base = base_w>0 ? [base_w,2*r,2*dz] : [2*r,2*r,d];
     union(){
         translate([0,0,0]) cube(base,center=true);
-        translate([0,0,base[2]/2-d]) square_to_circle(r, dz*4, 4, h-dz*5+d);
+        translate([0,0,base.z/2-d]) square_to_circle(r, dz*4, 4, h-dz*5+d);
         if(big_bottom) mirror([0,0,1]) cylinder(r=999,h=999,$fn=8);
     }
 }

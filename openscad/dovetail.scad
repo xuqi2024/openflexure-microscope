@@ -40,15 +40,15 @@ module dovetail_clip_cutout(size,dt=1.5,t=2,slope_front=0,solid_bottom=0){
     // want to make it tighter, either by increasing dt slightly or by
     // decreasing the size slightly (in both cases, of this, the female
     // dovetail).
-    // NB that it starts at z=-d and stops at z=size[2]+d to make
+    // NB that it starts at z=-d and stops at z=size.z+d to make
     // it easy to subtract from a block.
     
     cutout_bottom = solid_bottom > 0 ? solid_bottom+d : -d;
-    inner_w = size[0] - 2*t; // width between arms
+    inner_w = size.x - 2*t; // width between arms
     
-    hull() reflect([1,0,0]) translate([-size[0]/2+t,0,cutout_bottom]){
-        translate([dt,size[1]-dt,0]) cylinder(r=dt,h=size[2]+2*d,$fn=16);
-        translate([0,dt,0]) rotate(-45) cube([dt*2,d,size[2]+2*d]);
+    hull() reflect([1,0,0]) translate([-size.x/2+t,0,cutout_bottom]){
+        translate([dt,size.y-dt,0]) cylinder(r=dt,h=size.z+2*d,$fn=16);
+        translate([0,dt,0]) rotate(-45) cube([dt*2,d,size.z+2*d]);
     }
     
     if(slope_front>0){
@@ -77,7 +77,7 @@ module dovetail_clip(size=[10,2,10],dt=1.5,t=2,back_t=0,slope_front=0,solid_bott
     // can help with bed adhesion.
     // see dovetail_clip_cutout - most of the options are just passed through.
 	difference(){
-		translate([-size[0]/2,0,0]) cube(size);
+		translate([-size.x/2,0,0]) cube(size);
 		dovetail_clip_cutout(size-[0,back_t+d,0],dt=dt,t=t,slope_front=slope_front,solid_bottom=solid_bottom);
 	}
 }
@@ -96,7 +96,7 @@ module dovetail_plug(corner_x, r, dt, zx_profile=[[0,0],[10,0],[12,-1]]){
         // four fat cylinders make the contact point
         for(i=[0:len(zx_profile)-2]){
             hull() for(j=[0:1]){
-                z = zx_profile[i+j][0];
+                z = zx_profile[i+j].[0];
                 x = zx_profile[i+j][1];
                 reflect([1,0,0]) translate([corner_x+x,0,z]) rotate(45) translate([sqrt(3)*r,r,0]) repeat([dt*sqrt(2) - (1+sqrt(3))*r,0,0],2) cylinder(r=r,h=d);
             }
@@ -104,7 +104,7 @@ module dovetail_plug(corner_x, r, dt, zx_profile=[[0,0],[10,0],[12,-1]]){
         // another four cylinders join the plug to the y=0 plane
         for(i=[0:len(zx_profile)-2]){
             hull() for(j=[0:1]){
-                z = zx_profile[i+j][0];
+                z = zx_profile[i+j].[0];
                 x = zx_profile[i+j][1];
                 reflect([1,0,0]) translate([corner_x+x,0,z]) rotate(45) repeat([sqrt(3)*r,r,0],2) cylinder(r=d,h=d);
             }
@@ -119,10 +119,10 @@ module dovetail_m(size=[10,2,10],dt=1.5,t=2,top_taper=1,bottom_taper=0.5,waist=0
     // The width of the box should be the same as the width of the
     // female dovetail clip.  The size of the dovetail is set by dt.
     // t sets the thickness of the female dovetail arms; the dovetail
-    // is actually size[0]-2*t wide.
+    // is actually size.x-2*t wide.
     r=r; //radius of curvature - something around nozzle width is good.
-    w=size[0]-2*t; //width of dovetail
-    h=size[2]; //height
+    w=size.x-2*t; //width of dovetail
+    h=size.z; //height
     corner=[w/2-dt,0,0]; //location of the pointy bit of the dovetail
     difference(){
 		union(){
@@ -130,7 +130,7 @@ module dovetail_m(size=[10,2,10],dt=1.5,t=2,top_taper=1,bottom_taper=0.5,waist=0
             //dovetail's neck (as far as y=0)
 			sequential_hull(){
                 // start with the cube that the dovetail attaches to
-				translate([-w/2-t,-size[1],0]) cube([w+2*t,size[1]-r,h]);
+				translate([-w/2-t,-size.y,0]) cube([w+2*t,size.y-r,h]);
                 // then add shapes that take in the centres of the cylinders
                 // from the next step.  This joins together the nicely-rounded
                 // contact points, such that when we subtract out the cylinders
@@ -158,7 +158,7 @@ module dovetail_m(size=[10,2,10],dt=1.5,t=2,top_taper=1,bottom_taper=0.5,waist=0
                                   [h/2+waist/2,0],
                                   [h-top_taper,0],
                                   [h-d,-top_taper/2]];
-                    dovetail_plug(corner[0], r, dt, zx_profile);
+                    dovetail_plug(corner.x, r, dt, zx_profile);
                         
 				}
 			}
@@ -181,22 +181,22 @@ module dovetail_clip_y(size, dt=1.5, t=2, taper=0, endstop=false){
     // endstop_w, endstop_t set the width and thickness (in y and z) of the link
     // taper optionally feathers the dovetail onto an edge
     // the dovetail extends along the +y direction from y=0
-    h = size[1];
+    h = size.y;
     ew = 0;//endstop ? endstop_w : 0;
-    reflect([1,0,0]) translate([-size[0]/2,0,0]) mirror([0,0,1]) sequential_hull(){
+    reflect([1,0,0]) translate([-size.x/2,0,0]) mirror([0,0,1]) sequential_hull(){
         translate([0,dt,0]) cube([t+dt,h-2*dt,d]);
         cube([t,h,dt]);
         translate([0,-ew,0]) cube([t,h+ew,dt]);
-        translate([0,-taper,size[2]-d]) cube([t,h+2*taper,d]);
+        translate([0,-taper,size.z-d]) cube([t,h+2*taper,d]);
     }
     if(endstop){
         difference(){
             hull(){ // make a bridge between the lower tapers
-                translate([0,-taper/2,-size[2]+d]) cube([size[0],taper,2*d],center=true);
-                translate([0,0,-d]) cube([size[0],d,2*d],center=true);
+                translate([0,-taper/2,-size.z+d]) cube([size.x,taper,2*d],center=true);
+                translate([0,0,-d]) cube([size.x,d,2*d],center=true);
             }
-            translate([0,0,-size[2]+0.5+999/2]) cube([(size[0]-2*t-2*dt)-2,999,999],center=true); //cut the middle
-            translate([0,-taper/2,-size[2]]) cube([size[0],taper-1.5,0.5*2+d],center=true);
+            translate([0,0,-size.z+0.5+999/2]) cube([(size.x-2*t-2*dt)-2,999,999],center=true); //cut the middle
+            translate([0,-taper/2,-size.z]) cube([size.x,taper-1.5,0.5*2+d],center=true);
         }
     }
 }

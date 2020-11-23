@@ -47,7 +47,7 @@ module skew_flat(tilt, shift=false){
     // touched by the edge of the foot in the unskewed frame - and the skew will
     // move that side of the model downwards.  It's all because we rotate the
     // model about the corner, rather than the centre...
-    l = ss_outer()[1];
+    l = ss_outer().y;
     multmatrix([[1,0,0,0],
                 [0,1,0,0],
                 [0,tan(-tilt),1,shift ? l/2*tan(tilt) : 0],
@@ -59,12 +59,12 @@ module rx(){
 }
 
 module filleted_bridge(gap, roc_xy=2, roc_xz=2){
-    // This can be subtracted from a structure of width gap[0] to form
+    // This can be subtracted from a structure of width gap.x to form
     // a hole in the bottom of the object with rounded edges.
     // It's used here to smooth the band anchor to avoid damaging the bands.
-    w = gap[0];
-    b = gap[1];
-    h = gap[2];
+    w = gap.x;
+    b = gap.y;
+    h = gap.z;
     x1 = w/2 - roc_xy;
     x2 = w/2 - roc_xz;
     y1 = b/2 + roc_xy;
@@ -101,7 +101,7 @@ module foot_section(foot_angle=0,    //the angle the actuator column makes with 
 module foot_letter(letter="",actuator_tilt=0,h=10,base_cleareance=2){
     //To add a letrer to the side of the foot.
     //For letters that got below the line, base clearance may need increasing
-    y_tr = ss_outer()[1]/2-.5;
+    y_tr = ss_outer().y/2-.5;
     z_tr = -y_tr*tan(actuator_tilt)+h/2+base_cleareance;
     translate([0,y_tr*cos(actuator_tilt)-z_tr*sin(actuator_tilt),y_tr*sin(actuator_tilt)+z_tr*cos(actuator_tilt)])
     rotate([actuator_tilt,0,0])
@@ -124,10 +124,10 @@ module foot(travel=5,       // how far into the foot the actuator can move down
     // may also be two out of the three points of contact between the microscope
     // and the table (though not if you're using a stand).
                 
-    w = ss_outer()[0]; //size of the outside of the screw seat column
-    l = ss_outer()[1];
-    cw = column_core_size()[0]; //size of the inside of the screw seat column
-    cl = column_core_size()[1];
+    w = ss_outer().x; //size of the outside of the screw seat column
+    l = ss_outer().y;
+    cw = column_core_size().x; //size of the inside of the screw seat column
+    cl = column_core_size().y;
     wall_t = (w-cw)/2; //thickness of the wall
     h = foot_height - hover; //defined in parameters.scad, set hover=2 to not touch ground, useful for the middle foot.
     tilt = bottom_tilt - actuator_tilt; //the angle of the ground relative to the axis of the foot
@@ -210,7 +210,7 @@ module outer_foot(lie_flat=false,letter=""){
 }
 
 module feet_for_printing(lie_flat=true){
-    x_tr = ss_outer()[0]+1.5;
+    x_tr = ss_outer().x+1.5;
     translate([x_tr, 0]) outer_foot(lie_flat=lie_flat,letter="X");
     middle_foot(lie_flat=lie_flat,letter="Z");
     translate([-x_tr, 0]) outer_foot(lie_flat=lie_flat,letter="Y");

@@ -42,7 +42,7 @@ driver_support = 4.0;
 base_height = tall_bucket_base?45:30;
 
 //the y poistion where the base forms a point
-base_corner_y = (-(leg_r-flex_dims()[1]-wall_t/2+leg_outer_w/2)/sqrt(2)-wall_t/2-15);
+base_corner_y = (-(leg_r-flex_dims().y-wall_t/2+leg_outer_w/2)/sqrt(2)-wall_t/2-15);
 
 module foot_footprint(tilt=0){
     // the footprint of one foot/actuator column
@@ -51,12 +51,12 @@ module foot_footprint(tilt=0){
 
 module pi_frame(){
     // coordinate system relative to the corner of the pi.
-    translate([0,15]) rotate(-45) translate([-raspi_board[0]/2, -raspi_board[1]/2]) children();
+    translate([0,15]) rotate(-45) translate([-raspi_board.x/2, -raspi_board.y/2]) children();
 }
 
 module pi_footprint(){
     // basic space for the Pi (in 2D)
-    pi_frame() translate([-1,-1]) square([raspi_board[0]+2,raspi_board[1]+2]);
+    pi_frame() translate([-1,-1]) square([raspi_board.x+2,raspi_board.y+2]);
 }
 
 sd_card_cutout_top = 20;
@@ -64,13 +64,13 @@ sd_card_cutout_top = 20;
 module pi_connectors(){
     pi_frame(){
         // USB/network ports
-        translate([raspi_board[0]/2,-1,1]) cube(raspi_board + [2,2,-1]);
+        translate([raspi_board.x/2,-1,1]) cube(raspi_board + [2,2,-1]);
 
         // micro-USB power and HDMI
         translate([24-(40/2), -100, -2]) cube([46,100,14]);
 
         // micro-SD card cutout
-        translate([-25,raspi_board[1]/2-16,-10]) cube([30, sd_card_cutout_top + 10, 16]);
+        translate([-25,raspi_board.y/2-16,-10]) cube([30, sd_card_cutout_top + 10, 16]);
     }
 }
 
@@ -306,7 +306,7 @@ module microscope_stand(h=base_height){
 //I made it work for my wall size, then interpolated.
 //It should be acceptably close for most sane wall sizes.
         pi_frame() {
-            translate([-19.24,raspi_board[1]/2-15.96,10+bottom_thickness]) rotate([0,0,-15-0.9*(2.35-wall_thickness)]) rotate([0,-7,0]) translate([-11.5,0,0]) cube([11.5, 31.2, 27]);
+            translate([-19.24,raspi_board.y/2-15.96,10+bottom_thickness]) rotate([0,0,-15-0.9*(2.35-wall_thickness)]) rotate([0,-7,0]) translate([-11.5,0,0]) cube([11.5, 31.2, 27]);
         }
         
         // space for pi connectors
@@ -326,7 +326,7 @@ module microscope_stand(h=base_height){
 module sangaboard_connectors(){
     //Create cutouts for sangaboard connectors
     pi_frame(){
-        translate([raspi_board[0]/2,-1,1]) cube(raspi_board + [2,2,-1]);
+        translate([raspi_board.x/2,-1,1]) cube(raspi_board + [2,2,-1]);
         translate([10, -99, -2]) cube([35,100,18]);
     }
 }

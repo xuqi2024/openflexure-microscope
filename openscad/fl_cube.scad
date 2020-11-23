@@ -88,7 +88,7 @@ module fl_cube(){
     foot = roc*0.7;
     bottom_t = roc*3;
     dichroic = [12,16,1.1];
-    dichroic_t = dichroic[2];
+    dichroic_t = dichroic.z;
     emission_filter = [10,14,1.5];
     beamsplit = [0, w/2+2, w/2];
     inner_w = w - 6*roc;
@@ -99,12 +99,12 @@ module fl_cube(){
             fl_cube_outer();
             
             // mount for 45 degree dichroic, with bottom retaining clip
-            by = beamsplit[1] + dichroic[1]/2/sqrt(2) + 0.3; //coated tip of dichroic + wiggle room
-            bz = beamsplit[2] - dichroic[1]/2/sqrt(2) + 0.3; //coated tip of dichroic + wiggle room
-            bby = beamsplit[1] + dichroic[1]/2/sqrt(2) - dichroic[2]/sqrt(2); //back tip of dichroic
-            bbz = beamsplit[2] - dichroic[1]/2/sqrt(2) - dichroic[2]/sqrt(2); //back tip of dichroic
+            by = beamsplit.y + dichroic.y/2/sqrt(2) + 0.3; //coated tip of dichroic + wiggle room
+            bz = beamsplit.z - dichroic.y/2/sqrt(2) + 0.3; //coated tip of dichroic + wiggle room
+            bby = beamsplit.y + dichroic.y/2/sqrt(2) - dichroic.z/sqrt(2); //back tip of dichroic
+            bbz = beamsplit.z - dichroic.y/2/sqrt(2) - dichroic.z/sqrt(2); //back tip of dichroic
             sequential_hull(){
-                translate([-inner_w/2, bottom, 0]) cube([inner_w, tiny(), beamsplit[2] + beamsplit[1] - bottom - dichroic_t*sqrt(2)]); // tall back of triangle
+                translate([-inner_w/2, bottom, 0]) cube([inner_w, tiny(), beamsplit.z + beamsplit.y - bottom - dichroic_t*sqrt(2)]); // tall back of triangle
                 translate([-inner_w/2, bby, 0]) cube([inner_w, tiny(), bbz]); //pointy end of triangle
                 translate([-inner_w/2+2, by, 0]) cube([inner_w-4, 1.5, bz]); //far end
                 translate([-inner_w/2+2, by, bz]) cube([inner_w-4, 1.5, tiny()]); //start of retaining clip
@@ -123,9 +123,9 @@ module fl_cube(){
         // hole for the beam
         translate(beamsplit) rotate([90,0,0]) cylinder(r=5,h=999, center=true, $fn=32);
         // hole for the emission filter
-        translate([-emission_filter[0]/2, bottom - roc*1.5, beamsplit[2]-emission_filter[1]/2]) cube([emission_filter[0], emission_filter[2], 999]);
+        translate([-emission_filter.x/2, bottom - roc*1.5, beamsplit.z-emission_filter.y/2]) cube([emission_filter.x, emission_filter.z, 999]);
         // access hole for the dichroic
-        translate(beamsplit) rotate([-45,0,0]) translate([0,-dichroic[1]/2,0]) scale([1.1,1,1.9]) cube(dichroic, center=true);
+        translate(beamsplit) rotate([-45,0,0]) translate([0,-dichroic.y/2,0]) scale([1.1,1,1.9]) cube(dichroic, center=true);
     }
 }
 

@@ -16,7 +16,7 @@ gap = 9; //size of the gap between gear and screw seat
 swing_a = 30; //angle through which the tool swings
 sso = ss_outer(25); //outer size of screw seat
 handle_w = shaft_d+4; //width of the "handle" part
-handle_l = sso[0]/2+gap; //length of handle part
+handle_l = sso.x/2+gap; //length of handle part
 holder_height = 20; //height of the band insertion tool holder
 
 module tool_handle(){
@@ -29,14 +29,14 @@ module tool_handle(){
                 reflect([1,0,0]) translate([w/2 - rc, rc, rc * tan(45 + a/2)]) sphere(r=rc);
                 reflect([1,0,0]) translate([w/2 - rc, rc, gap - rc]) sphere(r=rc);
             }
-            translate([-w/2,(gap*cos(a)-ns[2])/tan(a) + gap*sin(a),0]) cube([w,tiny(),ns[2]]);
-            translate([-w/2,sso[0]/2*cos(swing_a)+gap*sin(swing_a),0]) cube([w,tiny(),ns[2]]);
-            translate([-ns[0]/2,handle_l,0]) cube([ns[0],tiny(),ns[2]]);
+            translate([-w/2,(gap*cos(a)-ns.z)/tan(a) + gap*sin(a),0]) cube([w,tiny(),ns.z]);
+            translate([-w/2,sso.x/2*cos(swing_a)+gap*sin(swing_a),0]) cube([w,tiny(),ns.z]);
+            translate([-ns.x/2,handle_l,0]) cube([ns.x,tiny(),ns.z]);
         }
         //ground (or bottom of gear)
         mirror([0,0,1]) cylinder(r=999,h=999,$fn=4);
         //screw seat (in swung-in position)
-        rotate([0,180-swing_a,-90]) translate([0,0,-(gap+sso[2]/2)]) screw_seat_shell(25);
+        rotate([0,180-swing_a,-90]) translate([0,0,-(gap+sso.z/2)]) screw_seat_shell(25);
     }
 }
 
@@ -49,9 +49,9 @@ module xz_slice(y=0){
 }
 
 module nut_tool(){
-    w = ns[0]-0.6; //width of tool tip (needs to fit through the slot that's ns[0] wide
-    h = ns[2]-0.7; //height of tool tip (needs to fit through slot)
-    l = 5+sso[1]/2+3;
+    w = ns.x-0.6; //width of tool tip (needs to fit through the slot that's ns.x wide
+    h = ns.z-0.7; //height of tool tip (needs to fit through slot)
+    l = 5+sso.y/2+3;
     difference(){
         union(){
             translate([0,-handle_l,0]) tool_handle();
@@ -70,9 +70,9 @@ module nut_tool(){
 
    
 module band_tool(){
-    w = ns[0]-0.5; //width of tool tip
+    w = ns.x-0.5; //width of tool tip
     h = 4.5; //height of tool tip (needs to fit through slot)
-    l = sso[2]/2+foot_height+5;
+    l = sso.z/2+foot_height+5;
     // presently, the hook on the actuator is a 1mm radius cylinder, centred
     // 3.5mm from the edge of the (elliptical) wall of the screw seat.
     difference(){
@@ -105,8 +105,8 @@ module band_tool(){
     }
 }
 
-band_tool_l = sso[2]/2+foot_height+holder_height;
-band_tool_w = ns[0]-0.5;
+band_tool_l = sso.z/2+foot_height+holder_height;
+band_tool_w = ns.x-0.5;
 band_tool_h = 4;
 
 module prong_frame(){
@@ -118,7 +118,7 @@ blade_anchor = [0,-12,0]; //position of the bottom of the slot
 
 module blade_point(pos, d1=1.5, d2=1.5, h=tiny()){
     union(){
-        translate(blade_anchor + [0,0,pos[2]]) cylinder(d=d1, h=h);
+        translate(blade_anchor + [0,0,pos.z]) cylinder(d=d1, h=h);
         translate(pos) cylinder(d=d2, h=h);
     }
 }
@@ -172,19 +172,19 @@ module double_ended_band_tool(bent=false){
     //flexible links between the two tools and the middle part
     if(bent){
         reflect([0,1,0]) translate([0,middle_w/2,roc]) difference(){
-            rotate([0,90,0]) cylinder(r=roc,h=ns[0],center=true);
+            rotate([0,90,0]) cylinder(r=roc,h=ns.x,center=true);
             rotate([0,90,0]) cylinder(r=roc-0.5,h=99,center=true);
             translate([-99,-99,0]) cube(999);
             translate([-99,-999,-99]) cube(999);
         }
-        translate([0,0,0.5/2]) cube([ns[0],middle_w+2*tiny(),0.5],center=true);
+        translate([0,0,0.5/2]) cube([ns.x,middle_w+2*tiny(),0.5],center=true);
     }else{
-        translate([0,0,0.5/2]) cube([ns[0],middle_w+2*flex_l+2*tiny(),0.5],center=true);
+        translate([0,0,0.5/2]) cube([ns.x,middle_w+2*flex_l+2*tiny(),0.5],center=true);
     }
     //thicker middle part to support the two ends
     hull(){
-        translate([0,0,0.5]) cube([ns[0],middle_w,tiny()],center=true);
-        translate([0,0,roc]) cube([ns[0],middle_w+2*(roc-0.5),tiny()],center=true);
+        translate([0,0,0.5]) cube([ns.x,middle_w,tiny()],center=true);
+        translate([0,0,roc]) cube([ns.x,middle_w+2*(roc-0.5),tiny()],center=true);
     }
 }
 

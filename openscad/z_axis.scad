@@ -110,7 +110,7 @@ module objective_fitting_cutout(max_screw=12, y_stop=false, nose_shift=0.2){
     // that anchors it to the objective mount.
     // TODO: also relieve the faces of the mount in case there are protrusions
     oms = objective_mount_screw_pos();
-    translate([oms[0], objective_mount_y - 1.2 - 2.5, oms[2]]){
+    translate([oms.x, objective_mount_y - 1.2 - 2.5, oms.z]){
         ofc_nut(shaft=true, max_screw=max_screw);
         sequential_hull(){
             ofc_nut();
@@ -121,16 +121,16 @@ module objective_fitting_cutout(max_screw=12, y_stop=false, nose_shift=0.2){
     if(y_stop) translate([-10,objective_mount_y-nose_shift,-99])cube([20,999,999]); 
 }
 
-module z_axis_flexure(h=flex_dims()[2], z=0){
+module z_axis_flexure(h=flex_dims().z, z=0){
     // The parts that bend as the Z axis is moved
     union(){
         reflect([1,0,0]) hull(){
-            translate([-flex_dims()[0]-1,objective_mount_back_y-tiny(),z]) cube([flex_dims()[0],tiny(),h]);
-            translate([-z_anchor_w/2,z_anchor_y,z]) cube([flex_dims()[0],tiny(),h]);
+            translate([-flex_dims().x-1,objective_mount_back_y-tiny(),z]) cube([flex_dims().x,tiny(),h]);
+            translate([-z_anchor_w/2,z_anchor_y,z]) cube([flex_dims().x,tiny(),h]);
         }
     }
 }
-module z_axis_flexures(h=flex_dims()[2]){
+module z_axis_flexures(h=flex_dims().z){
     // The parts that bend as the Z axis is moved
     for(z=[z_flexures_z1, z_flexures_z2]){
         z_axis_flexure(h=h, z=z);
@@ -142,8 +142,8 @@ module z_axis_struts(){
     // connects to the actuator column (but not the column itself).
     intersection(){ // The two horizontal parts
         for(z=[z_flexures_z1, z_flexures_z2]) hull(){
-            translate([-99,objective_mount_back_y+flex_dims()[1],z+dz]) cube([999,z_strut_l,1]);
-            translate([-99,objective_mount_back_y+flex_dims()[1]+3,z+dz]) cube([999,z_strut_l-6,5]);
+            translate([-99,objective_mount_back_y+flex_dims().y,z+dz]) cube([999,z_strut_l,1]);
+            translate([-99,objective_mount_back_y+flex_dims().y+3,z+dz]) cube([999,z_strut_l-6,5]);
         }
         hull() z_axis_flexures(h=999);
     }
@@ -154,7 +154,7 @@ module z_axis_struts(){
         sequential_hull(){
             translate([0, z_nut_y, 0]) cylinder(d=w, h=lever_h);
             translate([0, z_anchor_y + w/2 + 2, 0]) cylinder(d=w, h=z_flexures_z1+2*dz);
-            translate([-w/2, z_anchor_y - flex_dims()[0] - tiny(), z_flexures_z1 + dz]) cube([w,tiny(), 5-tiny()]);
+            translate([-w/2, z_anchor_y - flex_dims().x - tiny(), z_flexures_z1 + dz]) cube([w,tiny(), 5-tiny()]);
         }
         translate([0, z_nut_y, 0]) actuator_end_cutout();
     }

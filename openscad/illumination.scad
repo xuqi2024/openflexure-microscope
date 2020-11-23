@@ -25,15 +25,15 @@ front_dovetail_w = 30; // width of the main dovetail
 
 module each_illumination_dovetail_screw(middle=true){
     // A transform to repeat objects at each mounting point
-    for(p=illumination_dovetail_screws) if(p[0]!=0 || middle) translate(p) children();
+    for(p=illumination_dovetail_screws) if(p.x!=0 || middle) translate(p) children();
 }
 module right_illumination_dovetail_screw(){
     // A transform to position objects at the x>0 mounting point
-    for(p=illumination_dovetail_screws) if(p[0]>0) translate(p) children();
+    for(p=illumination_dovetail_screws) if(p.x>0) translate(p) children();
 }
 
 module middle_illumination_dovetail_screw(){
-    for(p=illumination_dovetail_screws) if(p[0]==0) translate(p) children();
+    for(p=illumination_dovetail_screws) if(p.x==0) translate(p) children();
 }
 
 module cyl_slot(r=1, h=1, dy=2, center=false){
@@ -45,14 +45,14 @@ module cyl_slot(r=1, h=1, dy=2, center=false){
 
 module illumination_dovetail(){
     // The dovetail on which we mount the condenser for the illumination
-    bottom_z = illumination_dovetail_screws[0][2]; // z position where we mount it
+    bottom_z = illumination_dovetail_screws[0].z; // z position where we mount it
     h = 50;
     smooth_h = 15;
     dt_z = leg_height + 12; // z position and height of the dovetail
     dt_h = h + bottom_z - dt_z;
     
     //top and bottom of y position of the sloped back
-    bot_y = illumination_dovetail_screws[0][1]+4+1;
+    bot_y = illumination_dovetail_screws[0].y+4+1;
     top_y = front_dovetail_y+10;
     back_angle = atan((top_y-bot_y)/(h-3));
     logo_z = bottom_z+3+h/2;
@@ -94,7 +94,7 @@ base_r = lens_r+2;
 
 lens_assembly_z = 30;
 dt_clip = [front_dovetail_w, 16, lens_assembly_z]; //size of the dovetail clip
-dovetail_end_y = front_dovetail_y-dt_clip[1]-4;
+dovetail_end_y = front_dovetail_y-dt_clip.y-4;
 
 module tall_condenser(bottom=true){
     difference(){
@@ -104,11 +104,11 @@ module tall_condenser(bottom=true){
             // add a bottom
             hull() reflect([1,0,0]){
                 translate([0,0,-10]) cylinder(r=base_r, h=lens_assembly_z+tiny()+10);
-                translate([-dt_clip[0]/2, dovetail_end_y,0]) cube([dt_clip[0], 2, lens_assembly_z]);
+                translate([-dt_clip.x/2, dovetail_end_y,0]) cube([dt_clip.x, 2, lens_assembly_z]);
             }
             
             // mount for the dovetail clip
-            translate([-dt_clip[0]/2,dovetail_end_y,0]) cube([dt_clip[0], 4, dt_clip[2]]);
+            translate([-dt_clip.x/2,dovetail_end_y,0]) cube([dt_clip.x, 4, dt_clip.z]);
             
             // the dovetail clip
             translate([0,front_dovetail_y, 0]) mirror([0,1,0]) dovetail_clip(dt_clip, slope_front=2, solid_bottom=bottom?0.2:0);
