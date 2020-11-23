@@ -96,7 +96,7 @@ module dovetail_plug(corner_x, r, dt, zx_profile=[[0,0],[10,0],[12,-1]]){
         // four fat cylinders make the contact point
         for(i=[0:len(zx_profile)-2]){
             hull() for(j=[0:1]){
-                z = zx_profile[i+j].[0];
+                z = zx_profile[i+j][0];
                 x = zx_profile[i+j][1];
                 reflect([1,0,0]) translate([corner_x+x,0,z]) rotate(45) translate([sqrt(3)*r,r,0]) repeat([dt*sqrt(2) - (1+sqrt(3))*r,0,0],2) cylinder(r=r,h=d);
             }
@@ -104,7 +104,7 @@ module dovetail_plug(corner_x, r, dt, zx_profile=[[0,0],[10,0],[12,-1]]){
         // another four cylinders join the plug to the y=0 plane
         for(i=[0:len(zx_profile)-2]){
             hull() for(j=[0:1]){
-                z = zx_profile[i+j].[0];
+                z = zx_profile[i+j][0];
                 x = zx_profile[i+j][1];
                 reflect([1,0,0]) translate([corner_x+x,0,z]) rotate(45) repeat([sqrt(3)*r,r,0],2) cylinder(r=d,h=d);
             }
