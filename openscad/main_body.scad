@@ -217,63 +217,134 @@ module xy_stage(h=10,on_buildplate=false){
 }
 
 
-///////////////////// MAIN STRUCTURE STARTS HERE ///////////////
-module xy_positioning_system() {
-    // This module represents the main body of the microscope, including the positioning mechanism.
+module xy_legs_and_actuators(){
+    // This is the xy_actuators including the casing and all 4 legs
 
-	//legs (incl. actuators)
+    // back legs
 	reflect([1,0,0]) leg_frame(135) leg();
-	each_actuator(){
+    //front legs and actuator columns
+    each_actuator(){
+        //actuator is the leg bat to connect to the flexure at the bottom of the column
         actuator();
-		translate([0,actuating_nut_r,0]) actuator_column(h=actuator_h, join_to_casing=true);
-    }
-	//Actuator housings (screw seats and motor mounts)
-    xy_labels=["X","Y"];
-    xy_angles=[-45,45];
-	for(i=[0:1]) leg_frame(xy_angles[i]) translate([0,actuating_nut_r,0]){
-        screw_seat(h=actuator_h, travel=xy_actuator_travel, motor_lugs=motor_lugs, extra_entry_h=actuator.z+2, label=xy_labels[i]);
-    }
-	//flexures connecting bottoms of legs to centre
-	each_leg() reflect([1,0,0]) translate([0,0,flex_z1]){
-        w=flex_dims().x;
-        translate([leg_middle_w/2-w,0,0.5]) hull()
-			repeat([1,-1,0]*(flex_dims().y+wall_t/2),2) cube([w,tiny(),flex_dims().z]);
-    }
-    //tie the legs to the wall (built later) during printing
-    reflect([1,0,0]) leg_frame(135) reflect([1,0,0]) {
-        translate([leg_middle_w/2+flex_dims().y+flex_dims().x/2, -wall_h*0.7*tan(6)-1-flex_dims().y, wall_h*0.7]) cube([1, wall_h*0.7*tan(6)+2+flex_dims().y, 0.5]);
+		translate([0,actuating_nut_r,0])
+            actuator_column(h=actuator_h, join_to_casing=true);
     }
 
-	// flexures between legs and stage
-    // NB these connect the legs together, and pass all the way under the stage.  This
-    // is important, if they get cut then the bridges will fail!
-	difference(){
-		hull() each_leg() translate([0,0,flex_z2+flex_dims().z/2+0.5]) cube([leg_middle_w,tiny(),flex_dims().z],center=true);
-		hull() each_leg() cube([leg_middle_w-2*flex_dims().x,tiny(),999],center=true);
-	}
+	for(label = ["X","Y"], angle = [-45,45]){
+        leg_frame(angle){
+            translate([0,actuating_nut_r,0]){
+                screw_seat(h=actuator_h,
+                           travel=xy_actuator_travel,
+                           motor_lugs=motor_lugs,
+                           extra_entry_h=actuator.z+2,
+                           label=label);
+            }
+        }
+    }
+}
 
-	// XY stage
-	difference(){
-		translate([0,0,flex_z2]) xy_stage(h=stage_t);
-		each_leg() translate([0,-stage_hole_inset,leg_height]) m3_nut_trap_with_shaft(0,0); //mounting holes
-	}
-    ////////////// Reinforcing wall and base /////////////////
-    //Add_hull_base generates the flat base of the structure.
+module internal_xy_structure(){
+    
     difference() {
         add_hull_base(base_t) wall_inside_xy_stage();
         central_optics_cut_out();
         // Cut-out for reflection optics
         fl_cube_cutout();
     }
-
-    // add mounts for the optical endstops for X and Y
+    //mounts for the optical endstops for X and 
     reflect([1,0,0]) hull(){
         inner_wall_vertex(45, -9, zawall_h);
         xy_limit_switch_mount();
     }
-    mounting_hole_lugs(); //lugs to bolt the microscope down
+    //lugs to bolt the microscope down to base
+    mounting_hole_lugs(); 
 }
 
+module xy_stage_with_nut_traps()
+{
+    //This is the microscope xy-stage built at the correct height
+    //and including the nut traps.
+    difference(){
+		translate([0,0,flex_z2]) xy_stage(h=stage_t);
+		each_leg(){
+            translate([0,-stage_hole_inset,leg_height]){
+                m3_nut_trap_with_shaft(0,0); //mounting holes
+            }
+        }
+	}
+}
+
+module xy_flexures(){
+    
+    //Bottom flexures: flexures between legs and inner walls
+    w=flex_dims().x;
+    //The flexure length, increased for some overlap
+    flex_len = flex_dims().y + wall_t/2;
+    each_leg(){
+        reflect([1,0,0]){
+            translate([leg_middle_w/2-w, 0, flex_z1+0.5]){
+                //Each flexure is the hull of two offset cuboids.
+                hull(){
+                    repeat([flex_len,-flex_len,0],2){
+                        cube([w, tiny(), flex_dims().z]);
+                    }
+                }
+            }
+        }
+    }
+    
+    // Top flexures: flexures between legs and stage
+    // NOTE: these connect the legs together, and pass all the way under the stage.
+    // This is important! If they get cut then the bridges will fail!
+	difference(){
+        //Make a truncated square with a truncated "corner" at each leg
+		hull() each_leg(){
+            translate([0,0,flex_z2+flex_dims().z/2+0.5])
+                cube([leg_middle_w,tiny(),flex_dims().z],center=true);
+        }
+        //chop out a smaller truncated square
+		hull() each_leg(){
+            cube([leg_middle_w-2*flex_dims().x,tiny(),999],center=true);
+        }
+	}
+}
+
+module xy_leg_ties(){
+    // Small ties that connect the legs to the walls of the structure to stop the
+    // legs moving during printing. These muse be cut after printing.
+    
+    z_tr = wall_h*0.7;
+    // Note that the walls slope in by 6 degrees so must compensate tie length
+    tie_length = flex_dims().y + z_tr*tan(6) + 2;
+    x_tr = leg_middle_w/2+flex_dims().y+flex_dims().x/2;
+    y_tr = 1-tie_length;
+    
+    reflect([1,0,0]){
+        leg_frame(135){
+            reflect([1,0,0]){
+                translate([x_tr, y_tr, z_tr]){
+                    cube([1, tie_length, 0.5]);
+                }
+            }
+        }
+    }
+}
+
+
+module xy_positioning_system(){
+    // This module creates the main XY positioning mechanism. Including the actuator columns.
+
+	xy_legs_and_actuators();
+    internal_xy_structure();
+    xy_stage_with_nut_traps();
+    
+	// Connect the legs to the stage and structure with flexures
+	xy_flexures();
+ 
+    //tie the legs to the wall to stop movement during printing
+    xy_leg_ties()
+}
+xy_positioning_system();
 
 module z_actuator_assembly(){
     // This is the z-actuator, objective mount and the z-flexures.
@@ -366,6 +437,7 @@ module main_body(){
 
 
 // If this file is "included" rather than "used", render the main body.
-exterior_brim(r=enable_smart_brim ? smart_brim_r : 0){
+*exterior_brim(r=enable_smart_brim ? smart_brim_r : 0){
     main_body();
 }
+
