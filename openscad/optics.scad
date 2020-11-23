@@ -172,9 +172,10 @@ module camera_mount_body(
             if(fluorescence){ 
                 rotate(fl_cube_rotation){
                     translate([0,-2.5,0])fl_screw_holes(d = 2.5, h = 6);
-                            translate([0,-fl_cube_w,fl_cube_bottom+fl_cube_w/2])cube([fl_cube_w+15,fl_cube_w,fl_cube_w],center=true);
-                            translate([0,-fl_cube_w-5,fl_cube_bottom++fl_cube_w/2+5])cube([fl_cube_w+20,fl_cube_w,fl_cube_w],center = true);
-                            }
+                    hull(){
+                        translate([0,-fl_cube_w,fl_cube_bottom+fl_cube_w/2+2])cube([fl_cube_w+15,fl_cube_w,fl_cube_w+4],center=true);
+                        translate([0,-fl_cube_w-5,fl_cube_bottom++fl_cube_w/2+8])cube([fl_cube_w+20,fl_cube_w,fl_cube_w+4],center = true);
+                    }
                 }
             }
         }
