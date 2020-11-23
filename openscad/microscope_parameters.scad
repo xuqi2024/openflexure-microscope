@@ -117,11 +117,24 @@ illumination_dovetail_screws = [[20,z_nut_y,leg_height-2],[-20,z_nut_y,leg_heigh
                       // positions of screws that mount the adjustable version of the 
                       // illumination arm
 condenser_clip_y = -8; //position of dovetail for old condenser assembly TODO: rename this
-base_mounting_holes = [[-20,z_nut_y-4,0],
-                       [20,z_nut_y-4,0],
-                       [-z_flexure_x-4,-8,0],
-                       [z_flexure_x+4,-8,0]]; 
-                       // holes to screw the microscope to a baseplate
+
+
+// base_mounting_holes returns a list of the holes for mounting the microscope
+// to the base. By default it returns all four holes.
+// To get only the lugs run `base_mounting_holes("lugs")`
+// To get only the front holes run `base_mounting_holes("front")`
+function base_mounting_holes(type="all") = let
+(
+    lug_pos = [[z_flexure_x+4,-8,0],
+               [-z_flexure_x-4,-8,0]],
+    front_pos =[[-20,z_nut_y-4,0],
+                [20,z_nut_y-4,0]],
+    lugs = (type == "lugs") || (type == "all"),
+    front = (type == "front") || (type == "all"),
+    //Set which holse to output
+    holes = [lugs?lug_pos:[], front?front_pos:[]]
+    //Final list comprehension make a single list of holes
+) [for (h = holes) each h];
 
 endstop_extra_ringheight=feet_endstops?1:0;
 endstop_hole_offset=0;

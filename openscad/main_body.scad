@@ -91,21 +91,25 @@ module actuator_silhouette(h=999){
     }
 }
 
-module mounting_hole_lugs(){
+module mounting_hole_lugs(holes=true){
     // lugs either side of the XY table to bolt the microscope down
     // these are to mount onto the baseplate
-    for(p=base_mounting_holes) {
-        if(p[1]<0 && p[0]>0) reflect([1,0,0])
-            difference() {
-                hull(){
-                    translate([z_flexure_x,0,0]) rotate(-120) cube([10,d,10]);
-                    translate(p) cylinder(r=4*1.1,h=3);
-                }
-                translate(p) {
-                    cylinder(r=3/2*1.1,h=50,center=true);
-                    translate([0,0,3]) cylinder(r=3*1.1, h=22);
-                }
+
+    //Just get one lug hole and then reflect the lug.
+    hole_pos = base_mounting_holes("lugs")[0];
+    reflect([1,0,0]){
+        difference(){
+            //the lug
+            hull(){
+                translate([z_flexure_x,0,0]) rotate(-120) cube([10,d,10]);
+                translate(hole_pos) cylinder(r=4*1.1,h=3);
             }
+            //the lug hole
+            if (holes) translate(hole_pos) {
+                cylinder(r=3/2*1.1,h=50,center=true);
+                translate([0,0,3]) cylinder(r=3*1.1, h=22);
+            }
+        }
     }
 }
 
@@ -329,10 +333,9 @@ module main_body(){
 
         central_optics_cut_out();
 
-        //post mounting holes (2 near z actuator, 2 in mounting lugs)
-        for(p=base_mounting_holes) translate(p){ 
-             cylinder(r=3/2*1.1,h=50,center=true); 
-             translate([0,0,3]) cylinder(r=3*1.1, h=22); 
+        //front mounting holes
+        for(hole_pos=base_mounting_holes("front")){ 
+             translate(hole_pos) cylinder(r=3/2*1.1,h=50,center=true); 
         }
 
         //////////////// logo and version string /////////////////////

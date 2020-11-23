@@ -113,7 +113,7 @@ module microscope_bottom(enlarge_legs=1.5, illumination_clip_void=true, lugs=tru
         translate([0, z_nut_y]) foot_footprint(tilt=z_actuator_tilt);
     }
     
-    if(lugs) projection(cut=true) translate([0,0,-d]) mounting_hole_lugs();
+    if(lugs) projection(cut=true) translate([0,0,-d]) mounting_hole_lugs(holes=false);
     
     if(legs) offset(enlarge_legs) microscope_legs();
 }
@@ -225,10 +225,17 @@ module bucket_base_with_microscope_top(h=base_height){
                 difference(){
                     // we hollow out the casing, but not underneath the legs or lugs.
                     top_casing_block(h=h, os=-wall_thickness, legs=false, lugs=false);
-                    for(p=base_mounting_holes) hull(){
-                        // double-subtract under the mounting holes to make attachment points
-                        translate(p+[0,0,h+foot_height-4]) cylinder(r=4,h=4);
-                        translate(p*1.2 + [0,0,h+foot_height-4-norm(p)*0.3]) cylinder(r=4,h=4+norm(p)*0.3);
+                    for(hole_pos=base_mounting_holes())
+                    {
+                        hull(){
+                            // double-subtract under the mounting holes to make attachment points
+                            translate(hole_pos+[0,0,h+foot_height-4]){
+                                cylinder(r=4,h=4);
+                            }
+                            translate(hole_pos*1.2 + [0,0,h+foot_height-4-norm(hole_pos)*0.3]){
+                                cylinder(r=4,h=4+norm(hole_pos)*0.3);
+                            }
+                        }
                     }
                 }
   
@@ -242,11 +249,14 @@ module bucket_base_with_microscope_top(h=base_height){
             translate([0,0,h+foot_height]) cylinder(r=999,h=999,$fn=4);
         }
         translate([0,0,h+foot_height-allow_space]) linear_extrude(999) offset(1.5) microscope_legs();
-        for(p=base_mounting_holes) if(p[0]>0) reflect([1,0,0]){ 
-            translate(p+[0,0,h+foot_height]) cylinder(r=3/2*1.7,h=20,$fn=3, center=true); //TODO: better self-tapping holes
-            // NB the reflect ensures that the triangular holes work for both y>0 lugs.
-            // otherwise the x<0 one snaps when you screw into it.
-            // TODO: nut traps underneath these holes
+        for(hole_pos=base_mounting_holes()){
+            if(hole_pos.x>0) reflect([1,0,0]){
+                // Note this is reflected so that the triangular holes work for both lugs.
+                // Otherwise the x<0 one snaps when you screw into it
+                translate(hole_pos+[0,0,h+foot_height])
+                    cylinder(r=3/2*1.7,h=20,$fn=3, center=true);
+                //TODO: Inprove better self-tapping holes or add nut trap.
+            }
         }
     }
 }
