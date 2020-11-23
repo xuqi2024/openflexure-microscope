@@ -137,12 +137,23 @@ module camera_mount_body(
             sequential_hull(){
                 translate([0,0,camera_mount_top_z]) camera_mount_top_slice();
                 hull(){
-                    translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=tiny());
+                    translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=tiny();
                     if(dovetail) translate([0,0,dt_bottom]) objective_fitting_base(params);
-                    if(fluorescence) fl_cube_casing();
+                    if(fluorescence){ 
+                      rotate(fl_cube_rotation){
+                       fl_cube_casing();
+                       fl_screw_holes(d = 4, h =8);
+                    }
+                    }
                 }
                 union(){
-                    if(fluorescence) fl_cube_casing();
+                    if(fluorescence){ 
+                       rotate(fl_cube_rotation){
+                            fl_cube_casing();
+                            fl_screw_holes(d = 4, h =8);
+                        }
+                    }
+
                     translate([0,0,body_top]) cylinder(r=body_r,h=tiny());
                     if(dovetail) translate([0,0,dt_top]) objective_fitting_base(params);
                 }
@@ -157,6 +168,15 @@ module camera_mount_body(
 
             // Mount for the nut that holds it on
             translate([0,0,-1]) objective_fitting_cutout(params);
+            // screw holes  and faceplate for fl module
+            if(fluorescence){ 
+                rotate(fl_cube_rotation){
+                    translate([0,-2.5,0])fl_screw_holes(d = 2.5, h = 6);
+                            translate([0,-fl_cube_w,fl_cube_bottom+fl_cube_w/2])cube([fl_cube_w+15,fl_cube_w,fl_cube_w],center=true);
+                            translate([0,-fl_cube_w-5,fl_cube_bottom++fl_cube_w/2+5])cube([fl_cube_w+20,fl_cube_w,fl_cube_w],center = true);
+                            }
+                }
+            }
         }
 
         // add the camera mount
