@@ -274,6 +274,21 @@ module xy_positioning_system() {
     mounting_hole_lugs(); //lugs to bolt the microscope down
 }
 
+
+module z_actuator_assembly(){
+    // This is the z-actuator, objective mount and the z-flexures.
+    // The flexure that join the body are not attached to anything on the body-side.
+
+    z_axis_flexures();
+    z_axis_struts();
+    objective_mount();
+    z_actuator_column();
+    difference(){
+        z_actuator_housing();
+        z_axis_clearance(); //make sure the actuator can get in ok!
+    }
+}
+
 module central_optics_cut_out() {
     // Central cut-out for optics
     sequential_hull(){
@@ -284,58 +299,69 @@ module central_optics_cut_out() {
     }
 }
 
-module main_body(){
-// This module represents the main body of the microscope, including the positioning mechanism.
-
-	//z axis
-    z_axis_flexures();
-    z_axis_struts();
-    objective_mount();
-    z_actuator_column();
-    difference(){
-        z_actuator_housing();
-        z_axis_clearance(); //make sure the actuator can get in ok!
+module xy_actuator_cut_outs(){
+    each_actuator(){
+        actuator_silhouette(xy_actuator_travel+actuator.z);
+        translate([0,actuating_nut_r,0]){
+            screw_seat_outline(h=999,adjustment=-tiny(),center=true);
+        }
     }
+}
 
-    xy_positioning_system();
 
-	//base
-	difference(){
+module actuator_walls_and_z_casing(z_axis=true){
+    // These are the wall that link the actuators. And the casing for the
+    // z-axis. This casing includes the mount for the illumination dovetail.
+    difference(){
         add_hull_base(base_t) {
-            // Next, link the XY actuators to the wall
-            reflect([1,0,0]) wall_inside_xy_actuators();
-            z_axis_casing(condenser_mount=true); //casing and anchor for the z axis
+            //link the XY actuators to the wall
+            if (z_axis) reflect([1,0,0]) wall_inside_xy_actuators();
             reflect([1,0,0]) wall_outside_xy_actuators();
             reflect([1,0,0]) wall_between_actuators();
-            // add a small object to make sure the base is big enough
-            wall_vertex(h=base_t);
+             // outer profile of casing and anchor for the z axis
+            if (z_axis) z_axis_casing(condenser_mount=true);
         }
-
-        //////  Things we need to cut out holes for... ///////////
-
-        // XY actuator cut-outs
-		each_actuator(){
-			actuator_silhouette(xy_actuator_travel+actuator.z);
-			translate([0,actuating_nut_r,0]) screw_seat_outline(h=999,adjustment=-tiny(),center=true);
-		}
-		// Cut-outs for the Z axis
-		z_axis_casing_cutouts();
-
+        //This also cuts the walls hence why it is two objects
+        if (z_axis)z_axis_casing_cutouts();
+        xy_actuator_cut_outs();
         central_optics_cut_out();
+    }
+}
 
-        //front mounting holes
-        for(hole_pos=base_mounting_holes("front")){ 
-             translate(hole_pos) cylinder(r=3/2*1.1,h=50,center=true); 
-        }
-
-        //////////////// logo and version string /////////////////////
-        size = 0.25;
-        place_on_wall() translate([9,wall_h-2-15*size,-0.5]) 
+module body_logos(message){
+    // The openflexure and opehardware logos. Plus a customisable message.
+    size = 0.25;
+    place_on_wall() translate([9,wall_h-2-15*size,-0.5])
         scale([size,size,10]) openflexure_logo();
 
-        mirror([1,0,0]) place_on_wall() translate([8,wall_h-2-15*size,-0.5]) 
-        scale([size,size,10]) oshw_logo_and_text(version_numstring);
-	} ///////// End of things to chop out of base/walls ///////
+    mirror([1,0,0]) place_on_wall() translate([8,wall_h-2-15*size,-0.5])
+        scale([size,size,10]) oshw_logo_and_text(message);
+}
+
+module xy_only_body(){
+    // This is a version of the body with only xy actuators. It is not used in the microscope
+    // but can be useful for other positioning systems.
+    xy_positioning_system();
+    difference(){
+        actuator_walls_and_z_casing(z_axis=false);
+        body_logos("xy-only");
+    }
+}
+
+module main_body(){
+    // This module represents the main body of the microscope, including the positioning mechanism.
+
+    xy_positioning_system();
+	//z axis - Only the actuator column is housed at this point
+    z_actuator_assembly();
+
+	difference(){
+        actuator_walls_and_z_casing();
+        //front mounting holes
+        for(hole_pos=base_mounting_holes("front"))
+             translate(hole_pos) cylinder(r=3/2*1.1,h=50,center=true);
+        body_logos(version_numstring);
+	}
 }
 
 
@@ -343,4 +369,3 @@ module main_body(){
 exterior_brim(r=enable_smart_brim ? smart_brim_r : 0){
     main_body();
 }
-
