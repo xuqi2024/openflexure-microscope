@@ -31,9 +31,9 @@ module chamfer_bottom_edge(chamfer=0.3, h=0.5){
         
         minkowski(){
             cylinder(r1=2*chamfer, r2=0, h=2*h, center=true);
-            linear_extrude(d) difference(){
+            linear_extrude(tiny()) difference(){
                 square(9999, center=true);
-                projection(cut=true) translate([0,0,-d]) hull() children();
+                projection(cut=true) translate([0,0,-tiny()]) hull() children();
             }
         }
     }
@@ -65,7 +65,7 @@ module fl_cube_outer(){
             }
         }
         // join the two arms together at the bottom
-        translate([0,foot+bottom_t/2, w/2]) cube([w - roc*3*2 + 2*d, bottom_t, w], center=true);
+        translate([0,foot+bottom_t/2, w/2]) cube([w - roc*3*2 + 2*tiny(), bottom_t, w], center=true);
         
         // feet at the bottom (and also in the middle of the top part)
         for(p = [[-w/2+roc*3, roc, roc+0.5], 
@@ -104,18 +104,18 @@ module fl_cube(){
             bby = beamsplit[1] + dichroic[1]/2/sqrt(2) - dichroic[2]/sqrt(2); //back tip of dichroic
             bbz = beamsplit[2] - dichroic[1]/2/sqrt(2) - dichroic[2]/sqrt(2); //back tip of dichroic
             sequential_hull(){
-                translate([-inner_w/2, bottom, 0]) cube([inner_w, d, beamsplit[2] + beamsplit[1] - bottom - dichroic_t*sqrt(2)]); // tall back of triangle
-                translate([-inner_w/2, bby, 0]) cube([inner_w, d, bbz]); //pointy end of triangle
+                translate([-inner_w/2, bottom, 0]) cube([inner_w, tiny(), beamsplit[2] + beamsplit[1] - bottom - dichroic_t*sqrt(2)]); // tall back of triangle
+                translate([-inner_w/2, bby, 0]) cube([inner_w, tiny(), bbz]); //pointy end of triangle
                 translate([-inner_w/2+2, by, 0]) cube([inner_w-4, 1.5, bz]); //far end
-                translate([-inner_w/2+2, by, bz]) cube([inner_w-4, 1.5, d]); //start of retaining clip
-                translate([-inner_w/2, by - 4, 4 + 2*dichroic_t]) cube([inner_w, 2, d]); //end of retaining clip
+                translate([-inner_w/2+2, by, bz]) cube([inner_w-4, 1.5, tiny()]); //start of retaining clip
+                translate([-inner_w/2, by - 4, 4 + 2*dichroic_t]) cube([inner_w, 2, tiny()]); //end of retaining clip
                 translate([-inner_w/2, by - 5, 4 + 2*dichroic_t]) cube([inner_w, 2, 1]); //overhanging bit
             }
             
             // attachment for the excitation filter and LED
             reflect([1,0,0]) translate([-w/2, bottom + 4, w]) sequential_hull(){
                 depth = w-bottom-4-roc;
-                translate([0,0,-roc]) cube([2*roc, depth, d]); 
+                translate([0,0,-roc]) cube([2*roc, depth, tiny()]); 
                 translate([0.5,0,roc]) cube([2*roc, depth, 1.5]);
                 translate([0.5+2*roc + 1.5 - 0.2*(1+sqrt(2)),0,roc+1.5-0.2]) rotate([-90,0,0]) cylinder(r=0.2, h=depth);//cube([2*roc + 1.5, depth, d]);
             }

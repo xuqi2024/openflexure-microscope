@@ -27,8 +27,8 @@ module optical_path(lens_aperture_r, lens_z, bottom_z=0){
     // a feathered cylindrical beam path.  Camera mount is now cut out
     // of the camera mount body already.
     union(){
-        translate([0,0,bottom_z-d]) lighttrap_cylinder(r1=5, r2=lens_aperture_r, h=lens_z-bottom_z+2*d); //beam path
-        translate([0,0,lens_z]) cylinder(r=lens_aperture_r,h=2*d); //lens
+        translate([0,0,bottom_z-tiny()]) lighttrap_cylinder(r1=5, r2=lens_aperture_r, h=lens_z-bottom_z+2*tiny()); //beam path
+        translate([0,0,lens_z]) cylinder(r=lens_aperture_r,h=2*tiny()); //lens
     }
 }
     
@@ -43,7 +43,7 @@ module lens_gripper(lens_r=10,h=6,lens_h=3.5,base_r=-1,t=0.65,solid=false, flare
   
 module camera_mount_top_slice(){
     // A thin slice of the top of the camera mount
-    linear_extrude(d) projection(cut=true) camera_mount();
+    linear_extrude(tiny()) projection(cut=true) camera_mount();
 }
 
 module lens_spacer(lens_r, parfocal_distance, lens_h, lens_spacing){
@@ -72,8 +72,8 @@ module lens_spacer(lens_r, parfocal_distance, lens_h, lens_spacing){
             // This is the main body of the mount
             sequential_hull(){
                 translate([0,0,camera_mount_height]) camera_mount_top_slice();
-                translate([0,0,camera_mount_height+5]) cylinder(r=6,h=d);
-                translate([0,0,lens_assembly_z])cylinder(r=lens_assembly_base_r, h=d);
+                translate([0,0,camera_mount_height+5]) cylinder(r=6,h=tiny());
+                translate([0,0,lens_assembly_z])cylinder(r=lens_assembly_base_r, h=tiny());
             }
             // A lens gripper to hold the objective
             translate([0,0,lens_assembly_z]){

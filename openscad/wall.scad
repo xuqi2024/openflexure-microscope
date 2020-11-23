@@ -63,7 +63,7 @@ module inner_wall_vertex(leg_angle, x, h=wall_h, thick=false){
     // edge is vertical (i.e. the bit at 45 degrees to
     // the leg frame)
     y_tilt = x>0?6:-6;
-    y=-zflex_l-wall_t/2;
+    y=-flex_dims()[1]-wall_t/2;
     r = thick?wall_t:wall_t/2;
     leg_frame(leg_angle) translate([x,y,0]){
             wall_vertex(r=r,h=h,x_tilt=6,y_tilt=y_tilt);

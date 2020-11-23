@@ -44,13 +44,13 @@ module camera_platform(
             // This is the main body of the mount
             sequential_hull(){
                 translate([0,0,0]) hull(){
-                    cylinder(r=base_r,h=d);
+                    cylinder(r=base_r,h=tiny());
                     objective_fitting_base();
                 }
                 translate([0,0,h]) hull(){
-                    cylinder(r=base_r,h=d);
+                    cylinder(r=base_r,h=tiny());
                     objective_fitting_base();
-                    camera_bottom_mounting_posts(h=d);
+                    camera_bottom_mounting_posts(h=tiny());
                 }
             }
             

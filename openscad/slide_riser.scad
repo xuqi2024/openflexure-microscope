@@ -34,8 +34,8 @@ module slide_riser_base(h, thickness, y_space){
 
         //angled cut-out for slide
         hull() translate([0,0,h]){
-            translate([0,-slide[2],d/2]) cube([slide[0],slide[1],d], center=true);
-            translate([0,999-slide[2],999+d/2]) cube([slide[0],slide[1],d], center=true);
+            translate([0,-slide[2],tiny()/2]) cube([slide[0],slide[1],tiny()], center=true);
+            translate([0,999-slide[2],999+tiny()/2]) cube([slide[0],slide[1],tiny()], center=true);
         }
         //extra cutout on clip side
         translate([-999/2,0,h]) cube([999,slide[1]/2+y_space,999]);
@@ -73,7 +73,7 @@ module slide_riser(h=.6, thickness=4){
                 //counter bored mounting holesmounting holes
                 each_leg() translate([0,-stage_hole_inset,0]){
                     cylinder(r=3/2*1.15,h=999,center=true);
-                    translate([0,0,thickness+d])cylinder(r=3*1.15,h=999);
+                    translate([0,0,thickness+tiny()])cylinder(r=3*1.15,h=999);
                 } 
             }
             //Clip and handle
