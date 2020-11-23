@@ -43,6 +43,7 @@ if(beamsplitter) echo(str("fl_cube_bottom: ", fl_cube_bottom, " for optics modul
 function fl_cube_width() = fl_cube_w;
 
 module fl_cube_cutout(taper=true){
+    fl_cube_cutout_w = fl_cube_w+2; //make the cutout a little bigger than the fl_cube
     // A cut-out that enables a filter cube to be inserted.
     union(){
         sequential_hull(){
