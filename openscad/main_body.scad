@@ -93,12 +93,19 @@ module actuator_silhouette(h=999){
 
 module mounting_hole_lugs(){
     // lugs either side of the XY table to bolt the microscope down
-    //these are to mount onto the baseplate 
+    // these are to mount onto the baseplate
     for(p=base_mounting_holes) {
-        if(p[1]<0 && p[0]>0) reflect([1,0,0]) hull(){
-            translate([z_flexure_x,0,0]) rotate(-120) cube([10,d,10]);
-            translate(p) cylinder(r=4*1.1,h=3);
-        }
+        if(p[1]<0 && p[0]>0) reflect([1,0,0])
+            difference() {
+                hull(){
+                    translate([z_flexure_x,0,0]) rotate(-120) cube([10,d,10]);
+                    translate(p) cylinder(r=4*1.1,h=3);
+                }
+                translate(p) {
+                    cylinder(r=3/2*1.1,h=50,center=true);
+                    translate([0,0,3]) cylinder(r=3*1.1, h=22);
+                }
+            }
     }
 }
 
@@ -260,6 +267,7 @@ module xy_positioning_system() {
         inner_wall_vertex(45, -9, zawall_h);
         xy_limit_switch_mount();
     }
+    mounting_hole_lugs(); //lugs to bolt the microscope down
 }
 
 module central_optics_cut_out() {
@@ -299,18 +307,15 @@ module main_body(){
 
 	//base
 	difference(){
-		union(){
-            add_hull_base(base_t) {
-                // Next, link the XY actuators to the wall
-                reflect([1,0,0]) wall_inside_xy_actuators();
-                z_axis_casing(condenser_mount=true); //casing and anchor for the z axis
-                reflect([1,0,0]) wall_outside_xy_actuators();
-                reflect([1,0,0]) wall_between_actuators();
-                // add a small object to make sure the base is big enough
-                wall_vertex(h=base_t);
-            }
-            mounting_hole_lugs(); //lugs to bolt the microscope down
-		}
+        add_hull_base(base_t) {
+            // Next, link the XY actuators to the wall
+            reflect([1,0,0]) wall_inside_xy_actuators();
+            z_axis_casing(condenser_mount=true); //casing and anchor for the z axis
+            reflect([1,0,0]) wall_outside_xy_actuators();
+            reflect([1,0,0]) wall_between_actuators();
+            // add a small object to make sure the base is big enough
+            wall_vertex(h=base_t);
+        }
 
         //////  Things we need to cut out holes for... ///////////
 
