@@ -69,6 +69,13 @@ module fl_cube_casing(){
     }
 }
 
+module fl_screw_holes(d,h){
+    reflect()
+        union(){
+            translate([fl_cube_w/2+5,0,fl_cube_bottom+fl_cube_w])rotate([90,0,0]) trylinder_selftap(d, h);
+        }
+}
+
 module optical_path(lens_aperture_r, lens_z){
     // The cut-out part of a camera mount, consisting of
     // a feathered cylindrical beam path.  Camera mount is now cut out
