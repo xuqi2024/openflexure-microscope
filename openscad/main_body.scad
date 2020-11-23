@@ -330,7 +330,6 @@ module xy_leg_ties(){
     }
 }
 
-
 module xy_positioning_system(){
     // This module creates the main XY positioning mechanism. Including the actuator columns.
 
@@ -342,9 +341,8 @@ module xy_positioning_system(){
 	xy_flexures();
  
     //tie the legs to the wall to stop movement during printing
-    xy_leg_ties()
+    xy_leg_ties();
 }
-xy_positioning_system();
 
 module z_actuator_assembly(){
     // This is the z-actuator, objective mount and the z-flexures.
@@ -437,7 +435,7 @@ module main_body(){
 
 
 // If this file is "included" rather than "used", render the main body.
-*exterior_brim(r=enable_smart_brim ? smart_brim_r : 0){
+exterior_brim(r=enable_smart_brim ? smart_brim_r : 0){
     main_body();
 }
 
