@@ -173,11 +173,11 @@ module camera_mount_body(
             // screw holes  and faceplate for fl module
             if(fluorescence){ 
                 rotate(fl_cube_rotation){
-                    translate([0,-0.5,0])fl_screw_holes(d = 2.5, h = 8);
-                        hull(){
-                            translate([0,-fl_cube_w,fl_cube_bottom+fl_cube_w/2])cube([fl_cube_w+15,fl_cube_w,fl_cube_w],center=true);
-                            translate([0,-fl_cube_w-5,fl_cube_bottom++fl_cube_w/2+5])cube([fl_cube_w+20,fl_cube_w,fl_cube_w],center = true);
-                            }
+                    translate([0,-2.5,0])fl_screw_holes(d = 2.5, h = 6);
+                    hull(){
+                        translate([0,-fl_cube_w,fl_cube_bottom+fl_cube_w/2+3])cube([fl_cube_w+15,fl_cube_w,fl_cube_w+6],center=true);
+                        translate([0,-fl_cube_w-6,fl_cube_bottom++fl_cube_w/2+9])cube([fl_cube_w+20,fl_cube_w,fl_cube_w+6],center = true);
+                    }
                 }
             }
         }
