@@ -103,7 +103,7 @@ z_actuator_tilt = -asin(z_flexures_z1/zll); //angle of the Z actuator
 
 z_flexure_x = (leg_r-flex_dims().y-max(5,leg_dims().z*0.1))*sqrt(2); // x position of the outside of the Z-axis static anchors (either side of the XY stage, on the X axis) (no longer used by Z axis but still in use elsewhere.)
 
-bridge_dz = 10; // spacing between thin links on legs
+leg_link_spacing = 10;
 base_t=1; // thickness of the flat base of the structure
 wall_h=15; // height of the stiffening vertical(ish) walls
 wall_t=2; //thickness of the stiffening walls
