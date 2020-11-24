@@ -22,9 +22,8 @@ def generate_rms_optics_modules(writer):
                 bs_text = "_beamsplitter" if beamsplitter else ""
                 output = f"optics_{camera}_{optics}{bs_text}.stl"
 
-                parameters = {"optics": optics, "camera": camera}
-                openscad_only = {"beamsplitter": beamsplitter}
-                select_stl_if = {"reflection_illumination": beamsplitter}
+                parameters = {"optics": optics, "camera": camera, "beamsplitter": beamsplitter}
+                select_stl_if = {"optics": optics, "camera": camera, "reflection_illumination": beamsplitter}
 
                 if optics == "rms_infinity_f50d13":
                     select_stl_if["tall_bucket_base"] = True
@@ -33,15 +32,14 @@ def generate_rms_optics_modules(writer):
 
                 writer.openscad(output,
                                 "optics.scad",
-                                parameters,
-                                openscad_only_parameters=openscad_only,
+                                parameters=parameters,
                                 select_stl_if=select_stl_if)
 
 def generate_platform_optics_modules(writer):
     '''This gereates both the lens spacers and the camera platforms'''
     for camera, optics in PLATFORM_OPTICS_MODULE_OPTIONS:
         parameters = {"camera": camera, "optics": optics}
-        select_stl_if = {"reflection_illumination": False}
+        select_stl_if = {**parameters, "reflection_illumination": False}
 
         output = f"camera_platform_{camera}_{optics}.stl"
         writer.openscad(output, "camera_platform.scad", parameters, select_stl_if=select_stl_if)
@@ -73,7 +71,7 @@ def generate_stand_with_pi(writer):
 
         select_stl_if = []
         for optics in compatible_lenses:
-            select_stl_if.append({"pi_in_base": True, "optics": optics})
+            select_stl_if.append({**parameters, "pi_in_base": True, "optics": optics})
 
         writer.openscad(output,
                         "microscope_stand.scad",
@@ -89,7 +87,7 @@ def generate_motor_buckets(writer):
         writer.openscad(f"motor_driver_case_{board_type}.stl",
                         "motor_driver_case.scad",
                         parameters,
-                        select_stl_if={"motorised": True})
+                        select_stl_if={**parameters, "motorised": True})
 
 def generate_bases(writer):
     generate_no_pi_stand(writer)
@@ -112,7 +110,7 @@ def generate_picamera_2_legacy_tools(writer):
         output = f"picamera_2_{tool}.stl"
         input_file = f"cameras/picamera_2_{tool}.scad"
         parameters = {"camera": "picamera_2"}
-        writer.openscad(output, input_file, parameters, select_stl_if={"legacy_picamera_tools": True})
+        writer.openscad(output, input_file, parameters, select_stl_if={**parameters, "legacy_picamera_tools": True})
 
 def generate_small_parts(writer):
     generate_picamera_2_legacy_tools(writer)
@@ -128,8 +126,8 @@ def generate_small_parts(writer):
 
     writer.openscad("picamera_2_cover.stl",
                     "cameras/picamera_2_cover.scad",
-                    {"camera": "picamera_2"},
-                    select_stl_if={"optics": set(RMS_OPTICS)})
+                    parameters={"camera": "picamera_2"},
+                    select_stl_if={"camera": "picamera_2", "optics": set(RMS_OPTICS)})
     writer.openscad("actuator_tension_band.stl",
                     "actuator_tension_band.scad",
                     select_stl_if={"include_actuator_tension_band": True})
@@ -140,8 +138,7 @@ def generate_small_parts(writer):
                     "reflection_illuminator.scad",
                     select_stl_if={"reflection_illumination": True})
     writer.openscad("just_leg_test.stl",
-                    "just_leg_test.scad",
-                    openscad_only_parameters={"big_stage": False})
+                    "just_leg_test.scad")
 
 def add_stls_to_writer(writer):
     writer.openscad("main_body.stl", "main_body.scad")

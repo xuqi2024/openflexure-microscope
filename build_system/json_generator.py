@@ -18,8 +18,6 @@ class JsonGenerator:
         self,
         output,
         input_file,
-        parameters=None,
-        file_local_parameters=None,
         select_stl_if=None,
     ):
         """
@@ -29,18 +27,9 @@ class JsonGenerator:
             self {JsonGenerator}
             output {str} -- file path of the output stl file
             input_file {str} -- file path of the input scad file
-            parameters {dict} -- values of globally used parameters
-            file_local_parameters {dict} -- values of parameters only used for this specific scad file
-            openscad_only_parameters {dict} -- values of parameters only used by openscad, ignored for stl selection
-            select_stl_if {dict}|{list} -- values of parameters not used by openscad but relevant to selecting this stl when making a specific variant.
-                                           Using a list means or-ing the combinations listed.
+            select_stl_if {dict}|{list} -- parameters that when set to the values given mean selecting this stl when making a specific variant.
+                                           using a list means or-ing the combinations listed.
         """
-
-        if parameters is None:
-            parameters = {}
-
-        if file_local_parameters is None:
-            file_local_parameters = {}
 
         if select_stl_if is None:
             ssif = [{}]
@@ -50,19 +39,11 @@ class JsonGenerator:
             ssif = select_stl_if
 
         for select in ssif:
-            # prefix any file-local parameters with the input file name so they
-            # don't overwrite any global parameters
-            prefix = os.path.splitext(input_file)[0] + ":"
-            flp_prefixed = {}
-            for k, v in file_local_parameters.items():
-                flp_prefixed[prefix + k] = v
-
             self._all_select_stl_params = self._all_select_stl_params.union(
                 select.keys()
             )
-            stl_option_params = {**parameters, **select, **flp_prefixed}
             self._stl_options.append(
-                {"stl": output, "input_file": input_file, "parameters": stl_option_params}
+                {"stl": output, "input_file": input_file, "parameters": select}
             )
 
     def write(self):
@@ -75,17 +56,10 @@ class JsonGenerator:
         # values to "bool"
         changeable_options = {}
         for name, options in available_options.items():
-            if len(options) > 1:
-                if options == {False, True}:
-                    changeable_options[name] = "bool"
-                else:
-                    changeable_options[name] = options
-            # if it's a select_stl_if param then it can have just a single value
-            elif name in self._all_select_stl_params:
-                if (False in options) or (True in options):
-                    changeable_options[name] = "bool"
-                else:
-                    changeable_options[name] = options
+            if (False in options) or (True in options):
+                changeable_options[name] = "bool"
+            else:
+                changeable_options[name] = options
 
         # make sure we have some docs for these options
         option_docs_dict = dict([(v["key"], v) for v in self._option_docs])
