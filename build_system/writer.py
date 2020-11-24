@@ -52,8 +52,6 @@ class MicroscopeBuildWriter():
         output,
         input_file,
         parameters=None,
-        file_local_parameters=None,
-        openscad_only_parameters=None,
         select_stl_if=None,
     ):
         """
@@ -64,28 +62,18 @@ class MicroscopeBuildWriter():
         Arguments:
             output {str} -- file path of the output stl file
             input_file {str} -- file path of the input scad file
-            parameters {dict} -- values of globally used parameters
-            file_local_parameters {dict} -- values of parameters only used for this specific scad file
-            openscad_only_parameters {dict} -- values of parameters only used by openscad, ignored for stl selection
+            parameters {dict} -- parameters passed to openscad using the `-D` switch
             select_stl_if {dict}|{list} -- values of parameters not used by openscad but relevant to selecting this stl when making a specific variant.
                                         Using a list means or-ing the combinations listed.
         """
 
         if parameters is None:
             parameters = {}
-        if file_local_parameters is None:
-            file_local_parameters = {}
-        if openscad_only_parameters is None:
-            openscad_only_parameters = {}
-        if select_stl_if is None:
-            select_stl_if = {}
 
         if self._json_generator is not None:
             self._json_generator.register(
                 output,
                 input_file,
-                parameters=parameters,
-                file_local_parameters=file_local_parameters,
                 select_stl_if=select_stl_if,
             )
 
@@ -94,9 +82,15 @@ class MicroscopeBuildWriter():
             rule="openscad",
             inputs=os.path.join("openscad/", input_file),
             variables={
-                "parameters": parameters_to_string(
-                    {**parameters, **file_local_parameters, **openscad_only_parameters}
-                )
-            },
+                "parameters": parameters_to_string(parameters)
+                },
         )
 
+    def copy_stl(self, stl_file, select_stl_if=None):
+        if self._json_generator is not None:
+            self._json_generator.register(
+                output=stl_file, input_file=stl_file, select_stl_if=select_stl_if
+            )
+        output = os.path.join(self._build_dir, stl_file)
+        input_file = os.path.join("openflexure-microscope-extra", stl_file)
+        self._ninja.build(output, rule="copy", inputs=input_file)
