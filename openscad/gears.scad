@@ -12,8 +12,8 @@
 *                                                                 *
 ******************************************************************/
 
-use <MCAD/involute_gears.scad>; // forward slash - for platform independence
-use <utilities.scad>;
+use <MCAD/involute_gears.scad> // forward slash - for platform independence
+use <utilities.scad>
 
 //pi=3.14159;
 //$fn=32;
@@ -35,7 +35,7 @@ function thumbwheel_spacing() = 44;
 //pitch radius = Nteeth * circular_pitch / 360
 //pitch radius is centre of gear to meshing point
 //outer radius = pitch radius * (1 + 2*pi/Nteeth)
-//our c2c distance is 10+12.5mm=22.5mm, 
+//our c2c distance is 10+12.5mm=22.5mm,
 module large_gear(){
 	assign($fn=32, pi=3.14159, pitch_r=c2c_distance*(ratio/(ratio+1)))
 	difference(){

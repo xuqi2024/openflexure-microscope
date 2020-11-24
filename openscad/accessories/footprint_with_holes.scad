@@ -1,6 +1,6 @@
 /*
 
-The "footprint" is the shape of the bottom of the bucket base (roughly 
+The "footprint" is the shape of the bottom of the bucket base (roughly
 equivalent to the shape of the bottom of the microscope, minus the front legs).
 If you want to cut out a recess that neatly fits the microscope (e.g. for a
 foam insert for your flight case, or another laser cut base) this might be the
@@ -11,7 +11,7 @@ You might also want to look at footprint_pocket.scad and footprint.scad.
 
 */
 
-use <../microscope_stand.scad>;
+use <../microscope_stand.scad>
 
 difference(){
     footprint();

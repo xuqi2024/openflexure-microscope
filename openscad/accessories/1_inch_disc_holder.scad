@@ -4,7 +4,7 @@
 
 difference(){
     cylinder(d=40,h=1.7);
-    
+
     translate([0,0,0.7]) cylinder(d=26,h=999);
     cylinder(d=23, h=999, center=true);
 }

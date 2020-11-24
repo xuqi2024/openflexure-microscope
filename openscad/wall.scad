@@ -9,10 +9,10 @@
 * Released under the CERN Open Hardware License                   *
 *                                                                 *
 ******************************************************************/
-use <./utilities.scad>;
-use <./main_body_transforms.scad>;
-use <./compact_nut_seat.scad>;
-include <./microscope_parameters.scad>; //All the geometric variables are now in here.
+use <./utilities.scad>
+use <./main_body_transforms.scad>
+use <./compact_nut_seat.scad>
+include <./microscope_parameters.scad> //All the geometric variables are now in here.
 
 
 module add_hull_base(h=1){
@@ -43,7 +43,7 @@ module wall_vertex(r=wall_t/2, h=wall_h, x_tilt=0, y_tilt=0){
     // A cylinder, rotated by the given angles about X and Y,
     // but with the top and bottom kept in the XY plane
     // (i.e. it's sheared rather than tilted).    These form the
-    // stiffening "wall" that runs around the base of 
+    // stiffening "wall" that runs around the base of
     // the legs
     smatrix(xz=tan(y_tilt), yz=-tan(x_tilt)) cylinder(r=r, h=h, $fn=8);
 }
@@ -52,13 +52,13 @@ module inner_wall_vertex(leg_angle, x, h=wall_h, thick=false){
     // tilts inwards to clear the leg.  These form the
     // corners of the stiffening "wall" that runs around
     // the base of the legs
-    
+
     // leg_angle specifies which leg the wall is for
     // (the legs are at +/-45 and +/-150 deg)
     // x is the X position before rotation through leg_angle
     // h is the wall height.
     // If thick = true then the wall is double thickness.
-    
+
     // unless specified, tilt the leg so the wall at the
     // edge is vertical (i.e. the bit at 45 degrees to
     // the leg frame)

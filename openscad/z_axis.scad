@@ -22,13 +22,13 @@ z_axis_struts() makes the two connections between the objective_mount()
 
 */
 
-use <./utilities.scad>;
-use <./compact_nut_seat.scad>;
-use <./main_body_transforms.scad>;
-use <./wall.scad>;
-use <./gears.scad>;
-use <./illumination.scad>;
-include <./microscope_parameters.scad>;
+use <./utilities.scad>
+use <./compact_nut_seat.scad>
+use <./main_body_transforms.scad>
+use <./wall.scad>
+use <./gears.scad>
+use <./illumination.scad>
+include <./microscope_parameters.scad>
 
 module each_om_contact_plane(){
     // This transform puts y=0 in the plane of contact between the
@@ -41,7 +41,7 @@ module each_om_contact_plane(){
 module objective_mount(){
     // The fitting to which the optics module is attached
     h = z_flexures_z2 + 4*sqrt(2);
-    overlap = 4; // we have this much contact between 
+    overlap = 4; // we have this much contact between
                  // the mount and the wedge on the optics module.
     roc=1.5; // radius of curvature of the arms
     w = objective_mount_nose_w + 2*overlap + 4;//+2*roc; //overall width
@@ -53,7 +53,7 @@ module objective_mount(){
             // the front of the mount (this makes contact with the optics module)
             each_om_contact_plane() translate([0,overlap-tiny(),0]) cube([2*roc,tiny(),h]);
         }
-        
+
         // bolt slot to mount objective
         hull(){
             translate([0,0,z_flexures_z1+8]) rotate([-90,0,0]) cylinder(d=3.5, h=999);
@@ -61,13 +61,13 @@ module objective_mount(){
         }
         // make the bolt slot keyhole-shaped to allow the screw to be easily inserted
         translate([0,0,z_flexures_z1+6]) rotate([-90,0,0]) cylinder(d=6.5, h=999);
-        
-        
+
+
         objective_fitting_wedge(h=999,nose_shift=-0.25,center=true);
-        
+
         // cut-outs for flexures to attach
         hull() reflect([1,0,0]) translate([1, tiny(), -4])  z_axis_flexures(h=5+8);
-        
+
         // cut out the back so it fits in the available space
         reflect([1,0,0]) translate([-z_flexure_x,0,-99]) rotate(45) cube(999);
     }
@@ -85,7 +85,7 @@ module objective_mount_screw(){
 }
 
 module objective_fitting_wedge(h=z_flexures_z2+4, nose_shift=0.2, center=false){
-    // A trapezoidal wedge that clamps onto the objective mount.  
+    // A trapezoidal wedge that clamps onto the objective mount.
     // NB you must subtract the objective_fitting_cutout from this to allow
     // the screw and nut to be attached.
     // NB nose_shift moves the tip of the wedge in the -y direction (i.e. increases
@@ -94,7 +94,7 @@ module objective_fitting_wedge(h=z_flexures_z2+4, nose_shift=0.2, center=false){
     nw = objective_mount_nose_w; //width of the pointy end
     translate([0,objective_mount_y,0]) mirror([0,1,0]) hull(){
         translate([-nw/2-nose_shift,nose_shift,center?-h/2:0]) cube([nw+2*nose_shift,tiny(),h]);
-        reflect([1,0,0]) translate([-nw/2-5+sqrt(2), 5+sqrt(2), 0]) 
+        reflect([1,0,0]) translate([-nw/2-5+sqrt(2), 5+sqrt(2), 0])
                 cylinder(r=2, h=h, $fn=16, center=center);
     }
 }
@@ -118,7 +118,7 @@ module objective_fitting_cutout(max_screw=12, y_stop=false, nose_shift=0.2){
             translate([0,10,7]) repeat([0,0,10],2) ofc_nut();
         }
     }
-    if(y_stop) translate([-10,objective_mount_y-nose_shift,-99])cube([20,999,999]); 
+    if(y_stop) translate([-10,objective_mount_y-nose_shift,-99])cube([20,999,999]);
 }
 
 module z_axis_flexure(h=flex_dims().z, z=0){
@@ -138,7 +138,7 @@ module z_axis_flexures(h=flex_dims().z){
 }
 
 module z_axis_struts(){
-    // The parts that tilt as the Z axis is moved, including the lever that 
+    // The parts that tilt as the Z axis is moved, including the lever that
     // connects to the actuator column (but not the column itself).
     intersection(){ // The two horizontal parts
         for(z=[z_flexures_z1, z_flexures_z2]) hull(){
@@ -180,7 +180,7 @@ module z_axis_clearance(){
 
 module objective_mounting_screw_access(){
     // access hole for the objective mounting screw
-    //translate([0,objective_mount_back_y, z_flexures_z2/2]) 
+    //translate([0,objective_mount_back_y, z_flexures_z2/2])
     //        rotate([-75,0,0]) cylinder(h=999, d=8, $fn=16);
     translate([0,objective_mount_back_y, z_flexures_z2/2]) hull(){
         rotate([-90,0,15]) cylinder(h=999, d=8, $fn=16);
@@ -204,7 +204,7 @@ module z_motor_clearance(motor_h=999){
 module top_of_z_axis_casing(){
     // The top of the Z axis casing, in case you want to join things onto it
     translate([-z_anchor_w/2-1.5, z_anchor_y - 1, z_flexures_z2]) cube([z_anchor_w+3, tiny(), tiny()]);
-    translate([0,z_nut_y,0]) rotate(180) 
+    translate([0,z_nut_y,0]) rotate(180)
                     motor_lugs(h=actuator_h + z_actuator_travel, angle=180, tilt=-z_actuator_tilt);
 }
 
@@ -227,7 +227,7 @@ module z_axis_casing(condenser_mount=false){
         // The top is a flat shape that the illumination arm screws onto.
         each_illumination_dovetail_screw() mirror([0,0,1]) cylinder(r=5,h=7);
     }
-    
+
 }
 
 module z_axis_casing_cutouts(){
@@ -250,10 +250,10 @@ module z_actuator_column(){
 
 module z_actuator_housing(motor_lugs=motor_lugs){
     // This houses the actuator column and provides screw seat/motor lugs
-    translate([0,z_nut_y,0]) screw_seat(h=actuator_h, 
-                                        tilt=z_actuator_tilt, 
-                                        travel=z_actuator_travel, 
-                                        motor_lugs=motor_lugs, 
+    translate([0,z_nut_y,0]) screw_seat(h=actuator_h,
+                                        tilt=z_actuator_tilt,
+                                        travel=z_actuator_travel,
+                                        motor_lugs=motor_lugs,
                                         lug_angle=180);
 }
 module z_actuator_cutout(){

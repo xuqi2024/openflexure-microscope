@@ -13,11 +13,11 @@
 *                                                                 *
 ******************************************************************/
 
-use <utilities.scad>;
-use <z_axis.scad>;
-include <microscope_parameters.scad>; // NB this defines "camera" and "optics"
-use <cameras/camera.scad>; // this will define the 2 functions and 1 module for the camera mount, using the camera defined in the "camera" parameter.
-use <lenses/lens.scad>;
+use <utilities.scad>
+use <z_axis.scad>
+include <microscope_parameters.scad> // NB this defines "camera" and "optics"
+use <cameras/camera.scad> // this will define the 2 functions and 1 module for the camera mount, using the camera defined in the "camera" parameter.
+use <lenses/lens.scad>
 $fn=24;
 
 
@@ -31,7 +31,7 @@ module optical_path(lens_aperture_r, lens_z, bottom_z=0){
         translate([0,0,lens_z]) cylinder(r=lens_aperture_r,h=2*tiny()); //lens
     }
 }
-    
+
 module lens_gripper(lens_r=10,h=6,lens_h=3.5,base_r=-1,t=0.65,solid=false, flare=0.4){
     // This creates a tapering, distorted hollow cylinder suitable for
     // gripping a small cylindrical (or spherical) object
@@ -40,7 +40,7 @@ module lens_gripper(lens_r=10,h=6,lens_h=3.5,base_r=-1,t=0.65,solid=false, flare
     trylinder_gripper(inner_r=lens_r, h=h, grip_h=lens_h, base_r=base_r, t=t, solid=solid, flare=flare);
 }
 
-  
+
 module camera_mount_top_slice(){
     // A thin slice of the top of the camera mount
     linear_extrude(tiny()) projection(cut=true) camera_mount();
@@ -51,7 +51,7 @@ module lens_spacer(lens_r, parfocal_distance, lens_h, lens_spacing){
 
     //z position of lens once in microscope
     //lens sits parfocal_distance below the sample
-    lens_z_microscope = sample_z - parfocal_distance; 
+    lens_z_microscope = sample_z - parfocal_distance;
 
     // z_position of the lens for this piece.
     //This is the height of the camera_sensor above the circuit board plus the spacing between the lens and the sensor
@@ -66,7 +66,7 @@ module lens_spacer(lens_r, parfocal_distance, lens_h, lens_spacing){
 
     //This is the height of the block the camera mounts into.
     camera_mount_height = camera_mount_height();
-                                            
+
     translate([0,0,lens_z_microscope-lens_z])difference(){
         union(){
             // This is the main body of the mount
@@ -98,7 +98,7 @@ module lens_spacer(lens_r, parfocal_distance, lens_h, lens_spacing){
 if(optics=="pilens"){
     // Optics module for picamera v2 lens, using trylinder
     lens_spacer(
-        lens_r = lens_radius(), 
+        lens_r = lens_radius(),
         parfocal_distance = lens_parfocal_distance(),
         lens_h = lens_height(),
         lens_spacing = lens_spacing()

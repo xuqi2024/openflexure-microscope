@@ -12,14 +12,14 @@
 *                                                                 *
 ******************************************************************/
 
-use <./utilities.scad>;
-use <./compact_nut_seat.scad>;
-use <./logo.scad>;
-use <./z_axis.scad>;
-use <./wall.scad>;
-use <./main_body_transforms.scad>;
-use <./reflection_illuminator.scad>;
-include <./microscope_parameters.scad>; //All the geometric variables are now in here.
+use <./utilities.scad>
+use <./compact_nut_seat.scad>
+use <./logo.scad>
+use <./z_axis.scad>
+use <./wall.scad>
+use <./main_body_transforms.scad>
+use <./reflection_illuminator.scad>
+include <./microscope_parameters.scad> //All the geometric variables are now in here.
 
 
 module leg_flexures(brace){
@@ -31,10 +31,10 @@ module leg_flexures(brace){
     //  * if brace=0 there is one normal sized flexure.
     //  * if brace=flex_dims().x there is one double width fexure
     //  * if brace>flex_dims().x there are two seperare flexures
-    
+
     block_size = [leg_middle_w, leg_dims().y, leg_block_t];
     flex_size = [leg_outer_w, leg_dims().y, flex_dims().z];
-    
+
     for (i = [0,1]){
         z_pos=[flex_z1, flex_z2][i];
         brace_pos= [brace, 0][i];
@@ -62,7 +62,7 @@ module leg(brace=flex_dims().x){
     // The legs support the stage - this is either used directly
     // or via "actuator" to make the legs with levers
     fw=flex_dims().x;
-    
+
 	union(){
        	//leg
 		reflect([1,0,0]){
@@ -76,7 +76,7 @@ module leg(brace=flex_dims().x){
             }
 		}
         leg_flexures(brace);
-        
+
 		//thin links between legs
         flex_sep = flex_z2-flex_z1;
         n = floor(flex_sep/leg_link_spacing);
@@ -108,7 +108,7 @@ module actuator(){
                 translate([-w/2,0,0]) cube(actuator);
             }
             //don't foul the actuator column
-            translate([0,actuating_nut_r,0]) actuator_end_cutout(); 
+            translate([0,actuating_nut_r,0]) actuator_end_cutout();
         }
 
 	}
@@ -169,14 +169,14 @@ module wall_inside_xy_stage(){
         inner_wall_vertex(135, -(leg_outer_w/2-wall_t/2), zawall_h, thick=true);
         inner_wall_vertex(-135, leg_outer_w/2-wall_t/2, zawall_h, thick=true);
 
-    };    
+    };
 
 }
 
 module wall_outside_xy_actuators(){
     // Add the wall from the XY actuator column to the middle
     sequential_hull(){
-        z_anchor_wall_vertex(); // join at the Z anchor 
+        z_anchor_wall_vertex(); // join at the Z anchor
         // [nb this is no longer actually the z anchor since the new z axis]
         // anchor at the same angle on the actuator
         // NB the base of the wall is outside the
@@ -190,7 +190,7 @@ module wall_outside_xy_actuators(){
 module wall_inside_xy_actuators(){
     // Connect the Z anchor to the XY actuators
     hull(){
-        translate([-(z_anchor_w/2+wall_t/2+1), z_anchor_y + 1, 0]) 
+        translate([-(z_anchor_w/2+wall_t/2+1), z_anchor_y + 1, 0])
                      wall_vertex();
         y_actuator_wall_vertex();
     }
@@ -206,8 +206,8 @@ module wall_between_actuators(){
 
 module reflection_illuminator_cutout(){
     // The shape for a hole in the main body for the reflection illuminator to poke through.
-    
-    // 
+
+    //
     top_cutout_w = 17.8;
     mid_cutout_w = illuminator_width() + 1;
     bottom_cutout_w = illuminator_width() + 4;
@@ -236,7 +236,7 @@ module xy_stage(h=10,on_buildplate=false){
     // The boolean value on_buildplate sets wether the stage is printed on the
     // buildplate. If true, the bottom is flat, if false the bottom is made from
     // bridges round the edge, that then work inwards.
-    
+
     side_length = leg_middle_w+2*flex_dims().y;
     cut_out_side_length = leg_middle_w-2*flex_dims().x;
     thickness = on_buildplate?h:h-1;
@@ -309,20 +309,20 @@ module xy_legs_and_actuators(){
 }
 
 module internal_xy_structure(){
-    
+
     difference() {
         add_hull_base(base_t) wall_inside_xy_stage();
         central_optics_cut_out();
         // Cut-out for reflection optics
         reflection_illuminator_cutout();
     }
-    //mounts for the optical endstops for X and 
+    //mounts for the optical endstops for X and
     reflect([1,0,0]) hull(){
         inner_wall_vertex(45, -9, zawall_h);
         xy_limit_switch_mount();
     }
     //lugs to bolt the microscope down to base
-    mounting_hole_lugs(); 
+    mounting_hole_lugs();
 }
 
 module xy_stage_with_nut_traps()
@@ -340,7 +340,7 @@ module xy_stage_with_nut_traps()
 }
 
 module xy_flexures(){
-    
+
     //Bottom flexures: flexures between legs and inner walls
     w=flex_dims().x;
     //The flexure length, increased for some overlap
@@ -357,7 +357,7 @@ module xy_flexures(){
             }
         }
     }
-    
+
     // Top flexures: flexures between legs and stage
     // NOTE: these connect the legs together, and pass all the way under the stage.
     // This is important! If they get cut then the bridges will fail!
@@ -377,13 +377,13 @@ module xy_flexures(){
 module xy_leg_ties(){
     // Small ties that connect the legs to the walls of the structure to stop the
     // legs moving during printing. These muse be cut after printing.
-    
+
     z_tr = wall_h*0.7;
     // Note that the walls slope in by 6 degrees so must compensate tie length
     tie_length = flex_dims().y + z_tr*tan(6) + 2;
     x_tr = leg_middle_w/2+flex_dims().y+flex_dims().x/2;
     y_tr = 1-tie_length;
-    
+
     reflect([1,0,0]){
         leg_frame(135){
             reflect([1,0,0]){
@@ -401,10 +401,10 @@ module xy_positioning_system(){
 	xy_legs_and_actuators();
     internal_xy_structure();
     xy_stage_with_nut_traps();
-    
+
 	// Connect the legs to the stage and structure with flexures
 	xy_flexures();
- 
+
     //tie the legs to the wall to stop movement during printing
     xy_leg_ties();
 }

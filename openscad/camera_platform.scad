@@ -21,14 +21,14 @@
 *                                                                 *
 ******************************************************************/
 
-use <utilities.scad>;
-use <dovetail.scad>;
-use <z_axis.scad>;
-include <microscope_parameters.scad>; // NB this defines "camera" and "optics"
-use <thorlabs_threads.scad>;
-use <optics.scad>;
-use <lenses/lens.scad>;
-use <cameras/camera.scad>; // Defines camera_bottom_mounting_posts
+use <utilities.scad>
+use <dovetail.scad>
+use <z_axis.scad>
+include <microscope_parameters.scad> // NB this defines "camera" and "optics"
+use <thorlabs_threads.scad>
+use <optics.scad>
+use <lenses/lens.scad>
+use <cameras/camera.scad> // Defines camera_bottom_mounting_posts
 
 dt_bottom = -2; //bottom of dovetail (<0 to allow some play)
 $fn=24;
@@ -53,11 +53,11 @@ module camera_platform(
                     camera_bottom_mounting_posts(h=tiny());
                 }
             }
-            
+
             // add the camera mount
             translate([0,0,h]) camera_bottom_mounting_posts(r=2, h=4);
         }
-        
+
         // fitting for the objective mount
         //translate([0,0,dt_bottom]) objective_fitting_wedge();
         // Mount for the nut that holds it on

@@ -21,13 +21,13 @@
 *                                                                 *
 ******************************************************************/
 
-use <utilities.scad>;
-use <dovetail.scad>;
-use <z_axis.scad>;
-include <microscope_parameters.scad>; // NB this defines "camera" and "optics"
-use <thorlabs_threads.scad>;
+use <utilities.scad>
+use <dovetail.scad>
+use <z_axis.scad>
+include <microscope_parameters.scad> // NB this defines "camera" and "optics"
+use <thorlabs_threads.scad>
 
-use <cameras/camera.scad>; // this will define the 2 functions and 1 module for the camera mount, using the camera defined in the "camera" parameter.
+use <cameras/camera.scad> // this will define the 2 functions and 1 module for the camera mount, using the camera defined in the "camera" parameter.
 
 dt_bottom = -2; //bottom of dovetail (<0 to allow some play)
 camera_mount_top_z = dt_bottom - 3 - (optics=="rms_f50d13"?8:0) - (optics=="rms_infinity_f50d13"?20:0); //the 50mm tube lens requires the camera to stick out the bottom.
@@ -56,7 +56,7 @@ module fl_cube_cutout(taper=true){
             translate([-fl_cube_w/2+2,-fl_cube_w/2-1,fl_cube_bottom]) cube([fl_cube_w-4,999,fl_cube_w]);
             translate([-fl_cube_w/2+4,-fl_cube_w/2,fl_cube_bottom]) cube([fl_cube_w-8,999,fl_cube_w+2]);
         }
-            
+
     }
 }
 module fl_cube_casing(){
@@ -89,7 +89,7 @@ module optical_path_fl(lens_aperture_r, lens_z){
         translate([0,0,lens_z]) cylinder(r=lens_aperture_r,h=2*d); //lens
     }
 }
-    
+
 module lens_gripper(lens_r=10,h=6,lens_h=3.5,base_r=-1,t=0.65,solid=false, flare=0.4){
     // This creates a tapering, distorted hollow cylinder suitable for
     // gripping a small cylindrical (or spherical) object
@@ -143,24 +143,24 @@ module camera_mount_body(
                 if(len(extra_rz) > 2) translate([0,0,extra_rz[2][1]-d]) cylinder(r=extra_rz[2][0],h=d);
                 if(len(extra_rz) > 3) translate([0,0,extra_rz[3][1]-d]) cylinder(r=extra_rz[3][0],h=d);
             }
-            
+
             // fitting for the objective mount
             //translate([0,0,dt_bottom]) objective_fitting_wedge();
             // Mount for the nut that holds it on
             translate([0,0,-1]) objective_fitting_cutout();
         }
-        
+
         // add the camera mount
         translate([0,0,camera_mount_top_z]) camera_mount();
     }
 }
 
 
-module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20, 
+module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
     tube_lens_r=16/2+0.2, objective_parfocal_distance=45, tube_length=150, fluorescence=false, gripper_t=1, dovetail=true){
     // This optics module takes an RMS objective and a tube length correction lens.
     // important parameters are below:
-        
+
     rms_r = 20/2; //radius of RMS thread, to be gripped by the mount
     //tube_lens_r (argument) is the radius of the tube lens
     //tube_lens_ffd (argument) is the front focal distance (from flat side to focus) - measure this, or take it from the lens spec. sheet
@@ -171,7 +171,7 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
     //NOTE: sample_z is set in microscope_parameters.scad
     dovetail_top = min(27, sample_z-objective_parfocal_distance-0.5); //height of the top of the dovetail, i.e. the position of the objective's "shoulder"
     //tube_length (argument) is the distance behind the objective's "shoulder" where the image is formed.  This should be infinity (safe to use 9999) for infinity-corrected lenses, or 150 for 160mm tube length objectives (the image is formed ~10mm from the end of the tube).
-    
+
     ///////////////// Lens position calculation //////////////////////////
     // calculate the position of the tube lens based on a thin-lens
     // approximation: the light is focussing from the objective shoulder
@@ -193,13 +193,13 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
     // that's the distance to the nominal "principal plane", in reality
     // we measure the front focal distance, and shift accordingly:
     tube_lens_z = bottom + camera_sensor_height() + dts - (tube_lens_f - tube_lens_ffd);
-        
+
     // having calculated where the lens should go, now make the mount:
     lens_assembly_z = tube_lens_z - pedestal_h; //height of lens assembly
     lens_assembly_base_r = rms_r+1; //outer size of the lens grippers
 
     //the objective sits parfocal_distance below the sample
-    lens_assembly_h = sample_z-lens_assembly_z-objective_parfocal_distance; 
+    lens_assembly_h = sample_z-lens_assembly_z-objective_parfocal_distance;
 
     union(){
         // The bottom part is just a camera mount with a flat top
@@ -215,7 +215,7 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
             // make sure the camera mount makes contact with the lens gripper, but
             // doesn't foul the inside of it
             translate([0,0,lens_assembly_z]) lens_gripper(lens_r=rms_r-d, lens_h=lens_assembly_h-2.5,h=lens_assembly_h, base_r=lens_assembly_base_r-d, solid=true); //same as the big gripper below
-            
+
         }
         // A threaded hole for the objective with a lens gripper for the tube lens
         translate([0,0,lens_assembly_z]){
@@ -254,9 +254,9 @@ difference(){
     if(optics=="rms_f40d16"){
         // Optics module for RMS objective, using Comar 40mm singlet tube lens
         optics_module_rms(
-            tube_lens_ffd=38, 
-            tube_lens_f=40, 
-            tube_lens_r=16/2+0.1, 
+            tube_lens_ffd=38,
+            tube_lens_f=40,
+            tube_lens_r=16/2+0.1,
             objective_parfocal_distance=45,
             fluorescence=beamsplitter,
             gripper_t=0.65,
@@ -266,9 +266,9 @@ difference(){
     }else if(optics=="rms_f50d13" || optics=="rms_infinity_f50d13"){
         // Optics module for RMS objective using ThorLabs ac127-050-a doublet tube lens
         optics_module_rms(
-            tube_lens_ffd=47, 
-            tube_lens_f=50, 
-            tube_lens_r=12.7/2+0.1, 
+            tube_lens_ffd=47,
+            tube_lens_f=50,
+            tube_lens_r=12.7/2+0.1,
             objective_parfocal_distance=45,
             fluorescence=beamsplitter,
             tube_length=(optics=="rms_f50d13" ? 150 : 99999) //use 150 for standard finite-conjugate objectives (cheap ones) or 9999 for infinity-corrected lenses (usually more expensive).

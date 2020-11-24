@@ -1,2 +1,2 @@
-use <./main_body.scad>;
+use <./main_body.scad>
 leg();

@@ -6,9 +6,9 @@ Tools for assembling the OpenFlexure Microscope v5.16
 
 */
 
-use <utilities.scad>;
-use <compact_nut_seat.scad>;
-include <microscope_parameters.scad>;
+use <utilities.scad>
+use <compact_nut_seat.scad>
+include <microscope_parameters.scad>
 
 ns = nut_slot_size();
 shaft_d = nut_size()*1.1;
@@ -61,14 +61,14 @@ module nut_tool(){
                 translate([-w/2, l, 0]) cube([w, tiny(), h]);
             }
         }
-        
-        //nut 
+
+        //nut
         translate([0,l,-tiny()])rotate(30)cylinder(r=nut_size()*1.15, h=999, $fn=6);
         translate([0,l-nut_size()*1.15+0.4,-tiny()]) cylinder(r=1,h=999,$fn=12);
     }
 }
 
-   
+
 module band_tool(){
     w = ns.x-0.5; //width of tool tip
     h = 4.5; //height of tool tip (needs to fit through slot)
@@ -160,9 +160,9 @@ module band_tool_2(handle=true){
 module double_ended_band_tool(bent=false){
     roc=2;
     middle_w = 2*column_base_radius()+1.5+2*(band_tool_h-roc)+0.5; //width of the band anchor on the foot
-    
+
     flex_l = roc*3.14/2; //length of the flexible linkers
-    
+
     // We make two tools, spaced out by a flexible joiner
     reflect([0,1,0]) translate([0,middle_w/2+flex_l,0]) if(bent){
         translate([0,roc-3,roc]) rotate([90,0,0]) band_tool_2(handle=false);

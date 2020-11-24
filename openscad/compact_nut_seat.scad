@@ -6,8 +6,8 @@ An attempt at an alternative to my ageing "nut_seat_with_flex" design...
 
 */
 
-use <utilities.scad>;
-include <microscope_parameters.scad>;
+use <utilities.scad>
+include <microscope_parameters.scad>
 
 d = 0.05;
 nut_size = 3;
@@ -17,7 +17,7 @@ nut_slot = [nut_w*sin(60), nut_w, nut_h+0.4];
 shaft_r = nut_size/2 * 1.15; //radius of hole to cut for screw
 column_base_r = shaft_r + 2; //radius of the bottom of the actuator column
 //column_clearance_w = nut_slot.x + 2*1.5 + 2*7;
-column_core = zeroz(nut_slot) + 2*[1.5+7+1, 1.5+1.5, 0];// NB leave z=0 here 
+column_core = zeroz(nut_slot) + 2*[1.5+7+1, 1.5+1.5, 0];// NB leave z=0 here
 wall_t = 1.6; //thickness of the wall around the column for the screw seat
 
 function nut_size() = nut_size;
@@ -52,7 +52,7 @@ module nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=-1){
         translate([-999, -hole_r,0]) cube([9999, 2*hole_r, h + trap_h + 0.5]);
         rotate(30) cylinder(r=r2, h=999, $fn=6);
     }
-        
+
 }
 
 
@@ -65,7 +65,7 @@ module m3_nut_trap_with_shaft(slot_angle=0,tilt=0)
 
 
     // nut trap
-    
+
     rotate([tilt,0,0])rotate([0,0,slot_angle]) translate([0,0,1]) union()
     {
         nut_trap_and_slot(nut_size, nut_slot);
@@ -108,7 +108,7 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
                         reflect([0,1,0]) translate([4.5,0.5,0]) cylinder(d=1,h=1);
                         translate([4,0,0]) cylinder(d=1,h=1);
                     }
-                } 
+                }
             }
             // join the column to the casing, for strength during printing...
             if(join_to_casing) translate([0,0,lever_tip+flex_dims().z+3]){
@@ -116,24 +116,24 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
                 //translate([-1/2,0,-0.25]) cube([1, ss_outer().y/2-wall_t/2, 0.5]); //this was too short...
             }
         }
-        
+
         // nut trap
-        if(!no_voids) rotate([tilt,0,0]) rotate(slot_angle) 
+        if(!no_voids) rotate([tilt,0,0]) rotate(slot_angle)
             translate([0,0,h-top.z]) nut_trap_and_slot(nut_size, nut_slot);
-        
+
         // shaft for the screw
         // NB this is raised up from the bottom so it stays within the shaft - this may need to change depending on the length of screw we use...
         if(!no_voids) rotate([tilt,0,0]) translate([0,0,lever_tip]){
             cylinder(r=shaft_r, h=999);
             translate([0,0,-lever_tip+1]) cylinder(r1=0, r2=shaft_r, h=lever_tip-1); //pointy bottom (stronger)
         }
-        
+
         // space for lever and flexure
         translate([-99, -flex_dims().y/2, flex_dims().z]) sequential_hull(){
             cube([999,flex_dims().y,lever_tip]);
             translate([0,-999,999]) cube([999,flex_dims().y,lever_tip]);
         }
-        
+
         // tiny holes, to increase the perimeter of the bottom bit and make it
         // stronger
         translate([-d,0,flex_dims().z]) cube([2*d, 10, 4]);
@@ -230,14 +230,14 @@ module screw_seat(h=25, travel=5, tilt=0, entry_w=2*column_base_r+3, extra_entry
                 rotate([90,0,0]) linear_extrude(1, center=true) mirror([1,0])
                         text(label, size=10, font="Sans", halign="center", valign="top");
             }
-                
+
         }
         nut_seat_void(h=h + travel, tilt=tilt); //hollow out the inside
-        
+
         edge_y = ss_outer(h).y/2; //allow the actuator to poke in
-        smatrix(zy=sin(tilt)) translate([0,-edge_y,0]) 
+        smatrix(zy=sin(tilt)) translate([0,-edge_y,0])
                     cube([entry_w, edge_y, entry_h*2], center=true);
-        
+
         //entrance slot for nut
         rotate([tilt,0,0]) translate([0,0,nut_slot_z]) nut_trap_and_slot(nut_size, nut_slot + [0,0,0.3]);
     }
@@ -322,7 +322,7 @@ module actuator_void(h, w1, w2, lever, tilted=false, extend_back=d){
             translate([-w1/2-c, 0, -d]) cube([w1+2*c,d,c]);
             translate([-w2/2-c, top_dy, h]) cube([w2+2*c,d,c]);
             translate([-w_n/2, nut_y, -d]) rotate([tilt,0,0]) cube([w_n, 2, 5 + lever*flex_a+c+1.5]);
-            
+
         }
         scale([1,1,1.5]) sphere(r=1.5, $fn=8);
     }
@@ -338,7 +338,7 @@ module flexure_anchor_cutout(h=999,w=999, extend_back=999){
             translate([0,extend_back,h/2]) cube([999,d,d]);
             translate([0,0,flex_dims().z]) mirror([0,0,1]) cube(999);
         }
-        
+
         cube([999,w,h],center=true);
     }
 }
@@ -358,7 +358,7 @@ module actuator_shroud_shell(h, w1, w2, lever, tilted=false, extend_back=d, ac_h
             }
             translate([0,nut_y,0]) screw_seat_shell(ns_h, tilt);
             translate([0,nut_y,0]) motor_lugs(ns_h, tilt);
-            
+
         }
         mirror([0,0,1]) cylinder(r=999,h=999,$fn=8); //don't extend below ground
         translate([0,-extend_back,0]) rotate([90,0,0]) cylinder(r=999,h=999,$fn=8); //cut off at the end, so we don't go past the back and close it off
@@ -370,7 +370,7 @@ module actuator_shroud_core(h, w1, w2, lever, tilted=false, extend_back=d, ac_h=
     ns_h = ac_h + lever * flex_a + 1.5; //internal height of nut seat
     nut_y = flex_dims().y + (tilted ? sqrt(lever*lever - h*h) : lever);
     tilt = tilted?-asin(h/lever):0;
-    
+
     difference(){
         actuator_void(h, w1, w2, lever, tilted, extend_back); //cut out so it's hollow
         if(tilted){ //make the void smaller so we get an anchor
@@ -379,12 +379,12 @@ module actuator_shroud_core(h, w1, w2, lever, tilted=false, extend_back=d, ac_h=
             flexure_anchor_cutout(h=2*(h-pushstick_h), extend_back=extend_back);
         }
     }
-                
+
     translate([0,nut_y,0]) nut_seat_void(ns_h, tilt); //cut out the nut seat
     // hole through which we can insert the nut
-    translate([0,nut_y]) rotate([tilt,0,0]) 
-            rotate(tilted ? 180 : 0) 
-            translate([-nut_slot.x/2-0.5,0,ac_h-nut_slot.z-nut_size-1.5]) 
+    translate([0,nut_y]) rotate([tilt,0,0])
+            rotate(tilted ? 180 : 0)
+            translate([-nut_slot.x/2-0.5,0,ac_h-nut_slot.z-nut_size-1.5])
             cube(nut_slot + [1,999,1]);
 }
 module actuator_shroud(h, w1, w2, lever, tilted=false, extend_back=d, ac_h=actuator_h, anchor=true){
@@ -393,7 +393,7 @@ module actuator_shroud(h, w1, w2, lever, tilted=false, extend_back=d, ac_h=actua
         actuator_shroud_core(h, w1, w2, lever, tilted=tilted, extend_back=extend_back, ac_h=ac_h, anchor=anchor);
     }
 }
-    
+
 //actuator_shroud(30, 25, pw, 50, extend_back=20);
 //untilted_actuator(30,25,50);
 
@@ -424,7 +424,7 @@ difference(){
     n = len(scales);
     nominal_w = 6.3;
     translate([1,1,0]*(-2-nominal_w/2)) cube([n*(nominal_w+4), nominal_w+4, nut_h+6]);
-    
+
     for(i=[0:(n-1)])translate([i*(nominal_w+4),0,2]) {
         w=nominal_w*scales[i];
         nut_trap_and_slot(nominal_w/2, [w*sin(60),w,nut_h+0.2]);

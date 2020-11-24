@@ -13,11 +13,11 @@
 ******************************************************************/
 
 
-use <utilities.scad>;
-use <main_body.scad>;
-use <sample_clips.scad>;
-use <main_body_transforms.scad>;
-include <microscope_parameters.scad>;
+use <utilities.scad>
+use <main_body.scad>
+use <sample_clips.scad>
+use <main_body_transforms.scad>
+include <microscope_parameters.scad>
 
 
 sep = 26;
@@ -29,7 +29,7 @@ slide = [75.8,25.8,1.0];
 
 module slide_riser_base(h, thickness, y_space){
     difference(){
-        
+
         xy_stage(h=thickness,on_buildplate=true);
 
         //angled cut-out for slide
@@ -39,7 +39,7 @@ module slide_riser_base(h, thickness, y_space){
         }
         //extra cutout on clip side
         translate([-999/2,0,h]) cube([999,slide.y/2+y_space,999]);
-        
+
         //cut-out for middle of slide (immersion oil, etc.)
         translate([-999/2,-slide.y/2+2, h-2]) cube([999,slide.y-4,999]);
     }
@@ -53,7 +53,7 @@ module slide_riser(h=.6, thickness=4){
     clip_r = 12;
     // Distance clip overlaps with slide position.
     // This is reduced by the tilted cutout:
-    clip_overlap = 5; 
+    clip_overlap = 5;
     clip_y = clip_overlap+y_space;
     clip_angle_h = 1+h+slide.z;
     handle_end = 75;
@@ -74,7 +74,7 @@ module slide_riser(h=.6, thickness=4){
                 each_leg() translate([0,-stage_hole_inset,0]){
                     cylinder(r=3/2*1.15,h=999,center=true);
                     translate([0,0,thickness+tiny()])cylinder(r=3*1.15,h=999);
-                } 
+                }
             }
             //Clip and handle
             translate([-clip_l+4,slide.y/2+y_space,0]){
@@ -83,7 +83,7 @@ module slide_riser(h=.6, thickness=4){
                             sample_clip([0,clip_l,-clip_y], w=clip_w, roc=clip_r);
                     }
                     translate([0,-clip_y+clip_angle_h,0])rotate([45,0,0])translate([clip_l,-5,0])cube([10,10,10], center=true);
-                    
+
                 }
                 translate([-999+7,slide.y/2+y_space+clip_r-2,0]) cube([999,9,7]);
             }

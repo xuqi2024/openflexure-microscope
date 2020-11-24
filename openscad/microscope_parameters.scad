@@ -35,7 +35,7 @@ camera = "picamera_2"; //see cameras/camera.scad for valid values
 optics = "rms_f50d13"; //see optics.scad for valid values
 led_r = 4.5/2; //size of the LED used for illumination
 endstops = false; //whether to build mounts for optical endstops inside the microscope.
-feet_endstops = false; //whether to include cut-outs for endstop switches in the feet. 
+feet_endstops = false; //whether to include cut-outs for endstop switches in the feet.
 beamsplitter = true; //enables a cut-out in some optics modules for a beamsplitter
 smart_brim_r = 5;
 enable_smart_brim = true;
@@ -110,9 +110,9 @@ wall_t=2; //thickness of the stiffening walls
 zawall_h = z_flexures_z2 - 10; //height of wall near Z anchor
 zbwall_h = z_flexures_z2 - 10; //height of bridge over Z lever
 
-illumination_dovetail_screws = [[20,z_nut_y,leg_height-2],[-20,z_nut_y,leg_height-2], 
+illumination_dovetail_screws = [[20,z_nut_y,leg_height-2],[-20,z_nut_y,leg_height-2],
                            [0,(leg_r + leg_outer_w)/sqrt(2) + 4,leg_height-2]];
-                      // positions of screws that mount the adjustable version of the 
+                      // positions of screws that mount the adjustable version of the
                       // illumination arm
 condenser_clip_y = -8; //position of dovetail for old condenser assembly TODO: rename this
 

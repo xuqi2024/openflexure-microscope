@@ -13,7 +13,7 @@
 * The part should be printed entirely with perimeters, no gap     *
 * fill. The part is designed to be printed with a 0.4mm nozzle.   *
 * Printing with a 1mm nozzle hasn't been tested, and isn't        *
-* recommended. 
+* recommended.
 *                                                                 *
 * (c) Bill Schaller, June 2020                                    *
 * Released under the CERN Open Hardware License v1.2              *
@@ -32,7 +32,7 @@ band_inner_diameter = 30;
 /*********
  * MODEL *
  *********/
-actual_band_thickness = 
+actual_band_thickness =
     ideal_band_thickness - (ideal_band_thickness % nozzle_width);
 band_outer_diameter = band_inner_diameter + actual_band_thickness * 2;
 

@@ -19,8 +19,8 @@
 ******************************************************************/
 
 
-use <../utilities.scad>;
-use <./m12.scad>;
+use <../utilities.scad>
+use <./m12.scad>
 
 // Camera geometry (mostly of the bottom of the lens mount)
 lens_holder_tube_r = 13.5/2; // the tube into which the lens screws
@@ -49,7 +49,7 @@ module 6led_camera_mount(){ //this is the same as the M12 mount
     m12_camera_mount();
 }
 
-    
+
 module 6led_bottom_mounting_posts(height=-1, radius=-1, outers=true, cutouts=true){
     //holes are (28-2.25*2)=23.5mm apart in Y and (33-4.45*2)=24.1mm apart in X
     r = radius > 0 ? radius : 2;

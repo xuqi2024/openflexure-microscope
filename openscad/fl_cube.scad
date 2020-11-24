@@ -21,14 +21,14 @@
 *                                                                 *
 ******************************************************************/
 
-use <utilities.scad>;
-include <microscope_parameters.scad>; // NB this defines "camera" and "optics"
+use <utilities.scad>
+include <microscope_parameters.scad> // NB this defines "camera" and "optics"
 
 
 module chamfer_bottom_edge(chamfer=0.3, h=0.5){
     difference(){
         children();
-        
+
         minkowski(){
             cylinder(r1=2*chamfer, r2=0, h=2*h, center=true);
             linear_extrude(tiny()) difference(){
@@ -66,10 +66,10 @@ module fl_cube_outer(){
         }
         // join the two arms together at the bottom
         translate([0,foot+bottom_t/2, w/2]) cube([w - roc*3*2 + 2*tiny(), bottom_t, w], center=true);
-        
+
         // feet at the bottom (and also in the middle of the top part)
-        for(p = [[-w/2+roc*3, roc, roc+0.5], 
-                 [w/2-roc*3, roc, roc+0.5], 
+        for(p = [[-w/2+roc*3, roc, roc+0.5],
+                 [w/2-roc*3, roc, roc+0.5],
                  [0, roc, w-roc],
                  [w/2-2-roc*0.3/sqrt(2), w+2-roc*1.2, w/2],
                  [-(w/2-2-roc*0.3/sqrt(2)), w+2-roc*1.0, w/2]
@@ -97,7 +97,7 @@ module fl_cube(){
     difference(){
         union(){
             fl_cube_outer();
-            
+
             // mount for 45 degree dichroic, with bottom retaining clip
             by = beamsplit.y + dichroic.y/2/sqrt(2) + 0.3; //coated tip of dichroic + wiggle room
             bz = beamsplit.z - dichroic.y/2/sqrt(2) + 0.3; //coated tip of dichroic + wiggle room
@@ -111,11 +111,11 @@ module fl_cube(){
                 translate([-inner_w/2, by - 4, 4 + 2*dichroic_t]) cube([inner_w, 2, tiny()]); //end of retaining clip
                 translate([-inner_w/2, by - 5, 4 + 2*dichroic_t]) cube([inner_w, 2, 1]); //overhanging bit
             }
-            
+
             // attachment for the excitation filter and LED
             reflect([1,0,0]) translate([-w/2, bottom + 4, w]) sequential_hull(){
                 depth = w-bottom-4-roc;
-                translate([0,0,-roc]) cube([2*roc, depth, tiny()]); 
+                translate([0,0,-roc]) cube([2*roc, depth, tiny()]);
                 translate([0.5,0,roc]) cube([2*roc, depth, 1.5]);
                 translate([0.5+2*roc + 1.5 - 0.2*(1+sqrt(2)),0,roc+1.5-0.2]) rotate([-90,0,0]) cylinder(r=0.2, h=depth);//cube([2*roc + 1.5, depth, d]);
             }

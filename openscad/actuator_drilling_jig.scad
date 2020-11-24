@@ -16,18 +16,18 @@
 *                                                                 *
 ******************************************************************/
 
-use <./utilities.scad>;
-use <./compact_nut_seat.scad>;
-use <./logo.scad>;
-use <./dovetail.scad>;
-include <./microscope_parameters.scad>; //All the geometric variables are now in here.
+use <./utilities.scad>
+use <./compact_nut_seat.scad>
+use <./logo.scad>
+use <./dovetail.scad>
+include <./microscope_parameters.scad> //All the geometric variables are now in here.
 
 outer_clearance = 0.5;
 cr = column_base_radius() + outer_clearance;
 
 difference(){
     translate([0,0,-7]) linear_extrude(actuator_h+5) offset(-outer_clearance) projection(cut=true) nut_seat_void();
-    
+
     //void for the actuator column
     minkowski(){
         actuator_column(h=actuator_h+1, no_voids=true, flip_nut_slot=true);

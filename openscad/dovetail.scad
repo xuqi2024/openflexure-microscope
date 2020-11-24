@@ -15,7 +15,7 @@
 *                                                                 *
 ******************************************************************/
 
-use <utilities.scad>;
+use <utilities.scad>
 $fn=16;
 d=0.05;
 
@@ -42,28 +42,28 @@ module dovetail_clip_cutout(size,dt=1.5,t=2,slope_front=0,solid_bottom=0){
     // dovetail).
     // NB that it starts at z=-d and stops at z=size.z+d to make
     // it easy to subtract from a block.
-    
+
     cutout_bottom = solid_bottom > 0 ? solid_bottom+d : -d;
     inner_w = size.x - 2*t; // width between arms
-    
+
     hull() reflect([1,0,0]) translate([-size.x/2+t,0,cutout_bottom]){
         translate([dt,size.y-dt,0]) cylinder(r=dt,h=size.z+2*d,$fn=16);
         translate([0,dt,0]) rotate(-45) cube([dt*2,d,size.z+2*d]);
     }
-    
+
     if(slope_front>0){
         //sloped bottom to improve quality of the dovetail clip and
         //allow insertion of the male dovetail from the bottom
         rotate([45,0,0]) cube([999,1,1]*sqrt(2)*slope_front,center=true); //slope up arms
         //also, slope in the dovetail tooth to avoid marring at the bottom:
-        hull() reflect([0,0,1]) translate([0,0,slope_front]) 
+        hull() reflect([0,0,1]) translate([0,0,slope_front])
             rotate([0,45,0]) cube([(inner_w)/sqrt(2),dt*2,inner_w/sqrt(2)],center=true);
     }
 }
 module dovetail_clip(size=[10,2,10],dt=1.5,t=2,back_t=0,slope_front=0,solid_bottom=0){
     // This forms a clip that will grip a dovetail, with the
     // contact between the m/f parts in the y=0 plane.
-    // This is the female part, and it is centred in X and 
+    // This is the female part, and it is centred in X and
     // extends into +y, +z.
     // The outer dimensions of the clip are given by size.
     // dt sets the size of the clip's teeth, and t is the
@@ -71,7 +71,7 @@ module dovetail_clip(size=[10,2,10],dt=1.5,t=2,back_t=0,slope_front=0,solid_bott
     // should be attached to a solid surface.  Specifying back_t>0
     // will add material at the back (by shortening the arms).
     // slope_front will add a sloped section to the front of the arms.
-    // this can improve the quality of the bottom of the dovetail 
+    // this can improve the quality of the bottom of the dovetail
     // (good if you're inserting from the bottom)
     // solid_bottom will join the arms together at the bottom, which
     // can help with bed adhesion.
@@ -88,7 +88,7 @@ module dovetail_plug(corner_x, r, dt, zx_profile=[[0,0],[10,0],[12,-1]]){
     // zx_profile is a list of 2-element vectors, each of which defines
     //   a point in Z-X space, i.e. first element is height and second
     //   is the shift in the corner position.  For example,
-    //   zx_profile=[[0,0],[10,0],[12,-1]] creates a plug 12mm+d high 
+    //   zx_profile=[[0,0],[10,0],[12,-1]] creates a plug 12mm+d high
     //   where the top 2mm are sloped at 60 degrees.  NB the use of d.
     union(){
         // sorry for the copy-paste code; I'm fairly sure it's less readable
@@ -159,7 +159,7 @@ module dovetail_m(size=[10,2,10],dt=1.5,t=2,top_taper=1,bottom_taper=0.5,waist=0
                                   [h-top_taper,0],
                                   [h-d,-top_taper/2]];
                     dovetail_plug(corner.x, r, dt, zx_profile);
-                        
+
 				}
 			}
 		}

@@ -36,11 +36,11 @@ module nut(d,h=-1,center=false,fudge=1.18,shaft=false){ //make a nut, for metric
 	//shaft: include a long cylinder representing the bolt shaft, diameter=d*1.05
 	h=(h<0)?d*0.8:h;
     union(){
-		cylinder(h=h,center=center,r=0.9*d*fudge,$fn=6); 
+		cylinder(h=h,center=center,r=0.9*d*fudge,$fn=6);
 		if(shaft){
-			reflect([0,0,1]) cylinder(r=d/2*1.05*(fudge+1)/2,h=99999999999,$fn=16); 
-			//the reason I reflect rather than use center=true is that the latter 
-			//fails in fast preview mode (I guess because of the lack of points 
+			reflect([0,0,1]) cylinder(r=d/2*1.05*(fudge+1)/2,h=99999999999,$fn=16);
+			//the reason I reflect rather than use center=true is that the latter
+			//fails in fast preview mode (I guess because of the lack of points
 			//inside the nut).  Also, less fudge is applied to the shaft, it can
 			//always be fixed with a drill after all...
 		}
@@ -54,14 +54,14 @@ module nut_from_bottom(d,h=-1,fudge=1.2,shaft=true,chamfer_r=0.75,chamfer_h=0.75
 	//shaft: include a long cylinder representing the bolt shaft, diameter=d*1.05
 	h=(h<0)?d*0.8:h;
     union(){
-		cylinder(h=h,r=0.9*d*fudge,$fn=6); 
-		translate([0,0,-0.05]) cylinder(h=chamfer_h,r1=0.9*d*fudge+chamfer_r,r2=0.9*d*fudge,$fn=6); 
-		mirror([0,0,1]) cylinder(h=9999,r=0.9*d*fudge+chamfer_r,$fn=6); 
+		cylinder(h=h,r=0.9*d*fudge,$fn=6);
+		translate([0,0,-0.05]) cylinder(h=chamfer_h,r1=0.9*d*fudge+chamfer_r,r2=0.9*d*fudge,$fn=6);
+		mirror([0,0,1]) cylinder(h=9999,r=0.9*d*fudge+chamfer_r,$fn=6);
 		if(shaft){
              sr=d/2*1.05*(fudge+1)/2; //radius of shaft
-			translate([0,0,h/2]) reflect([0,0,1]) cylinder(r=sr,h=99999999999,$fn=16); 
-			//the reason I reflect rather than use center=true is that the latter 
-			//fails in fast preview mode (I guess because of the lack of points 
+			translate([0,0,h/2]) reflect([0,0,1]) cylinder(r=sr,h=99999999999,$fn=16);
+			//the reason I reflect rather than use center=true is that the latter
+			//fails in fast preview mode (I guess because of the lack of points
 			//inside the nut).  Also, less fudge is applied to the shaft, it can
 			//always be fixed with a drill after all...
 			intersection(){ //we add a little cut to the roof of the surface so the initial bridges don't have to span the hole.
@@ -69,7 +69,7 @@ module nut_from_bottom(d,h=-1,fudge=1.2,shaft=true,chamfer_r=0.75,chamfer_h=0.75
 					translate([0,0,h]) cube([9999,sr*2,0.5],center=true);
 					translate([0,0,h+0.25]) cube([sr*2,sr*2,0.5],center=true);
 				}
-				cylinder(h=h+1,r=0.9*d*fudge,$fn=6); 
+				cylinder(h=h+1,r=0.9*d*fudge,$fn=6);
 			}
 		}
 	}
@@ -90,9 +90,9 @@ module nut_y(d,h=-1,center=false,fudge=1.15,extra_height=0.7,shaft=false,shaft_l
 		translate([-r*sin(30),center?-h/2:0,0]) cube([2*r*sin(30),h,r*cos(30)+extra_height]);
 		if(shaft || shaft_length > 0){
             sl = shaft_length >0 ? shaft_length : 9999;
-			translate([0,h/2,0]) reflect([0,1,0]) cylinder_with_45deg_top(h=sl,r=d/2*1.05*fudge,$fn=16,extra_height=extra_height); 
-			//the reason I reflect rather than use center=true is that the latter 
-			//fails in fast preview mode (I guess because of the lack of points 
+			translate([0,h/2,0]) reflect([0,1,0]) cylinder_with_45deg_top(h=sl,r=d/2*1.05*fudge,$fn=16,extra_height=extra_height);
+			//the reason I reflect rather than use center=true is that the latter
+			//fails in fast preview mode (I guess because of the lack of points
 			//inside the nut).
 		}
         if(top_access){ //hole from the top
@@ -109,11 +109,11 @@ module screw_y(d,h=-1,center=false,fudge=1.05,extra_height=0.7,shaft=false,shaft
 	h=(h<0)?d*0.8:h; //height of screw head
     r=0.9*d*fudge; //radius of screw head
     union(){
-		cylinder_with_45deg_top(h=h,r=d*1.05*fudge,$fn=16,extra_height=extra_height); 
+		cylinder_with_45deg_top(h=h,r=d*1.05*fudge,$fn=16,extra_height=extra_height);
 		if(shaft){
-			translate([0,center ? 0 : h/2,0]) reflect([0,1,0]) cylinder_with_45deg_top(h=shaft_length+h/2,r=d/2*1.05*fudge,$fn=16,extra_height=extra_height); 
-			//the reason I reflect rather than use center=true is that the latter 
-			//fails in fast preview mode (I guess because of the lack of points 
+			translate([0,center ? 0 : h/2,0]) reflect([0,1,0]) cylinder_with_45deg_top(h=shaft_length+h/2,r=d/2*1.05*fudge,$fn=16,extra_height=extra_height);
+			//the reason I reflect rather than use center=true is that the latter
+			//fails in fast preview mode (I guess because of the lack of points
 			//inside the nut).
 		}
 	}
@@ -244,7 +244,7 @@ module square_to_circle(r, h, layers=4, top_cylinder=0){
     // A stack of thin shapes, starting as a square and
     // gradually gaining sides to turn into a cylinder
     sides=[4,8,16,32,64,128,256]; //number of sides
-    for(i=[0:(layers-1)]) rotate(180/sides[i]) 
+    for(i=[0:(layers-1)]) rotate(180/sides[i])
         translate([0,0,i*h/layers]) cylinder(r=r/cos(180/sides[i]),h=h/layers+d,$fn=sides[i]);
     if(top_cylinder>0) translate([0,0,d]) cylinder(r=r,h=h+top_cylinder, $fn=sides[layers-1]);
 }
@@ -272,10 +272,10 @@ module lighttrap_cylinder(r1,r2,h,ridge=1.5){
 
     n_cones = max(floor(h/ridge),1);//there must be at least one cone or we divide by zero
     cone_h = h/n_cones;
-    
+
 	for(i = [0 : n_cones - 1]){
         p = i/(n_cones - 1);
-		translate([0, 0, i * cone_h - d]) 
+		translate([0, 0, i * cone_h - d])
 			cylinder(r1=(1-p)*r1 + p*(r2+ridge),
 					r2=(1-p)*(r1-ridge) + p*r2,
 					h=cone_h+2*d);
@@ -294,10 +294,10 @@ module lighttrap_sqylinder(r1,f1,r2,f2,h,ridge=1.5){
 
     n_cones = max(floor(h/ridge),1); //there must be at least one cone or we divide by zero
     cone_h = h/n_cones;
-    
+
 	for(i = [0 : n_cones - 1]){
         p = i/(n_cones - 1);
-		translate([0, 0, i * cone_h - d]) 
+		translate([0, 0, i * cone_h - d])
 			minkowski(){
                 cylinder(r1=(1-p)*r1 + p*(r2+ridge),
 					r2=(1-p)*(r1-ridge) + p*r2,
@@ -391,15 +391,15 @@ module self_tap_hole(mean_r, h, dr=1, dz=0.5, bridge_facets=0, center=false, scr
     bridge_facets = bridge_facets > 0 ? bridge_facets : floor(180/acos(inner_r/outer_r)); //sensible default for number of bridges
     difference(){
         cylinder(r=outer_r, h=h, center=center);
-        
+
         repeat([0,0,2*dz], ceil(h/dz/2), center=center) for(i=[1:bridge_facets]){
             rotate(i*360/bridge_facets) translate([-999,inner_r,screw ? i/bridge_facets*2*dz : 0]) cube([999*2,999,dz]);
         }
     }
 }
 
-            
-        
+
+
 //difference(){
 //    cylinder(r=16, h=5);
 //    self_tap_hole(20.4/2, dr=1.2, dz=0.7055/2, h=11, center=true, bridge_facets=5);
@@ -408,10 +408,10 @@ module self_tap_hole(mean_r, h, dr=1, dz=0.5, bridge_facets=0, center=false, scr
 module exterior_brim(r=4, h=0.2){
     // Add a "brim" around the outside of an object *only*, preserving holes in the object
     children();
-    
+
     if(r > 0) linear_extrude(h) difference(){
         offset(r) projection(cut=true) translate([0,0,-d]) children();
-       
+
         offset(-r+d) offset(r) projection(cut=true) translate([0,0,-d]) children();
     }
 }

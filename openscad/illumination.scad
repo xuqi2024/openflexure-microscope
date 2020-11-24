@@ -14,11 +14,11 @@
 // Note that no geometry is output in this file. The condender and the illumination
 // dovetail are created in condenser.scad and illumination_dovetail.scad
 
-use <./utilities.scad>;
-use <./logo.scad>;
-include <./microscope_parameters.scad>;
-use <./dovetail.scad>;
-use <./z_axis.scad>;
+use <./utilities.scad>
+use <./logo.scad>
+include <./microscope_parameters.scad>
+use <./dovetail.scad>
+use <./z_axis.scad>
 front_dovetail_y = 35; // position of the main dovetail
 front_dovetail_w = 30; // width of the main dovetail
 
@@ -50,7 +50,7 @@ module illumination_dovetail(){
     smooth_h = 15;
     dt_z = leg_height + 12; // z position and height of the dovetail
     dt_h = h + bottom_z - dt_z;
-    
+
     //top and bottom of y position of the sloped back
     bot_y = illumination_dovetail_screws[0].y+4+1;
     top_y = front_dovetail_y+10;
@@ -60,7 +60,7 @@ module illumination_dovetail(){
 
     translate([-11,logo_y,logo_z])rotate([90-back_angle,0,0])openflexure_emblem(scale_factor=.1);
     translate([0,front_dovetail_y,dt_z]) mirror([0,1,0]) dovetail_m([front_dovetail_w, 10, h-smooth_h]);
-    
+
     difference(){
         sequential_hull(){
             translate([-front_dovetail_w/2,front_dovetail_y-2,dt_z]) cube([front_dovetail_w, 15+2, 1]);
@@ -70,11 +70,11 @@ module illumination_dovetail(){
             }
             translate([-front_dovetail_w/2,front_dovetail_y+2,dt_z]) cube([front_dovetail_w, 10-2, dt_h]);
         }
-        
+
         // slots for the mounting screws (to allow adjustment of position)
         each_illumination_dovetail_screw(middle=false) cyl_slot(r=3/2*1.33, h=999, dy=3, center=true);
         each_illumination_dovetail_screw(middle=false) translate([0,0,3]) cyl_slot(r=6, h=999, dy=3);
-        
+
         // clearance for the motor
         translate([0,-2,0]) z_motor_clearance();
     }
@@ -100,20 +100,20 @@ module tall_condenser(bottom=true){
     difference(){
         union(){
 
-            
+
             // add a bottom
             hull() reflect([1,0,0]){
                 translate([0,0,-10]) cylinder(r=base_r, h=lens_assembly_z+tiny()+10);
                 translate([-dt_clip.x/2, dovetail_end_y,0]) cube([dt_clip.x, 2, lens_assembly_z]);
             }
-            
+
             // mount for the dovetail clip
             translate([-dt_clip.x/2,dovetail_end_y,0]) cube([dt_clip.x, 4, dt_clip.z]);
-            
+
             // the dovetail clip
             translate([0,front_dovetail_y, 0]) mirror([0,1,0]) dovetail_clip(dt_clip, slope_front=2, solid_bottom=bottom?0.2:0);
-            
-            
+
+
             translate([0,0,lens_assembly_z]){
                 // the lens holder
                 trylinder_gripper(inner_r=lens_r, grip_h=pedestal_h + lens_t/3,h=pedestal_h+lens_t+1.5, base_r=base_r, flare=0.5);
@@ -121,11 +121,11 @@ module tall_condenser(bottom=true){
                 cylinder(r=aperture_r+0.8,h=pedestal_h);
             }
         }
-        
+
         // hole for the beam passing through the lens
         translate([0,0,9]) lighttrap_cylinder(r1=led_r+1.5, r2=aperture_r,h=lens_assembly_z-9+tiny());
         translate([0,0,lens_assembly_z]) cylinder(r=aperture_r,h=999);
-        
+
         // hole for the LED
         //LED
         deformable_hole_trylinder(led_r,led_r+0.7,h=20, center=true);
