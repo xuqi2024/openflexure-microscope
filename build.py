@@ -66,20 +66,20 @@ def generate_rms_optics_modules(writer):
                     "camera": camera,
                     "beamsplitter": beamsplitter,
                 }
-                
+
                 if optics in RMS_OPTICS:
                     objective_type = "finite_rms"
-                    base_type = ["rpi_base_tall", "rpi_base"]
+                    base_type = {"rpi_base_tall", "rpi_base"}
                 elif optics in INF_RMS_OPTICS:
                     objective_type = "infinite_rms"
-                    base_type = ["rpi_base_tall"]
+                    base_type = "rpi_base_tall"
                 else:
                     raise ValueError("Unknown RMS optics module!?")
 
-                select_stl_if = [{"objective_type": objective_type,
+                select_stl_if = {"objective_type": objective_type,
                                   "camera": camera,
                                   "reflection_illumination": beamsplitter,
-                                  "base_type": base} for base in base_type]
+                                  "base_type": base_type}
 
                 writer.openscad(
                     output,
@@ -159,7 +159,7 @@ def generate_bases(writer):
     generate_motor_buckets(writer)
 
 
-def generate_gears_and_thumwheels(writer):
+def generate_gears_and_thumbwheels(writer):
     small_gear_selected = {"motorised": True}
     large_gear_selected = [
         {"motorised": True},
@@ -213,8 +213,7 @@ def generate_small_parts(writer):
         "picamera_2_cover.stl",
         "cameras/picamera_2_cover.scad",
         parameters={"camera": "picamera_2"},
-        select_stl_if=[{"camera": "picamera_2", "objective_type": "finite_rms"},
-                       {"camera": "picamera_2", "objective_type": "infinite_rms"}]
+        select_stl_if={"camera": "picamera_2", "objective_type": {"infinite_rms", "finite_rms"}}
     )
     writer.openscad(
         "actuator_tension_band.stl",
@@ -239,8 +238,7 @@ def add_extra_stls_to_writer(writer):
         select_mount_top = {"camera": camera, "objective_type": "cam_lens"}
         writer.copy_stl(f"{camera}_mount_top.stl", select_stl_if=select_mount_top)
 
-    select_mount_bottom = [{"camera": "dashcam", "objective_type": "cam_lens"},
-                           {"camera": "6ledcam", "objective_type": "cam_lens"}]
+    select_mount_bottom = {"camera": {"dashcam", "6ledcam"}, "objective_type": "cam_lens"}
     writer.copy_stl("dashcam_and_6ledcam_mount_bottom.stl", select_stl_if=select_mount_bottom)
 
 
@@ -251,7 +249,7 @@ with MicroscopeBuildWriter("builds", "build.ninja", args.generate_stl_options_js
     generate_rms_optics_modules(mbw)
     generate_platform_optics_modules(mbw)
     generate_bases(mbw)
-    generate_gears_and_thumwheels(mbw)
+    generate_gears_and_thumbwheels(mbw)
     generate_small_parts(mbw)
     # Include extra STL files
     if args.include_extra_files:

@@ -38,7 +38,7 @@ stl_presets = [
     #},
 ]
 
-#Outer dictionar are the questiosn of the STL selector. The "options" inside these are the opssible options.
+# In the outer dictionary are the questiosn of the STL selector. The "options" inside these are the possible options.
 option_docs = [
     {
         "key": "objective_type",
