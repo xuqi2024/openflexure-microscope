@@ -4,12 +4,11 @@ stl_presets = [
         "title": "High Resolution with Raspberry Pi",
         "description": "A microscope using the Raspberry Pi camera and  high resolution optics, as used for medical work.",
         "parameters": {
-            "optics": "rms_f50d13",
+            "objective_type": "finite_rms",
             "camera": "picamera_2",
             "reflection_illumination": False,
             "motorised": True,
-            "pi_in_base": True,
-            "tall_bucket_base": False,
+            "base_type": "rpi_base",
             "slide_riser": False,
         },
     },
@@ -18,76 +17,47 @@ stl_presets = [
         "title": "Basic with Raspberry Pi",
         "description": "A basic microscope using the Raspberry Pi camera and simple optics. Best suited for low resolution microscopy and educational workshops.",
         "parameters": {
-            "optics": "pilens",
+            "objective_type": "cam_lens",
             "camera": "picamera_2",
             "motorised": False,
-            "pi_in_base": True,
-            "tall_bucket_base": False,
+            "base_type": "rpi_base",
             "slide_riser": False,
         },
     },
-    {
-        "key": "low_cost_webcam",
-        "title": "Low Cost with Webcam",
-        "description": "The cheapest possible option using a computer webcam.",
-        "parameters": {
-            "optics": "6ledcam_lens",
-            "camera": "6ledcam",
-            "motorised": False,
-            "pi_in_base": False,
-            "slide_riser": False,
-        },
-    },
+    #{
+    #    "key": "low_cost_webcam",
+    #    "title": "Low Cost with Webcam",
+    #    "description": "The cheapest possible option using a computer webcam.",
+    #    "parameters": {
+    #        "optics": "6ledcam_lens",
+    #        "camera": "6ledcam",
+    #        "motorised": False,
+    #        "pi_in_base": False,
+    #        "slide_riser": False,
+    #    },
+    #},
 ]
 
-#TODO: Stop commenting out options and just put in a flag
+#Outer dictionar are the questiosn of the STL selector. The "options" inside these are the opssible options.
 option_docs = [
     {
-        "key": "optics",
-        "default": "rms_f50d13",
-        "description": "The type of lens you'd like to use on your microscope.",
+        "key": "objective_type",
+        "default": "finite_rms",
+        "description": "Do you want to use a microscope objective or the lens from your camera?",
         "options": [
-            {
-                "key": "rms_f50d13",
-                "title": "RMS Objective and f50d13 lens",
-                "description": "An RMS-threaded microscope objective with 160mm tube length, and a 12.7mm diameter, 50mm focal length achromatic doublet lens.",
+            { "key": "finite_rms",
+              "title": "RMS Objective",
+              "description": "A finite conjugate RMS objective. (Requires a f50d13 tube lens)",
             },
-            {
-                "key": "rms_infinity_f50d13",
-                "title": "RMS Infinity Objective and f50d13 lens",
-                "description": "An RMS-threaded, infinity-corrected microscope objective with a 12.7mm diameter, 50mm focal length achromatic doublet lens.",
+            { "key": "infinite_rms",
+              "title": "Ininity Corrected RMS Objective",
+              "description": "An ininity Corrected conjugate RMS objective. (Requires a f50d13 tube lens)",
             },
-            {
-                "key": "pilens",
-                "title": "Pi Lens",
-                "description": "The lens included with the Raspberry Pi camera module, v1 or v2 (either will fit)",
+            { "key": "cam_lens",
+              "title": "Lens from camera",
+              "description": "The lens from the camera you will use.",
             },
-            #{
-            #    "key": "c270_lens",
-            #    "title": "C270 Lens",
-            #    "description": "The lens included with the Logitech C270 webcam",
-            #},
-            #{
-            #    "key": "m12_lens",
-            #    "title": "M12 Lens",
-            #    "description": "A typical M12 CCTV lens",
-            #},
-            {
-                "key": "6ledcam_lens",
-                "title": "6LED Camera Lens",
-                "description": "The lens that comes with a cheap '6LED' camera.",
-            },
-            {
-                "key": "dashcam_lens",
-                "title": "Dashcam Lens",
-                "description": "The lens that comes with the camera of a cheap dashcam e.g. the RangeTour B90 (though it may be sold under different names).",
-            },
-            #{
-            #    "key": "rms_f40d16",
-            #    "title": "RMS F40D16",
-            #    "description": "An RMS-threaded microscope objective with 160mm tube length, and a 16mm diameter, 40mm focal length lens (no longer recommended due to poor quality at the edges of the image)",
-            #},
-        ],
+        ]
     },
     {
         "key": "camera",
@@ -97,7 +67,7 @@ option_docs = [
             {
                 "key": "picamera_2",
                 "title": "Pi Camera",
-                "description": "The Raspberry Pi camera module, version 1 or 2",
+                "description": "The Raspberry Pi camera module v2.",
             },
             #{
             #    "key": "logitech_c270",
@@ -152,12 +122,6 @@ option_docs = [
         "description": "Enable the microscope modifications required for reflection illumination and fluorescence microscopy.",
     },
     {
-        "key": "pi_in_base",
-        "default": True,
-        "advanced": True,
-        "description": "Whether you'd like to house a Raspberry Pi in the bucket base.",
-    },
-    {
         "key": "include_actuator_drilling_jig",
         "description": "This part is very much optional, and is only useful for cleaning up slightly dodgy prints, if the 3mm hole in the actuator has printed too small.",
         "advanced": True,
@@ -170,10 +134,26 @@ option_docs = [
         "description": "Use the normal motor gears instead of the thumbwheels with the hand-actuated version of the microscope.",
     },
     {
-        "key": "tall_bucket_base",
-        "description": "The tall bucket base is only needed if using the and infinity corrected RMS objective.",
-        "advanced": True,
-        "default": False,
+        "key": "base_type",
+        "description": "This is the base you mount the microcope to.",
+        "default": "rpi_base",
+        "options": [
+            {
+                "key": "rpi_base",
+                "title": "Raspberry Pi base",
+                "description": "A base that also houses a Raspberry Pi",
+            },
+            {
+                "key": "rpi_base_tall",
+                "title": "Tall Raspberry Pi base",
+                "description": "A base that also houses a Raspberry Pi with extra room for longer optics.",
+            },
+            {
+                "key": "simple_base",
+                "title": "Simple base",
+                "description": "A simple base for the Microscope. It does not have room for extra electronics, or RMS objective optics modules.",
+            },
+        ]
     },
     {
         "key": "include_actuator_tension_band",
