@@ -169,10 +169,8 @@ option_docs = [
     },
 ]
 
-# additional constraints on what is required to build a working microscope
-# that are not already expressed through openscad parameters, these are
-# used to disable option combinations that result in essential parts
-# missing
+# constraints on what is required to build a working microscope. these are used
+# to disable option combinations that result in essential parts missing
 required_stls = [
     # you need an optics module or a lens spacer, also called mount in some files
     r"^(optics_|lens_spacer|(.*cam_mount_)).*\.stl",
