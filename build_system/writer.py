@@ -86,3 +86,11 @@ class MicroscopeBuildWriter():
                 },
         )
 
+    def copy_stl(self, stl_file, select_stl_if=None):
+        if self._json_generator is not None:
+            self._json_generator.register(
+                output=stl_file, input_file=stl_file, select_stl_if=select_stl_if
+            )
+        output = os.path.join(self._build_dir, stl_file)
+        input_file = os.path.join("openflexure-microscope-extra", stl_file)
+        self._ninja.build(output, rule="copy", inputs=input_file)
