@@ -250,48 +250,38 @@ module z_actuator_column(){
 
 module z_actuator_housing(motor_lugs=motor_lugs){
     // This houses the actuator column and provides screw seat/motor lugs
-    translate([0,z_nut_y,0]) screw_seat(h=actuator_h,
-                                        tilt=z_actuator_tilt,
-                                        travel=z_actuator_travel,
-                                        motor_lugs=motor_lugs,
-                                        lug_angle=180);
+    translate([0,z_nut_y,0]){
+        screw_seat(h=actuator_h,
+                   tilt=z_actuator_tilt,
+                   travel=z_actuator_travel,
+                   motor_lugs=motor_lugs,
+                   lug_angle=180);
+    }
 }
+
 module z_actuator_cutout(){
     // This chops out a void for the actuator column
-    translate([0,z_nut_y,0]) screw_seat_outline(h=999,adjustment=-tiny(),center=true, tilt=z_actuator_tilt);
+    translate([0,z_nut_y,0]){
+        screw_seat_outline(h=999,
+                           adjustment=-tiny(),
+                           center=true,
+                           tilt=z_actuator_tilt);
+    }
 }
 
 
-// "scenery" so we can see how it fits with the rest of the microscope
-//legs
-// for(a=[-45,45]) rotate(a) translate([-leg_outer_w/2,leg_r,0]) cube([leg_outer_w, 4, leg_height]);
+module z_actuator_assembly(){
+    // This is the z-actuator, objective mount and the z-flexures.
+    // The flexure that join the body are not attached to anything on the body-side.
 
-include_z_axis_mechanism = true;
-include_z_axis_casing_outer = true;
-include_z_axis_casing_cutout = true;
-include_z_axis_actuator_housing = true;
-
-// These are the moving parts of the axis
-if(include_z_axis_mechanism){
-    objective_mount();
     z_axis_flexures();
     z_axis_struts();
+    objective_mount();
     z_actuator_column();
+    difference(){
+        z_actuator_housing();
+        // Subtract the clearance to make sure the actuator can get in ok.
+        // This only makes a very small cutout.
+        z_axis_clearance();
+    }
 }
-
-// The casing needs to have voids subtracted from it to fit the moving bits in
-difference(){
-    if(include_z_axis_casing_outer) z_axis_casing(condenser_mount=true);
-    if(include_z_axis_casing_cutout) z_axis_casing_cutouts();
-}
-
-// We add on the actuator housing last, because it's got the clearance subtracted already.
-if(include_z_axis_actuator_housing) z_actuator_housing();
-//*/
-// This is what fits onto it
-//translate([0,-1.5,0])
-//difference(){
-//    objective_fitting_wedge(nose_shift=0.2);
-//    objective_fitting_cutout();
-//}
-//objective_mount_screw();

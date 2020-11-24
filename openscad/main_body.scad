@@ -409,20 +409,6 @@ module xy_positioning_system(){
     xy_leg_ties();
 }
 
-module z_actuator_assembly(){
-    // This is the z-actuator, objective mount and the z-flexures.
-    // The flexure that join the body are not attached to anything on the body-side.
-
-    z_axis_flexures();
-    z_axis_struts();
-    objective_mount();
-    z_actuator_column();
-    difference(){
-        z_actuator_housing();
-        z_axis_clearance(); //make sure the actuator can get in ok!
-    }
-}
-
 module central_optics_cut_out() {
     // Central cut-out for optics
     sequential_hull(){
