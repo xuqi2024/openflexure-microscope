@@ -11,7 +11,7 @@
 ******************************************************************/
 
 
-// Note that no geometry is output in this file. The condender and the illumination
+// Note that no geometry is output in this file. The condenser and the illumination
 // dovetail are created in condenser.scad and illumination_dovetail.scad
 
 use <./utilities.scad>
@@ -82,7 +82,7 @@ module illumination_dovetail(){
 
 
 /*   THE CONDENSER **/
-//Note that this condernser is rotated, cut, and then printed in condenser.scad
+//Note that this condenser is rotated, cut, and then printed in condenser.scad
 
 // parameters of the lens
 pedestal_h = 5.5;
@@ -97,39 +97,55 @@ dt_clip = [front_dovetail_w, 16, lens_assembly_z]; //size of the dovetail clip
 dovetail_end_y = front_dovetail_y-dt_clip.y-4;
 
 module tall_condenser(bottom=true){
-    difference(){
-        union(){
 
+    // mount for the dovetail clip
+    translate([-dt_clip.x/2, dovetail_end_y, 0])
+        cube([dt_clip.x, 4, dt_clip.z]);
+    // the dovetail clip
+    translate([0,front_dovetail_y, 0])
+        mirror([0,1,0])
+            dovetail_clip(dt_clip, slope_front=2, solid_bottom=bottom ? 0.2 : 0);
 
-            // add a bottom
-            hull() reflect([1,0,0]){
-                translate([0,0,-10]) cylinder(r=base_r, h=lens_assembly_z+tiny()+10);
-                translate([-dt_clip.x/2, dovetail_end_y,0]) cube([dt_clip.x, 2, lens_assembly_z]);
-            }
-
-            // mount for the dovetail clip
-            translate([-dt_clip.x/2,dovetail_end_y,0]) cube([dt_clip.x, 4, dt_clip.z]);
-
-            // the dovetail clip
-            translate([0,front_dovetail_y, 0]) mirror([0,1,0]) dovetail_clip(dt_clip, slope_front=2, solid_bottom=bottom?0.2:0);
-
-
-            translate([0,0,lens_assembly_z]){
-                // the lens holder
-                trylinder_gripper(inner_r=lens_r, grip_h=pedestal_h + lens_t/3,h=pedestal_h+lens_t+1.5, base_r=base_r, flare=0.5);
+    // the lens holder
+    translate([0, 0, lens_assembly_z]) {
+        difference() {
+            h = pedestal_h+lens_t+1.5;
+            union() {
+                trylinder_gripper(inner_r=lens_r, grip_h=pedestal_h + lens_t/3, h=h, base_r=base_r, flare=0.5);
                 // pedestal to raise the lens up within the gripper
-                cylinder(r=aperture_r+0.8,h=pedestal_h);
+                cylinder(r=aperture_r+0.8, h=pedestal_h);
             }
+            // hole for the beam passing through the lens
+            translate([0, 0, -tiny()])
+                cylinder(r=aperture_r, h=h+tiny());
+        }
+    }
+
+    bottom_height = 10; // the bottom is an extra bit that is sliced off when the condenser is rotated and cut before printing
+    led_countersink = 2;// the led brim rests against the countersink
+    led_height = 9;     // how much space is reserved for the body of the led
+    difference() {
+        hull() reflect([1, 0, 0]) {
+            translate([0, 0, -bottom_height])
+                cylinder(r=base_r, h=lens_assembly_z+bottom_height);
+            translate([-dt_clip.x/2, dovetail_end_y, 0])
+                cube([dt_clip.x, 2, lens_assembly_z]);
         }
 
-        // hole for the beam passing through the lens
-        translate([0,0,9]) lighttrap_cylinder(r1=led_r+1.5, r2=aperture_r,h=lens_assembly_z-9+tiny());
-        translate([0,0,lens_assembly_z]) cylinder(r=aperture_r,h=999);
+        lighttrap_offset = led_height+led_countersink;
+        translate([0, 0, lighttrap_offset])
+            lighttrap_cylinder(r1=led_r+1.5, r2=aperture_r, h=lens_assembly_z-lighttrap_offset+tiny());
 
-        // hole for the LED
-        //LED
-        deformable_hole_trylinder(led_r,led_r+0.7,h=20, center=true);
-        cylinder(r=led_r+1.0,h=2,center=true);
-        translate([0,0,2-tiny()]) cylinder(r1=led_r+1.0, r2=led_r,h=2,center=true);
-    }
+        // pressfit hole for the LED
+        translate([0, 0, -bottom_height]) {
+            deformable_hole_trylinder(led_r, led_r+0.7, h=lighttrap_offset+bottom_height);
+        }
+
+        // cutout to allow the led to be pushed down to the pressfit hole
+        translate([0, 0, led_countersink])
+            cylinder(r1=led_r+1, r2=led_r, h=2);
+        translate([0, 0, -bottom_height-tiny()])
+            cylinder(r=led_r+1, h=bottom_height+led_countersink+tiny());
+     }
 }
+
