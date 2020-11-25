@@ -5,44 +5,47 @@ use <./dovetail.scad>;
 
 base_r = 20/2; // must be >= lens_r+1
 LEDstar_r = 19/2;
-module fl_led_mount(led_d=5){
+extra_space = 2.5;
+slip_plate_thickness=2;
+slip_plate_edge_slot  =3;
+excitation_thickness = 3.5;
+top_filter_cube =LEDstar_r-fl_cube_w/2+extra_space;
+beam_z = top_filter_cube+fl_cube_w/2;
+roc = 0.6;
+w = illuminator_width(); //nominal width of the mount (is the width between the outsides of the dovetail clip points)
+dovetail_pinch = fl_cube_w - 4*roc - 1 - 3; //width between the pinch-points of the dovetail
+h = fl_cube_w + top_filter_cube; //should probably be fl_cube_w
+filter = [10,14,1.5];
+beamsplit = [0, 0, w/2]; //NB different to fl_cube because we're printing with z=z here.
+
+front_t = 2;
+back_y = fl_cube_w/2 + roc + 1.5; //flat of dovetail (we actually start 1.5mm behind this)
+led_y = back_y+3; //don't worry about precise imaging (is this OK?)
+front_y = led_y + front_t;
+module fl_cube_mount(beam_d=5){
     // This part clips on to the filter cube, to allow a light source (generally LED) to be coupled in using the beamsplitter.
-    roc = 0.6;
-    w = fl_cube_w - 1; //nominal width of the mount (is the width between the outsides of the dovetail clip points)
-    dovetail_pinch = fl_cube_w - 4*roc - 1 - 3; //width between the pinch-points of the dovetail
-    h = fl_cube_w - 1; //should probably be fl_cube_w
-    led_z = fl_cube_w/2;//+2;
-    filter = [10,14,1.5];
-    beamsplit = [0, 0, w/2]; //NB different to fl_cube because we're printing with z=z here.
     $fn=8;
-    front_t = 2;
-    back_y = fl_cube_w/2 + roc + 1.5; //flat of dovetail (we actually start 1.5mm behind this)
-    led_y = back_y+3; //don't worry about precise imaging (is this OK?)
-    front_y = led_y + front_t;
-    
-    union() translate([0,0,0]){
-        difference(){
-            union(){
-                translate([0, back_y, 0]) mirror([0,1,0]) dovetail_m([w, 1, h], t=2*roc);
-                hull(){
-                    translate([-w/2,back_y,0]) cube([w,d,h]);
-                    reflect([1,0,0]) translate([w/2-3*roc, front_y - 3*roc, 0]) cylinder(r=3*roc, h=h, $fn=16);
-                }
-                hull(){
-                    l=3.5;
-                    translate([-w/2+2.5,back_y-1.5+d,led_z-led_d/2-2-l]) cube([w-5,d,led_d+4+l]);
-                    translate([-w/2+2.5,back_y-1.5+d-l,led_z-led_d/2-2]) cube([w-5,d,led_d+4]);
-                }
-                
+    echo(top_filter_cube+slip_plate_thickness);
+    difference(){
+        union(){
+            translate([0, back_y,0]) mirror([0,1,0]) dovetail_m([fl_cube_w-1, 1, h], t=2*roc);
+            hull(){
+                translate([-w/2,back_y,0]) cube([w,d,h]);
+                reflect([1,0,0]) translate([w/2-roc, back_y + excitation_thickness + 2,0]) cylinder(r=roc, h=h, $fn=16);
             }
+                //hull(){
+                //    l=3.5;
+                //    translate([-w/2+2.5,back_y-1.5+d,top_filter_cube-beam_d/2-3-l]) cube([w-5,d,beam_d+4+2*l]);
+                //    translate([-w/2+2.5,back_y-1.5+d-l,top_filter_cube-beam_d/2-3]) cube([w-5,d,beam_d+4]);
+                //}
+                
+        }
             
             // add a hole for the LED
-            translate([0,led_y,led_z]){
-                cylinder_with_45deg_top(h=999, r=led_d/2*1.05, $fn=16, extra_height=0, center=true); //LED
-                cylinder_with_45deg_top(h=999, r=(led_d+1)/2*1.05, $fn=16, extra_height=0);
-            }
-            }
+        translate([0,0,beam_z]){
+        cylinder_with_45deg_top(h=999, r=beam_d/2, $fn=16, extra_height=0, center=true); //LED
         }
+    }
 }
 
 module lens_holder(led_d=3.5){
@@ -179,11 +182,15 @@ module illuminator_holder(){
     
     intersection(){
     difference(){
+<<<<<<< HEAD
         union(){
             fl_led_mount();
             translate([-w/2,10.5,0]) cube([w,40,h]); //80 was 40 in the one I made earlier...
                     
     }
+=======
+            fl_cube_mount();
+>>>>>>> e2ba5f1... Simplify and improve fl cube mount
         //translate([0,13,0]) rotate([-90,0,0]) cylinder(h=999,r=999,$fn=5);
         
     //grooves to fit screw segments of illuminator
