@@ -12,9 +12,8 @@
 *                                                                 *
 ******************************************************************/
 
-use <MCAD/involute_gears.scad>; //NB forward slash - it works on 
-// both unix-like and Windows platforms. Backslash doesn't...
-use <utilities.scad>;
+use <MCAD/involute_gears.scad> // forward slash - for platform independence
+use <utilities.scad>
 
 //pi=3.14159;
 //$fn=32;
@@ -36,7 +35,7 @@ function thumbwheel_spacing() = 44;
 //pitch radius = Nteeth * circular_pitch / 360
 //pitch radius is centre of gear to meshing point
 //outer radius = pitch radius * (1 + 2*pi/Nteeth)
-//our c2c distance is 10+12.5mm=22.5mm, 
+//our c2c distance is 10+12.5mm=22.5mm,
 module large_gear(){
 	assign($fn=32, pi=3.14159, pitch_r=c2c_distance*(ratio/(ratio+1)))
 	difference(){
@@ -52,7 +51,6 @@ module large_gear(){
 			cylinder(r1=pitch_r-2,r2=pitch_r+18,h=20); //stop bottoms of teeth being funny
 		}
 		translate([0,0,1.5]) nut(3,shaft=true,fudge=1.2,h=999);
-//		for(i=[0:5]) rotate(i*60) translate([pitch_r*0.55,0,0.5]) cylinder(r=pitch_r*0.2,h=999);
 	}
 }
 
@@ -147,9 +145,4 @@ module motor_and_gear_clearance(gear_h=10, h=999){
     translate([0,c2c_distance-7.8,gear_h]) motor_clearance(h=h-gear_h);
 }
 
-//rotate(360/teeth_biggear/2) large_gear();
-//translate([c2c_distance*2,00]) small_gear();
-//thumbwheel();
-//motor_and_gear_clearance();
 repeat([0,large_gear_spacing(),0],3,center=true) large_gear();
-//repeat([0,thumbwheel_spacing(),0],3,center=true) thumbwheel();

@@ -1,9 +1,9 @@
 #!/bin/bash
 
 openscad=OpenSCAD
-options="--render -D 'big_stage=true' -D 'sample_z=65' -D 'motor_lugs=true'"
+options="--render -D 'sample_z=75' -D 'motor_lugs=true'"
 input="../../openscad/main_body.scad"
-output_prefix="main_body_LS65-M"
+output_prefix="main_body_75-M"
 
 renders=(
   _side_3D

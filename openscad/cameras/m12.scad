@@ -19,7 +19,7 @@
 ******************************************************************/
 
 
-use <../utilities.scad>;
+use <../utilities.scad>
 
 // Camera geometry (mostly of the bottom of the lens mount)
 lens_holder_tube_r = 13.5/2; // the tube into which the lens screws
@@ -41,7 +41,7 @@ module usbcam_lens_mount(){
     union(){
         cylinder(r=lens_holder_tube_r, h=lens_holder_tube_h, $fn=16);
         translate([0,0,lens_holder_box_h/2]) cube(lens_holder_box, center=true);
-        hull() reflect([0,1,0]) translate([0,lens_holder_mounting_screw_y,0]) 
+        hull() reflect([0,1,0]) translate([0,lens_holder_mounting_screw_y,0])
             cylinder(r=lens_holder_mounting_screw_lug_r, h=lens_holder_box_h, $fn=12);
     }
 }

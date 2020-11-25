@@ -9,10 +9,10 @@
 * Released under the CERN Open Hardware License                   *
 *                                                                 *
 ******************************************************************/
-use <./utilities.scad>;
-use <./main_body_transforms.scad>;
-use <./compact_nut_seat.scad>;
-include <./microscope_parameters.scad>; //All the geometric variables are now in here.
+use <./utilities.scad>
+use <./main_body_transforms.scad>
+use <./compact_nut_seat.scad>
+include <./microscope_parameters.scad> //All the geometric variables are now in here.
 
 
 module add_hull_base(h=1){
@@ -43,26 +43,30 @@ module wall_vertex(r=wall_t/2, h=wall_h, x_tilt=0, y_tilt=0){
     // A cylinder, rotated by the given angles about X and Y,
     // but with the top and bottom kept in the XY plane
     // (i.e. it's sheared rather than tilted).    These form the
-    // stiffening "wall" that runs around the base of 
+    // stiffening "wall" that runs around the base of
     // the legs
     smatrix(xz=tan(y_tilt), yz=-tan(x_tilt)) cylinder(r=r, h=h, $fn=8);
 }
-module inner_wall_vertex(leg_angle, x, h=wall_h, y_tilt=-999, y=-zflex_l-wall_t/2){
+module inner_wall_vertex(leg_angle, x, h=wall_h, thick=false){
     // A thin cylinder, close to one of the legs.  It
     // tilts inwards to clear the leg.  These form the
-    // stiffening "wall" that runs around the base of 
-    // the legs
-    
-    // leg_angle specifies the leg, x is the X position
-    // of the vertex in that leg frame.  h is its height,
-    // y and y_tilt override position and angle in y
-    
+    // corners of the stiffening "wall" that runs around
+    // the base of the legs
+
+    // leg_angle specifies which leg the wall is for
+    // (the legs are at +/-45 and +/-150 deg)
+    // x is the X position before rotation through leg_angle
+    // h is the wall height.
+    // If thick = true then the wall is double thickness.
+
     // unless specified, tilt the leg so the wall at the
     // edge is vertical (i.e. the bit at 45 degrees to
     // the leg frame)
-    y_tilt = (y_tilt==-999) ? (x>0?6:-6) : y_tilt;
+    y_tilt = x>0?6:-6;
+    y=-flex_dims().y-wall_t/2;
+    r = thick?wall_t:wall_t/2;
     leg_frame(leg_angle) translate([x,y,0]){
-            wall_vertex(h=h,x_tilt=6,y_tilt=y_tilt);
+            wall_vertex(r=r,h=h,x_tilt=6,y_tilt=y_tilt);
     }
 }
 
@@ -85,6 +89,6 @@ module z_anchor_wall_vertex(){
 module y_actuator_wall_vertex(x=1){
     // A wall vertex for the y actuator.  x=-1,1 picks the side
     // of the actuator where the vertex is placed.
-    leg_frame(45) translate([x*(ss_outer()[0]/2-wall_t/2),
+    leg_frame(45) translate([x*(ss_outer().x/2-wall_t/2),
                              actuating_nut_r, 0]) wall_vertex();
 }

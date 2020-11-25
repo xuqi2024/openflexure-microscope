@@ -14,7 +14,7 @@
 *                                                                 *
 ******************************************************************/
 
-use <utilities.scad>;
+use <utilities.scad>
 
 $fn=64;
 
@@ -25,14 +25,14 @@ module waterscope_logo(){
             translate([0,13,0]) cylinder(r=30,h=1);
             translate([0,-13,0]) cylinder(r=30,h=1);
         }
-        
+
         //tear-drop shaped pupil
         difference(){
             translate([0,-((12-1)*sqrt(2)+1 - 12)/2,0]) hull(){
                 cylinder(r=12,h=999,center=true);
                 translate([0,(12-1)*sqrt(2),0])cylinder(r=1,h=999,center=true);
             }
-            
+
             //tick
             translate([2,-11,0]) sequential_hull(){
                 translate([-3,3,0]) cylinder(r=1,h=1);
@@ -62,7 +62,7 @@ module openflexure_logo(h=1, resize=[0,0]){
 module oshw_logo_and_text(text=""){
     union(){
         oshw_logo();
-        
+
         translate([100,-7,0]) mirror([1,0,0]) linear_extrude(1){
             text(text, size=14, font="Calibri", halign="left");
         }

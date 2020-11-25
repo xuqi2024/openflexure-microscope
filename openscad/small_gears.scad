@@ -13,7 +13,7 @@
 *                                                                 *
 ******************************************************************/
 
-use <gears.scad>;
-use <utilities.scad>;
+use <gears.scad>
+use <utilities.scad>
 
 repeat([0,small_gear_spacing(),0],3,center=true) small_gear();

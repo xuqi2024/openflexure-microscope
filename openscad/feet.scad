@@ -18,8 +18,8 @@
 ******************************************************************/
 
 include <microscope_parameters.scad> //for foot_height
-use <utilities.scad>;
-use <compact_nut_seat.scad>;
+use <utilities.scad>
+use <compact_nut_seat.scad>
 use <endstop.scad>
 d = 0.05;
 
@@ -28,7 +28,7 @@ module foot_ground_plane(tilt=0, top=0, bottom=-999){
     //foot is usually printed tilted, pivoting around it's +y edge
     //As printed, the ground plane is the print bed, i.e. z=0
     //However, the foot is used in a different orientation, tilted
-    //around the outer edge (so the microscope sits on the outer 
+    //around the outer edge (so the microscope sits on the outer
     //edges of the feet).
     //NB top and bottom refer to distances in the model frame, so
     //they will be slightly smaller Z shifts in the printer frame.
@@ -47,7 +47,7 @@ module skew_flat(tilt, shift=false){
     // touched by the edge of the foot in the unskewed frame - and the skew will
     // move that side of the model downwards.  It's all because we rotate the
     // model about the corner, rather than the centre...
-    l = ss_outer()[1];
+    l = ss_outer().y;
     multmatrix([[1,0,0,0],
                 [0,1,0,0],
                 [0,tan(-tilt),1,shift ? l/2*tan(tilt) : 0],
@@ -59,12 +59,12 @@ module rx(){
 }
 
 module filleted_bridge(gap, roc_xy=2, roc_xz=2){
-    // This can be subtracted from a structure of width gap[0] to form
+    // This can be subtracted from a structure of width gap.x to form
     // a hole in the bottom of the object with rounded edges.
     // It's used here to smooth the band anchor to avoid damaging the bands.
-    w = gap[0];
-    b = gap[1];
-    h = gap[2];
+    w = gap.x;
+    b = gap.y;
+    h = gap.z;
     x1 = w/2 - roc_xy;
     x2 = w/2 - roc_xz;
     y1 = b/2 + roc_xy;
@@ -101,7 +101,7 @@ module foot_section(foot_angle=0,    //the angle the actuator column makes with 
 module foot_letter(letter="",actuator_tilt=0,h=10,base_cleareance=2){
     //To add a letrer to the side of the foot.
     //For letters that got below the line, base clearance may need increasing
-    y_tr = ss_outer()[1]/2-.5;
+    y_tr = ss_outer().y/2-.5;
     z_tr = -y_tr*tan(actuator_tilt)+h/2+base_cleareance;
     translate([0,y_tr*cos(actuator_tilt)-z_tr*sin(actuator_tilt),y_tr*sin(actuator_tilt)+z_tr*cos(actuator_tilt)])
     rotate([actuator_tilt,0,0])
@@ -116,18 +116,18 @@ module foot(travel=5,       // how far into the foot the actuator can move down
             bottom_tilt=0,  // the angle of the bottom of the foot
             hover=0,        // distance between the foot and the ground
             actuator_tilt=0,// the angle of the top of the foot
-            entry_w=2*column_base_radius()+3, 
+            entry_w=2*column_base_radius()+3,
             lie_flat=true,
             letter=""){
     // The feet sit at the bottoms of the actuator columns.  Their main
     // function is to anchor the Viton bands and provide downward force.  They
     // may also be two out of the three points of contact between the microscope
     // and the table (though not if you're using a stand).
-                
-    w = ss_outer()[0]; //size of the outside of the screw seat column
-    l = ss_outer()[1];
-    cw = column_core_size()[0]; //size of the inside of the screw seat column
-    cl = column_core_size()[1];
+
+    w = ss_outer().x; //size of the outside of the screw seat column
+    l = ss_outer().y;
+    cw = column_core_size().x; //size of the inside of the screw seat column
+    cl = column_core_size().y;
     wall_t = (w-cw)/2; //thickness of the wall
     h = foot_height - hover; //defined in parameters.scad, set hover=2 to not touch ground, useful for the middle foot.
     tilt = bottom_tilt - actuator_tilt; //the angle of the ground relative to the axis of the foot
@@ -153,7 +153,7 @@ module foot(travel=5,       // how far into the foot the actuator can move down
                 }
                 //we double-subtract the anchor for the bands at the bottom, so that it
                 //doesn't protrude outside the part.
-                cube([2*column_base_radius()+1.5, 999, 2*(h-travel-0.5)],center=true); 
+                cube([2*column_base_radius()+1.5, 999, 2*(h-travel-0.5)],center=true);
             }
             //cut out the core again, without tapering, in the middle (to make two lugs,
             //one on either side - rather than a ring around the top.
@@ -161,24 +161,24 @@ module foot(travel=5,       // how far into the foot the actuator can move down
                 cube([cw-3.3*2, 999, 999],center=true);
                 foot_section(actuator_tilt, 0, h=999, z=999/2+h-travel-0.5) nut_seat_void();
             }
-            
-            //cut out the shell close to the microscope centre to allow the actuator 
+
+            //cut out the shell close to the microscope centre to allow the actuator
             //to protrude below the bottom of the body
             difference(){
                 rotate([actuator_tilt,0,0]) translate([0,-l/2,h-travel-0.5]) cube([entry_w, wall_t*3, 999], center=true);
                 //NB we leave the very bottom, to keep the foot strong.
                 foot_ground_plane(tilt=0, top=h-travel-0.5);
             }
-            
-            //cut out a slot to allow bands to wrap round the outside 
+
+            //cut out a slot to allow bands to wrap round the outside
             //(this is useful if the available bands are too long)
             //NB this should match the height and width of the filleted_bridge below.
             intersection(){
-                rotate([actuator_tilt,0,0]) cube([999, 4, 999],center=true); 
+                rotate([actuator_tilt,0,0]) cube([999, 4, 999],center=true);
                 foot_ground_plane(tilt=tilt, bottom=0.5, top=(h-travel-4) - l/2*tan(tilt)-endstop_extra_ringheight); //set the top/bottom of the slot to be parallel to the print bed, and
                     //leave an 0.5mm layer on the bottom to help adhesion.
             }
-            
+
             //round the edges of the above slot, and make an actual hole (i.e. no adhesion
             //layer) for the elastic bands to sit in.  Rounded edges should help strength
             //and avoid damaging the bands.  NB width should match the band anchor above,
@@ -191,14 +191,14 @@ module foot(travel=5,       // how far into the foot the actuator can move down
 
             //Void for endstop switch
             //TODO: check properly parametrized
-            if(feet_endstops){           
+            if(feet_endstops){
                 translate([0,0.5-(h-travel)*sin(actuator_tilt),h-travel-endstop_hole_offset]) rotate([0,0,-90]) scale([1.03,1.08,1])endstop_hole(actuator_tilt);
               }
         }
         foot_letter(letter,actuator_tilt);
     }
-    
-}   
+
+}
 //foot(tilt=15);
 //foot(tilt=0,hover=2);
 module middle_foot(lie_flat=false,letter="Z"){
@@ -210,7 +210,7 @@ module outer_foot(lie_flat=false,letter=""){
 }
 
 module feet_for_printing(lie_flat=true){
-    x_tr = ss_outer()[0]+1.5;
+    x_tr = ss_outer().x+1.5;
     translate([x_tr, 0]) outer_foot(lie_flat=lie_flat,letter="X");
     middle_foot(lie_flat=lie_flat,letter="Z");
     translate([-x_tr, 0]) outer_foot(lie_flat=lie_flat,letter="Y");

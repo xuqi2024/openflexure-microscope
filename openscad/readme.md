@@ -15,15 +15,15 @@ Then for the main parts of the microscope:
 * ``gears.scad`` makes 3 gears for the actuators.
 * ``illumination_and_rear_foot.scad`` produces the illumination column, which is combined with the back foot.  It's now in three pieces, for easier printing and to allow some adjustment of the condenser position.
 * ``optics.scad`` defines, amongst other things, the optics module (the mount for the camera and objective).  This has a number of commented-out sections that must be uncommented depending on what you want to produce.  In particular, you must choose manually between an RMS objective and using a simpler lens.  You must also uncomment the correct line at the top of the file for the camera - the design will work with several camera modules defined in the ``cameras`` folder.
-* ``sample_clip_2.scad`` produces clips to hold microscope slides onto the microscope stage.  This is now set to print two, and produces an STL file that is print-ready (i.e. the clips are on their side).
-* ``sample_riser_2.scad`` makes a 10mm thick platform for a microscope slide.  You may need to use comments at the bottom of the file to print either the sample riser or the clip that holds the slide on.  A small spring is required to put the clip in the right place.
+* ``sample_clips.scad`` produces clips to hold microscope slides onto the microscope stage.  This is now set to print two, and produces an STL file that is print-ready (i.e. the clips are on their side).
+* ``slider_riser.scad`` Raises a slight just off the microscope and holds it in a reproducible place with a lever.
 * ``small_gear.scad`` makes the gear you fit on a motor if you want to motorise the microscope.  NB it only makes one gear.
 
 There are some that make tools too:
 * ``actuator_assembly_tools.scad`` defines the tool for inserting elastic bands, and the tooll for pushing nuts into nut slots.  NB there is a new double-ended band tool defined at the bottom of the file, you'll need to use the comments to either produce this or the old-style one.
-* ``tube_lens_tool.scad`` produces a ring of plastic, suitable for pushing the tube lens into its push-fit mount without damaging it.
-* ``condenser_lens_tool.scad`` produces a ring of plastic, suitable for pushing the condenser lens into its push-fit mount without damaging it.
-* ``lens_removal_tools.scad`` produces the tools needed to remove the lens from the Raspberry Pi camera module.  NB the lens removal tool is now superseded by the injection-moulded tool supplied by Raspberry Pi with each camera, but the board holder still helps to avoid damaging the flex.
+* ``lens_tool.scad`` produces a ring of plastic, suitable for pushing the tube lens or condenser lens into its push-fit mount without damaging it.
+* ``cameras/picamera_2_lens_gripper.scad`` produces the tools needed to remove the lens from the Raspberry Pi camera module.  NB the lens removal tool is now superseded by the injection-moulded tool supplied by Raspberry Pi with each camera.
+* ``cameras/picamera_2_gripper.scad`` A tool to hold the picamera2 board while emoving the lens.
 
 Other files:
 * ``baseplate.scad`` and ``baseplate_minimal.scad`` generate a baseplate, suitable for gluing onto some foam, if you want to mount the microscope in a box.  It's still work in progress...

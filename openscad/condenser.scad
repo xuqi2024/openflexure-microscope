@@ -1,5 +1,5 @@
-use <./illumination.scad>;
-include <./microscope_parameters.scad>;
+use <./illumination.scad>
+include <./microscope_parameters.scad>
 
 difference(){
     rotate([-15,0,0]) tall_condenser();

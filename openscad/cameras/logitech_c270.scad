@@ -18,7 +18,7 @@
 ******************************************************************/
 
 
-use <../utilities.scad>;
+use <../utilities.scad>
 
 
 
@@ -31,7 +31,7 @@ bottom = c270_camera_mount_height() * -1;
 function c270_camera_sensor_height() = 0.2; //Height of the sensor above the PCB
 
 module mounting_hole(){
-    translate([0,0,-5]) cylinder(r=0.8*1.2,h=999,$fn=12); 
+    translate([0,0,-5]) cylinder(r=0.8*1.2,h=999,$fn=12);
     translate([0,0,-0.5]) cylinder(r1=0.8*1.2,h=1,r2=0.8*1.2+1,$fn=12);
 }
 
@@ -48,8 +48,8 @@ module C270(beam_r=5, beam_h=6){
         }
 
         //mounting holes
-        reflect([1,0,0]) translate([mounting_hole_x,0,0]) mounting_hole(); 
-        
+        reflect([1,0,0]) translate([mounting_hole_x,0,0]) mounting_hole();
+
         //clearance for PCB
         translate([0,0,0]){
             hull(){
@@ -70,7 +70,7 @@ module C270(beam_r=5, beam_h=6){
             }
             translate([-6,42.3,0]) mounting_hole();
         }
-        
+
         //exit for cable
         translate([4,20,0]) rotate([-90,0,0]) cylinder(r=3,h=99);
     }

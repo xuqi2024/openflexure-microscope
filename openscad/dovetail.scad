@@ -1,6 +1,6 @@
 /******************************************************************
 *                                                                 *
-* OpenFlexure Microscope: Illumination arm                        *
+* OpenFlexure Microscope: Dovetail                                *
 *                                                                 *
 * This is part of the OpenFlexure microscope, an open-source      *
 * microscope and 3-axis translation stage.  It gets really good   *
@@ -15,7 +15,7 @@
 *                                                                 *
 ******************************************************************/
 
-use <utilities.scad>;
+use <utilities.scad>
 $fn=16;
 d=0.05;
 
@@ -40,30 +40,30 @@ module dovetail_clip_cutout(size,dt=1.5,t=2,slope_front=0,solid_bottom=0){
     // want to make it tighter, either by increasing dt slightly or by
     // decreasing the size slightly (in both cases, of this, the female
     // dovetail).
-    // NB that it starts at z=-d and stops at z=size[2]+d to make
+    // NB that it starts at z=-d and stops at z=size.z+d to make
     // it easy to subtract from a block.
-    
+
     cutout_bottom = solid_bottom > 0 ? solid_bottom+d : -d;
-    inner_w = size[0] - 2*t; // width between arms
-    
-    hull() reflect([1,0,0]) translate([-size[0]/2+t,0,cutout_bottom]){
-        translate([dt,size[1]-dt,0]) cylinder(r=dt,h=size[2]+2*d,$fn=16);
-        translate([0,dt,0]) rotate(-45) cube([dt*2,d,size[2]+2*d]);
+    inner_w = size.x - 2*t; // width between arms
+
+    hull() reflect([1,0,0]) translate([-size.x/2+t,0,cutout_bottom]){
+        translate([dt,size.y-dt,0]) cylinder(r=dt,h=size.z+2*d,$fn=16);
+        translate([0,dt,0]) rotate(-45) cube([dt*2,d,size.z+2*d]);
     }
-    
+
     if(slope_front>0){
         //sloped bottom to improve quality of the dovetail clip and
         //allow insertion of the male dovetail from the bottom
         rotate([45,0,0]) cube([999,1,1]*sqrt(2)*slope_front,center=true); //slope up arms
         //also, slope in the dovetail tooth to avoid marring at the bottom:
-        hull() reflect([0,0,1]) translate([0,0,slope_front]) 
+        hull() reflect([0,0,1]) translate([0,0,slope_front])
             rotate([0,45,0]) cube([(inner_w)/sqrt(2),dt*2,inner_w/sqrt(2)],center=true);
     }
 }
 module dovetail_clip(size=[10,2,10],dt=1.5,t=2,back_t=0,slope_front=0,solid_bottom=0){
     // This forms a clip that will grip a dovetail, with the
     // contact between the m/f parts in the y=0 plane.
-    // This is the female part, and it is centred in X and 
+    // This is the female part, and it is centred in X and
     // extends into +y, +z.
     // The outer dimensions of the clip are given by size.
     // dt sets the size of the clip's teeth, and t is the
@@ -71,13 +71,13 @@ module dovetail_clip(size=[10,2,10],dt=1.5,t=2,back_t=0,slope_front=0,solid_bott
     // should be attached to a solid surface.  Specifying back_t>0
     // will add material at the back (by shortening the arms).
     // slope_front will add a sloped section to the front of the arms.
-    // this can improve the quality of the bottom of the dovetail 
+    // this can improve the quality of the bottom of the dovetail
     // (good if you're inserting from the bottom)
     // solid_bottom will join the arms together at the bottom, which
     // can help with bed adhesion.
     // see dovetail_clip_cutout - most of the options are just passed through.
 	difference(){
-		translate([-size[0]/2,0,0]) cube(size);
+		translate([-size.x/2,0,0]) cube(size);
 		dovetail_clip_cutout(size-[0,back_t+d,0],dt=dt,t=t,slope_front=slope_front,solid_bottom=solid_bottom);
 	}
 }
@@ -88,7 +88,7 @@ module dovetail_plug(corner_x, r, dt, zx_profile=[[0,0],[10,0],[12,-1]]){
     // zx_profile is a list of 2-element vectors, each of which defines
     //   a point in Z-X space, i.e. first element is height and second
     //   is the shift in the corner position.  For example,
-    //   zx_profile=[[0,0],[10,0],[12,-1]] creates a plug 12mm+d high 
+    //   zx_profile=[[0,0],[10,0],[12,-1]] creates a plug 12mm+d high
     //   where the top 2mm are sloped at 60 degrees.  NB the use of d.
     union(){
         // sorry for the copy-paste code; I'm fairly sure it's less readable
@@ -119,10 +119,10 @@ module dovetail_m(size=[10,2,10],dt=1.5,t=2,top_taper=1,bottom_taper=0.5,waist=0
     // The width of the box should be the same as the width of the
     // female dovetail clip.  The size of the dovetail is set by dt.
     // t sets the thickness of the female dovetail arms; the dovetail
-    // is actually size[0]-2*t wide.
+    // is actually size.x-2*t wide.
     r=r; //radius of curvature - something around nozzle width is good.
-    w=size[0]-2*t; //width of dovetail
-    h=size[2]; //height
+    w=size.x-2*t; //width of dovetail
+    h=size.z; //height
     corner=[w/2-dt,0,0]; //location of the pointy bit of the dovetail
     difference(){
 		union(){
@@ -130,7 +130,7 @@ module dovetail_m(size=[10,2,10],dt=1.5,t=2,top_taper=1,bottom_taper=0.5,waist=0
             //dovetail's neck (as far as y=0)
 			sequential_hull(){
                 // start with the cube that the dovetail attaches to
-				translate([-w/2-t,-size[1],0]) cube([w+2*t,size[1]-r,h]);
+				translate([-w/2-t,-size.y,0]) cube([w+2*t,size.y-r,h]);
                 // then add shapes that take in the centres of the cylinders
                 // from the next step.  This joins together the nicely-rounded
                 // contact points, such that when we subtract out the cylinders
@@ -158,8 +158,8 @@ module dovetail_m(size=[10,2,10],dt=1.5,t=2,top_taper=1,bottom_taper=0.5,waist=0
                                   [h/2+waist/2,0],
                                   [h-top_taper,0],
                                   [h-d,-top_taper/2]];
-                    dovetail_plug(corner[0], r, dt, zx_profile);
-                        
+                    dovetail_plug(corner.x, r, dt, zx_profile);
+
 				}
 			}
 		}
@@ -181,22 +181,22 @@ module dovetail_clip_y(size, dt=1.5, t=2, taper=0, endstop=false){
     // endstop_w, endstop_t set the width and thickness (in y and z) of the link
     // taper optionally feathers the dovetail onto an edge
     // the dovetail extends along the +y direction from y=0
-    h = size[1];
+    h = size.y;
     ew = 0;//endstop ? endstop_w : 0;
-    reflect([1,0,0]) translate([-size[0]/2,0,0]) mirror([0,0,1]) sequential_hull(){
+    reflect([1,0,0]) translate([-size.x/2,0,0]) mirror([0,0,1]) sequential_hull(){
         translate([0,dt,0]) cube([t+dt,h-2*dt,d]);
         cube([t,h,dt]);
         translate([0,-ew,0]) cube([t,h+ew,dt]);
-        translate([0,-taper,size[2]-d]) cube([t,h+2*taper,d]);
+        translate([0,-taper,size.z-d]) cube([t,h+2*taper,d]);
     }
     if(endstop){
         difference(){
             hull(){ // make a bridge between the lower tapers
-                translate([0,-taper/2,-size[2]+d]) cube([size[0],taper,2*d],center=true);
-                translate([0,0,-d]) cube([size[0],d,2*d],center=true);
+                translate([0,-taper/2,-size.z+d]) cube([size.x,taper,2*d],center=true);
+                translate([0,0,-d]) cube([size.x,d,2*d],center=true);
             }
-            translate([0,0,-size[2]+0.5+999/2]) cube([(size[0]-2*t-2*dt)-2,999,999],center=true); //cut the middle
-            translate([0,-taper/2,-size[2]]) cube([size[0],taper-1.5,0.5*2+d],center=true);
+            translate([0,0,-size.z+0.5+999/2]) cube([(size.x-2*t-2*dt)-2,999,999],center=true); //cut the middle
+            translate([0,-taper/2,-size.z]) cube([size.x,taper-1.5,0.5*2+d],center=true);
         }
     }
 }
