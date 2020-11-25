@@ -137,29 +137,25 @@ module camera_mount_body(
     union(){
         difference(){
             // This is the main body of the mount
-            sequential_hull(){
-                rotate(camera_mount_rotation)translate([0,0,camera_mount_top_z]) camera_mount_top_slice();
-                hull(){
-                    translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=tiny();
-                    if(dovetail) translate([0,0,dt_bottom]) objective_fitting_base(params);
-                    if(fluorescence){ 
-                       rotate(fl_cube_rotation){}
-                        fl_cube_casing();
-                        fl_screw_holes(d = 5, h =10);
+            hull(){
+                rotate(camera_mount_rotation)translate([0,0,camera_mount_top_z]) camera_mount_top_slice(); //Where the tube meets the camera
+                
+                if(fluorescence){ 
+                    rotate(fl_cube_rotation){hull(){
+                        fl_cube_casing(); //the box to fit the fl cube in
+                        fl_screw_holes(d = 4, h =8); //the mounts for the fl cube screw holes
+                      }
                     }
                 }
-                union(){
-                    if(fluorescence){ 
-                        rotate(fl_cube_rotation){
-                            fl_cube_casing();
-                            translate([0,-1,0])fl_screw_holes(d = 4, h =10);
-                        }
-
-                    }
-
-                    translate([0,0,body_top]) cylinder(r=body_r,h=tiny());
-                    if(dovetail) translate([0,0,dt_top]) objective_fitting_base(params);
+                
+                translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=tiny()); //the bottom of the tube
+                translate([0,0,body_top]) cylinder(r=body_r,h=tiny()); //the top of the tube
+                if(dovetail){
+                    translate([0,0,dt_bottom]) objective_fitting_base(); //the bottom of the dovetail
+                    translate([0,0,dt_top]) objective_fitting_base(); //the top of the dovetail
                 }
+
+
                 // allow for extra coordinates above this, if wanted.
                 // this should really be done with a for loop, but
                 // that breaks the sequential_hull, hence the kludge.
