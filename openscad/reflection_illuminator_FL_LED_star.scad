@@ -69,13 +69,10 @@ module lens_holder(led_d=3.5){
             }
             cylinder(r=base_r, h=lens_z-pedestal_h+d);
             //mounts for screws for LED star
-        for (i = [0:1]){
-            rotate(180*i){
-            translate([LEDstar_r,0,0])
-        {
-            cylinder(r=3,h =lens_z-pedestal_h+d);
-        }
-    
+            translate([0,-LEDstar_r,0]){
+                cylinder(r=3,h =lens_z-pedestal_h+d);
+            }
+
         }
         }
 }
