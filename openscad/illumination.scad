@@ -40,7 +40,7 @@ module each_illumination_screw(middle=true){
 module each_illumination_corner(middle=true){
     // A transform to repeat objects at each corner of the illumination mount
     corners = [right_illumination_screw_pos(), left_illumination_screw_pos(), illumination_back_corner_pos()];
-    for(pos=corner){
+    for(pos=corners){
         translate(pos){
             children();
         }
