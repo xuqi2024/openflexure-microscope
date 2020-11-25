@@ -48,7 +48,7 @@ module fl_cube_mount(beam_d=5){
     }
 }
 
-module lens_holder(led_d=3.5){
+module lens_holder(beam_d=3.5){
     // A simple one-lens condenser, re-imaging the LED onto the sample.
     led_h = 2;              //distance from bottom to the top of the LED
     aperture_h = 2;
@@ -59,18 +59,19 @@ module lens_holder(led_d=3.5){
     pedestal_h = 3;
     lens_r = 13/2;
     lens_t = 1;
-    led_r = led_d/2;
-
+    led_r = beam_d/2;
+    w= illuminator_width();
     difference(){
         union(){
             //lens gripper to hold the plastic asphere
             translate([0,0,lens_z-pedestal_h]){
                 // gripper
-                trylinder_gripper(inner_r=lens_r, grip_h=pedestal_h + lens_t/3,h=pedestal_h+lens_t+1.5, base_r=base_r, flare=0.5);
+                trylinder_gripper(inner_r=lens_r, grip_h=pedestal_h + lens_t/3,h=pedestal_h+lens_t+1.5, LEDstar_r=LEDstar_r, flare=0.5);
                 // pedestal to raise the tube lens up within the gripper
                 cylinder(r=lens_r-0.5,h=pedestal_h);
             }
-            cylinder(r=base_r, h=lens_z-pedestal_h+d);
+            cylinder(r=LEDstar_r, h=lens_z-pedestal_h+d);
+            translate([-w/2,0,0])cube([w,LEDstar_r+extra_space,lens_z-pedestal_h]);
             //mounts for screws for LED star
             translate([0,-LEDstar_r,0]){
                 cylinder(r=3,h =lens_z-pedestal_h+d);
@@ -117,7 +118,7 @@ module lens_holder(led_d=3.5){
     
 }
 
-module field_stop(aperture=[3,4], illuminator_d=2*base_r, h=5){
+module field_stop(aperture=[3,4], illuminator_d=2*LEDstar_r, h=5){
     // a cylindrical plug with a rectangular aperture in it
     difference(){
         cylinder(d=illuminator_d, h=h);
