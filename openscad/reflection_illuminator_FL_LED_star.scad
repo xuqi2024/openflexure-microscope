@@ -187,24 +187,17 @@ module excitation_slot(){
 
 // Geometry of illuminator holder
 module illuminator_holder(){
-    illuminator_d = 2*base_r; // Illuminator diameter
-    h = fl_cube_width() - 1; // Illuminator holder height
     w = illuminator_width(); // Illuminator holder width
-    
-    intersection(){
     difference(){
+        union(){
             fl_cube_mount();
-        //translate([0,13,0]) rotate([-90,0,0]) cylinder(h=999,r=999,$fn=5);
-        
-    //grooves to fit screw segments of illuminator
-    for (i = [0:1]){
-                        translate([0,16,h/2])rotate([0,180*i,0]) translate([0,0,LEDstar_r]) rotate([-90,0,0])
-                cylinder(r=3,h =40);   
+            slip_plate(w);
         }
         excitation_slot();
-slip_plate(w);
+    }
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 //translate([30,30,0]) rotate(90) illuminator_holder();
@@ -214,6 +207,9 @@ translate([30,30,0]) rotate(90) illuminator_holder();
 =======
 translate([30,30,(base_r-fl_cube_w/2)+2]) rotate(90) illuminator_holder();
 >>>>>>> ead0158... Add screw holes for attachment to optics unit
+=======
+translate([30,30,slip_plate_thickness]) rotate(90) illuminator_holder();
+>>>>>>> 751c3ac... Tidied main module
 //translate([-30,0,0]) field_stop();
 lens_holder();
 
