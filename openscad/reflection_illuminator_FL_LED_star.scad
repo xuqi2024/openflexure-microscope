@@ -3,7 +3,6 @@ use <./optics.scad>;
 include <./microscope_parameters.scad>;
 use <./dovetail.scad>;
 
-base_r = 20/2; // must be >= lens_r+1
 LEDstar_r = 19/2;
 extra_space = 2.5;
 slip_plate_thickness=2;
@@ -152,15 +151,11 @@ module slip_plate(w){
                                         cylinder(r=2, h= 2);
                                 }
                             }   
-                        }   
-                            }   
                             translate([0,1,2]){
                                 cube([4,2,4], center=true);
                             }    
                         }
                     }
-                }
-                        }    
                 }
                 translate([-illuminator_width()/2-4,0,0])cube([illuminator_width()+8,2,top_filter_cube+slip_plate_thickness]);
             }
