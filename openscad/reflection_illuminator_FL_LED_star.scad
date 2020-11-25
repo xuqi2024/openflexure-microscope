@@ -94,12 +94,11 @@ module lens_holder(led_d=3.5){
         cylinder(r=led_r+0.5, h=1.5, center=true);
         
         //screws for LED star
-        for (i = [0:1]){
-            rotate(180*i){
-            translate([LEDstar_r,0,0])
-        {
-            trylinder_selftap(nominal_d = 3, h = lens_z-pedestal_h - 1);
+
+        translate([LEDstar_r,0,0]){
+            rotate([0,0,30])trylinder_selftap(nominal_d = 3, h = lens_z-pedestal_h - 1);
         }
+
         //screws for slip plate
         translate([0,base_r,(lens_z-pedestal_h)/2])
         rotate([90,0,0])
@@ -182,15 +181,7 @@ module illuminator_holder(){
     
     intersection(){
     difference(){
-<<<<<<< HEAD
-        union(){
-            fl_led_mount();
-            translate([-w/2,10.5,0]) cube([w,40,h]); //80 was 40 in the one I made earlier...
-                    
-    }
-=======
             fl_cube_mount();
->>>>>>> e2ba5f1... Simplify and improve fl cube mount
         //translate([0,13,0]) rotate([-90,0,0]) cylinder(h=999,r=999,$fn=5);
         
     //grooves to fit screw segments of illuminator
