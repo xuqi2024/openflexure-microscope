@@ -100,12 +100,19 @@ module lens_holder(led_d=3.5){
         }
 
         //screws for slip plate
-        translate([0,base_r,(lens_z-pedestal_h)/2])
+        translate([0,LEDstar_r+extra_space+0.1,(lens_z-pedestal_h)/2])
         rotate([90,0,0])
         reflect(){
-            translate([w/2-2,0,0])rotate([0,0,-30])trylinder_selftap(nominal_d = 2.5, h = 6);
+            translate([w/2-slip_plate_edge_slot,0,0])rotate([0,0,-30])trylinder_selftap(nominal_d = 2.5, h = 6);
         }
-    }
+
+        //nut trap for slip plate screws
+        reflect([1,0,0]){
+            hull(){
+                translate([w/2-4,LEDstar_r+extra_space-3,(lens_z-pedestal_h)/2])rotate([90,0,0])rotate([0,0,0])cylinder(d = 5.8, h = 2.4, $fn=6);
+                translate([w/2+4,LEDstar_r+extra_space-3,(lens_z-pedestal_h)/2])rotate([90,0,0])rotate([0,0,0])cylinder(d = 5.8, h = 2.4, $fn=6);
+            }
+        }
     }
     
 }
