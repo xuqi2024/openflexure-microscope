@@ -96,7 +96,7 @@ lens_assembly_z = 30;
 dt_clip = [front_dovetail_w, 16, lens_assembly_z]; //size of the dovetail clip
 dovetail_end_y = front_dovetail_y-dt_clip.y-4;
 
-module tall_condenser(bottom=true){
+module tall_condenser_new(bottom=true){
 
     // mount for the dovetail clip
     translate([-dt_clip.x/2, dovetail_end_y, 0])
@@ -122,12 +122,12 @@ module tall_condenser(bottom=true){
     }
 
     bottom_height = 10; // the bottom is an extra bit that is sliced off when the condenser is rotated and cut before printing
-    led_countersink = 2;// the led brim rests against the countersink
-    led_height = 9;     // how much space is reserved for the body of the led
+    led_countersink = 1;// the led brim rests against the countersink
+    led_height = 8;     // how much space is reserved for the body of the led
     difference() {
         hull() reflect([1, 0, 0]) {
             translate([0, 0, -bottom_height])
-                cylinder(r=base_r, h=lens_assembly_z+bottom_height);
+                cylinder(r=base_r, h=lens_assembly_z+bottom_height+tiny());
             translate([-dt_clip.x/2, dovetail_end_y, 0])
                 cube([dt_clip.x, 2, lens_assembly_z]);
         }
@@ -137,15 +137,13 @@ module tall_condenser(bottom=true){
             lighttrap_cylinder(r1=led_r+1.5, r2=aperture_r, h=lens_assembly_z-lighttrap_offset+tiny());
 
         // pressfit hole for the LED
-        translate([0, 0, -bottom_height]) {
-            deformable_hole_trylinder(led_r, led_r+0.7, h=lighttrap_offset+bottom_height);
-        }
+        deformable_hole_trylinder(led_r, led_r+0.7, h=2*bottom_height+tiny(), center=true);
 
         // cutout to allow the led to be pushed down to the pressfit hole
-        translate([0, 0, led_countersink])
+        translate([0, 0, led_countersink-tiny()])
             cylinder(r1=led_r+1, r2=led_r, h=2);
-        translate([0, 0, -bottom_height-tiny()])
-            cylinder(r=led_r+1, h=bottom_height+led_countersink+tiny());
+        translate([0, 0, -led_countersink])
+            cylinder(r=led_r+1, h=2*led_countersink+tiny());
      }
 }
 
