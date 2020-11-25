@@ -47,10 +47,6 @@ module each_illumination_corner(middle=true){
     }
 }
 
-module cyl_slot(r=1, h=1, dy=2, center=false){
-    hull() repeat([0,dy,0],2,center=true) cylinder(r=r, h=h, center=center);
-}
-
 /* THE ILLUMINATION DOVETAIL */
 //Note that this is not built from here. it is built in illumination_dovetail.scad
 
