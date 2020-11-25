@@ -90,43 +90,34 @@ module illumination_dovetail(){
 //TODO proect these somehow.
 /*   THE CONDENSER **/
 
+// This is the difference between the lens radius and the apertur radius
+// used in both condenser_lens_gripper and condenser_cutout
+_aperture_difference = 1.1;
 
-// parameters of the lens
-pedestal_h = 5.5;
-lens_r = 13/2; // for flanged plastic condenser
-//lens_r = 16/2; // for 16mm plastic condenser
-aperture_r = lens_r-1.1;
-lens_t = 1;
-base_r = lens_r+2;
-
-lens_assembly_z = 30;
-dt_clip = [front_dovetail_w, 16, lens_assembly_z]; //size of the dovetail clip
-dovetail_end_y = front_dovetail_y-dt_clip.y-4;
-
-
-module condenser_lens_gripper(){
+module condenser_lens_gripper(lens_r, lens_t, base_r){
     // the lens holder on the end or the condenser
+    pedestal_h = 5.5;
     h = pedestal_h+lens_t+1.5;
-    translate([0, 0, lens_assembly_z]) {
-        difference() {
-            union() {
-                trylinder_gripper(inner_r=lens_r,
-                                  grip_h=pedestal_h + lens_t/3,
-                                  h=h,
-                                  base_r=base_r,
-                                  flare=0.5);
-                // pedestal to raise the lens up within the gripper
-                cylinder(r=aperture_r+0.8, h=pedestal_h);
-            }
-            // hole through pedestal for the beam passing through the lens
-            translate([0, 0, -tiny()]){
-                cylinder(r=aperture_r, h=h);
-            }
+    aperture_r = lens_r-_aperture_difference;
+
+    difference() {
+        union() {
+            trylinder_gripper(inner_r=lens_r,
+                                grip_h=pedestal_h + lens_t/3,
+                                h=h,
+                                base_r=base_r,
+                                flare=0.5);
+            // pedestal to raise the lens up within the gripper
+            cylinder(r=aperture_r+0.8, h=pedestal_h);
+        }
+        // hole through pedestal for the beam passing through the lens
+        translate([0, 0, -tiny()]){
+            cylinder(r=aperture_r, h=h);
         }
     }
 }
 
-module condenser_cutout(bottom_height=10){
+module condenser_cutout(lens_r, lens_assembly_z, bottom_height=10){
     // This is the cutout for the beam to pass through the condenser. It contains a light trap
     // and a pressfit hole for the LED. In thr reference frame module the LED would be pointing upwards.
     // Not that the LED countersink is at z=0 because the `tall_condenser` module that uses this
@@ -137,10 +128,11 @@ module condenser_cutout(bottom_height=10){
     // the led brim rests against the countersink
     led_countersink = 1;
     // how much space is reserved for the body of the led
-    led_height = 8;     
+    led_height = 8;
     lighttrap_offset = led_height+led_countersink;
     lighttrap_h = lens_assembly_z-lighttrap_offset+tiny();
     led_trilinder_h = bottom_height+lighttrap_offset+2*tiny();
+    aperture_r = lens_r-_aperture_difference;
 
     //Light trap to reduce stray reflectins
     translate([0, 0, lighttrap_offset]){
@@ -161,20 +153,24 @@ module condenser_cutout(bottom_height=10){
     }
 }
 
-module tall_condenser(bottom=true){
+module tall_condenser(lens_d, lens_t, lens_assembly_z){
     // Note that this is the shape before it is is rotated, and cut for printing.
     // This module is useful because the optical path is vertical
     // In this module the lens is at the top of the structure.
     // The the back of the LED hole is at z=0
 
+    lens_r = lens_d/2;
+    base_r = lens_r+2;
      // the bottom is an extra bit that is sliced off when the condenser is rotated and cut before printing
-    bottom_height = 10; 
+    bottom_height = 10;
+    dt_clip = [front_dovetail_w, 16, lens_assembly_z]; //size of the dovetail clip
+    dovetail_end_y = front_dovetail_y-dt_clip.y-4;
 
     // the dovetail clip
     translate([0,front_dovetail_y, 0]){
         mirror([0,1,0]){
             //Note: the solid bottom is a roof not a bottom when the STL is in the assembly orientation
-            dovetail_clip(dt_clip, slope_front=2, solid_bottom=bottom ? 0.2 : 0);
+            dovetail_clip(dt_clip, slope_front=2);
         }
     }
 
@@ -182,7 +178,7 @@ module tall_condenser(bottom=true){
     translate([-dt_clip.x/2, dovetail_end_y, 0]){
         cube([dt_clip.x, 4, dt_clip.z]);
     }
-    
+
     difference() {
         //this hull is the outer shape of the body of the condenser
         hull() reflect([1, 0, 0]) {
@@ -192,17 +188,20 @@ module tall_condenser(bottom=true){
                 cube([dt_clip.x, 2, lens_assembly_z]);
         }
 
-        condenser_cutout(bottom_height=bottom_height);
+        condenser_cutout(lens_r, lens_assembly_z, bottom_height=bottom_height);
      }
      //finally add the lens gripper
-     condenser_lens_gripper();
+     translate([0, 0, lens_assembly_z]){
+        condenser_lens_gripper(lens_r, lens_t, base_r);
+     }
 }
 
-module condenser(){
+//TODO the lens_assembly_z should be adjusted to a focal length parameter
+module condenser(lens_d=13, lens_t=1, lens_assembly_z= 30){
     //This is the condenser that is printed.
     difference(){
         rotate([-15,0,0]){
-            tall_condenser();
+            tall_condenser(lens_d, lens_t, lens_assembly_z);
         }
         mirror([0,0,1]){
             cylinder(r=999,h=999,$fn=4);
