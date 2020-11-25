@@ -179,6 +179,12 @@ module slip_plate(w){
     }
 }
 
+module excitation_slot(){
+    excitation_width = 13;
+    excitation_offset = 2;
+    translate([-excitation_width/2,back_y + excitation_thickness/2-1,-slip_plate_thickness-d])cube([excitation_width,excitation_thickness,top_filter_cube+ fl_cube_w-excitation_offset]);
+}
+
 // Geometry of illuminator holder
 module illuminator_holder(){
     illuminator_d = 2*base_r; // Illuminator diameter
@@ -195,22 +201,8 @@ module illuminator_holder(){
                         translate([0,16,h/2])rotate([0,180*i,0]) translate([0,0,LEDstar_r]) rotate([-90,0,0])
                 cylinder(r=3,h =40);   
         }
-        //bodge to remove top parts when base_r = 19/2
-        //translate([-7.5,15,h-2])cube([15,40,3]);
-        // grip the illuminator
-        translate([0,16, h/2]) rotate([-90,0,0]) cylinder(h=999,d=illuminator_d);
-        //translate([-w/2+2,15,-1]) cube([w-4, 4+d,999]); // cut out flexible bits
-        //translate([-w/2+5,19,-1]) cube([w-5*2, 999,999]); // cut out flexible bits
-        // cable tie grooves to squeeze it
-        repeat([0,12,0],4) translate([0,22,h/2]) rotate([-90,0,0]) difference(){
-            cylinder(d=999,h=4.5,$fn=5);
-          cylinder(d=illuminator_d + 2*3, h=999, center=true);
-        }
-        // beam
-        translate([0,0,h/2]) rotate([-90,0,0]) cylinder(d=7, h=999, center=true);
-    }
-    translate([0,0,h/2]) rotate([-90,0,0]) cylinder(d=base_r*2+2, h=999, center=true);
-}
+        excitation_slot();
+slip_plate(w);
 }
 
 <<<<<<< HEAD
