@@ -96,7 +96,7 @@ lens_assembly_z = 30;
 dt_clip = [front_dovetail_w, 16, lens_assembly_z]; //size of the dovetail clip
 dovetail_end_y = front_dovetail_y-dt_clip.y-4;
 
-module tall_condenser_new(bottom=true){
+module tall_condenser(bottom=true){
 
     // mount for the dovetail clip
     translate([-dt_clip.x/2, dovetail_end_y, 0])
