@@ -10,6 +10,8 @@ scad-lib-tests:
     image: ubuntu:18.04
 
     before_script:
+      - apt-get update -qq
+      - apt-get -y -qq install software-properties-common apt-transport-https
       - add-apt-repository -y ppa:openscad/releases
       - apt-get update -qq
       - apt-get install -y -qq openscad

@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 '''
 Using Python's unittest to test the scad dictionaries!
 '''
