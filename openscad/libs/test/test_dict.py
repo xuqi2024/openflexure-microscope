@@ -275,11 +275,77 @@ class TestIsUnique6(BaseTestScadDict):
                '''
         self.run_scad(scad)
 
+class TestIsPairs1(BaseTestScadDict):
+    '''
+    Test _is_pairs asserts only returns true for a lists lists where each
+    sublist is of length two. Check valid pair'''
+    def test(self):
+        '''Must be the only test in the class!'''
+        scad = '''
+               val = _is_pairs([[1,2],
+                                [3,4],
+                                ["a",undef],
+                                [[2],true],
+                                [false,"I don't enjoy writing unit tests"]]);
+               assert(val==true);
+               '''
+        self.run_scad(scad)
+
+class TestIsPairs2(BaseTestScadDict):
+    '''
+    Test _is_pairs asserts only returns true for a lists lists where each
+    sublist is of length two. Check where one element is a string of length 2'''
+    def test(self):
+        '''Must be the only test in the class!'''
+        scad = '''
+               val = _is_pairs(["ab",
+                                [3,4],
+                                ["a",undef],
+                                [[2],true],
+                                [false,"I don't enjoy writing unit tests"]]);
+               assert(val==false);
+               '''
+        self.run_scad(scad)
+
+class TestIsPairs3(BaseTestScadDict):
+    '''
+    Test _is_pairs asserts only returns true for a lists lists where each
+    sublist is of length two. Check where one sublist has length 1'''
+    def test(self):
+        '''Must be the only test in the class!'''
+        scad = '''
+               val = _is_pairs([[1],
+                                [3,4],
+                                ["a",undef],
+                                [[2],true],
+                                [false,"I don't enjoy writing unit tests"]]);
+               assert(val==false);
+               '''
+        self.run_scad(scad)
+
+class TestIsPairs4(BaseTestScadDict):
+    '''
+    Test _is_pairs asserts only returns true for a lists lists where each
+    sublist is of length two. Check where one sublist has length 3'''
+    def test(self):
+        '''Must be the only test in the class!'''
+        scad = '''
+               val = _is_pairs([[1,2,3],
+                                [3,4],
+                                ["a",undef],
+                                [[2],true],
+                                [false,"I don't enjoy writing unit tests"]]);
+               assert(val==false);
+               '''
+        self.run_scad(scad)
+
 class TestIsListOfStrings1(BaseTestScadDict):
     '''
-    Test _is_list_of_strings returns tru for list of strings
+    Test _is_list_of_strings returns true for list of strings
     No checking of bad types as these are handled by valid_dict first
-    test there'''
+    test there:
+    Check valid is true
+    '''
     def test(self):
         '''Must be the only test in the class!'''
         scad = '''
@@ -292,7 +358,9 @@ class TestIsListOfStrings2(BaseTestScadDict):
     '''
     Test _is_list_of_strings returns false with empty string in list
     No checking of bad types as these are handled by valid_dict first
-    test there'''
+    test there
+    Must return false for empty string!
+    '''
     def test(self):
         '''Must be the only test in the class!'''
         scad = '''
@@ -305,7 +373,9 @@ class TestIsListOfStrings3(BaseTestScadDict):
     '''
     Test _is_list_of_strings returns false with one string being a sublist
     No checking of bad types as these are handled by valid_dict first
-    test there'''
+    test there
+    Must return false if one of the strings is a sub list
+    '''
     def test(self):
         '''Must be the only test in the class!'''
         scad = '''
@@ -314,7 +384,103 @@ class TestIsListOfStrings3(BaseTestScadDict):
                '''
         self.run_scad(scad)
 
-class TestLookup(BaseTestScadDict):
+class TestKeyList(BaseTestScadDict):
+    '''
+    Test _keylist returns the correct keys
+    '''
+    def test(self):
+        '''Must be the only test in the class!'''
+        scad = '''
+               dict = [["a",3],
+                       ["ab", 22],
+                       ["raisin", 99],
+                       ["great", 4]];
+               keys = ["a", "ab", "raisin", "great"];
+               assert(_keylist(dict) == keys);
+               '''
+        self.run_scad(scad)
+
+class TestValidDict1(BaseTestScadDict):
+    """
+    Check validation passes on a valid dictionary
+    """
+    def test(self):
+        '''Must be the only test in the class!'''
+        scad = '''
+               dict = [["a",3],
+                       ["ab", 22],
+                       ["raisin", 99],
+                       ["great", 4]];
+               val = valid_dict(dict);
+               assert(val==true);
+               '''
+        self.run_scad(scad)
+
+class TestValidDict2(BaseTestScadDict):
+    """
+    Validation fails when there is a key clash in a dictionary
+    """
+    def test(self):
+        '''Must be the only test in the class!'''
+        scad = '''
+               dict = [["a",3],
+                       ["a", 22],
+                       ["raisin", 99],
+                       ["great", 4]];
+               val = valid_dict(dict);
+               assert(val==false);
+               '''
+        self.run_scad(scad)
+
+class TestValidDict3(BaseTestScadDict):
+    """
+    Validation fails when not all key value pairs are pairs
+    """
+    def test(self):
+        '''Must be the only test in the class!'''
+        scad = '''
+               dict = [["a"],
+                       ["ab", 22],
+                       ["raisin", 99],
+                       ["great", 4]];
+               val = valid_dict(dict);
+               assert(val==false);
+               '''
+        self.run_scad(scad)
+
+class TestValidDict4(BaseTestScadDict):
+    """
+    Validation fails when not all keys are strings
+    """
+    def test(self):
+        '''Must be the only test in the class!'''
+        scad = '''
+               dict = [["a",3],
+                       [true, 22],
+                       ["raisin", 99],
+                       ["great", 4]];
+               val = valid_dict(dict);
+               assert(val==false);
+               '''
+        self.run_scad(scad)
+
+class TestValidDict5(BaseTestScadDict):
+    """
+    Validation fails when a key is an empty string
+    """
+    def test(self):
+        '''Must be the only test in the class!'''
+        scad = '''
+               dict = [["a",3],
+                       ["", 22],
+                       ["raisin", 99],
+                       ["great", 4]];
+               val = valid_dict(dict);
+               assert(val==false);
+               '''
+        self.run_scad(scad)
+
+class TestLookup1(BaseTestScadDict):
     """
     Test lookup gives the correct value with a valid dictionary
     """
@@ -331,9 +497,9 @@ class TestLookup(BaseTestScadDict):
                '''
         self.run_scad(scad)
 
-class TestKeyClash(BaseTestScadDict):
+class TestKeyLookup2(BaseTestScadDict):
     """
-    Check openscad throws and error when there is a key clash in a
+    Check openscad throws and error on lookup when there is a key clash in a
     dictionary
     """
     def test(self):
@@ -346,7 +512,6 @@ class TestKeyClash(BaseTestScadDict):
                val = key_lookup("raisin", dict);
                '''
         self.run_scad(scad, has_errors=True)
-
 
 def warns(output):
     """
