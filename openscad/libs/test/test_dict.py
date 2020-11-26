@@ -99,6 +99,7 @@ class TestIsInNum1(BaseTestScadDict):
                '''
         self.run_scad(scad)
 
+
 class TestIsInNum2(BaseTestScadDict):
     '''
     Test _is_in_str returns false with space at end of one option in list
@@ -117,12 +118,159 @@ class TestIsInNum3(BaseTestScadDict):
     Test _is_in_str returns false even when the numbers are very close
     No checking of bad types as these are handled by is_in first
     test there
-    Note not testing floats match as float==float is always dangerous
+    Note not testing floats match as float==float is always ambiguous
     '''
     def test(self):
         '''Must be the only test in the class!'''
         scad = '''
                val = _is_in_num(38, [1,2,3,3,4,5,3,38.0001,2,1,2,3,388]);
+               assert(val==false);
+               '''
+        self.run_scad(scad)
+
+class TestIsIn1(BaseTestScadDict):
+    '''
+    Same test success as for _is_in_str but via is_in
+    '''
+    def test(self):
+        '''Must be the only test in the class!'''
+        scad = '''
+               val = is_in("argle", ["rargle", "argle", "bargle"]);
+               assert(val==true);
+               '''
+        self.run_scad(scad)
+
+
+class TestIsIn2(BaseTestScadDict):
+    '''
+    Same test success as for _is_in_num but via is_in
+    '''
+    def test(self):
+        '''Must be the only test in the class!'''
+        scad = '''
+               val = is_in(38, [1,2,3,3,4,5,3,38,2,1,2,3,388]);
+               assert(val==true);
+               '''
+        self.run_scad(scad)
+
+class TestIsIn3(BaseTestScadDict):
+    '''
+    Asserts should be thrown for trying to check for a list
+    '''
+    def test(self):
+        '''Must be the only test in the class!'''
+        scad = '''
+               val = is_in([38], [[1],[2],[3],[3],[4],[5],[3],[38]]);
+               '''
+        self.run_scad(scad, has_errors=True)
+
+class TestIsIn4(BaseTestScadDict):
+    '''
+    Asserts should be thrown for trying to check for boolean
+    '''
+    def test(self):
+        '''Must be the only test in the class!'''
+        scad = '''
+               val = is_in(true, [false, true, false]);
+               '''
+        self.run_scad(scad, has_errors=True)
+
+class TestIsIn5(BaseTestScadDict):
+    '''
+    Asserts should be thrown for trying to check for undef
+    '''
+    def test(self):
+        '''Must be the only test in the class!'''
+        scad = '''
+               val = is_in(undef, [false, true, false]);
+               '''
+        self.run_scad(scad, has_errors=True)
+
+class TestIsUnique1(BaseTestScadDict):
+    '''
+    Unique number list should return true
+    '''
+    def test(self):
+        '''Must be the only test in the class!'''
+        scad = '''
+               val = is_unique([1,2,3,4,5,5.5,6,8]);
+               assert(val==true);
+               '''
+        self.run_scad(scad)
+
+class TestIsUnique2(BaseTestScadDict):
+    '''
+    Unique string list should return true
+    '''
+    def test(self):
+        '''Must be the only test in the class!'''
+        scad = '''
+               val = is_unique(["rargle", "argle", "bargle"]);
+               assert(val==true);
+               '''
+        self.run_scad(scad)
+
+class TestIsUnique3(BaseTestScadDict):
+    '''
+    Unique mixed list should return true
+    '''
+    def test(self):
+        '''Must be the only test in the class!'''
+        scad = '''
+               val = is_unique(["rargle", "argle", "bargle", 1, 3, true, false, undef, [4]]);
+               assert(val==true);
+               '''
+        self.run_scad(scad)
+
+class TestIsUnique4(BaseTestScadDict):
+    '''
+    This tests the edge cases where a list with a first element equal to something else in the
+    list is an errant match. This should be handled by _check_errant_matches. In this we will run
+    a number of tests with different numbers of matches. With the lists and numbers in different
+    places.
+    '''
+    def test(self):
+        '''Must be the only test in the class!'''
+        scad = '''
+               val = is_unique([1, 3, [1]]);
+               assert(val==true);
+               val2 = is_unique([[1,2], 1, 3, [1]]);
+               assert(val2==true);
+               val3 = is_unique([1, [1,2], 3, [1]]);
+               assert(val3==true);
+               val4 = is_unique([1, [1,2], 3, [1], [3]]);
+               assert(val4==true);
+               val5 = is_unique([[1,2], 3, [1], 1]);
+               assert(val5==true);
+               val6 = is_unique([1, [1,2], 3, [1], 1]);
+               assert(val6==false);
+               val7 = is_unique([[1], [1,2], 3, [1], 1]);
+               assert(val7==false);
+               val8 = is_unique([[1], [1,2], 3, [1,2], 1]);
+               assert(val8==false);
+               '''
+        self.run_scad(scad)
+
+class TestIsUnique5(BaseTestScadDict):
+    '''
+    Non unique number list should return false
+    '''
+    def test(self):
+        '''Must be the only test in the class!'''
+        scad = '''
+               val = is_unique([1,2,6,4,5,5.5,6,8]);
+               assert(val==false);
+               '''
+        self.run_scad(scad)
+
+class TestIsUnique6(BaseTestScadDict):
+    '''
+    Non unique string list should return false
+    '''
+    def test(self):
+        '''Must be the only test in the class!'''
+        scad = '''
+               val = is_unique(["abba", "babba", "jabba", "babba"]);
                assert(val==false);
                '''
         self.run_scad(scad)
@@ -210,7 +358,11 @@ def errors(output):
     """
     Checks for errors in the echo file output of OpenSCAD
     """
-    return 'ERROR:' in output
+    err = 'ERROR:' in output
+    if err and 'Parser error in file' in output:
+        #This should never actually happen as openscad should return an exit code
+        raise RuntimeError("Parser error in unit test")
+    return err
 
 if __name__ == '__main__':
     unittest.main()

@@ -32,17 +32,32 @@ function is_in(value, list) =
     assert(is_list(list), "is_in: list must be a list")
     is_num(value) ? _is_in_num(value, list) : _is_in_str(value, list);
 
+// An errant match is when a non-list matches with the first element in a list
+// a list match a non list though. Cannot know which element is the non-list
+// but we do know that it is errant if exactly one of them is not a list
+function _check_errant_match(list, match) = let(
+    non_list = [for (m = match) is_list(list[m])? 0 : 1],
+    // note when recording count_nl (counting non lists) it is first recorded before anything is iterated.
+    // the second recording happens after i is iterated to 0, then count_nl counts whether non_list[0] is 1
+    count = [for (i=-1, count_nl=0; i<len(match);i=i+1,count_nl=count_nl+non_list[i]) count_nl]
+    // the last element (count[len(match)] is equal to 1 on an errant match)
+) count[len(match)] == 1 ? 0 : 1;
 
 // Returns true if all emements in list are unique.
 function is_unique(list) = 
     assert(is_list(list), "is_unique: list must be a list")
     let(
-        matches = search(list, list, 0)
+        matches = search(list, list, 0),
         // Assign 1 or 0 depending on is the match length for each element
         // return wether any matches are greater than one (mathcing more than
         // itself)
         // note cannot search for true or false so using 1 and zero
-    ) !is_in(1, [for (match = matches) len(match)>1? 1: 0]);
+        bool_list = [for (match = matches) if (len(match)==1) 0 
+            // should put a 1 here to show they matched but in the case of
+            // [1, [1]] it will match both, so need to check if they are
+            // both lists or both not list
+            else _check_errant_match(list, match)]
+    ) !is_in(1, bool_list);
 
 // Private function:
 // Checks that the input is a list and that every element is a list
