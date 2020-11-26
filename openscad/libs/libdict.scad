@@ -1,0 +1,93 @@
+// This library add dictionary like features to openscad
+// the dictionary is a list of pairs as we cannot define new types.
+// Unlike a python dictionary we cannot do a proper hash table for speed
+// so everything is build around the OpenSCAD search function
+// There are a lot of assert statements to ensure data in the "dictionary"
+// is in the format of
+// * A list of lists
+// * Each internal list has a length of two
+// * First element of each internal list is a string (the key)
+// * All keys are unique.
+
+
+// Private function:
+// This function returns true if the value is in the list
+// value must be a string.
+// No error checking, for use by is_in only!
+function _is_in_str(value, list) = 
+    search([value], list) != [[]];
+
+// Private function:
+// This function returns true if the value is in the list
+// value must be a number.
+// No error checking, for use by is_in only!
+function _is_in_num(value, list) = 
+    search(value, list) != [];
+
+
+// This function returns true if the value is in the list
+// value must be a string or a number.
+function is_in(value, list) = 
+    assert(is_num(value) || is_string(value) , "is_in: value must be a number or string")
+    assert(is_list(list), "is_in: list must be a list")
+    is_num(value) ? _is_in_num(value, list) : _is_in_str(value, list);
+
+
+// Returns true if all emements in list are unique.
+function is_unique(list) = 
+    assert(is_list(list), "is_unique: list must be a list")
+    let(
+        matches = search(list, list, 0)
+        // Assign 1 or 0 depending on is the match length for each element
+        // return wether any matches are greater than one (mathcing more than
+        // itself)
+        // note cannot search for true or false so using 1 and zero
+    ) !is_in(1, [for (match = matches) len(match)>1? 1: 0]);
+
+// Private function:
+// Checks that the input is a list and that every element is a list
+// of length 2.
+// No error checking, for use by valid_dict only!
+function _is_pairs(list) =
+    !is_list(dict) ? false :
+        !is_in(0, [for (pair = list) is_list(pair) && len(pair)==2 ? 1: 0]);
+
+// Private function:
+// Checks all elements in the list are strings
+// No error checking, for use by valid_dict only!
+function _is_list_of_strings(list) =
+    !is_in(0, [for (item = list) is_string(item) ? 1: 0]);
+
+// Private function:
+// Returns the keus in a dictionary
+// No error checking, for use by valid_dict only!
+function _keylist(dict)  = [for (pair=dict) pair[0]];
+ 
+function valid_dict(dict) =
+    //if the input are not pairs return instantly
+    !_is_pairs(dict) ? false : let (
+        //if they are pairs get all keys
+        keys = _keylist(dict),
+        all_strings =  _is_list_of_strings(keys),
+        unique = is_unique(keys)
+    ) (all_strings && unique) ? true : false;
+
+// Key lookup for key value pair "dictionary".
+// Unlike the built in lookup this works with strings.
+function key_lookup(key, dict) = 
+    assert(is_string(key), "`key` must be a string")
+    assert(valid_dict(dict), "`dict` must be a valid 'dictionary'")
+    let(
+        index = search([key], dict, 1, 0)[0]
+    )  assert (index!=[], "Key lookup failed, key not found!") dict[index][1];
+
+// This is a tests and should be moved into a test folder
+dict = [["a",3],
+        ["ab", 22],
+        ["rasin", 99],
+        ["great", 4]];
+
+val = key_lookup("rasin", dict);
+echo(val);
+
+echo(valid_dict(dict));
