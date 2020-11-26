@@ -1,7 +1,26 @@
 stages:
+    - test
     - build
     - deploy
     - zenodo
+
+# Unit testing of the scad library functions
+scad-lib-tests:
+    stage: test
+    image: ubuntu:18.04
+
+    before_script:
+      - add-apt-repository -y ppa:openscad/releases
+      - apt-get update -qq
+      - apt-get install -y -qq openscad
+
+    script:
+      - openscad/libs/test/test_dict.py
+
+    only:
+      - tags
+      - merge_requests
+      - web
 
 # Build STL files
 build:
