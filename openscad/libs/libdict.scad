@@ -55,8 +55,9 @@ function _is_pairs(list) =
 // Private function:
 // Checks all elements in the list are strings
 // No error checking, for use by valid_dict only!
+// Strings can't be empty
 function _is_list_of_strings(list) =
-    !is_in(0, [for (item = list) is_string(item) ? 1: 0]);
+    !is_in(0, [for (item = list) is_string(item) && len(item)>0 ? 1: 0]);
 
 // Private function:
 // Returns the keus in a dictionary
