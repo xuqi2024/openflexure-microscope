@@ -49,7 +49,7 @@ function is_unique(list) =
 // of length 2.
 // No error checking, for use by valid_dict only!
 function _is_pairs(list) =
-    !is_list(dict) ? false :
+    !is_list(list) ? false :
         !is_in(0, [for (pair = list) is_list(pair) && len(pair)==2 ? 1: 0]);
 
 // Private function:
@@ -78,16 +78,7 @@ function key_lookup(key, dict) =
     assert(is_string(key), "`key` must be a string")
     assert(valid_dict(dict), "`dict` must be a valid 'dictionary'")
     let(
+        // key is in [] because otherwise openscad will search for each letter rather than the string.
         index = search([key], dict, 1, 0)[0]
     )  assert (index!=[], "Key lookup failed, key not found!") dict[index][1];
 
-// This is a tests and should be moved into a test folder
-dict = [["a",3],
-        ["ab", 22],
-        ["rasin", 99],
-        ["great", 4]];
-
-val = key_lookup("rasin", dict);
-echo(val);
-
-echo(valid_dict(dict));
