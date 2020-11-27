@@ -94,9 +94,12 @@ module lens_holder(beam_d=3.5){
         cylinder(r=led_r+0.5, h=1.5, center=true);
         
         //screws for LED star
-
-        translate([LEDstar_r,0,0]){
-            rotate([0,0,30])trylinder_selftap(nominal_d = 3, h = lens_z-pedestal_h - 1);
+        for(i = [0:1]){ 
+            rotate(180*i){
+                translate([0,LEDstar_r,0]){
+                    rotate([0,0,180])trylinder_selftap(nominal_d = 3, h = lens_z-pedestal_h - 1);
+                }
+            }
         }
 
         //screws for slip plate
