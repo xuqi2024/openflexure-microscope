@@ -29,7 +29,7 @@ use <./wall.scad>
 use <./gears.scad>
 use <./illumination.scad>
 include <./microscope_parameters.scad>
-
+use <libs/libdict.scad>
 module each_om_contact_plane(){
     // This transform puts y=0 in the plane of contact between the
     // optics module and the mount for it, with the origin at the
@@ -38,18 +38,18 @@ module each_om_contact_plane(){
                 rotate(135) children();
 }
 
-module objective_mount(){
+module objective_mount(params){
     // The fitting to which the optics module is attached
     h = z_flexures_z2 + 4*sqrt(2);
     overlap = 4; // we have this much contact between
                  // the mount and the wedge on the optics module.
     roc=1.5; // radius of curvature of the arms
     w = objective_mount_nose_w + 2*overlap + 4;//+2*roc; //overall width
+    leg_r = key_lookup("leg_r", params);
     difference(){
         hull(){
             // the back of the mount
             translate([-w/2,objective_mount_back_y+5,0]) cube([w,tiny(),h]);
-            //hull() reflect([1,0,0]) z_bridge_wall_vertex();
             // the front of the mount (this makes contact with the optics module)
             each_om_contact_plane() translate([0,overlap-tiny(),0]) cube([2*roc,tiny(),h]);
         }
@@ -69,7 +69,7 @@ module objective_mount(){
         hull() reflect([1,0,0]) translate([1, tiny(), -4])  z_axis_flexures(h=5+8);
 
         // cut out the back so it fits in the available space
-        reflect([1,0,0]) translate([-z_flexure_x,0,-99]) rotate(45) cube(999);
+        reflect([1,0,0]) translate([-z_flexure_x(leg_r),0,-99]) rotate(45) cube(999);
     }
     // Nice rounded fronts either side
     each_om_contact_plane() translate([roc,overlap,0]) cylinder(r=roc,h=h);
@@ -208,7 +208,7 @@ module top_of_z_axis_casing(){
                     motor_lugs(h=actuator_h + z_actuator_travel, angle=180, tilt=-z_actuator_tilt);
 }
 
-module z_axis_casing(condenser_mount=false){
+module z_axis_casing(params, condenser_mount=false){
     // Casing for the Z axis - needs to have the axis subtracted from it
     intersection(){
         linear_extrude(height=999) minkowski(){
@@ -216,7 +216,7 @@ module z_axis_casing(condenser_mount=false){
             hull() projection() z_axis_struts();
         }
         hull(){
-            reflect([1,0,0]) z_bridge_wall_vertex();
+            reflect([1,0,0]) z_bridge_wall_vertex(params);
             translate([-99,z_anchor_y,0]) cube([999,4,z_flexures_z2+2]);
             translate([0,z_nut_y,0]) cylinder(d=10,h=20);
         }
@@ -225,7 +225,7 @@ module z_axis_casing(condenser_mount=false){
         // At the bottom, connect to the top of the housing and the motor lugs
         top_of_z_axis_casing();
         // The top is a flat shape that the illumination arm screws onto.
-        each_illumination_corner() mirror([0,0,1]) cylinder(r=5,h=7);
+        each_illumination_corner(params) mirror([0,0,1]) cylinder(r=5,h=7);
     }
 
 }
@@ -270,13 +270,13 @@ module z_actuator_cutout(){
 }
 
 
-module z_actuator_assembly(){
+module z_actuator_assembly(params){
     // This is the z-actuator, objective mount and the z-flexures.
     // The flexure that join the body are not attached to anything on the body-side.
 
     z_axis_flexures();
     z_axis_struts();
-    objective_mount();
+    objective_mount(params);
     z_actuator_column();
     difference(){
         z_actuator_housing();

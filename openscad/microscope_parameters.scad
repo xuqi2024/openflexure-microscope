@@ -24,6 +24,8 @@
 *                                                                 *
 ******************************************************************/
 
+use <libs/libdict.scad>
+
 // this is a tiny distance. Used to be a parameter d in the code but that caused confusion with diameters
 function tiny() = 0.05;
 $fn=32;
@@ -44,7 +46,7 @@ enable_smart_brim = true;
 sample_z = 75; // z position of sample
 leg_height = sample_z-10; // height of the top of the leg. Shorter by 10 to give space to insert nuts.
 
-leg_r = 30; // radius on which the innermost part of legs sit. (This sets the stage size)
+//leg_r = 30; // radius on which the innermost part of legs sit. (This sets the stage size)
 hole_r = 20; // size of hole in the stage
 xy_lever_ratio = 4.0/7.0; // mechanical advantage of actuator over stage - can be used to trade speed and precision
 z_lever_ratio = 1.0; // as above, for Z axis (must be >1)
@@ -101,7 +103,7 @@ z_nut_y = z_anchor_y - flex_dims().y/2 + sqrt(zll*zll - zfz*zfz);
 z_actuator_travel = zll*0.15; // distance moved by the Z actuator
 z_actuator_tilt = -asin(z_flexures_z1/zll); //angle of the Z actuator
 
-z_flexure_x = (leg_r-flex_dims().y-max(5,leg_dims().z*0.1))*sqrt(2); // x position of the outside of the Z-axis static anchors (either side of the XY stage, on the X axis) (no longer used by Z axis but still in use elsewhere.)
+function z_flexure_x(leg_r) = (leg_r-flex_dims().y-max(5,leg_dims().z*0.1))*sqrt(2); // x position of the outside of the Z-axis static anchors (either side of the XY stage, on the X axis) (no longer used by Z axis but still in use elsewhere.)
 
 leg_link_spacing = 10;
 base_t=1; // thickness of the flat base of the structure
@@ -117,10 +119,11 @@ condenser_clip_y = -8; //position of dovetail for old condenser assembly TODO: r
 // to the base. By default it returns all four holes.
 // To get only the lugs run `base_mounting_holes("lugs")`
 // To get only the front holes run `base_mounting_holes("front")`
-function base_mounting_holes(type="all") = let
+function base_mounting_holes(params, type="all") = let
 (
-    lug_pos = [[z_flexure_x+4,-8,0],
-               [-z_flexure_x-4,-8,0]],
+    leg_r = key_lookup("leg_r", params),
+    lug_pos = [[z_flexure_x(leg_r)+4,-8,0],
+               [-z_flexure_x(leg_r)-4,-8,0]],
     front_pos =[[-20,z_nut_y-4,0],
                 [20,z_nut_y-4,0]],
     lugs = (type == "lugs") || (type == "all"),

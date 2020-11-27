@@ -1,3 +1,3 @@
 use <microscope_stand.scad>
 
-motor_driver_case();
+motor_driver_case(params);

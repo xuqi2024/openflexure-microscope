@@ -11,6 +11,7 @@
 
 use <./utilities.scad>
 use <./compact_nut_seat.scad>
+use <libs/libdict.scad>
 include <./microscope_parameters.scad>
 
 module shear_x(amount=1){
@@ -25,22 +26,24 @@ module shear_x(amount=1){
 }
 
 
-module leg_frame(angle){
+module leg_frame(params, angle){
+    leg_r = key_lookup("leg_r", params);
     // Transform into the frame of one of the legs of the stage
 	rotate(angle) translate([0,leg_r,]) children();
 }
-module each_leg(){
+module each_leg(params){
     // Repeat for each of the legs of the stage
-	for(angle=[45,135,-135,-45]) leg_frame(angle) children();
+	for(angle=[45,135,-135,-45]) leg_frame(params, angle) children();
 }
-module each_actuator(){
+module each_actuator(params){
     // Repeat this for both of the actuated legs (the ones with levers)
-	reflect([1,0,0]) leg_frame(45) children();
+	reflect([1,0,0]) leg_frame(params,45) children();
 }
 
-module place_on_wall(){
+module place_on_wall(params){
+    leg_r = key_lookup("leg_r", params);
     //this is a complicated transformation!  The wall runs from
-    wall_start = [z_flexure_x+wall_t/2,-wall_t/2,0]; // to
+    wall_start = [z_flexure_x(leg_r)+wall_t/2,-wall_t/2,0]; // to
     wall_end = ([1,1,0]*(leg_r+actuating_nut_r)
                  +[1,-1,0]*(ss_outer().x/2-wall_t/2))/sqrt(2);
     wall_disp = wall_end - wall_start; // vector along the wall base

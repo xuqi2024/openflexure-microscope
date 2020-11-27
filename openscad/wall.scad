@@ -13,7 +13,7 @@ use <./utilities.scad>
 use <./main_body_transforms.scad>
 use <./compact_nut_seat.scad>
 include <./microscope_parameters.scad> //All the geometric variables are now in here.
-
+use <libs/libdict.scad>
 
 module add_hull_base(h=1){
     // Take the convex hull of some objects, and add it in as a
@@ -47,7 +47,7 @@ module wall_vertex(r=wall_t/2, h=wall_h, x_tilt=0, y_tilt=0){
     // the legs
     smatrix(xz=tan(y_tilt), yz=-tan(x_tilt)) cylinder(r=r, h=h, $fn=8);
 }
-module inner_wall_vertex(leg_angle, x, h=wall_h, thick=false){
+module inner_wall_vertex(params, leg_angle, x, h=wall_h, thick=false){
     // A thin cylinder, close to one of the legs.  It
     // tilts inwards to clear the leg.  These form the
     // corners of the stiffening "wall" that runs around
@@ -65,30 +65,31 @@ module inner_wall_vertex(leg_angle, x, h=wall_h, thick=false){
     y_tilt = x>0?6:-6;
     y=-flex_dims().y-wall_t/2;
     r = thick?wall_t:wall_t/2;
-    leg_frame(leg_angle) translate([x,y,0]){
+    leg_frame(params, leg_angle) translate([x,y,0]){
             wall_vertex(r=r,h=h,x_tilt=6,y_tilt=y_tilt);
     }
 }
 
-module z_bridge_wall_vertex(){
+module z_bridge_wall_vertex(params){
     // This is the vertex of the "inner wall" nearest the
     // new (cantilevered) Z axis.
-    inner_wall_vertex(45, leg_outer_w/2+wall_t/2, zbwall_h);
+    inner_wall_vertex(params, 45, leg_outer_w/2+wall_t/2, zbwall_h);
 }
 
-module z_anchor_wall_vertex(){
+module z_anchor_wall_vertex(params){
     // This is the vertex of the supporting wall nearest
     // to the Z anchor - it doesn't make sense to use the
     // function above as it's got the wrong symmetry.
     // We also use this in a few places so it's worth saving
-    translate([-z_flexure_x-wall_t/2,-wall_t/2,0]){
+    leg_r = key_lookup("leg_r", params);
+    translate([-z_flexure_x(leg_r)-wall_t/2,-wall_t/2,0]){
         wall_vertex(h=zawall_h, y_tilt=atan(wall_t/zawall_h));
     }
 }
 
-module y_actuator_wall_vertex(x=1){
+module y_actuator_wall_vertex(params, x=1){
     // A wall vertex for the y actuator.  x=-1,1 picks the side
     // of the actuator where the vertex is placed.
-    leg_frame(45) translate([x*(ss_outer().x/2-wall_t/2),
+    leg_frame(params, 45) translate([x*(ss_outer().x/2-wall_t/2),
                              actuating_nut_r, 0]) wall_vertex();
 }
