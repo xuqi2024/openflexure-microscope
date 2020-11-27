@@ -192,7 +192,7 @@ module foot(travel=5,       // how far into the foot the actuator can move down
             //Void for endstop switch
             //TODO: check properly parametrized
             if(feet_endstops){
-                translate([0,0.5-(h-travel)*sin(actuator_tilt),h-travel-endstop_hole_offset]) rotate([0,0,-90]) scale([1.03,1.08,1])endstop_hole(actuator_tilt);
+                translate([0,0.5-(h-travel)*sin(actuator_tilt),h-travel]) rotate([0,0,-90]) scale([1.03,1.08,1])endstop_hole(actuator_tilt);
               }
         }
         foot_letter(letter,actuator_tilt);
@@ -201,8 +201,13 @@ module foot(travel=5,       // how far into the foot the actuator can move down
 }
 //foot(tilt=15);
 //foot(tilt=0,hover=2);
-module middle_foot(lie_flat=false,letter="Z"){
-        foot(travel=z_actuator_travel,bottom_tilt=0, actuator_tilt=z_actuator_tilt, hover=2, lie_flat=lie_flat,letter=letter);
+module middle_foot(params, lie_flat=false,letter="Z"){
+        foot(travel=z_actuator_travel(params),
+             bottom_tilt=0,
+             actuator_tilt=z_actuator_tilt(params),
+             hover=2,
+             lie_flat=lie_flat,
+             letter=letter);
 }
 
 module outer_foot(params, lie_flat=false,letter=""){
@@ -215,7 +220,7 @@ module outer_foot(params, lie_flat=false,letter=""){
 module feet_for_printing(params, lie_flat=true){
     x_tr = ss_outer().x+1.5;
     translate([x_tr, 0]) outer_foot(params, lie_flat=lie_flat,letter="X");
-    middle_foot(lie_flat=lie_flat,letter="Z");
+    middle_foot(params,lie_flat=lie_flat,letter="Z");
     translate([-x_tr, 0]) outer_foot(params, lie_flat=lie_flat,letter="Y");
 }
 

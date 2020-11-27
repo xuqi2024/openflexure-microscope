@@ -117,7 +117,9 @@ module microscope_bottom(params, enlarge_legs=1.5, lugs=true, feet=true, legs=tr
     }
     if(feet){
         each_actuator(params) translate([0, actuating_nut_r(params)]) foot_footprint();
-        translate([0, z_nut_y]) foot_footprint(tilt=z_actuator_tilt);
+        translate([0, z_nut_y(params)]){
+            foot_footprint(tilt=z_actuator_tilt(params));
+        }
     }
 
     if(lugs) projection(cut=true) translate([0,0,-tiny()]) mounting_hole_lugs(params, holes=false);
@@ -142,8 +144,8 @@ module feet_in_place(params, grow_r=1, grow_h=2){
                 hull() outer_foot(params, lie_flat=false);
                 cylinder(r=grow_r, h=grow_h, center=true);
             }
-            translate([0,z_nut_y,0]) minkowski(){
-                hull() middle_foot(lie_flat=false);
+            translate([0,z_nut_y(params),0]) minkowski(){
+                hull() middle_foot(params,lie_flat=false);
                 cylinder(r=grow_r, h=grow_h, center=true);
             }
             translate([-9.3,60,0.1]) rotate([0,9,0]) rotate([-20,0,0]) cube([17.5,10,8]);
@@ -156,7 +158,7 @@ module footprint(params){
     hull(){
         translate([-2, base_corner_y(params)]) square(4);
         each_actuator(params) translate([0, actuating_nut_r(params)]) foot_footprint();
-        translate([0, z_nut_y]) foot_footprint(tilt=z_actuator_tilt);
+        translate([0, z_nut_y(params)]) foot_footprint(tilt=z_actuator_tilt(params));
         offset(wall_thickness) pi_footprint();
     }
 }
@@ -427,7 +429,7 @@ module motor_driver_case(params){
             translate([0,0,bottom_thickness+raspi_support]) sangaboard_connectors();
 
         // motor cables
-            translate([0,z_nut_y,base_height]) cube([20,50,15],center=true);
+            translate([0,z_nut_y(params),base_height]) cube([20,50,15],center=true);
 
             mounting_holes(params);
         }

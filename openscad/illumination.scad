@@ -24,8 +24,8 @@ front_dovetail_y = 35; // position of the main dovetail
 front_dovetail_w = 30; // width of the main dovetail
 
 function illumination_dovetail_z(params) = leg_height(params)-2;
-function right_illumination_screw_pos(params) = [20, z_nut_y, illumination_dovetail_z(params)];
-function left_illumination_screw_pos(params) = [-20, z_nut_y, illumination_dovetail_z(params)];
+function right_illumination_screw_pos(params) = [20, z_nut_y(params), illumination_dovetail_z(params)];
+function left_illumination_screw_pos(params) = [-20, z_nut_y(params), illumination_dovetail_z(params)];
 function illumination_back_corner_pos(params) = [0, (key_lookup("leg_r", params)+ leg_outer_w(params))/sqrt(2) + 4, illumination_dovetail_z(params)];
 
 module each_illumination_screw(params){
@@ -129,7 +129,7 @@ module illumination_dovetail(params, h=50){
             }
         }
         // clearance for the motor
-        translate([0,-2,0]) z_motor_clearance();
+        translate([0,-2,0]) z_motor_clearance(params);
     }
     illumination_dovetail_branding(params, h, bottom_z);
 }

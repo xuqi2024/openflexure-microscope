@@ -314,14 +314,14 @@ module actuator_void(h, w1, w2, lever, tilted=false, extend_back=d){
     w_n = 2*column_base_r + 2*c; // width of neck
     nut_y = tilted ? sqrt(lever*lever - h*h) : lever;
     tilt = tilted?-asin(h/lever):0;
-    top_dy = tilted ? 0 : h*flex_a+1;
+    top_dy = tilted ? 0 : h*flex_a()+1;
     minkowski(){
         hull(){
             translate([-min(w1,w2)/2-c, -extend_back, -d]) cube([min(w1,w2)+2*c,d,h]);
             //translate([-w2/2-c, -extend_back, h]) cube([w2+2*c,d,c]);
             translate([-w1/2-c, 0, -d]) cube([w1+2*c,d,c]);
             translate([-w2/2-c, top_dy, h]) cube([w2+2*c,d,c]);
-            translate([-w_n/2, nut_y, -d]) rotate([tilt,0,0]) cube([w_n, 2, 5 + lever*flex_a+c+1.5]);
+            translate([-w_n/2, nut_y, -d]) rotate([tilt,0,0]) cube([w_n, 2, 5 + lever*flex_a()+c+1.5]);
 
         }
         scale([1,1,1.5]) sphere(r=1.5, $fn=8);
@@ -345,7 +345,7 @@ module flexure_anchor_cutout(h=999,w=999, extend_back=999){
 
 module actuator_shroud_shell(h, w1, w2, lever, tilted=false, extend_back=d, ac_h=actuator_h, motor_lugs=motor_lugs){
     // A cover for an actuator as defined above.
-    ns_h = ac_h + lever * flex_a + 1.5; //internal height of nut seat
+    ns_h = ac_h + lever * flex_a() + 1.5; //internal height of nut seat
     nut_y = flex_dims().y + (tilted ? sqrt(lever*lever - h*h) : lever);
     tilt = tilted?-asin(h/lever):0;
 
@@ -367,7 +367,7 @@ module actuator_shroud_shell(h, w1, w2, lever, tilted=false, extend_back=d, ac_h
 module actuator_shroud_core(h, w1, w2, lever, tilted=false, extend_back=d, ac_h=actuator_h, anchor=true, pushstick_h=pushstick.z+3){
     // The inside of a cover for an actuator as defined above.
     // It's split like this for ease of combining them together.
-    ns_h = ac_h + lever * flex_a + 1.5; //internal height of nut seat
+    ns_h = ac_h + lever * flex_a() + 1.5; //internal height of nut seat
     nut_y = flex_dims().y + (tilted ? sqrt(lever*lever - h*h) : lever);
     tilt = tilted?-asin(h/lever):0;
 

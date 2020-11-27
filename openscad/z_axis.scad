@@ -163,11 +163,11 @@ module z_axis_struts(params){
     lever_h = 6;
     difference(){
         sequential_hull(){
-            translate([0, z_nut_y, 0]) cylinder(d=w, h=lever_h);
+            translate([0, z_nut_y(params), 0]) cylinder(d=w, h=lever_h);
             translate([0, z_anchor_y + w/2 + 2, 0]) cylinder(d=w, h=z_flexures_z1+2*dz);
             translate([-w/2, z_anchor_y - flex_dims().x - tiny(), z_flexures_z1 + dz]) cube([w,tiny(), 5-tiny()]);
         }
-        translate([0, z_nut_y, 0]) actuator_end_cutout();
+        translate([0, z_nut_y(params), 0]) actuator_end_cutout();
     }
 }
 
@@ -198,11 +198,11 @@ module objective_mounting_screw_access(params){
     }
 }
 
-module z_motor_clearance(motor_h=999){
+module z_motor_clearance(params, motor_h=999){
     // clearance for the motor and gears, to be subtracted from the condenser mount
     // This also labels it as "Z"
-    translate([0,z_nut_y,0]) rotate([z_actuator_tilt,0,0]) {
-        translate([0,0,actuator_h+z_actuator_travel+2-1]) rotate(180){
+    translate([0,z_nut_y(params),0]) rotate([z_actuator_tilt(params),0,0]) {
+        translate([0,0,actuator_h+z_actuator_travel(params)+2-1]) rotate(180){
             motor_and_gear_clearance(gear_h=11, h=motor_h);
             linear_extrude(1, center=true) translate([0,15]) {
                 text("Z", size=10, font="Sans", halign="center", valign="baseline");
@@ -214,8 +214,8 @@ module z_motor_clearance(motor_h=999){
 module top_of_z_axis_casing(params){
     // The top of the Z axis casing, in case you want to join things onto it
     translate([-z_anchor_w/2-1.5, z_anchor_y - 1, z_flexures_z2(params)]) cube([z_anchor_w+3, tiny(), tiny()]);
-    translate([0,z_nut_y,0]) rotate(180)
-                    motor_lugs(h=actuator_h + z_actuator_travel, angle=180, tilt=-z_actuator_tilt);
+    translate([0,z_nut_y(params),0]) rotate(180)
+                    motor_lugs(h=actuator_h + z_actuator_travel(params), angle=180, tilt=-z_actuator_tilt(params));
 }
 
 module z_axis_casing(params, condenser_mount=false){
@@ -228,7 +228,7 @@ module z_axis_casing(params, condenser_mount=false){
         hull(){
             reflect([1,0,0]) z_bridge_wall_vertex(params);
             translate([-99,z_anchor_y,0]) cube([999,4,z_flexures_z2(params)+2]);
-            translate([0,z_nut_y,0]) cylinder(d=10,h=20);
+            translate([0,z_nut_y(params),0]) cylinder(d=10,h=20);
         }
     }
     if(condenser_mount) hull(){
@@ -245,8 +245,8 @@ module z_axis_casing_cutouts(params){
     // This module contains all the bits we need to cut out.
     z_axis_clearance(params);
     objective_mounting_screw_access(params);
-    z_actuator_cutout();
-    z_motor_clearance();
+    z_actuator_cutout(params);
+    z_motor_clearance(params);
     reflect([1,0,0]) translate(right_illumination_screw_pos(params)){
         rotate(-20) translate([0,0,-9]) m3_nut_trap_with_shaft(0,0);
     }
@@ -254,28 +254,28 @@ module z_axis_casing_cutouts(params){
 
 ////////////// These modules define the actuator column and housing (where the screw/nut/band go)
 
-module z_actuator_column(){
-    translate([0,z_nut_y,0]) actuator_column(actuator_h, tilt=z_actuator_tilt, join_to_casing=true);
+module z_actuator_column(params){
+    translate([0,z_nut_y(params),0]) actuator_column(actuator_h, tilt=z_actuator_tilt(params), join_to_casing=true);
 }
 
-module z_actuator_housing(motor_lugs=motor_lugs){
+module z_actuator_housing(params, motor_lugs=motor_lugs){
     // This houses the actuator column and provides screw seat/motor lugs
-    translate([0,z_nut_y,0]){
+    translate([0,z_nut_y(params),0]){
         screw_seat(h=actuator_h,
-                   tilt=z_actuator_tilt,
-                   travel=z_actuator_travel,
+                   tilt=z_actuator_tilt(params),
+                   travel=z_actuator_travel(params),
                    motor_lugs=motor_lugs,
                    lug_angle=180);
     }
 }
 
-module z_actuator_cutout(){
+module z_actuator_cutout(params){
     // This chops out a void for the actuator column
-    translate([0,z_nut_y,0]){
+    translate([0,z_nut_y(params),0]){
         screw_seat_outline(h=999,
                            adjustment=-tiny(),
                            center=true,
-                           tilt=z_actuator_tilt);
+                           tilt=z_actuator_tilt(params));
     }
 }
 
@@ -287,9 +287,9 @@ module z_actuator_assembly(params){
     z_axis_flexures(params);
     z_axis_struts(params);
     objective_mount(params);
-    z_actuator_column();
+    z_actuator_column(params);
     difference(){
-        z_actuator_housing();
+        z_actuator_housing(params);
         // Subtract the clearance to make sure the actuator can get in ok.
         // This only makes a very small cutout.
         z_axis_clearance(params);

@@ -201,7 +201,7 @@ module wall_between_actuators(params){
     // link the actuators together
     hull(){
         y_actuator_wall_vertex(params);
-        translate([0,z_nut_y+ss_outer().y/2-wall_t/2,0]) wall_vertex();
+        translate([0,z_nut_y(params)+ss_outer().y/2-wall_t/2,0]) wall_vertex();
     }
 }
 
@@ -229,7 +229,7 @@ module reflection_illuminator_cutout(){
     }
 }
 
-module xy_stage(params,h=10,on_buildplate=false){
+module xy_stage(params, h=10, on_buildplate=false){
     // This module is the outer shape of the XY stage.
     // A square without corners, and a hole through middle.
     // The size in XY is set by microscope_parameters.scad,
@@ -242,6 +242,7 @@ module xy_stage(params,h=10,on_buildplate=false){
     cut_out_side_length = leg_middle_w-2*flex_dims().x;
     thickness = on_buildplate?h:h-1;
     z = on_buildplate?0:1;
+    hole_r = key_lookup("stage_hole_r", params);
 
     difference(){
         hull(){
