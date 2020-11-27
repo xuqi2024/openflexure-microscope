@@ -32,7 +32,7 @@ use <./libs/cameras/camera.scad> // this will define the 2 functions and 1 modul
 dt_bottom = -2; //bottom of dovetail (<0 to allow some play)
 camera_mount_top_z = dt_bottom - 3 - (optics=="rms_f50d13"?8:0) - (optics=="rms_infinity_f50d13"?20:0); //the 50mm tube lens requires the camera to stick out the bottom.
 bottom = camera_mount_top_z-camera_mount_height(); //nominal distance from PCB to microscope bottom
-fl_cube_bottom = bottom + camera_sensor_height() + 6.5; //bottom of the fluorescence filter cube (0 except for the RMS f=50mm modules where it's -8 or -20)
+fl_cube_bottom = bottom + camera_sensor_height() + 6; //bottom of the fluorescence filter cube (0 except for the RMS f=50mm modules where it's -8 or -20)
 fl_cube_top = fl_cube_bottom + fl_cube_w + 2.7; //top of fluorescence cube
 fl_cube_top_w = fl_cube_w - 2.7;
 $fn=24;
