@@ -49,7 +49,7 @@ function base_corner_y(params) = let(
     // drawing a line from origin through a back leg
     on_rad = leg_r-flex_dims().y-wall_t/2+leg_outer_w(params)/2,
     // project this point ont the y axis:
-     = -on_rad/sqrt(2)
+    on_y_ax = -on_rad/sqrt(2)
 ) on_y_ax - wall_t/2 - 15;
 
 module foot_footprint(tilt=0){
@@ -437,6 +437,6 @@ module motor_driver_case(params){
     }
 }
 
-
+params = default_params();
 microscope_stand(params);
 

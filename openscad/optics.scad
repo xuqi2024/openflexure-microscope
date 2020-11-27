@@ -146,7 +146,7 @@ module camera_mount_body(
             }
 
             // Mount for the nut that holds it on
-            translate([0,0,-1]) objective_fitting_cutout();
+            translate([0,0,-1]) objective_fitting_cutout(params);
         }
 
         // add the camera mount
@@ -157,7 +157,10 @@ module camera_mount_body(
 
 module optics_module_rms(params, tube_lens_ffd=16.1, tube_lens_f=20,
     tube_lens_r=16/2+0.2, objective_parfocal_distance=45, tube_length=150, fluorescence=false, gripper_t=1, dovetail=true){
-    
+
+    sample_z = key_lookup("sample_z", params);
+    assert(sample_z > 60, "RMS objectives won't fit in small microscope frames!");
+    assert(objective_mount_y > 12, "RMS objectives won't fit in small microscope frames!");
     // This optics module takes an RMS objective and a tube length correction lens.
     // important parameters are below:
 
@@ -170,10 +173,6 @@ module optics_module_rms(params, tube_lens_ffd=16.1, tube_lens_f=20,
 
     dovetail_top = min(27, sample_z-objective_parfocal_distance-0.5); //height of the top of the dovetail, i.e. the position of the objective's "shoulder"
     //tube_length (argument) is the distance behind the objective's "shoulder" where the image is formed.  This should be infinity (safe to use 9999) for infinity-corrected lenses, or 150 for 160mm tube length objectives (the image is formed ~10mm from the end of the tube).
-
-    sample_z = key_lookup("sample_z", params);
-    assert(sample_z > 60, "RMS objectives won't fit in small microscope frames!");
-    assert(objective_mount_y < 12, "RMS objectives won't fit in small microscope frames!");
 
     ///////////////// Lens position calculation //////////////////////////
     // calculate the position of the tube lens based on a thin-lens

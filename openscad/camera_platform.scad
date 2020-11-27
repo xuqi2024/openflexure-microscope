@@ -61,7 +61,7 @@ module camera_platform(params, base_r, h){
         }
 
         // Mount for the nut that holds it on
-        translate([0,0,-4]) objective_fitting_cutout(y_stop=true);
+        translate([0,0,-4]) objective_fitting_cutout(params, y_stop=true);
         // add the camera mount
         translate([0,0,h]) camera_bottom_mounting_posts(outers=false, cutouts=true);
         // cable routing, if needed

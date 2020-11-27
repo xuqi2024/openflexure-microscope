@@ -93,7 +93,7 @@ module slide_riser(params, h=.6, thickness=4){
     }
 }
 
-
+params = default_params();
 h=.6;
 slide_riser(params, h);
 

@@ -52,7 +52,7 @@ module each_illumination_corner(params){
 //Note that this is not built from here. it is built in illumination_dovetail.scad
 
 
-module illumination_dovetail_branding(h, bottom_z){
+module illumination_dovetail_branding(params, h, bottom_z){
     // The open flexure logo for the back of the illumination fovetail
 
     //lug height
@@ -60,7 +60,7 @@ module illumination_dovetail_branding(h, bottom_z){
     //height of the slobed back
     slope_h = h-lug_h ;
     //top and bottom of y position of the sloped back
-    bot_y = right_illumination_screw_pos().y+5;
+    bot_y = right_illumination_screw_pos(params).y+5;
     top_y = front_dovetail_y+10;
     back_angle = atan((top_y-bot_y)/slope_h);
     logo_z = bottom_z+lug_h +slope_h/2;
@@ -131,7 +131,7 @@ module illumination_dovetail(params, h=50){
         // clearance for the motor
         translate([0,-2,0]) z_motor_clearance();
     }
-    illumination_dovetail_branding(h, bottom_z);
+    illumination_dovetail_branding(params, h, bottom_z);
 }
 
 

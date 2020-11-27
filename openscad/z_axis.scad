@@ -81,10 +81,12 @@ module objective_mount(params){
     each_om_contact_plane() translate([roc,overlap,0]) cylinder(r=roc,h=h);
 }
 
-function objective_mount_screw_pos() = [0, objective_mount_back_y, (z_flexures_z2(params) + z_flexures_z1)/2];
 
-module objective_mount_screw(){
-    translate(objective_mount_screw_pos()) rotate([-90,0,0]){
+//TODO find out what these are and whther they are still needed!
+function objective_mount_screw_pos(params) = [0, objective_mount_back_y, (z_flexures_z2(params) + z_flexures_z1)/2];
+
+module objective_mount_screw(params){
+    translate(objective_mount_screw_pos(params)) rotate([-90,0,0]){
         cylinder(r=3, h=2.5);
         mirror([0,0,1]) cylinder(d=3, h=12);
     }
@@ -114,11 +116,11 @@ module ofc_nut(shaft=false, max_screw=12){
     nut_y(3, h=2.5, extra_height=0, shaft=shaft, shaft_length=shaft?max_screw-4:0);
 }
 
-module objective_fitting_cutout(max_screw=12, y_stop=false, nose_shift=0.2){
+module objective_fitting_cutout(params, max_screw=12, y_stop=false, nose_shift=0.2){
     // Subtract this from the optics module, to cut out a hole for the nut
     // that anchors it to the objective mount.
     // TODO: also relieve the faces of the mount in case there are protrusions
-    oms = objective_mount_screw_pos();
+    oms = objective_mount_screw_pos(params);
     translate([oms.x, objective_mount_y - 1.2 - 2.5, oms.z]){
         ofc_nut(shaft=true, max_screw=max_screw);
         sequential_hull(){

@@ -1,5 +1,6 @@
 use <microscope_stand.scad>
 use <utilities.scad>
+use <microscope_parameters.scad>
 
 h=15;
 
@@ -13,5 +14,5 @@ module microscope_stand_no_pi(params){
 
     }
 }
-
+params = default_params();
 microscope_stand_no_pi(params);
