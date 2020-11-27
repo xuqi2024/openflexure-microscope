@@ -140,6 +140,22 @@ module chamfered_hole(r=10, h=10, chamfer=1,center=false){
 }
 //chamfered_hole(15,30,center=true);
 
+
+module cyl_slot(r=1, h=1, dy=2, center=false){
+    // An elongated cylinder use to make a slot for a screw. Slot is oriented in the y direction
+    // r: raduis of the slots
+    // h: the height
+    // dy: the length of the slot (centre to centre on circles) total length is dy+2*r
+    // center: if true the shape is centred on all axes.
+
+    hull(){
+        repeat([0, dy, 0], 2, center=true){
+            cylinder(r=r, h=h, center=center);
+        }
+    }
+}
+
+
 module unrotate(rotation){
 	//undo a previous rotation, NB this is NOT the same as rotate(-rotation) due to ordering.
 	rotate([0,0,-rotation.z]) rotate([0,-rotation.y,0]) rotate([-rotation.x,0,0]) children();

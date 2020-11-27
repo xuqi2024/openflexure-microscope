@@ -110,10 +110,6 @@ wall_t=2; //thickness of the stiffening walls
 zawall_h = z_flexures_z2 - 10; //height of wall near Z anchor
 zbwall_h = z_flexures_z2 - 10; //height of bridge over Z lever
 
-illumination_dovetail_screws = [[20,z_nut_y,leg_height-2],[-20,z_nut_y,leg_height-2],
-                           [0,(leg_r + leg_outer_w)/sqrt(2) + 4,leg_height-2]];
-                      // positions of screws that mount the adjustable version of the
-                      // illumination arm
 condenser_clip_y = -8; //position of dovetail for old condenser assembly TODO: rename this
 
 
