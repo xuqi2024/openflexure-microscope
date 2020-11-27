@@ -18,6 +18,7 @@ use <compact_nut_seat.scad>
 use <main_body_transforms.scad>
 use <main_body.scad>
 use <feet.scad>
+use <libs/libdict.scad>
 
 bottom_thickness = 1.0;
 inset_depth = 3.0;
@@ -42,8 +43,14 @@ driver_support = 4.0;
 base_height = tall_bucket_base?45:30;
 
 //the y poistion where the base forms a point
-//TODO fix leg_r
-base_corner_y = (-(leg_r-flex_dims().y-wall_t/2+leg_outer_w/2)/sqrt(2)-wall_t/2-15);
+function base_corner_y(params) = let(
+    leg_r = key_lookup("leg_r", params),
+    // calculate the radius that the center of the wall inside the xy stage is on
+    // drawing a line from origin through a back leg
+    on_rad = leg_r-flex_dims().y-wall_t/2+leg_outer_w(params)/2,
+    // project this point ont the y axis:
+     = -on_rad/sqrt(2)
+) on_y_ax - wall_t/2 - 15;
 
 module foot_footprint(tilt=0){
     // the footprint of one foot/actuator column
@@ -109,7 +116,7 @@ module microscope_bottom(params, enlarge_legs=1.5, lugs=true, feet=true, legs=tr
         wall_between_actuators(params);
     }
     if(feet){
-        each_actuator(params) translate([0, actuating_nut_r]) foot_footprint();
+        each_actuator(params) translate([0, actuating_nut_r(params)]) foot_footprint();
         translate([0, z_nut_y]) foot_footprint(tilt=z_actuator_tilt);
     }
 
@@ -121,8 +128,8 @@ module microscope_bottom(params, enlarge_legs=1.5, lugs=true, feet=true, legs=tr
 module microscope_legs(params){
     difference(){
         each_leg(params) union(){
-            projection(cut=true) translate([0,0,-tiny()]) leg();
-            projection(cut=true) translate([0,-5,-tiny()]) leg();
+            projection(cut=true) translate([0,0,-tiny()]) leg(params);
+            projection(cut=true) translate([0,-5,-tiny()]) leg(params);
         }
         translate([-999,0]) square(999*2);
     }
@@ -131,8 +138,8 @@ module microscope_legs(params){
 module feet_in_place(params, grow_r=1, grow_h=2){
     difference() {
         union(){
-            each_actuator(params) translate([0,actuating_nut_r,0]) minkowski(){
-                hull() outer_foot(lie_flat=false);
+            each_actuator(params) translate([0,actuating_nut_r(params),0]) minkowski(){
+                hull() outer_foot(params, lie_flat=false);
                 cylinder(r=grow_r, h=grow_h, center=true);
             }
             translate([0,z_nut_y,0]) minkowski(){
@@ -147,8 +154,8 @@ module feet_in_place(params, grow_r=1, grow_h=2){
 
 module footprint(params){
     hull(){
-        translate([-2, base_corner_y]) square(4);
-        each_actuator(params) translate([0, actuating_nut_r]) foot_footprint();
+        translate([-2, base_corner_y(params)]) square(4);
+        each_actuator(params) translate([0, actuating_nut_r(params)]) foot_footprint();
         translate([0, z_nut_y]) foot_footprint(tilt=z_actuator_tilt);
         offset(wall_thickness) pi_footprint();
     }
@@ -179,8 +186,8 @@ module bucket_base_stackable(params, h=base_height){
             translate([0,0,h-10]) linear_extrude(tiny()) offset(-wall_thickness) footprint(params);
             translate([0,0,h-tiny()]) linear_extrude(tiny()) difference(){
                 offset(-3.0) footprint(params);
-                translate([-99, base_corner_y+10-999]) square(999);
-                each_actuator(params) translate([-99, actuating_nut_r-5]) square(999);
+                translate([-99, base_corner_y(params)+10-999]) square(999);
+                each_actuator(params) translate([-99, actuating_nut_r(params)-5]) square(999);
             }
             translate([0,0,h]) linear_extrude(999) offset(0) footprint(params);
         }
@@ -274,17 +281,17 @@ module mounting_holes(params){
     // is approximately "self tapping" (a triangular hole, to allow for some
     // space for swarf).
     mirror([1,0,0]) leg_frame(params, 45)
-    translate([0, actuating_nut_r, 0]){
+    translate([0, actuating_nut_r(params), 0]){
         cylinder(d=4.4, h=20, center=true);
         rotate(90) trylinder_selftap(3, h=999, center=true);
     }
     // this hole is moved out of the way of the sd-card cutout
     leg_frame(params, 45)
-    translate([-10, actuating_nut_r-1, 0]){
+    translate([-10, actuating_nut_r(params)-1, 0]){
         cylinder(d=4.4, h=20, center=true);
         rotate(90) trylinder_selftap(3, h=999, center=true);
     }
-    translate([0, base_corner_y+7, 0]){
+    translate([0, base_corner_y(params)+7, 0]){
         cylinder(d=4.4, h=20, center=true);
         rotate(30) trylinder_selftap(3, h=999, center=true);
     }

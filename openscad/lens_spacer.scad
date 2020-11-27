@@ -46,12 +46,12 @@ module camera_mount_top_slice(){
     linear_extrude(tiny()) projection(cut=true) camera_mount();
 }
 
-module lens_spacer(lens_r, parfocal_distance, lens_h, lens_spacing){
+module lens_spacer(params, lens_r, parfocal_distance, lens_h, lens_spacing){
     // Mount a lens some distance from the camera
 
     //z position of lens once in microscope
     //lens sits parfocal_distance below the sample
-    lens_z_microscope = sample_z - parfocal_distance;
+    lens_z_microscope = key_lookup("sample_z", params) - parfocal_distance;
 
     // z_position of the lens for this piece.
     //This is the height of the camera_sensor above the circuit board plus the spacing between the lens and the sensor
@@ -98,6 +98,7 @@ module lens_spacer(lens_r, parfocal_distance, lens_h, lens_spacing){
 if(optics=="pilens"){
     // Optics module for picamera v2 lens, using trylinder
     lens_spacer(
+        params = default_params(),
         lens_r = lens_radius(),
         parfocal_distance = lens_parfocal_distance(),
         lens_h = lens_height(),

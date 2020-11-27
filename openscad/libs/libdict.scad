@@ -98,3 +98,10 @@ function key_lookup(key, dict) =
         index = search([key], dict, 1, 0)[0]
     )  assert (index!=[], "Key lookup failed, key not found!") dict[index][1];
 
+// Key lookup for key value pair "dictionary".
+// Unlike the built in lookup this works with strings.
+function replace_value(key, value, dict) = 
+    assert(is_string(key), "`key` must be a string")
+    assert(valid_dict(dict), "`dict` must be a valid 'dictionary'")
+    assert(is_in(key, _keylist(dict)), "`key` not found in dictionary!")
+    [for (kv_pair = dict) key!=kv_pair[0] ? kv_pair : [key, value]];

@@ -42,11 +42,27 @@ beamsplitter = true; //enables a cut-out in some optics modules for a beamsplitt
 smart_brim_r = 5;
 enable_smart_brim = true;
 
-// This sets the basic geometry of the microscope
-sample_z = 75; // z position of sample
-leg_height = sample_z-10; // height of the top of the leg. Shorter by 10 to give space to insert nuts.
+// This sets the basic geometry of the default microscope
+// Stages can be built with modified parameters but with **no guarantee** that any other
+// set of parameters will work.
+// These parameters define the default size for the structural elements of the micoroscope, optics parameters are set seperately.
+function default_params() = [["leg_r", 30],     // radius on which the innermost part of legs sit. (This sets the stage size)
+                             ["sample_z", 75 ], // z position of sample
+                             ["stage_t", 15],   //thickness of the XY stage (at thickest point, most is 1mm less)
+                             ["leg_block_t", 5] // Thickness of the block at the top and bottom of the leg
+                            ]; 
 
-//leg_r = 30; // radius on which the innermost part of legs sit. (This sets the stage size)
+
+// height of the top of the leg. Shorter than sample x so that you can get nuts in, and so the slide doesn't crash.
+function leg_height(params) = let(
+    sample_z = key_lookup("sample_z", params),
+    stage_t = key_lookup("stage_t", params),
+    leg_block_t = key_lookup("leg_block_t", params)
+) sample_z - stage_t + leg_block_t;
+
+
+
+//leg_r = 30; 
 hole_r = 20; // size of hole in the stage
 xy_lever_ratio = 4.0/7.0; // mechanical advantage of actuator over stage - can be used to trade speed and precision
 z_lever_ratio = 1.0; // as above, for Z axis (must be >1)
@@ -70,30 +86,34 @@ function flex_dims() = let
 
 flex_a = 0.15;    // sin(8.62 deg) => sine of the angle through which flexures can be bent
 
+
+// TODO: Work out what to do with this. This used to be called every time the params file was included
+//       but as we move away from includes it is less useful, and sample_z is no longer global.
 // Compile a sensible version string
-version_string = str("v",version_numstring, sample_z, motor_lugs?"-M":"");
-echo(str("Compiling OpenFlexure Microscope ",version_string));
+//version_string = str("v",version_numstring, sample_z, motor_lugs?"-M":"");
+//echo(str("Compiling OpenFlexure Microscope ",version_string));
 
 
-leg_block_t = 5; // Thickness of the block at the top and bottom of the leg
-stage_t = sample_z-leg_height + leg_block_t; //thickness of the XY stage (at thickest point, most is 1mm less)
 stage_hole_inset = flex_dims().y+4; // how far the holes on the XY stage are inset from leg_r
 flex_z1 = 0;      // z position of lower flexures for XY axis
-flex_z2 = leg_height-leg_block_t; //height of upper XY flexures
+function flex_z2(params) = leg_height(params) - key_lookup("leg_block_t", params); //height of upper XY flexures
 z_strut_t = 6;  // (z) thickness of struts for Z axis
-function leg_dims() = [4,flex_dims().x,flex_z2+flex_dims().z]; // size of vertical legs
+function leg_dims(params) = [4,flex_dims().x,flex_z2(params)+flex_dims().z]; // size of vertical legs
 leg_middle_w = 12; // width of the middle part of each leg
 actuator_h = 25; //height of the actuator columns
 dz = 0.5; //small increment in Z (~ 2 layers)
 
-leg_outer_w = leg_middle_w + 2*flex_dims().y + 2*leg_dims().x; // overall width of parallelogram legs that support the stage
-actuator = [3*1.2+2*2,(flex_z2 - flex_z1)*xy_lever_ratio,6]; // dimensions of the core part of the actuating levers for X and Y - NB should match the column_base_r in compact_nut_seat.scad
-actuating_nut_r = (flex_z2 - flex_z1)*xy_lever_ratio; // distance from leg_r to the actuating nut/screw for the XY axes
-xy_actuator_travel = actuating_nut_r*0.15; // distance moved by XY axis actuators
+function leg_outer_w(params) = leg_middle_w + 2*flex_dims().y + 2*leg_dims(params).x; // overall width of parallelogram legs that support the stage
+
+function actuator_dims(params) = [3*1.2+2*2,(flex_z2(params) - flex_z1)*xy_lever_ratio,6]; // dimensions of the core part of the actuating levers for X and Y - NB should match the column_base_r in compact_nut_seat.scad
+
+function actuating_nut_r(params) = (flex_z2(params) - flex_z1)*xy_lever_ratio; // distance from leg_r to the actuating nut/screw for the XY axes
+
+function xy_actuator_travel(params) = actuating_nut_r(params)*0.15; // distance moved by XY axis actuators
 
 // Z axis
 z_flexures_z1 = 8; // height of the lower flexure on z actuator
-z_flexures_z2 = min(leg_height - 12, 35); // height of the upper flexure on z actuator
+function z_flexures_z2(params) = min(leg_height(params) - 12, 35); // height of the upper flexure on z actuator
 objective_mount_back_y = objective_mount_y + 2; //back of objective mount
 z_anchor_y = objective_mount_back_y + z_strut_l + 2*flex_dims().y; // fixed end of the flexure-hinged lever that actuates the Z axis
 z_anchor_w = 20; //width of the Z anchor
@@ -103,14 +123,19 @@ z_nut_y = z_anchor_y - flex_dims().y/2 + sqrt(zll*zll - zfz*zfz);
 z_actuator_travel = zll*0.15; // distance moved by the Z actuator
 z_actuator_tilt = -asin(z_flexures_z1/zll); //angle of the Z actuator
 
-function z_flexure_x(leg_r) = (leg_r-flex_dims().y-max(5,leg_dims().z*0.1))*sqrt(2); // x position of the outside of the Z-axis static anchors (either side of the XY stage, on the X axis) (no longer used by Z axis but still in use elsewhere.)
+//TODO understand and rename this
+// x position of the outside of the Z-axis static anchors (either side of the XY stage, on the X axis) 
+// (no longer used by Z axis but still in use elsewhere.)
+function z_flexure_x(params) = let(
+    leg_r = key_lookup("leg_r", params),
+    tenth_of_height = max(5,leg_dims(params).z*0.1)
+) (leg_r-flex_dims().y-tenth_of_height)*sqrt(2);
 
 leg_link_spacing = 10;
 base_t=1; // thickness of the flat base of the structure
 wall_h=15; // height of the stiffening vertical(ish) walls
 wall_t=2; //thickness of the stiffening walls
-zawall_h = z_flexures_z2 - 10; //height of wall near Z anchor
-zbwall_h = z_flexures_z2 - 10; //height of bridge over Z lever
+function inner_wall_h(params) = z_flexures_z2(params) - 10; //height of walls inside xy_stage
 
 condenser_clip_y = -8; //position of dovetail for old condenser assembly TODO: rename this
 
@@ -121,9 +146,8 @@ condenser_clip_y = -8; //position of dovetail for old condenser assembly TODO: r
 // To get only the front holes run `base_mounting_holes("front")`
 function base_mounting_holes(params, type="all") = let
 (
-    leg_r = key_lookup("leg_r", params),
-    lug_pos = [[z_flexure_x(leg_r)+4,-8,0],
-               [-z_flexure_x(leg_r)-4,-8,0]],
+    lug_pos = [[z_flexure_x(params)+4,-8,0],
+               [-z_flexure_x(params)-4,-8,0]],
     front_pos =[[-20,z_nut_y-4,0],
                 [20,z_nut_y-4,0]],
     lugs = (type == "lugs") || (type == "all"),
@@ -135,11 +159,6 @@ function base_mounting_holes(params, type="all") = let
 
 endstop_extra_ringheight=feet_endstops?1:0;
 endstop_hole_offset=0;
-//this is a temporary option to printfeet with smaller travel
-//without this with 15mm hole the stage hits the objective
-//the stage can move ~3mm in each direction, so the actuator only moves
-//~1.7 mm
-avoid_objective_xyfoot_offset=xy_actuator_travel-1.8;
 
 fl_cube_w = 16; //width of the fluorescence filter cube
 

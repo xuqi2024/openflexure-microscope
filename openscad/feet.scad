@@ -205,19 +205,19 @@ module middle_foot(lie_flat=false,letter="Z"){
         foot(travel=z_actuator_travel,bottom_tilt=0, actuator_tilt=z_actuator_tilt, hover=2, lie_flat=lie_flat,letter=letter);
 }
 
-module outer_foot(lie_flat=false,letter=""){
-    foot(travel=xy_actuator_travel,bottom_tilt=15, lie_flat=lie_flat,letter=letter);
+module outer_foot(params, lie_flat=false,letter=""){
+    foot(travel=xy_actuator_travel(params),
+         bottom_tilt=15,
+         lie_flat=lie_flat,
+         letter=letter);
 }
 
-module feet_for_printing(lie_flat=true){
+module feet_for_printing(params, lie_flat=true){
     x_tr = ss_outer().x+1.5;
-    translate([x_tr, 0]) outer_foot(lie_flat=lie_flat,letter="X");
+    translate([x_tr, 0]) outer_foot(params, lie_flat=lie_flat,letter="X");
     middle_foot(lie_flat=lie_flat,letter="Z");
-    translate([-x_tr, 0]) outer_foot(lie_flat=lie_flat,letter="Y");
+    translate([-x_tr, 0]) outer_foot(params, lie_flat=lie_flat,letter="Y");
 }
-//outer_foot(lie_flat=true);
-//foot(bottom_tilt=0, actuator_tilt=0, hover=2, lie_flat=true);
-feet_for_printing(lie_flat=true);
-//middle_foot();
-//translate([20,0,0])rotate([90,0,0]) endstop_switch();
-//translate([0,30,0]) feet_for_printing(lie_flat=false);
+
+params = default_params();
+feet_for_printing(params, lie_flat=true);

@@ -5,7 +5,7 @@ This file should render the optics of the microscope...
 (c) 2017 Richard Bowman, released under CERN Open Hardware License
 
 */
-
+//TODO update this to work with dictionaries!
 use <../optics.scad>
 include <../microscope_parameters.scad>
 

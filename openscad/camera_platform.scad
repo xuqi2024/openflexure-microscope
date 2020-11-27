@@ -34,10 +34,12 @@ dt_bottom = -2; //bottom of dovetail (<0 to allow some play)
 $fn=24;
 
 
-module camera_platform(
-        base_r, //radius of mount body
-        h //height of dovetail (camera will be above this by 4mm)
-    ){
+// camera_platform(params, base_r, h)
+//
+// * params - the microscope parameter dictionary
+// * base_r - radius of mount body
+// * h      - height of dovetail (camera will be above this by 4mm)
+module camera_platform(params, base_r, h){
     // Make a camera platform with a dovetail on the side and a platform on the top
     difference(){
         union(){
@@ -45,11 +47,11 @@ module camera_platform(
             sequential_hull(){
                 translate([0,0,0]) hull(){
                     cylinder(r=base_r,h=tiny());
-                    objective_fitting_base();
+                    objective_fitting_base(params);
                 }
                 translate([0,0,h]) hull(){
                     cylinder(r=base_r,h=tiny());
-                    objective_fitting_base();
+                    objective_fitting_base(params);
                     camera_bottom_mounting_posts(h=tiny());
                 }
             }
@@ -58,8 +60,6 @@ module camera_platform(
             translate([0,0,h]) camera_bottom_mounting_posts(r=2, h=4);
         }
 
-        // fitting for the objective mount
-        //translate([0,0,dt_bottom]) objective_fitting_wedge();
         // Mount for the nut that holds it on
         translate([0,0,-4]) objective_fitting_cutout(y_stop=true);
         // add the camera mount
@@ -69,7 +69,10 @@ module camera_platform(
     }
 }
 
+// TODO: Stop this being in the global scope
+params = default_params();
+sample_z = key_lookup("sample_z", params);
 spacer_z = sample_z - (lens_parfocal_distance()+camera_sensor_height()+lens_spacing());
 platform_h = spacer_z-5;  // -5 as board is 1mm thick mounting posts are 4mm thick
-if(platform_h < z_flexures_z2) echo("Platform height too low for z-axis mounting");
-camera_platform(5, platform_h);
+assert(platform_h > z_flexures_z2(params), "Platform height too low for z-axis mounting");
+camera_platform(params, 5, platform_h);

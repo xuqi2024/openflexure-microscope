@@ -26,7 +26,7 @@ use <dovetail.scad>
 use <z_axis.scad>
 include <microscope_parameters.scad> // NB this defines "camera" and "optics"
 use <thorlabs_threads.scad>
-
+use <libs/libdict.scad>
 use <cameras/camera.scad> // this will define the 2 functions and 1 module for the camera mount, using the camera defined in the "camera" parameter.
 
 dt_bottom = -2; //bottom of dovetail (<0 to allow some play)
@@ -102,12 +102,13 @@ module camera_mount_top_slice(){
     // A thin slice of the top of the camera mount
     linear_extrude(d) projection(cut=true) camera_mount();
 }
-module objective_fitting_base(){
+module objective_fitting_base(params){
     // A thin slice of the mounting wedge that bolts to the microscope body
-    linear_extrude(d) projection() objective_fitting_wedge();
+    linear_extrude(d) projection() objective_fitting_wedge(params);
 }
 
 module camera_mount_body(
+        params,  //microscope parameter dictionary
         body_r, //radius of mount body
         body_top, //height of the top of the body
         dt_top, //height of the top of the dovetail
@@ -127,13 +128,13 @@ module camera_mount_body(
                 translate([0,0,camera_mount_top_z]) camera_mount_top_slice();
                 hull(){
                     translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=d);
-                    if(dovetail) translate([0,0,dt_bottom]) objective_fitting_base();
+                    if(dovetail) translate([0,0,dt_bottom]) objective_fitting_base(params);
                     if(fluorescence) fl_cube_casing();
                 }
                 union(){
                     if(fluorescence) fl_cube_casing();
                     translate([0,0,body_top]) cylinder(r=body_r,h=d);
-                    if(dovetail) translate([0,0,dt_top]) objective_fitting_base();
+                    if(dovetail) translate([0,0,dt_top]) objective_fitting_base(params);
                 }
                 // allow for extra coordinates above this, if wanted.
                 // this should really be done with a for loop, but
@@ -144,8 +145,6 @@ module camera_mount_body(
                 if(len(extra_rz) > 3) translate([0,0,extra_rz[3][1]-d]) cylinder(r=extra_rz[3][0],h=d);
             }
 
-            // fitting for the objective mount
-            //translate([0,0,dt_bottom]) objective_fitting_wedge();
             // Mount for the nut that holds it on
             translate([0,0,-1]) objective_fitting_cutout();
         }
@@ -156,8 +155,9 @@ module camera_mount_body(
 }
 
 
-module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
+module optics_module_rms(params, tube_lens_ffd=16.1, tube_lens_f=20,
     tube_lens_r=16/2+0.2, objective_parfocal_distance=45, tube_length=150, fluorescence=false, gripper_t=1, dovetail=true){
+    
     // This optics module takes an RMS objective and a tube length correction lens.
     // important parameters are below:
 
@@ -168,9 +168,12 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
     tube_lens_aperture = tube_lens_r - 1.5; // clear aperture of the tube lens
     pedestal_h = 2; // height of tube lens above bottom of lens assembly (to allow for flex)
 
-    //NOTE: sample_z is set in microscope_parameters.scad
     dovetail_top = min(27, sample_z-objective_parfocal_distance-0.5); //height of the top of the dovetail, i.e. the position of the objective's "shoulder"
     //tube_length (argument) is the distance behind the objective's "shoulder" where the image is formed.  This should be infinity (safe to use 9999) for infinity-corrected lenses, or 150 for 160mm tube length objectives (the image is formed ~10mm from the end of the tube).
+
+    sample_z = key_lookup("sample_z", params);
+    assert(sample_z > 60, "RMS objectives won't fit in small microscope frames!");
+    assert(objective_mount_y < 12, "RMS objectives won't fit in small microscope frames!");
 
     ///////////////// Lens position calculation //////////////////////////
     // calculate the position of the tube lens based on a thin-lens
@@ -205,7 +208,7 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
         // The bottom part is just a camera mount with a flat top
         difference(){
             // camera mount with a body that's shorter than the dovetail
-            camera_mount_body(body_r=lens_assembly_base_r, bottom_r=10.5, body_top=lens_assembly_z, dt_top=dovetail_top,fluorescence=fluorescence, dovetail=dovetail);
+            camera_mount_body(params, body_r=lens_assembly_base_r, bottom_r=10.5, body_top=lens_assembly_z, dt_top=dovetail_top,fluorescence=fluorescence, dovetail=dovetail);
             // camera cut-out and hole for the beam
             if(fluorescence){
                 optical_path_fl(tube_lens_aperture, lens_assembly_z);
@@ -246,33 +249,31 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
     }
 }
 
+params = default_params();
+if(optics=="rms_f40d16"){
+    // Optics module for RMS objective, using Comar 40mm singlet tube lens
+    
+    optics_module_rms(
+        params,
+        tube_lens_ffd=38,
+        tube_lens_f=40,
+        tube_lens_r=16/2+0.1,
+        objective_parfocal_distance=45,
+        fluorescence=beamsplitter,
+        gripper_t=0.65,
+        tube_length=150
+    );
+    
+}else if(optics=="rms_f50d13" || optics=="rms_infinity_f50d13"){
+    // Optics module for RMS objective using ThorLabs ac127-050-a doublet tube lens
+    optics_module_rms(
+        params,
+        tube_lens_ffd=47,
+        tube_lens_f=50,
+        tube_lens_r=12.7/2+0.1,
+        objective_parfocal_distance=45,
+        fluorescence=beamsplitter,
+        tube_length=(optics=="rms_f50d13" ? 150 : 99999) //use 150 for standard finite-conjugate objectives (cheap ones) or 9999 for infinity-corrected lenses (usually more expensive).
+    );
 
-//optics="beamsplitter_led_mount";
-//optics="rms_f50d13";
-//camera="picamera2";
-difference(){
-    if(optics=="rms_f40d16"){
-        // Optics module for RMS objective, using Comar 40mm singlet tube lens
-        optics_module_rms(
-            tube_lens_ffd=38,
-            tube_lens_f=40,
-            tube_lens_r=16/2+0.1,
-            objective_parfocal_distance=45,
-            fluorescence=beamsplitter,
-            gripper_t=0.65,
-            tube_length=150
-        );
-        if(sample_z < 60 || objective_mount_y < 12) echo("Warning: RMS objectives won't fit in small microscope frames!");
-    }else if(optics=="rms_f50d13" || optics=="rms_infinity_f50d13"){
-        // Optics module for RMS objective using ThorLabs ac127-050-a doublet tube lens
-        optics_module_rms(
-            tube_lens_ffd=47,
-            tube_lens_f=50,
-            tube_lens_r=12.7/2+0.1,
-            objective_parfocal_distance=45,
-            fluorescence=beamsplitter,
-            tube_length=(optics=="rms_f50d13" ? 150 : 99999) //use 150 for standard finite-conjugate objectives (cheap ones) or 9999 for infinity-corrected lenses (usually more expensive).
-        );
-        if(sample_z < 60 || objective_mount_y < 12) echo("Warning: RMS objectives won't fit in small microscope frames!");
-    }
 }

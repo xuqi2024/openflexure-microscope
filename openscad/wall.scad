@@ -73,7 +73,7 @@ module inner_wall_vertex(params, leg_angle, x, h=wall_h, thick=false){
 module z_bridge_wall_vertex(params){
     // This is the vertex of the "inner wall" nearest the
     // new (cantilevered) Z axis.
-    inner_wall_vertex(params, 45, leg_outer_w/2+wall_t/2, zbwall_h);
+    inner_wall_vertex(params, 45, leg_outer_w(params)/2+wall_t/2, inner_wall_h(params));
 }
 
 module z_anchor_wall_vertex(params){
@@ -81,9 +81,8 @@ module z_anchor_wall_vertex(params){
     // to the Z anchor - it doesn't make sense to use the
     // function above as it's got the wrong symmetry.
     // We also use this in a few places so it's worth saving
-    leg_r = key_lookup("leg_r", params);
-    translate([-z_flexure_x(leg_r)-wall_t/2,-wall_t/2,0]){
-        wall_vertex(h=zawall_h, y_tilt=atan(wall_t/zawall_h));
+    translate([-z_flexure_x(params)-wall_t/2,-wall_t/2,0]){
+        wall_vertex(h=inner_wall_h(params), y_tilt=atan(wall_t/inner_wall_h(params)));
     }
 }
 
@@ -91,5 +90,5 @@ module y_actuator_wall_vertex(params, x=1){
     // A wall vertex for the y actuator.  x=-1,1 picks the side
     // of the actuator where the vertex is placed.
     leg_frame(params, 45) translate([x*(ss_outer().x/2-wall_t/2),
-                             actuating_nut_r, 0]) wall_vertex();
+                             actuating_nut_r(params), 0]) wall_vertex();
 }

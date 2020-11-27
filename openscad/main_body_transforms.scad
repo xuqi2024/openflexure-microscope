@@ -41,17 +41,17 @@ module each_actuator(params){
 }
 
 module place_on_wall(params){
-    leg_r = key_lookup("leg_r", params);
     //this is a complicated transformation!  The wall runs from
-    wall_start = [z_flexure_x(leg_r)+wall_t/2,-wall_t/2,0]; // to
-    wall_end = ([1,1,0]*(leg_r+actuating_nut_r)
+    leg_r = key_lookup("leg_r", params);
+    wall_start = [z_flexure_x(params)+wall_t/2,-wall_t/2,0]; // to
+    wall_end = ([1,1,0]*(leg_r+actuating_nut_r(params))
                  +[1,-1,0]*(ss_outer().x/2-wall_t/2))/sqrt(2);
     wall_disp = wall_end - wall_start; // vector along the wall base
     // pivot about the starting corner of the wall so X is along it
     translate(wall_start) rotate(atan(wall_disp.y/wall_disp.x))
     // move out to the surface (the above are centres of cylinders)
     // and then align y with the vertical axis of the wall
-    translate([0,-wall_t/2,0]) rotate([90-atan(wall_t/zawall_h/sqrt(2)),0,0])
+    translate([0,-wall_t/2,0]) rotate([90-atan(wall_t/inner_wall_h(params)/sqrt(2)),0,0])
     // now X and Y are in the plane of the wall, and z=0 is its surface.
     children();
 }
