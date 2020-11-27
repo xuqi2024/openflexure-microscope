@@ -149,13 +149,13 @@ module slip_plate(w){
                 reflect([90,0,0]){
                     translate([(fl_cube_w/2+3),0,0]){
                         hull(){
-                            translate([0,0,top_filter_cube+slip_plate_thickness]){
+                            translate([0,0,top_filter_cube+slip_plate_thickness+1]){
                                 rotate([-90,0,0]){
-                                        cylinder(r=2, h= 2);
+                                        cylinder(r=2, h= 4);
                                 }
                             }   
-                            translate([0,1,2]){
-                                cube([4,2,4], center=true);
+                            translate([0,2,2]){
+                                cube([5,4,4], center=true);
                             }    
                         }
                     }
