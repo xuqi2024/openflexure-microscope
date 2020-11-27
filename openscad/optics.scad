@@ -37,6 +37,8 @@ fl_cube_top = fl_cube_bottom + fl_cube_w + 2.7; //top of fluorescence cube
 fl_cube_top_w = fl_cube_w - 2.7;
 $fn=24;
 
+beamsplitter = false;
+delta_stage = true;
 
 if(beamsplitter) echo(str("fl_cube_bottom: ", fl_cube_bottom, " for optics module: ", camera, "_", optics));
 
@@ -133,54 +135,75 @@ module camera_mount_body(
     // Just add a lens mount on top for a complete optics module!
     dt_h=dt_top-dt_bottom;
     camera_mount_rotation = delta_stage ? -45:0; // The angle of the camera mount (the ribbon cables exits at 135* from dovetail for '0*' &  180* from dovetail for '-45*')
-    fl_cube_rotation = delta_stage ?  0:-60; // The angle of the block to hold the fl cube (0* for the fl cube exiting at 180* from the dovetail and -60* for the fl cube exiting at 120* from the dovetail)
+    fl_cube_rotation = delta_stage ? -60:0; // The angle of the block to hold the fl cube (0* for the fl cube exiting at 180* from the dovetail and -60* for the fl cube exiting at 120* from the dovetail)
+    // This is the main body of the mount
     union(){
         difference(){
-            // This is the main body of the mount
-            hull(){
-                rotate(camera_mount_rotation)translate([0,0,camera_mount_top_z]) camera_mount_top_slice(); //Where the tube meets the camera
+            union(){
+                // Make the main tube, then add the dovetail (if needed)
+                hull(){
+                    //hull together the base, fluorescence (if needed) and the tube
+                    rotate(camera_mount_rotation)translate([0,0,camera_mount_top_z]) camera_mount_top_slice(); //Where the tube meets the camera
                 
-                if(fluorescence){ 
-                    rotate(fl_cube_rotation){hull(){
-                        fl_cube_casing(); //the box to fit the fl cube in
-                        fl_screw_holes(d = 4, h =8); //the mounts for the fl cube screw holes
-                      }
+                    if(fluorescence){ 
+                        rotate(fl_cube_rotation){hull(){
+                            fl_cube_casing(); //the box to fit the fl cube in
+                            fl_screw_holes(d = 4, h =8); //the mounts for the fl cube screw holes
+                        }
                     }
-                }
-                
+                } 
                 translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=tiny()); //the bottom of the tube
                 translate([0,0,body_top]) cylinder(r=body_r,h=tiny()); //the top of the tube
-                if(dovetail){
-                    translate([0,0,dt_bottom]) objective_fitting_base(); //the bottom of the dovetail
-                    translate([0,0,dt_top]) objective_fitting_base(); //the top of the dovetail
-                }
-
 
                 // allow for extra coordinates above this, if wanted.
                 // this should really be done with a for loop, but
                 // that breaks the sequential_hull, hence the kludge.
+                // TODO This can now be down with a for loop.
                 if(len(extra_rz) > 0) translate([0,0,extra_rz[0][1]-tiny()]) cylinder(r=extra_rz[0][0],h=tiny());
                 if(len(extra_rz) > 1) translate([0,0,extra_rz[1][1]-tiny()]) cylinder(r=extra_rz[1][0],h=tiny());
                 if(len(extra_rz) > 2) translate([0,0,extra_rz[2][1]-tiny()]) cylinder(r=extra_rz[2][0],h=tiny());
                 if(len(extra_rz) > 3) translate([0,0,extra_rz[3][1]-tiny()]) cylinder(r=extra_rz[3][0],h=tiny());
             }
-
-            // Mount for the nut that holds it on
-            translate([0,0,-1]) objective_fitting_cutout(params);
-            // screw holes  and faceplate for fl module
-            if(fluorescence){ 
-                rotate(fl_cube_rotation){
-                    translate([0,-2.5,0])fl_screw_holes(d = 2.5, h = 6);
+            if(dovetail){
+                //Make the dovetail by sequentially hulling from bottom, through tube to dovetail
+                sequential_hull(){
                     hull(){
-                        translate([0,-fl_cube_w,fl_cube_bottom+fl_cube_w/2+3.5])cube([fl_cube_w+15,fl_cube_w,fl_cube_w+7],center=true);
-                        translate([0,-fl_cube_w-6,fl_cube_bottom++fl_cube_w/2+9])cube([fl_cube_w+20,fl_cube_w,fl_cube_w+6],center = true);
+                        // all the things at the bottom
+                        rotate(camera_mount_rotation)translate([0,0,camera_mount_top_z]) camera_mount_top_slice(); //Where the tube meets the camera
+                        translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=d); //the bottom of the tube
+                        translate([0,0,dt_bottom]) objective_fitting_base(); //the bottom of the dovetail
+                    }                        
+                    hull(){
+                        // the tube
+                        translate([0,0,body_top]) cylinder(r=body_r,h=d); //the top of the tube
+                        translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=d); //the bottom of the tube
+                    }
+                    hull(){
+                        // the dovetail
+                        translate([0,0,dt_bottom]) objective_fitting_base(); //the bottom of the dovetail
+                        translate([0,0,dt_top]) objective_fitting_base(); //the top of the dovetail
                     }
                 }
             }
         }
-
-        // add the camera mount
-        rotate(camera_mount_rotation)translate([0,0,camera_mount_top_z]) camera_mount();
+            
+        // fitting for the objective mount
+        //translate([0,0,dt_bottom]) objective_fitting_wedge();
+        // Mount for the nut that holds it on
+        translate([0,0,-1]) objective_fitting_cutout(params);
+        // screw holes  and faceplate for fl module
+        if(fluorescence){ 
+            rotate(fl_cube_rotation){
+                translate([0,-2.5,0])fl_screw_holes(d = 2.5, h = 6);
+                hull(){
+                    translate([0,-fl_cube_w,fl_cube_bottom+fl_cube_w/2+3.5])cube([fl_cube_w+15,fl_cube_w,fl_cube_w+7],center=true);
+                    translate([0,-fl_cube_w-6,fl_cube_bottom++fl_cube_w/2+9])cube([fl_cube_w+20,fl_cube_w,fl_cube_w+6],center = true);
+                }
+            }
+        }
+    }
+    // add the camera mount
+    rotate(camera_mount_rotation)translate([0,0,camera_mount_top_z]) camera_mount();
     }
 }
 
