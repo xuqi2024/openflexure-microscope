@@ -65,7 +65,8 @@ function is_unique(list) =
 // No error checking, for use by valid_dict only!
 function _is_pairs(list) =
     !is_list(list) ? false :
-        !is_in(0, [for (pair = list) is_list(pair) && len(pair)==2 ? 1: 0]);
+        len(list)==0 ? false :
+            !is_in(0, [for (pair = list) is_list(pair) && len(pair)==2 ? 1: 0]);
 
 // Private function:
 // Checks all elements in the list are strings
@@ -98,10 +99,32 @@ function key_lookup(key, dict) =
         index = search([key], dict, 1, 0)[0]
     )  assert (index!=[], "Key lookup failed, key not found!") dict[index][1];
 
-// Key lookup for key value pair "dictionary".
-// Unlike the built in lookup this works with strings.
+// Creates a new dictionary with a key value pair replaced. Pair must already
+// be in dictionary.
 function replace_value(key, value, dict) = 
     assert(is_string(key), "`key` must be a string")
     assert(valid_dict(dict), "`dict` must be a valid 'dictionary'")
     assert(is_in(key, _keylist(dict)), "`key` not found in dictionary!")
     [for (kv_pair = dict) key!=kv_pair[0] ? kv_pair : [key, value]];
+
+
+// Creates a new dictionary with a a set of key value pair replaced
+// both inputs must be a dictionary. All keys in input must already be
+// in dictionary
+function replace_multiple_values(rep_dict, dict) =
+    assert(valid_dict(rep_dict), "`rep dict` must be a valid 'dictionary'")
+    assert(valid_dict(dict), "`dict` must be a valid 'dictionary'")
+    let(
+        // loop over all keys in replacement dict checking they are in the original
+        rep_keys = [for (key = _keylist(rep_dict))
+            assert(is_in(key, _keylist(dict)), "`key` not found in dictionary!")
+            key]
+    )
+    [for (kv_pair = dict) let(
+        key = kv_pair[0],
+        // check if this key is in the replacement dictionary and if so return index
+        // key is in [] because otherwise openscad will search for each letter rather than the string.
+        index = search([key], rep_dict, 1, 0)[0]
+        // if index is empty return original key value pair, else return the key with the replaced value
+        ) index == [] ? kv_pair : [key, rep_dict[index][1]]
+    ];

@@ -480,6 +480,19 @@ class TestValidDict5(BaseTestScadDict):
                '''
         self.run_scad(scad)
 
+class TestValidDict6(BaseTestScadDict):
+    """
+    Validation fails when a dictionary is empty list
+    """
+    def test(self):
+        '''Must be the only test in the class!'''
+        scad = '''
+               dict = [];
+               val = valid_dict(dict);
+               assert(val==false);
+               '''
+        self.run_scad(scad)
+
 class TestLookup1(BaseTestScadDict):
     """
     Test lookup gives the correct value with a valid dictionary

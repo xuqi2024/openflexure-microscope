@@ -14,6 +14,8 @@ def main():
     python over some powers of 10 and create a scad dictionary with 10, 100,
     1000 keys. Then writes in 20 scad key lookup commands. This is output to a file.
     """
+    this_dir = os.path.dirname(__file__)
+    temp_scad_file = os.path.join(this_dir, "temp.scad")
     temp_descriptor, temp_path = mkstemp(suffix='.echo')
 
     for i in range(3):
@@ -53,12 +55,12 @@ def main():
         echo(val);
         """
 
-        with open('temp.scad', 'w') as file_obj:
+        with open(temp_scad_file, 'w') as file_obj:
             file_obj.write(scad)
 
 
         start_time = time.time()
-        subprocess.run(["openscad", "-o", temp_path, "temp.scad"], check=True)
+        subprocess.run(["openscad", "-o", temp_path, temp_scad_file], check=True)
         delta_t = time.time()-start_time
 
         with open(temp_path, 'r') as file_obj:
@@ -70,7 +72,7 @@ def main():
         else:
             print(f"Openscad error for dictionary length {d_length}!")
     os.close(temp_descriptor)
-    os.remove("temp.scad")
+    os.remove(temp_scad_file)
 
 
 if __name__ == "__main__":
