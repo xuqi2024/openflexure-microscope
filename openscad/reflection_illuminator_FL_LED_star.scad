@@ -149,14 +149,21 @@ module slip_plate(w){
                 reflect([90,0,0]){
                     translate([(fl_cube_w/2+3),0,0]){
                         hull(){
-                            translate([0,0,top_filter_cube+slip_plate_thickness+1]){
-                                rotate([-90,0,0]){
-                                        cylinder(r=2, h= 4);
-                                }
-                            }   
+                            //bottom of mounting point
                             translate([0,2,2]){
                                 cube([5,4,4], center=true);
                             }    
+                            //mounting point to optics module
+                            translate([0,0,top_filter_cube+slip_plate_thickness+1]){
+                                rotate([-90,0,0]){
+                                        cylinder(r=2, h= 4); //mounting point to optics module
+                                }
+                            }
+                            //top of mounting point
+                            translate([-2.5,2,top_filter_cube+fl_cube_w+slip_plate_thickness-0.05]){
+                                cube([0.01,4,0.1], center=true);
+                            }    
+
                         }
                     }
                 }
@@ -164,9 +171,11 @@ module slip_plate(w){
             }
             reflect([90,0,0]){
                 hull(){
+                    //slip plate slots
                     translate([w/2-slip_plate_edge_slot,15,0])cylinder(r=1.3,h = slip_plate_thickness+1);
                     translate([w/2-slip_plate_edge_slot,37,0])cylinder(r=1.3,h = slip_plate_thickness+1);
                 }
+                    //mounting hole to optics module
                 translate([(fl_cube_w/2+3),0,(top_filter_cube)+slip_plate_thickness]){
                     rotate([-90,60,0]){
                         trylinder_selftap(nominal_d = 2.5,h= 6);
