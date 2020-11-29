@@ -118,13 +118,17 @@ function replace_multiple_values(rep_dict, dict) =
         // loop over all keys in replacement dict checking they are in the original
         rep_keys = [for (key = _keylist(rep_dict))
             assert(is_in(key, _keylist(dict)), "`key` not found in dictionary!")
-            key]
-    )
-    [for (kv_pair = dict) let(
-        key = kv_pair[0],
-        // check if this key is in the replacement dictionary and if so return index
-        // key is in [] because otherwise openscad will search for each letter rather than the string.
-        index = search([key], rep_dict, 1, 0)[0]
-        // if index is empty return original key value pair, else return the key with the replaced value
+            key
+        ]
+    ) //Finally return the updated dictionary using this long list comprehension.
+    [
+        for (kv_pair = dict) let(
+            key = kv_pair[0],
+            // check if this key is in the replacement dictionary and if so return index
+            // key is in [] because otherwise openscad will search for each letter rather
+            // than the string.
+            index = search([key], rep_dict, 1, 0)[0]
+            // if index is empty return original key value pair, else return the key with
+            // the replaced value
         ) index == [] ? kv_pair : [key, rep_dict[index][1]]
     ];

@@ -512,7 +512,7 @@ class TestLookup1(BaseTestScadDict):
 
 class TestKeyLookup2(BaseTestScadDict):
     """
-    Check openscad throws and error on lookup when there is a key clash in a
+    Check openscad throws an error on lookup when there is a key clash in a
     dictionary
     """
     def test(self):
@@ -525,6 +525,120 @@ class TestKeyLookup2(BaseTestScadDict):
                val = key_lookup("raisin", dict);
                '''
         self.run_scad(scad, has_errors=True)
+
+class TestKeyLookup3(BaseTestScadDict):
+    """
+    Check openscad throws an error on lookup when the key is not in the dictionary
+    """
+    def test(self):
+        '''Must be the only test in the class!'''
+        scad = '''
+               dict = [["a",3],
+                       ["ab", 22],
+                       ["raisin", 99],
+                       ["great", 4]];
+               val = key_lookup("aa", dict);
+               '''
+        self.run_scad(scad, has_errors=True)
+
+class TestKeyLookup4(BaseTestScadDict):
+    """
+    Check openscad throws an error on lookup when the key is a number
+    """
+    def test(self):
+        '''Must be the only test in the class!'''
+        scad = '''
+               dict = [["1",3],
+                       ["ab", 22],
+                       ["raisin", 99],
+                       ["great", 4]];
+               val = key_lookup(1, dict);
+               '''
+        self.run_scad(scad, has_errors=True)
+
+class TestReplace1(BaseTestScadDict):
+    """
+    Check that a value can be replaced and then read  and that other values are
+    unchanged
+    """
+    def test(self):
+        '''Must be the only test in the class!'''
+        scad = '''
+               dict = [["a",3],
+                       ["ab", 22],
+                       ["raisin", 99],
+                       ["great", 4]];
+               updated_dict = replace_value("ab", 66, dict);
+               val1 = key_lookup("a", updated_dict);
+               val2 = key_lookup("ab", updated_dict);
+               val3 = key_lookup("raisin", updated_dict);
+               val4 = key_lookup("great", updated_dict);
+               assert(val1==3);
+               assert(val2==66);
+               assert(val3==99);
+               assert(val4==4);
+               '''
+        self.run_scad(scad)
+
+class TestReplace2(BaseTestScadDict):
+    """
+    Check an error is thrown if the key is not in the dictionary
+    """
+    def test(self):
+        '''Must be the only test in the class!'''
+        scad = '''
+               dict = [["a",3],
+                       ["ab", 22],
+                       ["raisin", 99],
+                       ["great", 4]];
+               updated_dict = replace_value("aa", 66, dict);
+               '''
+        self.run_scad(scad, has_errors=True)
+
+class TestReplaceMultiple1(BaseTestScadDict):
+    """
+    Check that values can be replaced and then read, and that the others are
+    unchanged.
+    """
+    def test(self):
+        '''Must be the only test in the class!'''
+        scad = '''
+               dict = [["a",3],
+                       ["ab", 22],
+                       ["raisin", 99],
+                       ["great", 4]];
+               rep_dict = [["great", true],
+                           ["ab", [1,2,4]]];
+               updated_dict = replace_multiple_values(rep_dict, dict);
+               val1 = key_lookup("a", updated_dict);
+               val2 = key_lookup("ab", updated_dict);
+               val3 = key_lookup("raisin", updated_dict);
+               val4 = key_lookup("great", updated_dict);
+               assert(val1==3);
+               assert(val2==[1,2,4]);
+               assert(val3==99);
+               assert(val4==true);
+               '''
+        self.run_scad(scad)
+
+class TestReplaceMultiple2(BaseTestScadDict):
+    """
+    Check that an error is thrown if one of the replaement keys is not
+    in the input dictionary
+    """
+    def test(self):
+        '''Must be the only test in the class!'''
+        scad = '''
+               dict = [["a",3],
+                       ["ab", 22],
+                       ["raisin", 99],
+                       ["great", 4]];
+               rep_dict = [["great", true],
+                           ["abc", [1,2,4]]];
+               updated_dict = replace_multiple_values(rep_dict, dict);
+               '''
+        self.run_scad(scad, has_errors=True)
+
 
 def warns(output):
     """
