@@ -4,7 +4,7 @@ include <./microscope_parameters.scad>;
 use <./dovetail.scad>;
 
 LEDstar_r = 19/2;
-extra_space = 2.5;
+extra_space = 2.7; //The xtra space needed between the radius of the LED star and the size of the screw head
 slip_plate_thickness=2;
 slip_plate_edge_slot  =3;
 excitation_thickness = 3.5;
