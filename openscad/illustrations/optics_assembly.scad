@@ -20,14 +20,14 @@ lenses=true;
 
 module lens(d=16, f=40, ct=4.5){
     $fn=60;
-    color("PaleTurquoise")render(6)intersection(){
+    color("PaleTurquoise", .60)render(6)intersection(){
         cylinder(d=d, h=999);
         translate([0,0,-f+ct]) sphere(r=f);
     }
 }
 module led(){
     $fn=60;
-    color("white")render(6)union(){
+    color("white", .75)render(6)union(){
         cylinder(d=6, h=0.7);
         cylinder(d=5, h=5);
         translate([0,0,5]) sphere(r=5/2);
@@ -123,7 +123,7 @@ if(mounts) cutaway("DimGray"){
 
 
 if(lenses){
-    translate([0,0,12.8]) lens(d=12.7, f=24);
+    translate([0,0,12.8]) lens(d=12.7, f=15);
 
     translate([0,0,40.1]) rendered_objective();
 
