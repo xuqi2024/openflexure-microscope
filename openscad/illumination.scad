@@ -242,10 +242,11 @@ module tall_condenser(lens_d, lens_t, lens_assembly_z){
 }
 
 //TODO the lens_assembly_z should be adjusted to a focal length parameter
-module condenser(lens_d=13, lens_t=1, lens_assembly_z= 30){
+module condenser(params, lens_d=13, lens_t=1, lens_assembly_z= 30){
     //This is the condenser that is printed.
+    condenser_angle = key_lookup("condenser_angle", params);
     difference(){
-        rotate([-15,0,0]){
+        rotate([-condenser_angle,0,0]){
             tall_condenser(lens_d, lens_t, lens_assembly_z);
         }
         mirror([0,0,1]){

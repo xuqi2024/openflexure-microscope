@@ -53,7 +53,8 @@ function default_params() = [["leg_r", 30],     // radius on which the innermost
                              ["leg_block_t", 5], // Thickness of the block at the top and bottom of the leg
                              ["stage_hole_r", 20], // size of hole in the stage
                              ["xy_lever_ratio", 4.0/7.0], // mechanical advantage of actuator over xy-stage - can be used to trade speed and precision
-                             ["z_lever_ratio", 1.0] //  mechanical advantage of actuator over objective mount (must be >1)
+                             ["z_lever_ratio", 1.0], //  mechanical advantage of actuator over objective mount (must be >1)
+                             ["condenser_angle", 15] //angle of the top of the condenser relative to the xy plane
                             ]; 
 
 
