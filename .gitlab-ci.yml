@@ -66,7 +66,6 @@ render:
       - add-apt-repository -y ppa:openscad/releases
       - apt-get update -qq
       - apt-get install -y -qq openscad git
-      - pip3 install -r requirements.txt
 
     script:
       - cd openscad/illustrations
