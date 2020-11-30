@@ -55,14 +55,14 @@ build:
       - merge_requests
       - web
 
-# render assemblies
+# render assemblies - uses xvfb as a virtual x-server
 render:
     stage: build
     image: ubuntu:18.04
 
     before_script:
       - apt-get update -qq
-      - apt-get -y -qq install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates python3-pip
+      - apt-get -y -qq install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates xvfb
       - add-apt-repository -y ppa:openscad/releases
       - apt-get update -qq
       - apt-get install -y -qq openscad git
@@ -70,7 +70,7 @@ render:
 
     script:
       - cd openscad/illustrations
-      - ./render_optics.sh
+      - xvfb-run --auto-servernum --server-args "-screen 0 1024x768x24" ./render_optics.sh
       - cd ../..
 
     artifacts:
