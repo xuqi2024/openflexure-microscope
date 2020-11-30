@@ -138,29 +138,20 @@ module camera_mount_body(
     union(){
         difference(){
             union(){
-                // Make the main tube, then add the dovetail (if needed)
-                hull(){
-                    //hull together the base, beamsplitter (if needed) and the tube
+                // Make the main tube, then add the dovetail and beamsplitter (if needed)
+                sequential_hull(){
+                    //hull together the base and the tube
                     rotate(camera_mount_rotation)translate([0,0,camera_mount_top_z]) camera_mount_top_slice(); //Where the tube meets the camera
-                
-                    if(beamsplitter){ 
-                        rotate(fl_cube_rotation){hull(){
-                            fl_cube_casing(); //the box to fit the fl cube in
-                            fl_screw_holes(d = 4, h =8); //the mounts for the fl cube screw holes
-                        }
-                    }
-                } 
-                translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=tiny()); //the bottom of the tube
-                translate([0,0,body_top]) cylinder(r=body_r,h=tiny()); //the top of the tube
+                    translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=tiny()); //the bottom of the tube
+                    translate([0,0,body_top]) cylinder(r=body_r,h=tiny()); //the top of the tube
 
-                // allow for extra coordinates above this, if wanted.
-                // this should really be done with a for loop, but
-                // that breaks the sequential_hull, hence the kludge.
-                // TODO This can now be down with a for loop.
-                if(len(extra_rz) > 0) translate([0,0,extra_rz[0][1]-tiny()]) cylinder(r=extra_rz[0][0],h=tiny());
-                if(len(extra_rz) > 1) translate([0,0,extra_rz[1][1]-tiny()]) cylinder(r=extra_rz[1][0],h=tiny());
-                if(len(extra_rz) > 2) translate([0,0,extra_rz[2][1]-tiny()]) cylinder(r=extra_rz[2][0],h=tiny());
-                if(len(extra_rz) > 3) translate([0,0,extra_rz[3][1]-tiny()]) cylinder(r=extra_rz[3][0],h=tiny());
+                    // allow for extra coordinates above this, if wanted.
+                    // this should really be done with a for loop, but
+                    // that breaks the sequential_hull, hence the kludge.
+                    if(len(extra_rz) > 0) translate([0,0,extra_rz[0][1]-tiny()]) cylinder(r=extra_rz[0][0],h=tiny());
+                    if(len(extra_rz) > 1) translate([0,0,extra_rz[1][1]-tiny()]) cylinder(r=extra_rz[1][0],h=tiny());
+                    if(len(extra_rz) > 2) translate([0,0,extra_rz[2][1]-tiny()]) cylinder(r=extra_rz[2][0],h=tiny());
+                    if(len(extra_rz) > 3) translate([0,0,extra_rz[3][1]-tiny()]) cylinder(r=extra_rz[3][0],h=tiny());
             }
             if(dovetail){
                 //Make the dovetail by sequentially hulling from bottom, through tube to dovetail
@@ -170,17 +161,32 @@ module camera_mount_body(
                         rotate(camera_mount_rotation)translate([0,0,camera_mount_top_z]) camera_mount_top_slice(); //Where the tube meets the camera
                         translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=d); //the bottom of the tube
                         translate([0,0,dt_bottom]) objective_fitting_base(); //the bottom of the dovetail
-                    }                        
-                    hull(){
-                        // the tube
-                        translate([0,0,body_top]) cylinder(r=body_r,h=d); //the top of the tube
-                        translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=d); //the bottom of the tube
                     }
+                    // the dovetail                        
+                    translate([0,0,dt_bottom]) objective_fitting_base(); //the bottom of the dovetail
                     hull(){
-                        // the dovetail
                         translate([0,0,dt_bottom]) objective_fitting_base(); //the bottom of the dovetail
                         translate([0,0,dt_top]) objective_fitting_base(); //the top of the dovetail
                     }
+                    hull(){
+                        // the tube
+                        translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=d); //the bottom of the tube
+                        translate([0,0,body_top]) cylinder(r=body_r,h=d); //the top of the tube
+                    }
+                }
+            }
+            if(beamsplitter){ 
+                // join together the top of the camera, the beamsplitter and the tube
+                hull(){
+                    rotate(camera_mount_rotation)translate([0,0,camera_mount_top_z]) camera_mount_top_slice(); //Where the tube meets the camera
+                    rotate(fl_cube_rotation){
+                        hull(){
+                            fl_cube_casing(); //the box to fit the fl cube in
+                            fl_screw_holes(d = 4, h =8); //the mounts for the fl cube screw holes
+                        }
+                    }
+                    translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=d); //the bottom of the tube
+                    translate([0,0,body_top]) cylinder(r=body_r,h=d); //the top of the tube
                 }
             }
         }
