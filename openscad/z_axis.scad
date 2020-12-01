@@ -254,8 +254,17 @@ module z_axis_casing_cutouts(params){
 
 ////////////// These modules define the actuator column and housing (where the screw/nut/band go)
 
-module z_actuator_column(params){
-    translate([0,z_nut_y(params),0]) actuator_column(actuator_h, tilt=z_actuator_tilt(params), join_to_casing=true);
+module z_actuator_column(params, ties_only=false){
+    ties = key_lookup("print_ties", params);
+    tilt = z_actuator_tilt(params);
+    translate([0,z_nut_y(params),0]){
+        if (! ties_only){
+                actuator_column(actuator_h, tilt=tilt, join_to_casing=ties);
+        }
+        else{
+            actuator_ties(tilt);
+        }
+    }
 }
 
 module z_actuator_housing(params, motor_lugs=motor_lugs){

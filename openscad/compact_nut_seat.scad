@@ -73,6 +73,89 @@ module m3_nut_trap_with_shaft(slot_angle=0,tilt=0)
 
 }
 
+module central_actuator_column(h, top){
+    //The central column of the actuator including the square head. The column extends down
+    //past the bottom of the base and must be cut
+    $fn=16;
+    r1 = column_base_r; //size of the bottom part
+    r2 = sqrt(top.x*top.x+top.y*top.y)/2; //outer radius of top
+    sequential_hull(){
+        translate([0, 0, -99]){
+            resize([2*r1, top.y, tiny()]){
+                cylinder(r=r1, h=tiny());
+            }
+        }
+        translate([0, 0, h-top.z - 2*(r2-r1)]){
+            resize([2*r1, top.y, tiny()]){
+                cylinder(r=r1, h=tiny());
+            }
+        }
+        translate([0, 0, h-top.z/2]){
+            cube(top, center=true);
+        }
+    }
+}
+
+module actuator_hooks(h,top){
+    //These are the hooks on the actuator
+    //Reflect to get two hooks
+    reflect([1,0,0]){
+        //Translate to the correct postion on the actuator
+        translate([top.x/2,0,h]){
+            //Mirror as build upside down
+            mirror([0,0,1]){
+                // The hook is the sequantiall hull of:
+                sequential_hull(){
+                    //A thin cube on the side wall of the block
+                    translate([-tiny(),-top.y/2,0]){
+                        cube([tiny(),top.y,top.z]);
+                    }
+                    //A thin cylinder inside the block so the nex section is thin
+                    translate([0, 0, 0.5]){
+                        scale([0.5 ,1, 1]){
+                            cylinder(d=4.5, h=top.z-2);
+                        }
+                    }
+                    //A compressed truncated cone just outside the block
+                    translate([1.5,0,0.5]){
+                        resize([3,4,3.5]){
+                            cylinder(d1=1, d2=4, h=4);
+                        }
+                    }
+                    //Another compressed truncated cone just under where the
+                    //hook rises
+                    translate([3.5,0,0.5]){
+                        resize([2.5,3.0,1.5]){
+                            cylinder(d1=1,d2=3.5);
+                        }
+                    }
+                    // A tri-lobular shape for the top of the hook formed from the union
+                    // of three cylinders.
+                    union(){
+                        reflect([0,1,0]){
+                            translate([4.5,0.5,0]){
+                                cylinder(d=1,h=1);
+                            }
+                        }
+                        translate([4,0,0]){
+                            cylinder(d=1,h=1);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+module actuator_ties(tilt=0, lever_tip=3){
+    // The ties for the actuator.
+    rotate([tilt,0,0]){
+        translate([0, 0, lever_tip+flex_dims().z+3]){
+                    cube([ss_outer().x-wall_t, 1, 0.5], center=true);
+        }
+    }
+}
+
 module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casing=true, no_voids=false){
     // An "actuator column", a nearly-vertical tower, with a nut trap and hooks
     // for elastic bands at the top, usually attached to a flexure at the bottom.
@@ -83,36 +166,22 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
     //flip_nut_slot: if set to true, the nut is inserted from -y
     //join_to_casing: if set to true, the column is joined to the casing by thin threads
     //no_voids: don't leave a void for the nut or screw, used for the drilling jig.
-    r1 = column_base_r; //size of the bottom part
+
     top = nut_slot + [3,3,nut_size + 1.5]; //size of the top part
-    r2 = sqrt(top.x*top.x+top.y*top.y)/2; //outer radius of top
     slot_angle = flip_nut_slot ? 180 : 0; //enter from -y if needed
     $fn=16;
     difference(){
-        rotate([tilt,0,0]) union(){
-            sequential_hull(){
-                // main body, starting at bottom of shaft
-                translate([0,0,-99]) resize([2*r1, top.y,tiny()]) cylinder(r=r1, h=tiny());
-                translate([0,0,h-top.z - 2*(r2-r1)]) resize([2*r1, top.y,tiny()]) cylinder(r=r1, h=tiny());
-                translate([0,0,h-top.z/2]) cube(top, center=true);
+        union(){
+            rotate([tilt,0,0]){
+                central_actuator_column(h, top);
+                // hooks for elastic bands/springs
+                actuator_hooks(h, top);
             }
-            // hooks for elastic bands/springs
-            reflect([1,0,0]) translate([top.x/2,0,h]) difference(){
-                mirror([0,0,1]) sequential_hull(){
-                    translate([-tiny(),-top.y/2,0]) cube([tiny(),top.y,top.z]);
-                    translate([0,0,0.5]) scale([0.5,1,1]) cylinder(d=4.5, h=top.z-2);
-                    translate([1.5,0,0.5]) resize([3,4,3.5]) cylinder(d1=1, d2=4, h=4);
-                    translate([3.5,0,0.5]) resize([2.5,3.0,1.5]) cylinder(d1=1,d2=3.5);
-                    union(){
-                        reflect([0,1,0]) translate([4.5,0.5,0]) cylinder(d=1,h=1);
-                        translate([4,0,0]) cylinder(d=1,h=1);
-                    }
-                }
-            }
-            // join the column to the casing, for strength during printing...
-            if(join_to_casing) translate([0,0,lever_tip+flex_dims().z+3]){
-                cube([ss_outer().x-wall_t, 1, 0.5], center=true);
-                //translate([-1/2,0,-0.25]) cube([1, ss_outer().y/2-wall_t/2, 0.5]); //this was too short...
+            // join the column to the casing, for strength during printing
+            // This module does the tilt itself so it can be rendered seperately
+            // for instructions
+            if(join_to_casing){
+                actuator_ties(tilt, lever_tip);
             }
         }
 
@@ -140,7 +209,8 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
         mirror([0,0,1]) cylinder(r=999,h=999,$fn=4);
     }
 }
-//actuator_column(25);
+actuator_column(25);
+
 
 module actuator_end_cutout(lever_tip=3-0.5 ){
     // This shape cuts off the end of an actuator, leaving a thin strip to
@@ -385,51 +455,10 @@ module actuator_shroud_core(h, w1, w2, lever, tilted=false, extend_back=tiny(), 
             translate([-nut_slot.x/2-0.5,0,ac_h-nut_slot.z-nut_size-1.5])
             cube(nut_slot + [1,999,1]);
 }
+
 module actuator_shroud(h, w1, w2, lever, tilted=false, extend_back=tiny(), ac_h=actuator_h, anchor=true){
     difference(){
         actuator_shroud_shell(h, w1, w2, lever, tilted=tilted, extend_back=extend_back, ac_h=ac_h);
         actuator_shroud_core(h, w1, w2, lever, tilted=tilted, extend_back=extend_back, ac_h=ac_h, anchor=anchor);
     }
 }
-
-//actuator_shroud(30, 25, pw, 50, extend_back=20);
-//untilted_actuator(30,25,50);
-
-translate([40,0,0]){
-//    actuator_shroud(25, 10, 25, 50, tilted=true, extend_back=20);
-//    tilted_actuator(25,25,50, base_w=6);
-}
-//echo(nut_slot);
-//
-difference(){
-    union(){
-        screw_seat(25, motor_lugs=true, label="Z");
-
-        difference(){ //an example actuator rod
-            translate([-3,-40,0]) cube([6,40,5]);
-            actuator_end_cutout();
-        }
-        actuator_column(25, 0);
-        translate([0,0,1+20.5]) cube([6,14,2],center=true);
-    }
-    translate([0,0,2.5]) rotate([180,0,0]) cylinder(r=999,h=999,$fn=4);
-}//*/
-//nut_seat_void(99, tilt=30, center=true); // space inside the column
-
-/*/ TEST PIECE: different sized nut slots, 3% different in size
-difference(){
-    scales=[0.94, 0.97, 1.0, 1.03, 1.06, 1.09];
-    n = len(scales);
-    nominal_w = 6.3;
-    translate([1,1,0]*(-2-nominal_w/2)) cube([n*(nominal_w+4), nominal_w+4, nut_h+6]);
-
-    for(i=[0:(n-1)])translate([i*(nominal_w+4),0,2]) {
-        w=nominal_w*scales[i];
-        nut_trap_and_slot(nominal_w/2, [w*sin(60),w,nut_h+0.2]);
-        translate([0,0,d]) cylinder(r=shaft_r,h=999);
-        translate([0,-(2+nominal_w/2), 0]) rotate([90,0,0]) linear_extrude(0.6,center=true) text(str((scales[i]-1)*100), size=nut_h+3, halign="center");
-    }
-    translate([-(2+nominal_w/2), 0, 2]) rotate([90,0,-90]) linear_extrude(0.6,center=true) text(str(nominal_w), size=(nut_h+3)/2, halign="center");
-    translate([(2+nominal_w/2)*(n*2-1), 0, 2]) rotate([90,0,90]) linear_extrude(0.6,center=true) text("+/-%", size=(nut_h+3)/2, halign="center");
-}
-//*/

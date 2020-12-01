@@ -282,18 +282,35 @@ module xy_stage(params, h=10, on_buildplate=false){
 }
 
 
+module xy_actuators(params, ties_only=false){
+    // Just the actuators for the xy.
+    // If ties_only=true then only the ties to the casing are printed. This is useful for
+    // rendering instructions
+
+    ties = key_lookup("print_ties", params);
+    each_actuator(params){
+        //actuator is the leg bat to connect to the flexure at the bottom of the column
+        if (! ties_only){
+            actuator(params);
+        }
+		translate([0,actuating_nut_r(params),0]){
+            if (! ties_only){
+                actuator_column(h=actuator_h, join_to_casing=ties);
+            }
+            else{
+                actuator_ties();
+            }
+        }
+    }
+}
+
 module xy_legs_and_actuators(params){
     // This is the xy_actuators including the casing and all 4 legs
 
     // back legs
 	reflect([1,0,0]) leg_frame(params, 135) leg(params);
     //front legs and actuator columns
-    each_actuator(params){
-        //actuator is the leg bat to connect to the flexure at the bottom of the column
-        actuator(params);
-		translate([0,actuating_nut_r(params),0])
-            actuator_column(h=actuator_h, join_to_casing=true);
-    }
+    xy_actuators(params);
 
 	for(i = [0,1]){
         label = ["X","Y"][i];
@@ -400,16 +417,19 @@ module xy_leg_ties(params){
 
 module xy_positioning_system(params){
     // This module creates the main XY positioning mechanism. Including the actuator columns.
-
+    ties = key_lookup("print_ties", params);
 	xy_legs_and_actuators(params);
     internal_xy_structure(params);
     xy_stage_with_nut_traps(params);
 
 	// Connect the legs to the stage and structure with flexures
-	xy_flexures(params);
+    xy_flexures(params);
+
 
     //tie the legs to the wall to stop movement during printing
-    xy_leg_ties(params);
+    if (ties){
+        xy_leg_ties(params);
+    }
 }
 
 module central_optics_cut_out(params) {
@@ -495,10 +515,10 @@ module main_body(params){
 	}
 }
 
+params = default_params();
+smart_brim_r = key_lookup("smart_brim_r", params);
 // If this file is "included" rather than "used", render the main body.
-render(6)exterior_brim(r=enable_smart_brim ? smart_brim_r : 0){
-    params = default_params();
+exterior_brim(r=enable_smart_brim ? smart_brim_r : 0){
     main_body(params);
 }
-
 
