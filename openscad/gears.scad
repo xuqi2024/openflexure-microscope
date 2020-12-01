@@ -24,7 +24,7 @@ teeth_smallgear = 12;
 teeth_biggear = teeth_smallgear * ratio;
 c2c_distance = 20; //see output from motor_lugs
 pitch = c2c_distance * 360 / (teeth_smallgear + teeth_biggear);
-d=0.05;
+
 
 function gear_c2c_distance() = c2c_distance;
 function gear_ratio() = ratio;
@@ -78,10 +78,10 @@ module small_gear(){
 		intersection(){
 			cylinder(r=shaft_r, h=999, center=true);
 			sequential_hull(){
-                translate([0,0,-d]) cube([999,3,d]*1.1,center=true);
-                translate([0,0,flat_h]) cube([999,3,d]*1.1,center=true);
-                translate([0,0,flat_h+2]) cube([999,7,d]*1.1,center=true);
-                translate([0,0,999]) cube([999,7,d]*1.1,center=true);
+                translate([0,0,-tiny()]) cube([999,3,tiny()]*1.1,center=true);
+                translate([0,0,flat_h]) cube([999,3,tiny()]*1.1,center=true);
+                translate([0,0,flat_h+2]) cube([999,7,tiny()]*1.1,center=true);
+                translate([0,0,999]) cube([999,7,tiny()]*1.1,center=true);
             }
 		}
         //chamfer the top/bottom for better fit

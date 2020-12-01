@@ -23,7 +23,6 @@ use <../utilities.scad>
 
 
 $fn=48;
-d=0.05;
 
 
 function c270_camera_mount_height() = 4.5;
@@ -44,7 +43,7 @@ module C270(beam_r=5, beam_h=6){
         //beam clearance
         hull(){
             cube([8,8,6],center=true);
-            translate([0,0,-beam_h]) cylinder(r=beam_r,h=2*d,center=true);
+            translate([0,0,-beam_h]) cylinder(r=beam_r,h=2*tiny(),center=true);
         }
 
         //mounting holes
@@ -53,9 +52,9 @@ module C270(beam_r=5, beam_h=6){
         //clearance for PCB
         translate([0,0,0]){
             hull(){
-                translate([-10/2,-13.5,0]) cube([10,d,8]);
+                translate([-10/2,-13.5,0]) cube([10,tiny(),8]);
                 translate([-21.5/2,-4,0]) cube([21.5,41,8]);
-                translate([-10/2,45,0]) cube([10,d,8]);
+                translate([-10/2,45,0]) cube([10,tiny(),8]);
             }
             reflect([0,1,0]) hull(){
                 translate([-4.5,6,-1.5]) cube([9,7.5,8]);
@@ -78,7 +77,7 @@ module C270(beam_r=5, beam_h=6){
 
 module c270_camera_mount(){
     // A mount for the pi camera v2
-    // This should finish at z=0+d, with a surface that can be
+    // This should finish at z=0+tiny(), with a surface that can be
     // hull-ed onto the lens assembly.
     h = 58;
     w = 25;

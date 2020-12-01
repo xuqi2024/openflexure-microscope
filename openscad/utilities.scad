@@ -15,7 +15,8 @@
 
 //utilities
 
-d=0.05;
+// this is a tiny distance. Used to be a parameter d in the code but that caused confusion with diameters
+function tiny() = 0.05;
 
 function zeroz(size) = [size.x, size.y, 0]; //set the Z component of a 3-vector to 0
 
@@ -122,9 +123,9 @@ module pinch_y(d, screw_l=999, counterbore_l=999, nut_l=-1, gap=[], t=2,extra_he
 
 module chamfered_hole(r=10, h=10, chamfer=1,center=false){
     translate([0,0, center ? -h/2 : 0]) union(){
-        translate([0,0,-d]) cylinder(r1=r+chamfer+d,r2=r,h=chamfer+d);
+        translate([0,0,-tiny()]) cylinder(r1=r+chamfer+tiny(),r2=r,h=chamfer+tiny());
         cylinder(r=r,h=h);
-        translate([0,0,h-chamfer]) cylinder(r1=r,r2=r+chamfer+d,h=chamfer+d);
+        translate([0,0,h-chamfer]) cylinder(r1=r,r2=r+chamfer+tiny(),h=chamfer+tiny());
     }
 }
 //chamfered_hole(15,30,center=true);
@@ -251,17 +252,17 @@ module square_to_circle(r, h, layers=4, top_cylinder=0){
     // gradually gaining sides to turn into a cylinder
     sides=[4,8,16,32,64,128,256]; //number of sides
     for(i=[0:(layers-1)]) rotate(180/sides[i])
-        translate([0,0,i*h/layers]) cylinder(r=r/cos(180/sides[i]),h=h/layers+d,$fn=sides[i]);
-    if(top_cylinder>0) translate([0,0,d]) cylinder(r=r,h=h+top_cylinder, $fn=sides[layers-1]);
+        translate([0,0,i*h/layers]) cylinder(r=r/cos(180/sides[i]),h=h/layers+tiny(),$fn=sides[i]);
+    if(top_cylinder>0) translate([0,0,tiny()]) cylinder(r=r,h=h+top_cylinder, $fn=sides[layers-1]);
 }
 
 module hole_from_bottom(r, h, base_w=-1, dz=0.5, big_bottom=true){
     // This creates a cut-out that can be used to make a hole in a large
     // bridge, without too much spaghetti!
-    base = base_w>0 ? [base_w,2*r,2*dz] : [2*r,2*r,d];
+    base = base_w>0 ? [base_w,2*r,2*dz] : [2*r,2*r,tiny()];
     union(){
         translate([0,0,0]) cube(base,center=true);
-        translate([0,0,base.z/2-d]) square_to_circle(r, dz*4, 4, h-dz*5+d);
+        translate([0,0,base.z/2-tiny()]) square_to_circle(r, dz*4, 4, h-dz*5+tiny());
         if(big_bottom) mirror([0,0,1]) cylinder(r=999,h=999,$fn=8);
     }
 }
@@ -281,10 +282,10 @@ module lighttrap_cylinder(r1,r2,h,ridge=1.5){
 
 	for(i = [0 : n_cones - 1]){
         p = i/(n_cones - 1);
-		translate([0, 0, i * cone_h - d])
+		translate([0, 0, i * cone_h - tiny()])
 			cylinder(r1=(1-p)*r1 + p*(r2+ridge),
 					r2=(1-p)*(r1-ridge) + p*r2,
-					h=cone_h+2*d);
+					h=cone_h+2*tiny());
     }
 }
 module lighttrap_sqylinder(r1,f1,r2,f2,h,ridge=1.5){
@@ -303,17 +304,17 @@ module lighttrap_sqylinder(r1,f1,r2,f2,h,ridge=1.5){
 
 	for(i = [0 : n_cones - 1]){
         p = i/(n_cones - 1);
-		translate([0, 0, i * cone_h - d])
+		translate([0, 0, i * cone_h - tiny()])
 			minkowski(){
                 cylinder(r1=(1-p)*r1 + p*(r2+ridge),
 					r2=(1-p)*(r1-ridge) + p*r2,
 					h=cone_h);
-                cube([1,1,0]*((1-p)*f1 + p*f2) + [0,0,2*d], center=true);
+                cube([1,1,0]*((1-p)*f1 + p*f2) + [0,0,2*tiny()], center=true);
             }
     }
 }
 
-module trylinder(r=1, flat=1, h=d, center=false){
+module trylinder(r=1, flat=1, h=tiny(), center=false){
     //Halfway between a cylinder and a triangle.
     //NB the largest cylinder that fits inside it has r=r+f/(2*sqrt(3))
     //One of the sides is parallel with the X axis
@@ -349,16 +350,16 @@ module trylinder_gripper(inner_r=10,h=6,grip_h=3.5,base_r=-1,t=0.65,squeeze=1,fl
     bottom_r=base_r>0?base_r:inner_r+1+t;
     difference(){
         sequential_hull(){
-            translate([0,0,0]) cylinder(r=bottom_r,h=d);
-            translate([0,0,grip_h-0.5]) trylinder(r=inner_r-squeeze+t,flat=2.5*squeeze,h=d);
-            translate([0,0,grip_h+0.5]) trylinder(r=inner_r-squeeze+t,flat=2.5*squeeze,h=d);
-            translate([0,0,h-d]) trylinder(r=inner_r-squeeze+flare+t,flat=2.5*squeeze,h=d);
+            translate([0,0,0]) cylinder(r=bottom_r,h=tiny());
+            translate([0,0,grip_h-0.5]) trylinder(r=inner_r-squeeze+t,flat=2.5*squeeze,h=tiny());
+            translate([0,0,grip_h+0.5]) trylinder(r=inner_r-squeeze+t,flat=2.5*squeeze,h=tiny());
+            translate([0,0,h-tiny()]) trylinder(r=inner_r-squeeze+flare+t,flat=2.5*squeeze,h=tiny());
         }
         if(solid==false) sequential_hull(){
-            translate([0,0,-d]) cylinder(r=bottom_r-t,h=d);
-            translate([0,0,grip_h-0.5]) trylinder(r=inner_r-squeeze,flat=2.5*squeeze,h=d);
-            translate([0,0,grip_h+0.5]) trylinder(r=inner_r-squeeze,flat=2.5*squeeze,h=d);
-            translate([0,0,h]) trylinder(r=inner_r-squeeze+flare,flat=2.5*squeeze,h=d);
+            translate([0,0,-tiny()]) cylinder(r=bottom_r-t,h=tiny());
+            translate([0,0,grip_h-0.5]) trylinder(r=inner_r-squeeze,flat=2.5*squeeze,h=tiny());
+            translate([0,0,grip_h+0.5]) trylinder(r=inner_r-squeeze,flat=2.5*squeeze,h=tiny());
+            translate([0,0,h]) trylinder(r=inner_r-squeeze+flare,flat=2.5*squeeze,h=tiny());
         }
     }
 }
@@ -375,8 +376,8 @@ module deformable_hole_trylinder(r1, r2, h=99, corner_roc=-1, dz=0.5, center=fal
     flat_l = 2*sqrt(r2*r2 - r1*r1);
     corner_roc = corner_roc < 0 ? r1 - flat_l/(2*sqrt(3)) : corner_roc;
     repeat([0,0,2*dz], n, center=center) union(){
-        cylinder(r=r2, h=dz+d);
-        translate([0,0,center ? -dz : dz]) trylinder(r=corner_roc, flat=flat_l, h=dz+d);
+        cylinder(r=r2, h=dz+tiny());
+        translate([0,0,center ? -dz : dz]) trylinder(r=corner_roc, flat=flat_l, h=dz+tiny());
     }
 }
 module self_tap_hole(mean_r, h, dr=1, dz=0.5, bridge_facets=0, center=false, screw=true){
@@ -404,14 +405,16 @@ module self_tap_hole(mean_r, h, dr=1, dz=0.5, bridge_facets=0, center=false, scr
 
 
 
-module exterior_brim(r=4, h=0.2){
+module exterior_brim(r=4, h=0.2, brim_only=false){
     // Add a "brim" around the outside of an object *only*, preserving holes in the object
-    children();
+    if (!brim_only){
+        children();
+    }
 
     if(r > 0) linear_extrude(h) difference(){
-        offset(r) projection(cut=true) translate([0,0,-d]) children();
+        offset(r) projection(cut=true) translate([0,0,-tiny()]) children();
 
-        offset(-r+d) offset(r) projection(cut=true) translate([0,0,-d]) children();
+        offset(-r+tiny()) offset(r) projection(cut=true) translate([0,0,-tiny()]) children();
     }
 }
 

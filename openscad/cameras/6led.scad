@@ -32,7 +32,6 @@ lens_holder_mounting_screw_y = 9; // position of the lugs for mounting screws
 lens_holder_mounting_screw_lug_r = 2.2; // size of above.
 camera_component_clearance = 1; // it's easiest to have the PCB slightly below the mount
 
-d=0.05; //small distance!
 $fn=32;
 
 function 6led_camera_sensor_height() = m12_camera_sensor_height(); //Height of the sensor above the PCB
