@@ -7,7 +7,8 @@ LEDstar_r = 19/2;
 extra_space = 3; //The xtra space needed between the radius of the LED star and the size of the screw head
 slip_plate_thickness=2;
 slip_plate_edge_slot  =3;
-excitation_thickness = 2;
+excitation_thickness = 2; // The thickness of the excitation filter
+excitation_offset = 2; //The amount of holder either side of the exciation filter.
 top_filter_cube =LEDstar_r-fl_cube_w/2+extra_space;
 beam_z = top_filter_cube+fl_cube_w/2;
 roc = 0.6;
@@ -30,7 +31,7 @@ module fl_cube_mount(beam_d=5){
             translate([0, back_y,0]) mirror([0,1,0]) dovetail_m([fl_cube_w-1, 1, h], t=2*roc);
             hull(){
                 translate([-w/2,back_y,0]) cube([w,d,h]);
-                reflect([1,0,0]) translate([w/2-roc, back_y + excitation_thickness + 2,0]) cylinder(r=roc, h=h, $fn=16);
+                reflect([1,0,0]) translate([w/2-roc, back_y + excitation_thickness + excitation_offset+excitation_offset,0]) cylinder(r=roc, h=h, $fn=16);
             }
                 //hull(){
                 //    l=3.5;
@@ -188,8 +189,7 @@ module slip_plate(w){
 
 module excitation_slot(){
     excitation_width = 13;
-    excitation_offset = 2;
-    translate([-excitation_width/2,back_y + excitation_thickness/2-1,-slip_plate_thickness-d])cube([excitation_width,excitation_thickness,top_filter_cube+ fl_cube_w-excitation_offset]);
+    translate([-excitation_width/2,back_y + excitation_offset + excitation_thickness/2,-slip_plate_thickness-d])cube([excitation_width,excitation_thickness,top_filter_cube+ fl_cube_w-excitation_offset]);
 }
 
 // Geometry of illuminator holder
