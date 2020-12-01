@@ -171,7 +171,7 @@ module optics_module_rms(params, tube_lens_ffd=16.1, tube_lens_f=20,
     pedestal_h = 2; // height of tube lens above bottom of lens assembly (to allow for flex)
 
     dovetail_top = min(27, sample_z-objective_parfocal_distance-0.5); //height of the top of the dovetail, i.e. the position of the objective's "shoulder"
-    //tube_length (argument) is the distance behind the objective's "shoulder" where the image is formed.  This should be infinity (safe to use 9999) for infinity-corrected lenses, or 150 for 160mm tube length objectives (the image is formed ~10mm from the end of the tube).
+    //tube_length (argument) is the distance behind the objective's "shoulder" where the image is formed.  This should be infinity (safe to use 99999) for infinity-corrected lenses, or 150 for 160mm tube length objectives (the image is formed ~10mm from the end of the tube).
 
     ///////////////// Lens position calculation //////////////////////////
     // calculate the position of the tube lens based on a thin-lens
@@ -271,7 +271,7 @@ if(optics=="rms_f40d16"){
         tube_lens_r=12.7/2+0.1,
         objective_parfocal_distance=45,
         fluorescence=beamsplitter,
-        tube_length=(optics=="rms_f50d13" ? 150 : 9999) //use 150 for standard finite-conjugate objectives (cheap ones) or 9999 for infinity-corrected lenses (usually more expensive).
+        tube_length=(optics=="rms_f50d13" ? 150 : 99999) //use 150 for standard finite-conjugate objectives (cheap ones) or 99999 for infinity-corrected lenses (usually more expensive).
     );
 
 }

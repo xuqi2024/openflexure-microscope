@@ -234,13 +234,20 @@ module cylinder_with_45deg_top(h,r,center=false,extra_height=0.7,$fn=$fn){
 	}
 }
 
+//TODO: Find out if this is still needed, and what it is!
 module feather_vertical_edges(flat_h=0.2,fin_r=0.5,fin_h=0.72,object_h=20){
 	union(){
 	//	children();
 		minkowski(){
 			intersection(){
 				children();
-				union() for(i=[-floor(object_h/fin_h):floor(object_h/fin_h)]) translate([0,0,i*fin_h+flat_h*1.5]) cube([999,999,flat_h],center=true);
+				union(){
+                    for(i=[-floor(object_h/fin_h):floor(object_h/fin_h)]){
+                        translate([0,0,i*fin_h+flat_h*1.5]){
+                            cube([999,999,flat_h],center=true);
+                        }
+                    }
+                }
 			}
 			cylinder(r1=0,r2=fin_r,h=fin_h-2*flat_h,$fn=8);
 		}

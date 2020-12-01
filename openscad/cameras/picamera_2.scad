@@ -171,7 +171,7 @@ module picamera_2_cover(){
                 // cut out centre to form walls on 3 sides
                 translate([-w/2+t,-b/2+centre_y-t,0.75]) cube([w-2*t, b, h]);
                 //chamfer the connector edge for ease of access
-                translate([-999,-b/2+centre_y,h]) rotate([-135,0,0]) cube([999,999,999]);
+                translate([-999/2,-b/2+centre_y,h]) rotate([-135,0,0]) cube([999,999,999]);
             }
             //mounting screws
             reflect([1,0,0]) translate([21/2, 0, 0]) cylinder(r=3, h=h, $fn=16);

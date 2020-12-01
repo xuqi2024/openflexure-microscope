@@ -83,18 +83,34 @@ module thick_section(h=tiny(), center=false, shift=true){
     linear_extrude(h, center=center) projection(cut=true) translate([0,0,shift?-tiny():0]) children();
 }
 module offset_thick_section(h=tiny(), offset=0, center=false, shift=true){
-    // A 3D object, corresponding to the linearly-extruded projection of another object.
+    // A 3D object, corresponding to the linearly-extruded projection of another object. Cut a tiny distance above z=0
     linear_extrude(h, center=center) offset(r=offset) projection(cut=true) translate([0,0,shift?-tiny():0]) children();
 }
 
+
+//TODO think of a less confusing name for this!!!!!!
+// This is used to create long tilted extrusions where the bottom of the section may have a different angle
+// This module takes a child module, cuts it a tiny bit above z=0. This cut is extruded along the angle of the foot
+// Only a section of this is returned which extends from the input `z` up by a hight h. The angle this section is cut
+// can be tilted independently  by `section_angle`.
 module foot_section(foot_angle=0,    //the angle the actuator column makes with the Z axis
                     section_angle=0, //the angle between the section and the XY plane
-                    offset=0,        //grow the section by this much
-                    h=tiny(),             //thickness
+                    offset=0,        //grow the section by this much in XY plane
+                    h=tiny(),        //thickness
                     z=0){
+    assert(h<=999, "Maximum h for foot section is 999");
     intersection(){
-        translate([0,0,z]) rotate([section_angle,0,0]) cube([999,999,h],center=true);
-        rotate([foot_angle,0,0]) offset_thick_section(h=999, center=true, offset=offset) children();
+        translate([0,0,z]){
+            rotate([section_angle,0,0]){
+                cube([999,999,h],center=true);
+            }
+        }
+        rotate([foot_angle,0,0]){
+            // This is set to 1000 so that numbers up to 999 can be put into h
+            offset_thick_section(h=1000, center=true, offset=offset){
+                children();
+            }
+        }
     }
 }
 
@@ -146,10 +162,10 @@ module foot(travel=5,       // how far into the foot the actuator can move down
             difference(){
                 //the core tapers at the top to support the lugs
                 sequential_hull(){
-                    foot_section(actuator_tilt, 0, z=-999) nut_seat_void();
+                    foot_section(actuator_tilt, 0, z=-99) nut_seat_void();
                     foot_section(actuator_tilt, 0, z=h-4) nut_seat_void();
                     foot_section(actuator_tilt, 0, offset=-wall_t, z=h) nut_seat_void();
-                    foot_section(actuator_tilt, 0, offset=-wall_t, z=999) nut_seat_void();
+                    foot_section(actuator_tilt, 0, offset=-wall_t, z=99) nut_seat_void();
                 }
                 //we double-subtract the anchor for the bands at the bottom, so that it
                 //doesn't protrude outside the part.
@@ -159,7 +175,7 @@ module foot(travel=5,       // how far into the foot the actuator can move down
             //one on either side - rather than a ring around the top.
             intersection(){
                 cube([cw-3.3*2, 999, 999],center=true);
-                foot_section(actuator_tilt, 0, h=999, z=999/2+h-travel-0.5) nut_seat_void();
+                foot_section(actuator_tilt, 0, h=99, z=99/2+h-travel-0.5) nut_seat_void();
             }
 
             //cut out the shell close to the microscope centre to allow the actuator
