@@ -7,7 +7,7 @@ LEDstar_r = 19/2;
 extra_space = 3; //The xtra space needed between the radius of the LED star and the size of the screw head
 slip_plate_thickness=2;
 slip_plate_edge_slot  =3;
-excitation_thickness = 3.5;
+excitation_thickness = 2;
 top_filter_cube =LEDstar_r-fl_cube_w/2+extra_space;
 beam_z = top_filter_cube+fl_cube_w/2;
 roc = 0.6;
@@ -65,7 +65,7 @@ module lens_holder(beam_d=3.5){
             //lens gripper to hold the plastic asphere
             translate([0,0,lens_z-pedestal_h]){
                 // gripper
-                trylinder_gripper(inner_r=lens_r, grip_h=pedestal_h + lens_t/3,h=pedestal_h+lens_t+1.5, LEDstar_r=LEDstar_r, flare=0.5);
+                trylinder_gripper(inner_r=lens_r, grip_h=pedestal_h + lens_t/3,h=pedestal_h+lens_t+1.5, base_r=LEDstar_r, flare=0.5);
                 // pedestal to raise the tube lens up within the gripper
                 cylinder(r=lens_r-0.5,h=pedestal_h);
             }
@@ -105,7 +105,7 @@ module lens_holder(beam_d=3.5){
         //screws for slip plate
         translate([0,LEDstar_r+extra_space+0.1,(lens_z-pedestal_h)/2])
         rotate([90,0,0])
-        reflect(){
+        reflect([1,0,0]){
             translate([w/2-slip_plate_edge_slot,0,0])rotate([0,0,-30])trylinder_selftap(nominal_d = 2.5, h = 6);
         }
 
