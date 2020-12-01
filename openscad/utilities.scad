@@ -38,11 +38,7 @@ module nut(d,h=-1,center=false,fudge=1.18,shaft=false){ //make a nut, for metric
     union(){
 		cylinder(h=h,center=center,r=0.9*d*fudge,$fn=6);
 		if(shaft){
-			reflect([0,0,1]) cylinder(r=d/2*1.05*(fudge+1)/2,h=99999999999,$fn=16);
-			//the reason I reflect rather than use center=true is that the latter
-			//fails in fast preview mode (I guess because of the lack of points
-			//inside the nut).  Also, less fudge is applied to the shaft, it can
-			//always be fixed with a drill after all...
+			cylinder(r=d/2*1.05*(fudge+1)/2,h=999,$fn=16,center=true);
 		}
 	}
 }
@@ -56,17 +52,13 @@ module nut_from_bottom(d,h=-1,fudge=1.2,shaft=true,chamfer_r=0.75,chamfer_h=0.75
     union(){
 		cylinder(h=h,r=0.9*d*fudge,$fn=6);
 		translate([0,0,-0.05]) cylinder(h=chamfer_h,r1=0.9*d*fudge+chamfer_r,r2=0.9*d*fudge,$fn=6);
-		mirror([0,0,1]) cylinder(h=9999,r=0.9*d*fudge+chamfer_r,$fn=6);
+		mirror([0,0,1]) cylinder(h=999,r=0.9*d*fudge+chamfer_r,$fn=6);
 		if(shaft){
              sr=d/2*1.05*(fudge+1)/2; //radius of shaft
-			translate([0,0,h/2]) reflect([0,0,1]) cylinder(r=sr,h=99999999999,$fn=16);
-			//the reason I reflect rather than use center=true is that the latter
-			//fails in fast preview mode (I guess because of the lack of points
-			//inside the nut).  Also, less fudge is applied to the shaft, it can
-			//always be fixed with a drill after all...
+			translate([0,0,h/2]) cylinder(r=sr,h=999,$fn=16,center=true);
 			intersection(){ //we add a little cut to the roof of the surface so the initial bridges don't have to span the hole.
 				union(){
-					translate([0,0,h]) cube([9999,sr*2,0.5],center=true);
+					translate([0,0,h]) cube([999,sr*2,0.5],center=true);
 					translate([0,0,h+0.25]) cube([sr*2,sr*2,0.5],center=true);
 				}
 				cylinder(h=h+1,r=0.9*d*fudge,$fn=6);
@@ -89,18 +81,17 @@ module nut_y(d,h=-1,center=false,fudge=1.15,extra_height=0.7,shaft=false,shaft_l
 		rotate([-90,top_access?30:0,0]) cylinder(h=h,center=center,r=r,$fn=6);
 		translate([-r*sin(30),center?-h/2:0,0]) cube([2*r*sin(30),h,r*cos(30)+extra_height]);
 		if(shaft || shaft_length > 0){
-            sl = shaft_length >0 ? shaft_length : 9999;
+            sl = shaft_length >0 ? shaft_length : 999;
 			translate([0,h/2,0]) reflect([0,1,0]) cylinder_with_45deg_top(h=sl,r=d/2*1.05*fudge,$fn=16,extra_height=extra_height);
-			//the reason I reflect rather than use center=true is that the latter
-			//fails in fast preview mode (I guess because of the lack of points
-			//inside the nut).
+			//Center could be used instead of reflect
 		}
         if(top_access){ //hole from the top
-            translate([-r*cos(30),center?-h/2:0,0]) cube([2*r*cos(30),h,9999]);
+            translate([-r*cos(30),center?-h/2:0,0]) cube([2*r*cos(30),h,999]);
         }
 	}
 }
-module screw_y(d,h=-1,center=false,fudge=1.05,extra_height=0.7,shaft=false,shaft_length=999999){ //make a nut, for metric bolt of nominal diameter d
+
+module screw_y(d,h=-1,center=false,fudge=1.05,extra_height=0.7,shaft=false,shaft_length=999){ //make a nut, for metric bolt of nominal diameter d
 	//d: nominal bolt diameter (e.g. 3 for M3)
 	//h: height of nut
 	//center: works as for cylinder
@@ -112,9 +103,7 @@ module screw_y(d,h=-1,center=false,fudge=1.05,extra_height=0.7,shaft=false,shaft
 		cylinder_with_45deg_top(h=h,r=d*1.05*fudge,$fn=16,extra_height=extra_height);
 		if(shaft){
 			translate([0,center ? 0 : h/2,0]) reflect([0,1,0]) cylinder_with_45deg_top(h=shaft_length+h/2,r=d/2*1.05*fudge,$fn=16,extra_height=extra_height);
-			//the reason I reflect rather than use center=true is that the latter
-			//fails in fast preview mode (I guess because of the lack of points
-			//inside the nut).
+			//Center could be used instead of reflect
 		}
 	}
 }
@@ -202,7 +191,7 @@ module support(size, height, baseheight=0, rotation=[0,0,0], supportangle=45, ou
 module rightangle_prism(size,center=false){
 	intersection(){
 		cube(size,center=center);
-		rotate([0,45,0]) translate([9999/2,0,0]) cube([1,1,1]*9999,center=true);
+		rotate([0,45,0]) translate([999/2,0,0]) cube([1,1,1]*999,center=true);
 	}
 }
 
@@ -233,6 +222,7 @@ module union_preserving_holes(){
 	}
 }
 
+// TODO: Find out why this is called this.
 module cylinder_with_45deg_top(h,r,center=false,extra_height=0.7,$fn=$fn){
 	union(){
 		rotate([90,0,180]) hull(){
@@ -249,7 +239,7 @@ module feather_vertical_edges(flat_h=0.2,fin_r=0.5,fin_h=0.72,object_h=20){
 		minkowski(){
 			intersection(){
 				children();
-				union() for(i=[-floor(object_h/fin_h):floor(object_h/fin_h)]) translate([0,0,i*fin_h+flat_h*1.5]) cube([9999,9999,flat_h],center=true);
+				union() for(i=[-floor(object_h/fin_h):floor(object_h/fin_h)]) translate([0,0,i*fin_h+flat_h*1.5]) cube([999,999,flat_h],center=true);
 			}
 			cylinder(r1=0,r2=fin_r,h=fin_h-2*flat_h,$fn=8);
 		}
@@ -341,11 +331,7 @@ module trylinder_selftap(nominal_d=3, h=10, center=false){
     trylinder(r=r - dr, flat=flat, h=h, center=center);
 }
 
-for(bd=[2.5, 3, 4]) translate([0,(bd-3)*20,0])
-for(dd=[-0.4, -0.3, -0.2, -0.1, 0, 0.1]) translate([dd*100,0,0]) difference(){
-    cylinder(d=7, h=10 + dd*10, $fn=12);
-    trylinder_selftap(bd+dd, h=999,center=true, $fn=12);
-}
+
 module trylinder_gripper(inner_r=10,h=6,grip_h=3.5,base_r=-1,t=0.65,squeeze=1,flare=0.8,solid=false){
     // This creates a tapering, distorted hollow cylinder suitable for
     // gripping a small cylindrical (or spherical) object
@@ -416,10 +402,7 @@ module self_tap_hole(mean_r, h, dr=1, dz=0.5, bridge_facets=0, center=false, scr
 
 
 
-//difference(){
-//    cylinder(r=16, h=5);
-//    self_tap_hole(20.4/2, dr=1.2, dz=0.7055/2, h=11, center=true, bridge_facets=5);
-//}
+
 
 module exterior_brim(r=4, h=0.2){
     // Add a "brim" around the outside of an object *only*, preserving holes in the object
@@ -432,23 +415,4 @@ module exterior_brim(r=4, h=0.2){
     }
 }
 
-//trylinder_gripper();
-//feather_vertical_edges(fin_r=1){
-//	cylinder(r=12,h=10);
-//}
 
-//cylinder_with_45deg_top(20,10,center=false,$fn=32,extra_height=0.5);
-
-//$fn=12;
-//sequential_hull(){
-//	translate([0,0,0]) sphere(r=.2);
-//	translate([0,1,0]) sphere(r=.2);
-//	translate([0,1,1]) sphere(r=.2);
-//	translate([1,1,1]) sphere(r=.2);
-//}
-
-//nut(3,shaft=true);
-
-//rightangle_prism([1,1,1],center=true);
-
-//support(50,20,baseheight=-20,rotation=[90,0,0]) sphere(r=8,$fn=16);

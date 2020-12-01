@@ -9,7 +9,6 @@ An attempt at an alternative to my ageing "nut_seat_with_flex" design...
 use <utilities.scad>
 include <microscope_parameters.scad>
 
-d = 0.05;
 nut_size = 3;
 nut_w = 6.3*1.1; //nominal width of the nut (vertex-to-vertex, bigger than flat-flat distance - 6.3 is theoretical value and the 1.03 is determined by experiment)
 nut_h = 2.6;
@@ -38,9 +37,9 @@ module nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=-1){
     r1 = w/2/cos(30); //bottom of nut trap is large
     r2 = r*squeeze; //top of nut trap is very tight
     sequential_hull(){
-        translate([-w/2,999,0]) cube([w,d,h]);
+        translate([-w/2,999,0]) cube([w,tiny(),h]);
         union(){
-            translate([-w/2,l/2-d,0]) cube([w,d,h]);
+            translate([-w/2,l/2-tiny(),0]) cube([w,tiny(),h]);
             rotate(30) cylinder(d=w/sin(60), h=h, $fn=6);
         }
         a = 1/trap_h;
@@ -49,7 +48,7 @@ module nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=-1){
     }
     // ensure the hole in the top can be made nicely
     intersection(){
-        translate([-999, -hole_r,0]) cube([9999, 2*hole_r, h + trap_h + 0.5]);
+        translate([-999, -hole_r,0]) cube([999, 2*hole_r, h + trap_h + 0.5]);
         rotate(30) cylinder(r=r2, h=999, $fn=6);
     }
 
@@ -93,14 +92,14 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
         rotate([tilt,0,0]) union(){
             sequential_hull(){
                 // main body, starting at bottom of shaft
-                translate([0,0,-99]) resize([2*r1, top.y,d]) cylinder(r=r1, h=d);
-                translate([0,0,h-top.z - 2*(r2-r1)]) resize([2*r1, top.y,d]) cylinder(r=r1, h=d);
+                translate([0,0,-99]) resize([2*r1, top.y,tiny()]) cylinder(r=r1, h=tiny());
+                translate([0,0,h-top.z - 2*(r2-r1)]) resize([2*r1, top.y,tiny()]) cylinder(r=r1, h=tiny());
                 translate([0,0,h-top.z/2]) cube(top, center=true);
             }
             // hooks for elastic bands/springs
             reflect([1,0,0]) translate([top.x/2,0,h]) difference(){
                 mirror([0,0,1]) sequential_hull(){
-                    translate([-d,-top.y/2,0]) cube([d,top.y,top.z]);
+                    translate([-tiny(),-top.y/2,0]) cube([tiny(),top.y,top.z]);
                     translate([0,0,0.5]) scale([0.5,1,1]) cylinder(d=4.5, h=top.z-2);
                     translate([1.5,0,0.5]) resize([3,4,3.5]) cylinder(d1=1, d2=4, h=4);
                     translate([3.5,0,0.5]) resize([2.5,3.0,1.5]) cylinder(d1=1,d2=3.5);
@@ -136,7 +135,7 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
 
         // tiny holes, to increase the perimeter of the bottom bit and make it
         // stronger
-        translate([-d,0,flex_dims().z]) cube([2*d, 10, 4]);
+        translate([-tiny(),0,flex_dims().z]) cube([2*tiny(), 10, 4]);
         // cut off at the bottom
         mirror([0,0,1]) cylinder(r=999,h=999,$fn=4);
     }
@@ -208,7 +207,7 @@ module motor_lugs(h=20, tilt=0, angle=0){
             }
         }
         //space for gears
-        translate([0,0,h]) cylinder(r1=8,r2=17,h=2+d);
+        translate([0,0,h]) cylinder(r1=8,r2=17,h=2+tiny());
         translate([0,0,h+2]) cylinder(h=999,r=17);
         //hollow inside of the structure
         rotate(-angle) nut_seat_void(h=h, tilt=tilt);
@@ -258,13 +257,13 @@ module tilted_actuator(pivot_z, pivot_w, lever, column_h=actuator_h, base_w = co
     difference(){
         reflect([1,0,0]){
             // pivot flexures
-            translate([-pw/2, -d, pz]) cube(flex_dims() + [0,2*d,0]);
+            translate([-pw/2, -tiny(), pz]) cube(flex_dims() + [0,2*tiny(),0]);
             // arms linking flexures to actuator column
             sequential_hull(){
                 translate([-pw/2, flex_dims().y, pz]) cube(flex_dims());
                 union(){
-                    translate([-base_w/2, flex_dims().y, 0]) cube([base_w, d, 5]);
-                    translate([-column_base_r, nut_y-12, 0]) cube([2*column_base_r, d, 5]);
+                    translate([-base_w/2, flex_dims().y, 0]) cube([base_w, tiny(), 5]);
+                    translate([-column_base_r, nut_y-12, 0]) cube([2*column_base_r, tiny(), 5]);
                 }
                 translate([0, nut_y, 0]) cylinder(r=column_base_r, h=5);
             }
@@ -288,7 +287,7 @@ module untilted_actuator(pushstick_z, pivot_w, lever, column_h=actuator_h, pushs
     difference(){
         reflect([1,0,0]){
             // pivot flexures
-            translate([-pw/2, -d, 0]) cube(flex_dims() + [0,2*d,0]);
+            translate([-pw/2, -tiny(), 0]) cube(flex_dims() + [0,2*tiny(),0]);
             // arms linking flexures to actuator column
             sequential_hull(){
                 union(){
@@ -308,20 +307,19 @@ module untilted_actuator(pushstick_z, pivot_w, lever, column_h=actuator_h, pushs
     translate([0, nut_y, 0]) actuator_column(column_h, 0);
 }
 
-module actuator_void(h, w1, w2, lever, tilted=false, extend_back=d){
+module actuator_void(h, w1, w2, lever, tilted=false, extend_back=tiny()){
     // A solid object that's big enough to give clearance for an actuator
-    c = d; //additional clearance (makes it angular)
+    c = tiny(); //additional clearance (makes it angular)
     w_n = 2*column_base_r + 2*c; // width of neck
     nut_y = tilted ? sqrt(lever*lever - h*h) : lever;
     tilt = tilted?-asin(h/lever):0;
     top_dy = tilted ? 0 : h*flex_a()+1;
     minkowski(){
         hull(){
-            translate([-min(w1,w2)/2-c, -extend_back, -d]) cube([min(w1,w2)+2*c,d,h]);
-            //translate([-w2/2-c, -extend_back, h]) cube([w2+2*c,d,c]);
-            translate([-w1/2-c, 0, -d]) cube([w1+2*c,d,c]);
-            translate([-w2/2-c, top_dy, h]) cube([w2+2*c,d,c]);
-            translate([-w_n/2, nut_y, -d]) rotate([tilt,0,0]) cube([w_n, 2, 5 + lever*flex_a()+c+1.5]);
+            translate([-min(w1,w2)/2-c, -extend_back, -tiny()]) cube([min(w1,w2)+2*c,tiny(),h]);
+            translate([-w1/2-c, 0, -tiny()]) cube([w1+2*c,tiny(),c]);
+            translate([-w2/2-c, top_dy, h]) cube([w2+2*c,tiny(),c]);
+            translate([-w_n/2, nut_y, -tiny()]) rotate([tilt,0,0]) cube([w_n, 2, 5 + lever*flex_a()+c+1.5]);
 
         }
         scale([1,1,1.5]) sphere(r=1.5, $fn=8);
@@ -335,7 +333,7 @@ module flexure_anchor_cutout(h=999,w=999, extend_back=999){
     // pivot around.
     intersection(){
         mirror([0,1,0]) hull() reflect([1,0,0]){
-            translate([0,extend_back,h/2]) cube([999,d,d]);
+            translate([0,extend_back,h/2]) cube([999,tiny(),tiny()]);
             translate([0,0,flex_dims().z]) mirror([0,0,1]) cube(999);
         }
 
@@ -343,7 +341,7 @@ module flexure_anchor_cutout(h=999,w=999, extend_back=999){
     }
 }
 
-module actuator_shroud_shell(h, w1, w2, lever, tilted=false, extend_back=d, ac_h=actuator_h, motor_lugs=motor_lugs){
+module actuator_shroud_shell(h, w1, w2, lever, tilted=false, extend_back=tiny(), ac_h=actuator_h, motor_lugs=motor_lugs){
     // A cover for an actuator as defined above.
     ns_h = ac_h + lever * flex_a() + 1.5; //internal height of nut seat
     nut_y = flex_dims().y + (tilted ? sqrt(lever*lever - h*h) : lever);
@@ -364,7 +362,7 @@ module actuator_shroud_shell(h, w1, w2, lever, tilted=false, extend_back=d, ac_h
         translate([0,-extend_back,0]) rotate([90,0,0]) cylinder(r=999,h=999,$fn=8); //cut off at the end, so we don't go past the back and close it off
     }
 }
-module actuator_shroud_core(h, w1, w2, lever, tilted=false, extend_back=d, ac_h=actuator_h, anchor=true, pushstick_h=pushstick.z+3){
+module actuator_shroud_core(h, w1, w2, lever, tilted=false, extend_back=tiny(), ac_h=actuator_h, anchor=true, pushstick_h=pushstick.z+3){
     // The inside of a cover for an actuator as defined above.
     // It's split like this for ease of combining them together.
     ns_h = ac_h + lever * flex_a() + 1.5; //internal height of nut seat
@@ -387,7 +385,7 @@ module actuator_shroud_core(h, w1, w2, lever, tilted=false, extend_back=d, ac_h=
             translate([-nut_slot.x/2-0.5,0,ac_h-nut_slot.z-nut_size-1.5])
             cube(nut_slot + [1,999,1]);
 }
-module actuator_shroud(h, w1, w2, lever, tilted=false, extend_back=d, ac_h=actuator_h, anchor=true){
+module actuator_shroud(h, w1, w2, lever, tilted=false, extend_back=tiny(), ac_h=actuator_h, anchor=true){
     difference(){
         actuator_shroud_shell(h, w1, w2, lever, tilted=tilted, extend_back=extend_back, ac_h=ac_h);
         actuator_shroud_core(h, w1, w2, lever, tilted=tilted, extend_back=extend_back, ac_h=ac_h, anchor=anchor);

@@ -21,7 +21,7 @@ module add_hull_base(h=1){
     union(){
         intersection(){
             hull() children();
-            cylinder(r=9999,$fn=8,h=h); //make the base thin
+            cylinder(r=999,$fn=8,h=h); //make the base thin
         }
         children();
     }
@@ -34,7 +34,7 @@ module add_roof(inner_h){
     union(){
         difference(){
             hull() children();
-            cylinder(r=9999,$fn=8,h=inner_h);
+            cylinder(r=999,$fn=8,h=inner_h);
         }
         children();
     }

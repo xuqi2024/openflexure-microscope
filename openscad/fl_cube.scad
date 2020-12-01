@@ -32,7 +32,7 @@ module chamfer_bottom_edge(chamfer=0.3, h=0.5){
         minkowski(){
             cylinder(r1=2*chamfer, r2=0, h=2*h, center=true);
             linear_extrude(tiny()) difference(){
-                square(9999, center=true);
+                square(999, center=true);
                 projection(cut=true) translate([0,0,-tiny()]) hull() children();
             }
         }

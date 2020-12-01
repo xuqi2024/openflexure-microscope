@@ -35,7 +35,6 @@ bottom = camera_mount_top_z-camera_mount_height(); //nominal distance from PCB t
 fl_cube_bottom = bottom + camera_sensor_height() + 7.5; //bottom of the fluorescence filter cube (0 except for the RMS f=50mm modules where it's -8 or -20)
 fl_cube_top = fl_cube_bottom + fl_cube_w + 2.7; //top of fluorescence cube
 fl_cube_top_w = fl_cube_w - 2.7;
-d = 0.05;
 $fn=24;
 
 if(beamsplitter) echo(str("fl_cube_bottom: ", fl_cube_bottom, " for optics module: ", camera, "_", optics));
@@ -49,7 +48,7 @@ module fl_cube_cutout(taper=true){
             translate([-fl_cube_w/2,-fl_cube_w/2,fl_cube_bottom]) cube([fl_cube_w,999,fl_cube_w]);
             translate([-fl_cube_w/2+2,-fl_cube_w/2,fl_cube_bottom]) cube([fl_cube_w-4,999,fl_cube_w+2]); //sloping sides
             translate([-fl_cube_w/2+2,-fl_cube_w/2+2,fl_cube_bottom]) cube([fl_cube_w-4,fl_cube_w-4,fl_cube_w+2]);
-            if(taper) translate([-d,-d,fl_cube_bottom]) cube([2*d,2*d,fl_cube_w*1.5]); //taper gradually to the diameter of the beam
+            if(taper) translate([-tiny(),-tiny(),fl_cube_bottom]) cube([2*tiny(),2*tiny(),fl_cube_w*1.5]); //taper gradually to the diameter of the beam
         }
         //a space at the back to allow the grippers for the dichroics to extend back a bit further.
         hull(){
@@ -75,18 +74,18 @@ module optical_path(lens_aperture_r, lens_z){
     // a feathered cylindrical beam path.  Camera mount is now cut out
     // of the camera mount body already.
     union(){
-        translate([0,0,camera_mount_top_z-d]) lighttrap_cylinder(r1=5, r2=lens_aperture_r, h=lens_z-camera_mount_top_z+2*d); //beam path
-        translate([0,0,lens_z]) cylinder(r=lens_aperture_r,h=2*d); //lens
+        translate([0,0,camera_mount_top_z-tiny()]) lighttrap_cylinder(r1=5, r2=lens_aperture_r, h=lens_z-camera_mount_top_z+2*tiny()); //beam path
+        translate([0,0,lens_z]) cylinder(r=lens_aperture_r,h=2*tiny()); //lens
     }
 }
 module optical_path_fl(lens_aperture_r, lens_z){
     // The cut-out part of a camera mount, with a space to slot in a filter cube.
     union(){
-        translate([0,0,camera_mount_top_z-d]) lighttrap_sqylinder(r1=5, f1=0,
-                r2=0, f2=fl_cube_w-4, h=fl_cube_bottom-camera_mount_top_z+2*d); //beam path to bottom of cube
+        translate([0,0,camera_mount_top_z-tiny()]) lighttrap_sqylinder(r1=5, f1=0,
+                r2=0, f2=fl_cube_w-4, h=fl_cube_bottom-camera_mount_top_z+2*tiny()); //beam path to bottom of cube
         rotate(180) fl_cube_cutout(); //filter cube
-        translate([0,0,fl_cube_top-d]) lighttrap_sqylinder(r1=1.5, f1=fl_cube_w-4-3, r2=lens_aperture_r, f2=0, h=lens_z-fl_cube_top+4*d); //beam path
-        translate([0,0,lens_z]) cylinder(r=lens_aperture_r,h=2*d); //lens
+        translate([0,0,fl_cube_top-tiny()]) lighttrap_sqylinder(r1=1.5, f1=fl_cube_w-4-3, r2=lens_aperture_r, f2=0, h=lens_z-fl_cube_top+4*tiny()); //beam path
+        translate([0,0,lens_z]) cylinder(r=lens_aperture_r,h=2*tiny()); //lens
     }
 }
 
@@ -100,11 +99,11 @@ module lens_gripper(lens_r=10,h=6,lens_h=3.5,base_r=-1,t=0.65,solid=false, flare
 
 module camera_mount_top_slice(){
     // A thin slice of the top of the camera mount
-    linear_extrude(d) projection(cut=true) camera_mount();
+    linear_extrude(tiny()) projection(cut=true) camera_mount();
 }
 module objective_fitting_base(params){
     // A thin slice of the mounting wedge that bolts to the microscope body
-    linear_extrude(d) projection() objective_fitting_wedge(params);
+    linear_extrude(tiny()) projection() objective_fitting_wedge(params);
 }
 
 module camera_mount_body(
@@ -127,22 +126,22 @@ module camera_mount_body(
             sequential_hull(){
                 translate([0,0,camera_mount_top_z]) camera_mount_top_slice();
                 hull(){
-                    translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=d);
+                    translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=tiny());
                     if(dovetail) translate([0,0,dt_bottom]) objective_fitting_base(params);
                     if(fluorescence) fl_cube_casing();
                 }
                 union(){
                     if(fluorescence) fl_cube_casing();
-                    translate([0,0,body_top]) cylinder(r=body_r,h=d);
+                    translate([0,0,body_top]) cylinder(r=body_r,h=tiny());
                     if(dovetail) translate([0,0,dt_top]) objective_fitting_base(params);
                 }
                 // allow for extra coordinates above this, if wanted.
                 // this should really be done with a for loop, but
                 // that breaks the sequential_hull, hence the kludge.
-                if(len(extra_rz) > 0) translate([0,0,extra_rz[0][1]-d]) cylinder(r=extra_rz[0][0],h=d);
-                if(len(extra_rz) > 1) translate([0,0,extra_rz[1][1]-d]) cylinder(r=extra_rz[1][0],h=d);
-                if(len(extra_rz) > 2) translate([0,0,extra_rz[2][1]-d]) cylinder(r=extra_rz[2][0],h=d);
-                if(len(extra_rz) > 3) translate([0,0,extra_rz[3][1]-d]) cylinder(r=extra_rz[3][0],h=d);
+                if(len(extra_rz) > 0) translate([0,0,extra_rz[0][1]-tiny()]) cylinder(r=extra_rz[0][0],h=tiny());
+                if(len(extra_rz) > 1) translate([0,0,extra_rz[1][1]-tiny()]) cylinder(r=extra_rz[1][0],h=tiny());
+                if(len(extra_rz) > 2) translate([0,0,extra_rz[2][1]-tiny()]) cylinder(r=extra_rz[2][0],h=tiny());
+                if(len(extra_rz) > 3) translate([0,0,extra_rz[3][1]-tiny()]) cylinder(r=extra_rz[3][0],h=tiny());
             }
 
             // Mount for the nut that holds it on
@@ -216,7 +215,7 @@ module optics_module_rms(params, tube_lens_ffd=16.1, tube_lens_f=20,
             }
             // make sure the camera mount makes contact with the lens gripper, but
             // doesn't foul the inside of it
-            translate([0,0,lens_assembly_z]) lens_gripper(lens_r=rms_r-d, lens_h=lens_assembly_h-2.5,h=lens_assembly_h, base_r=lens_assembly_base_r-d, solid=true); //same as the big gripper below
+            translate([0,0,lens_assembly_z]) lens_gripper(lens_r=rms_r-tiny(), lens_h=lens_assembly_h-2.5,h=lens_assembly_h, base_r=lens_assembly_base_r-tiny(), solid=true); //same as the big gripper below
 
         }
         // A threaded hole for the objective with a lens gripper for the tube lens
@@ -226,13 +225,13 @@ module optics_module_rms(params, tube_lens_ffd=16.1, tube_lens_f=20,
             pitch=0.7056;
             difference(){
                 hull(){
-                    cylinder(r=lens_assembly_base_r,h=d,$fn=50);
+                    cylinder(r=lens_assembly_base_r,h=tiny(),$fn=50);
                     translate([0,0,lens_assembly_h-5]) cylinder(r=radius+1.2+0.44, h=5);
                 }
                 sequential_hull(){
-                    cylinder(r=lens_assembly_base_r-1, h=2*d,center=true,$fn=50);
-                    translate([0,0,lens_assembly_h-5]) cylinder(r=radius+0.44,h=d,$fn=100);
-                    translate([0,0,999]) cylinder(r=radius+0.44,h=d,$fn=100);
+                    cylinder(r=lens_assembly_base_r-1, h=2*tiny(),center=true,$fn=50);
+                    translate([0,0,lens_assembly_h-5]) cylinder(r=radius+0.44,h=tiny(),$fn=100);
+                    translate([0,0,999]) cylinder(r=radius+0.44,h=tiny(),$fn=100);
                 }
             }
             translate([0,0,lens_assembly_h-5]) inner_thread(radius=radius,threads_per_mm=pitch,thread_base_width = 0.60,thread_length=5);
@@ -272,7 +271,7 @@ if(optics=="rms_f40d16"){
         tube_lens_r=12.7/2+0.1,
         objective_parfocal_distance=45,
         fluorescence=beamsplitter,
-        tube_length=(optics=="rms_f50d13" ? 150 : 99999) //use 150 for standard finite-conjugate objectives (cheap ones) or 9999 for infinity-corrected lenses (usually more expensive).
+        tube_length=(optics=="rms_f50d13" ? 150 : 9999) //use 150 for standard finite-conjugate objectives (cheap ones) or 9999 for infinity-corrected lenses (usually more expensive).
     );
 
 }

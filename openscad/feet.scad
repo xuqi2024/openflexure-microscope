@@ -21,7 +21,7 @@ include <microscope_parameters.scad> //for foot_height
 use <utilities.scad>
 use <compact_nut_seat.scad>
 use <endstop.scad>
-d = 0.05;
+
 
 module foot_ground_plane(tilt=0, top=0, bottom=-999){
     //This represents where the ground would be, given that the
@@ -71,30 +71,30 @@ module filleted_bridge(gap, roc_xy=2, roc_xz=2){
     difference(){
         translate(-zeroz(gap)/2 -[0,roc_xy,999]) cube(gap + [0,2*roc_xy,roc_xz] + [0,0,999]);
         reflect([0,1,0]) sequential_hull(){
-            rx() translate([x1, y1, -999]) cylinder(r=roc_xy, h=d);
+            rx() translate([x1, y1, -999]) cylinder(r=roc_xy, h=tiny());
             rx() translate([x1, y1, 0]) cylinder(r=roc_xy, h=h+roc_xz);
-            rx() translate([x2, b/2, h+roc_xz]) rotate([-90,0,0]) cylinder(r=roc_xz, h=d);
-            rx() translate([x2, -2*d, h+roc_xz]) rotate([90,0,0]) cylinder(r=roc_xz ,h=d);
+            rx() translate([x2, b/2, h+roc_xz]) rotate([-90,0,0]) cylinder(r=roc_xz, h=tiny());
+            rx() translate([x2, -2*tiny(), h+roc_xz]) rotate([90,0,0]) cylinder(r=roc_xz ,h=tiny());
         }
     }
 }
-module thick_section(h=d, center=false, shift=true){
+module thick_section(h=tiny(), center=false, shift=true){
     // A 3D object, corresponding to the linearly-extruded projection of another object.
-    linear_extrude(h, center=center) projection(cut=true) translate([0,0,shift?-d:0]) children();
+    linear_extrude(h, center=center) projection(cut=true) translate([0,0,shift?-tiny():0]) children();
 }
-module offset_thick_section(h=d, offset=0, center=false, shift=true){
+module offset_thick_section(h=tiny(), offset=0, center=false, shift=true){
     // A 3D object, corresponding to the linearly-extruded projection of another object.
-    linear_extrude(h, center=center) offset(r=offset) projection(cut=true) translate([0,0,shift?-d:0]) children();
+    linear_extrude(h, center=center) offset(r=offset) projection(cut=true) translate([0,0,shift?-tiny():0]) children();
 }
 
 module foot_section(foot_angle=0,    //the angle the actuator column makes with the Z axis
                     section_angle=0, //the angle between the section and the XY plane
                     offset=0,        //grow the section by this much
-                    h=d,             //thickness
+                    h=tiny(),             //thickness
                     z=0){
     intersection(){
         translate([0,0,z]) rotate([section_angle,0,0]) cube([999,999,h],center=true);
-        rotate([foot_angle,0,0]) offset_thick_section(h=9999, center=true, offset=offset) children();
+        rotate([foot_angle,0,0]) offset_thick_section(h=999, center=true, offset=offset) children();
     }
 }
 
