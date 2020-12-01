@@ -96,7 +96,7 @@ module render_frame(frame_dict){
     foot_alpha = key_lookup("foot_alpha", frame_dict);
     tool_kink = key_lookup("tool_kink", frame_dict);
 
-    color("pink", 1.0){
+    color("HotPink", 1.0){
         actuator_column(25, 0, join_to_casing=false);
     }
     color("gray", 1){
