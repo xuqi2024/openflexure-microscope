@@ -6,12 +6,12 @@ This file should render the optics of the microscope...
 
 */
 
-use <../optics.scad>
-use <../utilities.scad>
-use <../microscope_parameters.scad>
-use <../libs/libdict.scad>
-use <../illumination.scad>
-use <../thorlabs_threads.scad>
+use <../openscad/optics.scad>
+use <../openscad/utilities.scad>
+use <../openscad/microscope_parameters.scad>
+use <../openscad/libs/libdict.scad>
+use <../openscad/illumination.scad>
+use <../openscad/thorlabs_threads.scad>
 
 params = default_params();
 

@@ -209,7 +209,7 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
         mirror([0,0,1]) cylinder(r=999,h=999,$fn=4);
     }
 }
-actuator_column(25);
+//actuator_column(25);
 
 
 module actuator_end_cutout(lever_tip=3-0.5 ){

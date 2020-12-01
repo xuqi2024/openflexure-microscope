@@ -1,6 +1,7 @@
 stages:
     - test
     - build
+    - build-docs
     - deploy
     - zenodo
 
@@ -68,15 +69,13 @@ render:
       - apt-get install -y -qq openscad
 
     script:
-      - cd openscad/illustrations
       - xvfb-run --auto-servernum --server-args "-screen 0 1024x768x24" ./render.sh
-      - cd ../..
 
     artifacts:
       expire_in: 1 week
       name: "${CI_PROJECT_NAME}-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}-renders"
       paths:
-        - openscad/illustrations/renders/*.png
+        - docs/renders/*.png
 
     only:
       - tags
@@ -84,10 +83,14 @@ render:
       - web
 
 
-# Build docs
+# Build docs- this is at a later stage so it has access to the models
 build-docs:
-    stage: build
+    stage: build-docs
     image: ubuntu:18.04
+
+    dependencies:
+      - build
+      - render
 
     before_script:
       - apt-get update -qq
@@ -121,6 +124,7 @@ deploy:
   stage: deploy
   dependencies:
     - build
+    - render
     - build-docs
   image: ubuntu:latest
 

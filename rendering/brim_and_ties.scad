@@ -1,8 +1,8 @@
-use <../main_body.scad>
-use <../z_axis.scad>
-use <../utilities.scad>
-use <../microscope_parameters.scad>
-use <../libs/libdict.scad>
+use <../openscad/main_body.scad>
+use <../openscad/z_axis.scad>
+use <../openscad/utilities.scad>
+use <../openscad/microscope_parameters.scad>
+use <../openscad/libs/libdict.scad>
 
 params = default_params();
 render_params = replace_value("print_ties", false, params);
