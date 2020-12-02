@@ -234,7 +234,7 @@ module optics_module_rms(params, tube_lens_ffd=16.1, tube_lens_f=20,
                     translate([0,0,999]) cylinder(r=radius+0.44,h=tiny(),$fn=100);
                 }
             }
-            translate([0,0,lens_assembly_h-5]) inner_thread(radius=radius,threads_per_mm=pitch,thread_base_width = 0.60,thread_length=5);
+            translate([0,0,lens_assembly_h-5]) inner_thread(radius=radius,pitch=pitch,thread_base_width = 0.60,thread_length=5);
 
             // gripper for the tube lens
             lens_gripper(lens_r=tube_lens_r, lens_h=pedestal_h+1,h=pedestal_h+1+2.5, t=gripper_t);

@@ -69,7 +69,7 @@ module objective(){
         translate([0,0,-4]){
             cylinder(r=radius,h=4+tiny());
             outer_thread(radius=radius,
-                        threads_per_mm=pitch,
+                        pitch=pitch,
                         thread_base_width = 0.60,
                         thread_length=2.5);
         }
