@@ -161,7 +161,7 @@ module slip_plate(w){
                                 }
                             }
                             //top of mounting point
-                            translate([-2.5,2,top_filter_cube+fl_cube_w+2+slip_plate_thickness-0.05]){
+                            translate([-2.5,2,fl_cube_mount_h+slip_plate_thickness-0.05]){
                                 cube([0.01,4,0.1], center=true);
                             }    
 
@@ -214,7 +214,7 @@ module illuminator_holder(){
 render(6)translate([30,30,slip_plate_thickness]) rotate(90) illuminator_holder();
 
 //translate([-30,0,0]) field_stop();
-//lens_holder();
+lens_holder();
 
 
 //difference(){
