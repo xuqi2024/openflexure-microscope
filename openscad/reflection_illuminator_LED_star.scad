@@ -14,7 +14,7 @@ beam_z = top_filter_cube+fl_cube_w/2;
 roc = 0.6;
 w = illuminator_width(); //nominal width of the mount (is the width between the outsides of the dovetail clip points)
 dovetail_pinch = fl_cube_w - 4*roc - 1 - 3; //width between the pinch-points of the dovetail
-h = fl_cube_w + top_filter_cube; //should probably be fl_cube_w
+fl_cube_mount_h = fl_cube_w + top_filter_cube+2; //should probably be fl_cube_w
 filter = [10,14,1.5];
 beamsplit = [0, 0, w/2]; //NB different to fl_cube because we're printing with z=z here.
 
@@ -28,10 +28,10 @@ module fl_cube_mount(beam_d=5){
     echo(top_filter_cube+slip_plate_thickness);
     difference(){
         union(){
-            translate([0, back_y,0]) mirror([0,1,0]) dovetail_m([fl_cube_w-1, 1, h], t=2*roc);
+            translate([0, back_y,0]) mirror([0,1,0]) dovetail_m([fl_cube_w-1, 1, fl_cube_mount_h], t=2*roc);
             hull(){
-                translate([-w/2,back_y,0]) cube([w,d,h]);
-                reflect([1,0,0]) translate([w/2-roc, back_y + excitation_thickness + excitation_offset+excitation_offset,0]) cylinder(r=roc, h=h, $fn=16);
+                translate([-w/2,back_y,0]) cube([w,d,fl_cube_mount_h]);
+                reflect([1,0,0]) translate([w/2-roc, back_y + excitation_thickness + excitation_offset+excitation_offset,0]) cylinder(r=roc, h=fl_cube_mount_h, $fn=16);
             }
                 //hull(){
                 //    l=3.5;
@@ -155,20 +155,26 @@ module slip_plate(w){
                                 cube([5,4,4], center=true);
                             }    
                             //mounting point to optics module
-                            translate([0,0,top_filter_cube+slip_plate_thickness+1]){
+                            translate([0,0,top_filter_cube+slip_plate_thickness+3]){
                                 rotate([-90,0,0]){
                                         cylinder(r=2, h= 4); //mounting point to optics module
                                 }
                             }
                             //top of mounting point
-                            translate([-2.5,2,top_filter_cube+fl_cube_w+slip_plate_thickness-0.05]){
+                            translate([-2.5,2,top_filter_cube+fl_cube_w+2+slip_plate_thickness-0.05]){
                                 cube([0.01,4,0.1], center=true);
                             }    
 
                         }
                     }
                 }
-                translate([-illuminator_width()/2-4,0,0])cube([illuminator_width()+8,2,top_filter_cube+slip_plate_thickness]);
+                translate([-illuminator_width()/2-4,0,0])cube([illuminator_width()+8,2,top_filter_cube+slip_plate_thickness+2]);
+            }
+            translate([-999/2,0,0]){
+                hull(){
+                    cube([999,2,d]);
+                    translate([0,0,2])cube([999,d,d]);
+                }
             }
             reflect([90,0,0]){
                 hull(){
@@ -177,7 +183,7 @@ module slip_plate(w){
                     translate([w/2-slip_plate_edge_slot,37,0])cylinder(r=1.3,h = slip_plate_thickness+1);
                 }
                     //mounting hole to optics module
-                translate([(fl_cube_w/2+3),0,(top_filter_cube)+slip_plate_thickness]){
+                translate([(fl_cube_w/2+3),0,(top_filter_cube)+slip_plate_thickness+2]){
                     rotate([-90,60,0]){
                         trylinder_selftap(nominal_d = 2.5,h= 6);
                     }
@@ -201,24 +207,14 @@ module illuminator_holder(){
             slip_plate(w);
         }
         excitation_slot();
+
     }
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-//translate([30,30,0]) rotate(90) illuminator_holder();
-=======
-translate([30,30,0]) rotate(90) illuminator_holder();
->>>>>>> 025f179... Add slip plate
-=======
-translate([30,30,(base_r-fl_cube_w/2)+2]) rotate(90) illuminator_holder();
->>>>>>> ead0158... Add screw holes for attachment to optics unit
-=======
-translate([30,30,slip_plate_thickness]) rotate(90) illuminator_holder();
->>>>>>> 751c3ac... Tidied main module
+render(6)translate([30,30,slip_plate_thickness]) rotate(90) illuminator_holder();
+
 //translate([-30,0,0]) field_stop();
-lens_holder();
+//lens_holder();
 
 
 //difference(){
