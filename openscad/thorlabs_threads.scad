@@ -1,19 +1,18 @@
-//The module provides functionality for creating threads. The threads are profile is highly spcified
-//allowing  thread profiles such as trapezoidal thrads to be created
+// The module provides functionality for creating threads.
+// The threads are profile is highly spcified allowing thread profiles
+// such as trapezoidal thrads to be created.
 
 
 /*
+This part of the OpenFlexure Microscope
+(c) Richard Bowman 2020
+Released under the CERN Open Hardware License    
 
-This file was put together by Graham Gibson, based on a part
-by Hazen Babcock https://github.com/ZhuangLab/3D-printing/tree/master/nikon_filter_cube
-
-That, in turn, borrowed from what I believe became the MCAD threads library.
-
-I think everything in here can be considered GPL, but if I've misunderstood, I would be
-very happy to be corrected.
-
--- Richard Bowman, July 2018
-
+This file was put together by Graham Gibson, as a derivative of
+https://github.com/ZhuangLab/3D-printing/tree/master/nikon_filter_cube
+by Hazen Babcock
+ZhuangLab/3D-printing is CERN OHL 1.2 licensed.
+(c)  Hazen Babcock 2015
 */
 
 
