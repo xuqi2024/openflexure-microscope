@@ -31,7 +31,6 @@ lens_holder_mounting_screw_y = 9; // position of the lugs for mounting screws
 lens_holder_mounting_screw_lug_r = 2.2; // size of above.
 camera_component_clearance = 1; // it's easiest to have the PCB slightly below the mount
 
-d=0.05; //small distance!
 $fn=32;
 
 function m12_camera_sensor_height() = 0.5; //Height of the sensor above the PCB
@@ -57,7 +56,7 @@ module m12_camera_mount(){
     sensor_w = 10 + 0.8; //reasonably tight fit around sensor
     solder_w = (box_w-1.2*2); //the solder terminals need some give
     translate([0,0,-h]) difference(){
-        linear_extrude(h+d) difference(){
+        linear_extrude(h+tiny()) difference(){
             union(){
                 square(box_w, center=true);
                 hull() reflect([0,1]) translate([0,sy]) circle(r=sr, $fn=16);
@@ -77,10 +76,10 @@ module m12_camera_mount(){
         // is intentional, to help with bed adhesion
         cube([sensor_w, sensor_w, 2],center=true);
         sequential_hull(){
-            translate([0,0,0.7]) cube([solder_w,solder_w,d],center=true);
-            translate([0,0,0.7+(solder_w-sensor_w)/2]) cube([sensor_w, sensor_w, d],center=true);
-            translate([0,0,2]) cube([sensor_w, sensor_w, d],center=true);
-            translate([0,0,h+d]) cylinder(r=5,h=d);
+            translate([0,0,0.7]) cube([solder_w,solder_w,tiny()],center=true);
+            translate([0,0,0.7+(solder_w-sensor_w)/2]) cube([sensor_w, sensor_w, tiny()],center=true);
+            translate([0,0,2]) cube([sensor_w, sensor_w, tiny()],center=true);
+            translate([0,0,h+tiny()]) cylinder(r=5,h=tiny());
         }
     }
 }

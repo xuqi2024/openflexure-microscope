@@ -1,0 +1,125 @@
+/*
+
+An illustration for the OpenFlexure Microscope; how to put the nut in
+
+(c) 2016 Richard Bowman - released under CERN Open Hardware License
+
+*/
+
+use <../openscad/compact_nut_seat.scad>
+use <../openscad/utilities.scad>
+use <../openscad/actuator_assembly_tools.scad>
+use <../openscad/microscope_parameters.scad>
+use <../openscad/feet.scad>
+use <../openscad/libs/libdict.scad>
+use <librender/hardware.scad>
+
+module cut_actuator_housing(cut=true){
+    difference(){
+        screw_seat(25, motor_lugs=true);
+
+        // cutout actuator hole
+        difference(){ 
+            translate([-3,-10,0]) cube([6,10,5]);
+            actuator_end_cutout();
+        }
+        // only render half
+        if (cut) {
+            rotate([0,-90,0])cylinder(r=99,h=99,$fn=4);
+        }
+    }
+}
+
+module render_frame(frame_dict){
+    params = default_params();
+
+    foot_tr = key_lookup("foot_tr", frame_dict);
+    band_tr = key_lookup("band_tr", frame_dict);
+    tool_tr = key_lookup("tool_tr", frame_dict);
+    casing_cut = key_lookup("casing_cut", frame_dict);
+    casing_alpha = key_lookup("casing_alpha", frame_dict);
+    foot_alpha = key_lookup("foot_alpha", frame_dict);
+    tool_kink = key_lookup("tool_kink", frame_dict);
+
+    color("HotPink", 1.0){
+        actuator_column(25, 0, join_to_casing=false);
+    }
+    color("gray", 1){
+        translate(band_tr){
+            viton_band_in_situ_vertical(tool_kink=tool_kink);
+        }
+    }
+    color("green", 1){
+        translate([0,0,-45]+tool_tr){
+            rotate([0, 0, 90]){
+                double_ended_band_tool(bent=true);
+            }
+        }
+    }
+    color("HotPink", foot_alpha){
+        translate(foot_tr){
+            render(6){
+                outer_foot(params, lie_flat=false, letter="X");
+            }
+        }
+    }
+    // See though object last
+    color("HotPink", casing_alpha){
+        render(6){
+            cut_actuator_housing(cut=casing_cut);
+        }
+    }
+}
+
+frame1 = [["foot_tr", [0,0,-40]],
+          ["band_tr", [0,0,-40]],
+          ["tool_tr", [0,0,-40]],
+          ["casing_cut", false],
+          ["casing_alpha", 1],
+          ["foot_alpha", 1],
+          ["tool_kink", true]];
+
+frame2 = [["foot_tr", [0,0,-40]],
+          ["band_tr", [0,0,-40]],
+          ["tool_tr", [0,0,-40]],
+          ["casing_cut", true],
+          ["casing_alpha", .5],
+          ["foot_alpha", .5],
+          ["tool_kink", true]];
+
+frame3 = [["foot_tr", [0,0,0]],
+          ["band_tr", [0,0,0]],
+          ["tool_tr", [0,0,0]],
+          ["casing_cut", true],
+          ["casing_alpha", .5],
+          ["foot_alpha", .5],
+          ["tool_kink", true]];
+
+frame4 = [["foot_tr", [0,0,0]],
+          ["band_tr", [0,0,0]],
+          ["tool_tr", [0,0,-40]],
+          ["casing_cut", true],
+          ["casing_alpha", .5],
+          ["foot_alpha", .5],
+          ["tool_kink", false]];
+
+frame5 = [["foot_tr", [0,0,0]],
+          ["band_tr", [0,0,0]],
+          ["tool_tr", [0,0,-40]],
+          ["casing_cut", false],
+          ["casing_alpha", 1],
+          ["foot_alpha", 1],
+          ["tool_kink", false]];
+
+FRAME=5;
+if (FRAME==1){
+    render_frame(frame1);
+}else if (FRAME==2){
+    render_frame(frame2);
+}else if (FRAME==3){
+    render_frame(frame3);
+}else if (FRAME==4){
+    render_frame(frame4);
+}else if (FRAME==5){
+    render_frame(frame5);
+}

@@ -43,7 +43,7 @@ module tool_handle(){
 module xz_slice(y=0){
     //slice out just the part of something that sits in the XZ plane
     intersection(){
-        translate([0,y,0]) cube([9999,2*tiny(),9999],center=true);
+        translate([0,y,0]) cube([999,2*tiny(),999],center=true);
         children();
     }
 }

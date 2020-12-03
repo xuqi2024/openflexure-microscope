@@ -1,7 +1,29 @@
 stages:
+    - test
     - build
+    - build-docs
     - deploy
     - zenodo
+
+# Unit testing of the scad library functions
+scad-lib-tests:
+    stage: test
+    image: ubuntu:18.04
+
+    before_script:
+      - apt-get update -qq
+      - apt-get -y -qq install software-properties-common apt-transport-https
+      - add-apt-repository -y ppa:openscad/releases
+      - apt-get update -qq
+      - apt-get install -y -qq openscad
+
+    script:
+      - openscad/libs/test/test_dict.py
+
+    only:
+      - tags
+      - merge_requests
+      - web
 
 # Build STL files
 build:
@@ -34,11 +56,41 @@ build:
       - merge_requests
       - web
 
-
-# Build docs
-build-docs:
+# render assemblies - uses xvfb as a virtual x-server
+render:
     stage: build
     image: ubuntu:18.04
+
+    before_script:
+      - apt-get update -qq
+      - apt-get -y -qq install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates xvfb imagemagick
+      - add-apt-repository -y ppa:openscad/releases
+      - apt-get update -qq
+      - apt-get install -y -qq openscad
+
+    script:
+      - xvfb-run --auto-servernum --server-args "-screen 0 1024x768x24" ./render.sh
+
+    artifacts:
+      expire_in: 1 week
+      name: "${CI_PROJECT_NAME}-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}-renders"
+      paths:
+        - docs/renders/*.png
+
+    only:
+      - tags
+      - merge_requests
+      - web
+
+
+# Build docs- this is at a later stage so it has access to the models
+build-docs:
+    stage: build-docs
+    image: ubuntu:18.04
+
+    dependencies:
+      - build
+      - render
 
     before_script:
       - apt-get update -qq
@@ -72,6 +124,7 @@ deploy:
   stage: deploy
   dependencies:
     - build
+    - render
     - build-docs
   image: ubuntu:latest
 

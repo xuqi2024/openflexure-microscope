@@ -1,3 +1,5 @@
+use <microscope_parameters.scad>
 use <microscope_stand.scad>
 
-motor_driver_case();
+params = default_params();
+motor_driver_case(params);

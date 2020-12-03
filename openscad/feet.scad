@@ -21,7 +21,7 @@ include <microscope_parameters.scad> //for foot_height
 use <utilities.scad>
 use <compact_nut_seat.scad>
 use <endstop.scad>
-d = 0.05;
+
 
 module foot_ground_plane(tilt=0, top=0, bottom=-999){
     //This represents where the ground would be, given that the
@@ -71,30 +71,46 @@ module filleted_bridge(gap, roc_xy=2, roc_xz=2){
     difference(){
         translate(-zeroz(gap)/2 -[0,roc_xy,999]) cube(gap + [0,2*roc_xy,roc_xz] + [0,0,999]);
         reflect([0,1,0]) sequential_hull(){
-            rx() translate([x1, y1, -999]) cylinder(r=roc_xy, h=d);
+            rx() translate([x1, y1, -999]) cylinder(r=roc_xy, h=tiny());
             rx() translate([x1, y1, 0]) cylinder(r=roc_xy, h=h+roc_xz);
-            rx() translate([x2, b/2, h+roc_xz]) rotate([-90,0,0]) cylinder(r=roc_xz, h=d);
-            rx() translate([x2, -2*d, h+roc_xz]) rotate([90,0,0]) cylinder(r=roc_xz ,h=d);
+            rx() translate([x2, b/2, h+roc_xz]) rotate([-90,0,0]) cylinder(r=roc_xz, h=tiny());
+            rx() translate([x2, -2*tiny(), h+roc_xz]) rotate([90,0,0]) cylinder(r=roc_xz ,h=tiny());
         }
     }
 }
-module thick_section(h=d, center=false, shift=true){
+module thick_section(h=tiny(), center=false, shift=true){
     // A 3D object, corresponding to the linearly-extruded projection of another object.
-    linear_extrude(h, center=center) projection(cut=true) translate([0,0,shift?-d:0]) children();
+    linear_extrude(h, center=center) projection(cut=true) translate([0,0,shift?-tiny():0]) children();
 }
-module offset_thick_section(h=d, offset=0, center=false, shift=true){
-    // A 3D object, corresponding to the linearly-extruded projection of another object.
-    linear_extrude(h, center=center) offset(r=offset) projection(cut=true) translate([0,0,shift?-d:0]) children();
+module offset_thick_section(h=tiny(), offset=0, center=false, shift=true){
+    // A 3D object, corresponding to the linearly-extruded projection of another object. Cut a tiny distance above z=0
+    linear_extrude(h, center=center) offset(r=offset) projection(cut=true) translate([0,0,shift?-tiny():0]) children();
 }
 
+
+//TODO think of a less confusing name for this!!!!!!
+// This is used to create long tilted extrusions where the bottom of the section may have a different angle
+// This module takes a child module, cuts it a tiny bit above z=0. This cut is extruded along the angle of the foot
+// Only a section of this is returned which extends from the input `z` up by a hight h. The angle this section is cut
+// can be tilted independently  by `section_angle`.
 module foot_section(foot_angle=0,    //the angle the actuator column makes with the Z axis
                     section_angle=0, //the angle between the section and the XY plane
-                    offset=0,        //grow the section by this much
-                    h=d,             //thickness
+                    offset=0,        //grow the section by this much in XY plane
+                    h=tiny(),        //thickness
                     z=0){
+    assert(h<=999, "Maximum h for foot section is 999");
     intersection(){
-        translate([0,0,z]) rotate([section_angle,0,0]) cube([999,999,h],center=true);
-        rotate([foot_angle,0,0]) offset_thick_section(h=9999, center=true, offset=offset) children();
+        translate([0,0,z]){
+            rotate([section_angle,0,0]){
+                cube([999,999,h],center=true);
+            }
+        }
+        rotate([foot_angle,0,0]){
+            // This is set to 1000 so that numbers up to 999 can be put into h
+            offset_thick_section(h=1000, center=true, offset=offset){
+                children();
+            }
+        }
     }
 }
 
@@ -146,10 +162,10 @@ module foot(travel=5,       // how far into the foot the actuator can move down
             difference(){
                 //the core tapers at the top to support the lugs
                 sequential_hull(){
-                    foot_section(actuator_tilt, 0, z=-999) nut_seat_void();
+                    foot_section(actuator_tilt, 0, z=-99) nut_seat_void();
                     foot_section(actuator_tilt, 0, z=h-4) nut_seat_void();
                     foot_section(actuator_tilt, 0, offset=-wall_t, z=h) nut_seat_void();
-                    foot_section(actuator_tilt, 0, offset=-wall_t, z=999) nut_seat_void();
+                    foot_section(actuator_tilt, 0, offset=-wall_t, z=99) nut_seat_void();
                 }
                 //we double-subtract the anchor for the bands at the bottom, so that it
                 //doesn't protrude outside the part.
@@ -159,7 +175,7 @@ module foot(travel=5,       // how far into the foot the actuator can move down
             //one on either side - rather than a ring around the top.
             intersection(){
                 cube([cw-3.3*2, 999, 999],center=true);
-                foot_section(actuator_tilt, 0, h=999, z=999/2+h-travel-0.5) nut_seat_void();
+                foot_section(actuator_tilt, 0, h=99, z=99/2+h-travel-0.5) nut_seat_void();
             }
 
             //cut out the shell close to the microscope centre to allow the actuator
@@ -192,7 +208,7 @@ module foot(travel=5,       // how far into the foot the actuator can move down
             //Void for endstop switch
             //TODO: check properly parametrized
             if(feet_endstops){
-                translate([0,0.5-(h-travel)*sin(actuator_tilt),h-travel-endstop_hole_offset]) rotate([0,0,-90]) scale([1.03,1.08,1])endstop_hole(actuator_tilt);
+                translate([0,0.5-(h-travel)*sin(actuator_tilt),h-travel]) rotate([0,0,-90]) scale([1.03,1.08,1])endstop_hole(actuator_tilt);
               }
         }
         foot_letter(letter,actuator_tilt);
@@ -201,23 +217,28 @@ module foot(travel=5,       // how far into the foot the actuator can move down
 }
 //foot(tilt=15);
 //foot(tilt=0,hover=2);
-module middle_foot(lie_flat=false,letter="Z"){
-        foot(travel=z_actuator_travel,bottom_tilt=0, actuator_tilt=z_actuator_tilt, hover=2, lie_flat=lie_flat,letter=letter);
+module middle_foot(params, lie_flat=false,letter="Z"){
+        foot(travel=z_actuator_travel(params),
+             bottom_tilt=0,
+             actuator_tilt=z_actuator_tilt(params),
+             hover=2,
+             lie_flat=lie_flat,
+             letter=letter);
 }
 
-module outer_foot(lie_flat=false,letter=""){
-    foot(travel=xy_actuator_travel,bottom_tilt=15, lie_flat=lie_flat,letter=letter);
+module outer_foot(params, lie_flat=false,letter=""){
+    foot(travel=xy_actuator_travel(params),
+         bottom_tilt=15,
+         lie_flat=lie_flat,
+         letter=letter);
 }
 
-module feet_for_printing(lie_flat=true){
+module feet_for_printing(params, lie_flat=true){
     x_tr = ss_outer().x+1.5;
-    translate([x_tr, 0]) outer_foot(lie_flat=lie_flat,letter="X");
-    middle_foot(lie_flat=lie_flat,letter="Z");
-    translate([-x_tr, 0]) outer_foot(lie_flat=lie_flat,letter="Y");
+    translate([x_tr, 0]) outer_foot(params, lie_flat=lie_flat,letter="X");
+    middle_foot(params,lie_flat=lie_flat,letter="Z");
+    translate([-x_tr, 0]) outer_foot(params, lie_flat=lie_flat,letter="Y");
 }
-//outer_foot(lie_flat=true);
-//foot(bottom_tilt=0, actuator_tilt=0, hover=2, lie_flat=true);
-feet_for_printing(lie_flat=true);
-//middle_foot();
-//translate([20,0,0])rotate([90,0,0]) endstop_switch();
-//translate([0,30,0]) feet_for_printing(lie_flat=false);
+
+params = default_params();
+feet_for_printing(params, lie_flat=true);

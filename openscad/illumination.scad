@@ -19,17 +19,18 @@ use <./logo.scad>
 include <./microscope_parameters.scad>
 use <./dovetail.scad>
 use <./z_axis.scad>
+use <libs/libdict.scad>
 front_dovetail_y = 35; // position of the main dovetail
 front_dovetail_w = 30; // width of the main dovetail
 
-function illumination_dovetail_z() = leg_height-2;
-function right_illumination_screw_pos() = [20, z_nut_y, illumination_dovetail_z()];
-function left_illumination_screw_pos() = [-20, z_nut_y, illumination_dovetail_z()];
-function illumination_back_corner_pos() = [0, (leg_r + leg_outer_w)/sqrt(2) + 4, illumination_dovetail_z()];
+function illumination_dovetail_z(params) = leg_height(params)-2;
+function right_illumination_screw_pos(params) = [20, z_nut_y(params), illumination_dovetail_z(params)];
+function left_illumination_screw_pos(params) = [-20, z_nut_y(params), illumination_dovetail_z(params)];
+function illumination_back_corner_pos(params) = [0, (key_lookup("leg_r", params)+ leg_outer_w(params))/sqrt(2) + 4, illumination_dovetail_z(params)];
 
-module each_illumination_screw(middle=true){
+module each_illumination_screw(params){
     // A transform to repeat objects at each screw hole
-    screws = [right_illumination_screw_pos(), left_illumination_screw_pos()];
+    screws = [right_illumination_screw_pos(params), left_illumination_screw_pos(params)];
     for(pos=screws){
         translate(pos){
             children();
@@ -37,9 +38,9 @@ module each_illumination_screw(middle=true){
     }
 }
 
-module each_illumination_corner(middle=true){
+module each_illumination_corner(params){
     // A transform to repeat objects at each corner of the illumination mount
-    corners = [right_illumination_screw_pos(), left_illumination_screw_pos(), illumination_back_corner_pos()];
+    corners = [right_illumination_screw_pos(params), left_illumination_screw_pos(params), illumination_back_corner_pos(params)];
     for(pos=corners){
         translate(pos){
             children();
@@ -51,7 +52,7 @@ module each_illumination_corner(middle=true){
 //Note that this is not built from here. it is built in illumination_dovetail.scad
 
 
-module illumination_dovetail_branding(h, bottom_z){
+module illumination_dovetail_branding(params, h, bottom_z){
     // The open flexure logo for the back of the illumination fovetail
 
     //lug height
@@ -59,7 +60,7 @@ module illumination_dovetail_branding(h, bottom_z){
     //height of the slobed back
     slope_h = h-lug_h ;
     //top and bottom of y position of the sloped back
-    bot_y = right_illumination_screw_pos().y+5;
+    bot_y = right_illumination_screw_pos(params).y+5;
     top_y = front_dovetail_y+10;
     back_angle = atan((top_y-bot_y)/slope_h);
     logo_z = bottom_z+lug_h +slope_h/2;
@@ -72,14 +73,13 @@ module illumination_dovetail_branding(h, bottom_z){
     }
 }
 
-module illumination_dovetail_structure(h, dt_z, dt_h){
+module illumination_dovetail_structure(params, h, dt_z, dt_h){
     //this is the outer structure that forms the illumination mount.
 
     //nominal postion of the corner of the cubes that form this  structure
     cube_corner = [-front_dovetail_w/2, front_dovetail_y, dt_z];
     //distance cubes are moved forward and backward in y respectivly
     delta_y = 2;
-
     sequential_hull(){
         //Cube jsut below the actual dovetail
         translate(cube_corner - [0, delta_y, 0]){
@@ -87,10 +87,10 @@ module illumination_dovetail_structure(h, dt_z, dt_h){
         }
         //trulobular structure with "corners" at the 2 screws and a back corner position
         hull(){
-            each_illumination_screw(){
+            each_illumination_screw(params){
                 cyl_slot(r=4, h=3+tiny(), dy=3);
             }
-            translate(illumination_back_corner_pos()){
+            translate(illumination_back_corner_pos(params)){
                 scale([1,0.5,1]){
                     cylinder(r=4, h=tiny());
                 }
@@ -103,12 +103,12 @@ module illumination_dovetail_structure(h, dt_z, dt_h){
     }
 }
 
-module illumination_dovetail(h=50){
+module illumination_dovetail(params, h=50){
     // The dovetail on which we mount the condenser for the illumination
     // This is built in place in the microscope coordinates.
 
     // z position where we mount it
-    bottom_z = illumination_dovetail_z();
+    bottom_z = illumination_dovetail_z(params);
     // Where the dovetail itself starts (relative to the bottom of the structure)
     start_z = 14;
     // z position of the dovetail, in microscope referecne frame
@@ -118,9 +118,9 @@ module illumination_dovetail(h=50){
 
     translate([0,front_dovetail_y,dt_z]) mirror([0,1,0]) dovetail_m([front_dovetail_w, 10, dt_h]);
     difference(){
-        illumination_dovetail_structure(h, dt_z, dt_h);
+        illumination_dovetail_structure(params, h, dt_z, dt_h);
         // slots for the mounting screws (to allow adjustment of position)
-        each_illumination_screw(){
+        each_illumination_screw(params){
             // wider than normal M3 clearance hole to ease adjustment of illumination
             m3_clear_loose = 3/2*1.33;
             cyl_slot(r=m3_clear_loose, h=999, dy=3, center=true);
@@ -129,9 +129,9 @@ module illumination_dovetail(h=50){
             }
         }
         // clearance for the motor
-        translate([0,-2,0]) z_motor_clearance();
+        translate([0,-2,0]) z_motor_clearance(params);
     }
-    illumination_dovetail_branding(h, bottom_z);
+    illumination_dovetail_branding(params, h, bottom_z);
 }
 
 
@@ -242,10 +242,11 @@ module tall_condenser(lens_d, lens_t, lens_assembly_z){
 }
 
 //TODO the lens_assembly_z should be adjusted to a focal length parameter
-module condenser(lens_d=13, lens_t=1, lens_assembly_z= 30){
+module condenser(params, lens_d=13, lens_t=1, lens_assembly_z= 30){
     //This is the condenser that is printed.
+    condenser_angle = key_lookup("condenser_angle", params);
     difference(){
-        rotate([-15,0,0]){
+        rotate([-condenser_angle,0,0]){
             tall_condenser(lens_d, lens_t, lens_assembly_z);
         }
         mirror([0,0,1]){

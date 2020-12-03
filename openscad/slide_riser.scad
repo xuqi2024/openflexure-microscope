@@ -27,10 +27,10 @@ slide = [75.8,25.8,1.0];
 
 
 
-module slide_riser_base(h, thickness, y_space){
+module slide_riser_base(params, h, thickness, y_space){
     difference(){
 
-        xy_stage(h=thickness,on_buildplate=true);
+        xy_stage(params, h=thickness,on_buildplate=true);
 
         //angled cut-out for slide
         hull() translate([0,0,h]){
@@ -46,7 +46,7 @@ module slide_riser_base(h, thickness, y_space){
 }
 
 
-module slide_riser(h=.6, thickness=4){
+module slide_riser(params, h=.6, thickness=4){
     y_space = 1.5;
     clip_l = 30;
     clip_w = 7;
@@ -61,7 +61,7 @@ module slide_riser(h=.6, thickness=4){
         union(){
             difference(){
                 union(){
-                    slide_riser_base(h,thickness, y_space);
+                    slide_riser_base(params, h,thickness, y_space);
                     // This is the bar that froms the stationary handle.
                     // It is very long and will be cut down later.
                     translate([-999+30,slide.y/2+y_space,0]) cube([999,9,12]);
@@ -71,7 +71,7 @@ module slide_riser(h=.6, thickness=4){
                 translate([-slide.y/2+2,0, -1]) cube([slide.y-4,999,clip_w+3]);
 
                 //counter bored mounting holesmounting holes
-                each_leg() translate([0,-stage_hole_inset,0]){
+                each_leg(params) translate([0,-stage_hole_inset,0]){
                     cylinder(r=3/2*1.15,h=999,center=true);
                     translate([0,0,thickness+tiny()])cylinder(r=3*1.15,h=999);
                 }
@@ -93,9 +93,9 @@ module slide_riser(h=.6, thickness=4){
     }
 }
 
-
+params = default_params();
 h=.6;
-slide_riser(h);
+slide_riser(params, h);
 
 // Comment this back in to see slide position
 // translate([0,0,h+slide.z/2]) cube(slide,center=true);

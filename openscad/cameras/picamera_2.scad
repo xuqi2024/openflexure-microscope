@@ -30,7 +30,6 @@
 
 use <../utilities.scad>
 
-d=0.05; //small distance!
 
 function picamera_2_camera_mount_height() = 4.5;
 bottom = picamera_2_camera_mount_height() * -1;
@@ -69,8 +68,8 @@ module picam2_cutout( beam_length=15){
 	union(){
         sequential_hull(){
             //cut-out for camera
-            translate([0,0,-d]) cube([cw+0.5,cw+0.5,d],center=true); //wider at bottom
-            translate([0,0,0.5]) cube([cw,cw,d],center=true);
+            translate([0,0,-tiny()]) cube([cw+0.5,cw+0.5,tiny()],center=true); //wider at bottom
+            translate([0,0,0.5]) cube([cw,cw,tiny()],center=true);
             translate([0,0,ch/2]) cube([cw,cw,ch],center=true);
             cylinder(r=hole_r, h=2*picamera_2_camera_mount_height(), center=true);
         }
@@ -82,13 +81,13 @@ module picam2_cutout( beam_length=15){
         dz = mh-fh-0.75; // extra height above the flex for the sloping "roof"
         rw = cw - 2*dz;
         hull(){
-            translate([0,0,-d]) linear_extrude(fh) picam2_flex_and_components(cw);
-            translate([0,0,-d]) linear_extrude(fh+dz) offset(-dz) picam2_flex_and_components(cw);
+            translate([0,0,-tiny()]) linear_extrude(fh) picam2_flex_and_components(cw);
+            translate([0,0,-tiny()]) linear_extrude(fh+dz) offset(-dz) picam2_flex_and_components(cw);
         }
         //clearance for the LED/resistor on v1 of the camera
         hull(){
-            translate([0,0,-d]) linear_extrude(fh) picam1_led();
-            translate([0,0,-d]) linear_extrude(fh+dz) offset(-dz) picam1_led();
+            translate([0,0,-tiny()]) linear_extrude(fh) picam1_led();
+            translate([0,0,-tiny()]) linear_extrude(fh+dz) offset(-dz) picam1_led();
         }
 
         //beam clearance
@@ -106,7 +105,7 @@ module picam2_cutout( beam_length=15){
 }
 //picam2_cutout();
 
-module picam2_board(h=d){
+module picam2_board(h=tiny()){
     // a rounded rectangle with the dimensions of the picamera board v2
     // centred on the origin
     b = 24;
@@ -119,15 +118,15 @@ module picam2_board(h=d){
 
 module picamera_2_camera_mount(counterbore=false){
     // A mount for the pi camera v2
-    // This should finish at z=0+d, with a surface that can be
+    // This should finish at z=0+tiny(), with a surface that can be
     // hull-ed onto the lens assembly.
     b = 24;
     w = 25;
     difference(){
         rotate(45) translate([0,2.4,0]) sequential_hull(){
-            translate([0,0,bottom]) picam2_board(h=d);
-            translate([0,0,-1]) picam2_board(h=d);
-            translate([0,0,0]) cube([w-(-1.5-bottom)*2,b,d],center=true);
+            translate([0,0,bottom]) picam2_board(h=tiny());
+            translate([0,0,-1]) picam2_board(h=tiny());
+            translate([0,0,0]) cube([w-(-1.5-bottom)*2,b,tiny()],center=true);
         }
         rotate(45) translate([0,0,bottom]) picam2_cutout();
         if(counterbore){
@@ -172,7 +171,7 @@ module picamera_2_cover(){
                 // cut out centre to form walls on 3 sides
                 translate([-w/2+t,-b/2+centre_y-t,0.75]) cube([w-2*t, b, h]);
                 //chamfer the connector edge for ease of access
-                translate([-999,-b/2+centre_y,h]) rotate([-135,0,0]) cube([9999,999,999]);
+                translate([-999/2,-b/2+centre_y,h]) rotate([-135,0,0]) cube([999,999,999]);
             }
             //mounting screws
             reflect([1,0,0]) translate([21/2, 0, 0]) cylinder(r=3, h=h, $fn=16);
@@ -198,7 +197,7 @@ module generous_camera_bits(){
 	union(){
 		//ribbon cable at top of camera
         sequential_hull(){
-            translate([0,0,0]) cube([cw-1,d,4],center=true);
+            translate([0,0,0]) cube([cw-1,tiny(),4],center=true);
             translate([0,9.4-(4.4/1)/2,0]) cube([cw-1,1,4],center=true);
         }
         //flex connector

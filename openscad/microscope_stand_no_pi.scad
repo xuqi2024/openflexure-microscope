@@ -1,17 +1,18 @@
 use <microscope_stand.scad>
 use <utilities.scad>
+use <microscope_parameters.scad>
 
 h=15;
 
-module microscope_stand_no_pi(){
+module microscope_stand_no_pi(params){
     difference(){
         union(){
-            bucket_base_with_microscope_top(h=h);
+            bucket_base_with_microscope_top(params, h=h);
         }
 
-        mounting_holes();
+        mounting_holes(params);
 
     }
 }
-
-microscope_stand_no_pi();
+params = default_params();
+microscope_stand_no_pi(params);
