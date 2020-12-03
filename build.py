@@ -202,7 +202,7 @@ def generate_small_parts(writer):
     writer.openscad("condenser.stl", "condenser.scad")
     writer.openscad("illumination_dovetail.stl", "illumination_dovetail.scad")
     writer.openscad("lens_tool.stl", "lens_tool.scad")
-    writer.openscad("nut_trap_test.stl", "ut_trap_test.scad")
+    writer.openscad("nut_trap_test.stl", "test_pieces/nut_trap_test.scad")
     writer.openscad("feet.stl", "feet.scad")
     writer.openscad("sample_clips.stl", "sample_clips.scad")
     writer.openscad(
@@ -230,7 +230,7 @@ def generate_small_parts(writer):
         "reflection_illuminator.scad",
         select_stl_if={"reflection_illumination": True},
     )
-    writer.openscad("leg_test.stl", "leg_test.scad")
+    writer.openscad("leg_test.stl", "test_pieces/leg_test.scad")
 
 def add_extra_stls_to_writer(writer):
     for camera in ["6ledcam", "dashcam"]:
