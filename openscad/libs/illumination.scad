@@ -14,12 +14,12 @@
 // Note that no geometry is output in this file. The condenser and the illumination
 // dovetail are created in condenser.scad and illumination_dovetail.scad
 
-use <./libs/utilities.scad>
-use <./libs/logo.scad>
+use <./utilities.scad>
+use <./logo.scad>
 include <./microscope_parameters.scad>
 use <./dovetail.scad>
 use <./z_axis.scad>
-use <libs/libdict.scad>
+use <./libdict.scad>
 front_dovetail_y = 35; // position of the main dovetail
 front_dovetail_w = 30; // width of the main dovetail
 

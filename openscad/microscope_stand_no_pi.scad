@@ -1,6 +1,6 @@
 use <microscope_stand.scad>
 use <./libs/utilities.scad>
-use <microscope_parameters.scad>
+use <./libs/microscope_parameters.scad>
 
 h=15;
 

@@ -10,9 +10,9 @@
 ******************************************************************/
 
 use <./utilities.scad>
-use <../compact_nut_seat.scad>
+use <./compact_nut_seat.scad>
 use <libdict.scad>
-include <../microscope_parameters.scad>
+include <./microscope_parameters.scad>
 
 module shear_x(amount=1){
     // Shear transformation: tilt the Y axis towards the X axis

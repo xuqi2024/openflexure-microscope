@@ -5,7 +5,7 @@
 // the plate.
 
 use <../main_body.scad>
-use <../microscope_parameters.scad>
+use <../libs/microscope_parameters.scad>
 
 params = default_params();
 projection(cut=true){

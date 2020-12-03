@@ -13,14 +13,14 @@
 ******************************************************************/
 
 use <./libs/utilities.scad>
-use <./compact_nut_seat.scad>
+use <./libs/compact_nut_seat.scad>
 use <./libs/logo.scad>
-use <./z_axis.scad>
-use <./wall.scad>
+use <./libs/z_axis.scad>
+use <./libs/wall.scad>
 use <./libs/main_body_transforms.scad>
 use <./reflection_illuminator.scad>
-use <libs/libdict.scad>
-include <./microscope_parameters.scad> //All the geometric variables are now in here.
+use <./libs/libdict.scad>
+include <./libs/microscope_parameters.scad> //All the geometric variables are now in here.
 
 
 module leg_flexures(params, brace){

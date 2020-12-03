@@ -17,10 +17,10 @@
 ******************************************************************/
 
 use <../libs/utilities.scad>
-use <../compact_nut_seat.scad>
+use <../libs/compact_nut_seat.scad>
 use <../libs/logo.scad>
-use <../dovetail.scad>
-include <../microscope_parameters.scad> //All the geometric variables are now in here.
+use <../libs/dovetail.scad>
+include <../libs/microscope_parameters.scad> //All the geometric variables are now in here.
 
 outer_clearance = 0.5;
 cr = column_base_radius() + outer_clearance;

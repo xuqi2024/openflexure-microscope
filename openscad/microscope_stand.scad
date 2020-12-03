@@ -13,12 +13,12 @@
 // Released under the CERN Open Hardware License
 
 use <./libs/utilities.scad>
-include <microscope_parameters.scad>
-use <compact_nut_seat.scad>
+include <./libs/microscope_parameters.scad>
+use <./libs/compact_nut_seat.scad>
 use <./libs/main_body_transforms.scad>
 use <main_body.scad>
 use <feet.scad>
-use <libs/libdict.scad>
+use <./libs/libdict.scad>
 
 bottom_thickness = 1.0;
 inset_depth = 3.0;

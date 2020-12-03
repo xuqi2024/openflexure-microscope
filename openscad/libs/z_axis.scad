@@ -22,14 +22,14 @@ z_axis_struts() makes the two connections between the objective_mount()
 
 */
 
-use <./libs/utilities.scad>
+use <./utilities.scad>
 use <./compact_nut_seat.scad>
-use <./libs/main_body_transforms.scad>
+use <./main_body_transforms.scad>
 use <./wall.scad>
-use <./libs/gears.scad>
+use <./gears.scad>
 use <./illumination.scad>
 include <./microscope_parameters.scad>
-use <libs/libdict.scad>
+use <./libdict.scad>
 module each_om_contact_plane(){
     // This transform puts y=0 in the plane of contact between the
     // optics module and the mount for it, with the origin at the

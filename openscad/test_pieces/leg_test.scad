@@ -1,5 +1,5 @@
 use <../main_body.scad>
-use <../microscope_parameters.scad>
+use <../libs/microscope_parameters.scad>
 use <../libs/libdict.scad>
 
 // This is for printing a shorter version of the leg just
