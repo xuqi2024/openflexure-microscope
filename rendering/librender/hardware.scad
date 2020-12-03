@@ -1,4 +1,19 @@
+/*
+This is the hardware for rendering the OpenFlexure microscope
+documentation.*/
 
+/*
+This file licensed CERN OHL.
+(c) Richard Bowman 2020
+
+The nuts and bolts are included from "binaries" generated
+using NopSCADlib. NopSCADlib is GPL licenses and in compliance
+with the GPL we provide our generation script generate_hardware.py
+under the GPL. NopSCADLib is available from 
+https://github.com/nophead/NopSCADlib
+the banch we use is:
+https://github.com/julianstirling/NopSCADlib/tree/no2_screw_hack
+*/
 use <../../openscad/utilities.scad>
 use <../../openscad/thorlabs_threads.scad>
 
@@ -58,4 +73,45 @@ module viton_band_in_situ_vertical(h=25, foot_z=-11, tool_kink=true){
     }
 
 }
+
+module m3_hex_x25(){
+    color("Silver")import("m3_hex_x25.stl");
+}
+
+module m4_button_x6(){
+    color("Silver")import("m4_button_x6.stl");
+}
+
+module m3_washer(){
+    color("Silver")import("m3_washer.stl");
+}
+
+module m3_nut(){
+    color("Silver")import("m3_nut.stl");
+}
+
+module m3_cap_x10(){
+    color("Silver")import("m3_cap_x10.stl");
+}
+
+module m3_cap_x8(){
+    color("Silver")import("m3_cap_x8.stl");
+}
+
+module m3_cap_x6(){
+    color("Silver")import("m3_cap_x6.stl");
+}
+
+module m2_cap_x6(){
+    color("Silver")import("m2_cap_x6.stl");
+}
+
+module m2_5_cap_x6(){
+    color("Silver")import("m2_5_cap_x6.stl");
+}
+
+module no2_x6_5_selftap(){
+    color("Silver")import("no2_x6_5_selftap.stl");
+}
+
 
