@@ -173,7 +173,7 @@ def generate_gears_and_thumbwheels(writer):
     writer.openscad(
         "small_gears.stl", "small_gears.scad", select_stl_if=small_gear_selected
     )
-    writer.openscad("gears.stl", "gears.scad", select_stl_if=large_gear_selected)
+    writer.openscad("large_gears.stl", "large_gears.scad", select_stl_if=large_gear_selected)
     writer.openscad(
         "thumbwheels.stl", "thumbwheels.scad", select_stl_if=thumbwheels_selected
     )
@@ -183,7 +183,7 @@ def generate_picamera_2_legacy_tools(writer):
     picamera_2_legacy_tools = ["gripper", "lens_gripper"]
     for tool in picamera_2_legacy_tools:
         output = f"picamera_2_{tool}.stl"
-        input_file = f"cameras/picamera_2_{tool}.scad"
+        input_file = f"accessories/picamera_2_{tool}.scad"
         parameters = {"camera": "picamera_2"}
         writer.openscad(
             output,
@@ -202,7 +202,7 @@ def generate_small_parts(writer):
     writer.openscad("condenser.stl", "condenser.scad")
     writer.openscad("illumination_dovetail.stl", "illumination_dovetail.scad")
     writer.openscad("lens_tool.stl", "lens_tool.scad")
-    writer.openscad("just_nut_trap_test.stl", "just_nut_trap_test.scad")
+    writer.openscad("nut_trap_test.stl", "ut_trap_test.scad")
     writer.openscad("feet.stl", "feet.scad")
     writer.openscad("sample_clips.stl", "sample_clips.scad")
     writer.openscad(
@@ -211,18 +211,18 @@ def generate_small_parts(writer):
 
     writer.openscad(
         "picamera_2_cover.stl",
-        "cameras/picamera_2_cover.scad",
+        "picamera_2_cover.scad",
         parameters={"camera": "picamera_2"},
         select_stl_if={"camera": "picamera_2", "objective_type": {"infinite_rms", "finite_rms"}}
     )
     writer.openscad(
-        "actuator_tension_band.stl",
-        "actuator_tension_band.scad",
+        "accessories/actuator_tension_band.stl",
+        "accessories/actuator_tension_band.scad",
         select_stl_if={"include_actuator_tension_band": True},
     )
     writer.openscad(
-        "actuator_drilling_jig.stl",
-        "actuator_drilling_jig.scad",
+        "accessories/actuator_drilling_jig.stl",
+        "accessories/actuator_drilling_jig.scad",
         select_stl_if={"include_actuator_drilling_jig": True},
     )
     writer.openscad(
@@ -230,7 +230,7 @@ def generate_small_parts(writer):
         "reflection_illuminator.scad",
         select_stl_if={"reflection_illumination": True},
     )
-    writer.openscad("just_leg_test.stl", "just_leg_test.scad")
+    writer.openscad("leg_test.stl", "leg_test.scad")
 
 def add_extra_stls_to_writer(writer):
     for camera in ["6ledcam", "dashcam"]:

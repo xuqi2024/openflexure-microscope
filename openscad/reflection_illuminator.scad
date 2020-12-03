@@ -1,4 +1,4 @@
-use <./utilities.scad>
+use <./libs/utilities.scad>
 use <./optics.scad>
 include <./microscope_parameters.scad>
 use <./dovetail.scad>

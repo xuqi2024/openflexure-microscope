@@ -12,12 +12,12 @@
 *                                                                 *
 ******************************************************************/
 
-use <./utilities.scad>
+use <./libs/utilities.scad>
 use <./compact_nut_seat.scad>
-use <./logo.scad>
+use <./libs/logo.scad>
 use <./z_axis.scad>
 use <./wall.scad>
-use <./main_body_transforms.scad>
+use <./libs/main_body_transforms.scad>
 use <./reflection_illuminator.scad>
 use <libs/libdict.scad>
 include <./microscope_parameters.scad> //All the geometric variables are now in here.

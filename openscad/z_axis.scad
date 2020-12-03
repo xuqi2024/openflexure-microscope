@@ -22,11 +22,11 @@ z_axis_struts() makes the two connections between the objective_mount()
 
 */
 
-use <./utilities.scad>
+use <./libs/utilities.scad>
 use <./compact_nut_seat.scad>
-use <./main_body_transforms.scad>
+use <./libs/main_body_transforms.scad>
 use <./wall.scad>
-use <./gears.scad>
+use <./libs/gears.scad>
 use <./illumination.scad>
 include <./microscope_parameters.scad>
 use <libs/libdict.scad>

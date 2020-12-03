@@ -12,10 +12,10 @@
 // (c) Richard Bowman 2019
 // Released under the CERN Open Hardware License
 
-use <utilities.scad>
+use <./libs/utilities.scad>
 include <microscope_parameters.scad>
 use <compact_nut_seat.scad>
-use <main_body_transforms.scad>
+use <./libs/main_body_transforms.scad>
 use <main_body.scad>
 use <feet.scad>
 use <libs/libdict.scad>

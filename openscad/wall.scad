@@ -9,8 +9,8 @@
 * Released under the CERN Open Hardware License                   *
 *                                                                 *
 ******************************************************************/
-use <./utilities.scad>
-use <./main_body_transforms.scad>
+use <./libs/utilities.scad>
+use <./libs/main_body_transforms.scad>
 use <./compact_nut_seat.scad>
 include <./microscope_parameters.scad> //All the geometric variables are now in here.
 use <libs/libdict.scad>

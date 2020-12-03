@@ -1,8 +1,8 @@
 //Simple test object to test the nut trap prints correctly
 
-use <compact_nut_seat.scad>
-include <microscope_parameters.scad>
-use <utilities.scad>
+use <../compact_nut_seat.scad>
+include <../microscope_parameters.scad>
+use <../libs/utilities.scad>
 
 
 c_h = 10;

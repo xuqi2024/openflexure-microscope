@@ -6,7 +6,7 @@ Tools for assembling the OpenFlexure Microscope v5.16
 
 */
 
-use <utilities.scad>
+use <./libs/utilities.scad>
 use <compact_nut_seat.scad>
 include <microscope_parameters.scad>
 

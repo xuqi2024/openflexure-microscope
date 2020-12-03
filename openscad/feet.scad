@@ -18,7 +18,7 @@
 ******************************************************************/
 
 include <microscope_parameters.scad> //for foot_height
-use <utilities.scad>
+use <./libs/utilities.scad>
 use <compact_nut_seat.scad>
 use <endstop.scad>
 

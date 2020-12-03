@@ -14,8 +14,7 @@ https://github.com/nophead/NopSCADlib
 the banch we use is:
 https://github.com/julianstirling/NopSCADlib/tree/no2_screw_hack
 */
-use <../../openscad/utilities.scad>
-use <../../openscad/thorlabs_threads.scad>
+use <../../openscad/libs/utilities.scad>
 
 module double_reflect(){
     //Shortcut function to reflext in both the xy and yz plane. Used for creating the band.

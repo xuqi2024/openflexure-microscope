@@ -21,14 +21,14 @@
 *                                                                 *
 ******************************************************************/
 
-use <utilities.scad>
+use <./libs/utilities.scad>
 use <dovetail.scad>
 use <z_axis.scad>
 include <microscope_parameters.scad> // NB this defines "camera" and "optics"
-use <thorlabs_threads.scad>
+use <./libs/threads.scad>
 use <optics.scad>
-use <lenses/lens.scad>
-use <cameras/camera.scad> // Defines camera_bottom_mounting_posts
+use <./libs/lenses/lens.scad>
+use <./libs/cameras/camera.scad> // Defines camera_bottom_mounting_posts
 
 dt_bottom = -2; //bottom of dovetail (<0 to allow some play)
 $fn=24;

@@ -12,8 +12,8 @@
 *                                                                 *
 ******************************************************************/
 
-use <./libMCAD/involute_gears.scad> // forward slash - for platform independence
-use <utilities.scad>
+use <./MCAD/involute_gears.scad> // forward slash - for platform independence
+use <./utilities.scad>
 
 
 strut_t=3;
@@ -144,4 +144,3 @@ module motor_and_gear_clearance(gear_h=10, h=999){
     translate([0,c2c_distance-7.8,gear_h]) motor_clearance(h=h-gear_h);
 }
 
-repeat([0,large_gear_spacing(),0],3,center=true) large_gear();

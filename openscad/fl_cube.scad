@@ -21,7 +21,7 @@
 *                                                                 *
 ******************************************************************/
 
-use <utilities.scad>
+use <./libs/utilities.scad>
 include <microscope_parameters.scad> // NB this defines "camera" and "optics"
 
 

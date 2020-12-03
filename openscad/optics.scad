@@ -21,13 +21,13 @@
 *                                                                 *
 ******************************************************************/
 
-use <utilities.scad>
+use <./libs/utilities.scad>
 use <dovetail.scad>
 use <z_axis.scad>
 include <microscope_parameters.scad> // NB this defines "camera" and "optics"
-use <thorlabs_threads.scad>
-use <libs/libdict.scad>
-use <cameras/camera.scad> // this will define the 2 functions and 1 module for the camera mount, using the camera defined in the "camera" parameter.
+use <./libs/threads.scad>
+use <./libs/libdict.scad>
+use <./libs/cameras/camera.scad> // this will define the 2 functions and 1 module for the camera mount, using the camera defined in the "camera" parameter.
 
 dt_bottom = -2; //bottom of dovetail (<0 to allow some play)
 camera_mount_top_z = dt_bottom - 3 - (optics=="rms_f50d13"?8:0) - (optics=="rms_infinity_f50d13"?20:0); //the 50mm tube lens requires the camera to stick out the bottom.
