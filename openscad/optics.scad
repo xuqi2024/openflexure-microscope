@@ -47,10 +47,10 @@ module fl_cube_cutout(taper=true){
     // A cut-out that enables a filter cube to be inserted.
     union(){
         sequential_hull(){
-            translate([-fl_cube_w/2,-fl_cube_w/2,fl_cube_bottom]) cube([fl_cube_w,999,fl_cube_w]);
-            translate([-fl_cube_w/2+2,-fl_cube_w/2,fl_cube_bottom]) cube([fl_cube_w-4,999,fl_cube_w+2]); //sloping sides
-            translate([-fl_cube_w/2+2,-fl_cube_w/2+2,fl_cube_bottom]) cube([fl_cube_w-4,fl_cube_w-4,fl_cube_w+2]);
-            if(taper) translate([-tiny(),-tiny(),fl_cube_bottom]) cube([2*tiny(),2*tiny(),fl_cube_w*1.5]); //taper gradually to the diameter of the beam
+            translate([-fl_cube_cutout_w/2,-fl_cube_w/2,fl_cube_bottom]) cube([fl_cube_cutout_w,999,fl_cube_cutout_w]);
+            translate([-fl_cube_cutout_w/2+2,-fl_cube_w/2,fl_cube_bottom]) cube([fl_cube_cutout_w-4,999,fl_cube_cutout_w+2]); //sloping sides
+            translate([-fl_cube_cutout_w/2+2,-fl_cube_w/2+2,fl_cube_bottom]) cube([fl_cube_cutout_w-4,fl_cube_w-4,fl_cube_cutout_w+2]);
+            if(taper) translate([-tiny(),-tiny(),fl_cube_bottom]) cube([2*tiny(),2*tiny(),fl_cube_cutout_w*1.5]); //taper gradually to the diameter of the beam
         }
         //a space at the back to allow the grippers for the dichroics to extend back a bit further.
         hull(){
@@ -61,7 +61,7 @@ module fl_cube_cutout(taper=true){
     }
 }
 module fl_cube_casing(){
-    // A solid object, big enough to contain the fluorescence cube cutout.
+    // A solid object, big enough to contain the beamsplitter cube cutout.
     minkowski(){
         difference(){
             fl_cube_cutout();
@@ -90,7 +90,7 @@ module optical_path(lens_aperture_r, lens_z){
 }
 module optical_path_fl(lens_aperture_r, lens_z){
     // The cut-out part of a camera mount, with a space to slot in a filter cube.
-    rotation = delta_stage ? 180 : 120; // The angle that the fl module exits from (0* is the dovetail)
+    rotation = delta_stage ? 120 : 180; // The angle that the fl module exits from (0* is the dovetail)
     rotate(rotation){
         union(){
             translate([0,0,camera_mount_top_z-tiny()]) lighttrap_sqylinder(r1=5, f1=0, r2=0, f2=fl_cube_w-4, h=fl_cube_bottom-camera_mount_top_z+2*tiny()); //beam path to bottom of cube
@@ -125,7 +125,7 @@ module camera_mount_body(
         dt_top, //height of the top of the dovetail
         extra_rz = [], //extra [r,z] values to extend the mount
         bottom_r=8, //radius of the bottom of the mount
-        fluorescence=false, //whether to leave a port for fluorescence beamsplitter etc.
+        beamsplitter=false, //whether to leave a port for beamsplitter etc.
         dt_waist=true, //whether to make the middle of the dovetail looser for easy insertion
         dovetail=true //set this to false to remove the attachment point
     ){
@@ -136,6 +136,7 @@ module camera_mount_body(
     fl_cube_rotation = delta_stage ? -60:0; // The angle of the block to hold the fl cube (0* for the fl cube exiting at 180* from the dovetail and -60* for the fl cube exiting at 120* from the dovetail)
     // This is the main body of the mount
     union(){
+        //The tube + the camera mount
         difference(){
             union(){
                 // Make the main tube, then add the dovetail and beamsplitter (if needed)
@@ -263,9 +264,9 @@ module optics_module_rms(params, tube_lens_ffd=16.1, tube_lens_f=20,
         // The bottom part is just a camera mount with a flat top
         difference(){
             // camera mount with a body that's shorter than the dovetail
-            camera_mount_body(params, body_r=lens_assembly_base_r, bottom_r=10.5, body_top=lens_assembly_z, dt_top=dovetail_top,fluorescence=fluorescence, dovetail=dovetail);
+            camera_mount_body(params, body_r=lens_assembly_base_r, bottom_r=10.5, body_top=lens_assembly_z, dt_top=dovetail_top,beamsplitter=beamsplitter, dovetail=dovetail);
             // camera cut-out and hole for the beam
-            if(fluorescence){
+            if(beamsplitter){
                 optical_path_fl(tube_lens_aperture, lens_assembly_z);
             }else{
                 optical_path(tube_lens_aperture, lens_assembly_z);

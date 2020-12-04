@@ -78,8 +78,7 @@ module lens_holder(beam_d=3.5){
             }
 
         }
-        }
-}
+
         //beam
         hull(){ // todo: make this a light trap?
             translate([0,0,led_h+aperture_h-tiny()]) cylinder(r=tiny(),h=tiny());
@@ -213,16 +212,4 @@ module illuminator_holder(){
 
 render(6)translate([30,30,slip_plate_thickness]) rotate(90) illuminator_holder();
 
-//translate([-30,0,0]) field_stop();
 lens_holder();
-
-
-//difference(){
-//    lens_holder();
-//    //rotate([90,0,0]) //mirror([0,0,1]) 
-//    translate([0,0,10]) cylinder(r=99,h=999,$fn=5);
-//}
-//for(i=[0:3]) translate([i*15,-20, 0]) difference(){
-//    cylinder(h=0.5 * pow(2,i), d=12); 
-//    cylinder(h=999,d=6,center=true);
-//}
