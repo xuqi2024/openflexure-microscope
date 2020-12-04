@@ -1,7 +1,7 @@
-use <./illumination.scad>;
-use <./utilities.scad>;
-use <./dovetail.scad>;
-include <./microscope_parameters.scad>;
+use <./libs/illumination.scad>;
+use <./libs/utilities.scad>;
+use <./libs/dovetail.scad>;
+include <./libs/microscope_parameters.scad>;
 
 module LED_array_holder(){
 //normal dovetail parameters
