@@ -2,7 +2,7 @@
 Released under CERN open hardware license v1
 */
 
-use <utilities.scad>
+use <../libs/utilities.scad>
 
 sizes = [2.4, 2.6, 2.8, 2.9, 3.0, 3.1, 3.2, 3.4, 3.6, 3.8, 4.0, 4.2, 4.4];
 N = len(sizes);

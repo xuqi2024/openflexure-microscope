@@ -1,7 +1,7 @@
 use <../openscad/main_body.scad>
-use <../openscad/z_axis.scad>
-use <../openscad/utilities.scad>
-use <../openscad/microscope_parameters.scad>
+use <../openscad/libs/z_axis.scad>
+use <../openscad/libs/utilities.scad>
+use <../openscad/libs/microscope_parameters.scad>
 use <../openscad/libs/libdict.scad>
 
 params = default_params();

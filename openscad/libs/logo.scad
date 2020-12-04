@@ -14,7 +14,7 @@
 *                                                                 *
 ******************************************************************/
 
-use <utilities.scad>
+use <./utilities.scad>
 
 $fn=64;
 
@@ -44,11 +44,11 @@ module waterscope_logo(){
 }
 
 module oshw_logo(){
-    linear_extrude(1) translate([-17.5,-16]) resize([35,0],auto=true) import("oshw_gear.dxf");
+    linear_extrude(1) translate([-17.5,-16]) resize([35,0],auto=true) import("logos/oshw_gear.dxf");
 }
 
 module openflexure_emblem(h=1, scale_factor=1){
-    linear_extrude(h) scale(scale_factor) import("openflexure_emblem.dxf");
+    linear_extrude(h) scale(scale_factor) import("logos/openflexure_emblem.dxf");
 }
 module openflexure_logo(h=1, resize=[0,0]){
     // The full logo, including text
@@ -56,7 +56,7 @@ module openflexure_logo(h=1, resize=[0,0]){
     // We resize it to be about the right size for the microscope
     // The origin is set to x=38 to centre the emblem on x=0
     // I don't understand the Y origin value...
-    linear_extrude(h) scale(0.85) import("openflexure_logo.dxf", origin=[38,3]);
+    linear_extrude(h) scale(0.85) import("logos/openflexure_logo.dxf", origin=[38,3]);
 }
 
 module oshw_logo_and_text(text=""){

@@ -6,8 +6,8 @@ An attempt at an alternative to my ageing "nut_seat_with_flex" design...
 
 */
 
-use <utilities.scad>
-include <microscope_parameters.scad>
+use <./utilities.scad>
+include <./microscope_parameters.scad>
 
 nut_size = 3;
 nut_w = 6.3*1.1; //nominal width of the nut (vertex-to-vertex, bigger than flat-flat distance - 6.3 is theoretical value and the 1.03 is determined by experiment)

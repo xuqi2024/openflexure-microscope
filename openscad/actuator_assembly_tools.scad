@@ -6,9 +6,9 @@ Tools for assembling the OpenFlexure Microscope v5.16
 
 */
 
-use <utilities.scad>
-use <compact_nut_seat.scad>
-include <microscope_parameters.scad>
+use <./libs/utilities.scad>
+use <./libs/compact_nut_seat.scad>
+include <./libs/microscope_parameters.scad>
 
 ns = nut_slot_size();
 shaft_d = nut_size()*1.1;

@@ -7,9 +7,9 @@ An illustration for the OpenFlexure Microscope; how to put the nut in
 */
 
 use <../openscad/compact_nut_seat.scad>
-use <../openscad/utilities.scad>
+use <../openscad/libs/utilities.scad>
 use <../openscad/actuator_assembly_tools.scad>
-use <../openscad/microscope_parameters.scad>
+use <../openscad/libs/microscope_parameters.scad>
 use <../openscad/feet.scad>
 use <../openscad/libs/libdict.scad>
 use <librender/hardware.scad>

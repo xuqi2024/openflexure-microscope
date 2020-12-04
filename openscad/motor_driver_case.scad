@@ -1,4 +1,4 @@
-use <microscope_parameters.scad>
+use <./libs/microscope_parameters.scad>
 use <microscope_stand.scad>
 
 params = default_params();

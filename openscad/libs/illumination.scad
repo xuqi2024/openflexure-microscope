@@ -19,7 +19,7 @@ use <./logo.scad>
 include <./microscope_parameters.scad>
 use <./dovetail.scad>
 use <./z_axis.scad>
-use <libs/libdict.scad>
+use <./libdict.scad>
 front_dovetail_y = 35; // position of the main dovetail
 front_dovetail_w = 30; // width of the main dovetail
 

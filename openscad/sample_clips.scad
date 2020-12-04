@@ -13,7 +13,7 @@
 ******************************************************************/
 
 
-use <utilities.scad>
+use <./libs/utilities.scad>
 
 //this is for mini culture plates, 39mm outer diameter and 12.4mm high
 sample=[0,19/2,12.4-1.5-9]; //position of clamping point relative to bolt

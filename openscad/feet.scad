@@ -17,10 +17,10 @@
 *                                                                 *
 ******************************************************************/
 
-include <microscope_parameters.scad> //for foot_height
-use <utilities.scad>
-use <compact_nut_seat.scad>
-use <endstop.scad>
+include <./libs/microscope_parameters.scad> //for foot_height
+use <./libs/utilities.scad>
+use <./libs/compact_nut_seat.scad>
+use <./libs/endstop.scad>
 
 
 module foot_ground_plane(tilt=0, top=0, bottom=-999){

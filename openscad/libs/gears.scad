@@ -12,11 +12,10 @@
 *                                                                 *
 ******************************************************************/
 
-use <MCAD/involute_gears.scad> // forward slash - for platform independence
-use <utilities.scad>
+use <./MCAD/involute_gears.scad> // forward slash - for platform independence
+use <./utilities.scad>
 
-//pi=3.14159;
-//$fn=32;
+
 strut_t=3;
 depth = 40;
 ratio = 2;
@@ -37,7 +36,8 @@ function thumbwheel_spacing() = 44;
 //outer radius = pitch radius * (1 + 2*pi/Nteeth)
 //our c2c distance is 10+12.5mm=22.5mm,
 module large_gear(){
-	assign($fn=32, pi=3.14159, pitch_r=c2c_distance*(ratio/(ratio+1)))
+	$fn=32;
+    pitch_r=c2c_distance*(ratio/(ratio+1));
 	difference(){
 		intersection(){
 			gear(number_of_teeth=teeth_biggear,
@@ -56,7 +56,6 @@ module large_gear(){
 
 module small_gear(){	
 	$fn=32;
-    pi=3.14159;
     h=8;
     flat_h=h-3.5;
     shaft_r=5/2*1.1;
@@ -72,7 +71,7 @@ module small_gear(){
 					rim_thickness=h,
 					bore_diameter=1);
 				
-			cylinder(r=pitch_r+pi*pitch_r/teeth_smallgear,h=0.5); //help adhesion
+			cylinder(r=pitch_r+PI*pitch_r/teeth_smallgear,h=0.5); //help adhesion
 		}
         //cut-out for motor shaft
 		intersection(){
@@ -145,4 +144,3 @@ module motor_and_gear_clearance(gear_h=10, h=999){
     translate([0,c2c_distance-7.8,gear_h]) motor_clearance(h=h-gear_h);
 }
 
-repeat([0,large_gear_spacing(),0],3,center=true) large_gear();

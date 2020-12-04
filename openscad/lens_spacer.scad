@@ -13,11 +13,11 @@
 *                                                                 *
 ******************************************************************/
 
-use <utilities.scad>
-use <z_axis.scad>
-include <microscope_parameters.scad> // NB this defines "camera" and "optics"
-use <cameras/camera.scad> // this will define the 2 functions and 1 module for the camera mount, using the camera defined in the "camera" parameter.
-use <lenses/lens.scad>
+use <./libs/utilities.scad>
+use <./libs/z_axis.scad>
+include <./libs/microscope_parameters.scad> // NB this defines "camera" and "optics"
+use <./libs/cameras/camera.scad> // this will define the 2 functions and 1 module for the camera mount, using the camera defined in the "camera" parameter.
+use <./libs/lenses/lens.scad>
 $fn=24;
 
 
