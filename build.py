@@ -226,6 +226,11 @@ def generate_small_parts(writer):
         select_stl_if={"include_actuator_drilling_jig": True},
     )
     writer.openscad(
+        "reflection_illuminator_LED_star.stl",
+        "reflection_illuminator_LED_star.scad",
+        select_stl_if={"reflection_illumination": True},
+    )
+    writer.openscad(
         "reflection_illuminator.stl",
         "reflection_illuminator.scad",
         select_stl_if={"reflection_illumination": True},
