@@ -1,7 +1,7 @@
-use <./utilities.scad>;
+use <./libs/utilities.scad>;
 use <./optics.scad>;
-include <./microscope_parameters.scad>;
-use <./dovetail.scad>;
+include <./libs/microscope_parameters.scad>;
+use <./libs/dovetail.scad>;
 
 LEDstar_r = 19/2;
 extra_space = 2.8; //The xtra space needed between the radius of the LED star and the size of the screw head
@@ -30,7 +30,7 @@ module fl_cube_mount(beam_d=5){
         union(){
             translate([0, back_y,0]) mirror([0,1,0]) dovetail_m([fl_cube_w-1, 1, fl_cube_mount_h], t=2*roc);
             hull(){
-                translate([-w/2,back_y,0]) cube([w,d,fl_cube_mount_h]);
+                translate([-w/2,back_y,0]) cube([w,tiny(),fl_cube_mount_h]);
                 reflect([1,0,0]) translate([w/2-roc, back_y + excitation_thickness + excitation_offset+excitation_offset,0]) cylinder(r=roc, h=fl_cube_mount_h, $fn=16);
             }
                 //hull(){
@@ -70,11 +70,11 @@ module lens_holder(beam_d=3.5){
                 // pedestal to raise the tube lens up within the gripper
                 cylinder(r=lens_r-0.5,h=pedestal_h);
             }
-            cylinder(r=LEDstar_r, h=lens_z-pedestal_h+d);
+            cylinder(r=LEDstar_r, h=lens_z-pedestal_h+tiny());
             translate([-w/2,0,0])cube([w,LEDstar_r+extra_space,lens_z-pedestal_h]);
             //mounts for screws for LED star
             translate([0,-LEDstar_r,0]){
-                cylinder(r=3,h =lens_z-pedestal_h+d);
+                cylinder(r=3,h =lens_z-pedestal_h+tiny());
             }
 
         }
@@ -82,15 +82,15 @@ module lens_holder(beam_d=3.5){
 }
         //beam
         hull(){ // todo: make this a light trap?
-            translate([0,0,led_h+aperture_h-d]) cylinder(r=d,h=d);
-            translate([0,0,led_h+aperture_h+1]) cylinder(r=4,h=d);
+            translate([0,0,led_h+aperture_h-tiny()]) cylinder(r=tiny(),h=tiny());
+            translate([0,0,led_h+aperture_h+1]) cylinder(r=4,h=tiny());
             //translate([0,0,lens_z]) cube([3,4,d], center=true);
-            translate([0,0,lens_z]) cylinder(r=lens_r-2,h=d);
+            translate([0,0,lens_z]) cylinder(r=lens_r-2,h=tiny());
         }
         
         //LED
-        deformable_hole_trylinder(led_r-0.1,led_r+0.6,h=2*led_h+d, center=true);
-        translate([0,0,led_h]) cylinder(r1=led_r+0.6, r2=aperture_stop_r,h=aperture_h-0.5+d);
+        deformable_hole_trylinder(led_r-0.1,led_r+0.6,h=2*led_h+tiny(), center=true);
+        translate([0,0,led_h]) cylinder(r1=led_r+0.6, r2=aperture_stop_r,h=aperture_h-0.5+tiny());
         translate([0,0,led_h+aperture_h]) cylinder(r=aperture_stop_r,h=2,center=true);
         cylinder(r=led_r+0.5, h=1.5, center=true);
         
@@ -172,8 +172,8 @@ module slip_plate(w){
             }
             translate([-999/2,0,0]){
                 hull(){
-                    cube([999,2,d]);
-                    translate([0,0,2])cube([999,d,d]);
+                    cube([999,2,tiny()]);
+                    translate([0,0,2])cube([999,tiny(),tiny()]);
                 }
             }
             reflect([90,0,0]){
@@ -195,7 +195,7 @@ module slip_plate(w){
 
 module excitation_slot(){
     excitation_width = 13;
-    translate([-excitation_width/2,back_y + excitation_offset + excitation_thickness/2,-slip_plate_thickness-d])cube([excitation_width,excitation_thickness,top_filter_cube+ fl_cube_w-excitation_offset]);
+    translate([-excitation_width/2,back_y + excitation_offset + excitation_thickness/2,-slip_plate_thickness-tiny()])cube([excitation_width,excitation_thickness,top_filter_cube+ fl_cube_w-excitation_offset]);
 }
 
 // Geometry of illuminator holder
