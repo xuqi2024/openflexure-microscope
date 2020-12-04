@@ -37,6 +37,7 @@ led_r = 4.5/2; //size of the LED used for illumination
 endstops = false; //whether to build mounts for optical endstops inside the microscope.
 feet_endstops = false; //whether to include cut-outs for endstop switches in the feet.
 beamsplitter = true; //enables a cut-out in some optics modules for a beamsplitter
+delta_stage = false;
 
 enable_smart_brim = true;
 tall_bucket_base = false; //If true creates a taller bucket base for the infinity corrected optics.
@@ -182,4 +183,3 @@ function base_mounting_holes(params, type="all") = let
 endstop_extra_ringheight=feet_endstops?1:0;
 
 fl_cube_w = 16; //width of the fluorescence filter cube
-

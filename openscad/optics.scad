@@ -93,7 +93,7 @@ module optical_path_fl(lens_aperture_r, lens_z){
     rotation = delta_stage ? 180 : 120; // The angle that the fl module exits from (0* is the dovetail)
     rotate(rotation){
         union(){
-            translate([0,0,camera_mount_top_z-tiny()]) lighttrap_sqylinder(r1=5, f1=0, r2=0, f2=fl_cube_w-4, h=fl_cube_bottom-camera_mount_top+2*tiny()); //beam path to bottom of cube
+            translate([0,0,camera_mount_top_z-tiny()]) lighttrap_sqylinder(r1=5, f1=0, r2=0, f2=fl_cube_w-4, h=fl_cube_bottom-camera_mount_top_z+2*tiny()); //beam path to bottom of cube
             fl_cube_cutout(); //filter cube
             translate([0,0,fl_cube_top-tiny()]) lighttrap_sqylinder(r1=1.5, f1=fl_cube_w-4-3, r2=lens_aperture_r, f2=0, h=lens_z-fl_cube_top+4*tiny()); //beam path
             translate([0,0,lens_z]) cylinder(r=lens_aperture_r,h=2*tiny()); //lens
@@ -159,19 +159,19 @@ module camera_mount_body(
                     hull(){
                         // all the things at the bottom
                         rotate(camera_mount_rotation)translate([0,0,camera_mount_top_z]) camera_mount_top_slice(); //Where the tube meets the camera
-                        translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=d); //the bottom of the tube
-                        translate([0,0,dt_bottom]) objective_fitting_base(); //the bottom of the dovetail
+                        translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=tiny()); //the bottom of the tube
+                        translate([0,0,dt_bottom]) objective_fitting_base(params); //the bottom of the dovetail
                     }
                     // the dovetail                        
-                    translate([0,0,dt_bottom]) objective_fitting_base(); //the bottom of the dovetail
+                    translate([0,0,dt_bottom]) objective_fitting_base(params); //the bottom of the dovetail
                     hull(){
-                        translate([0,0,dt_bottom]) objective_fitting_base(); //the bottom of the dovetail
-                        translate([0,0,dt_top]) objective_fitting_base(); //the top of the dovetail
+                        translate([0,0,dt_bottom]) objective_fitting_base(params); //the bottom of the dovetail
+                        translate([0,0,dt_top]) objective_fitting_base(params); //the top of the dovetail
                     }
                     hull(){
                         // the tube
-                        translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=d); //the bottom of the tube
-                        translate([0,0,body_top]) cylinder(r=body_r,h=d); //the top of the tube
+                        translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=tiny()); //the bottom of the tube
+                        translate([0,0,body_top]) cylinder(r=body_r,h=tiny()); //the top of the tube
                     }
                 }
             }
@@ -185,14 +185,12 @@ module camera_mount_body(
                             fl_screw_holes(d = 4, h =8); //the mounts for the fl cube screw holes
                         }
                     }
-                    translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=d); //the bottom of the tube
-                    translate([0,0,body_top]) cylinder(r=body_r,h=d); //the top of the tube
+                    translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=tiny()); //the bottom of the tube
+                    translate([0,0,body_top]) cylinder(r=body_r,h=tiny()); //the top of the tube
                 }
             }
         }
-            
-        // fitting for the objective mount
-        //translate([0,0,dt_bottom]) objective_fitting_wedge();
+
         // Mount for the nut that holds it on
         translate([0,0,-1]) objective_fitting_cutout(params);
         // screw holes  and faceplate for fl module
@@ -212,12 +210,13 @@ module camera_mount_body(
 }
 
 
-module optics_module_rms(params, tube_lens_ffd=16.1, tube_lens_f=20,
-    tube_lens_r=16/2+0.2, objective_parfocal_distance=45, tube_length=150, fluorescence=false, gripper_t=1, dovetail=true){
-
+module optics_module_rms(params, tube_lens_ffd=16.1, tube_lens_f=20, 
+    tube_lens_r=16/2+0.2, objective_parfocal_distance=45, tube_length=150, beamsplitter=false, gripper_t=1, dovetail=true){
+    
     sample_z = key_lookup("sample_z", params);
     assert(sample_z > 60, "RMS objectives won't fit in small microscope frames!");
     assert(objective_mount_y > 12, "RMS objectives won't fit in small microscope frames!");
+
     // This optics module takes an RMS objective and a tube length correction lens.
     // important parameters are below:
 
@@ -305,31 +304,33 @@ module optics_module_rms(params, tube_lens_ffd=16.1, tube_lens_f=20,
     }
 }
 
+
 params = default_params();
+
+echo(params);
+
 if(optics=="rms_f40d16"){
     // Optics module for RMS objective, using Comar 40mm singlet tube lens
-    
     optics_module_rms(
         params,
-        tube_lens_ffd=38,
-        tube_lens_f=40,
-        tube_lens_r=16/2+0.1,
+        tube_lens_ffd=38, 
+        tube_lens_f=40, 
+        tube_lens_r=16/2+0.1, 
         objective_parfocal_distance=45,
-        fluorescence=beamsplitter,
+        beamsplitter=beamsplitter,
         gripper_t=0.65,
         tube_length=150
     );
-    
 }else if(optics=="rms_f50d13" || optics=="rms_infinity_f50d13"){
     // Optics module for RMS objective using ThorLabs ac127-050-a doublet tube lens
     optics_module_rms(
         params,
-        tube_lens_ffd=47,
-        tube_lens_f=50,
-        tube_lens_r=12.7/2+0.1,
+        tube_lens_ffd=47, 
+        tube_lens_f=50, 
+        tube_lens_r=12.7/2+0.1, 
         objective_parfocal_distance=45,
-        fluorescence=beamsplitter,
+        beamsplitter=beamsplitter,
         tube_length=(optics=="rms_f50d13" ? 150 : 99999) //use 150 for standard finite-conjugate objectives (cheap ones) or 99999 for infinity-corrected lenses (usually more expensive).
     );
-
 }
+
