@@ -198,6 +198,25 @@ module condenser_cutout(lens_r, lens_assembly_z, bottom_height=10){
     }
 }
 
+module condenser_body(lens_r, lens_t, base_r, width, lens_assembly_z, back_y, bottom_height){
+    //the main body of the condenser
+    difference() {
+        //this hull is the outer shape of the body of the condenser
+        hull() reflect([1, 0, 0]) {
+            translate([0, 0, -bottom_height])
+                cylinder(r=base_r, h=lens_assembly_z+bottom_height+tiny());
+            translate([-width/2, back_y-2, 0])
+                cube([width, 2, lens_assembly_z]);
+        }
+
+        condenser_cutout(lens_r, lens_assembly_z, bottom_height=bottom_height);
+    }
+    //finally add the lens gripper
+    translate([0, 0, lens_assembly_z]){
+        condenser_lens_gripper(lens_r, lens_t, base_r);
+    }
+}
+
 module tall_condenser(lens_d, lens_t, lens_assembly_z){
     // Note that this is the shape before it is is rotated, and cut for printing.
     // This module is useful because the optical path is vertical
@@ -219,26 +238,18 @@ module tall_condenser(lens_d, lens_t, lens_assembly_z){
         }
     }
 
-    // This cube suts between the body of the condernser and the dovetail clip
+    // This cube sits between the body of the condernser and the dovetail clip
     translate([-dt_clip.x/2, dovetail_end_y, 0]){
         cube([dt_clip.x, 4, dt_clip.z]);
     }
+    condenser_body(lens_r=lens_r,
+                   lens_t=lens_t,
+                   base_r=base_r,
+                   width=dt_clip.x,
+                   lens_assembly_z=lens_assembly_z,
+                   back_y=dovetail_end_y+2,
+                   bottom_height=bottom_height);
 
-    difference() {
-        //this hull is the outer shape of the body of the condenser
-        hull() reflect([1, 0, 0]) {
-            translate([0, 0, -bottom_height])
-                cylinder(r=base_r, h=lens_assembly_z+bottom_height+tiny());
-            translate([-dt_clip.x/2, dovetail_end_y, 0])
-                cube([dt_clip.x, 2, lens_assembly_z]);
-        }
-
-        condenser_cutout(lens_r, lens_assembly_z, bottom_height=bottom_height);
-     }
-     //finally add the lens gripper
-     translate([0, 0, lens_assembly_z]){
-        condenser_lens_gripper(lens_r, lens_t, base_r);
-     }
 }
 
 //TODO the lens_assembly_z should be adjusted to a focal length parameter

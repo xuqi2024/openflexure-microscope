@@ -6,8 +6,14 @@ use <./utilities.scad>
 use <./z_axis.scad>
 use <./logo.scad>
 
-double_dove_mount_y = 35; // position of the main dovetail
-double_dove_mount_w = 38; // width of the main dovetail
+function double_dove_cube_w() = 10;
+// position of the main dovetail
+function double_dove_mount_y() = 40;
+function double_dove_mount_front_y() = double_dove_mount_y() - double_dove_cube_w()/sqrt(2) + .5;
+// width of the main dovetail
+function double_dove_mount_w() = 38;
+
+
 
 module doubledove_illumination_mount_branding(params, h, bottom_z){
     // The open flexure logo for the back of the illumination fovetail
@@ -18,7 +24,7 @@ module doubledove_illumination_mount_branding(params, h, bottom_z){
     slope_h = h-lug_h ;
     //top and bottom of y position of the sloped back
     bot_y = right_illumination_screw_pos(params).y+5;
-    top_y = double_dove_mount_y+15;
+    top_y = double_dove_mount_front_y()+2*double_dove_cube_w();
     back_angle = atan((top_y-bot_y)/slope_h);
     logo_z = bottom_z+lug_h +slope_h/2;
     logo_y = (top_y+bot_y)/2+.5;
@@ -34,13 +40,12 @@ module doubledove_illumination_mount_structure(params, h, dt_z, dt_h){
     //this is the outer structure that forms the illumination mount.
 
     //nominal postion of the corner of the cubes that form this  structure
-    cube_corner = [-double_dove_mount_w/2, double_dove_mount_y, dt_z];
+    cube_corner = [-double_dove_mount_w()/2, double_dove_mount_front_y(), dt_z];
     //distance cubes are moved forward and backward in y respectivly
-    delta_y = 2;
     sequential_hull(){
-        //Cube jsut below the actual dovetail
-        translate(cube_corner - [0, delta_y, 0]){
-            cube([double_dove_mount_w, 15+delta_y, 1]);
+        //Cube just below the actual dovetail
+        translate(cube_corner){
+            cube([double_dove_mount_w(), 20, 1]);
         }
         //trulobular structure with "corners" at the 2 screws and a back corner position
         hull(){
@@ -54,13 +59,12 @@ module doubledove_illumination_mount_structure(params, h, dt_z, dt_h){
             }
         }
         //cube behind double dove
-        translate(cube_corner + [0, 15-tiny(), 0]){
-            cube([double_dove_mount_w, tiny(), dt_h]);
+        translate(cube_corner + [0, 20-tiny(), 0]){
+            cube([double_dove_mount_w(), tiny(), dt_h]);
         }
-        
     }
-    translate(cube_corner + [0, -delta_y, 0]){
-        cube([double_dove_mount_w, 15+delta_y, dt_h]);
+    translate(cube_corner){
+        cube([double_dove_mount_w(), 20, dt_h]);
     }
 }
 
@@ -91,7 +95,7 @@ module doubledove_illumination_mount(params, h=50){
         // clearance for the motor
         translate([0,-2,0]) z_motor_clearance(params);
 
-        translate([0,double_dove_mount_y-3,bottom_z+15]){
+        translate([0,double_dove_mount_y(),bottom_z+15]){
             double_dove_cutout(h);
         }
     }
@@ -99,16 +103,13 @@ module doubledove_illumination_mount(params, h=50){
 }
 
 module double_dove_cutout(h){
-    cube_w = 10;
-    y_tr = cube_w/sqrt(2);
-    translate([0, y_tr, 0]){
-        double_dove(h=999, cube_w=cube_w, truncated=false);
-    }
+    cube_w =  double_dove_cube_w();
+    double_dove(h=999, cube_w=cube_w, truncated=false);
     hull(){
         for (z_tr = [5, h-20]){
-            translate([0, y_tr, z_tr]){
+            translate([0, 0, z_tr]){
                 rotate([0,90,0]){
-                    cylinder(d=3.5, h=100, center=true);
+                    cylinder(d=3.5, h=100, $fn=24, center=true);
                 }
             }
         }
@@ -142,7 +143,9 @@ module double_dove(h=10, cube_w=10, x_offset=10, truncated=true){
 module illumination_filter_holder(){
     h = 8;
     union(){
-        double_dove_with_nuts(h);
+        translate([0, -double_dove_mount_y(), 0]){
+            double_dove_with_nuts(h);
+        }
         optics_holder_inch(h);
         translate([0, -26, h/2]){
             cube([18, 15, h], center=true);
@@ -173,7 +176,6 @@ module optics_holder_inch(h=8){
             }
         }
     }
-    
 }
 
 module octagonal_prism(w, h, center){
@@ -185,18 +187,17 @@ module octagonal_prism(w, h, center){
     }
 }
 
-module double_dove_with_nuts(h=8){
-    translate([0,-40,0]){
-        difference(){
-            
-            x_offset = 10;
-            double_dove(h=h, cube_w=9.5, x_offset=10);
+module double_dove_with_nuts(h=8, nut_z=-1){
+    x_offset = 10;
+    nut_z_pos = (nut_z<0)? h/2 : nut_z;
+    nut_trap_pos = [x_offset-6, 0, nut_z_pos];
+    difference(){
+        double_dove(h=h, cube_w=9.5, x_offset=10);
 
-            reflect([1,0,0]){
-                translate([x_offset-6, 0, h/2]){
-                    rotate([0,0,90]){
-                        m3_nut_trap_with_shaft(tilt=90,shaft_below=true);
-                    }
+        reflect([1,0,0]){
+            translate(nut_trap_pos){
+                rotate([0,0,90]){
+                    m3_nut_trap_with_shaft(tilt=90,shaft_below=true);
                 }
             }
         }
