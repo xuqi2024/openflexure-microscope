@@ -11,7 +11,7 @@ function double_dove_cube_w() = 10;
 function double_dove_mount_y() = 40;
 function double_dove_mount_front_y() = double_dove_mount_y() - double_dove_cube_w()/sqrt(2) + .5;
 // width of the main dovetail
-function double_dove_mount_w() = 38;
+function double_dove_mount_w() = 42;
 
 
 
@@ -80,6 +80,7 @@ module doubledove_illumination_mount(params, h=50){
     dt_z = bottom_z + start_z;
     //height of the dovetail
     dt_h = h - start_z;
+    cutout_z = 15;
 
     difference(){
         doubledove_illumination_mount_structure(params, h, dt_z, dt_h);
@@ -95,8 +96,8 @@ module doubledove_illumination_mount(params, h=50){
         // clearance for the motor
         translate([0,-2,0]) z_motor_clearance(params);
 
-        translate([0,double_dove_mount_y(),bottom_z+15]){
-            double_dove_cutout(h);
+        translate([0,double_dove_mount_y(),bottom_z+cutout_z]){
+            double_dove_cutout(h-cutout_z);
         }
     }
     doubledove_illumination_mount_branding(params, h, bottom_z);
@@ -104,9 +105,9 @@ module doubledove_illumination_mount(params, h=50){
 
 module double_dove_cutout(h){
     cube_w =  double_dove_cube_w();
-    double_dove(h=999, cube_w=cube_w, truncated=false);
+    double_dove(h=h+1, cube_w=cube_w, truncated=false);
     hull(){
-        for (z_tr = [5, h-20]){
+        for (z_tr = [5, h-10]){
             translate([0, 0, z_tr]){
                 rotate([0,90,0]){
                     cylinder(d=3.5, h=100, $fn=24, center=true);
