@@ -190,7 +190,7 @@ module octagonal_prism(w, h, center){
 module double_dove_with_nuts(h=8, nut_z=-1){
     x_offset = 10;
     nut_z_pos = (nut_z<0)? h/2 : nut_z;
-    nut_trap_pos = [x_offset-6, 0, nut_z_pos];
+    nut_trap_pos = [x_offset-7, 0, nut_z_pos];
     difference(){
         double_dove(h=h, cube_w=9.5, x_offset=10);
 
@@ -200,6 +200,38 @@ module double_dove_with_nuts(h=8, nut_z=-1){
                     m3_nut_trap_with_shaft(tilt=90,shaft_below=true);
                 }
             }
+        }
+    }
+}
+
+module sprung_double_dove(h=8, nut_z=-1){
+
+    difference(){
+        double_dove_with_nuts(h=h, nut_z=nut_z);
+        cube([14, 3*double_dove_cube_w(), 3*h], center=true);
+    }
+
+    translate([0, 0, h/2]){
+        cube([4,4,h], center=true);
+    }
+    reflect([0,1,0])
+    hull(){
+        translate([0, -2, h/2]){
+            cube([4,tiny(),h], center=true); 
+        }
+        translate([0, -9.5/sqrt(2)+tiny(), h/2]){
+            cube([12, 2*tiny() ,h], center=true);
+        }
+    }
+    double_reflect(){
+        sequential_hull(){
+            translate([7, -9.5/sqrt(2), 0]){
+                cube([tiny(), 1, h]);
+            }
+            translate([2, -1, 0]){
+                cube([tiny(), 1, h]);
+            }
+
         }
     }
 }

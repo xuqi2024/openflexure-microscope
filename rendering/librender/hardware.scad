@@ -16,15 +16,6 @@ https://github.com/julianstirling/NopSCADlib/tree/no2_screw_hack
 */
 use <../../openscad/libs/utilities.scad>
 
-module double_reflect(){
-    //Shortcut function to reflext in both the xy and yz plane. Used for creating the band.
-    reflect([1,0,0]){
-        reflect([0,1,0]){
-            children();
-        }
-    }
-}
-
 module viton_band_in_situ_vertical(h=25, foot_z=-11, tool_kink=true){
     // Viton band in situ. A bit of an ad-hoc function, but looks good enough.
     band_d=2;

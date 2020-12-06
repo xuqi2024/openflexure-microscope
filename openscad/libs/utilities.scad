@@ -425,4 +425,11 @@ module exterior_brim(r=4, h=0.2, brim_only=false){
     }
 }
 
-
+module double_reflect(){
+    //Shortcut function to reflext in both the xy and yz plane. Used for creating the band.
+    reflect([1,0,0]){
+        reflect([0,1,0]){
+            children();
+        }
+    }
+}

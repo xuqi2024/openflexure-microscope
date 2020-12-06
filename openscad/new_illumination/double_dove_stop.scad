@@ -2,4 +2,4 @@
 
 use <../libs/double_dove_illumination.scad>
 
-double_dove_with_nuts(h=8);
+sprung_double_dove(h=8);
