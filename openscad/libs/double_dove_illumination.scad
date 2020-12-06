@@ -10,7 +10,11 @@ function double_dove_cube_w() = 10;
 function inner_dove_cube_w() = double_dove_cube_w()-.5;
 // position of the main dovetail
 function double_dove_mount_y() = 40;
-function double_dove_mount_front_y() = double_dove_mount_y() - double_dove_cube_w()/sqrt(2) + .5;
+function double_dove_mount_front_y() = let(
+    cutout_w = 2*double_dove_cube_w()/sqrt(2),
+    front_wall_t = 2
+)    double_dove_mount_y() - .5*cutout_w - front_wall_t;
+
 // width of the main dovetail
 function double_dove_mount_w() = 42;
 function double_dove_nut_offset() = 6;
@@ -105,13 +109,17 @@ module doubledove_illumination_mount(params, h=50){
 }
 
 module double_dove_cutout(h){
+    front_opening_w = 14;
     cube_w =  double_dove_cube_w();
     double_dove(h=h+1, cube_w=cube_w, truncated=false);
+    translate([-front_opening_w/2, -100, 0]){
+        cube([front_opening_w, 100, h+1]);
+    }
     hull(){
         for (z_tr = [5, h-10]){
             translate([0, 0, z_tr]){
                 rotate([0,90,0]){
-                    cylinder(d=3.5, h=100, $fn=24, center=true);
+                    cylinder(d=3.3, h=100, $fn=24, center=true);
                 }
             }
         }
