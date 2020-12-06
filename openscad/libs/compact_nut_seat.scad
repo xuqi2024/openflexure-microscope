@@ -25,6 +25,9 @@ function column_core_size() = column_core;
 function nut_slot_size() = nut_slot;
 function ss_outer(h=-2) = column_core + [wall_t*2,wall_t*2,(h+2)*2];
 
+
+//TODO fix how these are named! Why is the nut size r?
+//TODO make a function so a nut trap like this can be made without a slot
 module nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=-1){
     // A cut-out that will hold a nut.  The nut slots in horizontally
     // along the +y axis, and is pulled up and into the tight part of the
@@ -54,8 +57,7 @@ module nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=-1){
 
 }
 
-
-module m3_nut_trap_with_shaft(slot_angle=0,tilt=0)
+module m3_nut_trap_with_shaft(slot_angle=0, tilt=0, shaft_below=false)
 {
     // Nut trap for an M3 nut with a screw from the top this is a solid
     // Object difference it from your part.
@@ -68,7 +70,7 @@ module m3_nut_trap_with_shaft(slot_angle=0,tilt=0)
     rotate([tilt,0,0])rotate([0,0,slot_angle]) translate([0,0,1]) union()
     {
         nut_trap_and_slot(nut_size, nut_slot);
-        cylinder(r=shaft_r, h=999, $fn=16);
+        cylinder(r=shaft_r, h=999, $fn=16, center=shaft_below);
     }
 
 }
