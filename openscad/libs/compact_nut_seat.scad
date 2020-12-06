@@ -57,7 +57,7 @@ module nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=-1){
 
 }
 
-module m3_nut_trap_with_shaft(slot_angle=0, tilt=0, shaft_below=false)
+module m3_nut_trap_with_shaft(slot_angle=0, tilt=0, squeeze=0.9, shaft_below=false)
 {
     // Nut trap for an M3 nut with a screw from the top this is a solid
     // Object difference it from your part.
@@ -69,7 +69,7 @@ module m3_nut_trap_with_shaft(slot_angle=0, tilt=0, shaft_below=false)
 
     rotate([tilt,0,0])rotate([0,0,slot_angle]) translate([0,0,1]) union()
     {
-        nut_trap_and_slot(nut_size, nut_slot);
+        nut_trap_and_slot(nut_size, nut_slot, squeeze=squeeze);
         cylinder(r=shaft_r, h=999, $fn=16, center=shaft_below);
     }
 

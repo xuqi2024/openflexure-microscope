@@ -7,12 +7,13 @@ use <./z_axis.scad>
 use <./logo.scad>
 
 function double_dove_cube_w() = 10;
+function inner_dove_cube_w() = double_dove_cube_w()-.5;
 // position of the main dovetail
 function double_dove_mount_y() = 40;
 function double_dove_mount_front_y() = double_dove_mount_y() - double_dove_cube_w()/sqrt(2) + .5;
 // width of the main dovetail
 function double_dove_mount_w() = 42;
-
+function double_dove_nut_offset() = 6;
 
 
 module doubledove_illumination_mount_branding(params, h, bottom_z){
@@ -166,7 +167,7 @@ module optics_holder_inch(h=8){
         }
         translate([-20+10, 0, h/2]){
             rotate([0,0,-90]){
-                m3_nut_trap_with_shaft(tilt=90,shaft_below=false);
+                m3_nut_trap_with_shaft(tilt=90,shaft_below=false, squeeze=.99);
             }
         }
     }
@@ -191,14 +192,16 @@ module octagonal_prism(w, h, center){
 module double_dove_with_nuts(h=8, nut_z=-1){
     x_offset = 10;
     nut_z_pos = (nut_z<0)? h/2 : nut_z;
-    nut_trap_pos = [x_offset-7, 0, nut_z_pos];
+    nut_trap_pos = [double_dove_nut_offset()-4, 0, nut_z_pos];
     difference(){
-        double_dove(h=h, cube_w=9.5, x_offset=10);
+        double_dove(h=h, cube_w=inner_dove_cube_w(), x_offset=10);
 
         reflect([1,0,0]){
             translate(nut_trap_pos){
                 rotate([0,0,90]){
-                    m3_nut_trap_with_shaft(tilt=90,shaft_below=true);
+                    //Squeeze sets the fraction of the nut site at the top of the trap
+                    // inceased to 0.9 for vertical nuts to prevent layer seperation
+                    m3_nut_trap_with_shaft(tilt=90,shaft_below=true, squeeze=.99);
                 }
             }
         }
@@ -209,24 +212,25 @@ module sprung_double_dove(h=8, nut_z=-1){
 
     difference(){
         double_dove_with_nuts(h=h, nut_z=nut_z);
-        cube([14, 3*double_dove_cube_w(), 3*h], center=true);
+        cube([2*double_dove_nut_offset(), 3*double_dove_cube_w(), 3*h], center=true);
     }
 
     translate([0, 0, h/2]){
         cube([4,4,h], center=true);
     }
-    reflect([0,1,0])
-    hull(){
-        translate([0, -2, h/2]){
-            cube([4,tiny(),h], center=true); 
-        }
-        translate([0, -9.5/sqrt(2)+tiny(), h/2]){
-            cube([12, 2*tiny() ,h], center=true);
+    reflect([0,1,0]){
+        hull(){
+            translate([0, -2, h/2]){
+                cube([4,tiny(),h], center=true);
+            }
+            translate([0, -inner_dove_cube_w()/sqrt(2)+tiny(), h/2]){
+                cube([2*(double_dove_nut_offset()-1), 2*tiny() ,h], center=true);
+            }
         }
     }
     double_reflect(){
         sequential_hull(){
-            translate([7, -9.5/sqrt(2), 0]){
+            translate([double_dove_nut_offset(), -inner_dove_cube_w()/sqrt(2), 0]){
                 cube([tiny(), 1, h]);
             }
             translate([2, -1, 0]){
