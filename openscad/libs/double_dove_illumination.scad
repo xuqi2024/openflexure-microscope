@@ -221,15 +221,28 @@ module sprung_double_dove(h=8, nut_z=-1){
     difference(){
         double_dove_with_nuts(h=h, nut_z=nut_z);
         cube([2*double_dove_nut_offset(), 3*double_dove_cube_w(), 3*h], center=true);
+        double_reflect(){
+            translate([double_dove_nut_offset() - tiny(), inner_dove_cube_w()/sqrt(2)-2, -h]){
+                sequential_hull(){
+                    cube([tiny(), 1, 3*h]);
+                    translate([4,0,0]){
+                        cube([tiny(), 1, 3*h]);
+                    }
+                    translate([7,-2,0]){
+                        cube([tiny(), tiny(), 3*h]);
+                    }
+                }
+            }
+        }
     }
 
     translate([0, 0, h/2]){
-        cube([4,4,h], center=true);
+        cube([3,4,h], center=true);
     }
     reflect([0,1,0]){
         hull(){
             translate([0, -2, h/2]){
-                cube([4,tiny(),h], center=true);
+                cube([3,tiny(),h], center=true);
             }
             translate([0, -inner_dove_cube_w()/sqrt(2)+tiny(), h/2]){
                 cube([2*(double_dove_nut_offset()-1), 2*tiny() ,h], center=true);
@@ -241,7 +254,7 @@ module sprung_double_dove(h=8, nut_z=-1){
             translate([double_dove_nut_offset(), -inner_dove_cube_w()/sqrt(2), 0]){
                 cube([tiny(), 1, h]);
             }
-            translate([2, -1, 0]){
+            translate([1.5-tiny(), -1.5, 0]){
                 cube([tiny(), 1, h]);
             }
 
