@@ -145,21 +145,18 @@ module condenser_lens_gripper(lens_r, lens_t, base_r){
     h = pedestal_h+lens_t+1.5;
     aperture_r = lens_r-_aperture_difference;
 
-    difference() {
-        union() {
-            trylinder_gripper(inner_r=lens_r,
-                                grip_h=pedestal_h + lens_t/3,
-                                h=h,
-                                base_r=base_r,
-                                flare=0.5);
-            // pedestal to raise the lens up within the gripper
-            cylinder(r=aperture_r+0.8, h=pedestal_h);
-        }
+    trylinder_gripper(inner_r=lens_r,
+                        grip_h=pedestal_h + lens_t/3,
+                        h=h,
+                        base_r=base_r,
+                        flare=0.5);
+    // pedestal to raise the lens up within the gripper
+    difference(){
+        cylinder(r=aperture_r+0.8, h=pedestal_h);
         // hole through pedestal for the beam passing through the lens
-        translate([0, 0, -tiny()]){
-            cylinder(r=aperture_r, h=h);
-        }
+        cylinder(r=aperture_r, h=3*h, center=true);
     }
+
 }
 
 module condenser_cutout(lens_r, lens_assembly_z, bottom_height=10){
@@ -198,24 +195,6 @@ module condenser_cutout(lens_r, lens_assembly_z, bottom_height=10){
     }
 }
 
-module condenser_body(lens_r, lens_t, base_r, width, lens_assembly_z, back_y, bottom_height){
-    //the main body of the condenser
-    difference() {
-        //this hull is the outer shape of the body of the condenser
-        hull() reflect([1, 0, 0]) {
-            translate([0, 0, -bottom_height])
-                cylinder(r=base_r, h=lens_assembly_z+bottom_height+tiny());
-            translate([-width/2, back_y-2, 0])
-                cube([width, 2, lens_assembly_z]);
-        }
-
-        condenser_cutout(lens_r, lens_assembly_z, bottom_height=bottom_height);
-    }
-    //finally add the lens gripper
-    translate([0, 0, lens_assembly_z]){
-        condenser_lens_gripper(lens_r, lens_t, base_r);
-    }
-}
 
 module tall_condenser(lens_d, lens_t, lens_assembly_z){
     // Note that this is the shape before it is is rotated, and cut for printing.
@@ -242,13 +221,21 @@ module tall_condenser(lens_d, lens_t, lens_assembly_z){
     translate([-dt_clip.x/2, dovetail_end_y, 0]){
         cube([dt_clip.x, 4, dt_clip.z]);
     }
-    condenser_body(lens_r=lens_r,
-                   lens_t=lens_t,
-                   base_r=base_r,
-                   width=dt_clip.x,
-                   lens_assembly_z=lens_assembly_z,
-                   back_y=dovetail_end_y+2,
-                   bottom_height=bottom_height);
+    difference() {
+        //this hull is the outer shape of the body of the condenser
+        hull() reflect([1, 0, 0]) {
+            translate([0, 0, -bottom_height])
+                cylinder(r=base_r+.3, h=lens_assembly_z+bottom_height+tiny());
+            translate([-dt_clip.x/2, dovetail_end_y+2-2, 0])
+                cube([dt_clip.x, 2, lens_assembly_z+tiny()]);
+        }
+
+        condenser_cutout(lens_r, lens_assembly_z, bottom_height=bottom_height);
+    }
+    //finally add the lens gripper
+    translate([0, 0, lens_assembly_z]){
+        condenser_lens_gripper(lens_r, lens_t, base_r);
+    }
 
 }
 

@@ -152,13 +152,17 @@ module double_dove(h=10, cube_w=10, x_offset=10, truncated=true){
 
 module illumination_filter_holder(){
     h = 8;
+    dove_pos = [0, double_dove_mount_y(), 0];
     union(){
-        translate([0, -double_dove_mount_y(), 0]){
-            double_dove_with_nuts(h);
+        translate(dove_pos){
+            sprung_double_dove(h);
         }
         optics_holder_inch(h);
-        translate([0, -26, h/2]){
-            cube([18, 15, h], center=true);
+        hull(){
+            translate(dove_pos){
+                sprung_double_dove_face(h);
+            }
+            optics_holder_inch_back_face(h);
         }
     }
 }
@@ -187,6 +191,14 @@ module optics_holder_inch(h=8){
         }
     }
 }
+
+module optics_holder_inch_back_face(h=8){
+    w = 40/(1+sqrt(2));
+    translate([-w/2, 20-tiny(), 0]){
+        cube([w, tiny(), h]);
+    }
+}
+
 
 module octagonal_prism(w, h, center){
     intersection(){
@@ -236,19 +248,18 @@ module sprung_double_dove(h=8, nut_z=-1){
         }
     }
 
-    translate([0, 0, h/2]){
-        cube([3,4,h], center=true);
-    }
-    reflect([0,1,0]){
-        hull(){
-            translate([0, -2, h/2]){
-                cube([3,tiny(),h], center=true);
-            }
-            translate([0, -inner_dove_cube_w()/sqrt(2)+tiny(), h/2]){
-                cube([2*(double_dove_nut_offset()-1), 2*tiny() ,h], center=true);
-            }
+
+    sequential_hull(){
+        sprung_double_dove_face(h);
+        translate([0, -2, h/2]){
+            cube([3,tiny(),h], center=true);
         }
+        translate([0, 2-tiny(), h/2]){
+            cube([3,tiny(),h], center=true);
+        }
+        sprung_double_dove_face(h, front=false);
     }
+
     double_reflect(){
         sequential_hull(){
             translate([double_dove_nut_offset(), -inner_dove_cube_w()/sqrt(2), 0]){
@@ -259,5 +270,48 @@ module sprung_double_dove(h=8, nut_z=-1){
             }
 
         }
+    }
+}
+
+module sprung_double_dove_face(h=8, front=true){
+    if (front){
+        translate([0, -inner_dove_cube_w()/sqrt(2)+tiny(), h/2]){
+            cube([2*(double_dove_nut_offset()-1), 2*tiny() ,h], center=true);
+        }
+    }
+    else{
+        mirror([0,1,0]){
+             sprung_double_dove_face(h);
+        }
+    }
+}
+
+
+module double_dove_condenser(lens_d, lens_t, lens_assembly_z){
+    //the main body of the condenser
+    lens_r = lens_d/2;
+    base_r = lens_r+1;
+    dove_pos = [0, double_dove_mount_y(), 0];
+    double_dove_height = lens_assembly_z-4;
+    nut_z = double_dove_height -6;
+    difference() {
+        union(){
+            //this hull is the outer shape of the body of the condenser
+            hull() reflect([1, 0, 0]) {
+                cylinder(r=base_r+.3, h=lens_assembly_z+tiny());
+                translate(dove_pos){
+                    sprung_double_dove_face(double_dove_height);
+                }
+            }
+            translate(dove_pos){
+                sprung_double_dove(double_dove_height, nut_z);
+
+            }
+            //add the lens gripper
+            translate([0, 0, lens_assembly_z]){
+                condenser_lens_gripper(lens_r, lens_t, base_r);
+            }
+        }
+        condenser_cutout(lens_r, lens_assembly_z, bottom_height=0);
     }
 }
