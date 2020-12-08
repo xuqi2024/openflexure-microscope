@@ -63,8 +63,11 @@ class MicroscopeBuildWriter():
             output {str} -- file path of the output stl file
             input_file {str} -- file path of the input scad file
             parameters {dict} -- parameters passed to openscad using the `-D` switch
-            select_stl_if {dict}|{list} -- values of parameters not used by openscad but relevant to selecting this stl when making a specific variant.
-                                        Using a list means or-ing the combinations listed.
+            select_stl_if {dict}|{list}|string -- parameters that when set to the
+                values given mean selecting this stl when making a specific
+                variant. using a list means or-ing the combinations listed.
+                leaving this empty means the stl will never be selected and
+                setting it to "alays" means it will always be selected.
         """
 
         if parameters is None:

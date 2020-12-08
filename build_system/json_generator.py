@@ -27,24 +27,30 @@ class JsonGenerator:
             self {JsonGenerator}
             output {str} -- file path of the output stl file
             input_file {str} -- file path of the input scad file
-            select_stl_if {dict}|{list} -- parameters that when set to the values given mean selecting this stl when making a specific variant.
-                                           using a list means or-ing the combinations listed.
+            select_stl_if {dict}|{list}|string -- parameters that when set to the
+                values given mean selecting this stl when making a specific
+                variant. using a list means or-ing the combinations listed.
+                leaving this empty means the stl will never be selected and
+                setting it to "alays" means it will always be selected.
         """
 
-        if select_stl_if is None:
-            ssif = [{}]
-        elif not isinstance(select_stl_if, list):
-            ssif = [select_stl_if]
-        else:
-            ssif = select_stl_if
+        if select_stl_if is not None:
+            if select_stl_if == "always":
+                ssif = [{}]
+            elif isinstance(select_stl_if, str):
+                raise RuntimeError(f"Invalid select_stl_if option {select_stl_if}")
+            elif not isinstance(select_stl_if, list):
+                ssif = [select_stl_if]
+            else:
+                ssif = select_stl_if
 
-        for select in ssif:
-            self._all_select_stl_params = self._all_select_stl_params.union(
-                select.keys()
-            )
-            self._stl_options.append(
-                {"stl": output, "input_file": input_file, "parameters": select}
-            )
+            for select in ssif:
+                self._all_select_stl_params = self._all_select_stl_params.union(
+                    select.keys()
+                )
+                self._stl_options.append(
+                    {"stl": output, "input_file": input_file, "parameters": select}
+                )
 
     def write(self):
         # condense all used parameters down to sets of possible values
