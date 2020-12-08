@@ -198,13 +198,13 @@ def generate_small_parts(writer):
     writer.openscad(
         "slide_riser.stl", "slide_riser.scad", select_stl_if={"slide_riser": True}
     )
-    writer.openscad("actuator_assembly_tools.stl", "actuator_assembly_tools.scad")
-    writer.openscad("condenser.stl", "condenser.scad")
-    writer.openscad("illumination_dovetail.stl", "illumination_dovetail.scad")
-    writer.openscad("lens_tool.stl", "lens_tool.scad")
-    writer.openscad("nut_trap_test.stl", "test_pieces/nut_trap_test.scad")
-    writer.openscad("feet.stl", "feet.scad")
-    writer.openscad("sample_clips.stl", "sample_clips.scad")
+    writer.openscad("actuator_assembly_tools.stl", "actuator_assembly_tools.scad", select_stl_if="always")
+    writer.openscad("condenser.stl", "condenser.scad", select_stl_if="always")
+    writer.openscad("illumination_dovetail.stl", "illumination_dovetail.scad", select_stl_if="always")
+    writer.openscad("lens_tool.stl", "lens_tool.scad", select_stl_if="always")
+    writer.openscad("nut_trap_test.stl", "test_pieces/nut_trap_test.scad", select_stl_if="always")
+    writer.openscad("feet.stl", "feet.scad", select_stl_if="always")
+    writer.openscad("sample_clips.stl", "sample_clips.scad", select_stl_if="always")
     writer.openscad(
         "fl_cube.stl", "fl_cube.scad", select_stl_if={"reflection_illumination": True}
     )
@@ -235,7 +235,7 @@ def generate_small_parts(writer):
         "reflection_illuminator.scad",
         select_stl_if={"reflection_illumination": True},
     )
-    writer.openscad("leg_test.stl", "test_pieces/leg_test.scad")
+    writer.openscad("leg_test.stl", "test_pieces/leg_test.scad", select_stl_if="always")
     writer.openscad("LED_array_holder.stl", "LED_array_holder.scad")
 
 def add_extra_stls_to_writer(writer):
@@ -251,7 +251,7 @@ def add_extra_stls_to_writer(writer):
 # Use ninja to write a build.ninja file which specifies all the STLs to build
 with MicroscopeBuildWriter("builds", "build.ninja", args.generate_stl_options_json) as mbw:
     # Generate basic STL files
-    mbw.openscad("main_body.stl", "main_body.scad")
+    mbw.openscad("main_body.stl", "main_body.scad", select_stl_if="always")
     generate_rms_optics_modules(mbw)
     generate_platform_optics_modules(mbw)
     generate_bases(mbw)
