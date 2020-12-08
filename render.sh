@@ -1,5 +1,7 @@
 #! /bin/bash
 
+set -eu -o pipefail
+
 mkdir "docs/renders"
 
 openscad --hardwarnings -o "docs/renders/optics_assembly.png" --camera=30,5,60,90,0,110,440 --imgsize=1200,2400  rendering/optics_assembly.scad
