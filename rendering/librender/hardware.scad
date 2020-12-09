@@ -106,12 +106,13 @@ module m3_washer(){
     color("Silver")import("m3_washer.stl");
 }
 
-module m3_nut(brass=false){
-    if (brass){
-        color("Gold")import("m3_nut.stl");
-    }
-    else{
-        color("Silver")import("m3_nut.stl");
+module m3_nut(brass=false, center=false){
+    nut_colour = brass ? "Gold" : "Silver";
+    nut_tr = center ? [0, 0, -1.15] : [0, 0, 0];
+    translate(nut_tr){
+        color(nut_colour){
+            import("m3_nut.stl");
+        }
     }
 }
 
