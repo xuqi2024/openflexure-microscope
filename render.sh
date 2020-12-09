@@ -2,7 +2,13 @@
 
 set -eu -o pipefail
 
+if [ -d "docs/renders" ]; then
+  rm -r "docs/renders"
+fi
 mkdir "docs/renders"
+cd rendering/librender
+unzip -o hardware.zip
+cd ../..
 
 openscad --hardwarnings -o "docs/renders/optics_assembly.png" --camera=30,5,60,90,0,110,440 --imgsize=1200,2400  rendering/optics_assembly.scad
 for i in {1..5}
