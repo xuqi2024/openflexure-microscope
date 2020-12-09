@@ -44,11 +44,11 @@ module render_frame(frame_dict){
     color("HotPink", 1.0){
         actuator_column(25, 0, join_to_casing=false);
     }
-    color("gray", 1){
-        translate(band_tr){
-            viton_band_in_situ_vertical(tool_kink=tool_kink);
-        }
+
+    translate(band_tr){
+        viton_band_in_situ_vertical(tool_kink=tool_kink);
     }
+
     color("green", 1){
         translate([0,0,-45]+tool_tr){
             rotate([0, 0, 90]){
