@@ -117,7 +117,7 @@ if(mounts) cutaway("DimGray"){
         tube_lens_f=40,
         tube_lens_r=12.7/2+0.1,
         objective_parfocal_distance=35,
-        fluorescence=false
+        beamsplitter=false
     );
 }
 
