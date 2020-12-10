@@ -44,7 +44,7 @@ module viton_band(){
 }
 
 
-module viton_band_in_situ_vertical(h=25, foot_z=-11, tool_kink=true){
+module viton_band_in_situ_vertical(h=25, foot_z=-11, tool_kink=false){
     // Viton band in situ. A bit of an ad-hoc function, but looks good enough.
     band_d=2;
     $fn=32;
