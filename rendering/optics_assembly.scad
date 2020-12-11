@@ -12,6 +12,7 @@ use <../openscad/libs/microscope_parameters.scad>
 use <../openscad/libs/libdict.scad>
 use <../openscad/libs/illumination.scad>
 use <../openscad/libs/threads.scad>
+use <librender/render_settings.scad>
 
 params = default_params();
 
@@ -84,7 +85,7 @@ module rendered_objective(){
     }
 }
 
-module cutaway(colour="DimGray"){
+module cutaway(colour="Red"){
     color(colour){
         render(6){
             difference(){
@@ -100,7 +101,7 @@ condenser_z = illumination_dovetail_z(params) + 65;
 condenser_angle = key_lookup("condenser_angle", params);
 
 // Condenser module
-if(mounts) cutaway("HotPink"){
+if(mounts) cutaway(extras_colour()){
     translate([0,0,condenser_z]){
         rotate([0, 0, 180])
         rotate([180+condenser_angle,0,0]){
@@ -109,7 +110,7 @@ if(mounts) cutaway("HotPink"){
     }
 }
 
-if(mounts) cutaway("DimGray"){
+if(mounts) cutaway(optics_module_colour()){
     // Optics module for RMS objective, using Comar 40mm singlet tube lens
     optics_module_rms(
         params,

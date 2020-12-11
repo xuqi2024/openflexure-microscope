@@ -30,6 +30,7 @@ function gear_ratio() = ratio;
 function small_gear_spacing() = c2c_distance/(ratio + 1)*2 + 4;
 function large_gear_spacing() = c2c_distance/(1/ratio + 1)*2 + 4;
 function thumbwheel_spacing() = 44;
+function large_gear_screw_pos() = [0,0,1.5];
 
 //pitch radius = Nteeth * circular_pitch / 360
 //pitch radius is centre of gear to meshing point
@@ -50,7 +51,9 @@ module large_gear(){
 				bore_diameter=1);	
 			cylinder(r1=pitch_r-2,r2=pitch_r+18,h=20); //stop bottoms of teeth being funny
 		}
-		translate([0,0,1.5]) nut(3,shaft=true,fudge=1.2,h=999);
+		translate(large_gear_screw_pos()){
+            nut(3,shaft=true,fudge=1.2,h=999);
+        }
 	}
 }
 

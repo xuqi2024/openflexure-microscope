@@ -13,10 +13,12 @@ use <../openscad/libs/microscope_parameters.scad>
 use <../openscad/feet.scad>
 use <../openscad/libs/libdict.scad>
 use <librender/hardware.scad>
+use <librender/render_settings.scad>
+use <librender/assembly_parameters.scad>
 
 module cut_actuator_housing(cut=true){
     difference(){
-        screw_seat(25, motor_lugs=true);
+        screw_seat(column_height(), motor_lugs=true);
 
         // cutout actuator hole
         difference(){ 
@@ -41,22 +43,22 @@ module render_frame(frame_dict){
     foot_alpha = key_lookup("foot_alpha", frame_dict);
     tool_kink = key_lookup("tool_kink", frame_dict);
 
-    color("HotPink", 1.0){
+    color(body_colour(), 1.0){
         actuator_column(25, 0, join_to_casing=false);
     }
-    color("gray", 1){
-        translate(band_tr){
-            viton_band_in_situ_vertical(tool_kink=tool_kink);
-        }
+
+    translate(band_tr){
+        viton_band_in_situ_vertical(tool_kink=tool_kink);
     }
-    color("green", 1){
+
+    color(tools_colour(), 1){
         translate([0,0,-45]+tool_tr){
             rotate([0, 0, 90]){
                 double_ended_band_tool(bent=true);
             }
         }
     }
-    color("HotPink", foot_alpha){
+    color(extras_colour(), foot_alpha){
         translate(foot_tr){
             render(6){
                 outer_foot(params, lie_flat=false, letter="X");
@@ -64,7 +66,7 @@ module render_frame(frame_dict){
         }
     }
     // See though object last
-    color("HotPink", casing_alpha){
+    color(body_colour(), casing_alpha){
         render(6){
             cut_actuator_housing(cut=casing_cut);
         }
@@ -73,7 +75,7 @@ module render_frame(frame_dict){
 
 frame1 = [["foot_tr", [0,0,-40]],
           ["band_tr", [0,0,-40]],
-          ["tool_tr", [0,0,-40]],
+          ["tool_tr", [0,0,-37]],
           ["casing_cut", false],
           ["casing_alpha", 1],
           ["foot_alpha", 1],
@@ -81,7 +83,7 @@ frame1 = [["foot_tr", [0,0,-40]],
 
 frame2 = [["foot_tr", [0,0,-40]],
           ["band_tr", [0,0,-40]],
-          ["tool_tr", [0,0,-40]],
+          ["tool_tr", [0,0,-37]],
           ["casing_cut", true],
           ["casing_alpha", .5],
           ["foot_alpha", .5],
@@ -111,7 +113,7 @@ frame5 = [["foot_tr", [0,0,0]],
           ["foot_alpha", 1],
           ["tool_kink", false]];
 
-FRAME=5;
+FRAME=2;
 if (FRAME==1){
     render_frame(frame1);
 }else if (FRAME==2){
