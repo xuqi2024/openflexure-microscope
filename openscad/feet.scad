@@ -181,26 +181,27 @@ module foot(travel=5,       // how far into the foot the actuator can move down
             //cut out the shell close to the microscope centre to allow the actuator
             //to protrude below the bottom of the body
             difference(){
-                rotate([actuator_tilt,0,0]) translate([0,-l/2,h-travel-0.5]) cube([entry_w, wall_t*3, 999], center=true);
-                //NB we leave the very bottom, to keep the foot strong.
+                rotate([actuator_tilt,0,0]){
+                    translate([0,-l/2,h-travel-0.5]){
+                        cube([entry_w, wall_t*3, 999], center=true);
+                    }
+                }
+                //NOTE: We do not cut all the way through the foot. This is to keep the foot strong.
                 foot_ground_plane(tilt=0, top=h-travel-0.5);
             }
 
-            //cut out a slot to allow bands to wrap round the outside
-            //(this is useful if the available bands are too long)
-            //NB this should match the height and width of the filleted_bridge below.
-            intersection(){
-                rotate([actuator_tilt,0,0]) cube([999, 4, 999],center=true);
-                foot_ground_plane(tilt=tilt, bottom=0.5, top=(h-travel-4) - l/2*tan(tilt)-endstop_extra_ringheight); //set the top/bottom of the slot to be parallel to the print bed, and
-                    //leave an 0.5mm layer on the bottom to help adhesion.
-            }
 
             //round the edges of the above slot, and make an actual hole (i.e. no adhesion
             //layer) for the elastic bands to sit in.  Rounded edges should help strength
-            //and avoid damaging the bands.  NB width should match the band anchor above,
+            //and avoid damaging the bands.
+            //NOTE: width should match the band anchor above,
             //and height/span should match the slot above.
-            skew_flat(bottom_tilt) rotate([actuator_tilt,0,0]) translate([0,0,h-travel-4-2-endstop_extra_ringheight]){
-                filleted_bridge([2*column_base_radius()+1.5, 4, 2], roc_xy=4, roc_xz=3);
+            skew_flat(bottom_tilt){
+                rotate([actuator_tilt,0,0]){
+                    translate([0,0,h-travel-4-2-endstop_extra_ringheight]){
+                        filleted_bridge([2*column_base_radius()+1.5, 4, 2], roc_xy=4, roc_xz=3);
+                    }
+                }
             }
             //cut off the foot below the "ground plane" (i.e. print bed)
             foot_ground_plane(tilt, top=0);
@@ -208,8 +209,14 @@ module foot(travel=5,       // how far into the foot the actuator can move down
             //Void for endstop switch
             //TODO: check properly parametrized
             if(feet_endstops){
-                translate([0,0.5-(h-travel)*sin(actuator_tilt),h-travel]) rotate([0,0,-90]) scale([1.03,1.08,1])endstop_hole(actuator_tilt);
-              }
+                translate([0,0.5-(h-travel)*sin(actuator_tilt),h-travel]){
+                    rotate([0,0,-90]){
+                        scale([1.03,1.08,1]){
+                            endstop_hole(actuator_tilt);
+                        }
+                    }
+                }
+            }
         }
         foot_letter(letter,actuator_tilt);
     }
