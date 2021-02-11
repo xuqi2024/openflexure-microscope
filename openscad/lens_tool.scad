@@ -17,3 +17,5 @@ module lens_tool(h=20){
         translate([0,0,h-4]) cylinder(d1=8, d2=10.5, h=4.01);
     }
 }
+
+lens_tool()
