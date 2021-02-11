@@ -1,19 +1,19 @@
 
-module pi_camera2(lens=true){
+module picamera2(lens=true){
     $fn = 20;
-    pi_camera2_board();
+    picamera2_board();
 
-    pi_camera2_front();
-    pi_camera2_back();
+    picamera2_front();
+    picamera2_back();
 
     if (lens){
         translate([0,0,3]){
-            pi_camera2_lens();
+            picamera2_lens();
         }
     }
 }
 
-module pi_camera2_lens(){
+module picamera2_lens(){
     $fn = 20;
     color("#404040"){
         render(){
@@ -37,7 +37,7 @@ module pi_camera2_lens(){
     }
 }
 
-module pi_camera2_front(){
+module picamera2_front(){
     color("black"){
         cylinder(d=6, h=1);
         translate([8, -3, 0]){
@@ -69,7 +69,7 @@ module pi_camera2_front(){
     }
 }
 
-module pi_camera2_back(){
+module picamera2_back(){
     translate([0,0,-1]){
         mirror([0,0,1]){
 
@@ -113,56 +113,62 @@ module chip(x, y, w, h, t){
     }
 }
 
+function picamera2_size() = [23.862, 25, 1];
+function picamera2_cam_pos_x() = 9.462;
 
+function picamera2_holes() = let(
+    cam_pos_x = picamera2_cam_pos_x(),
+    h_y = picamera2_size().y/2-2,
+    h_x1 = picamera2_size().x-2-cam_pos_x,
+    h_x2 = picamera2_size().x-14.5-cam_pos_x
+) [[h_x1, h_y, 0], [h_x1, -h_y, 0], [h_x2, h_y, 0], [h_x2, -h_y, 0]];
 
-module pi_camera2_board(){
-    $fn = 20;
-    x = 23.862;
-    y = 25;
-    t = 1;
-    //hole positions (before translating the camera to centre
-    h_y = y/2-2;
-    h_x1 = x/2-2;
-    h_x2 = x/2-14.5;
-    holes = [[h_x1, h_y, 0], [h_x1, -h_y, 0], [h_x2, h_y, 0], [h_x2, -h_y, 0]];
-
-    cam_pos_x = 9.462;
+module picamera2_board_blank(x, y, t, cam_pos_x){
     //Translate camera to centre in xy, and board top to z=0
     translate([x/2-cam_pos_x, 0 ,-t]){
-        // board except with cutout for screw clearance
-        color("green"){
-            render(){
-                difference(){
-                    filleted_board(x, y, t, r=2);
-                    for (hole = holes){
-                        translate(hole){
-                            cylinder(d=5, h=99, center=true);
-                        }
+        filleted_board(x, y, t, r=2);
+    }
+}
+
+module picamera2_board(){
+    $fn = 20;
+    cam_pos_x = picamera2_cam_pos_x();
+
+    x = picamera2_size().x;
+    y = picamera2_size().y;
+    t = picamera2_size().z;
+    // board except with cutout for screw clearance
+    color("green"){
+        render(){
+            difference(){
+                picamera2_board_blank(x, y, t, cam_pos_x);
+                for (hole = picamera2_holes()){
+                    translate(hole + [0, 0, -t]){
+                        cylinder(d=5, h=99, center=true);
                     }
                 }
             }
         }
-        // screw clearance area
-        color("darkkhaki"){
-            render(){
-                intersection(){
-                    filleted_board(x, y, t, r=2);
-                    for (hole = holes){
-                        translate(hole){
-                            difference(){
-                                cylinder(d=5, h=t);
-                                cylinder(d=2.2, h=99, center=true);
-                            }
+    }
+    // screw clearance area
+    color("darkkhaki"){
+        render(){
+            intersection(){
+                picamera2_board_blank(x, y, t, cam_pos_x);
+                for (hole = picamera2_holes()){
+                    translate(hole + [0, 0, -t]){
+                        difference(){
+                            cylinder(d=5, h=t);
+                            cylinder(d=2.2, h=99, center=true);
                         }
                     }
                 }
             }
         }
     }
-
 }
 
-module pi_camera2_tool(){
+module picamera2_tool(){
     $fn=30;
     color("#CCCCCC"){
         difference(){

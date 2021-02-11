@@ -3,6 +3,17 @@
 use <../../openscad/libs/threads.scad>
 use <../../openscad/libs/utilities.scad>
 
+module tube_lens(){
+    //Should be f=50 but exaggerating curvature
+    lens(d=12.7, f=30);
+}
+
+module condenser_lens(){
+    mirror([0,0,1]){
+        flanged_lens(d=11,f=9,cut=4, fl_d=13, fl_h=1);
+}
+}
+
 module lens(d=16, f=40, cut=4.5, n=1.5){
     $fn=60;
     color("PaleTurquoise", .60){

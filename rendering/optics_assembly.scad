@@ -8,45 +8,61 @@ This file should render the optics of the microscope...
 
 
 use <../openscad/optics.scad>
+use <../openscad/lens_tool.scad>
 use <../openscad/libs/utilities.scad>
 use <../openscad/libs/microscope_parameters.scad>
 use <../openscad/libs/libdict.scad>
 use <../openscad/libs/illumination.scad>
+use <librender/render_utils.scad>
 use <librender/render_settings.scad>
 use <librender/optics.scad>
+use <librender/electronics.scad>
+use <librender/hardware.scad>
 
 params = default_params();
 
 mounts=true;
 lenses=true;
+condenser_z = illumination_dovetail_z(params) + 65;
+condenser_angle = key_lookup("condenser_angle", params);
+condenser_pos = create_placement_dict([0, 0, condenser_z], [0, 0, 180], [180+condenser_angle, 0, 0]);
+camera_pos = create_placement_dict([0, 0, -17.5], [0, 0, 135]);
 
-
-module cutaway(colour="Red"){
+module cutaway(dir="+x", colour="Red"){
+    rotations = [["x", [0, 90, 0]],
+                 ["+x", [0, 90, 0]],
+                 ["-x", [0, -90, 0]],
+                 ["y", [-90, 0, 0]],
+                 ["+y", [-90, 0, 0]],
+                 ["-y", [90, 0, 0]],
+                 ["z", [0, 0, 0]],
+                 ["+z", [0, 0, 0]],
+                 ["-z", [0, 180, 0]]];
+    rotation = key_lookup(dir, rotations);
     color(colour){
         render(6){
             difference(){
                 children();
-            rotate([0,90,0]) cylinder(r=999,h=999,$fn=4); //cutaway
+                rotate(rotation){
+                    cylinder(r=999,h=999,$fn=4); //cutaway
+                }
             }
         }
     }
 }
 
 
-condenser_z = illumination_dovetail_z(params) + 65;
-condenser_angle = key_lookup("condenser_angle", params);
+
+
 
 // Condenser module
-if(mounts) cutaway(extras_colour()){
-    translate([0,0,condenser_z]){
-        rotate([0, 0, 180])
-        rotate([180+condenser_angle,0,0]){
-            condenser(params);
-        }
+if(mounts) cutaway("+x", extras_colour()){
+    place_part(condenser_pos){
+        condenser(params);
     }
 }
 
-if(mounts) cutaway(optics_module_colour()){
+if(mounts) cutaway("+x", optics_module_colour()){
     // Optics module for RMS objective, using Comar 40mm singlet tube lens
     optics_module_rms(
         params,
@@ -60,12 +76,24 @@ if(mounts) cutaway(optics_module_colour()){
 
 
 if(lenses){
-    //Should be f=50 but exaggerating curvature
-    translate([0,0,12.8]) lens(d=12.7, f=30);
+    translate([0,0,12.8]) tube_lens();
 
     translate([0,0,40.1]) rendered_objective();
 
-    translate([0,0,condenser_z-35.5]) mirror([0,0,1]) flanged_lens(d=11,f=9,cut=4, fl_d=13, fl_h=1);
+    translate([0,0,condenser_z-35.5]) condenser_lens();
 
     translate([0,0,condenser_z]) rotate([180,0,0]) led();
 }
+
+place_part(camera_pos){
+    picamera2(lens = false);
+    holes = [for (i = [2, 3]) picamera2_holes()[i]];
+    for (hole_pos = holes){
+        translate(hole_pos - [0, 0, picamera2_size().z]){
+            mirror([0,0,1]){
+                no2_x6_5_selftap();
+            }
+        }
+    }
+}
+

@@ -33,16 +33,16 @@ module render_frame(frame_dict){
     }
 
     place_part(tool_pos){
-        pi_camera2_tool();
+        picamera2_tool();
     }
 
     if (removed){
         place_part(lens_pos){
-            pi_camera2_lens();
+            picamera2_lens();
         }
     }
 
-    pi_camera2(lens = !removed);
+    picamera2(lens = !removed);
 
 }
 
