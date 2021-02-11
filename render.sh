@@ -25,3 +25,9 @@ openscad --hardwarnings -o "docs/renders/actuator_assembly_gear.png" -D "FRAME=3
 openscad --hardwarnings -o "docs/renders/actuator_assembly_gear2.png" -D "FRAME=4;" --camera=4,35,35,71,0,186,330 --imgsize=2400,2000  rendering/actuator_assembly.scad
 openscad --hardwarnings -o "docs/renders/actuator_assembly_x.png" -D "FRAME=5;" --camera=4,35,35,71,0,186,330 --imgsize=2400,2000  rendering/actuator_assembly.scad
 openscad --hardwarnings -o "docs/renders/actuators_assembled.png" -D "FRAME=6;" --camera=4,35,35,71,0,186,330 --imgsize=2400,2000  rendering/actuator_assembly.scad
+
+
+openscad --hardwarnings -o "docs/renders/picam1.png" -D "FRAME=1;" --camera=-6,3,11,46,0,90,140 --imgsize=2400,2000  rendering/prepare_picamera.scad
+openscad --hardwarnings -o "docs/renders/picam2.png" -D "FRAME=2;" --camera=0,0,0,29,0,90,140 --imgsize=2400,2000  rendering/prepare_picamera.scad
+openscad --hardwarnings -o "docs/renders/picam3.png" -D "FRAME=3;" --camera=1,18,8,52,0,90,140 --imgsize=2400,2000  rendering/prepare_picamera.scad
+

@@ -25,6 +25,28 @@ module construction_line(p1, p2, width=0.1, line_color="Black"){
     }
 }
 
+module turn_anticlockwise(rad = 5, head = 2.5){
+    color("black"){
+        rotate_extrude(angle=270, $fn=80){
+            translate([rad, 0, 0]){
+                circle(r = 0.1);
+            }
+        }
+        translate([0, -rad, 0]){
+            rotate([0, 90, 0]) {
+                cylinder(d1=head*2/3, d2=0.01, h=head, $fn=80);
+            }
+        }
+    }
+}
+
+module turn_clockwise(rad = 5, head = 2.5){
+    mirror([0, 1, 0]){
+        turn_anticlockwise(rad, head);
+    }
+}
+
+
 function create_placement_dict(translation=[0,0,0],
                                rotation3=[0,0,0],
                                rotation2=[0,0,0],

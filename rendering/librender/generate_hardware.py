@@ -4,7 +4,7 @@ This script is released under the GPL
 Copyright Julian Stirling 2020
 
 It is a quick script to use NopSCADlib to generate some STLs of hardware.
-To get the thread on the No2 screw we use my brnach:
+To get the thread on the No2 screw we use my branch:
 https://github.com/julianstirling/NopSCADlib/tree/no2_screw_hack
 '''
 
