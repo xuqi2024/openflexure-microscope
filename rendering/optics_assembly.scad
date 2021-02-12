@@ -28,32 +28,6 @@ condenser_angle = key_lookup("condenser_angle", params);
 condenser_pos = create_placement_dict([0, 0, condenser_z], [0, 0, 180], [180+condenser_angle, 0, 0]);
 camera_pos = create_placement_dict([0, 0, -17.5], [0, 0, 135]);
 
-module cutaway(dir="+x", colour="Red"){
-    rotations = [["x", [0, 90, 0]],
-                 ["+x", [0, 90, 0]],
-                 ["-x", [0, -90, 0]],
-                 ["y", [-90, 0, 0]],
-                 ["+y", [-90, 0, 0]],
-                 ["-y", [90, 0, 0]],
-                 ["z", [0, 0, 0]],
-                 ["+z", [0, 0, 0]],
-                 ["-z", [0, 180, 0]]];
-    rotation = key_lookup(dir, rotations);
-    color(colour){
-        render(6){
-            difference(){
-                children();
-                rotate(rotation){
-                    cylinder(r=999,h=999,$fn=4); //cutaway
-                }
-            }
-        }
-    }
-}
-
-
-
-
 
 // Condenser module
 if(mounts) cutaway("+x", extras_colour()){
