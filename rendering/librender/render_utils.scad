@@ -74,19 +74,32 @@ module place_part(placement_dict){
     }
 }
 
-module cutaway(dir="+x", colour="Red"){
-    rotations = [["x", [0, 90, 0]],
-                 ["+x", [0, 90, 0]],
-                 ["-x", [0, -90, 0]],
-                 ["y", [-90, 0, 0]],
-                 ["+y", [-90, 0, 0]],
-                 ["-y", [90, 0, 0]],
-                 ["z", [0, 0, 0]],
-                 ["+z", [0, 0, 0]],
-                 ["-z", [0, 180, 0]]];
-    rotation = key_lookup(dir, rotations);
+module coloured_render(colour="Red", convexity=6){
     color(colour){
-        render(6){
+        render(convexity){
+            children();
+        }
+    }
+}
+
+module cutaway(dir="+x", colour="Red"){
+    if (dir == "none"){
+        coloured_render(colour){
+            children();
+        }
+    }
+    else{
+        rotations = [["x", [0, 90, 0]],
+                    ["+x", [0, 90, 0]],
+                    ["-x", [0, -90, 0]],
+                    ["y", [-90, 0, 0]],
+                    ["+y", [-90, 0, 0]],
+                    ["-y", [90, 0, 0]],
+                    ["z", [0, 0, 0]],
+                    ["+z", [0, 0, 0]],
+                    ["-z", [0, 180, 0]]];
+        rotation = key_lookup(dir, rotations);
+        coloured_render(colour){
             difference(){
                 children();
                 rotate(rotation){

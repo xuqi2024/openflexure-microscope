@@ -21,6 +21,7 @@ build.ninja
 .ninja_deps
 .ninja_log
 docs/renders/
+rendering/annotations/*.png
 
 # Ignore IDE files
 .vscode/

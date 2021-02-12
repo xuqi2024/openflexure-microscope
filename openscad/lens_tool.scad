@@ -3,7 +3,9 @@
 
 // (c) 2017 Richard Bowman, released under CERN open hardware license.
 
-module lens_tool(h=20){
+function lens_tool_height() = 20;
+
+module lens_tool(h=lens_tool_height()){
     $fn=32;
 
     difference(){
