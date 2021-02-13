@@ -12,13 +12,21 @@ cd ../..
 
 # OpenSCAD renders
 # Note some render to rendering/annotations. These should then be run through inkscape below
-openscad --hardwarnings -o "rendering/annotations/optics_assembly_tube_lens1.png" -D "FRAME=1;" --camera=29,0,59,69,0,90,290 --imgsize=1000,2000  rendering/optics_assembly.scad
-openscad --hardwarnings -o "rendering/annotations/optics_assembly_tube_lens2.png" -D "FRAME=2;" --camera=29,0,59,69,0,90,290 --imgsize=1000,2000  rendering/optics_assembly.scad
-openscad --hardwarnings -o "rendering/annotations/optics_assembly_tube_lens3.png" -D "FRAME=3;" --camera=29,0,59,69,0,90,290 --imgsize=1000,2000  rendering/optics_assembly.scad
+openscad --hardwarnings -o "rendering/annotations/optics_assembly_tube_lens1.png" -D "FRAME=1;" --camera=29,0,59,69,0,90,290 --imgsize=1000,2000  rendering/rms_optics_assembly.scad
+openscad --hardwarnings -o "rendering/annotations/optics_assembly_tube_lens2.png" -D "FRAME=2;" --camera=29,0,59,69,0,90,290 --imgsize=1000,2000  rendering/rms_optics_assembly.scad
+openscad --hardwarnings -o "rendering/annotations/optics_assembly_tube_lens3.png" -D "FRAME=3;" --camera=29,0,59,69,0,90,290 --imgsize=1000,2000  rendering/rms_optics_assembly.scad
 
-openscad --hardwarnings -o "rendering/annotations/optics_assembly_condenser_lens1.png" -D "FRAME=4;" --camera=29,0,59,69,0,90,290 --imgsize=1000,2000  rendering/optics_assembly.scad
-openscad --hardwarnings -o "rendering/annotations/optics_assembly_condenser_lens2.png" -D "FRAME=5;" --camera=29,0,59,69,0,90,290 --imgsize=1000,2000  rendering/optics_assembly.scad
-openscad --hardwarnings -o "rendering/annotations/optics_assembly_condenser_lens3.png" -D "FRAME=6;" --camera=29,0,59,69,0,90,290 --imgsize=1000,2000  rendering/optics_assembly.scad
+openscad --hardwarnings -o "docs/renders/optics_assembly_camera1.png" -D "FRAME=4;" --camera=7,-14,-21,247,0,211,250 --imgsize=1200,2000  rendering/rms_optics_assembly.scad
+openscad --hardwarnings -o "docs/renders/optics_assembly_camera2.png" -D "FRAME=5;" --camera=7,-14,-21,247,0,211,250 --imgsize=1200,2000  rendering/rms_optics_assembly.scad
+convert docs/renders/optics_assembly_camera*.png +append docs/renders/optics_assembly_camera.png
+
+openscad --hardwarnings -o "docs/renders/optics_assembly_objective1.png" -D "FRAME=6;" --camera=0,8,25,55,0,90,240 --imgsize=1200,2000  rendering/rms_optics_assembly.scad
+openscad --hardwarnings -o "docs/renders/optics_assembly_objective1.png" -D "FRAME=7;" --camera=0,8,25,55,0,90,240 --imgsize=1200,2000  rendering/rms_optics_assembly.scad
+convert docs/renders/optics_assembly_objective*.png +append docs/renders/optics_assembly_objective.png
+
+openscad --hardwarnings -o "rendering/annotations/optics_assembly_condenser_lens1.png" -D "FRAME=1;" --camera=29,0,59,69,0,90,290 --imgsize=1000,2000  rendering/optics_assembly.scad
+openscad --hardwarnings -o "rendering/annotations/optics_assembly_condenser_lens2.png" -D "FRAME=2;" --camera=29,0,59,69,0,90,290 --imgsize=1000,2000  rendering/optics_assembly.scad
+openscad --hardwarnings -o "rendering/annotations/optics_assembly_condenser_lens3.png" -D "FRAME=3;" --camera=29,0,59,69,0,90,290 --imgsize=1000,2000  rendering/optics_assembly.scad
 
 openscad --hardwarnings -o "docs/renders/optics_assembled.png" -D "FRAME=4;" --camera=30,5,60,90,0,110,440 --imgsize=1200,2400  rendering/optics_assembly.scad
 

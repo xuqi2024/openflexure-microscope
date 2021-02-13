@@ -55,6 +55,10 @@ function create_placement_dict(translation=[0,0,0],
                                                      ["rotation2",rotation2],
                                                      ["rotation1",rotation1]];
 
+function translate_pos(placement_dict, translation) = let(
+    tr = key_lookup("translation", placement_dict) + translation
+) replace_value("translation", tr, placement_dict);
+
 module place_part(placement_dict){
     // Places part in 3D space
     // input is a dictionary with keys translation, rotation3, rotation2, rotation1, translation
