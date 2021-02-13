@@ -15,6 +15,11 @@ cd ../..
 openscad --hardwarnings -o "rendering/annotations/optics_assembly_tube_lens1.png" -D "FRAME=1;" --camera=29,0,59,69,0,90,290 --imgsize=1000,2000  rendering/optics_assembly.scad
 openscad --hardwarnings -o "rendering/annotations/optics_assembly_tube_lens2.png" -D "FRAME=2;" --camera=29,0,59,69,0,90,290 --imgsize=1000,2000  rendering/optics_assembly.scad
 openscad --hardwarnings -o "rendering/annotations/optics_assembly_tube_lens3.png" -D "FRAME=3;" --camera=29,0,59,69,0,90,290 --imgsize=1000,2000  rendering/optics_assembly.scad
+
+openscad --hardwarnings -o "rendering/annotations/optics_assembly_condenser_lens1.png" -D "FRAME=4;" --camera=29,0,59,69,0,90,290 --imgsize=1000,2000  rendering/optics_assembly.scad
+openscad --hardwarnings -o "rendering/annotations/optics_assembly_condenser_lens2.png" -D "FRAME=5;" --camera=29,0,59,69,0,90,290 --imgsize=1000,2000  rendering/optics_assembly.scad
+openscad --hardwarnings -o "rendering/annotations/optics_assembly_condenser_lens3.png" -D "FRAME=6;" --camera=29,0,59,69,0,90,290 --imgsize=1000,2000  rendering/optics_assembly.scad
+
 openscad --hardwarnings -o "docs/renders/optics_assembled.png" -D "FRAME=4;" --camera=30,5,60,90,0,110,440 --imgsize=1200,2400  rendering/optics_assembly.scad
 
 for i in {1..5}
@@ -39,3 +44,4 @@ openscad --hardwarnings -o "docs/renders/picam3.png" -D "FRAME=3;" --camera=1,18
 
 # inkscape annotations, make sure SVG uses relative links.
 inkscape -z -e "docs/renders/optics_assembly_tube_lens.png" "rendering/annotations/annotate_optics_assembly_tube_lens.svg"
+inkscape -z -e "docs/renders/optics_assembly_condenser_lens.png" "rendering/annotations/annotate_optics_assembly_condenser_lens.svg"
