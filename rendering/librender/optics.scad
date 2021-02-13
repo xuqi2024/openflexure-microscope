@@ -2,6 +2,7 @@
 
 use <../../openscad/libs/threads.scad>
 use <../../openscad/libs/utilities.scad>
+use <render_utils.scad>
 
 module tube_lens(){
     //Should be f=50 but exaggerating curvature
@@ -65,17 +66,13 @@ module led(){
     }
 }
 
-module objective(){
-    union(){
-        stage1_z = 16;
-        stage2_z = stage1_z+15.5;
-        stage3_z = stage2_z+8;
-        stage4_z = stage3_z+2;
-
-        //coppied in from optics.scad!
-        radius=25.4*0.8/2-0.25;
-        pitch=0.7056;
-        $fn=60;
+module objective_body(){
+    $fn=60;
+    stage1_z = 16;
+    stage2_z = stage1_z+15.5;
+    stage3_z = stage2_z+8;
+    stage4_z = stage3_z+2;
+    difference(){
         sequential_hull(){
             cylinder(d=24.5,h=tiny());
             translate([0,0,stage1_z]){
@@ -97,20 +94,55 @@ module objective(){
                 cylinder(d=4,h=tiny());
             }
         }
-        translate([0,0,-4]){
-            cylinder(r=radius,h=4+tiny());
-            outer_thread(radius=radius,
-                        pitch=pitch,
-                        thread_base_width = 0.60,
-                        thread_length=2.5);
+        translate([0, 0, 35]){
+            cylinder(d=3, h=10);
+        }
+    }
+}
+
+module objective_thread(){
+    $fn=60;
+    //coppied in from optics.scad!
+    radius=25.4*0.8/2-0.25;
+    pitch=0.7056;
+    translate([0,0,-4]){
+        difference(){
+            cylinder(r=radius, h=4+tiny());
+            cylinder(r=radius-1, h=99, center=true);
+        }
+        outer_thread(radius=radius,
+                    pitch=pitch,
+                    thread_base_width = 0.60,
+                    thread_length=2.5);
+    }
+}
+module objective_base(){
+    $fn=60;
+    translate([0,0,-4.5]){
+        difference(){
+            cylinder(r=9.5, h=4.5+tiny());
+            cylinder(r=4, h=99, center=true);
         }
     }
 }
 
 module rendered_objective(){
-    color("Silver"){
-        render(6){
-            objective();
+    
+    coloured_render("silver"){
+        objective_body();
+    }
+    coloured_render("goldenrod"){
+        objective_thread();
+    }
+    coloured_render("#404040"){
+        objective_base();
+        translate([0, 0, 38.6]){
+            sphere(r=3);
+        }
+    }
+    coloured_render("deepskyblue"){
+        translate([0, 0, 13]){
+            cylinder(d=24.53, h=1, $fn=60);
         }
     }
 }

@@ -18,7 +18,7 @@ om_pos_on_tool = create_placement_dict([0, 0, 42] ,[0, 180, 0], [0, 0, 180]);
 tube_lens_tool_pos = create_placement_dict([0, 0, lens_tool_height()+3.6], [0, 180, 0]);
 
 
-FRAME = 6;
+FRAME = 7;
 
 if (FRAME <= 3){
     assemble_om(FRAME);
