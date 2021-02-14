@@ -24,6 +24,12 @@ openscad --hardwarnings -o "docs/renders/optics_assembly_objective1.png" -D "FRA
 openscad --hardwarnings -o "docs/renders/optics_assembly_objective2.png" -D "FRAME=7;" --camera=-2,2,25,55,0,90,290 --imgsize=1200,2000  rendering/rms_optics_assembly.scad
 convert docs/renders/optics_assembly_objective*.png +append docs/renders/optics_assembly_objective.png
 
+openscad --hardwarnings -o "docs/renders/optics_assembly_screw1.png" -D "FRAME=8;" --camera=-6.5,14,38,60,0,243,290 --imgsize=1000,2000  rendering/rms_optics_assembly.scad
+openscad --hardwarnings -o "docs/renders/optics_assembly_screw2.png" -D "FRAME=9;" --camera=-6.5,14,38,60,0,243,290 --imgsize=1000,2000  rendering/rms_optics_assembly.scad
+openscad --hardwarnings -o "docs/renders/optics_assembly_screw3.png" -D "FRAME=10;" --camera=-6.5,14,38,60,0,243,290 --imgsize=1000,2000  rendering/rms_optics_assembly.scad
+convert docs/renders/optics_assembly_screw*.png +append docs/renders/optics_assembly_screw.png
+
+
 openscad --hardwarnings -o "rendering/annotations/optics_assembly_condenser_lens1.png" -D "FRAME=1;" --camera=29,0,59,69,0,90,290 --imgsize=1000,2000  rendering/optics_assembly.scad
 openscad --hardwarnings -o "rendering/annotations/optics_assembly_condenser_lens2.png" -D "FRAME=2;" --camera=29,0,59,69,0,90,290 --imgsize=1000,2000  rendering/optics_assembly.scad
 openscad --hardwarnings -o "rendering/annotations/optics_assembly_condenser_lens3.png" -D "FRAME=3;" --camera=29,0,59,69,0,90,290 --imgsize=1000,2000  rendering/optics_assembly.scad

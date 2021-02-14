@@ -33,7 +33,7 @@ condenser_lens_tool_pos = create_placement_dict([0, 0, lens_tool_height()+1.51])
 
 om_pos = create_placement_dict([0, 0, 0]);
 
-FRAME = 3;
+FRAME = 4;
 
 if (FRAME <= 3){
     assemble_condenser(FRAME);
@@ -56,7 +56,7 @@ module assemble_condenser(frame){
 
 module cutaway_optics(){
     
-    rendered_optics_module(om_pos, cut=true, lens=true, camera=true, objective=true);
+    rendered_optics_module(om_pos, cut=true);
 
     rendered_condenser(condenser_pos, cut=true);
     translate([0,0,condenser_z-35.5]){
