@@ -22,7 +22,7 @@ om_mount_pos = objective_mount_screw_pos(params);
 om_nut_pos = create_placement_dict(om_mount_pos - [0, 3.25, 1], [90, 0, 0], [0, 0, 30]);
 om_screw_pos = create_placement_dict(om_mount_pos - [0, -4, 1], [-90, 0, 0], [0, 0, 30]);
 
-FRAME = 9;
+FRAME = 6;
 
 if (FRAME <= 3){
     assemble_om(FRAME);
@@ -47,7 +47,7 @@ else if (FRAME == 5){
                            screw=false);
 }
 else if (FRAME == 6){
-    rendered_optics_module(oom_pos,
+    rendered_optics_module(om_pos,
                            cut=false,
                            lens=true,
                            camera=true,
