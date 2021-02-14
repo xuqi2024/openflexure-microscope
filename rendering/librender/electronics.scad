@@ -1,4 +1,6 @@
 
+use <render_utils.scad>
+
 module picamera2(lens=true){
     $fn = 20;
     picamera2_board();
@@ -189,6 +191,77 @@ module picamera2_tool(){
     }
 }
 
+module motor28BYJ48_body(){
+    holes = [[17.5, 0, 0], [-17.5, 0, 0]];
+    translate([0, 8, 0]){
+        cylinder(d=28, h=19);
+        difference(){
+            hull(){
+                for (hole = holes){
+                    translate(hole){
+                        cylinder(r=3.5, h=.8);
+                    }
+                }
+            }
+            for (hole = holes){
+                translate(hole){
+                    cylinder(r=2.1, h=3, center=true);
+                }
+            }
+        }
+    }
+    //centered at height 3 so 1.5mm is exposed
+    cylinder(d=9, h=3, center=true);
+}
+
+module motor28BYJ48_wo_wire(){
+    coloured_render("silver"){
+        motor28BYJ48_body();
+    }
+    coloured_render("goldenrod"){
+        intersection()
+        {
+            //centered at height 20 so 10mm is exposed
+            cylinder(d=5, h=20, center=true);
+            union(){
+                cube([10, 10, 8], center=true);
+                cube([10, 3, 99], center=true);
+            }
+        }
+    }
+    coloured_render("RoyalBlue"){
+        translate([-14.5/2, 8, 0.01]){
+            cube([14.5, 17, 16.5]);
+        }
+        translate([-17.5/2, 8, 4.01]){
+            cube([17.5, 14, 12.5]);
+        }
+    }
+}
+
+
+module motor28BYJ48(){
+    motor28BYJ48_wo_wire();
+    wire_start = [0, 17, 2.5];
+    wire_end = [0, 47, 2.5];
+    coloured_render("Orange"){
+        wire(d=1, points=[wire_start+[2, 0, 0], wire_end+[2, 0, 0]]);
+    }
+    coloured_render("Yellow"){
+        wire(d=1, points=[wire_start+[1, 0, 0], wire_end+[1, 0, 0]]);
+    }
+    coloured_render("Red"){
+        wire(d=1, points=[wire_start, wire_end]);
+    }
+    coloured_render("Blue"){
+        wire(d=1, points=[wire_start+[-1, 0, 0], wire_end+[-1, 0, 0]]);
+    }
+    coloured_render("Magenta"){
+        wire(d=1, points=[wire_start+[-2, 0, 0], wire_end+[-2, 0, 0]]);
+    }
+}
+
+
 module filleted_board(x, y, t, r=2){
     x_tr = x/2-r;
     y_tr = y/2-r;
@@ -206,4 +279,19 @@ module filleted_board(x, y, t, r=2){
             cylinder(r=r, h=t);
         }
     }
+}
+
+module wire(d=1, points=[[0, 0, 0], [10,0,0]]){
+    $fn=10;
+    echo(points);
+	for(i=[0:len(points)-2]){
+		hull(){
+            translate(points[i]){
+			    sphere(d=d);
+            }
+			translate(points[i+1]){
+			    sphere(d=d);
+            }
+		}
+	}
 }
