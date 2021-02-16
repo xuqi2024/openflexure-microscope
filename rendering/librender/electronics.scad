@@ -1,4 +1,5 @@
 
+use <../../openscad/libs/utilities.scad>
 use <render_utils.scad>
 
 module picamera2(lens=true){
@@ -230,34 +231,224 @@ module motor28BYJ48_wo_wire(){
         }
     }
     coloured_render("RoyalBlue"){
-        translate([-14.5/2, 8, 0.01]){
+        translate([-14.5/2, 8, 0.1]){
             cube([14.5, 17, 16.5]);
         }
-        translate([-17.5/2, 8, 4.01]){
+        translate([-17.5/2, 8, 4.1]){
             cube([17.5, 14, 12.5]);
         }
     }
 }
 
+module motor_jst_connector(){
+    coloured_render("WhiteSmoke"){
+        motor_jst_connector_body();
+    }
+    coloured_render("gray"){
+        for (x_pin = [-2, -1, 0, 1, 2]*2.54){
+            translate([x_pin, 0, 3.5]){
+                cube([1.2, 3, 6], center=true);
+            }
+        }
+    }
+}
 
-module motor28BYJ48(){
-    motor28BYJ48_wo_wire();
-    wire_start = [0, 17, 2.5];
-    wire_end = [0, 47, 2.5];
+module motor_jst_connector_body(){
+    difference(){
+        union(){
+            translate([0, 0, 7.7/2]){
+                cube([13.2, 4, 7.7], center=true);
+            }
+            translate([0, .7/2, 7.3]){
+                cube([14.6, 4.7, 0.8], center=true);
+            }
+            // the "clip"
+            jst_connector_clip();
+        }
+        translate([0, -1.6, 0]){
+            cube([99, 4, .6], center=true);
+        }
+        for (x_pin = [-2, -1, 0, 1, 2]*2.54){
+            translate([x_pin, 0, 0]){
+                jst_pin_void();
+            }
+        }
+    }
+}
+
+module jst_connector_clip(){
+    sequential_hull(){
+        //x_gap is the space inside the clip in x
+        x_gap = 8.6;
+        //note everything is 1.0 in y and centred but it protrudes 0.8mm
+        // Need to translate 2.8 in y to get this
+        y_tr = -2.8;
+        translate([x_gap/2, y_tr, 2]){
+            cube([0.6, 1.6, 0.6]);
+        }
+        translate([x_gap/2, y_tr, 3.5]){
+            cube([1.2, 1.6, 0.5]);
+        }
+        translate([x_gap/2, y_tr, 3.7]){
+            cube([0.6, 1.6, 0.5]);
+        }
+        translate([x_gap/2, y_tr, 7.7-0.6]){
+            cube([0.6, 1.6, 0.6]);
+        }
+        translate([-x_gap/2-0.6, y_tr, 7.7-0.6]){
+            cube([0.6, 1.6, 0.6]);
+        }
+        translate([-x_gap/2-0.6, y_tr, 3.7]){
+            cube([0.6, 1.6, 0.5]);
+        }
+        translate([-x_gap/2-1.2, y_tr, 3.5]){
+            cube([1.2, 1.6, 0.5]);
+        }
+        translate([-x_gap/2-0.6, y_tr, 2]){
+            cube([0.6, 1.6, 0.6]);
+        }
+    }
+}
+
+module jst_pin_void(){
+        translate([0, 2, 0]){
+            cube([1.2, 2, 6], center=true);
+        }
+        translate([0, 0, 6]){
+            cube([2, 2.8, 10], center=true);
+        }
+        translate([0, .5, 6]){
+            cube([1.2, 2.8, 10], center=true);
+        }
+        translate([0, -.7, 0]){
+            cube([1, 1, 10], center=true);
+        }
+};
+
+
+module motor28BYJ48_wire(m_pos, c_pos, m_pin, c_pin, points=[]){
+    wire_start_m = [2, 17, 2.5];
+    wire_end_m = [2, 27, 2.5];
+    wire_pitch_m = [1, 0, 0];
+    pin_tr_m = (m_pin-1)*(-wire_pitch_m);
+
+    wire_start_c = [5.08, -.7, 6];
+    wire_end_c = [2, -.7, 14];
+    wire_pitch_cs = [2.54, 0, 0];
+    wire_pitch_ce = [1, 0, 0];
+    pin_tr_cs = (c_pin-1)*(-wire_pitch_cs);
+    pin_tr_ce = (c_pin-1)*(-wire_pitch_ce);
+
+    //wire near motor
+    place_part(m_pos){
+        hull(){
+            translate(wire_start_m+pin_tr_m){
+                sphere(d=1, $fn=10);
+            }
+            translate(wire_end_m+pin_tr_m){
+                sphere(d=1, $fn=10);
+            }
+        }
+    }
+    //wire connector motor
+    place_part(c_pos){
+        hull(){
+            translate(wire_start_c+pin_tr_cs){
+                sphere(d=1, $fn=10);
+            }
+            translate(wire_end_c+pin_tr_ce){
+                sphere(d=1, $fn=10);
+            }
+        }
+    }
+    //the rest of the wire
+    //can reduce this block of code if there was a way to create a
+    // pacement dictionary where the part is tranlated before the placement is applied
+    // This requires function with a lot of algebra
+    if (len(points) == 0){
+        hull(){
+            place_part(m_pos){
+                translate(wire_end_m+pin_tr_m){
+                    sphere(d=1, $fn=10);
+                }
+            }
+            place_part(c_pos){
+                translate(wire_end_c+pin_tr_ce){
+                    sphere(d=1, $fn=10);
+                }
+            }
+        }
+    }
+    else{
+        w_points = calc_bundled_wire_points(5, m_pin, points);
+        hull(){
+            place_part(m_pos){
+                translate(wire_end_m+pin_tr_m){
+                    sphere(d=1, $fn=10);
+                }
+            }
+            translate(w_points[0]){
+                sphere(d=1, $fn=10);
+            }
+        }
+        if (len(w_points) > 1){
+            wire(d=1, points=w_points);
+        }
+        hull(){
+            translate(w_points[len(w_points)-1]){
+                sphere(d=1, $fn=10);
+            }
+            place_part(c_pos){
+                translate(wire_end_c+pin_tr_ce){
+                    sphere(d=1, $fn=10);
+                }
+            }
+        }
+    }
+}
+
+function calc_bundled_wire_points(n_wires, wire_num, points) = let(
+    off_x = cos(360*wire_num/n_wires),
+    off_y = sin(360*wire_num/n_wires)
+)[
+    for (point = points)
+        if (len(point)==3)
+            point + [off_x, off_y, 0]
+        else
+            let(
+                beta = point[3],
+                gamma = point[4],
+                x = point[0] + cos(beta)*cos(gamma)*off_x - sin(beta)*off_y,
+                y = point[1] + sin(beta)*cos(gamma)*off_x + cos(beta)*off_y,
+                z = point[2] + sin(gamma)*off_x
+            )  [x, y, z]
+];
+
+
+module motor28BYJ48(motor_pos, connector_pos, wire_points=[]){
+    m_pos = is_undef(motor_pos) ? create_placement_dict([0, 0, 0]) : motor_pos; 
+    c_pos = is_undef(connector_pos) ? create_placement_dict([0, 280, 0], [90, 0, 0]) : connector_pos; 
+    place_part(m_pos){
+        motor28BYJ48_wo_wire();
+    }
+    place_part(c_pos){
+        motor_jst_connector();
+    }
+
     coloured_render("Orange"){
-        wire(d=1, points=[wire_start+[2, 0, 0], wire_end+[2, 0, 0]]);
+        motor28BYJ48_wire(m_pos, c_pos, 1, 4, wire_points);
     }
     coloured_render("Yellow"){
-        wire(d=1, points=[wire_start+[1, 0, 0], wire_end+[1, 0, 0]]);
+        motor28BYJ48_wire(m_pos, c_pos, 2, 3, wire_points);
     }
     coloured_render("Red"){
-        wire(d=1, points=[wire_start, wire_end]);
+        motor28BYJ48_wire(m_pos, c_pos, 3, 5, wire_points);
     }
     coloured_render("Blue"){
-        wire(d=1, points=[wire_start+[-1, 0, 0], wire_end+[-1, 0, 0]]);
+        motor28BYJ48_wire(m_pos, c_pos, 4, 1, wire_points);
     }
     coloured_render("Magenta"){
-        wire(d=1, points=[wire_start+[-2, 0, 0], wire_end+[-2, 0, 0]]);
+        motor28BYJ48_wire(m_pos, c_pos, 5, 2, wire_points);
     }
 }
 
@@ -283,7 +474,6 @@ module filleted_board(x, y, t, r=2){
 
 module wire(d=1, points=[[0, 0, 0], [10,0,0]]){
     $fn=10;
-    echo(points);
 	for(i=[0:len(points)-2]){
 		hull(){
             translate(points[i]){

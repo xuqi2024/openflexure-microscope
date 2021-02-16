@@ -59,21 +59,28 @@ function translate_pos(placement_dict, translation) = let(
     tr = key_lookup("translation", placement_dict) + translation
 ) replace_value("translation", tr, placement_dict);
 
-module place_part(placement_dict){
-    // Places part in 3D space
-    // input is a dictionary with keys translation, rotation3, rotation2, rotation1, translation
-    // These will be applied in order allowing full ridgidbody rotation before translation
-    tr = key_lookup("translation", placement_dict);
-    r1 = key_lookup("rotation1", placement_dict);
-    r2 = key_lookup("rotation2", placement_dict);
-    r3 = key_lookup("rotation3", placement_dict);
-    translate(tr){
-        rotate(r3){
-            rotate(r2){
-                rotate(r1){
-                    children();
+module place_part(position){
+    if (valid_dict(position)){
+        // Places part in 3D space
+        // input is a dictionary with keys translation, rotation3, rotation2, rotation1, translation
+        // These will be applied in order allowing full ridgidbody rotation before translation
+        tr = key_lookup("translation", position);
+        r1 = key_lookup("rotation1", position);
+        r2 = key_lookup("rotation2", position);
+        r3 = key_lookup("rotation3", position);
+        translate(tr){
+            rotate(r3){
+                rotate(r2){
+                    rotate(r1){
+                        children();
+                    }
                 }
             }
+        }
+    }
+    else{
+        translate(position){
+            children();
         }
     }
 }
