@@ -1,10 +1,11 @@
-OverviewPage: index.md
 
 CustomCategories:
     PrintedPart:
         Reuse: false
+        DisplayName: Printed Part
     PrintedTool:
         Reuse: true
+        DisplayName: Printed Tool
 
 DefaultCategory: Part
 
