@@ -31,6 +31,8 @@ Insert the LED into the condenser housing.  It should push-fit and stay in place
 ![](./images/insert_led.jpg)
 
 ## Step 4
+_Note: Openflexure industries kits supply a pre-assembled LED with resistor so you can skip this step._
+
 Assemble the cable for the LED, if you don't have one soldered on already.  You just need to be able to light it up - we usually do this by soldering the LED to a resistor (about 80 ohms), then attaching about 20cm of cable with female crimps on the end.  This can easily be plugged onto the Raspberry Pi's 5v GPIO pin.
 
 ## Step 5
