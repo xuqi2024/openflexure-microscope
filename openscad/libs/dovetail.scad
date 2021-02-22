@@ -30,15 +30,16 @@ function dovetail_default_params() = [
     ["block_depth", 12],     // y size of mounting block
     ["fillet_r", 0.5],       // fillet radius for rounded corners
     ["relief_r", 0.7],       // fillet radius for rounded corners
-    ["lever", 6],            // distance from flat surface to pivot of clamp
-    ["flex_l", 3],           // length of clamp flexure
+    ["lever", 8],            // distance from flat surface to pivot of clamp
+    ["flex_l", 4],           // length of clamp flexure
     ["flex_t", 1.6],         // thickness of above
-    ["clamp_t", 8],          // x dimension of clamping flange
+    ["clamp_t", 9],          // thickness of clamping flange, in the direction of the bolt
     ["top_t", 2],            // thickness of the top solid layer
     ["bottom_t", 2],         // thickness of the bottom solid layer
     ["vertical_gap", 1],     // gap between clamp and top/bottom layers
     ["clamp_support_t", 0.5],// thickness of internal bridge support for clamp
     ["clamp_angle", 7],      // angle through which we allow the clamp to bend
+    ["pinch_bolt_inset", 2], // distance from centre of clamping bolt to female point
 ];
 
 module block_sharp(p){
@@ -154,10 +155,18 @@ module clamp_cutout_2d(p){
         }
         // behind clamp
         sequential_hull(){
+            // start next to the flexure
             translate([flex_l/2, -fillet_r - flex_t/2]) circle(fillet_r);
+            // duplicate the corner point to allow it to bend
             rotate_repeat(clamp_angle) translate([-clamp_t, -fillet_r - flex_t/2]){
                 circle(fillet_r);
             }
+            // don't use the second corner point, to avoid shortening the clamping part
+            // because of cosine error
+            translate([-clamp_t, -fillet_r - flex_t/2]){
+                circle(fillet_r);
+            }
+            // a far-away, wider point, so the opening is wedge-shaped.
             rotate_repeat(clamp_angle) translate([-clamp_t, 99]) circle(fillet_r);
         } 
     }
@@ -188,7 +197,7 @@ module clamp_cutout_base_2d(p){
         // separate the flange from the block
         hull() translate(female_point(p)){
             circle(relief_r);
-            translate([-key_lookup("clamp_t", p) - relief_r, 0]) circle(relief_r);
+            translate([-key_lookup("clamp_t", p)/sin(key_lookup("angle", p)), 0]) circle(relief_r);
         }
 
         // take the hull of just the external part
@@ -201,45 +210,47 @@ module clamp_cutout_base_2d(p){
         }
     }
 }
-module clamp_back_2d(p, extra_l=0, extra_r=0){
+module clamp_back_2d(p, extra_left=0, extra_right=0, extra_top=0){
     // back of the internal part of the clamp
-    length = key_lookup("clamp_t", p) + key_lookup("fillet_r", p) + extra_l + extra_r;
+    // extra_l and extra_r add additional length on
+    // the left/right respectively.  By default (0), 
+    // the part matches the size of the external part
+    // of the clamp (i.e. it's in line with female_point)
+    length = (
+        key_lookup("clamp_t", p) -
+        key_lookup("fillet_r", p) +
+        extra_left + 
+        extra_right
+    );
     clamp_frame(p){
-        translate([-length + extra_r, -key_lookup("flex_t", p)/2]){
-            square([length, key_lookup("flex_t", p)]);
+        translate([-length + extra_right, -key_lookup("flex_t", p)/2]){
+            square([length, key_lookup("flex_t", p) + extra_top]);
         }
     }
 }
-module clamp_support_2d(p){
-    // a bridge to support the internal part of the clamp
-    // this sits underneath the back of the clamp
-    clamp_back_2d(
-        p, 
-        extra_l=3*key_lookup("fillet_r", p), 
-        extra_r=key_lookup("flex_l", p)/2 + tiny()
-    );
-}
+
 module clamping_flange_2d(p){
+    // 2D shape of the part of the flange that moves
     convex_fillet(p) difference(){
         union(){
             hull(){
                 // external end
                 flange_r(
                     p, 
-                    width=(
+                    width=( // NB this is defined in x, not in the clamp_frame.
                         (key_lookup("clamp_t", p) - key_lookup("fillet_r", p))
                         /sin(key_lookup("angle", p))
                     )
                 );
                 // internal end
-                clamp_back_2d(p);
+                clamp_back_2d(p); // NB this gets cut by clamp_cutout_2d
             }
 
             // add the flexure to join to the block. 
             clamp_back_2d(
                 p, 
-                extra_r=key_lookup("flex_l", p) + key_lookup("fillet_r", p),
-                extra_l=-key_lookup("fillet_r", p)
+                extra_right=key_lookup("flex_l", p)/2 + key_lookup("fillet_r", p),
+                extra_left=-key_lookup("fillet_r", p) // avoid fouling the fillet
             );
         }
 
@@ -261,17 +272,22 @@ module clamping_flange(p){
 module clamping_bolt_and_nut(p){
     // The counterbored screw and nut that clamp the dovetail
     h = key_lookup("overall_height", p);
-    clamp_frame(p) translate([0, key_lookup("lever", p) - 2, h/2]){
+    clamp_y = ( // Place the clamping bolt relative to the female point
+        key_lookup("lever", p) - key_lookup("pinch_bolt_inset", p)
+    );
+    fillet_r = key_lookup("fillet_r", p);
+    // We place everything relative to 
+    clamp_frame(p) translate([0, clamp_y, h/2]){
         $fn = 16;
-        // Counterbored hole for screw
+        // Counterbored hole for screw (in solid block)
         rotate([0, 90, 0]){
             cylinder(d=3*1.2, h=99);
-            translate([0,0,key_lookup("fillet_r", p) + 4]) cylinder(d=3*1.3*2, h=99);
+            translate([0,0,fillet_r + 4]) cylinder(d=3*1.3*2, h=99);
         }
-        // Nut trap, with angled entry
+        // Nut trap, with angled entry (in the clamp)
         rotate([0, -90, 0]){
-            cylinder(d=3*1.2, h=8);
-            translate([0,0,key_lookup("fillet_r", p) + 1.5]) rotate([0,0,60]) sequential_hull(){
+            cylinder(d=3*1.2, h=key_lookup("clamp_t", p)); //shaft of the screw
+            translate([0,0, fillet_r + 2]) rotate([0,0,60]) sequential_hull(){
                 // TODO: replace this with a proper parametric nut trap!
                 cylinder(r=3*1.1, h=3.2, $fn=6);
                 //translate([2,0,0]) cylinder(r=3*1.2, h=2.8, $fn=6);
@@ -285,8 +301,30 @@ module clamp_support(p){
     // a bridge to support the internal part of the clamp
     gap = key_lookup("vertical_gap", p);
     bottom = key_lookup("bottom_t", p) + gap;
-    translate([0,0,bottom]) linear_extrude(key_lookup("clamp_support_t", p)){
-        clamp_support_2d(p);
+    support_t = key_lookup("clamp_support_t", p);
+    fillet_r = key_lookup("fillet_r", p);
+
+    // bridge the bottom of the flexure right across the gap
+    translate([0,0,bottom]) linear_extrude(support_t){
+        // a bridge to support the internal part of the clamp
+        // this sits underneath the back of the clamp
+        clamp_back_2d(
+            p, 
+            extra_left=3*key_lookup("fillet_r", p), 
+            extra_right=key_lookup("flex_l", p)/2 + tiny()
+        );
+    }
+
+    // bridge the bottom layer of the cut-out next to the flexure
+    translate([0,0,bottom + support_t]) linear_extrude(support_t){
+        // a bridge to support the internal part of the clamp
+        // this sits underneath the back of the clamp
+        clamp_back_2d(
+            p, 
+            extra_left=-fillet_r, 
+            extra_right=-fillet_r,
+            extra_top=3*fillet_r
+        );
     }
 }
 
@@ -363,6 +401,11 @@ module dovetail_f(p, height=50){
     }
 }
 
-%mirror([0,1,0]) dovetail_f(dovetail_default_params());
+difference(){
+    render(6) dovetail_clamp_m(dovetail_default_params());
+
+    translate([0,0,key_lookup("overall_height", dovetail_default_params())/2]) cylinder(r=99, h=99, $fn=5);
+}
+
+//%mirror([0,1,0]) dovetail_f(dovetail_default_params());
 //translate([0,25,0]) dovetail_f(default_params());
-render(6) dovetail_clamp_m(dovetail_default_params());
