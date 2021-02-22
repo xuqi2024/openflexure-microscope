@@ -42,6 +42,20 @@ function dovetail_default_params() = [
     ["pinch_bolt_inset", 2], // distance from centre of clamping bolt to female point
 ];
 
+function dovetail_params(
+    // This is an experiment in how to handle the commonly-changed parameters more nicely
+    height=16,
+    width=30,
+    block_depth=12,
+) = replace_multiple_values(
+    [
+        ["overall_height", height],
+        ["overall_width", width],
+        ["block_depth", block_depth],
+    ],
+    dovetail_default_params()
+);
+
 module block_sharp(p){
     // the block to which we attach the male dovetail 
     // or from whiuch we cut the female one
@@ -100,19 +114,24 @@ module dovetail_section_m_sharp(p){
     }
 }
 
+module dovetail_section_f_sharp_cutout(p){
+    // We cut this shape out of a block to make the female cutout
+
+    // The male dovetail
+    hull() reflect([1, 0]) mirror([0,1]) flange_r(p);
+
+    // relieve internal corners
+    hull() reflect([1, 0]) translate(-male_point(p)){
+        circle(key_lookup("relief_r", p));
+    }
+}
+
 module dovetail_section_f_sharp(p){
     // A female dovetail, before any filleting of the corners
     difference(){
-        union(){
-            block_sharp(p);
-        }
+        block_sharp(p);
         
-        hull() reflect([1, 0]) mirror([0,1]) flange_r(p);
-
-        // relieve internal corners
-        hull() reflect([1, 0]) translate(-male_point(p)){
-            circle(key_lookup("relief_r", p));
-        }        
+        dovetail_section_f_sharp_cutout(p);
     }
 }
 
@@ -394,10 +413,29 @@ module dovetail_clamp_m(p){
 
 
 
-module dovetail_f(p, height=50){
-    h = height;
+module dovetail_f(p, height=undef){
+    // A female dovetail, existing in y<0 with mating face at y=0
+    h = is_undef(height) ? key_lookup("overall_height", p) : height;
     linear_extrude(h) convex_fillet(p){
         dovetail_section_f_sharp(p);
+    }
+}
+module dovetail_f_cutout(p, height=undef){
+    // Cut this shape out of a block with a face at y=0 to make
+    // a dovetail
+    h = is_undef(height) ? key_lookup("overall_height", p) : height;
+    w = key_lookup("overall_width", p);
+    linear_extrude(h) concave_fillet(p) union(){
+        dovetail_section_f_sharp_cutout(p);
+        translate([-w/2, tiny()]) square([w, 99]);
+    }
+}
+
+module dovetail_block(p, height=undef){
+    // A 3D block, filleted as the dovetail would be
+    h = is_undef(height) ? key_lookup("overall_height", p) : height;
+    linear_extrude(h) convex_fillet(p){
+        block_sharp(p);
     }
 }
 
@@ -407,5 +445,4 @@ difference(){
     translate([0,0,key_lookup("overall_height", dovetail_default_params())/2]) cylinder(r=99, h=99, $fn=5);
 }
 
-//%mirror([0,1,0]) dovetail_f(dovetail_default_params());
-//translate([0,25,0]) dovetail_f(default_params());
+%mirror([0,1,0]) dovetail_f(dovetail_default_params());
