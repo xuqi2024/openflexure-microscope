@@ -40,6 +40,7 @@ function dovetail_default_params() = [
     ["clamp_support_t", 0.5],// thickness of internal bridge support for clamp
     ["clamp_angle", 7],      // angle through which we allow the clamp to bend
     ["pinch_bolt_inset", 2], // distance from centre of clamping bolt to female point
+    ["taper_block", false],  // set this to true to taper the block parallel to the flanges
 ];
 
 function dovetail_params(
@@ -47,23 +48,46 @@ function dovetail_params(
     height=16,
     width=30,
     block_depth=12,
+    taper_block=false
 ) = replace_multiple_values(
     [
         ["overall_height", height],
         ["overall_width", width],
         ["block_depth", block_depth],
+        ["taper_block", taper_block],
     ],
     dovetail_default_params()
 );
 
 module block_sharp(p){
     // the block to which we attach the male dovetail 
-    // or from whiuch we cut the female one
+    // or from which we cut the female one
 
     w = key_lookup("overall_width", p);
-    block = [w, key_lookup("block_depth", p)];
+    depth = key_lookup("block_depth", p);
+    angle = key_lookup("angle", p);
+    back_w = key_lookup("taper_block", p) ? w - 2*tan(90-angle)*depth : w;
 
-    translate([-w/2, -block[1]]) square(block);
+    polygon([
+        [     -w/2,      0],
+        [      w/2,      0],
+        [ back_w/2, -depth],
+        [-back_w/2, -depth],
+    ]);
+}
+module back_of_block_2d(p){
+    // the back of the block to which we attach the male dovetail
+    // or from which we cut the female one
+
+    depth = key_lookup("block_depth", p);
+    w = key_lookup("overall_width", p);
+    angle = key_lookup("angle", p);
+    back_w = key_lookup("taper_block", p) ? w - 2*tan(90-angle)*depth : w;
+    fillet_r = key_lookup("fillet_r", p);
+
+    hull() reflect([1,0,0]){
+        translate([back_w/2 - fillet_r*tan(angle/2), -depth + fillet_r]) circle(r=fillet_r);
+    }
 }
 
 module flange_r(p, width=tiny()){
