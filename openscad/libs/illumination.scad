@@ -20,10 +20,19 @@ include <./microscope_parameters.scad>
 use <./dovetail.scad>
 use <./z_axis.scad>
 use <./libdict.scad>
-front_dovetail_y = 35; // position of the main dovetail
-front_dovetail_w = 30; // width of the main dovetail
 
+function illumination_dovetail_w(params) = 30; // width of the dovetail
+function illumination_dovetail_y(params) = 35; // position of the mating surface
 function illumination_dovetail_z(params) = leg_height(params)-2;
+function illumination_dovetail_blockdepth(params) = 12; // depth of the block containing the dovetail
+
+// Set the dovetail parameters dictionary based on the above settings:
+function illumination_dt_params(params) = dovetail_params(
+    width = illumination_dovetail_w(params),
+    block_depth = illumination_dovetail_blockdepth(params),
+    height = 99
+);
+
 function right_illumination_screw_pos(params) = [20, z_nut_y(params), illumination_dovetail_z(params)];
 function left_illumination_screw_pos(params) = [-20, z_nut_y(params), illumination_dovetail_z(params)];
 function illumination_back_corner_pos(params) = [0, (key_lookup("leg_r", params)+ leg_outer_w(params))/sqrt(2) + 4, illumination_dovetail_z(params)];
@@ -61,7 +70,7 @@ module illumination_dovetail_branding(params, h, bottom_z){
     slope_h = h-lug_h ;
     //top and bottom of y position of the sloped back
     bot_y = right_illumination_screw_pos(params).y+5;
-    top_y = front_dovetail_y+10;
+    top_y = illumination_dovetail_y(params)+10;
     back_angle = atan((top_y-bot_y)/slope_h);
     logo_z = bottom_z+lug_h +slope_h/2;
     logo_y = (top_y+bot_y)/2+.5;
@@ -75,17 +84,19 @@ module illumination_dovetail_branding(params, h, bottom_z){
 
 module illumination_dovetail_structure(params, h, dt_z, dt_h){
     //this is the outer structure that forms the illumination mount.
+    dt_w = illumination_dovetail_w(params);
+    dt_y = illumination_dovetail_y(params);
 
     //nominal postion of the corner of the cubes that form this  structure
-    cube_corner = [-front_dovetail_w/2, front_dovetail_y, dt_z];
+    cube_corner = [-dt_w/2, dt_y, dt_z];
     //distance cubes are moved forward and backward in y respectivly
-    delta_y = 2;
-    sequential_hull(){
-        //Cube jsut below the actual dovetail
-        translate(cube_corner - [0, delta_y, 0]){
-            cube([front_dovetail_w, 15+delta_y, 1]);
+    delta_y = illumination_dovetail_blockdepth(params);
+    /*sequential_hull(){
+        //Cube just below the actual dovetail
+        translate(cube_corner){
+            cube([dt_w, 15+delta_y, 1]);
         }
-        //trulobular structure with "corners" at the 2 screws and a back corner position
+        //trilobular structure with "corners" at the 2 screws and a back corner position
         hull(){
             each_illumination_screw(params){
                 cyl_slot(r=4, h=3+tiny(), dy=3);
@@ -97,8 +108,25 @@ module illumination_dovetail_structure(params, h, dt_z, dt_h){
             }
         }
         //cube behind dovetail
-        translate(cube_corner + [0, delta_y, 0]){
-            cube([front_dovetail_w, 10-delta_y, dt_h]);
+        translate(cube_corner + [0, delta_y - tiny(), 0]){
+            cube([dt_w, tiny(), dt_h]);
+        }
+    }*/
+    hull(){
+        translate([0, dt_y, dt_z]) mirror([0,1,0]){
+            dovetail_block(illumination_dt_params(params), height=dt_h);
+        }
+        
+        //trilobular structure with "corners" at the 2 screws and a back corner position
+        hull(){
+            each_illumination_screw(params){
+                cyl_slot(r=4, h=3+tiny(), dy=3);
+            }
+            translate(illumination_back_corner_pos(params)){
+                scale([1,0.5,1]){
+                    cylinder(r=4, h=tiny());
+                }
+            }
         }
     }
 }
@@ -109,6 +137,8 @@ module illumination_dovetail(params, h=50){
 
     // z position where we mount it
     bottom_z = illumination_dovetail_z(params);
+    dt_w = illumination_dovetail_w(params);
+    dt_y = illumination_dovetail_y(params);
     // Where the dovetail itself starts (relative to the bottom of the structure)
     start_z = 14;
     // z position of the dovetail, in microscope referecne frame
@@ -116,7 +146,6 @@ module illumination_dovetail(params, h=50){
     //height of the dovetail
     dt_h = h - start_z;
 
-    translate([0,front_dovetail_y,dt_z]) mirror([0,1,0]) dovetail_m([front_dovetail_w, 10, dt_h]);
     difference(){
         illumination_dovetail_structure(params, h, dt_z, dt_h);
         // slots for the mounting screws (to allow adjustment of position)
@@ -128,6 +157,9 @@ module illumination_dovetail(params, h=50){
                 cyl_slot(r=6, h=999, dy=3);
             }
         }
+
+        // cutout to make the dovetail
+        translate([0,dt_y,dt_z]) mirror([0,1,0]) dovetail_f_cutout(illumination_dt_params(params), height=99);
         // clearance for the motor
         translate([0,-2,0]) z_motor_clearance(params);
     }
@@ -208,11 +240,11 @@ module tall_condenser(lens_d, lens_t, lens_assembly_z){
     base_r = lens_r+2;
      // the bottom is an extra bit that is sliced off when the condenser is rotated and cut before printing
     bottom_height = 10;
-    dt_clip = [front_dovetail_w, 16, lens_assembly_z]; //size of the dovetail clip
-    dovetail_end_y = front_dovetail_y-dt_clip.y-4;
+    dt_clip = [illumination_dovetail_w(params), 16, lens_assembly_z]; //size of the dovetail clip
+    dovetail_end_y = illumination_dovetail_y(params)-dt_clip.y-4;
 
     // the dovetail clip
-    translate([0,front_dovetail_y, 0]){
+    translate([0,illumination_dovetail_y(params), 0]){
         mirror([0,1,0]){
             //Note: the solid bottom is a roof not a bottom when the STL is in the assembly orientation
             dovetail_clip(dt_clip, slope_front=2);
