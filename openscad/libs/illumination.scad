@@ -230,7 +230,7 @@ module condenser_cutout(lens_r, lens_assembly_z, bottom_height=10){
     }
 }
 
-module tall_condenser(lens_d, lens_t, lens_assembly_z){
+module tall_condenser(params, lens_d, lens_t, lens_assembly_z){
     // Note that this is the shape before it is is rotated, and cut for printing.
     // This module is useful because the optical path is vertical
     // In this module the lens is at the top of the structure.
@@ -240,20 +240,18 @@ module tall_condenser(lens_d, lens_t, lens_assembly_z){
     base_r = lens_r+2;
      // the bottom is an extra bit that is sliced off when the condenser is rotated and cut before printing
     bottom_height = 10;
-    dt_clip = [illumination_dovetail_w(params), 16, lens_assembly_z]; //size of the dovetail clip
-    dovetail_end_y = illumination_dovetail_y(params)-dt_clip.y-4;
+    dt_block_depth = 16;
+    dt_params = dovetail_params(
+        width=illumination_dovetail_w(params),
+        height=lens_assembly_z,  // do we want to keep this so tall?  It would probably be fine if we made it shorter.
+        block_depth = dt_block_depth,
+        taper_block = true
+    );
+    dovetail_end_y = illumination_dovetail_y(params)-dt_block_depth;
 
     // the dovetail clip
     translate([0,illumination_dovetail_y(params), 0]){
-        mirror([0,1,0]){
-            //Note: the solid bottom is a roof not a bottom when the STL is in the assembly orientation
-            dovetail_clip(dt_clip, slope_front=2);
-        }
-    }
-
-    // This cube suts between the body of the condernser and the dovetail clip
-    translate([-dt_clip.x/2, dovetail_end_y, 0]){
-        cube([dt_clip.x, 4, dt_clip.z]);
+        dovetail_clamp_m(dt_params);
     }
 
     difference() {
@@ -261,8 +259,9 @@ module tall_condenser(lens_d, lens_t, lens_assembly_z){
         hull() reflect([1, 0, 0]) {
             translate([0, 0, -bottom_height])
                 cylinder(r=base_r, h=lens_assembly_z+bottom_height+tiny());
-            translate([-dt_clip.x/2, dovetail_end_y, 0])
-                cube([dt_clip.x, 2, lens_assembly_z]);
+            translate([0,illumination_dovetail_y(params), 0]){
+                linear_extrude(lens_assembly_z) back_of_block_2d(dt_params);
+            }
         }
 
         condenser_cutout(lens_r, lens_assembly_z, bottom_height=bottom_height);
@@ -279,7 +278,7 @@ module condenser(params, lens_d=13, lens_t=1, lens_assembly_z= 30){
     condenser_angle = key_lookup("condenser_angle", params);
     difference(){
         rotate([-condenser_angle,0,0]){
-            tall_condenser(lens_d, lens_t, lens_assembly_z);
+            tall_condenser(params, lens_d, lens_t, lens_assembly_z);
         }
         mirror([0,0,1]){
             cylinder(r=999,h=999,$fn=4);

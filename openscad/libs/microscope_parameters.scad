@@ -53,7 +53,7 @@ function default_params() = [["leg_r", 30],     // radius on which the innermost
                              ["stage_hole_r", 20], // size of hole in the stage
                              ["xy_lever_ratio", 4.0/7.0], // mechanical advantage of actuator over xy-stage - can be used to trade speed and precision
                              ["z_lever_ratio", 1.0], //  mechanical advantage of actuator over objective mount (must be >1)
-                             ["condenser_angle", 15], //angle of the top of the condenser relative to the xy plane
+                             ["condenser_angle", 0], //angle of the top of the condenser relative to the xy plane
                              ["print_ties", true], //sets whether the ties that support printing are on. It is usefull to be able to turn these off for rendering
                              ["smart_brim_r", 5] // The radius of the smart brim on the main body
                             ]; 
