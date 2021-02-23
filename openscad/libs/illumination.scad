@@ -241,13 +241,14 @@ module tall_condenser(params, lens_d, lens_t, lens_assembly_z){
      // the bottom is an extra bit that is sliced off when the condenser is rotated and cut before printing
     bottom_height = 10;
     dt_block_depth = 16;
+    dt_height = 20;
     dt_params = dovetail_params(
         width=illumination_dovetail_w(params),
-        height=lens_assembly_z,  // do we want to keep this so tall?  It would probably be fine if we made it shorter.
+        height=dt_height,  // do we want to keep this so tall?  It would probably be fine if we made it shorter.
         block_depth = dt_block_depth,
         taper_block = true
     );
-    dovetail_end_y = illumination_dovetail_y(params)-dt_block_depth;
+    dovetail_end_y = illumination_dovetail_y(params) - dt_block_depth;
 
     // the dovetail clip
     translate([0,illumination_dovetail_y(params), 0]){
@@ -256,11 +257,15 @@ module tall_condenser(params, lens_d, lens_t, lens_assembly_z){
 
     difference() {
         //this hull is the outer shape of the body of the condenser
-        hull() reflect([1, 0, 0]) {
-            translate([0, 0, -bottom_height])
-                cylinder(r=base_r, h=lens_assembly_z+bottom_height+tiny());
+        sequential_hull(){
+            translate([0, 0, lens_assembly_z]){
+                cylinder(r=base_r, h=tiny());
+            }
+            translate([0, 0, -bottom_height]){
+                cylinder(r=base_r, h=dt_height + bottom_height);
+            }
             translate([0,illumination_dovetail_y(params), 0]){
-                linear_extrude(lens_assembly_z) back_of_block_2d(dt_params);
+                linear_extrude(dt_height) back_of_block_2d(dt_params);
             }
         }
 
