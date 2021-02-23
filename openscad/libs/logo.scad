@@ -59,15 +59,25 @@ module openflexure_logo(h=1, resize=[0,0]){
     linear_extrude(h) scale(0.85) import("logos/openflexure_logo.dxf", origin=[38,3]);
 }
 
+module openflexure_logo_above(h=1, resize=[0,0]){
+    // The logo including text, with embelem above text
+    linear_extrude(h) scale(0.85) import("logos/openflexure_logo_above.dxf", origin=[-25,3]);
+}
+
 module oshw_logo_and_text(text=""){
     union(){
-        oshw_logo();
+        translate([-40,50,0]){
+            oshw_logo();
+        }
 
-        translate([100,-7,0]) mirror([1,0,0]) linear_extrude(1){
-            text(text, size=14, font="Calibri", halign="left");
+        mirror([1,0,0]){
+            linear_extrude(1){
+                text(text, size=14, font="Calibri", halign="left");
+            }
         }
     }
 }
+
 //openflexure_logo();
 //logo_and_name("v5.15.2-LS-M");
 //translate([0,-40,0]) oshw_logo();

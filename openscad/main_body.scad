@@ -134,7 +134,7 @@ module mounting_hole_lugs(params, holes=true){
         difference(){
             //the lug
             hull(){
-                translate([z_flexure_x(params),0,0]) rotate(-120) cube([10,tiny(),10]);
+                translate([lug_x_pos(params),0,0]) rotate(-120) cube([10,tiny(),10]);
                 translate(hole_pos) cylinder(r=4*1.1,h=3);
             }
             //the lug hole
@@ -163,7 +163,7 @@ module wall_inside_xy_stage(params){
         mirror([1,0,0]) z_bridge_wall_vertex(params);
         z_bridge_wall_vertex(params);
         inner_wall_vertex(params, 45, -leg_outer_w(params)/2, inner_wall_h(params));
-        z_anchor_wall_vertex(params);
+        mounting_lug_wall_vertex(params);
         inner_wall_vertex(params, 135, leg_outer_w(params)/2, inner_wall_h(params));
         //The wall that has the reflection illumination cut-out is double thickness
         // to improve stiffness
@@ -177,14 +177,12 @@ module wall_inside_xy_stage(params){
 module wall_outside_xy_actuators(params){
     // Add the wall from the XY actuator column to the middle
     sequential_hull(){
-        z_anchor_wall_vertex(params); // join at the Z anchor
+        mounting_lug_wall_vertex(params); // join at the Z anchor
         // [nb this is no longer actually the z anchor since the new z axis]
         // anchor at the same angle on the actuator
         // NB the base of the wall is outside the
         // base of the screw seat
-        leg_frame(params, 45) translate([-ss_outer().x/2+wall_t/2,actuating_nut_r(params),0]){
-            rotate(-45) wall_vertex(y_tilt=atan(wall_t/inner_wall_h(params)));
-        }
+        y_actuator_wall_vertex(params, inside=false);
     }
 }
 
@@ -436,11 +434,11 @@ module central_optics_cut_out(params) {
     // Central cut-out for optics
     sequential_hull(){
         h=base_t*3;
-        translate([0,z_flexure_x(params)+1.5-14/2,0]){
+        translate([0,lug_x_pos(params)+1.5-14/2,0]){
             cube([14,2*tiny(),h],center=true);
         }
-        cube([2*(z_flexure_x(params)-flex_dims().x),1,h],center=true);
-        translate([0,8-(z_flexure_x(params)-flex_dims().x-tiny()),0]){
+        cube([2*(lug_x_pos(params)-flex_dims().x),1,h],center=true);
+        translate([0,8-(lug_x_pos(params)-flex_dims().x-tiny()),0]){
             cube([16,2*tiny(),h],center=true);
         }
     }
@@ -460,13 +458,16 @@ module actuator_walls_and_z_casing(params, z_axis=true){
     // These are the wall that link the actuators. And the casing for the
     // z-axis. This casing includes the mount for the illumination dovetail.
     difference(){
-        add_hull_base(base_t) {
-            //link the XY actuators to the wall
-            if (z_axis) reflect([1,0,0]) wall_inside_xy_actuators(params);
-            reflect([1,0,0]) wall_outside_xy_actuators(params);
-            reflect([1,0,0]) wall_between_actuators(params);
-             // outer profile of casing and anchor for the z axis
-            if (z_axis) z_axis_casing(params, condenser_mount=true);
+        union(){
+            add_hull_base(base_t) {
+                //link the XY actuators to the wall
+                if (z_axis) reflect([1,0,0]) wall_inside_xy_actuators(params);
+                reflect([1,0,0]) wall_outside_xy_actuators(params);
+                reflect([1,0,0]) wall_between_actuators(params);
+                // outer profile of casing and anchor for the z axis
+                if (z_axis) z_axis_casing(params, condenser_mount=true);
+            }
+            reflect([1,0,0]) side_housing(params);
         }
         //This also cuts the walls hence why it is two objects
         if (z_axis)z_axis_casing_cutouts(params);
@@ -478,11 +479,23 @@ module actuator_walls_and_z_casing(params, z_axis=true){
 module body_logos(params, message){
     // The openflexure and opehardware logos. Plus a customisable message.
     size = 0.25;
-    place_on_wall(params) translate([9,wall_h-2-15*size,-0.5])
-        scale([size,size,10]) openflexure_logo();
+    place_on_wall(params, is_y=false){
+        translate([9,wall_h-2-15*size,-0.5]){
+            scale([size,size,10]){
+                openflexure_logo_above();
+            }
+        }
+    }
 
-    mirror([1,0,0]) place_on_wall(params) translate([8,wall_h-2-15*size,-0.5])
-        scale([size,size,10]) oshw_logo_and_text(message);
+    place_on_wall(params){
+        translate([-34, wall_h-2-15*size, -.5]){
+            mirror([1,0,0]){
+                scale([size,size,10]){
+                    oshw_logo_and_text(message);
+                }
+            }
+        }
+    }
 }
 
 module xy_only_body(params){
@@ -516,9 +529,13 @@ module main_body(params){
 }
 
 params = default_params();
-smart_brim_r = key_lookup("smart_brim_r", params);
+/*smart_brim_r = key_lookup("smart_brim_r", params);
 // If this file is "included" rather than "used", render the main body.
 exterior_brim(r=enable_smart_brim ? smart_brim_r : 0){
+    main_body(params);
+}*/
+
+render(6){
     main_body(params);
 }
 
