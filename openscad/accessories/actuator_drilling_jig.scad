@@ -22,7 +22,7 @@ use <../libs/logo.scad>
 use <../libs/dovetail.scad>
 include <../libs/microscope_parameters.scad> //All the geometric variables are now in here.
 
-defult_params = default_params();
+params = default_params();
 actuator_h = key_lookup("actuator_h", params);
 
 outer_clearance = 0.5;
