@@ -39,3 +39,11 @@ module each_actuator(params){
     // Repeat this for both of the actuated legs (the ones with levers)
 	reflect([1,0,0]) leg_frame(params,45) children();
 }
+
+module y_actuator_frame(params){
+    translate(y_actuator_pos(params)){
+        rotate(45){
+            children();
+        }
+    }
+}

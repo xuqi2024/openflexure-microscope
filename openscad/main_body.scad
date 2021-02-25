@@ -535,13 +535,7 @@ module main_body(params){
 }
 
 params = default_params();
-/*smart_brim_r = key_lookup("smart_brim_r", params);
-// If this file is "included" rather than "used", render the main body.
+smart_brim_r = key_lookup("smart_brim_r", params);
 exterior_brim(r=enable_smart_brim ? smart_brim_r : 0){
     main_body(params);
-}*/
-
-render(6){
-    main_body(params);
 }
-

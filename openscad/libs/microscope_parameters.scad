@@ -149,6 +149,21 @@ function z_nut_y(params) = let(
 function z_actuator_travel(params) = z_lever_length(params)*0.15; // distance moved by the Z actuator
 function z_actuator_tilt(params) = -asin(z_flexures_z1/z_lever_length(params)); //angle of the Z actuator
 
+function motor_lug_h() = 11;
+function motor_shaft_pos(h) = [0,-20,h+2];
+function motor_screw_pos(h) = let(
+    shaft_pos = motor_shaft_pos(h)
+) [35/2,shaft_pos.y+7.8,shaft_pos.z+motor_lug_h()];
+
+function y_actuator_pos(params) = let(
+    leg_r = key_lookup("leg_r", params),
+    radial_distance = leg_r+actuating_nut_r(params)
+) [-1, 1, 0]*radial_distance/sqrt(2);
+
+function y_motor_z_pos(params) = let(
+    actuator_h = key_lookup("actuator_h", params)
+) motor_screw_pos(actuator_h+xy_actuator_travel(params)).z;
+
 //TODO understand and rename this
 // x position of the outside of the Z-axis static anchors (either side of the XY stage, on the X axis) 
 // (no longer used by Z axis but still in use elsewhere.)

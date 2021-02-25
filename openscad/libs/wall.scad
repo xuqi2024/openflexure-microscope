@@ -91,11 +91,6 @@ module mounting_lug_wall_vertex(params){
     }
 }
 
-function y_actuator_pos(params) = let(
-    leg_r = key_lookup("leg_r", params),
-    radial_distance = leg_r+actuating_nut_r(params)
-) [-1, 1, 0]*radial_distance/sqrt(2);
-
 
 function y_actuator_wall_vertex_position(params, inside=true) = let(
     tansverse_distance = ss_outer().x/2 - wall_t/2,
@@ -120,6 +115,11 @@ function y_wall_angle(params) = let(
 
 
 function connector_size() = [5.5, 14.5, 8];
+
+//default housing height
+//height of the housing is 0.8mm higher than the motor screw due to the thickness
+// of the lug on the motor
+function side_housing_h(params) = y_motor_z_pos(params) + .8;
 function housing_size(h) = [connector_size().x+4+2,connector_size().y+4+2+15.5, h];
 
 
@@ -131,35 +131,39 @@ module side_housing_placement(params){
     }
 }
 
-module side_housing(params, cavity_h=undef){
+module side_housing(params, h=undef, cavity_h=undef, attach=true){
+    //attach: whether the housing it attached to the wall
     actuator_h = key_lookup("actuator_h", params);
-    //height of the housing is 0.8mm higher than the motor screw due to the thickness
-    // of the lug on the motor
-    h = motor_screw_pos(actuator_h+xy_actuator_travel(params)).z + .8;
-    c_h = is_undef(cavity_h) ? h+1 : cavity_h;
+    
+    
+
+    wall_h = is_undef(cavity_h) ? side_housing_h(params) : h;
+    c_h = is_undef(cavity_h) ? wall_h+1 : cavity_h;
     shaft_z = motor_shaft_pos(actuator_h+xy_actuator_travel(params)).z;
 
     outer_r = 6;
     inner_r = 1;
-    outer_x_pos = housing_size(h).x - outer_r;
+    outer_x_pos = housing_size(wall_h).x - outer_r;
     difference(){
         hull(){
             side_housing_placement(params){
                 translate([outer_x_pos, outer_r+1.5, 0]){
-                    cylinder(r=outer_r,h=h);
+                    cylinder(r=outer_r,h=wall_h);
                 }
-                translate([outer_x_pos, housing_size(h).y-outer_r, 0]){
-                    cylinder(r=outer_r,h=h);
+                translate([outer_x_pos, housing_size(wall_h).y-outer_r, 0]){
+                    cylinder(r=outer_r,h=wall_h);
                 }
                 translate([0, 0, 0]){
-                    cylinder(r=inner_r,h=h);
+                    cylinder(r=inner_r,h=wall_h);
                 }
-                translate([0, housing_size(h).y, 0]){
-                    cylinder(r=inner_r,h=h);
+                translate([0, housing_size(wall_h).y, 0]){
+                    cylinder(r=inner_r,h=wall_h);
                 }
             }
-            mounting_lug_wall_vertex(params);
-            y_actuator_wall_vertex(params, inside=false);
+            if(attach){
+                mounting_lug_wall_vertex(params);
+                y_actuator_wall_vertex(params, inside=false);
+            }
         }
         side_housing_cutout(params, c_h);
         translate(y_actuator_pos(params) + [0, 0, shaft_z-1.5]){
