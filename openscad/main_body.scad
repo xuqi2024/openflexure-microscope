@@ -286,6 +286,7 @@ module xy_actuators(params, ties_only=false){
     // rendering instructions
 
     ties = key_lookup("print_ties", params);
+    actuator_h = key_lookup("actuator_h", params);
     each_actuator(params){
         //actuator is the leg bat to connect to the flexure at the bottom of the column
         if (! ties_only){
@@ -293,13 +294,22 @@ module xy_actuators(params, ties_only=false){
         }
 		translate([0,actuating_nut_r(params),0]){
             if (! ties_only){
-                actuator_column(h=actuator_h, join_to_casing=ties);
+                actuator_column(actuator_h, join_to_casing=ties);
             }
             else{
                 actuator_ties();
             }
         }
     }
+}
+
+module xy_screw_seat(params, label=""){
+    h = key_lookup("actuator_h", params);
+    screw_seat(h,
+               travel=xy_actuator_travel(params),
+               motor_lugs=motor_lugs,
+               extra_entry_h=actuator_dims(params).z+2,
+               label=label);
 }
 
 module xy_legs_and_actuators(params){
@@ -315,11 +325,7 @@ module xy_legs_and_actuators(params){
         angle = [-45,45][i];
         leg_frame(params, angle){
             translate([0,actuating_nut_r(params),0]){
-                screw_seat(h=actuator_h,
-                           travel=xy_actuator_travel(params),
-                           motor_lugs=motor_lugs,
-                           extra_entry_h=actuator_dims(params).z+2,
-                           label=label);
+                xy_screw_seat(params, label);
             }
         }
     }

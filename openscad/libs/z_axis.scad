@@ -201,6 +201,7 @@ module objective_mounting_screw_access(params){
 module z_motor_clearance(params, motor_h=999){
     // clearance for the motor and gears, to be subtracted from the condenser mount
     // This also labels it as "Z"
+    actuator_h = key_lookup("actuator_h", params);
     translate([0,z_nut_y(params),0]) rotate([z_actuator_tilt(params),0,0]) {
         translate([0,0,actuator_h+z_actuator_travel(params)+2-1]) rotate(180){
             motor_and_gear_clearance(gear_h=11, h=motor_h);
@@ -212,10 +213,16 @@ module z_motor_clearance(params, motor_h=999){
 }
 
 module top_of_z_axis_casing(params){
+    actuator_h = key_lookup("actuator_h", params);
     // The top of the Z axis casing, in case you want to join things onto it
-    translate([-z_anchor_w/2-1.5, z_anchor_y - 1, z_flexures_z2(params)]) cube([z_anchor_w+3, tiny(), tiny()]);
-    translate([0,z_nut_y(params),0]) rotate(180)
-                    motor_lugs(h=actuator_h + z_actuator_travel(params), angle=180, tilt=-z_actuator_tilt(params));
+    translate([-z_anchor_w/2-1.5, z_anchor_y - 1, z_flexures_z2(params)]){
+        cube([z_anchor_w+3, tiny(), tiny()]);
+    }
+    translate([0,z_nut_y(params),0]){
+        rotate(180){
+            motor_lugs(h=actuator_h + z_actuator_travel(params), angle=180, tilt=-z_actuator_tilt(params));
+        }
+    }
 }
 
 module z_axis_casing(params, condenser_mount=false){
@@ -256,6 +263,7 @@ module z_axis_casing_cutouts(params){
 
 module z_actuator_column(params, ties_only=false){
     ties = key_lookup("print_ties", params);
+    actuator_h = key_lookup("actuator_h", params);
     tilt = z_actuator_tilt(params);
     translate([0,z_nut_y(params),0]){
         if (! ties_only){
@@ -269,8 +277,9 @@ module z_actuator_column(params, ties_only=false){
 
 module z_actuator_housing(params, motor_lugs=motor_lugs){
     // This houses the actuator column and provides screw seat/motor lugs
+    h = key_lookup("actuator_h", params);
     translate([0,z_nut_y(params),0]){
-        screw_seat(h=actuator_h,
+        screw_seat(h,
                    tilt=z_actuator_tilt(params),
                    travel=z_actuator_travel(params),
                    motor_lugs=motor_lugs,

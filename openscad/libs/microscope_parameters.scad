@@ -55,7 +55,8 @@ function default_params() = [["leg_r", 30],     // radius on which the innermost
                              ["z_lever_ratio", 1.0], //  mechanical advantage of actuator over objective mount (must be >1)
                              ["condenser_angle", 15], //angle of the top of the condenser relative to the xy plane
                              ["print_ties", true], //sets whether the ties that support printing are on. It is usefull to be able to turn these off for rendering
-                             ["smart_brim_r", 5] // The radius of the smart brim on the main body
+                             ["smart_brim_r", 5], // The radius of the smart brim on the main body
+                             ["actuator_h", 25] //height of the actuator columns
                             ]; 
 
 
@@ -102,7 +103,6 @@ function flex_z2(params) = leg_height(params) - key_lookup("leg_block_t", params
 z_strut_t = 6;  // (z) thickness of struts for Z axis
 function leg_dims(params) = [4,flex_dims().x,flex_z2(params)+flex_dims().z]; // size of vertical legs
 leg_middle_w = 12; // width of the middle part of each leg
-actuator_h = 25; //height of the actuator columns
 dz = 0.5; //small increment in Z (~ 2 layers)
 
 function leg_outer_w(params) = leg_middle_w + 2*flex_dims().y + 2*leg_dims(params).x; // overall width of parallelogram legs that support the stage

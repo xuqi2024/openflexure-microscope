@@ -9,7 +9,7 @@ use <./libs/gears.scad>
 
 //estimated angle
 a_to_wall = 10;
-
+params = default_params();
 
 //rendered();
 to_print();
@@ -96,7 +96,7 @@ module side_housing_cutout(h){
 }
 
 module augmented_screw_seat(h=43.8){
-    screw_seat(actuator_h, motor_lugs=true);
+    xy_screw_seat(params);
     difference(){
             side_housing(h=h);
         translate([0,0,29]){
