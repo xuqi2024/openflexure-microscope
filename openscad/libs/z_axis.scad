@@ -193,8 +193,8 @@ module objective_mounting_screw_access(params){
     // access hole for the objective mounting screw
 
     translate([0,objective_mount_back_y, z_flexures_z2(params)/2]) hull(){
-        rotate([-90,0,15]) cylinder(h=999, d=8, $fn=16);
-        translate([0,0,6]) rotate([-90,0,0]) cylinder(h=tiny(), d=4, $fn=16);
+        translate([0,0,0])rotate([-90,0,22]) cylinder(h=999, d=7, $fn=16);
+        translate([-1,0,4]) rotate([-90,0,0]) cylinder(h=tiny(), d=4, $fn=16);
     }
 }
 
@@ -244,7 +244,7 @@ module z_axis_casing(params, condenser_mount=false){
         // The top is a flat shape that the illumination arm screws onto.
         each_illumination_corner(params) mirror([0,0,1]) cylinder(r=5,h=7);
     }
-
+    z_cable_housing(params);
 }
 
 module z_axis_casing_cutouts(params){
@@ -311,5 +311,122 @@ module z_actuator_assembly(params){
         // Subtract the clearance to make sure the actuator can get in ok.
         // This only makes a very small cutout.
         z_axis_clearance(params);
+    }
+}
+
+
+
+
+module z_housing_frame(params, h, y_actuator=false){
+    tilt = z_actuator_tilt(params);
+    x_tr = y_actuator ? -23 : 23;
+    angle = y_actuator ? 15 : -15;
+    translate([x_tr, z_nut_y(params), 0]){
+        rotate([0, 0, angle]){
+            rotate([tilt, 0, 0]){
+                children();
+            }
+        }
+    }
+}
+
+module z_cable_tidy_frame(params, z_extra=0){
+    tilt = z_actuator_tilt(params);
+    z_tr = z_motor_z_pos(params) + z_extra;
+    translate([0, z_nut_y(params), 0]){
+        rotate([tilt, 0, 0]){
+            translate([0, 0, z_tr]){
+                rotate([0, 0, 180]){
+                    children();
+                }
+            }
+        }
+    }
+}
+
+module z_cable_tidy_frame_undo(params, z_extra=0){
+    tilt = z_actuator_tilt(params);
+    z_tr = z_motor_z_pos(params) + z_extra;   
+    rotate([0, 0, -180]){
+        translate([0, 0, -z_tr]){
+            rotate([-tilt, 0, 0]){
+                translate([0, -z_nut_y(params), 0]){
+                    children();
+                }
+            }
+        }
+    }
+}
+
+
+module z_cable_housing(params){
+    difference(){
+        hull(){
+            z_cable_housing_x(params);
+            mirror([1,0,0])z_cable_housing_x(params);
+        }
+        translate([0,0,-99]){  
+            cylinder(d=999,h=99);
+        }
+        z_cable_tidy_frame(params, z_extra=0.8){
+            cylinder(d=999,h=99);
+        }
+    }
+}
+
+module z_cable_housing_top(params, h){
+    tilt = z_actuator_tilt(params);
+    z_tr = z_motor_z_pos(params) + 0.8;
+    // Must untilt and trasnlate before cutting. Then undo transforms
+    z_cable_tidy_frame(params, , z_extra=0.8){
+        linear_extrude(h){
+            projection(cut=true){
+                z_cable_tidy_frame_undo(params, , z_extra=0.8-tiny()){
+                    z_cable_housing(params);
+                }
+            }
+        }
+    }
+}
+
+
+
+module z_cable_housing_x(params){   
+    h=z_motor_z_pos(params)+.8;
+    housing = [connector_size().y+5, connector_size().x+5, h*3];
+    
+    hull(){
+        z_housing_frame(params, h){
+            translate([housing.x/2-3, housing.y/2-3, 0]){
+                cylinder(r=3,h=housing.z, center=true);
+            }
+            translate([housing.x/2-3, -(housing.y/2-3), 0]){
+                cylinder(r=3,h=housing.z, center=true);
+            }
+            translate([-(housing.x/2-2), housing.y/2-3, 0]){
+                cylinder(r=3,h=housing.z, center=true);
+            }
+            translate([-(housing.x/2-2), -(housing.y/2-3), 0]){
+                cylinder(r=3,h=housing.z, center=true);
+            }
+        }
+        difference(){
+            wall_between_actuators(params, y_actuator=false);
+            z_axis_casing_cutouts(params);
+        }
+    }
+}
+
+module z_cable_housing_cutout(params, h=99, top=false){
+    cutout_size = [connector_size().y+2, connector_size().x+2, 2*h];
+    inset = top ? [2,0,0] : [0,0,0];
+    z_housing_frame(params, h, y_actuator=false){
+        translate(-inset)
+        cube(cutout_size, center=true);
+    }
+    z_housing_frame(params, h, y_actuator=true){
+        translate([-4,0,0]+inset){
+            cube(cutout_size-[8,0,0], center=true);
+        }
     }
 }

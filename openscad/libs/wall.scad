@@ -106,6 +106,83 @@ module y_actuator_wall_vertex(params, inside=true){
     }
 }
 
+module z_actuator_wall_vertex(params, front=true){
+    if (front){
+        y_tr = z_nut_y(params)+ss_outer().y/2-wall_t/2;
+        translate([0, y_tr, 0]){
+            wall_vertex();
+        }
+    }
+    else{
+        x_tr = -(z_anchor_w/2+wall_t/2+1);
+        y_tr = z_anchor_y + 1;
+        translate([x_tr, y_tr, 0]){
+            wall_vertex();
+        }
+    }
+}
+
+// The "wall" that forms most of the microscope's structure
+module wall_inside_xy_stage(params){
+
+    // First, go around the inside of the legs, under the stage.
+    // This starts at the Z nut seat.  I've split it into two
+    // blocks, because the shape is not convex so the base
+    // would be bigger than the walls otherwise.
+    reflect([1,0,0]) sequential_hull(){
+        mirror([1,0,0]){
+            z_bridge_wall_vertex(params);
+        }
+        z_bridge_wall_vertex(params);
+        inner_wall_vertex(params, 45, -leg_outer_w(params)/2, inner_wall_h(params));
+        mounting_lug_wall_vertex(params);
+        inner_wall_vertex(params, 135, leg_outer_w(params)/2, inner_wall_h(params));
+        //The wall that has the reflection illumination cut-out is double thickness
+        // to improve stiffness
+        inner_wall_vertex(params, 135, -(leg_outer_w(params)/2-wall_t/2), inner_wall_h(params), thick=true);
+        inner_wall_vertex(params, -135, leg_outer_w(params)/2-wall_t/2, inner_wall_h(params), thick=true);
+
+    };
+
+}
+
+module wall_outside_xy_actuators(params){
+    // Add the wall from the XY actuator column to the middle
+    sequential_hull(){
+        mounting_lug_wall_vertex(params); // join at the Z anchor
+        // [nb this is no longer actually the z anchor since the new z axis]
+        // anchor at the same angle on the actuator
+        // NB the base of the wall is outside the
+        // base of the screw seat
+        y_actuator_wall_vertex(params, inside=false);
+    }
+}
+
+module wall_inside_xy_actuators(params){
+    // Connect the Z anchor to the XY actuators
+    hull(){
+        z_actuator_wall_vertex(params, front=false);
+        y_actuator_wall_vertex(params);
+    }
+}
+
+module wall_between_actuators(params, y_actuator=true){
+    // link the actuators together
+    if (y_actuator){
+        hull(){
+            y_actuator_wall_vertex(params);
+            z_actuator_wall_vertex(params, front=true);
+        }
+    }
+    else{
+        //for the x actuator wall mirror the same function
+        mirror([1,0,0]){
+            wall_between_actuators(params);
+        }
+    }
+}
+
+
 //wall angle about the motor lug
 function y_wall_angle(params) = let(
     wall_start = mounting_lug_wall_vertex_position(params),

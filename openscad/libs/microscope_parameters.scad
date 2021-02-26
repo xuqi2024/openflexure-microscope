@@ -164,6 +164,11 @@ function y_motor_z_pos(params) = let(
     actuator_h = key_lookup("actuator_h", params)
 ) motor_screw_pos(actuator_h+xy_actuator_travel(params)).z;
 
+//Note this is not a true z position as it is the position along the tilted axis
+function z_motor_z_pos(params) = let(
+    actuator_h = key_lookup("actuator_h", params)
+) motor_screw_pos(actuator_h+z_actuator_travel(params)).z;
+
 //TODO understand and rename this
 // x position of the outside of the Z-axis static anchors (either side of the XY stage, on the X axis) 
 // (no longer used by Z axis but still in use elsewhere.)
