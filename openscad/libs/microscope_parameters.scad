@@ -175,7 +175,7 @@ function z_motor_z_pos(params) = let(
 function lug_x_pos(params) = let(
     leg_r = key_lookup("leg_r", params),
     tenth_of_height = max(5,leg_dims(params).z*0.1)
-) (leg_r-flex_dims().y-tenth_of_height)*sqrt(2);
+) (leg_r-flex_dims().y-tenth_of_height)*sqrt(2)+wall_t/2;
 
 leg_link_spacing = 10;
 base_t=1; // thickness of the flat base of the structure

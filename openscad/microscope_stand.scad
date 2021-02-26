@@ -17,6 +17,7 @@ include <./libs/microscope_parameters.scad>
 use <./libs/compact_nut_seat.scad>
 use <./libs/main_body_transforms.scad>
 use <main_body.scad>
+use <./libs/wall.scad>
 use <feet.scad>
 use <./libs/libdict.scad>
 
