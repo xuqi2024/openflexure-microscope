@@ -76,7 +76,7 @@ module z_bridge_wall_vertex(params){
     inner_wall_vertex(params, 45, leg_outer_w(params)/2+wall_t/2, inner_wall_h(params));
 }
 
-function mounting_lug_wall_vertex_position(params) = [-lug_x_pos(params)-wall_t/2, -wall_t/2, 0];
+function mounting_lug_wall_vertex_position(params) = [-back_lug_x_pos(params)-wall_t/2, -wall_t/2, 0];
 
 function outer_wall_tilt(params) = atan(wall_t/inner_wall_h(params));
 

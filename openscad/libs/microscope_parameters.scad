@@ -169,13 +169,13 @@ function z_motor_z_pos(params) = let(
     actuator_h = key_lookup("actuator_h", params)
 ) motor_screw_pos(actuator_h+z_actuator_travel(params)).z;
 
-//TODO understand and rename this
-// x position of the outside of the Z-axis static anchors (either side of the XY stage, on the X axis) 
-// (no longer used by Z axis but still in use elsewhere.)
-function lug_x_pos(params) = let(
+
+function lug_back_offset() = [-5, -8, 0];
+
+function back_lug_x_pos(params) = let(
     leg_r = key_lookup("leg_r", params),
     tenth_of_height = max(5,leg_dims(params).z*0.1)
-) (leg_r-flex_dims().y-tenth_of_height)*sqrt(2)+wall_t/2;
+) (leg_r-flex_dims().y-tenth_of_height)*sqrt(2);
 
 leg_link_spacing = 10;
 base_t=1; // thickness of the flat base of the structure
@@ -185,20 +185,25 @@ function inner_wall_h(params) = z_flexures_z2(params) - 10; //height of walls in
 
 // base_mounting_holes returns a list of the holes for mounting the microscope
 // to the base. By default it returns all four holes.
-// To get only the lugs run `base_mounting_holes("lugs")`
+// To get only the back hole run `base_mounting_holes("back")`
 // To get only the front holes run `base_mounting_holes("front")`
 function base_mounting_holes(params, type="all") = let
 (
-    lug_pos = [[lug_x_pos(params)+4,-8,0],
-               [-lug_x_pos(params)-4,-8,0]],
-    front_pos =[[-20,z_nut_y(params)-4,0],
-                [20,z_nut_y(params)-4,0]],
-    lugs = (type == "lugs") || (type == "all"),
+    back_lug_hole_x = back_lug_x_pos(params) + wall_t/2 - lug_back_offset().x,
+    back_pos = [[back_lug_hole_x,-8,0],
+               [-back_lug_hole_x,-8,0]],
+    actuator_offset = [-1, -1, 0] * ss_outer().x/2/sqrt(2),
+    y_front_lug_pos = y_actuator_pos(params) + actuator_offset + [-6.5, .5, 0],
+    front_pos =[y_front_lug_pos,
+                [-y_front_lug_pos.x, y_front_lug_pos.y, 0]],
+    back = (type == "back") || (type == "all"),
     front = (type == "front") || (type == "all"),
     //Set which holse to output
-    holes = [lugs?lug_pos:[], front?front_pos:[]]
+    holes = [back?back_pos:[], front?front_pos:[]]
     //Final list comprehension make a single list of holes
 ) [for (h = holes) each h];
+
+function lug_angles() = [-120, 120, 50, -50];
 
 endstop_extra_ringheight=feet_endstops?1:0;
 

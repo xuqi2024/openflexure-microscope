@@ -129,18 +129,34 @@ module mounting_hole_lugs(params, holes=true){
     // these are to mount onto the baseplate
 
     //Just get one lug hole and then reflect the lug.
-    hole_pos = base_mounting_holes(params,"lugs").x;
-    reflect([1,0,0]){
-        difference(){
-            //the lug
-            hull(){
-                translate([lug_x_pos(params),0,0]) rotate(-120) cube([10,tiny(),10]);
-                translate(hole_pos) cylinder(r=4*1.1,h=3);
-            }
-            //the lug hole
-            if (holes) translate(hole_pos) {
-                cylinder(r=3/2*1.1,h=50,center=true);
-                translate([0,0,3]) cylinder(r=3*1.1, h=22);
+    hole_pos = base_mounting_holes(params);
+    for (n = [0:len(hole_pos)-1]){
+        hole = hole_pos[n];
+        angle = lug_angles()[n];
+        m3_lug(hole, angle, holes=true);
+    }
+}
+
+module m3_lug(pos, angle, holes=true){
+    // position in the hole poistion. Rotate about hole
+
+    translate(pos){
+        rotate(angle){
+            difference(){
+                //the lug
+                hull(){
+                    translate(lug_back_offset()){
+                        cube([10,tiny(),10]);
+                    }
+                    cylinder(r=4*1.1,h=3);
+                }
+                //the lug hole
+                if (holes) {
+                    cylinder(r=3/2*1.1,h=50,center=true);
+                    translate([0,0,3]){
+                        cylinder(r=3*1.1, h=22);
+                    }
+                }
             }
         }
     }
@@ -293,8 +309,6 @@ module internal_xy_structure(params){
         inner_wall_vertex(params, 45, -9, inner_wall_h(params));
         xy_limit_switch_mount(params);
     }
-    //lugs to bolt the microscope down to base
-    mounting_hole_lugs(params);
 }
 
 module xy_stage_with_nut_traps(params)
@@ -389,11 +403,11 @@ module central_optics_cut_out(params) {
     // Central cut-out for optics
     sequential_hull(){
         h=base_t*3;
-        translate([0,lug_x_pos(params)+1.5-14/2,0]){
+        translate([0,back_lug_x_pos(params)+1.5-14/2,0]){
             cube([14,2*tiny(),h],center=true);
         }
-        cube([2*(lug_x_pos(params)-flex_dims().x),1,h],center=true);
-        translate([0,8-(lug_x_pos(params)-flex_dims().x-tiny()),0]){
+        cube([2*(back_lug_x_pos(params)-flex_dims().x),1,h],center=true);
+        translate([0,8-(back_lug_x_pos(params)-flex_dims().x-tiny()),0]){
             cube([16,2*tiny(),h],center=true);
         }
     }
@@ -423,6 +437,8 @@ module actuator_walls_and_z_casing(params, z_axis=true){
                 if (z_axis) z_axis_casing(params, condenser_mount=true);
             }
             reflect([1,0,0]) side_housing(params);
+            //lugs to bolt the microscope down to base
+            mounting_hole_lugs(params);
         }
         //This also cuts the walls hence why it is two objects
         if (z_axis){
@@ -483,6 +499,8 @@ module main_body(params){
 	}
 }
 
+//Note that the main body is complex enough you should run Render not preview
+// To use in preview wrap with render(6)
 params = default_params();
 smart_brim_r = key_lookup("smart_brim_r", params);
 exterior_brim(r=enable_smart_brim ? smart_brim_r : 0){

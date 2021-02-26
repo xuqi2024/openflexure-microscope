@@ -75,7 +75,7 @@ module objective_mount(params){
         }
 
         // cut out the back so it fits in the available space
-        reflect([1,0,0]) translate([-lug_x_pos(params),0,-99]) rotate(45) cube(999);
+        reflect([1,0,0]) translate([-back_lug_x_pos(params),0,-99]) rotate(45) cube(999);
     }
     // Nice rounded fronts either side
     each_om_contact_plane() translate([roc,overlap,0]) cylinder(r=roc,h=h);
