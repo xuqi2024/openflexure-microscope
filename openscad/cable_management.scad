@@ -13,11 +13,8 @@ use <./libs/z_axis.scad>
 //estimated angle
 params = default_params();
 
-rendered();
-//to_print();
-
-
-
+//rendered();
+to_print();
 
 
 module rendered(){
@@ -69,7 +66,7 @@ module rendered(){
 }
 
 module to_print(){
-    z_cable_tidy_frame_undo(params){
+    z_cable_tidy_frame_undo(params, z_extra=0.8){
         front_cable_tidy(params);
     }
     reflect([1, 0, 0]){
@@ -78,7 +75,6 @@ module to_print(){
         }
     }
 }
-
 
 module cable_tidy_body_back(h, curve_both=false){
     translate([11,-11,0]){
