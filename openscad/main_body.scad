@@ -133,7 +133,7 @@ module mounting_hole_lugs(params, holes=true){
     for (n = [0:len(hole_pos)-1]){
         hole = hole_pos[n];
         angle = lug_angles()[n];
-        m3_lug(hole, angle, holes=true);
+        m3_lug(hole, angle, holes=holes);
     }
 }
 
@@ -436,7 +436,9 @@ module actuator_walls_and_z_casing(params, z_axis=true){
                 // outer profile of casing and anchor for the z axis
                 if (z_axis) z_axis_casing(params, condenser_mount=true);
             }
-            reflect([1,0,0]) side_housing(params);
+            reflect([1,0,0]){
+                side_housing(params);
+            }
             //lugs to bolt the microscope down to base
             mounting_hole_lugs(params);
         }

@@ -18,6 +18,7 @@ use <./libs/compact_nut_seat.scad>
 use <./libs/main_body_transforms.scad>
 use <main_body.scad>
 use <./libs/wall.scad>
+use <./libs/z_axis.scad>
 use <feet.scad>
 use <./libs/libdict.scad>
 
@@ -110,22 +111,61 @@ module hull_from(){
 
 module microscope_bottom(params, enlarge_legs=1.5, lugs=true, feet=true, legs=true){
     // a 2D representation of the bottom of the microscope
-    hull()projection(cut=true) translate([0,0,-tiny()]) wall_inside_xy_stage(params);
-
-    hull() reflect([1,0,0]) projection(cut=true) translate([0,0,-tiny()]){
-        wall_outside_xy_actuators(params);
-        wall_between_actuators(params);
+    hull(){
+        projection(cut=true){
+            translate([0,0,-tiny()]){
+                wall_inside_xy_stage(params);
+            }
+        }
     }
+
+    hull(){
+        reflect([1,0,0]){
+            projection(cut=true){
+                translate([0,0,-tiny()]){
+                    wall_outside_xy_actuators(params);
+                    wall_between_actuators(params);
+                }
+            }
+        }
+    }
+
+    projection(cut=true){
+        translate([0,0,-tiny()]){
+            z_axis_casing(params);
+            reflect([1,0,0]){
+                hull(){
+                    side_housing(params);
+                }
+            }
+        }
+    }
+
+
     if(feet){
-        each_actuator(params) translate([0, actuating_nut_r(params)]) foot_footprint();
+        each_actuator(params){
+            translate([0, actuating_nut_r(params)]){
+                foot_footprint();
+            }
+        }
         translate([0, z_nut_y(params)]){
             foot_footprint(tilt=z_actuator_tilt(params));
         }
     }
 
-    if(lugs) projection(cut=true) translate([0,0,-tiny()]) mounting_hole_lugs(params, holes=false);
+    if(lugs){
+        projection(cut=true){
+            translate([0,0,-tiny()]){
+                mounting_hole_lugs(params, holes=false);
+            }
+        }
+    }
 
-    if(legs) offset(enlarge_legs) microscope_legs(params);
+    if(legs){
+        offset(enlarge_legs){
+            microscope_legs(params);
+        }
+    }
 }
 
 module microscope_legs(params){
@@ -440,6 +480,58 @@ module motor_driver_case(params){
     }
 }
 
-params = default_params();
-microscope_stand(params);
 
+module thick_bottom_section(h, offset_d, center=false){
+    hull(){
+        linear_extrude(h, center=center){
+            offset(offset_d){
+                microscope_bottom(params, feet=true);
+            }
+        }
+    }
+}
+
+module stand_top(h){
+    difference(){
+        thick_bottom_section(h, wall_thickness+2.5);
+        thick_bottom_section(3*h, 2.5, center=true);
+    }
+}
+
+
+module new_stand(){
+    h=foot_height;
+    stand_top(h+3);
+
+    hole_pos = base_mounting_holes(params);
+    for (n = [0:len(hole_pos)-1]){
+        hole = hole_pos[n];
+        angle = lug_angles()[n];
+
+        difference(){
+            hull(){
+                intersection(){
+                    translate(hole+[0,0,h/2]){
+                        rotate(angle){
+                            cube([10,50,h], center=true);
+                        }
+                    }
+                    stand_top(h);
+                }
+
+                translate(hole){
+                    cylinder(r=5, h=h);
+                }
+            }
+            translate(hole+[0,0,h-10]){
+                m3_nut_trap_with_shaft(angle+180);
+            }
+        }
+    }
+
+}
+
+params = default_params();
+//microscope_stand(params);
+
+new_stand();
