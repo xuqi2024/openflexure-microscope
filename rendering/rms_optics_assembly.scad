@@ -124,7 +124,7 @@ module camera_and_screws(camera_pos, explode=false){
 
     place_part(render_pos){
         picamera2(lens = false);
-        for (hole_pos = holes){
+        union() for (hole_pos = holes){
             translate(hole_pos - [0, 0, screw_z]){
                 mirror([0,0,1]){
                     no2_x6_5_selftap();

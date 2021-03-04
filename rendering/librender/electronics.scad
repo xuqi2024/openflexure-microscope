@@ -158,7 +158,7 @@ module picamera2_board(){
         render(){
             intersection(){
                 picamera2_board_blank(x, y, t, cam_pos_x);
-                for (hole = picamera2_holes()){
+                union() for (hole = picamera2_holes()){
                     translate(hole + [0, 0, -t]){
                         difference(){
                             cylinder(d=5, h=t);
@@ -245,7 +245,7 @@ module motor_jst_connector(){
         motor_jst_connector_body();
     }
     coloured_render("gray"){
-        for (x_pin = [-2, -1, 0, 1, 2]*2.54){
+        union() for (x_pin = [-2, -1, 0, 1, 2]*2.54){
             translate([x_pin, 0, 3.5]){
                 cube([1.2, 3, 6], center=true);
             }

@@ -36,7 +36,7 @@ module leg_flexures(params, brace){
     block_size = [leg_middle_w, leg_dims(params).y, leg_block_t];
     flex_size = [leg_outer_w(params), leg_dims(params).y, flex_dims().z];
 
-    for (i = [0,1]){
+    union() for (i = [0,1]){
         z_pos=[flex_z1, flex_z2(params)][i];
         brace_pos= [brace, 0][i];
         translate([0,0,z_pos]){
