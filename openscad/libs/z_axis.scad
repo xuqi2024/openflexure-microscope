@@ -368,7 +368,7 @@ module z_cable_housing(params){
         translate([0,0,-99]){  
             cylinder(d=999,h=99);
         }
-        z_cable_tidy_frame(params, z_extra=0.8){
+        z_cable_tidy_frame(params, z_extra=motor_bracket_h()){
             cylinder(d=999,h=99);
         }
     }
@@ -376,12 +376,12 @@ module z_cable_housing(params){
 
 module z_cable_housing_top(params, h){
     tilt = z_actuator_tilt(params);
-    z_tr = z_motor_z_pos(params) + 0.8;
+    z_tr = z_motor_z_pos(params) + motor_bracket_h();
     // Must untilt and trasnlate before cutting. Then undo transforms
-    z_cable_tidy_frame(params, , z_extra=0.8){
+    z_cable_tidy_frame(params, , z_extra=motor_bracket_h()){
         linear_extrude(h){
             projection(cut=true){
-                z_cable_tidy_frame_undo(params, , z_extra=0.8-tiny()){
+                z_cable_tidy_frame_undo(params, , z_extra=motor_bracket_h()-tiny()){
                     z_cable_housing(params);
                 }
             }
@@ -392,8 +392,8 @@ module z_cable_housing_top(params, h){
 
 
 module z_cable_housing_x(params){   
-    h=z_motor_z_pos(params)+.8;
-    housing = [connector_size().y+5, connector_size().x+5, h*3];
+    h=z_motor_z_pos(params)+motor_bracket_h();
+    housing = [motor_connector_size().y+5, motor_connector_size().x+5, h*3];
     
     hull(){
         z_housing_frame(params, h){
@@ -418,7 +418,7 @@ module z_cable_housing_x(params){
 }
 
 module z_cable_housing_cutout(params, h=99, top=false){
-    cutout_size = [connector_size().y+2, connector_size().x+2, 2*h];
+    cutout_size = [motor_connector_size().y+2, motor_connector_size().x+2, 2*h];
     inset = top ? [2,0,0] : [0,0,0];
     z_housing_frame(params, h, y_actuator=false){
         translate(-inset)

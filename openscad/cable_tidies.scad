@@ -8,6 +8,11 @@ use <libs/z_axis.scad>
 
 
 module cable_tidy_body_back(h, curve_both=false){
+    //This is the back edge of the cable tidy.
+    // it will be hulled with the font where the lugs are to make
+    // the final structure. The +x direction always has a radius of
+    // 8. To have a radius on both sizes (for the z_motor) use
+    // `curve_both=true`. For the x-motor this shape must be mirrored.
     translate([11,-11,0]){
         cylinder(d=8, h=h);
     }
@@ -26,7 +31,7 @@ module cable_tidy_body_back(h, curve_both=false){
 
 module cable_tidy_body(h, curve_both=false){
     hull(){
-        for(x_tr = [-.5, .5]*35){
+        for(x_tr = [-.5, .5]*motor_screw_separation()){
             translate([x_tr,12,0]){
                 cylinder(d=8, h=h);
             }
@@ -74,7 +79,7 @@ module cable_tidy_body_cutouts(h, front=false){
         }
     }
     
-    for(x_tr = [-.5, .5]*35){
+    for(x_tr = [-.5, .5]*motor_screw_separation()){
         translate([x_tr,12,0]){
             cylinder(d=4.5, h=h, center=true);
         }
@@ -97,20 +102,20 @@ module side_cable_tidy(params, h=7){
 }
 
 module front_cable_tidy(params, h=7){
-    cutout_h = z_motor_z_pos(params) + 0.8 + h - 2;
+    cutout_h = z_motor_z_pos(params) + motor_bracket_h() + h - 2;
     difference(){
         union(){
-            z_cable_tidy_frame(params, z_extra=0.8){
+            z_cable_tidy_frame(params, z_extra=motor_bracket_h()){
                 cable_tidy_body(h, curve_both=true);
             }
             hull(){
                 z_cable_housing_top(params, h);
-                z_cable_tidy_frame(params, z_extra=0.8){
+                z_cable_tidy_frame(params, z_extra=motor_bracket_h()){
                     cable_tidy_body_back(h, curve_both=true);
                 }
             }
         }
-        z_cable_tidy_frame(params, z_extra=0.8){
+        z_cable_tidy_frame(params, z_extra=motor_bracket_h()){
             cable_tidy_body_cutouts(h, front=true);
         }
         z_cable_housing_cutout(params, cutout_h, top=true);
@@ -118,7 +123,7 @@ module front_cable_tidy(params, h=7){
 }
 
 module cable_tidies(params){
-    z_cable_tidy_frame_undo(params, z_extra=0.8){
+    z_cable_tidy_frame_undo(params, z_extra=motor_bracket_h()){
         front_cable_tidy(params);
     }
     reflect([1, 0, 0]){

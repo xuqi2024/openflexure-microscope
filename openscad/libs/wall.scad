@@ -190,14 +190,11 @@ function y_wall_angle(params) = let(
     wall_disp = wall_end - wall_start
 ) atan(wall_disp.y/wall_disp.x);
 
-
-function connector_size() = [5.5, 14.5, 8];
-
 //default housing height
 //height of the housing is 0.8mm higher than the motor screw due to the thickness
 // of the lug on the motor
-function side_housing_h(params) = y_motor_z_pos(params) + .8;
-function housing_size(h) = [connector_size().x+4+2,connector_size().y+4+2+15.5, h];
+function side_housing_h(params) = y_motor_z_pos(params) + motor_bracket_h();
+function housing_size(h) = [motor_connector_size().x+4+2,motor_connector_size().y+4+2+15.5, h];
 
 
 module side_housing_placement(params){
@@ -250,7 +247,7 @@ module side_housing(params, h=undef, cavity_h=undef, attach=true){
 }
 
 module side_housing_cutout(params, h){
-    housing_cut_size = [connector_size().x+2,connector_size().y+2, h+1];
+    housing_cut_size = [motor_connector_size().x+2,motor_connector_size().y+2, h+1];
     side_housing_placement(params){
         translate([2, 6, -1]){
             cube(housing_cut_size);
