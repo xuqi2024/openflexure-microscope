@@ -33,7 +33,7 @@ module leg_frame(params, angle){
 }
 module each_leg(params){
     // Repeat for each of the legs of the stage
-	for(angle=[45,135,-135,-45]) leg_frame(params, angle) children();
+	union() for(angle=[45,135,-135,-45]) leg_frame(params, angle) children();
 }
 module each_actuator(params){
     // Repeat this for both of the actuated legs (the ones with levers)

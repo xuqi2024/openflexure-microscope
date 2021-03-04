@@ -25,8 +25,11 @@ module reflect(axis){ //reflects its children about the origin, but keeps the or
 	mirror(axis) children();
 }
 module repeat(delta,N,center=false){ //repeat something along a regular array
-	translate( (center ?  -(N-1)/2 : 0) * delta)
-				for(i=[0:1:(N-1)]) translate(i*delta) children();
+    translate( (center ?  -(N-1)/2 : 0) * delta){
+		union() for(i=[0:1:(N-1)]){
+            translate(i*delta) children();
+        }
+    }
 }
 
 module nut(d,h=-1,center=false,fudge=1.18,shaft=false){ //make a nut, for metric bolt of nominal diameter d
@@ -177,7 +180,7 @@ module support(size, height, baseheight=0, rotation=[0,0,0], supportangle=45, ou
 			}
 			intersection(){
 				children();
-				rotate(supportangle) for(x=[-size:sp:size])
+				rotate(supportangle) union() for(x=[-size:sp:size])
 					translate([x,0]) square([sw,2*size],center=true);
 			}
 		}
@@ -198,7 +201,7 @@ module rightangle_prism(size,center=false){
 
 module sequential_hull(){
 	//given a sequence of >2 children, take the convex hull between each pair - a helpful, general extrusion technique.
-	for(i=[0:$children-2]){
+	union() for(i=[0:$children-2]){
 		hull(){
 			children(i);
 			children(i+1);
@@ -258,9 +261,22 @@ module square_to_circle(r, h, layers=4, top_cylinder=0){
     // A stack of thin shapes, starting as a square and
     // gradually gaining sides to turn into a cylinder
     sides=[4,8,16,32,64,128,256]; //number of sides
-    for(i=[0:(layers-1)]) rotate(180/sides[i])
-        translate([0,0,i*h/layers]) cylinder(r=r/cos(180/sides[i]),h=h/layers+tiny(),$fn=sides[i]);
-    if(top_cylinder>0) translate([0,0,tiny()]) cylinder(r=r,h=h+top_cylinder, $fn=sides[layers-1]);
+    union() {
+        for(i=[0:(layers-1)]) rotate(180/sides[i]){
+            translate([0,0,i*h/layers]){
+                cylinder(
+                    r=r/cos(180/sides[i]), 
+                    h=h/layers+tiny(),
+                    $fn=sides[i]
+                );
+            }
+        }
+        if(top_cylinder>0){
+            translate([0,0,tiny()]){
+                cylinder(r=r,h=h+top_cylinder, $fn=sides[layers-1]);
+            }
+        }
+    }
 }
 
 module hole_from_bottom(r, h, base_w=-1, dz=0.5, big_bottom=true){
@@ -287,7 +303,7 @@ module lighttrap_cylinder(r1,r2,h,ridge=1.5){
     n_cones = max(floor(h/ridge),1);//there must be at least one cone or we divide by zero
     cone_h = h/n_cones;
 
-	for(i = [0 : n_cones - 1]){
+	union() for(i = [0 : n_cones - 1]){
         p = i/(n_cones - 1);
 		translate([0, 0, i * cone_h - tiny()])
 			cylinder(r1=(1-p)*r1 + p*(r2+ridge),
@@ -309,7 +325,7 @@ module lighttrap_sqylinder(r1,f1,r2,f2,h,ridge=1.5){
     n_cones = max(floor(h/ridge),1); //there must be at least one cone or we divide by zero
     cone_h = h/n_cones;
 
-	for(i = [0 : n_cones - 1]){
+	union() for(i = [0 : n_cones - 1]){
         p = i/(n_cones - 1);
 		translate([0, 0, i * cone_h - tiny()])
 			minkowski(){

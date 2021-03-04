@@ -144,12 +144,19 @@ module picamera_2_bottom_mounting_posts(height=-1, radius=-1, outers=true, cutou
     // posts to mount to pi camera from below
     r = radius > 0 ? radius : 2;
     h = height > 0 ? height : 4;
-    rotate(45)
-    reflect([1,0,0]) for(y=[0,12.5]) translate([21/2, y, 0]) difference(){
-        if(outers) cylinder(r=r, h=h, $fn=12);
-        if(cutouts) intersection(){
-            cylinder(h=13, d=2*1.7, center=true, $fn=3);
-            rotate(60) cylinder(h=999, d=2*1.7*1.4, center=true, $fn=3);
+    union(){
+        rotate(45){
+            reflect([1,0,0]){
+                for(y=[0,12.5]) translate([21/2, y, 0]){
+                    difference(){
+                        if(outers) cylinder(r=r, h=h, $fn=12);
+                        if(cutouts) intersection(){
+                            cylinder(h=13, d=2*1.7, center=true, $fn=3);
+                            rotate(60) cylinder(h=999, d=2*1.7*1.4, center=true, $fn=3);
+                        }
+                    }
+                }
+            }
         }
     }
 }

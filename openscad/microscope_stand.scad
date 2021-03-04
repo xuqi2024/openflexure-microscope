@@ -101,7 +101,7 @@ module pi_supports(){
 
 module hull_from(){
     // take the convex hull betwen one object and all subsequent objects
-    for(i=[1:$children-1]) hull(){
+    union() for(i=[1:$children-1]) hull(){
         children(0);
         children(i);
     }
@@ -272,30 +272,31 @@ module bucket_base_with_microscope_top(params, h=base_height){
 
 module mounting_holes(params){
     // holes to mount the buckets together (stacking) or to a breadboard
+    union(){
+        // Allow the base to be bolted to a metric optical breadboard
+        // with M6 holes on 25mm centres
+        if (include_breadboard_holes)
+            for(p=[[0,0,0], [25,25,0], [-25,25,0], [0,50,0], [0,-25,0]]) translate(p) cylinder(d=6.6,h=999,center=true);
 
-    // Allow the base to be bolted to a metric optical breadboard
-    // with M6 holes on 25mm centres
-    if (include_breadboard_holes)
-        for(p=[[0,0,0], [25,25,0], [-25,25,0], [0,50,0], [0,-25,0]]) translate(p) cylinder(d=6.6,h=999,center=true);
-
-    // holes at 3 corners to allow mounting to something underneath/stacking
-    // NB the bottom hole is larger to allow for screwing through it, the top
-    // is approximately "self tapping" (a triangular hole, to allow for some
-    // space for swarf).
-    mirror([1,0,0]) leg_frame(params, 45)
-    translate([0, actuating_nut_r(params), 0]){
-        cylinder(d=4.4, h=20, center=true);
-        rotate(90) trylinder_selftap(3, h=999, center=true);
-    }
-    // this hole is moved out of the way of the sd-card cutout
-    leg_frame(params, 45)
-    translate([-10, actuating_nut_r(params)-1, 0]){
-        cylinder(d=4.4, h=20, center=true);
-        rotate(90) trylinder_selftap(3, h=999, center=true);
-    }
-    translate([0, base_corner_y(params)+7, 0]){
-        cylinder(d=4.4, h=20, center=true);
-        rotate(30) trylinder_selftap(3, h=999, center=true);
+        // holes at 3 corners to allow mounting to something underneath/stacking
+        // NB the bottom hole is larger to allow for screwing through it, the top
+        // is approximately "self tapping" (a triangular hole, to allow for some
+        // space for swarf).
+        mirror([1,0,0]) leg_frame(params, 45)
+        translate([0, actuating_nut_r(params), 0]){
+            cylinder(d=4.4, h=20, center=true);
+            rotate(90) trylinder_selftap(3, h=999, center=true);
+        }
+        // this hole is moved out of the way of the sd-card cutout
+        leg_frame(params, 45)
+        translate([-10, actuating_nut_r(params)-1, 0]){
+            cylinder(d=4.4, h=20, center=true);
+            rotate(90) trylinder_selftap(3, h=999, center=true);
+        }
+        translate([0, base_corner_y(params)+7, 0]){
+            cylinder(d=4.4, h=20, center=true);
+            rotate(30) trylinder_selftap(3, h=999, center=true);
+        }
     }
 }
 

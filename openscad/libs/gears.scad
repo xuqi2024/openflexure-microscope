@@ -102,22 +102,20 @@ module thumbwheel(r=10,h=5,knobble_r=1,knobble_angle=45,chamfer=0.5){
     base_h = 12.5;
     n_lobe = 6;
 
-    difference()
-    {
-        union()
-        {
+    difference(){
+        union(){
             cylinder(r1=base_low_r,r2=base_up_r,h=base_h);
-            for( n = [0 : n_lobe-1] )
-            {
+            for( n = [0 : n_lobe-1] ){
                 deg = 360*n/n_lobe;
-                translate([lobe_r*sin(deg),lobe_r*cos(deg),base_h]){cone_cyl(r=lobe_r,h=lobe_h);}
+                translate([lobe_r*sin(deg),lobe_r*cos(deg),base_h]){
+                    cone_cyl(r=lobe_r,h=lobe_h);
+                }
             }
         }
         translate([0,0,1.5]) nut(3,shaft=true,fudge=1.2,h=999);
     }
 
-    module cone_cyl(r=5,h=5)
-    {
+    module cone_cyl(r=5,h=5){
         cylinder(r=r,h=h);
         translate([0,0,-h]){cylinder(r1=.1,r2=r,h=h);}
     }

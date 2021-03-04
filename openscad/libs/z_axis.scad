@@ -143,7 +143,7 @@ module z_axis_flexure(h=flex_dims().z, z=0){
 }
 module z_axis_flexures(params, h=flex_dims().z){
     // The parts that bend as the Z axis is moved
-    for(z=[z_flexures_z1, z_flexures_z2(params)]){
+    union() for(z=[z_flexures_z1, z_flexures_z2(params)]){
         z_axis_flexure(h=h, z=z);
     }
 }
@@ -152,7 +152,7 @@ module z_axis_struts(params){
     // The parts that tilt as the Z axis is moved, including the lever that
     // connects to the actuator column (but not the column itself).
     intersection(){ // The two horizontal parts
-        for(z=[z_flexures_z1, z_flexures_z2(params)]) hull(){
+        union() for(z=[z_flexures_z1, z_flexures_z2(params)]) hull(){
             translate([-99,objective_mount_back_y+flex_dims().y,z+dz]) cube([999,z_strut_l,1]);
             translate([-99,objective_mount_back_y+flex_dims().y+3,z+dz]) cube([999,z_strut_l-6,5]);
         }
@@ -183,7 +183,7 @@ module pivot_z_axis(angle){
 
 module z_axis_clearance(params){
     // Clearance for the moving part of the Z axis
-    for(a=[-6,0,6]) pivot_z_axis(a) minkowski(){
+    union() for(a=[-6,0,6]) pivot_z_axis(a) minkowski(){
         cylinder(r=1, h=4, center=true, $fn=8);
         z_axis_struts(params);
     }

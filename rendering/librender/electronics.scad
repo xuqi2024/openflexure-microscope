@@ -474,7 +474,7 @@ module filleted_board(x, y, t, r=2){
 
 module wire(d=1, points=[[0, 0, 0], [10,0,0]]){
     $fn=10;
-	for(i=[0:len(points)-2]){
+	union() for(i=[0:len(points)-2]){
 		hull(){
             translate(points[i]){
 			    sphere(d=d);

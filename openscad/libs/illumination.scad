@@ -31,7 +31,7 @@ function illumination_back_corner_pos(params) = [0, (key_lookup("leg_r", params)
 module each_illumination_screw(params){
     // A transform to repeat objects at each screw hole
     screws = [right_illumination_screw_pos(params), left_illumination_screw_pos(params)];
-    for(pos=screws){
+    union() for(pos=screws){
         translate(pos){
             children();
         }
@@ -41,7 +41,7 @@ module each_illumination_screw(params){
 module each_illumination_corner(params){
     // A transform to repeat objects at each corner of the illumination mount
     corners = [right_illumination_screw_pos(params), left_illumination_screw_pos(params), illumination_back_corner_pos(params)];
-    for(pos=corners){
+    union() for(pos=corners){
         translate(pos){
             children();
         }
