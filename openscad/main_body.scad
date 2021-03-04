@@ -482,17 +482,17 @@ module xy_only_body(params){
     }
 }
 
-module main_body(params){
+module main_body(params, version_string){
     // This module represents the main body of the microscope, including the positioning mechanism.
 
     difference(){
         xy_positioning_system(params);
         z_axis_casing_cutouts(params);
     }
-    
+
 	//z axis - Only the actuator column is housed at this point
     z_actuator_assembly(params);
-    
+
 	difference(){
         actuator_walls_and_z_casing(params);
         body_logos(params, version_numstring);
@@ -501,8 +501,9 @@ module main_body(params){
 
 //Note that the main body is complex enough you should run Render not preview
 // To use in preview wrap with render(6)
+VERSION_STRING = "Custom";
 params = default_params();
 smart_brim_r = key_lookup("smart_brim_r", params);
 exterior_brim(r=enable_smart_brim ? smart_brim_r : 0){
-    main_body(params);
+    main_body(params, VERSION_STRING);
 }

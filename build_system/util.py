@@ -2,6 +2,9 @@
 This module has a range of misc utilities for the build system.
 """
 import sys
+import subprocess
+from copy import copy
+import re
 
 def get_openscad_exe():
     """
@@ -99,3 +102,78 @@ def parameters_to_string(parameters):
         strings.append("-D '{}={}'".format(name, value))
 
     return " ".join(strings)
+
+def version_string(force_clean):
+    """
+    The version string for the microscope.
+    """
+    if not repo_is_clean():
+        if force_clean:
+            exit(1)
+        return "Custom"
+
+    tag = get_commit_tag()
+    if is_release(tag):
+        return tag
+
+    commit_hash = get_commit_hash()
+    if commit_hash is None:
+        if force_clean:
+            exit(1)
+        return "Custom"
+    return commit_hash[0:7]
+
+
+def repo_is_clean():
+    """
+    Returns True if the repo is has no changes.
+    Returns False if there are changes in the repo or if Git fails to check.
+    """
+    ret = run_git(["status", "--porcelain"])
+    if ret is None:
+        return False
+    # With `--porcelain` the output of `git status` should be empty is repo is clean
+    if len(ret) == 0:
+        return True
+    print("Warning! Git repository is not clean:")
+    print(ret)
+    return False
+
+def is_release(tag):
+    """
+    Returns true if the the tag is of the form: v1.3.5
+    else returns false
+    """
+    if tag is None:
+        return False
+    match = re.match(r"^v[0-9]+\.[0-9]+\.[0-9]+$", tag)
+    return match is not None
+
+def get_commit_tag():
+    """
+    Returns the git tag of the current commit.
+    If current commit is not tagged returns None
+    """
+    return run_git(["desribe", "--tags", "--exact-match"], warn_on_error=False)
+
+def get_commit_hash():
+    """
+    Returns gomit hash. Will return None if has cannot be read.
+    """
+    return run_git(["log", "-n1", "--format=format:%H"])
+
+def run_git(git_args, warn_on_error=True):
+    """
+    Runs git with the input list of arguments. It will return the stdout if
+    the command succeeds. On a non-zero exit code it will return None
+    """
+    args = copy(git_args)
+    args.insert(0, "git")
+    try:
+        ret = subprocess.run(args, capture_output=True, check=True)
+    except subprocess.CalledProcessError:
+        if warn_on_error:
+            print("Warning! Could not read git repository!")
+        return None
+    return ret.stdout.decode("UTF-8")
+
