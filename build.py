@@ -208,6 +208,7 @@ def generate_small_parts(writer):
     writer.openscad(
         "fl_cube.stl", "fl_cube.scad", select_stl_if={"reflection_illumination": True}
     )
+    writer.openscad("cable_tidies.stl", "cable_tidies.scad", select_stl_if="always")
 
     writer.openscad(
         "picamera_2_cover.stl",

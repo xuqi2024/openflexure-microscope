@@ -59,3 +59,6 @@ openscad --hardwarnings -o "docs/renders/picam3.png" -D "FRAME=3;" --camera=1,18
 # inkscape annotations, make sure SVG uses relative links.
 inkscape -z -e "docs/renders/optics_assembly_tube_lens.png" "rendering/annotations/annotate_optics_assembly_tube_lens.svg"
 inkscape -z -e "docs/renders/optics_assembly_condenser_lens.png" "rendering/annotations/annotate_optics_assembly_condenser_lens.svg"
+
+
+openscad --hardwarnings -o "docs/renders/cable_management.png" --camera=8,-8,8,69,0,190,440 --imgsize=2400,2000  rendering/cable_management.scad
