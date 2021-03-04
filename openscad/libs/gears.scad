@@ -124,6 +124,15 @@ module thumbwheel(r=10,h=5,knobble_r=1,knobble_angle=45,chamfer=0.5){
     }
 }
 
+module illumination_thumbscrew(){
+    difference()
+    {
+        cylinder(r=5, h=14, $fn=8);
+        translate([0, 0, 12]) nut(3, shaft=true, fudge=1.2, h=999);
+    }
+}
+
+
 module motor_clearance(h=15){
     // an approximate cut-out for a 28BYJ-48 stepper motor
     // NB does not include cable clearance, I assume that goes on the outside.

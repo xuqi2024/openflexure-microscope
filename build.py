@@ -201,6 +201,7 @@ def generate_small_parts(writer):
     writer.openscad("actuator_assembly_tools.stl", "actuator_assembly_tools.scad", select_stl_if="always")
     writer.openscad("condenser.stl", "condenser.scad", select_stl_if="always")
     writer.openscad("illumination_dovetail.stl", "illumination_dovetail.scad", select_stl_if="always")
+    writer.openscad("illumination_thumbscrew.stl", "illumination_thumbscrew.scad", select_stl_if="always")
     writer.openscad("lens_tool.stl", "lens_tool.scad", select_stl_if="always")
     writer.openscad("nut_trap_test.stl", "test_pieces/nut_trap_test.scad", select_stl_if="always")
     writer.openscad("feet.stl", "feet.scad", select_stl_if="always")
