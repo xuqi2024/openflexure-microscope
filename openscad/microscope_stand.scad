@@ -481,7 +481,7 @@ module motor_driver_case(params){
 }
 
 
-module thick_bottom_section(h, offset_d, center=false){
+module thick_bottom_section(params, h, offset_d, center=false){
     hull(){
         linear_extrude(h, center=center){
             offset(offset_d){
@@ -491,58 +491,174 @@ module thick_bottom_section(h, offset_d, center=false){
     }
 }
 
-module stand_top(h){
-    difference(){
-        thick_bottom_section(h, wall_thickness+2.5);
-        thick_bottom_section(3*h, 2.5, center=true);
-    }
-}
-
-
-module new_stand(){
-    h=foot_height;
-    stand_top(h+3);
+module stand_lugs(params, h, pi_stand_h){
+    lug_body_h = 9;
+    lug_h = 20;
+    lug_z = h-lug_h-3;
 
     hole_pos = base_mounting_holes(params);
     for (n = [0:len(hole_pos)-1]){
         hole = hole_pos[n];
         angle = lug_angles()[n];
-
-        difference(){
-            hull(){
-                intersection(){
-                    translate(hole+[0,0,h/2]){
-                        rotate(angle){
-                            cube([10,50,h], center=true);
+        translate([0, 0, lug_z]){
+            difference(){
+                hull(){
+                    intersection(){
+                        translate(hole+[0,0,lug_h/2]){
+                            rotate(angle){
+                                cube([10,50,lug_h], center=true);
+                            }
+                        }
+                        translate([0, 0, -lug_z]){
+                            new_bucket(params, h, pi_stand_h);
                         }
                     }
-                    stand_top(h);
-                }
 
-                translate(hole){
-                    cylinder(r=5, h=h);
+                    translate(hole + [0, 0, lug_h-lug_body_h]){
+                        cylinder(r=5, h=lug_body_h);
+                    }
+                }
+                translate(hole+[0,0,lug_h-9]){
+                    m3_nut_trap_with_shaft(angle+180);
                 }
             }
-            translate(hole+[0,0,h-9]){
-                m3_nut_trap_with_shaft(angle+180);
+        }
+    }
+}
+
+
+
+module new_bucket(params, h, pi_stand_h){
+    offset_d=1.5;
+    wall_t=3.5;
+    
+    difference(){
+        sequential_hull(){
+            new_bucket_base_primative(params, 3);
+
+            translate([0,0,pi_stand_h+5]){
+                new_bucket_base_primative(params, 3);
+            }
+            translate([0,0,pi_stand_h+10]){
+                thick_bottom_section(params, h-pi_stand_h-10, wall_t+offset_d);
+            }
+        }
+
+        sequential_hull(){
+            translate([0,0,2]){
+                new_bucket_base_primative(params, 1);
+            }
+
+            translate([0,0,pi_stand_h+5]){
+                new_bucket_base_primative(params, 1);
+            }
+            translate([0,0,pi_stand_h+11]){
+                thick_bottom_section(params, h-pi_stand_h-10, offset_d);
             }
         }
     }
 
 }
 
+
+module pi_stand_frame_xy(primative=false){
+    initial_pos = primative ? [0,0,0] : [5,0,2];
+    translate([28, -38, 0]){
+        rotate(-y_wall_angle(params)){
+            translate(initial_pos){
+                children();
+            }
+        }
+    }
+}
+
+
+module new_bucket_base_primative(params, ex_rad=3){
+    pi_base_size = pi_stand_base_size();
+    pi_block_size = [pi_base_size.x, pi_base_size.y, tiny()];
+    minkowski(){
+        hull(){
+            reflect([1,0,0]){
+                pi_stand_frame_xy(primative=true){
+                    cube(pi_block_size);
+                }
+            }
+        }
+        cylinder(r=ex_rad, h=tiny());
+    }
+}
+
+
+
+module new_stand(params, pi_stand_h){
+    h=73;
+
+    stand_lugs(params, h, pi_stand_h);
+    //stand_top(params, h);
+    
+    
+    pi_base_size = pi_stand_base_size();
+    extra_space = [1.5, 1.5, 1.5];
+    pi_cutout_size = [pi_base_size.x, pi_base_size.y, pi_stand_h] + extra_space;
+
+    difference(){
+        new_bucket(params, h, pi_stand_h);
+        pi_stand_frame_xy(){
+            translate(-extra_space/2){
+                cube(pi_cutout_size);
+            }
+            translate([5, -50, 2]){
+                cube([60, 100, 15]);
+            }
+        }
+    }
+
+    
+
+    
+
+}
+
+pi_stand_h = 42;
 params = default_params();
 //microscope_stand(params);
 
-//new_stand();
-pi_stand();
+//to_print();
+rendered();
+
+module to_print(){
+    new_stand(params, pi_stand_h);
+    //pi_stand(pi_stand_h);
+}
+
+module rendered(){
+    color("#505050"){
+        render(6){
+            new_stand(params, pi_stand_h);
+        }
+    }
+    color("Dodgerblue"){
+        render(6){
+            pi_stand_frame_xy(){
+                pi_stand(pi_stand_h);
+            }
+        }
+    }
+}
 
 
-module pi_stand(){
-    thickness = 3;
+function pi_stand_board_inset() = [3, 3, 0];
+function pi_stand_thickness() = 2;
+function pi_stand_base_size() = let(
+    t = pi_stand_thickness(),
+    board_size = [raspi_board.x, raspi_board.y, t]
+) board_size + 2 * pi_stand_board_inset();
+
+module pi_stand(h=50){
+    thickness = pi_stand_thickness();
     hole_inset = [3.5, 3.5, 0];
-    board_inset = [3, 3, 0];
-    standoff_h = 7;
+    board_inset = pi_stand_board_inset();
+    standoff_h = 4.5;
     wall_t = board_inset.x-.5;
 
     function pi_holes() = [[0, 0, 0]+hole_inset+board_inset,
@@ -550,7 +666,7 @@ module pi_stand(){
                            [0, 49, 0]+hole_inset+board_inset,
                            [58, 49, 0]+hole_inset+board_inset];
 
-    base_size = [raspi_board.x, raspi_board.y, thickness] + 2*board_inset;
+    base_size = pi_stand_base_size();
 
     difference(){
         union(){
@@ -560,9 +676,9 @@ module pi_stand(){
                     cylinder(d=5.5, h=standoff_h, $fn=12);
                 }
             }
-            cube([base_size.x, wall_t, 30]);
+            cube([base_size.x, wall_t, h]);
             translate([base_size.x- (wall_t), 0, 0]){
-                cube([wall_t, base_size.y, 30]);
+                cube([wall_t, base_size.y, h]);
             }
         }
         for (hole = pi_holes()){
@@ -580,20 +696,13 @@ module pi_stand(){
             translate([0, 9-15.5/2, 0]){
                 cube([200, 15.5, 17]);
             }
-            for (n = [0:3]){
-                translate([0,-50,0]){
-                    pi_side_connectors(n);
-                }
-                hull(){
-                    translate([0,-(board_inset.y-1),0]){
-                        pi_side_connectors(n);
-                    }
-                    translate([0,-(board_inset.y-1),30]){
-                        pi_side_connectors(n);
-                    }
-                    translate([5,-(board_inset.y-1),30]){
-                        pi_side_connectors(n);
-                    }
+
+            translate([0,-board_inset.y-tiny(),0]){
+                pi_side_connectors();
+            }
+            hull(){
+                translate([0,-(board_inset.y-1.5),0]){
+                    pi_side_connectors();
                 }
             }
         }
@@ -601,29 +710,23 @@ module pi_stand(){
    
 }
 
-module pi_side_connectors(num=0){
-    if (num == 0){
-        translate([11.2-10/2, 0, 0]){
-            cube([10, 200, 4.5]);
-        }
+module pi_side_connectors(){
+
+    translate([11.2-10/2, 0, 0]){
+        cube([10, 200, 4.5]);
     }
-    else if (num == 1){
-        translate([26-8/2, 0, 0]){
-            cube([8, 200, 4.5]);
-        }
+    translate([26-8/2, 0, 0]){
+        cube([8, 200, 4.5]);
     }
-    else if (num == 2){
-        translate([39.5-8/2, 0, 0]){
-            cube([8, 200, 4.5]);
-        }
+    translate([39.5-8/2, 0, 0]){
+        cube([8, 200, 4.5]);
     }
-    else{
-        translate([54-7/2, 0, 0]){
-            translate([3.5, 0, 3.5]){
-                rotate([-90, 0, 0]){
-                    cylinder(d=7, h=200);
-                }
+    translate([54-7/2, 0, 0]){
+        translate([3.5, 0, 3.5]){
+            rotate([-90, 0, 0]){
+                cylinder(d1=7, d2=8, h=5);
             }
         }
     }
+
 }
