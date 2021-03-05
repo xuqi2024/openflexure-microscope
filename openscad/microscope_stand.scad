@@ -523,7 +523,7 @@ module new_stand(){
                     cylinder(r=5, h=h);
                 }
             }
-            translate(hole+[0,0,h-10]){
+            translate(hole+[0,0,h-9]){
                 m3_nut_trap_with_shaft(angle+180);
             }
         }
@@ -534,4 +534,96 @@ module new_stand(){
 params = default_params();
 //microscope_stand(params);
 
-new_stand();
+//new_stand();
+pi_stand();
+
+
+module pi_stand(){
+    thickness = 3;
+    hole_inset = [3.5, 3.5, 0];
+    board_inset = [3, 3, 0];
+    standoff_h = 7;
+    wall_t = board_inset.x-.5;
+
+    function pi_holes() = [[0, 0, 0]+hole_inset+board_inset,
+                           [58, 0, 0]+hole_inset+board_inset,
+                           [0, 49, 0]+hole_inset+board_inset,
+                           [58, 49, 0]+hole_inset+board_inset];
+
+    base_size = [raspi_board.x, raspi_board.y, thickness] + 2*board_inset;
+
+    difference(){
+        union(){
+            cube(base_size);
+            for (hole = pi_holes()){
+                translate(hole){
+                    cylinder(d=5.5, h=standoff_h, $fn=12);
+                }
+            }
+            cube([base_size.x, wall_t, 30]);
+            translate([base_size.x- (wall_t), 0, 0]){
+                cube([wall_t, base_size.y, 30]);
+            }
+        }
+        for (hole = pi_holes()){
+            translate(hole){
+                cylinder(d=2.5, h=99, center=true, $fn=3);
+            }
+        }
+        translate(board_inset+ [0, 0, standoff_h+1]){
+            translate([0, 45.75-17/2, 0]){
+                cube([200, 17, 14.5]);
+            }
+            translate([0, 27-15.5/2, 0]){
+                cube([200, 15.5, 17]);
+            }
+            translate([0, 9-15.5/2, 0]){
+                cube([200, 15.5, 17]);
+            }
+            for (n = [0:3]){
+                translate([0,-50,0]){
+                    pi_side_connectors(n);
+                }
+                hull(){
+                    translate([0,-(board_inset.y-1),0]){
+                        pi_side_connectors(n);
+                    }
+                    translate([0,-(board_inset.y-1),30]){
+                        pi_side_connectors(n);
+                    }
+                    translate([5,-(board_inset.y-1),30]){
+                        pi_side_connectors(n);
+                    }
+                }
+            }
+        }
+    }
+   
+}
+
+module pi_side_connectors(num=0){
+    if (num == 0){
+        translate([11.2-10/2, 0, 0]){
+            cube([10, 200, 4.5]);
+        }
+    }
+    else if (num == 1){
+        translate([26-8/2, 0, 0]){
+            cube([8, 200, 4.5]);
+        }
+    }
+    else if (num == 2){
+        translate([39.5-8/2, 0, 0]){
+            cube([8, 200, 4.5]);
+        }
+    }
+    else{
+        translate([54-7/2, 0, 0]){
+            translate([3.5, 0, 3.5]){
+                rotate([-90, 0, 0]){
+                    cylinder(d=7, h=200);
+                }
+            }
+        }
+    }
+}

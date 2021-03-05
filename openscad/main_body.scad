@@ -152,7 +152,7 @@ module m3_lug(pos, angle, holes=true){
                 }
                 //the lug hole
                 if (holes) {
-                    cylinder(r=3/2*1.1,h=50,center=true);
+                    cylinder(r=3.5,h=50,center=true);
                     translate([0,0,3]){
                         cylinder(r=3*1.1, h=22);
                     }
