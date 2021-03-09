@@ -12,7 +12,7 @@ The selection for which extra STLs are copied in is in build_system/stl_copy
 import argparse
 import sys
 from ninja import ninja
-from build_system.writer import MicroscopeBuildWriter
+from build_system.microscope_build_writer import MicroscopeBuildWriter
 
 parser = argparse.ArgumentParser(
     description="Run the OpenSCAD build for the Openflexure Microscope."
