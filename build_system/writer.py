@@ -2,11 +2,11 @@
 In this submodule we create a class that can writes and "ninja.build" file. There
 is also a function "run_ninja()" which runs this file.
 '''
-import sys
+
 import os
 from ninja import Writer
 
-from .util import parameters_to_string
+from .util import parameters_to_string, get_openscad_exe
 from .json_generator import JsonGenerator
 from .stl_options import stl_presets, option_docs, required_stls
 
@@ -36,10 +36,7 @@ class MicroscopeBuildWriter():
         self._build_file.close()
 
     def _create_rules(self):
-        if sys.platform.startswith("darwin"):
-            executable = "/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD"
-        else:
-            executable = "openscad"
+        executable = get_openscad_exe()
         self._ninja.rule(
             "openscad",
             command=f"{executable} --hardwarnings $parameters $in -o $out -d $out.d",
