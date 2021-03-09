@@ -1,4 +1,12 @@
 #!/usr/bin/env python3
+
+"""
+This module wraps openscad and checks whether a warning happened during render.
+
+This is needed for rendering as `--hardwardings` stops compilations but no exit code is set
+instead a blank .png is output. See: https://github.com/openscad/openscad/issues/3616
+"""
+
 import subprocess
 import sys
 import re
