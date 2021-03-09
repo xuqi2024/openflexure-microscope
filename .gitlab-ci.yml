@@ -61,6 +61,10 @@ render:
     stage: build
     image: ubuntu:20.04
 
+    variables:
+      # prevents config waiting for user input, e.g. for tzdata
+      DEBIAN_FRONTEND: noninteractive
+
     before_script:
       - apt-get update -qq
       - apt-get -y -qq install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates xvfb imagemagick unzip inkscape
