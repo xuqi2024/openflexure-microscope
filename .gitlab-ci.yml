@@ -59,7 +59,7 @@ build:
 # render assemblies - uses xvfb as a virtual x-server
 render:
     stage: build
-    image: ubuntu:18.04
+    image: ubuntu:20.04
 
     before_script:
       - apt-get update -qq
