@@ -17,8 +17,10 @@ class MicroscopeBuildWriter():
         self._build_file = None
         self._ninja = None
         option_docs = get_option_docs(include_extra_files)
+        standard_configurations = get_standard_configurations()
+        required_stls = get_required_stls()
         if generate_stl_options_json:
-            self._json_generator = JsonGenerator(build_dir, option_docs, get_standard_configurations, get_required_stls())
+            self._json_generator = JsonGenerator(build_dir, option_docs, standard_configurations, required_stls)
         else:
             self._json_generator = None
 

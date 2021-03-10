@@ -92,6 +92,7 @@ def _get_objective_options():
         "description": "Do you want to use a microscope objective or the lens from your camera?",
         "options": [finite_rms_doc, infinite_rms_doc, cam_lens_doc]
     }
+    return objective_options_doc
 
 def _get_camera_options(include_extra_files):
     """
