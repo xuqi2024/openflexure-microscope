@@ -8,7 +8,7 @@ from ninja import Writer
 
 from .util import parameters_to_string
 from .json_generator import JsonGenerator
-from .stl_options import stl_presets, get_option_docs, required_stls
+from .stl_options import get_standard_configurations, get_option_docs, get_required_stls
 
 class MicroscopeBuildWriter():
     def __init__(self, build_dir, build_filename, include_extra_files=False, generate_stl_options_json=False):
@@ -18,7 +18,7 @@ class MicroscopeBuildWriter():
         self._ninja = None
         option_docs = get_option_docs(include_extra_files)
         if generate_stl_options_json:
-            self._json_generator = JsonGenerator(build_dir, option_docs, stl_presets, required_stls)
+            self._json_generator = JsonGenerator(build_dir, option_docs, get_standard_configurations, get_required_stls())
         else:
             self._json_generator = None
 
