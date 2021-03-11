@@ -6,12 +6,12 @@ from .util import merge_dicts
 
 
 class JsonGenerator:
-    def __init__(self, build_dir, option_docs, stl_presets, required_stls):
+    def __init__(self, build_dir, option_docs, standard_configurations, required_stls):
         self._all_select_stl_params = set()
         self._stl_options = []
         self._build_dir = build_dir
         self._option_docs = option_docs
-        self._stl_presets = stl_presets
+        self._standard_configurations = standard_configurations
         self._required_stls = required_stls
 
     def register(
@@ -119,7 +119,7 @@ class JsonGenerator:
                     "options": changeable_options,
                     "docs": self._option_docs,
                     "required": self._required_stls,
-                    "presets": self._stl_presets,
+                    "presets": self._standard_configurations,
                 },
                 f,
                 indent=2,
