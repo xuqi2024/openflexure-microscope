@@ -93,14 +93,7 @@ module picam2_cutout( beam_length=15){
         //beam clearance
         cylinder(r=hole_r, h=beam_length);
 
-        //chamfered screw holes for mounting
-        sx = 21/2; //position of screw holes
-        reflect([1,0,0]) translate([sx,0,0]) rotate(60){
-            //cylinder(r1=3, r2=0,h=4, center=true); //chamfered bottom
-            //deformable_hole_trylinder(1.5/2,2.1/2,h=12, center=true);
-            cylinder(r1=3.1, r2=1.1, h=5, $fn=3, center=true);
-            cylinder(r=1.1, h=20, $fn=3, center=true);
-        }
+
 	}
 }
 //picam2_cutout();
@@ -130,8 +123,18 @@ module picamera_2_camera_mount(counterbore=false){
         }
         rotate(45) translate([0,0,bottom]) picam2_cutout();
         if(counterbore){
-            translate([0,0,bottom-1]) picamera_2_bottom_mounting_posts(height=999, radius=1, cutouts=false);
+            translate([0,0,bottom-1]) picamera_2_bottom_mounting_posts(height=999, radius=1.15, cutouts=false);
             translate([0,0,bottom+1])  picamera_2_bottom_mounting_posts(height=999, radius=2.7, cutouts=false);
+        }
+        else{
+        //chamfered screw holes for mounting
+        sx = 21/2; //position of screw holes
+        rotate(45) translate([0,0,bottom]) reflect([1,0,0]) translate([sx,0,0]) rotate(60){
+            //cylinder(r1=3, r2=0,h=4, center=true); //chamfered bottom
+            //deformable_hole_trylinder(1.5/2,2.1/2,h=12, center=true);
+            cylinder(r1=3.1, r2=1.1, h=5, $fn=3, center=true);
+            cylinder(r=1.1, h=20, $fn=3, center=true);
+        }
         }
     }
 }

@@ -17,6 +17,7 @@ use <./libs/utilities.scad>
 use <./libs/z_axis.scad>
 include <./libs/microscope_parameters.scad> // NB this defines "camera" and "optics"
 use <./libs/cameras/camera.scad> // this will define the 2 functions and 1 module for the camera mount, using the camera defined in the "camera" parameter.
+use <./libs/cameras/picamera_2.scad> // this will define the 1 module for the pi_camera_2_bottom_mounting_posts.
 use <./libs/lenses/lens.scad>
 $fn=24;
 
@@ -97,13 +98,20 @@ module lens_spacer(params, lens_r, parfocal_distance, lens_h, lens_spacing){
 //Note do not try to set the optics in this file things will go wrong. Annoyingly you must modify microscope_parameters or run openscad in the terminal with the -D flag
 if(optics=="pilens"){
     // Optics module for picamera v2 lens, using trylinder
-    lens_spacer(
-        params = default_params(),
-        lens_r = lens_radius(),
-        parfocal_distance = lens_parfocal_distance(),
-        lens_h = lens_height(),
-        lens_spacing = lens_spacing()
-    );
-}else{
+    difference() {
+        %lens_spacer(
+            params = default_params(),
+            lens_r = lens_radius(),
+            parfocal_distance = lens_parfocal_distance(),
+            lens_h = lens_height(),
+           lens_spacing = lens_spacing()
+        );
+        // re-do the counterbores that were done in cameramount(counterbore=true) because they have been
+        // partially obscured but a later convex hull
+        translate([0,0,+1])  picamera_2_bottom_mounting_posts(height=999, radius=2.7, cutouts=false);
+    }
+
+}
+else{
     echo("No lens_spacer available for this lens type");
 }
