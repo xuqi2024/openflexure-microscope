@@ -22,6 +22,10 @@ We recommend the following printer settings:
 
 **Do not print with supports**. The microscope has been designed to print without supports. Supports will damage the mechanism.
 
+**NOTE** - The microscope body has a custom brim included in the STL. This may require [custom print settings].
+
+[custom print settings]: smart_brim.md
+
 ## Testing your printer {pagestep}
 
 Now we will test whether your printer can print the bridges in the microscope.
@@ -39,7 +43,7 @@ You will need to print the following parts:
 
 * [Actuator assembly tools](parts/printed_tools/actuator_assembly_tools.md)
 * [Lens Tool](parts/printed_tools/lens_tool.md)
-* [Main body](parts/printed/main_body.md) - The smart brim may require [custom print settings](smart_brim.md)
+* [Main body](parts/printed/main_body.md) - The smart brim may require [custom print settings].
 * [Feet](parts/printed/feet.md)
 * [Large gears](parts/printed/gears.md)
 * [Illuminationl dovetail](parts/printed/illumination_dovetail.md)

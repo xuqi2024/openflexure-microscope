@@ -1,34 +1,22 @@
-# High resolution optics module
-To get lab quality images from your microscope, you need to use more sophisticated optics than a webcam lens.  This optics module uses an RMS threaded microscope objective, with a tube length correction lens, to take very high quality images.
+# Assemble the high resolution optics module
 
-# Requirements
-You will need the parts shown in the picture below:
+The imaging optics for this version of the microscope consist of an RMS objective, a tube lens and the Raspberry pi camera arranged as shown below (with the illumination optics)
 
-![Parts required for this step](./images/hires_optics_parts.jpg)
+![Optics cutaway](renders/optics_assembled.png)
 
-## Parts
-*   1 [RMS optics module casing](./parts/printed/optics_module_casing.md)
-*   1 [Raspbery Pi camera module](./parts/electronics/raspberry_pi_camera.md)  (ideally v2, though v1 should also work)
-*   1 [M3 steel nut](./parts/fixings/m3_steel_nut.md)
-*   1 [M3x10mm cap head screw](./parts/fixings/m3x8mm_caphead_screw.md)
-*   2 [M2x6mm cap head screws](./parts/fixings/m2x6mm_caphead_screw.md)
-*   1 [12.7mm diameter, 50mm focal length achromatic lens](./parts/optics/tube_lens.md)
-*   1 [RMS threaded microscope objective](./parts/optics/objective.md)
-
-## Tools
-*   1 [Tube lens insertion tool](./parts/printed_tools/lens_tool.md)
-*   1 2.5mm hex key
-*   1 1.5mm hex key
-*   1 scalpel or craft knife (optional)
-*   1 lens removal tool (supplied with the camera)
-*   1 printed [board gripper](./parts/printed_tools/picamera_2_tools.md)
+## For this section you will need
+{{BOM}}
 
 
-# Assembly Instructions
-## Step 1
-First, get the necessary tools and parts: the optics module plastic part, the Raspberry Pi camera module, the tools for removing the camera lens, two M2 screws to secure the camera, the tube lens, and the objective.  Depending on print quality, you might also need a sharp craft knife.
- 
-NB the lens removal tools, board gripper, and optics module are all specific to the camera you're using.  This version of the instructions is for version 2 of the camera board, version 1 of the Rasbperry Pi camera module will also work, but you will need to remove the lens with pliers or tweezers instead.  Version 2 of the camera module ships with a lens removal tool included, which is a white disc of plastic with a hole in the centre.  This is better than the printed lens removal tool, if it's available.
+## Remove Pi Camera Lens {pagestep}
+
+* Take the [Pi Camera][Raspberry Pi Camera Module v2]{Qty:1} out of the package. Make sure to hold it by the sides of the board.
+* Take the protective film off the lens.
+* Take the [Pi Camera lens tool]{qty: 1, note: "This should come with the pi camera"} and place it over the lens
+* Slowly unscrew the lens (About 4 full turns of the tool)
+* Carefully lift off the lens. We do not use the lens in this version of the microscope.
+
+![](renders/picam1.png)![](renders/picam2.png)![](renders/picam3.png)
 
 ## Step 2
 Before assembling the parts into the holder, make sure it's free from dust by blowing some air through it, and check there are no strings of plastic in the central hole through the mount - an example with strings of plastic is shown in the picture.  Use a craft knife to remove these strings, and blow out any debris that remains inside the optics module.

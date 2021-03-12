@@ -1,7 +1,10 @@
 # Preparing the main body
 
-## For this you will need
+## For this section you will need
 {{BOM}}
+
+
+## Removing brim and supports
 
 The main body has some custom supports and a custom brim to remove.
 
@@ -12,8 +15,8 @@ The main body has some custom supports and a custom brim to remove.
 
 These are highlighted in red in the following images.
 
-![](images/SmartBrimHighlight.png)
-![](images/SmartBrimHighlight2.png)
+![](renders/brim_and_ties1.png)
+![](renders/brim_and_ties2.png)
 
 
 
