@@ -482,6 +482,21 @@ module xy_only_body(params){
     }
 }
 
+module z_only_body(params){
+    // This is a version of the body with only z actuator. It is not used in the microscope
+    // but can be useful for other positioning systems.
+    z_actuator_assembly(params);
+    difference(){
+        union(){
+            z_axis_casing(params, condenser_mount=true);
+        }
+        union(){
+            z_axis_casing_cutouts(params);
+            z_cable_housing_cutout(params);
+        }
+    }
+}
+
 module main_body(params){
     // This module represents the main body of the microscope, including the positioning mechanism.
 
@@ -505,4 +520,6 @@ params = default_params();
 smart_brim_r = key_lookup("smart_brim_r", params);
 exterior_brim(r=enable_smart_brim ? smart_brim_r : 0){
     main_body(params);
+//    z_only_body(params);
 }
+ 
