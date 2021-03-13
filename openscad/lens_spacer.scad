@@ -94,12 +94,12 @@ module lens_spacer(params, lens_r, parfocal_distance, lens_h, lens_spacing){
         optical_path(lens_aperture, lens_assembly_z, 0);
     }
 }
-
+optics="pilens";
 //Note do not try to set the optics in this file things will go wrong. Annoyingly you must modify microscope_parameters or run openscad in the terminal with the -D flag
 if(optics=="pilens"){
     // Optics module for picamera v2 lens, using trylinder
     difference() {
-        %lens_spacer(
+        lens_spacer(
             params = default_params(),
             lens_r = lens_radius(),
             parfocal_distance = lens_parfocal_distance(),
@@ -108,7 +108,7 @@ if(optics=="pilens"){
         );
         // re-do the counterbores that were done in cameramount(counterbore=true) because they have been
         // partially obscured but a later convex hull
-        translate([0,0,+1])  picamera_2_bottom_mounting_posts(height=999, radius=2.7, cutouts=false);
+        translate([0,0,+1])  picamera_2_bottom_mounting_posts(height=999, radius=2.8, cutouts=false);
     }
 
 }
