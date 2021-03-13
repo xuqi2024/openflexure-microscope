@@ -99,7 +99,7 @@ module lens_spacer(params, lens_r, parfocal_distance, lens_h, lens_spacing){
         }
     }
 }
-optics="pilens";
+//optics="pilens";
 //Note do not try to set the optics in this file things will go wrong. Annoyingly you must modify microscope_parameters or run openscad in the terminal with the -D flag
 if(optics=="pilens"){
     // Optics module for picamera v2 lens, using trylinder
