@@ -249,7 +249,7 @@ def add_extra_stls_to_writer(writer):
 
 
 # Use ninja to write a build.ninja file which specifies all the STLs to build
-with MicroscopeBuildWriter("builds", "build.ninja", args.generate_stl_options_json) as mbw:
+with MicroscopeBuildWriter("builds", "build.ninja", args.include_extra_files, args.generate_stl_options_json) as mbw:
     # Generate basic STL files
     mbw.openscad("main_body.stl", "main_body.scad", select_stl_if="always")
     generate_rms_optics_modules(mbw)
