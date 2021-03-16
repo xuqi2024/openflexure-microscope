@@ -22,7 +22,6 @@
 ******************************************************************/
 
 use <./libs/utilities.scad>
-use <./libs/dovetail.scad>
 use <./libs/z_axis.scad>
 include <./libs/microscope_parameters.scad> // NB this defines "camera" and "optics"
 use <./libs/threads.scad>

@@ -1,209 +1,472 @@
-/******************************************************************
-*                                                                 *
-* OpenFlexure Microscope: Dovetail                                *
-*                                                                 *
-* This is part of the OpenFlexure microscope, an open-source      *
-* microscope and 3-axis translation stage.  It gets really good   *
-* precision over a ~10mm range, by using plastic flexure          *
-* mechanisms.                                                     *
-*                                                                 *
-* This file deals with the dovetail clips that are used to hold   *
-* the objective and illumination, and provide coarse Z adjustment.*
-*                                                                 *
-* (c) Richard Bowman, January 2016                                *
-* Released under the CERN Open Hardware License                   *
-*                                                                 *
-******************************************************************/
+/*
 
-use <./utilities.scad>
-$fn=16;
+Some sketches to work towards a nicer dovetail mechanism in OpenSCAD.
 
+(c) Richard Bowman 2021, released under CERN-OHL-W v2
 
-module dovetail_clip_cutout(size,dt=1.5,t=2,slope_front=0,solid_bottom=0){
-    // This will form a female dovetail when subtracted from a block.
-    // cut this out of a cube (of size "size", with one edge centred along
-    // the X axis extending into +y, +z
-    //
-    // dt sets the size of the 45-degree clips
-    // t sets the thickness of the dovetail arms (2mm is good)
-    // slope_front cuts off the bottom of the ends of the arms, i.e.
-    //   the part that does the gripping starts above Z=0.  This can
-    //   avoid the splodginess that comes from the bottom few layers,
-    //   and make it print much better - useful if you want to insert
-    //   things from the bottom.
-    // solid_bottom joins the bottoms of the arms with a thin layer.
-    //   this can help it stick to the print bed.
-    //
-    // I reccommend using ~8-10mm arms for a tight fit.  On all my
-    // printers, the ooze of the plastic is enough to keep it tight, so I
-    // set the size of the M and F dovetails to be identical.  You might
-    // want to make it tighter, either by increasing dt slightly or by
-    // decreasing the size slightly (in both cases, of this, the female
-    // dovetail).
-    // NB that it starts at z=-tiny() and stops at z=size.z+tiny() to make
-    // it easy to subtract from a block.
+*/
 
-    cutout_bottom = solid_bottom > 0 ? solid_bottom+tiny() : -tiny();
-    inner_w = size.x - 2*t; // width between arms
+/*
+Conversion notes:
 
-    hull() reflect([1,0,0]) translate([-size.x/2+t,0,cutout_bottom]){
-        translate([dt,size.y-dt,0]) cylinder(r=dt,h=size.z+2*tiny(),$fn=16);
-        translate([0,dt,0]) rotate(-45) cube([dt*2,tiny(),size.z+2*tiny()]);
-    }
+I swapped from lookup functions to regular dicts with a regex
+p\("([a-z_]+)"\)
+replace with
+key_lookup("$1", p)
 
-    if(slope_front>0){
-        //sloped bottom to improve quality of the dovetail clip and
-        //allow insertion of the male dovetail from the bottom
-        rotate([45,0,0]) cube([999,1,1]*sqrt(2)*slope_front,center=true); //slope up arms
-        //also, slope in the dovetail tooth to avoid marring at the bottom:
-        hull() reflect([0,0,1]) translate([0,0,slope_front])
-            rotate([0,45,0]) cube([(inner_w)/sqrt(2),dt*2,inner_w/sqrt(2)],center=true);
-    }
+ functions renamed to old names
+ofu_ -> ""
+*/
+
+use <./libdict.scad>;
+use <utilities.scad>;
+
+function dovetail_default_params() = [
+    ["depth", 4],            // y distance between outer flat surface and tip
+    ["angle", 60],           // angle of sloping part
+    ["outer_flat", 6],       // width of outer flat parts
+    ["overall_width", 30],   // width of whole structure
+    ["overall_height", 16],  // height of whole structure
+    ["block_depth", 12],     // y size of mounting block
+    ["fillet_r", 0.5],       // fillet radius for rounded corners
+    ["relief_r", 0.7],       // fillet radius for rounded corners
+    ["lever", 8],            // distance from flat surface to pivot of clamp
+    ["flex_l", 4],           // length of clamp flexure
+    ["flex_t", 1.6],         // thickness of above
+    ["clamp_t", 9],          // thickness of clamping flange, in the direction of the bolt
+    ["top_t", 2],            // thickness of the top solid layer
+    ["bottom_t", 2],         // thickness of the bottom solid layer
+    ["vertical_gap", 1],     // gap between clamp and top/bottom layers
+    ["clamp_support_t", 0.5],// thickness of internal bridge support for clamp
+    ["clamp_angle", 7],      // angle through which we allow the clamp to bend
+    ["pinch_bolt_inset", 2], // distance from centre of clamping bolt to female point
+    ["taper_block", false],  // set this to true to taper the block parallel to the flanges
+];
+
+function dovetail_params(
+    // This is an experiment in how to handle the commonly-changed parameters more nicely
+    height=16,
+    width=30,
+    block_depth=12,
+    taper_block=false
+) = replace_multiple_values(
+    [
+        ["overall_height", height],
+        ["overall_width", width],
+        ["block_depth", block_depth],
+        ["taper_block", taper_block],
+    ],
+    dovetail_default_params()
+);
+
+module block_sharp(p){
+    // the block to which we attach the male dovetail 
+    // or from which we cut the female one
+
+    w = key_lookup("overall_width", p);
+    depth = key_lookup("block_depth", p);
+    angle = key_lookup("angle", p);
+    back_w = key_lookup("taper_block", p) ? w - 2*tan(90-angle)*depth : w;
+
+    polygon([
+        [     -w/2,      0],
+        [      w/2,      0],
+        [ back_w/2, -depth],
+        [-back_w/2, -depth],
+    ]);
 }
-module dovetail_clip(size=[10,2,10],dt=1.5,t=2,back_t=0,slope_front=0,solid_bottom=0){
-    // This forms a clip that will grip a dovetail, with the
-    // contact between the m/f parts in the y=0 plane.
-    // This is the female part, and it is centred in X and
-    // extends into +y, +z.
-    // The outer dimensions of the clip are given by size.
-    // dt sets the size of the clip's teeth, and t is the
-    // thickness of the arms.  By default it has no back, and
-    // should be attached to a solid surface.  Specifying back_t>0
-    // will add material at the back (by shortening the arms).
-    // slope_front will add a sloped section to the front of the arms.
-    // this can improve the quality of the bottom of the dovetail
-    // (good if you're inserting from the bottom)
-    // solid_bottom will join the arms together at the bottom, which
-    // can help with bed adhesion.
-    // see dovetail_clip_cutout - most of the options are just passed through.
-	difference(){
-		translate([-size.x/2,0,0]) cube(size);
-		dovetail_clip_cutout(size-[0,back_t+tiny(),0],dt=dt,t=t,slope_front=slope_front,solid_bottom=solid_bottom);
-	}
-}
+module back_of_block_2d(p){
+    // the back of the block to which we attach the male dovetail
+    // or from which we cut the female one
 
-module dovetail_plug(corner_x, r, dt, zx_profile=[[0,0],[10,0],[12,-1]]){
-    // Just the "plug" of a male dovetail (i.e. not the flat surface
-    // it's attached to, just the bit that fits inside the female).
-    // zx_profile is a list of 2-element vectors, each of which defines
-    //   a point in Z-X space, i.e. first element is height and second
-    //   is the shift in the corner position.  For example,
-    //   zx_profile=[[0,0],[10,0],[12,-1]] creates a plug 12mm+tiny() high
-    //   where the top 2mm are sloped at 60 degrees.  NB the use of tiny().
-    union(){
-        // sorry for the copy-paste code; I'm fairly sure it's less readable
-        // if I arrange things in a way that avoids it...
-        // four fat cylinders make the contact point
-        for(i=[0:len(zx_profile)-2]){
-            hull() for(j=[0:1]){
-                z = zx_profile[i+j][0];
-                x = zx_profile[i+j][1];
-                reflect([1,0,0]) translate([corner_x+x,0,z]) rotate(45) translate([sqrt(3)*r,r,0]) repeat([dt*sqrt(2) - (1+sqrt(3))*r,0,0],2) cylinder(r=r,h=tiny());
-            }
-        }
-        // another four cylinders join the plug to the y=0 plane
-        for(i=[0:len(zx_profile)-2]){
-            hull() for(j=[0:1]){
-                z = zx_profile[i+j][0];
-                x = zx_profile[i+j][1];
-                reflect([1,0,0]) translate([corner_x+x,0,z]) rotate(45) repeat([sqrt(3)*r,r,0],2) cylinder(r=tiny(),h=tiny());
-            }
-        }
+    depth = key_lookup("block_depth", p);
+    w = key_lookup("overall_width", p);
+    angle = key_lookup("angle", p);
+    back_w = key_lookup("taper_block", p) ? w - 2*tan(90-angle)*depth : w;
+    fillet_r = key_lookup("fillet_r", p);
+
+    hull() reflect([1,0,0]){
+        translate([back_w/2 - fillet_r*tan(angle/2), -depth + fillet_r]) circle(r=fillet_r);
     }
 }
-module dovetail_m(size=[10,2,10],dt=1.5,t=2,top_taper=1,bottom_taper=0.5,waist=0,waist_dx=0.5,r=0.5){
-    // Male dovetail, contact plane is y=0, dovetail is in y>0
-    // size is a box that is centred in X, sits on Z=0, and extends
-    // in the -y direction from y=0.  This is the mount for the
-    // dovetail, which sits in the +y direction.
-    // The width of the box should be the same as the width of the
-    // female dovetail clip.  The size of the dovetail is set by dt.
-    // t sets the thickness of the female dovetail arms; the dovetail
-    // is actually size.x-2*t wide.
-    r=r; //radius of curvature - something around nozzle width is good.
-    w=size.x-2*t; //width of dovetail
-    h=size.z; //height
-    corner=[w/2-dt,0,0]; //location of the pointy bit of the dovetail
+
+module flange_r(p, width=tiny()){
+    // the angled part of a male dovetail
+
+    w = key_lookup("overall_width", p);
+    flat = key_lookup("outer_flat", p);
+    shiftx = [-width, 0];
+    // we extend the parallelogram into the block slightly, 
+    // at the same angle.
+    shift_in = tiny()*[-cos(key_lookup("angle", p)), -sin(key_lookup("angle", p))];
+
+    polygon([
+        female_point(p) + shift_in,
+        male_point(p),
+        male_point(p) + shiftx,
+        female_point(p) + shiftx + shift_in
+    ]);
+}
+
+function male_point(p) = let(
+    w = key_lookup("overall_width", p),
+    flat = key_lookup("outer_flat", p),
+    depth = key_lookup("depth", p),
+    angle = key_lookup("angle", p)
+) [w/2 - flat + depth/tan(angle), depth];
+
+function female_point(p) = let(
+    w = key_lookup("overall_width", p),
+    flat = key_lookup("outer_flat", p),
+    depth = key_lookup("depth", p),
+    angle = key_lookup("angle", p)
+) [w/2 - flat, 0];
+
+module dovetail_section_m_sharp(p){
+    // A male dovetail, before any filleting of the corners
     difference(){
-		union(){
-            //back of the dovetail (the mount) plus the start of the
-            //dovetail's neck (as far as y=0)
-			sequential_hull(){
-                // start with the cube that the dovetail attaches to
-				translate([-w/2-t,-size.y,0]) cube([w+2*t,size.y-r,h]);
-                // then add shapes that take in the centres of the cylinders
-                // from the next step.  This joins together the nicely-rounded
-                // contact points, such that when we subtract out the cylinders
-                // at the corners we get a nice smooth shape.
-                reflect([1,0,0]) translate(corner+[sqrt(3)*r,-r,0]) cylinder(r=tiny(),h=h);
-                reflect([1,0,0]) translate(corner) cylinder(r=tiny(),h=h);
-			}
-            //contact points (with rounded edges to avoid burrs)
-			difference(){
-				union(){
-					reflect([1,0,0]) hull(){
-						translate(corner+[sqrt(3)*r,-r,0]) cylinder(r=r,h=h);	
-						translate([w/2+t-r,-r,0]) cylinder(r=r,h=h);	
-                    }
-					//hull() reflect([1,0,0]) translate(corner) rotate(45) translate([sqrt(3)*r,r,0]) repeat([1,0,0],2) cylinder(r=r,h=h);
-                    // the "plug" is tapered for easy insertion, and may
-                    // have optional indents in the middle (a "waist").
-                    waist_dx = waist>waist_dx*4 ? waist_dx : 0;
-                    waist_dz = waist>waist_dx*4 ? waist_dx*2 : tiny();
-                    zx_profile = [[0,-bottom_taper],
-                                  [bottom_taper,0],
-                                  [h/2-waist/2,0],
-                                  [h/2-waist/2+waist_dz,-waist_dx],
-                                  [h/2+waist/2-waist_dz,-waist_dx],
-                                  [h/2+waist/2,0],
-                                  [h-top_taper,0],
-                                  [h-tiny(),-top_taper/2]];
-                    dovetail_plug(corner.x, r, dt, zx_profile);
+        union(){
+            block_sharp(p);
 
-				}
-			}
-		}
-        // We round out the internal corner so that we grip with the edges
-        // of the tooth and not the point (you get better contact this way).
-		reflect([1,0,0]) translate(corner) cylinder(r=r,h=3*h,center=true);
-	}
+            hull() reflect([1, 0]) flange_r(p);
+        }
+
+        // relieve internal corners
+        reflect([1, 0]) translate(female_point(p)){
+            circle(key_lookup("relief_r", p));
+        }        
+    }
 }
 
-module dovetail_clip_y(size, dt=1.5, t=2, taper=0, endstop=false){
-    // Make a dovetail where the sliding axis is along y, i.e. horizontal
-    // This means it's the top of the object that grips the dovetail.
-    //
-    // the x and y elements of size set the dovetail width and "height"
-    // the z element sets the distance from the end of the teeth (z=0) to
-    // the bottom of the mount.
-    // dt is the size of the dovetail teeth
-    // endstop enables a link on the other side of the Y axis, to stop motion there.
-    // endstop_w, endstop_t set the width and thickness (in y and z) of the link
-    // taper optionally feathers the dovetail onto an edge
-    // the dovetail extends along the +y direction from y=0
-    h = size.y;
-    ew = 0;//endstop ? endstop_w : 0;
-    reflect([1,0,0]) translate([-size.x/2,0,0]) mirror([0,0,1]) sequential_hull(){
-        translate([0,dt,0]) cube([t+dt,h-2*dt,tiny()]);
-        cube([t,h,dt]);
-        translate([0,-ew,0]) cube([t,h+ew,dt]);
-        translate([0,-taper,size.z-tiny()]) cube([t,h+2*taper,tiny()]);
+module dovetail_section_f_sharp_cutout(p){
+    // We cut this shape out of a block to make the female cutout
+
+    // The male dovetail
+    hull() reflect([1, 0]) mirror([0,1]) flange_r(p);
+
+    // relieve internal corners
+    hull() reflect([1, 0]) translate(-male_point(p)){
+        circle(key_lookup("relief_r", p));
     }
-    if(endstop){
-        difference(){
-            hull(){ // make a bridge between the lower tapers
-                translate([0,-taper/2,-size.z+tiny()]) cube([size.x,taper,2*tiny()],center=true);
-                translate([0,0,-tiny()]) cube([size.x,tiny(),2*tiny()],center=true);
+}
+
+module dovetail_section_f_sharp(p){
+    // A female dovetail, before any filleting of the corners
+    difference(){
+        block_sharp(p);
+        
+        dovetail_section_f_sharp_cutout(p);
+    }
+}
+
+module rotate_repeat(angle){
+    union(){
+        children();
+        rotate(angle) children();
+    }
+}
+
+module clamp_frame(p){
+    // place the origin at the pivot point of the clamp
+    // and align y axis with the dovetail angle
+    translate(female_point(p)) rotate(key_lookup("angle", p) - 90){
+        translate([0, -key_lookup("lever", p)]) children();
+    }
+}
+
+module clamp_cutout_2d(p){
+    // 2D cutout to make a male dovetail clamp
+    fillet_r = key_lookup("fillet_r", p);
+    fp = female_point(p);
+    mp = male_point(p);
+    lever = key_lookup("lever", p);
+    flex_l = key_lookup("flex_l", p);
+    flex_t = key_lookup("flex_t", p);
+    clamp_t = key_lookup("clamp_t", p);
+    relief_r = key_lookup("relief_r", p);
+    clamp_angle = key_lookup("clamp_angle", p);
+    $fn=16;
+    clamp_frame(p){
+        // between nut and screw
+        hull(){
+            translate([0, fillet_r + flex_t/2]) circle(fillet_r);
+            translate([0, lever]) circle(fillet_r); 
+        } 
+        // next to flexure
+        hull() reflect([1,0]){
+            translate([flex_l/2, fillet_r + flex_t/2]) circle(fillet_r);
+        }
+        // behind clamp
+        sequential_hull(){
+            // start next to the flexure
+            translate([flex_l/2, -fillet_r - flex_t/2]) circle(fillet_r);
+            // duplicate the corner point to allow it to bend
+            rotate_repeat(clamp_angle) translate([-clamp_t, -fillet_r - flex_t/2]){
+                circle(fillet_r);
             }
-            translate([0,0,-size.z+0.5+999/2]) cube([(size.x-2*t-2*dt)-2,999,999],center=true); //cut the middle
-            translate([0,-taper/2,-size.z]) cube([size.x,taper-1.5,0.5*2+tiny()],center=true);
+            // don't use the second corner point, to avoid shortening the clamping part
+            // because of cosine error
+            translate([-clamp_t, -fillet_r - flex_t/2]){
+                circle(fillet_r);
+            }
+            // a far-away, wider point, so the opening is wedge-shaped.
+            rotate_repeat(clamp_angle) translate([-clamp_t, 99]) circle(fillet_r);
+        } 
+    }
+}
+module clamp_cutout_empty_2d(p){
+    // 2D cutout to make a male dovetail clamp
+    union(){
+        clamp_cutout_2d(p);
+
+        // take the hull of just the internal part
+        hull() intersection(){
+            clamp_cutout_2d(p);
+            hull() repeat([-99, 0], 2, center=false){
+                clamp_frame(p) reflect([0, 1]) {
+                    translate([0, key_lookup("lever", p)]) circle(key_lookup("relief_r", p));
+                }
+            }
         }
     }
 }
-//dovetail_clip_y([12,12,3],taper=2,endstop=true);
-///
-test_size = [14,10,24];
-test_dt = 2;
-//color("blue") dovetail_clip(test_size,dt=test_dt,slope_front=3,solid_bottom=0.5);
-color("green") translate([0,0,-2]) dovetail_m(test_size, waist=10, dt=test_dt,waist_dx=0.2);
-//*/
+module clamp_cutout_base_2d(p){
+    // 2D cutout to separate the point of the clamp from the base
+    fillet_r = key_lookup("fillet_r", p);
+    relief_r = key_lookup("relief_r", p);
+    lever = key_lookup("lever", p);
+    
+    union(){
+        // separate the flange from the block
+        hull() translate(female_point(p)){
+            circle(relief_r);
+            translate([-key_lookup("clamp_t", p)/sin(key_lookup("angle", p)), 0]) circle(relief_r);
+        }
+
+        // take the hull of just the external part
+        intersection(){
+            clamp_cutout_2d(p);
+            hull() reflect([1, 0]) translate(female_point(p)){
+                circle(key_lookup("relief_r", p));
+                translate([0, 99]) circle(key_lookup("relief_r", p));
+            }
+        }
+    }
+}
+module clamp_back_2d(p, extra_left=0, extra_right=0, extra_top=0){
+    // back of the internal part of the clamp
+    // extra_l and extra_r add additional length on
+    // the left/right respectively.  By default (0), 
+    // the part matches the size of the external part
+    // of the clamp (i.e. it's in line with female_point)
+    length = (
+        key_lookup("clamp_t", p) -
+        key_lookup("fillet_r", p) +
+        extra_left + 
+        extra_right
+    );
+    clamp_frame(p){
+        translate([-length + extra_right, -key_lookup("flex_t", p)/2]){
+            square([length, key_lookup("flex_t", p) + extra_top]);
+        }
+    }
+}
+
+module clamping_flange_2d(p){
+    // 2D shape of the part of the flange that moves
+    convex_fillet(p) difference(){
+        union(){
+            hull(){
+                // external end
+                flange_r(
+                    p, 
+                    width=( // NB this is defined in x, not in the clamp_frame.
+                        (key_lookup("clamp_t", p) - key_lookup("fillet_r", p))
+                        /sin(key_lookup("angle", p))
+                    )
+                );
+                // internal end
+                clamp_back_2d(p); // NB this gets cut by clamp_cutout_2d
+            }
+
+            // add the flexure to join to the block. 
+            clamp_back_2d(
+                p, 
+                extra_right=key_lookup("flex_l", p)/2 + key_lookup("fillet_r", p),
+                extra_left=-key_lookup("fillet_r", p) // avoid fouling the fillet
+            );
+        }
+
+        clamp_cutout_2d(p);
+    }
+}
+
+module clamping_flange(p){
+    // The moving part that makes the right hand flange
+    // clamp the female dovetail
+    gap = key_lookup("vertical_gap", p);
+    bottom = key_lookup("bottom_t", p) + gap + key_lookup("clamp_support_t", p);
+    top = key_lookup("overall_height", p) - gap - key_lookup("top_t", p);
+    translate([0,0,bottom]) linear_extrude(top - bottom){
+        clamping_flange_2d(p);
+    }
+}
+
+module clamping_bolt_and_nut(p){
+    // The counterbored screw and nut that clamp the dovetail
+    h = key_lookup("overall_height", p);
+    clamp_y = ( // Place the clamping bolt relative to the female point
+        key_lookup("lever", p) - key_lookup("pinch_bolt_inset", p)
+    );
+    fillet_r = key_lookup("fillet_r", p);
+    // We place everything relative to 
+    clamp_frame(p) translate([0, clamp_y, h/2]){
+        $fn = 16;
+        // Counterbored hole for screw (in solid block)
+        rotate([0, 90, 0]){
+            cylinder(d=3*1.2, h=99);
+            translate([0,0,fillet_r + 4]) cylinder(d=3*1.3*2, h=99);
+        }
+        // Nut trap, with angled entry (in the clamp)
+        rotate([0, -90, 0]){
+            cylinder(d=3*1.2, h=key_lookup("clamp_t", p)); //shaft of the screw
+            translate([0,0, fillet_r + 2]) rotate([0,0,60]) sequential_hull(){
+                // TODO: replace this with a proper parametric nut trap!
+                cylinder(r=3*1.1, h=3.2, $fn=6);
+                //translate([2,0,0]) cylinder(r=3*1.2, h=2.8, $fn=6);
+                translate([99,0,0]) cylinder(r=3*1.1, h=3.2, $fn=6);
+            }
+        }
+    }
+}
+
+module clamp_support(p){
+    // a bridge to support the internal part of the clamp
+    gap = key_lookup("vertical_gap", p);
+    bottom = key_lookup("bottom_t", p) + gap;
+    support_t = key_lookup("clamp_support_t", p);
+    fillet_r = key_lookup("fillet_r", p);
+
+    // bridge the bottom of the flexure right across the gap
+    translate([0,0,bottom]) linear_extrude(support_t){
+        // a bridge to support the internal part of the clamp
+        // this sits underneath the back of the clamp
+        clamp_back_2d(
+            p, 
+            extra_left=3*key_lookup("fillet_r", p), 
+            extra_right=key_lookup("flex_l", p)/2 + tiny()
+        );
+    }
+
+    // bridge the bottom layer of the cut-out next to the flexure
+    translate([0,0,bottom + support_t]) linear_extrude(support_t){
+        // a bridge to support the internal part of the clamp
+        // this sits underneath the back of the clamp
+        clamp_back_2d(
+            p, 
+            extra_left=-fillet_r, 
+            extra_right=-fillet_r,
+            extra_top=3*fillet_r
+        );
+    }
+}
+
+module convex_fillet(p){
+    // smooth the convex corners
+    $fn=12;
+
+    offset(key_lookup("fillet_r", p)) offset(-key_lookup("fillet_r", p)){
+        children();
+    }
+}
+module concave_fillet(p){
+    // smooth the concave corners
+    $fn=12;
+
+    offset(-key_lookup("fillet_r", p)) offset(key_lookup("fillet_r", p)){
+        children();
+    }
+}
+
+module dovetail_section_m(p, relief=true){
+    convex_fillet(p){
+        dovetail_section_m_sharp(p, relief=relief);
+    }
+}
+
+module undercut_male_dovetail(p){
+    // Chamfer the bottom of the mating faces to avoid
+    // wonkiness due to "elephant's foot" issues
+    minkowski(){
+        mirror([0,1,0]) linear_extrude(tiny()){
+            dovetail_section_f_sharp(p);
+        }
+
+        cylinder(r1=2, r2=tiny(), h=2, $fn=16, center=true);
+    }
+}
+module dovetail_clamp_m(p){
+    // male dovetail with clamping arm
+    h = key_lookup("overall_height", p);
+    difference(){
+        union(){
+            difference(){
+                linear_extrude(h) convex_fillet(p) difference(){
+                    dovetail_section_m_sharp(p);
+
+                    clamp_cutout_base_2d(p);
+                }
+
+                // void for clamp
+                translate([0,0,2]) linear_extrude(h-4){
+                    concave_fillet(p) clamp_cutout_empty_2d(p);
+                }
+            }
+
+            // clamping flange
+            clamping_flange(p);
+            clamp_support(p);
+        }
+
+        clamping_bolt_and_nut(p);
+        
+        // work around "elephant's foot"/brim on mating faces
+        undercut_male_dovetail(p);
+    }
+}
+
+
+
+module dovetail_f(p, height=undef){
+    // A female dovetail, existing in y<0 with mating face at y=0
+    h = is_undef(height) ? key_lookup("overall_height", p) : height;
+    linear_extrude(h) convex_fillet(p){
+        dovetail_section_f_sharp(p);
+    }
+}
+module dovetail_f_cutout(p, height=undef){
+    // Cut this shape out of a block with a face at y=0 to make
+    // a dovetail
+    h = is_undef(height) ? key_lookup("overall_height", p) : height;
+    w = key_lookup("overall_width", p);
+    linear_extrude(h) concave_fillet(p) union(){
+        dovetail_section_f_sharp_cutout(p);
+        translate([-w/2, tiny()]) square([w, 99]);
+    }
+}
+
+module dovetail_block(p, height=undef){
+    // A 3D block, filleted as the dovetail would be
+    h = is_undef(height) ? key_lookup("overall_height", p) : height;
+    linear_extrude(h) convex_fillet(p){
+        block_sharp(p);
+    }
+}
+
+difference(){
+    render(6) dovetail_clamp_m(dovetail_default_params());
+
+    translate([0,0,key_lookup("overall_height", dovetail_default_params())/2]) cylinder(r=99, h=99, $fn=5);
+}
+
+%mirror([0,1,0]) dovetail_f(dovetail_default_params());
