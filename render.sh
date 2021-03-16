@@ -12,9 +12,6 @@ cd ../..
 
 # OpenSCAD renders
 # Note some render to rendering/annotations. These should then be run through inkscape below
-build_system/openscad_render.py -o "rendering/annotations/optics_assembly_tube_lens1.png" -D "FRAME=1;" --camera=29,0,59,69,0,90,290 --imgsize=1000,2000  rendering/rms_optics_assembly.scad
-build_system/openscad_render.py -o "rendering/annotations/optics_assembly_tube_lens2.png" -D "FRAME=2;" --camera=29,0,59,69,0,90,290 --imgsize=1000,2000  rendering/rms_optics_assembly.scad
-build_system/openscad_render.py -o "rendering/annotations/optics_assembly_tube_lens3.png" -D "FRAME=3;" --camera=29,0,59,69,0,90,290 --imgsize=1000,2000  rendering/rms_optics_assembly.scad
 
 build_system/openscad_render.py -o "docs/renders/optics_assembly_camera1.png" -D "FRAME=4;" --camera=7,-14,-21,247,0,211,250 --imgsize=1200,2000  rendering/rms_optics_assembly.scad
 build_system/openscad_render.py -o "docs/renders/optics_assembly_camera2.png" -D "FRAME=5;" --camera=7,-14,-21,247,0,211,250 --imgsize=1200,2000  rendering/rms_optics_assembly.scad
@@ -51,10 +48,6 @@ build_system/openscad_render.py -o "docs/renders/actuator_assembly_gear2.png" -D
 build_system/openscad_render.py -o "docs/renders/actuator_assembly_x.png" -D "FRAME=5;" --camera=4,35,35,71,0,186,330 --imgsize=2400,2000  rendering/actuator_assembly.scad
 build_system/openscad_render.py -o "docs/renders/actuators_assembled.png" -D "FRAME=6;" --camera=4,35,35,71,0,186,330 --imgsize=2400,2000  rendering/actuator_assembly.scad
 
-
-build_system/openscad_render.py -o "docs/renders/picam1.png" -D "FRAME=1;" --camera=-6,3,11,46,0,90,140 --imgsize=2400,2000  rendering/prepare_picamera.scad
-build_system/openscad_render.py -o "docs/renders/picam2.png" -D "FRAME=2;" --camera=0,0,0,29,0,90,140 --imgsize=2400,2000  rendering/prepare_picamera.scad
-build_system/openscad_render.py -o "docs/renders/picam3.png" -D "FRAME=3;" --camera=1,18,8,52,0,90,140 --imgsize=2400,2000  rendering/prepare_picamera.scad
 
 # inkscape annotations, make sure SVG uses relative links.
 inkscape -z -e "docs/renders/optics_assembly_tube_lens.png" "rendering/annotations/annotate_optics_assembly_tube_lens.svg"
