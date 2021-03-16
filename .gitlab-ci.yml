@@ -72,8 +72,6 @@ render:
 
     script:
       - xvfb-run --auto-servernum --server-args "-screen 0 1024x768x24" ./render.py
-      # TODO: running both for now, remove this once all are ported to render.py
-      - xvfb-run --auto-servernum --server-args "-screen 0 1024x768x24" ./render.sh
 
     artifacts:
       expire_in: 1 week
