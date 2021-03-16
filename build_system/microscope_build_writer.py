@@ -1,5 +1,5 @@
 '''
-In this submodule we create a class that writes a "ninja.build" file for the microscope STLs.
+In this submodule we create a class that writes a "build.ninja" file for building the microscope STLs.
 '''
 
 import os
