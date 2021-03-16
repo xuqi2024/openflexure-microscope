@@ -1,18 +1,37 @@
 #!/usr/bin/env python3
 import sys
+from dataclasses import dataclass
 from ninja import _program
 from build_system.render_build_writer import RenderBuildWriter
 
 NINJA_FILE = "render.ninja"
 
+@dataclass
+class Camera:
+    """Data class to handle the OpenSCAD camera parameters"""
+    position: list = (0, 0, 0)
+    angle: list = (0, 0, 0)
+    distance: float = 240
+
+    def as_string(self):
+        combined = self.position + self.angle + (self.distance,)
+        return ','.join([str(i) for i in combined])
+
+def format_render_params(camera, imgsize, frame=None):
+    imgsize_str = ','.join([str(i) for i in imgsize])
+    params = f"--camera={camera.as_string()} --imgsize={imgsize_str}"
+    if frame is not None:
+        params += f" -D 'FRAME={frame};'"
+    return params
+
+
 with RenderBuildWriter(build_filename=NINJA_FILE) as rbw:
-    # OpenSCAD renders
-    # Note some render to rendering/annotations. These should then be run through inkscape below
-    for i in [1, 2, 3]:
+    for frame in [1, 2, 3]:
+        camera = Camera(position=(29, 0, 59), angle=(69, 0, 90), distance=290)
         rbw.openscad_render(
-            f"rendering/annotations/optics_assembly_tube_lens{i}.png",
+            f"rendering/annotations/optics_assembly_tube_lens{frame}.png",
             input_file="rendering/rms_optics_assembly.scad",
-            parameters=f"-D 'FRAME={i};' --camera=29,0,59,69,0,90,290 --imgsize=1000,2000",
+            parameters= format_render_params(camera, imgsize=[1000,2000], frame=frame)
         )
     rbw.openscad_render(
         "docs/renders/picam1.png",
