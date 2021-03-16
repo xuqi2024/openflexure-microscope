@@ -13,8 +13,6 @@ cd ../..
 # OpenSCAD renders
 # Note some render to rendering/annotations. These should then be run through inkscape below
 
-build_system/openscad_render.py -o "docs/renders/optics_assembly_camera1.png" -D "FRAME=4;" --camera=7,-14,-21,247,0,211,250 --imgsize=1200,2000  rendering/rms_optics_assembly.scad
-build_system/openscad_render.py -o "docs/renders/optics_assembly_camera2.png" -D "FRAME=5;" --camera=7,-14,-21,247,0,211,250 --imgsize=1200,2000  rendering/rms_optics_assembly.scad
 convert docs/renders/optics_assembly_camera*.png +append docs/renders/optics_assembly_camera.png
 
 build_system/openscad_render.py -o "docs/renders/optics_assembly_objective1.png" -D "FRAME=6;" --camera=-2,2,25,55,0,90,290 --imgsize=1200,2000  rendering/rms_optics_assembly.scad
