@@ -207,3 +207,23 @@ subprocess.run(
 )
 
 _program("ninja", ["-f", NINJA_FILE] + sys.argv[1:])
+
+# inkscape annotations, make sure the SVGs use relative links. we don't use
+# ninja for these because it's pretty fast and it's too much work to figure out
+# the build dependencies of the SVGs
+subprocess.run(
+    [
+        "inkscape",
+        "--without-gui",
+        "--export-png=docs/renders/optics_assembly_tube_lens.png",
+        "rendering/annotations/annotate_optics_assembly_tube_lens.svg",
+    ]
+)
+subprocess.run(
+    [
+        "inkscape",
+        "--without-gui",
+        "--export-png=docs/renders/optics_assembly_condenser_lens.png",
+        "rendering/annotations/annotate_optics_assembly_condenser_lens.svg",
+    ]
+)

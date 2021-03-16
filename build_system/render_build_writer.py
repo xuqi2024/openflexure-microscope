@@ -19,10 +19,10 @@ class RenderBuildWriter(NinjaWriter):
     def _create_rules(self):
         self.rule(
             "openscad_render",
-            command="build_system/openscad_render.py $parameters $in -o $out -d $out.d",
+            command="build_system/openscad_render.py $parameters $in -o '$out' -d '$out.d'",
             depfile="$out.d",
         )
-        self.rule("imagemagick_append", command="convert $in +append $out")
+        self.rule("imagemagick_append", command="convert $in +append '$out'")
 
     def openscad_render(self, output, input_file, parameters=None):
         self.build(
