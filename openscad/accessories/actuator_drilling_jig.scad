@@ -22,6 +22,9 @@ use <../libs/logo.scad>
 use <../libs/dovetail.scad>
 include <../libs/microscope_parameters.scad> //All the geometric variables are now in here.
 
+params = default_params();
+actuator_h = key_lookup("actuator_h", params);
+
 outer_clearance = 0.5;
 cr = column_base_radius() + outer_clearance;
 
@@ -30,7 +33,7 @@ difference(){
 
     //void for the actuator column
     minkowski(){
-        actuator_column(h=actuator_h+1, no_voids=true, flip_nut_slot=true);
+        actuator_column(actuator_h+1, no_voids=true, flip_nut_slot=true);
         cylinder(r=0.5, h=tiny(), $fn=8);
     }
     //clearance for the lever

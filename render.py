@@ -144,6 +144,14 @@ def generate_picam(writer):
         writer.openscad_render(output_file, input_file, camera, imgsize, frame)
 
 
+def generate_cable_management(writer):
+    input_file = "rendering/cable_management.scad"
+    camera = Camera(position=[8, -8, 8], angle=[69, 0, 190], distance=440)
+    imgsize = [2400, 2000]
+    output_file = "docs/renders/cable_management.png"
+    writer.openscad_render(output_file, input_file, camera, imgsize)
+
+
 with RenderBuildWriter(build_filename=NINJA_FILE) as rbw:
     generate_optics_assembly_tube_lens(rbw)
     generate_optics_assembly_camera(rbw)
