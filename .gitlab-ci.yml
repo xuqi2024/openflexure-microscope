@@ -67,7 +67,8 @@ render:
 
     before_script:
       - apt-get update -qq
-      - apt-get -y -qq install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates xvfb imagemagick unzip inkscape openscad
+      - apt-get -y -qq install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates xvfb imagemagick unzip inkscape openscad python3-pip
+      - pip3 install -r requirements.txt
 
     script:
       - xvfb-run --auto-servernum --server-args "-screen 0 1024x768x24" ./render.py
