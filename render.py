@@ -46,7 +46,7 @@ def generate_optics_assembly_camera(writer):
     camera = Camera(position=[7, -14, -21], angle=[247, 0, 211], distance=250)
     input_file = "rendering/rms_optics_assembly.scad"
     for frame in [1, 2]:
-        output_file = f"rendering/annotations/optics_assembly_camera{frame}.png"
+        output_file = f"docs/renders/optics_assembly_camera{frame}.png"
         parameters = format_render_params(camera, imgsize=[1200, 2000], frame=frame + 3)
         writer.openscad_render(
             output_file,
