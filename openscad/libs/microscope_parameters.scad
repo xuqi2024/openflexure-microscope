@@ -55,7 +55,8 @@ function default_params() = [["leg_r", 30],     // radius on which the innermost
                              ["z_lever_ratio", 1.0], //  mechanical advantage of actuator over objective mount (must be >1)
                              ["condenser_angle", 15], //angle of the top of the condenser relative to the xy plane
                              ["print_ties", true], //sets whether the ties that support printing are on. It is usefull to be able to turn these off for rendering
-                             ["smart_brim_r", 5] // The radius of the smart brim on the main body
+                             ["smart_brim_r", 5], // The radius of the smart brim on the main body
+                             ["actuator_h", 25] //height of the actuator columns
                             ]; 
 
 
@@ -102,7 +103,6 @@ function flex_z2(params) = leg_height(params) - key_lookup("leg_block_t", params
 z_strut_t = 6;  // (z) thickness of struts for Z axis
 function leg_dims(params) = [4,flex_dims().x,flex_z2(params)+flex_dims().z]; // size of vertical legs
 leg_middle_w = 12; // width of the middle part of each leg
-actuator_h = 25; //height of the actuator columns
 dz = 0.5; //small increment in Z (~ 2 layers)
 
 function leg_outer_w(params) = leg_middle_w + 2*flex_dims().y + 2*leg_dims(params).x; // overall width of parallelogram legs that support the stage
@@ -149,10 +149,35 @@ function z_nut_y(params) = let(
 function z_actuator_travel(params) = z_lever_length(params)*0.15; // distance moved by the Z actuator
 function z_actuator_tilt(params) = -asin(z_flexures_z1/z_lever_length(params)); //angle of the Z actuator
 
-//TODO understand and rename this
-// x position of the outside of the Z-axis static anchors (either side of the XY stage, on the X axis) 
-// (no longer used by Z axis but still in use elsewhere.)
-function z_flexure_x(params) = let(
+function motor_connector_size() = [5.5, 14.5, 8];
+//height of the printed lug:
+function motor_lug_h() = 11;
+//height of the lug/bracket on the motor itself:
+function motor_bracket_h() = 0.8;
+function motor_shaft_pos(h) = [0,-20,h+2];
+function motor_screw_separation() = 35;
+function motor_screw_pos(h) = let(
+    shaft_pos = motor_shaft_pos(h)
+) [motor_screw_separation()/2,shaft_pos.y+7.8,shaft_pos.z+motor_lug_h()];
+
+function y_actuator_pos(params) = let(
+    leg_r = key_lookup("leg_r", params),
+    radial_distance = leg_r+actuating_nut_r(params)
+) [-1, 1, 0]*radial_distance/sqrt(2);
+
+function y_motor_z_pos(params) = let(
+    actuator_h = key_lookup("actuator_h", params)
+) motor_screw_pos(actuator_h+xy_actuator_travel(params)).z;
+
+//Note this is not a true z position as it is the position along the tilted axis
+function z_motor_z_pos(params) = let(
+    actuator_h = key_lookup("actuator_h", params)
+) motor_screw_pos(actuator_h+z_actuator_travel(params)).z;
+
+
+function lug_back_offset() = [-5, -8, 0];
+
+function back_lug_x_pos(params) = let(
     leg_r = key_lookup("leg_r", params),
     tenth_of_height = max(5,leg_dims(params).z*0.1)
 ) (leg_r-flex_dims().y-tenth_of_height)*sqrt(2);
@@ -165,20 +190,25 @@ function inner_wall_h(params) = z_flexures_z2(params) - 10; //height of walls in
 
 // base_mounting_holes returns a list of the holes for mounting the microscope
 // to the base. By default it returns all four holes.
-// To get only the lugs run `base_mounting_holes("lugs")`
+// To get only the back hole run `base_mounting_holes("back")`
 // To get only the front holes run `base_mounting_holes("front")`
 function base_mounting_holes(params, type="all") = let
 (
-    lug_pos = [[z_flexure_x(params)+4,-8,0],
-               [-z_flexure_x(params)-4,-8,0]],
-    front_pos =[[-20,z_nut_y(params)-4,0],
-                [20,z_nut_y(params)-4,0]],
-    lugs = (type == "lugs") || (type == "all"),
+    back_lug_hole_x = back_lug_x_pos(params) + wall_t/2 - lug_back_offset().x,
+    back_pos = [[back_lug_hole_x,-8,0],
+               [-back_lug_hole_x,-8,0]],
+    actuator_offset = [-1, -1, 0] * ss_outer().x/2/sqrt(2),
+    y_front_lug_pos = y_actuator_pos(params) + actuator_offset + [-6.5, .5, 0],
+    front_pos =[y_front_lug_pos,
+                [-y_front_lug_pos.x, y_front_lug_pos.y, 0]],
+    back = (type == "back") || (type == "all"),
     front = (type == "front") || (type == "all"),
     //Set which holse to output
-    holes = [lugs?lug_pos:[], front?front_pos:[]]
+    holes = [back?back_pos:[], front?front_pos:[]]
     //Final list comprehension make a single list of holes
 ) [for (h = holes) each h];
+
+function lug_angles() = [-120, 120, 50, -50];
 
 endstop_extra_ringheight=feet_endstops?1:0;
 

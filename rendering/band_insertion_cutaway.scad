@@ -11,14 +11,15 @@ use <../openscad/libs/utilities.scad>
 use <../openscad/actuator_assembly_tools.scad>
 use <../openscad/libs/microscope_parameters.scad>
 use <../openscad/feet.scad>
+use <../openscad/main_body.scad>
 use <../openscad/libs/libdict.scad>
 use <librender/hardware.scad>
 use <librender/render_settings.scad>
 use <librender/assembly_parameters.scad>
 
-module cut_actuator_housing(cut=true){
+module cut_actuator_housing(params, cut=true){
     difference(){
-        screw_seat(column_height(), motor_lugs=true);
+        xy_screw_seat(params, label="")
 
         // cutout actuator hole
         difference(){ 
@@ -42,9 +43,10 @@ module render_frame(frame_dict){
     casing_alpha = key_lookup("casing_alpha", frame_dict);
     foot_alpha = key_lookup("foot_alpha", frame_dict);
     tool_kink = key_lookup("tool_kink", frame_dict);
+    actuator_h = key_lookup("actuator_h", params);
 
     color(body_colour(), 1.0){
-        actuator_column(25, 0, join_to_casing=false);
+        actuator_column(actuator_h, 0, join_to_casing=false);
     }
 
     translate(band_tr){
@@ -68,7 +70,7 @@ module render_frame(frame_dict){
     // See though object last
     color(body_colour(), casing_alpha){
         render(6){
-            cut_actuator_housing(cut=casing_cut);
+            cut_actuator_housing(params, cut=casing_cut);
         }
     }
 }

@@ -13,6 +13,7 @@
 ******************************************************************/
 
 use <./MCAD/involute_gears.scad> // forward slash - for platform independence
+use <./microscope_parameters.scad>
 use <./utilities.scad>
 
 
@@ -130,9 +131,9 @@ module motor_clearance(h=15){
     // The shaft is not included.
     linear_extrude(height=h){
         circle(r=14+1.5);
-        hull() reflect([1,0]) translate([35/2,0]) circle(r=4.5);
+        hull() reflect([1,0]) translate([motor_screw_separation()/2,0]) circle(r=4.5);
     }
-    reflect([1,0,0]) translate([35/2,0,0]) rotate(180) trylinder_selftap(4,h=20,center=true);
+    reflect([1,0,0]) translate([motor_screw_separation()/2,0,0]) rotate(180) trylinder_selftap(4,h=20,center=true);
 }
 
 module motor_and_gear_clearance(gear_h=10, h=999){

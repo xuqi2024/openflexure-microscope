@@ -79,19 +79,208 @@ module z_bridge_wall_vertex(params){
     inner_wall_vertex(params, 45, leg_outer_w(params)/2+wall_t/2, inner_wall_h(params));
 }
 
-module z_anchor_wall_vertex(params){
+function mounting_lug_wall_vertex_position(params) = [-back_lug_x_pos(params)-wall_t/2, -wall_t/2, 0];
+
+function outer_wall_tilt(params) = atan(wall_t/inner_wall_h(params));
+
+module mounting_lug_wall_vertex(params){
     // This is the vertex of the supporting wall nearest
     // to the Z anchor - it doesn't make sense to use the
     // function above as it's got the wrong symmetry.
     // We also use this in a few places so it's worth saving
-    translate([-z_flexure_x(params)-wall_t/2,-wall_t/2,0]){
-        wall_vertex(h=inner_wall_h(params), y_tilt=atan(wall_t/inner_wall_h(params)));
+    //this is on the y_side it is reflected for the z_side
+    translate(mounting_lug_wall_vertex_position(params)){
+        wall_vertex(h=inner_wall_h(params), y_tilt=outer_wall_tilt(params));
     }
 }
 
-module y_actuator_wall_vertex(params, x=1){
+
+function y_actuator_wall_vertex_position(params, inside=true) = let(
+    tansverse_distance = ss_outer().x/2 - wall_t/2,
+    x_sign = inside? 1 : -1
+) y_actuator_pos(params) + [x_sign, x_sign, 0]*tansverse_distance/sqrt(2);
+
+module y_actuator_wall_vertex(params, inside=true){
     // A wall vertex for the y actuator.  x=-1,1 picks the side
     // of the actuator where the vertex is placed.
-    leg_frame(params, 45) translate([x*(ss_outer().x/2-wall_t/2),
-                             actuating_nut_r(params), 0]) wall_vertex();
+    y_tilt = inside ? 0 : outer_wall_tilt(params);
+    translate(y_actuator_wall_vertex_position(params, inside)){
+        wall_vertex(y_tilt=y_tilt);
+    }
+}
+
+module z_actuator_wall_vertex(params, front=true){
+    if (front){
+        y_tr = z_nut_y(params)+ss_outer().y/2-wall_t/2;
+        translate([0, y_tr, 0]){
+            wall_vertex();
+        }
+    }
+    else{
+        x_tr = -(z_anchor_w/2+wall_t/2+1);
+        y_tr = z_anchor_y + 1;
+        translate([x_tr, y_tr, 0]){
+            wall_vertex();
+        }
+    }
+}
+
+// The "wall" that forms most of the microscope's structure
+module wall_inside_xy_stage(params){
+
+    // First, go around the inside of the legs, under the stage.
+    // This starts at the Z nut seat.  I've split it into two
+    // blocks, because the shape is not convex so the base
+    // would be bigger than the walls otherwise.
+    reflect([1,0,0]) sequential_hull(){
+        mirror([1,0,0]){
+            z_bridge_wall_vertex(params);
+        }
+        z_bridge_wall_vertex(params);
+        inner_wall_vertex(params, 45, -leg_outer_w(params)/2, inner_wall_h(params));
+        mounting_lug_wall_vertex(params);
+        inner_wall_vertex(params, 135, leg_outer_w(params)/2, inner_wall_h(params));
+        //The wall that has the reflection illumination cut-out is double thickness
+        // to improve stiffness
+        inner_wall_vertex(params, 135, -(leg_outer_w(params)/2-wall_t/2), inner_wall_h(params), thick=true);
+        inner_wall_vertex(params, -135, leg_outer_w(params)/2-wall_t/2, inner_wall_h(params), thick=true);
+
+    };
+
+}
+
+module wall_outside_xy_actuators(params){
+    // Add the wall from the XY actuator column to the middle
+    sequential_hull(){
+        mounting_lug_wall_vertex(params); // join at the Z anchor
+        // [nb this is no longer actually the z anchor since the new z axis]
+        // anchor at the same angle on the actuator
+        // NB the base of the wall is outside the
+        // base of the screw seat
+        y_actuator_wall_vertex(params, inside=false);
+    }
+}
+
+module wall_inside_xy_actuators(params){
+    // Connect the Z anchor to the XY actuators
+    hull(){
+        z_actuator_wall_vertex(params, front=false);
+        y_actuator_wall_vertex(params);
+    }
+}
+
+module wall_between_actuators(params, y_actuator=true){
+    // link the actuators together
+    if (y_actuator){
+        hull(){
+            y_actuator_wall_vertex(params);
+            z_actuator_wall_vertex(params, front=true);
+        }
+    }
+    else{
+        //for the x actuator wall mirror the same function
+        mirror([1,0,0]){
+            wall_between_actuators(params);
+        }
+    }
+}
+
+
+//wall angle about the motor lug
+function y_wall_angle(params) = let(
+    wall_start = mounting_lug_wall_vertex_position(params),
+    wall_end = y_actuator_wall_vertex_position(params, inside=false),
+    wall_disp = wall_end - wall_start
+) atan(wall_disp.y/wall_disp.x);
+
+//default housing height
+//height of the housing is 0.8mm higher than the motor screw due to the thickness
+// of the lug on the motor
+function side_housing_h(params) = y_motor_z_pos(params) + motor_bracket_h();
+function housing_size(h) = [motor_connector_size().x+4+2,motor_connector_size().y+4+2+15.5, h];
+
+
+module side_housing_placement(params){
+    translate(y_actuator_wall_vertex_position(params, inside=false)){
+        rotate([0, 0, y_wall_angle(params)-90]){
+            children();
+        }
+    }
+}
+
+module side_housing(params, h=undef, cavity_h=undef, attach=true){
+    //attach: whether the housing it attached to the wall
+    actuator_h = key_lookup("actuator_h", params);
+    
+    
+
+    wall_h = is_undef(cavity_h) ? side_housing_h(params) : h;
+    c_h = is_undef(cavity_h) ? wall_h+1 : cavity_h;
+    shaft_z = motor_shaft_pos(actuator_h+xy_actuator_travel(params)).z;
+
+    outer_r = 6;
+    inner_r = 1;
+    outer_x_pos = housing_size(wall_h).x - outer_r;
+    difference(){
+        hull(){
+            side_housing_placement(params){
+                translate([outer_x_pos, outer_r+1.5, 0]){
+                    cylinder(r=outer_r,h=wall_h);
+                }
+                translate([outer_x_pos, housing_size(wall_h).y-outer_r, 0]){
+                    cylinder(r=outer_r,h=wall_h);
+                }
+                translate([0, 0, 0]){
+                    cylinder(r=inner_r,h=wall_h);
+                }
+                translate([0, housing_size(wall_h).y, 0]){
+                    cylinder(r=inner_r,h=wall_h);
+                }
+            }
+            if(attach){
+                mounting_lug_wall_vertex(params);
+                y_actuator_wall_vertex(params, inside=false);
+            }
+        }
+        side_housing_cutout(params, c_h);
+        translate(y_actuator_pos(params) + [0, 0, shaft_z-1.5]){
+            cylinder(d=30, h=80);
+        }
+    }
+}
+
+module side_housing_cutout(params, h){
+    housing_cut_size = [motor_connector_size().x+2,motor_connector_size().y+2, h+1];
+    side_housing_placement(params){
+        translate([2, 6, -1]){
+            cube(housing_cut_size);
+        }
+    }
+}
+
+module place_on_wall(params, is_y=true, housing=true){
+    // The wall runs from the outside y actuator wall vertex to the
+    // mounting lug wall vertex
+    y_wall_start = mounting_lug_wall_vertex_position(params);
+    y_wall_end = y_actuator_wall_vertex_position(params, inside=false);
+
+    wall_start = is_y ? y_wall_start : [-y_wall_start.x, y_wall_start.y, y_wall_start.z];
+    wall_angle = is_y ? y_wall_angle(params) : - y_wall_angle(params);
+    
+    wall_tr_y = housing ? -housing_size(0).x : -wall_t/2;
+    wall_tilt = housing ? 0 : outer_wall_tilt(params);
+
+    // pivot about the starting corner of the wall so X is along it
+    translate(wall_start){
+        rotate(wall_angle){
+            // move out to the surface (the above are centres of cylinders)
+            translate([0, wall_tr_y, 0]){
+                // and then align y with the vertical axis of the wall
+                rotate([90-wall_tilt, 0, 0]){
+                    // now X and Y are in the plane of the wall, and z=0 is its surface.
+                    children();
+                }
+            }
+        }
+    }
 }
