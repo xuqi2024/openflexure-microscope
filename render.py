@@ -68,6 +68,19 @@ def generate_optics_assembly_objective(writer):
         )
 
 
+def generate_optics_assembly_screw(writer):
+    camera = Camera(position=[-6.5, 14, 38], angle=[60, 0, 243], distance=290)
+    input_file = "rendering/rms_optics_assembly.scad"
+    for frame in [1, 2, 3]:
+        output_file = f"docs/renders/optics_assembly_screw{frame}.png"
+        parameters = format_render_params(camera, imgsize=[1000, 2000], frame=frame + 7)
+        writer.openscad_render(
+            output_file,
+            input_file,
+            parameters,
+        )
+
+
 def generate_picam(writer):
     camera = Camera(position=[-6, 3, 11], angle=[46, 0, 90], distance=140)
     input_file = "rendering/prepare_picamera.scad"

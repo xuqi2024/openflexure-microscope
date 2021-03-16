@@ -10,11 +10,7 @@ convert docs/renders/optics_assembly_camera*.png +append docs/renders/optics_ass
 
 convert docs/renders/optics_assembly_objective*.png +append docs/renders/optics_assembly_objective.png
 
-build_system/openscad_render.py -o "docs/renders/optics_assembly_screw1.png" -D "FRAME=8;" --camera=-6.5,14,38,60,0,243,290 --imgsize=1000,2000  rendering/rms_optics_assembly.scad
-build_system/openscad_render.py -o "docs/renders/optics_assembly_screw2.png" -D "FRAME=9;" --camera=-6.5,14,38,60,0,243,290 --imgsize=1000,2000  rendering/rms_optics_assembly.scad
-build_system/openscad_render.py -o "docs/renders/optics_assembly_screw3.png" -D "FRAME=10;" --camera=-6.5,14,38,60,0,243,290 --imgsize=1000,2000  rendering/rms_optics_assembly.scad
 convert docs/renders/optics_assembly_screw*.png +append docs/renders/optics_assembly_screw.png
-
 
 build_system/openscad_render.py -o "rendering/annotations/optics_assembly_condenser_lens1.png" -D "FRAME=1;" --camera=29,0,59,69,0,90,290 --imgsize=1000,2000  rendering/optics_assembly.scad
 build_system/openscad_render.py -o "rendering/annotations/optics_assembly_condenser_lens2.png" -D "FRAME=2;" --camera=29,0,59,69,0,90,290 --imgsize=1000,2000  rendering/optics_assembly.scad
