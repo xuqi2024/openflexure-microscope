@@ -24,21 +24,26 @@ def format_render_params(camera, imgsize, frame=None):
         params += f" -D 'FRAME={frame};'"
     return params
 
-
-with RenderBuildWriter(build_filename=NINJA_FILE) as rbw:
+def generate_optics_assembly(writer):
+    camera = Camera(position=[29, 0, 59], angle=[69, 0, 90], distance=290)
     for frame in [1, 2, 3]:
-        camera = Camera(position=[29, 0, 59], angle=[69, 0, 90], distance=290)
-        rbw.openscad_render(
+        writer.openscad_render(
             f"rendering/annotations/optics_assembly_tube_lens{frame}.png",
             input_file="rendering/rms_optics_assembly.scad",
             parameters= format_render_params(camera, imgsize=[1000,2000], frame=frame)
         )
+
+def generate_picam(writer):
     camera = Camera(position=[-6,3,11], angle=[46,0,90], distance=140)
     for frame in [1, 2, 3]:
-        rbw.openscad_render(
+        writer.openscad_render(
             f"docs/renders/picam{frame}.png",
             input_file="rendering/prepare_picamera.scad",
             parameters=format_render_params(camera, imgsize=[2400,2000], frame=frame)
         )
+
+with RenderBuildWriter(build_filename=NINJA_FILE) as rbw:
+    generate_optics_assembly(rbw)
+    generate_picam(rbw)
 
 _program("ninja", ["-f", NINJA_FILE] + sys.argv[1:])
