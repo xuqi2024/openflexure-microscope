@@ -2,13 +2,6 @@
 
 set -eu -o pipefail
 
-if [ -d "docs/renders" ]; then
-  rm -r "docs/renders"
-fi
-mkdir "docs/renders"
-cd rendering/librender
-unzip -o hardware.zip
-cd ../..
 
 # OpenSCAD renders
 # Note some render to rendering/annotations. These should then be run through inkscape below

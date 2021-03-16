@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import sys
+import subprocess
 from dataclasses import dataclass
 from ninja import _program
 from build_system.render_build_writer import RenderBuildWriter
@@ -85,5 +86,9 @@ with RenderBuildWriter(build_filename=NINJA_FILE) as rbw:
     generate_optics_assembly_camera(rbw)
     generate_optics_assembly_objective(rbw)
     generate_picam(rbw)
+
+subprocess.run(
+    ["unzip", "-o", "-d", "rendering/librender/", "rendering/librender/hardware.zip"]
+)
 
 _program("ninja", ["-f", NINJA_FILE] + sys.argv[1:])
