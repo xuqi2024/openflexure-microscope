@@ -51,7 +51,7 @@ def generate_optics_assembly_camera(writer):
         parameters = format_render_params(camera, imgsize=[1200, 2000], frame=frame + 3)
         writer.openscad_render(output_file, input_file, parameters)
 
-    writer.imagemagick_append("docs/renders/optics_assembly_camera.png", png_files)
+    writer.imagemagick_sequence("docs/renders/optics_assembly_camera.png", png_files)
 
 
 def generate_optics_assembly_objective(writer):
@@ -65,7 +65,7 @@ def generate_optics_assembly_objective(writer):
         parameters = format_render_params(camera, imgsize=[1200, 2000], frame=frame + 5)
         writer.openscad_render(output_file, input_file, parameters)
 
-    writer.imagemagick_append("docs/renders/optics_assembly_objective.png", png_files)
+    writer.imagemagick_sequence("docs/renders/optics_assembly_objective.png", png_files)
 
 
 def generate_optics_assembly_screw(writer):
@@ -79,7 +79,7 @@ def generate_optics_assembly_screw(writer):
         parameters = format_render_params(camera, imgsize=[1000, 2000], frame=frame + 7)
         writer.openscad_render(output_file, input_file, parameters)
 
-    writer.imagemagick_append("docs/renders/optics_assembly_screw.png", png_files)
+    writer.imagemagick_sequence("docs/renders/optics_assembly_screw.png", png_files)
 
 
 def generate_optics_assembly_condenser_lens(writer):
@@ -111,7 +111,7 @@ def generate_band(writer):
         parameters = format_render_params(camera, imgsize=[1200, 2400], frame=frame)
         writer.openscad_render(output_file, input_file, parameters)
 
-    writer.imagemagick_append("docs/renders/band_instruction.png", png_files)
+    writer.imagemagick_sequence("docs/renders/band_instruction.png", png_files)
 
 
 def generate_brim_and_ties(writer):
