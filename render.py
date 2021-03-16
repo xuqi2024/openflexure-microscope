@@ -98,6 +98,7 @@ with RenderBuildWriter(build_filename=NINJA_FILE) as rbw:
     generate_optics_assembly_tube_lens(rbw)
     generate_optics_assembly_camera(rbw)
     generate_optics_assembly_objective(rbw)
+    generate_optics_assembly_screw(rbw)
     generate_picam(rbw)
 
 subprocess.run(
