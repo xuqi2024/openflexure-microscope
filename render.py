@@ -54,6 +54,19 @@ def generate_optics_assembly_camera(writer):
         )
 
 
+def generate_optics_assembly_objective(writer):
+    camera = Camera(position=[2, 2, 25], angle=[55, 0, 90], distance=290)
+    input_file = "rendering/rms_optics_assembly.scad"
+    for frame in [1, 2]:
+        output_file = f"docs/renders/optics_assembly_objective{frame}.png"
+        parameters = format_render_params(camera, imgsize=[1200, 2000], frame=frame + 5)
+        writer.openscad_render(
+            output_file,
+            input_file,
+            parameters,
+        )
+
+
 def generate_picam(writer):
     camera = Camera(position=[-6, 3, 11], angle=[46, 0, 90], distance=140)
     input_file = "rendering/prepare_picamera.scad"
@@ -70,6 +83,7 @@ def generate_picam(writer):
 with RenderBuildWriter(build_filename=NINJA_FILE) as rbw:
     generate_optics_assembly_tube_lens(rbw)
     generate_optics_assembly_camera(rbw)
+    generate_optics_assembly_objective(rbw)
     generate_picam(rbw)
 
 _program("ninja", ["-f", NINJA_FILE] + sys.argv[1:])

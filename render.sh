@@ -15,8 +15,6 @@ cd ../..
 
 convert docs/renders/optics_assembly_camera*.png +append docs/renders/optics_assembly_camera.png
 
-build_system/openscad_render.py -o "docs/renders/optics_assembly_objective1.png" -D "FRAME=6;" --camera=-2,2,25,55,0,90,290 --imgsize=1200,2000  rendering/rms_optics_assembly.scad
-build_system/openscad_render.py -o "docs/renders/optics_assembly_objective2.png" -D "FRAME=7;" --camera=-2,2,25,55,0,90,290 --imgsize=1200,2000  rendering/rms_optics_assembly.scad
 convert docs/renders/optics_assembly_objective*.png +append docs/renders/optics_assembly_objective.png
 
 build_system/openscad_render.py -o "docs/renders/optics_assembly_screw1.png" -D "FRAME=8;" --camera=-6.5,14,38,60,0,243,290 --imgsize=1000,2000  rendering/rms_optics_assembly.scad
