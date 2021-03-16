@@ -14,7 +14,7 @@ class Camera:
     distance: float = 240
 
     def as_string(self):
-        combined = self.position + self.angle + (self.distance,)
+        combined = list(self.position) + list(self.angle) + [self.distance]
         return ','.join([str(i) for i in combined])
 
 def format_render_params(camera, imgsize, frame=None):
@@ -27,16 +27,18 @@ def format_render_params(camera, imgsize, frame=None):
 
 with RenderBuildWriter(build_filename=NINJA_FILE) as rbw:
     for frame in [1, 2, 3]:
-        camera = Camera(position=(29, 0, 59), angle=(69, 0, 90), distance=290)
+        camera = Camera(position=[29, 0, 59], angle=[69, 0, 90], distance=290)
         rbw.openscad_render(
             f"rendering/annotations/optics_assembly_tube_lens{frame}.png",
             input_file="rendering/rms_optics_assembly.scad",
             parameters= format_render_params(camera, imgsize=[1000,2000], frame=frame)
         )
-    rbw.openscad_render(
-        "docs/renders/picam1.png",
-        input_file="rendering/prepare_picamera.scad",
-        parameters='-D "FRAME=1;" --camera=-6,3,11,46,0,90,140 --imgsize=2400,2000',
-    )
+    camera = Camera(position=[-6,3,11], angle=[46,0,90], distance=140)
+    for frame in [1, 2, 3]:
+        rbw.openscad_render(
+            f"docs/renders/picam{frame}.png",
+            input_file="rendering/prepare_picamera.scad",
+            parameters=format_render_params(camera, imgsize=[2400,2000], frame=frame)
+        )
 
 _program("ninja", ["-f", NINJA_FILE] + sys.argv[1:])
