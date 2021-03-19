@@ -5,10 +5,16 @@ If you have bought the plastic parts you can skip this step!
 ### You will need:
 {{BOM}}
 
-All microscope parts can be printed out of [PLA filament]{Qty: 200g} on most [RepRap-style printers][RepRap-style printer]{Qty:1,cat:tool}.
+[PLA filament]: parts/materials/pla_filament.md
+[Black PLA filament]: parts/materials/pla_filament.md
+[RepRap-style printer]: parts/tools/rep-rap.md
+[utility knife]: parts/tools/utility-knife.md
+
 
 ## Set your printer settings {pagestep}
 
+
+All microscope parts can be printed out of [PLA filament]{Qty: 200g} on most [RepRap-style printers][RepRap-style printer]{Qty:1,cat:tool}. 
 We recommend the following printer settings:
 
 |Setting        |Value          |
@@ -30,9 +36,9 @@ We recommend the following printer settings:
 
 Now we will test whether your printer can print the bridges in the microscope.
 
-[Download and print this file:](models/just_leg_test.stl)
+[Download and print this file:](models/leg_test.stl)
 
-The result should look like this:
+The result should look like this (this has been printed with a brim):
 
 ![](images/just_leg_test.jpg)
 
@@ -41,19 +47,18 @@ The result should look like this:
 
 You will need to print the following parts:
 
-* [Actuator assembly tools](parts/printed_tools/actuator_assembly_tools.md)
-* [Lens Tool](parts/printed_tools/lens_tool.md)
-* [Main body](parts/printed/main_body.md) - The smart brim may require [custom print settings].
-* [Feet](parts/printed/feet.md)
-* [Large gears](parts/printed/gears.md)
-* [Illuminationl dovetail](parts/printed/illumination_dovetail.md)
-* [Condenser arm](parts/printed/condenser.md)
-* [Sample clips](parts/printed/sample_clips.md)
-* [Optics module](parts/printed/optics_module_casing.md) - **This must be printed in [black][Black PLA filament]{Qty: 50g}!** ([?](why_optics_black.md "why?"))
-* [Microscope stand](parts/printed/microscope_stand.md)
-* [Riser for the sample](parts/printed/sample_riser.md)
-* [Small gears](parts/printed/small_gears.md)
-* [Base to hold the motor driver](parts/printed/motor_driver_case.md)
+* Actuator assembly tools ([nut tool]{output,qty:1}, [band tool]{output,qty:1}, and [band tool cover]{output,qty:1}) [(STL file)](parts/printed_tools/actuator_assembly_tools.md)
+* [Lens Tool]{output,qty:1} [(STL file)](parts/printed_tools/lens_tool.md)
+* [Main body]{output,qty:1} [(STL file)](parts/printed/main_body.md) - The smart brim may require [custom print settings].
+* 3 [feet]{output,qty:3} [(STL file)](parts/printed/feet.md)
+* 3 [large gears]{output,qty:3} [(STL file)](parts/printed/gears.md)
+* [Illuminationl dovetail]{output,qty:1} [(STL file)](parts/printed/illumination_dovetail.md)
+* [Condenser arm]{output,qty:1} [(STL file)](parts/printed/condenser.md)
+* [Sample clips]{output,qty:2} [(STL file)](parts/printed/sample_clips.md)
+* [Optics module]{output,qty:1} [(STL file)](parts/printed/optics_module_casing.md) - **This must be printed in [black][Black PLA filament]{Qty: 50g}!** ([?](why_optics_black.md "why?"))
+* [Microscope stand]{output, qty:1} [(STL file)](parts/printed/microscope_stand.md)
+* 3 [Small gears]{output,qty:3} [(STL file)](parts/printed/small_gears.md)
+* [Base to hold the motor driver]{output,qty:1} [(STL file)](parts/printed/motor_driver_case.md)
 
 
 

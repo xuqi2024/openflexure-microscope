@@ -20,9 +20,9 @@ There is one "actuator column" for each of the three axes of the OpenFlexure Mic
 ![Gear attachment exploded](renders/actuator_assembly_gear2.png)
 
 * Take one of the [hex bolts][M3x25mm stainless steel hex bolt]{qty:3}
-* Push it through one of the [large gears]{qty:3} and two [washers][M3 stainless steel washers]{qty:6}
+* Push it through one of the [large gears](fromstep){qty:3} and two [washers][M3 stainless steel washers]{qty:6}
 * Push the screw through the hole at the top of the x actuator until it reaches the nut
-* Screw the bolt into the nut (If the nut turns hold it in place with the [nut tool]{qty:1, cat:tool})
+* Screw the bolt into the nut (If the nut turns hold it in place with the [nut tool](fromstep){qty:1, cat:tool})
 
 
 ## Prepare the actuator {pagestep}
@@ -37,10 +37,10 @@ This is the trickiest part of the microscope build. In this step we will clip ba
 
 ![Actuator cutaway](renders/band_instruction.png)
 
-* Take the [foot][feet]{qty:3, note:" - Each actuator has its own labelled foot."} for the x actuator
+* Take the [foot][feet](fromstep){qty:3, note:" - Each actuator has its own labelled foot."} for the x actuator
 * Loop a [viton band][30mmx2mm Viton O-ring]{qty:3, note: '- "Viton band"'} through the foot
-* Push the [band tool]{qty:1, cat:tool} through the foot hook the band onto the tool on each side.
-* Push the [band tool cover]{qty:1, cat:tool} onto the bottom of the band tool
+* Push the [band tool](fromstep){qty:1, cat:tool} through the foot hook the band onto the tool on each side.
+* Push the [band tool cover](fromstep){qty:1, cat:tool} onto the bottom of the band tool
 * Align the foot under the microscope so that the letter faces outwards
 * Check that the nut tool is still blocking the actuator column.
 * Push the band tool into the microscope until it clicks
