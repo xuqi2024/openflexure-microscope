@@ -109,7 +109,7 @@ module picam2_board(h=tiny()){
     }
 }
 
-module picamera_2_camera_mount(counterbore=false){
+module picamera_2_camera_mount(screwhole=true, counterbore=false){
     // A mount for the pi camera v2
     // This should finish at z=0+tiny(), with a surface that can be
     // hull-ed onto the lens assembly.
@@ -123,24 +123,38 @@ module picamera_2_camera_mount(counterbore=false){
         }
         rotate(45) translate([0,0,bottom]) picam2_cutout();
         if(counterbore){
-            translate([0,0,bottom-1]) picamera_2_bottom_mounting_posts(height=999, radius=1.15, cutouts=false);
-            translate([0,0,bottom+1])  picamera_2_bottom_mounting_posts(height=999, radius=2.7, cutouts=false);
+            picamera_2_counterbore();
         }
-        else{
-        //chamfered screw holes for mounting
-        sx = 21/2; //position of screw holes
-        rotate(45) translate([0,0,bottom]) reflect([1,0,0]) translate([sx,0,0]) rotate(60){
-            //cylinder(r1=3, r2=0,h=4, center=true); //chamfered bottom
-            //deformable_hole_trylinder(1.5/2,2.1/2,h=12, center=true);
-            cylinder(r1=3.1, r2=1.1, h=5, $fn=3, center=true);
-            cylinder(r=1.1, h=20, $fn=3, center=true);
-        }
+        if(screwhole){
+            picamera_2_screwholes();
         }
     }
 }
-difference(){
-    picamera_2_camera_mount(counterbore=true);
-    //rotate([90,0,0]) cylinder(r=999,h=999,$fn=4);
+
+module picamera_2_screwholes(){
+    //chamfered screw holes for mounting
+    sx = 21/2; //position of screw holes
+    rotate(45){
+        translate([0,0,bottom]){
+            reflect([1,0,0]){
+                translate([sx,0,0]){
+                    rotate(60){
+                        cylinder(r1=3.1, r2=1.1, h=5, $fn=3, center=true);
+                        cylinder(r=1.1, h=20, $fn=3, center=true);
+                    }
+                }
+            }
+        }
+    }
+}
+
+module picamera_2_counterbore(){
+    translate([0,0,bottom-1]){
+        picamera_2_bottom_mounting_posts(height=999, radius=1.25, cutouts=false);
+    }
+    translate([0,0,bottom+1]){
+        picamera_2_bottom_mounting_posts(height=999, radius=2.8, cutouts=false);
+    }
 }
 
 module picamera_2_bottom_mounting_posts(height=-1, radius=-1, outers=true, cutouts=true){

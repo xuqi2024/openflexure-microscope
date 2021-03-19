@@ -14,10 +14,12 @@
 ******************************************************************/
 
 use <./libs/utilities.scad>
-use <./libs/z_axis.scad>
-include <./libs/microscope_parameters.scad> // NB this defines "camera" and "optics"
-use <./libs/cameras/camera.scad> // this will define the 2 functions and 1 module for the camera mount, using the camera defined in the "camera" parameter.
-use <./libs/cameras/picamera_2.scad> // this will define the 1 module for the pi_camera_2_bottom_mounting_posts.
+// NOTE: microscope_parameters defines which "camera" and "optics" are used for the lens spacer.
+// You must change it in that file not this one.
+include <./libs/microscope_parameters.scad>
+// ./libs/cameras/camera.scad will use the correct camera module for generating camera mounts
+// depending on the "camera" variable
+use <./libs/cameras/camera.scad> 
 use <./libs/lenses/lens.scad>
 $fn=24;
 
@@ -47,6 +49,29 @@ module camera_mount_top_slice(){
     linear_extrude(tiny()) projection(cut=true) camera_mount();
 }
 
+function lens_aperture(lens_r) = lens_r - 1.5;
+
+module lens_spacer_gripper(lens_r, lens_h, pedestal_h, lens_assembly_base_r, lens_assembly_z){
+
+    lens_assembly_h = lens_h + pedestal_h; //height of the lens assembly
+
+    // A lens gripper to hold the objective
+    translate([0,0,lens_assembly_z]){
+        // gripper
+        trylinder_gripper(inner_r=lens_r,
+                          grip_h=lens_assembly_h-1.5,
+                          h=lens_assembly_h,
+                          base_r=lens_assembly_base_r,
+                          flare=0.4,
+                          squeeze=lens_r*0.15);
+        // pedestal to raise the tube lens up within the gripper
+        difference(){
+            cylinder(r=lens_aperture(lens_r) + 1.0,h=pedestal_h);
+            cylinder(r=lens_aperture(lens_r),h=999,center=true);
+        }
+    }
+}
+
 module lens_spacer(params, lens_r, parfocal_distance, lens_h, lens_spacing){
     // Mount a lens some distance from the camera
 
@@ -60,63 +85,57 @@ module lens_spacer(params, lens_r, parfocal_distance, lens_h, lens_spacing){
 
     pedestal_h = 4; // extra height on the gripper, to allow it to flex
     lens_assembly_z = lens_z - pedestal_h; //z position of the bottom of the lens assembly
-    lens_assembly_h = lens_h + pedestal_h; //height of the lens assembly
 
     lens_assembly_base_r = lens_r+1; //outer size of the lens grippers
-    lens_aperture = lens_r - 1.5; // clear aperture of the lens
 
     //This is the height of the block the camera mounts into.
     camera_mount_height = camera_mount_height();
 
-    translate([0,0,lens_z_microscope-lens_z])difference(){
-        union(){
-            // This is the main body of the mount
-            sequential_hull(){
-                translate([0,0,camera_mount_height]) camera_mount_top_slice();
-                translate([0,0,camera_mount_height+5]) cylinder(r=6,h=tiny());
-                translate([0,0,lens_assembly_z])cylinder(r=lens_assembly_base_r, h=tiny());
-            }
-            // A lens gripper to hold the objective
-            translate([0,0,lens_assembly_z]){
-                // gripper
-                trylinder_gripper(inner_r=lens_r, grip_h=lens_assembly_h-1.5,h=lens_assembly_h, base_r=lens_assembly_base_r, flare=0.4, squeeze=lens_r*0.15);
-                // pedestal to raise the tube lens up within the gripper
-                difference(){
-                    cylinder(r=lens_aperture + 1.0,h=pedestal_h);
-                    cylinder(r=lens_aperture,h=999,center=true);
+    translate([0,0,lens_z_microscope-lens_z]){
+        difference(){
+            union(){
+                // This is the main body of the mount
+                sequential_hull(){
+                    translate([0,0,camera_mount_height]) camera_mount_top_slice();
+                    translate([0,0,camera_mount_height+5]) cylinder(r=6,h=tiny());
+                    translate([0,0,lens_assembly_z])cylinder(r=lens_assembly_base_r, h=tiny());
+                }
+
+                lens_spacer_gripper(lens_r, lens_h, pedestal_h, lens_assembly_base_r, lens_assembly_z);
+
+                // add the camera mount
+                translate([0,0,camera_mount_height]){
+                    camera_mount(screwhole=false, counterbore=false);
                 }
             }
-
-            // add the camera mount
-            translate([0,0,camera_mount_height]) camera_mount(counterbore=true);
-        }
-        union(){
-        // cut out the optical path
-            optical_path(lens_aperture, lens_assembly_z, 0);
-            // re-do the counterbores that were done in cameramount(counterbore=true) because they have been
-            // partially obscured but a later convex hull
-            translate([0,0,+2])  picamera_2_bottom_mounting_posts(height=999, radius=2.8, cutouts=false);
+            union(){
+                // cut out the optical path
+                optical_path(lens_aperture(lens_r), lens_assembly_z, 0);
+                //cut out counterbores
+                translate([0,0,camera_mount_height]){
+                    camera_mount_counterbore();
+                }
+            }
         }
     }
 }
-//optics="pilens";
-//Note do not try to set the optics in this file things will go wrong. Annoyingly you must modify microscope_parameters or run openscad in the terminal with the -D flag
+
+
+// Note do not try to set the optics in this file things will go wrong.
+// You must define the optics and camera type in microscope_parameters or run openscad in the terminal with the -D flag
 if(optics=="pilens"){
-    // Optics module for picamera v2 lens, using trylinder
-//    difference() {
-        lens_spacer(
-            params = default_params(),
-            lens_r = lens_radius(),
-            parfocal_distance = lens_parfocal_distance(),
-            lens_h = lens_height(),
-           lens_spacing = lens_spacing()
-        );
-        // re-do the counterbores that were done in cameramount(counterbore=true) because they have been
-        // partially obscured but a later convex hull
-//        translate([0,0,+1])  picamera_2_bottom_mounting_posts(height=999, radius=2.8, cutouts=false);
-//    }
+    // Optics module for picamera v2 lens
+
+    lens_spacer(
+        params = default_params(),
+        lens_r = lens_radius(),
+        parfocal_distance = lens_parfocal_distance(),
+        lens_h = lens_height(),
+        lens_spacing = lens_spacing()
+    );
 
 }
 else{
     echo("No lens_spacer available for this lens type");
+
 }
