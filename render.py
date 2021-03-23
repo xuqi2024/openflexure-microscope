@@ -144,7 +144,7 @@ def generate_picam(writer):
     ]
     imgsize = [2400, 2000]
     for i, camera in enumerate(cameras):
-        feame = i+1
+        frame = i+1
         output_file = f"docs/renders/picam{frame}.png"
         writer.openscad_render(output_file, input_file, camera, imgsize, frame)
 
