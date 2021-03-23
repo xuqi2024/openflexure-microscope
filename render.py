@@ -137,9 +137,14 @@ def generate_actuator_assembly(writer):
 
 def generate_picam(writer):
     input_file = "rendering/prepare_picamera.scad"
-    camera = Camera(position=[-6, 3, 11], angle=[46, 0, 90], distance=140)
+    cameras = [
+        Camera(position=[-6, 3, 11], angle=[46, 0, 90], distance=140),
+        Camera(position=[0, 0, 0], angle=[29, 0, 90], distance=140),
+        Camera(position=[1, 18, 8], angle=[52, 0, 90], distance=140)
+    ]
     imgsize = [2400, 2000]
-    for frame in [1, 2, 3]:
+    for i, camera in enumerate(cameras):
+        feame = i+1
         output_file = f"docs/renders/picam{frame}.png"
         writer.openscad_render(output_file, input_file, camera, imgsize, frame)
 
