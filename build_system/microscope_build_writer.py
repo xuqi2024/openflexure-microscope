@@ -1,21 +1,18 @@
 '''
-In this submodule we create a class that can writes and "ninja.build" file. There
-is also a function "run_ninja()" which runs this file.
+In this submodule we create a class that writes a "build.ninja" file for building the microscope STLs.
 '''
-import sys
-import os
-from ninja import Writer
 
-from .util import parameters_to_string
+import os
+
+from .util import parameters_to_string, get_openscad_exe
 from .json_generator import JsonGenerator
 from .stl_options import get_standard_configurations, get_option_docs, get_required_stls
+from .ninja_writer import NinjaWriter
 
-class MicroscopeBuildWriter():
+class MicroscopeBuildWriter(NinjaWriter):
     def __init__(self, build_dir, build_filename, include_extra_files=False, generate_stl_options_json=False):
+        super().__init__(build_filename=build_filename)
         self._build_dir = build_dir
-        self._build_filename = build_filename
-        self._build_file = None
-        self._ninja = None
         option_docs = get_option_docs(include_extra_files)
         standard_configurations = get_standard_configurations()
         required_stls = get_required_stls()
@@ -24,31 +21,24 @@ class MicroscopeBuildWriter():
         else:
             self._json_generator = None
 
-    def __enter__(self):
-        # Create the ninja build file
-        self._build_file = open(self._build_filename, "w")
-        self._ninja = Writer(self._build_file, width=120)
+    def __enter__(self, *_):
+        super().__enter__()
         self._create_rules()
         return self
 
     def __exit__(self, *_):
-        # Write to JSON file etc if needed
         if self._json_generator is not None:
             self._json_generator.write()
-        # Close the Ninja build file
-        self._build_file.close()
+        super().__exit__()
 
     def _create_rules(self):
-        if sys.platform.startswith("darwin"):
-            executable = "/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD"
-        else:
-            executable = "openscad"
-        self._ninja.rule(
+        executable = get_openscad_exe()
+        self.rule(
             "openscad",
             command=f"{executable} --hardwarnings $parameters $in -o $out -d $out.d",
             depfile="$out.d",
         )
-        self._ninja.rule("copy", command="cp $in $out")
+        self.rule("copy", command="cp $in $out")
 
     def openscad(
         self,
@@ -83,7 +73,7 @@ class MicroscopeBuildWriter():
                 select_stl_if=select_stl_if,
             )
 
-        self._ninja.build(
+        self.build(
             os.path.join(self._build_dir, output),
             rule="openscad",
             inputs=os.path.join("openscad/", input_file),
@@ -99,4 +89,4 @@ class MicroscopeBuildWriter():
             )
         output = os.path.join(self._build_dir, stl_file)
         input_file = os.path.join("openflexure-microscope-extra", stl_file)
-        self._ninja.build(output, rule="copy", inputs=input_file)
+        self.build(output, rule="copy", inputs=input_file)

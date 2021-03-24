@@ -12,12 +12,11 @@
 docs/*.zip
 
 # Ignore automatically built files
-Makefile
 builds/
 docs/Output/
-*.stl.d
-ninja.build
+*.d
 build.ninja
+render.ninja
 .ninja_deps
 .ninja_log
 docs/renders/

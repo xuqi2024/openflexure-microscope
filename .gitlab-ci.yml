@@ -59,17 +59,19 @@ build:
 # render assemblies - uses xvfb as a virtual x-server
 render:
     stage: build
-    image: ubuntu:18.04
+    image: ubuntu:20.04
+
+    variables:
+      # prevents config waiting for user input, e.g. for tzdata
+      DEBIAN_FRONTEND: noninteractive
 
     before_script:
       - apt-get update -qq
-      - apt-get -y -qq install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates xvfb imagemagick unzip inkscape
-      - add-apt-repository -y ppa:openscad/releases
-      - apt-get update -qq
-      - apt-get install -y -qq openscad
+      - apt-get -y -qq install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates xvfb imagemagick unzip inkscape openscad python3-pip
+      - pip3 install -r requirements.txt
 
     script:
-      - xvfb-run --auto-servernum --server-args "-screen 0 1024x768x24" ./render.sh
+      - xvfb-run --auto-servernum --server-args "-screen 0 1024x768x24" ./render.py
 
     artifacts:
       expire_in: 1 week

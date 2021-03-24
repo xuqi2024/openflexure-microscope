@@ -1,3 +1,17 @@
+"""
+This module has a range of misc utilities for the build system.
+"""
+import sys
+
+def get_openscad_exe():
+    """
+    This returns the name of the openscad executable. It is needed as OpenSCAD is not
+    on the path in MacOS.
+    """
+    if sys.platform.startswith("darwin"):
+        return "/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD"
+    return "openscad"
+
 def merge_dicts(d1, d2):
     """
     Recursively merge two dictionaries condensing all non-dict values into
