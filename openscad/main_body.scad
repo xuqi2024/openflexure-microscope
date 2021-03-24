@@ -495,7 +495,7 @@ module main_body(params, version_string){
 
 	difference(){
         actuator_walls_and_z_casing(params);
-        body_logos(params, version_numstring);
+        body_logos(params, version_string);
 	}
 }
 
