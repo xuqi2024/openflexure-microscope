@@ -45,17 +45,26 @@ function camera_sensor_height() =
     :(camera=="6led"?6led_camera_sensor_height()
     :picamera_2_camera_sensor_height()
     ));
-module camera_mount(counterbore=false){
+module camera_mount(screwhole=true, counterbore=false){
     if(camera=="logitech_c270") c270_camera_mount();
     else if(camera=="m12") m12_camera_mount();
     else if(camera=="6led") 6led_camera_mount();
-    else picamera_2_camera_mount(counterbore=counterbore);
+    else picamera_2_camera_mount(screwhole=screwhole, counterbore=counterbore);
 }
 module camera_bottom_mounting_posts(h=-1, r=-1, outers=true, cutouts=true){
     if(camera=="logitech_c270") c270_bottom_mounting_posts();
     else if(camera=="m12") m12_bottom_mounting_posts();
     else if(camera=="6led") 6led_bottom_mounting_posts(height=h, radius=r, outers=outers, cutouts=cutouts);
     else picamera_2_bottom_mounting_posts(height=h, radius=r, outers=outers, cutouts=cutouts);
+}
+
+module camera_mount_counterbore(){
+    if(camera=="picamera_2"){
+        picamera_2_counterbore();
+    }
+    else{
+        assert(false, "This camera option does not have counterbore set.");
+    }
 }
 
 echo(str("Camera mount height: ",camera_mount_height()));
