@@ -56,6 +56,7 @@ You will need to print the following parts:
 * [Condenser arm]{output,qty:1} [(STL file)](parts/printed/condenser.md)
 * [Sample clips]{output,qty:2} [(STL file)](parts/printed/sample_clips.md)
 * [Optics module]{output,qty:1} [(STL file)](parts/printed/optics_module_casing.md) - **This must be printed in [black][Black PLA filament]{Qty: 50g}!** ([?](why_optics_black.md "why?"))
+* [pi camera cover]{output,qty:1} [(STL file)](parts/printed/picamera_cover.md)
 * [Microscope stand]{output, qty:1} [(STL file)](parts/printed/microscope_stand.md)
 * 3 [Small gears]{output,qty:3} [(STL file)](parts/printed/small_gears.md)
 * [Base to hold the motor driver]{output,qty:1} [(STL file)](parts/printed/motor_driver_case.md)

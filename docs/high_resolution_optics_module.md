@@ -47,13 +47,13 @@ Take the [optics module][Optics module](fromstep){qty:1, cat:printedpart} and co
 
 * Take the Pi Camera and place it on the back of the optics module
 * Place the [pi camera cover](fromstep){qty:1, cat:printedpart} over the back of the Pi Camera.
-* Use two [No 2 6.5mm self tapping screws]{qty:2} to secure the camera
+* Use two [No 2 6.5mm self tapping screws]{qty:2} to secure the camera using a [#1 pozidrive screwdriver]{qty:1, cat:tool}
 * Take care to not over torque the screws.
 
 ![Attach pi camera](renders/optics_assembly_camera.png)
 
 
-## Attach the objective
+## Attach the objective {pagestep}
 
 * Take your [microscope objective]{qty:1, note:"- This page provides more information on choosing an objective."} and the partially assembled optics module
 * Place objective on top of optics module
