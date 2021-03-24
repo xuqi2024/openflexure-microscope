@@ -48,7 +48,7 @@ The result should look like this (this has been printed with a brim):
 You will need to print the following parts:
 
 * Actuator assembly tools ([nut tool]{output,qty:1}, [band tool]{output,qty:1}, and [band tool cover]{output,qty:1}) [(STL file)](parts/printed_tools/actuator_assembly_tools.md)
-* [Lens Tool]{output,qty:1} [(STL file)](parts/printed_tools/lens_tool.md)
+* [Lens tool]{output,qty:1} [(STL file)](parts/printed_tools/lens_tool.md)
 * [Main body]{output,qty:1} [(STL file)](parts/printed/main_body.md) - The smart brim may require [custom print settings].
 * 3 [feet]{output,qty:3} [(STL file)](parts/printed/feet.md)
 * 3 [large gears]{output,qty:3} [(STL file)](parts/printed/gears.md)
