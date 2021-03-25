@@ -1,59 +1,34 @@
-# Motor assembly
-The OpenFlexure Microscope can be motorised, to allow you to run automated experiments.  In order to do this, you will need to fit stepper motors to the X, Y, and Z axes.
+# Assemble the motors
 
-# Requirements
-You will need the parts shown in the picture below:
-
-![Parts required for this step](./images/motors_parts.jpg)
-
-## Parts
-*   1 Microscope, with actuators already assembled
-*   [Small printed gears](./parts/printed/small_gears.md)
-*   3 [28BYJ-48 micro geared stepper motors](./parts/electronics/stepper_motors.md)
-*   6 [M4x6mm button head screws](./parts/fixings/m4x6mm_buttonhead_screw.md)
-*   1 [Motor board case](./parts/printed/motor_driver_case.md)
-*   1 [Motor driver board](./parts/electronics/motor_driver.md)
-*   1 Short mini USB lead
-*   2 Small cable ties
-
-## Tools
-*   1 2.5mm hex key
-*   3cm insulating tape
+## For this section you will need
+{{BOM}}
 
 
-# Assembly Instructions
-## Step 1
-First, fit the gears onto the motors.  The gears are printed with a circular bottom - place them on the table, circular side down.  They should be a tight fit onto the motor shaft - if they are not, place some insulating tape, sticky side up, on top of the gear as shown.
 
-![A motor and gear, ready for assembly](./images/motors_tape.jpg)
 
-## Step 2
-Now, fit the gear (and tape) onto the motor shaft - with the gear on the table, press the shaft into the hole.  NB you need to line the flat sides of the shaft up with the hole - it is not circular.
+## Attach the small gears {pagestep}
 
-![A motor with the gear on its shaft](./images/motors_gear.jpg)
+* Take a [stepper motor][28BYJ-48 micro geared stepper motors](./parts/electronics/stepper_motors.md){qty:3, cat:electronic} and a [small gear][small gears](fromstep){qty:3, cat:printedpart}
+* Place the motor on the work surface with the shaft pointing up
+* Apply a small drop of [threadlock adhesive]{qty: 6 drops, cat:consumable} to each side of the motor shaft near the top
+* Align the flat sides of the motor shaft with the flat sides of the hole in the gear.
+* Push the gear onto the motor with the flanged side downwards (motor side).
+* Repeat for the other two motors
 
-## Step 3
-Repeat steps 1 and 2 for all three motors.
+## Attach the motors {pagestep}
 
-## Step 4
-Fit each of the three motors onto the microscope body using two M4 screws.  It is possible that this step will be easier if you tap the holes in the microscope body first.  The screws should be done up tightly, otherwise the motor will wobble.
+Note that each motor has a cable tidy cap that is different. Which cap to use should be apparent from the shape.
 
-![A motor screwed onto the microscope body](./images/motors_mount.jpg)
+* Get a [2.5mm Allen key]{qty:1, cat:tool} ready
+* Feed the cable from the motor through the rectangular wall in the outer wall by the X actuator.
+* Place the motor on the motor lugs with the small gear towards the outside of the microscope
+* Check that the small gear and the large gear are meshed correctly
+* Take the X [cable tidy cap][cable tidy caps](fromstep){qty:3, cat:printedpart, note: "- Each cap is a different shape"} and place it over the motor
+* Check that the motor cable is running through the cable tidy rather than pinched underneath.
+* Fasten the motor and cable tidy caps to the motor lugs with two [M4x6mm button head screws](./parts/fixings/m4x6mm_buttonhead_screw.md){qty:6, cat:mech}
+* Repeat for Y and Z actuators. For the Z actuator use the rectangular slot to the left of the actuator.
 
-## Step 5
-Fit the mini USB lead to the motor board, and fit the motor board into the case as shown.
 
-![The motor board, in its case](./images/motors_board_in_base.jpg)
+![](renders/cable_management.png)
 
-## Step 6
-Connect the cables from the motors to the motor board as shown.
 
-![Motors connected to the motor board](./images/motors_wiring.jpg)
-
-## Step 7
-Finally, sit the microscope on top of the motor board case, and tidy up the wiring using the cable ties.  You can more securely attach the motor board to the microscope using M3 screws at the corners, but you might want to wait until you have tested it in case you need to swap the wiring around.
-
-![The microscope complete with assembled motors](./images/motors_assembled.jpg)
-
-## Step 8
-Congratulations, you have fitted the motors.  You will need to upload the motor controller firmware using the Arduino IDE.  The [firmware and instructions can be found on GitLab](https://gitlab.com/bath_open_instrumentation_group/sangaboard).

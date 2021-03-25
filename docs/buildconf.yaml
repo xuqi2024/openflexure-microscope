@@ -9,6 +9,21 @@ CustomCategories:
     SubAssembly:
         Reuse: false
         DisplayName: Sub-Assemblies
+    Material:
+        Reuse: false
+        DisplayName: Materials
+    Consumable:
+        Reuse: false
+        DisplayName: Consumables
+    Optical:
+        Reuse: false
+        DisplayName: Optical Components
+    Electronic:
+        Reuse: false
+        DisplayName: Electronic Components
+    Mech:
+        Reuse: false
+        DisplayName: Mechancial Components
 
 DefaultCategory: Part
 

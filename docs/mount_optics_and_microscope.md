@@ -19,4 +19,4 @@
 
 * Place the microscope onto the [microscope stand][prepared microscope stand](fromstep){qty:1, cat:subassembly}.
 * The lugs on the microscope should sit on the lugs of the stand.
-* Use four [M3x8 cap head screws](parts/fixings/m3x8mm_caphead_screw.md){qty: 4} to fix the microscope in place using the same [Allen key][2.5mm Allen key]
+* Use four [M3x8 cap head screws](parts/fixings/m3x8mm_caphead_screw.md){qty: 4, cat:mech} to fix the microscope in place using the same [Allen key][2.5mm Allen key]

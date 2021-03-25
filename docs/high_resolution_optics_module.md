@@ -21,7 +21,7 @@ Take the [optics module][Optics module](fromstep){qty:1, cat:printedpart} and co
 ## Insert the tube lens {pagestep}
 
 * Place the [lens tool][Lens tool](fromstep){qty:1, cat:printedtool} on a steady surface
-* Place the [13mm achromatic lens]{qty:1} on the lens tool
+* Place the [13mm achromatic lens]{qty:1, cat:optical} on the lens tool
 * Check the lens has the more curved side facing down
 * Take the optics module and place carefully over lens
 * Push down hard to seat the lens in the optics module
@@ -33,7 +33,7 @@ Take the [optics module][Optics module](fromstep){qty:1, cat:printedpart} and co
 **WARNING!** The camera board is static sensitive.
 
 * Before touching the Pi Camera touch a metal earthed object. If you own one, consider wearing and anti-static strap.
-* Take the [Pi Camera][Raspberry Pi Camera Module v2]{Qty:1} out of the package. Make sure to **hold it only by the sides of the board**.
+* Take the [Pi Camera][Raspberry Pi Camera Module v2]{Qty:1, cat:electronic} out of the package. Make sure to **hold it only by the sides of the board**.
 * Take the protective film off the lens.
 * Take the [Pi Camera lens tool]{qty: 1, cat:tool, note: "This should come with the pi camera"} and place it over the lens
 * Slowly unscrew the lens (About 4 full turns of the tool)
@@ -47,7 +47,7 @@ Take the [optics module][Optics module](fromstep){qty:1, cat:printedpart} and co
 
 * Take the Pi Camera and place it on the back of the optics module
 * Place the [pi camera cover](fromstep){qty:1, cat:printedpart} over the back of the Pi Camera.
-* Use two [No 2 6.5mm self tapping screws]{qty:2} to secure the camera using a [#1 pozidrive screwdriver]{qty:1, cat:tool}
+* Use two [No 2 6.5mm self tapping screws]{qty:2, cat:mech} to secure the camera using a [#1 pozidrive screwdriver]{qty:1, cat:tool}
 * Take care to not over torque the screws.
 
 ![Attach pi camera](renders/optics_assembly_camera.png)
@@ -55,7 +55,7 @@ Take the [optics module][Optics module](fromstep){qty:1, cat:printedpart} and co
 
 ## Attach the objective {pagestep}
 
-* Take your [microscope objective]{qty:1, note:"- This page provides more information on choosing an objective."} and the partially assembled optics module
+* Take your [microscope objective]{qty:1, note:"- This page provides more information on choosing an objective.", cat:optical} and the partially assembled optics module
 * Place objective on top of optics module
 * **Check that the optics module is not tilted!**
 * Carefully and slowly screw the objective into the optics module, taking care to ensure it does not tilt.
@@ -65,14 +65,14 @@ Take the [optics module][Optics module](fromstep){qty:1, cat:printedpart} and co
 
 ## Attach the mounting screw {pagestep}
 
-* Take an [M3 nut]{qty:1} and push it into the nut trap from the top
-* Take an [M3x8 cap head screws](parts/fixings/m3x8mm_caphead_screw.md){qty: 1} and screw it into the nut.
+* Take an [M3 nut]{qty:1, cat:mech} and push it into the nut trap from the top
+* Take an [M3x8 cap head screws](parts/fixings/m3x8mm_caphead_screw.md){qty: 1, cat:mech} and screw it into the nut.
 * Only screw it in a couple of turns. About 5 mm of thread should still be visible
 
 
 ## Connect ribbon cable {pagestep}
 
-* Take the [Raspberry Pi ribbon cable]{qty:1}
+* Take the [Raspberry Pi ribbon cable]{qty:1, cat:electronic}
 * Pull the catch forward on the exposed Pi Camera connector
 * Insert the ribbon cable with the contacts towards the board
 * Close the catch on the connector

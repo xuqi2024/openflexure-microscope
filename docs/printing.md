@@ -2,11 +2,11 @@
 
 If you have bought the plastic parts you can skip this step!
 
-### You will need:
+### For this section you will need:
 {{BOM}}
 
-[PLA filament]: parts/materials/pla_filament.md
-[Black PLA filament]: parts/materials/pla_filament.md
+[PLA filament]: parts/materials/pla_filament.md "{cat:material}"
+[Black PLA filament]: parts/materials/pla_filament.md "{cat:material}"
 [RepRap-style printer]: parts/tools/rep-rap.md
 [utility knife]: parts/tools/utility-knife.md
 
@@ -14,7 +14,7 @@ If you have bought the plastic parts you can skip this step!
 ## Set your printer settings {pagestep}
 
 
-All microscope parts can be printed out of [PLA filament]{Qty: 200g} on most [RepRap-style printers][RepRap-style printer]{Qty:1,cat:tool}. 
+All microscope parts can be printed out of [PLA filament]{Qty: 200g, note:"Of any colour you want. Two contrasting colours may look best."} on most [RepRap-style printers][RepRap-style printer]{Qty:1,cat:tool}. 
 We recommend the following printer settings:
 
 |Setting        |Value          |
@@ -52,6 +52,7 @@ You will need to print the following parts:
 * [Main body]{output,qty:1} [(STL file)](parts/printed/main_body.md) - The smart brim may require [custom print settings].
 * 3 [feet]{output,qty:3} [(STL file)](parts/printed/feet.md)
 * 3 [large gears]{output,qty:3} [(STL file)](parts/printed/gears.md)
+* 3 [cable tidy caps]{output,qty:3}
 * [Illumination dovetail]{output,qty:1} [(STL file)](parts/printed/illumination_dovetail.md)
 * [Condenser arm]{output,qty:1} [(STL file)](parts/printed/condenser.md)
 * [Illumination thumbscrew]{output,qty:1} 
@@ -59,7 +60,7 @@ You will need to print the following parts:
 * [Optics module]{output,qty:1} [(STL file)](parts/printed/optics_module_casing.md) - **This must be printed in [black][Black PLA filament]{Qty: 50g}!** ([?](why_optics_black.md "why?"))
 * [pi camera cover]{output,qty:1} [(STL file)](parts/printed/picamera_cover.md)
 * [Microscope stand]{output, qty:1} [(STL file)](parts/printed/microscope_stand.md)
-* 3 [Small gears]{output,qty:3} [(STL file)](parts/printed/small_gears.md)
+* 3 [small gears]{output,qty:3} [(STL file)](parts/printed/small_gears.md)
 * [Base to hold the motor driver]{output,qty:1} [(STL file)](parts/printed/motor_driver_case.md)
 
 

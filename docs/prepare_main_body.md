@@ -32,6 +32,6 @@ These are highlighted in red in the following images.
 
 ## Embed mounting nuts illumination platform {pagestep}
 
-* Repeat the steps used above to add two [M3 nuts][M3 nut]{qty:2} into the platform above the z-axis
+* Repeat the steps used above to add two [M3 nuts][M3 nut]{qty:2, cat:mech} into the platform above the z-axis
 
 The [prepared main body]{output, qty:1} is now ready for assembly.
