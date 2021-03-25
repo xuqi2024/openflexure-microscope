@@ -1,5 +1,5 @@
 # OpenFlexure Microscope - Assembly Instructions
-The OpenFlexure Microscope is a 3D printable microscope, with a very precise mechanical translation stage. The microscope is highly customisable. These instructions will take you through how to assemble various configurations. [Find about more about the design.](about.md)
+The OpenFlexure Microscope is a 3D printable microscope, with a very precise mechanical translation stage. The microscope is highly customisable. These instructions will take you through how to assemble various configurations. Find about more about the microscope on the [OpenFlexure website](https://openflexure.org/projects/microscope)
 
 
 ## Microscope Configurations:
