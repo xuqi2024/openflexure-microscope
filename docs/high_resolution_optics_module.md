@@ -1,4 +1,4 @@
-# Assemble the high resolution optics module
+# Assemble the high-resolution optics module
 
 The imaging optics for this version of the microscope consist of an RMS objective, a tube lens and the Raspberry pi camera arranged as shown below (with the illumination optics)
 
@@ -68,6 +68,7 @@ Take the [optics module][Optics module](fromstep){qty:1, cat:printedpart} and co
 * Take an [M3x8 cap head screws](parts/fixings/m3x8mm_caphead_screw.md){qty: 1, cat:mech} and screw it into the nut.
 * Only screw it in a couple of turns. About 5 mm of thread should still be visible
 
+![Attach mounting screw](renders/optics_assembly_screw.png)
 
 ## Connect ribbon cable {pagestep}
 
@@ -79,5 +80,3 @@ Take the [optics module][Optics module](fromstep){qty:1, cat:printedpart} and co
 ## Set the complete module aside {pagestep}
 
 Set the [compete optics module]{output, qty:1} aside in a safe place.
-
-![Attach mounting screw](renders/optics_assembly_screw.png)
