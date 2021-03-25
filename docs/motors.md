@@ -1,9 +1,6 @@
 # Assemble the motors
 
-## For this section you will need
 {{BOM}}
-
-
 
 
 ## Attach the small gears {pagestep}

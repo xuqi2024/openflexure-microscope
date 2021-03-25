@@ -2,7 +2,6 @@
 
 If you have bought the plastic parts you can skip this step!
 
-### For this section you will need:
 {{BOM}}
 
 [PLA filament]: parts/materials/pla_filament.md "{cat:material}"

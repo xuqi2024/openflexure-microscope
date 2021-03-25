@@ -1,7 +1,6 @@
 # Attach the sample clips
 
 
-## For this section you will need
 {{BOM}}
 
 ## Attaching the sample clips {pagestep}

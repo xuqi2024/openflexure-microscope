@@ -1,6 +1,5 @@
 # Prepare the microscope stand
 
-## For this section you will need
 {{BOM}}
 
 

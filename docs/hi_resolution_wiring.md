@@ -3,7 +3,7 @@
 
 **TODO: This page is a placeholder it needs to be completed**
 
-## For this section you will need
+
 {{BOM}}
 
 

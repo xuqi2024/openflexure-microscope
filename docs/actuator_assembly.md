@@ -2,10 +2,11 @@
 
 There is one "actuator column" for each of the three axes of the OpenFlexure Microscope stage. These allow you to move the sample in X and Y, or focus the microscope by moving in Z. 
 
-## For this section you will need
 
-![Parts required for actuator assembly](renders/actuator_assembly_parts.png)
+
+
 {{BOM}}
+![Parts required for actuator assembly](renders/actuator_assembly_parts.png)
 
 ## Insert the nut {pagestep}
 

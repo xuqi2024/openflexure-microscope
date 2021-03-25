@@ -1,6 +1,5 @@
 # Prepare the main body
 
-## For this section you will need
 {{BOM}}
 
 [utility knife]: parts/tools/utility-knife.md

@@ -1,3 +1,7 @@
+Authors: 
+    - Richard Bowman
+Affiliation: The Openflexure Community
+Email: "contact@openflexure.org"
 License: CERN-OHL-1.2
 CustomCategories:
     PrintedPart:
@@ -24,8 +28,7 @@ CustomCategories:
     Mech:
         Reuse: false
         DisplayName: Mechancial Components
-
 DefaultCategory: Part
-
+PageBOMTitle: "## For this section you will need:"
 #uncomment line below to disable fussy warnings
 #Fussy: False

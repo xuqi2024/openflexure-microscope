@@ -4,9 +4,8 @@ The imaging optics for this version of the microscope consist of an RMS objectiv
 
 ![Optics cutaway](renders/optics_assembled.png)
 
-## For this section you will need
-{{BOM}}
 
+{{BOM}}
 
 
 ## Visually inspect the optics module {pagestep}

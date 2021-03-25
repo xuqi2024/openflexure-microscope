@@ -1,7 +1,6 @@
 # Mount the optics and the microscope
 
 
-## For this section you will need
 {{BOM}}
 
 
