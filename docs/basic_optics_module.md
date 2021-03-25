@@ -4,22 +4,22 @@ The simplest option for the microscope optics is to use a webcam lens.  This is 
 # Requirements
 You will need the parts shown in the picture below:
 
-![Parts required for this step](./images/basic_optics_module_parts.jpg)
+![Parts required for this step](images/basic_optics_module_parts.jpg)
 
 ## Parts
-*   1 [Camera platform](./parts/printed/camera_platform.md)
-*   1 [Lens extension tube](./parts/printed/lens_spacer.md)
-*   1 [Raspberry Pi camera module](./parts/electronics/raspberry_pi_camera.md) (ideally v2, though v1 should also work) - you could substitute a 6-LED webcam for an even lower-cost solution.
-*   1 [M3 steel nut](./parts/fixings/m3_steel_nut.md)
-*   1 [M3x10mm cap head screw](./parts/fixings/m3x8mm_caphead_screw.md)
-*   2 [M2x6mm cap head screws](./parts/fixings/m2x6mm_caphead_screw.md)
+*   1 [Camera platform](parts/printed/camera_platform.md)
+*   1 [Lens extension tube](parts/printed/lens_spacer.md)
+*   1 [Raspberry Pi camera module](parts/electronics/raspberry_pi_camera.md) (ideally v2, though v1 should also work) - you could substitute a 6-LED webcam for an even lower-cost solution.
+*   1 [M3 steel nut](parts/fixings/m3_steel_nut.md)
+*   1 [M3x10mm cap head screw](parts/fixings/m3x8mm_caphead_screw.md)
+*   2 [M2x6mm cap head screws](parts/fixings/m2x6mm_caphead_screw.md)
 
 ## Tools
 *   1 2.5mm hex key
 *   1 1.5mm hex key
 *   1 scalpel or craft knife (optional)
 *   1 lens removal tool (supplied with the camera)
-*   1 printed [board gripper](./parts/printed_tools/picamera_2_tools.md)
+*   1 printed [board gripper](parts/printed_tools/picamera_2_tools.md)
 
 # Assembly Instructions
 ## Step 1
@@ -37,13 +37,13 @@ We need to remove the lens from the camera.  To do this, you need the two plasti
 ## Step 3
 Remove the protective film from the camera lens.
 
-![Removing the protective film from the lens](./images/picam2_film_removal.jpg)
+![Removing the protective film from the lens](images/picam2_film_removal.jpg)
 
 ## Step 4
 There is a small ribbon cable connecting the camera to the PCB that is very easy to break.  There is a square plastic jig that fits over the camera and PCB (the "camera board gripper"), which stops the camera twisting and damaging the ribbon cable.  Fit this over the camera as shown.  Note that the part for v2 of the camera board will sort-of fit v1, but you need to be a little more careful as it's not a perfect fit.
 
-![The board gripper](./images/picam2_board_gripper_1.jpg)
-![Gripping the camera to prevent damage to the ribbon cable](./images/picam2_board_gripper_2.jpg)
+![The board gripper](images/picam2_board_gripper_1.jpg)
+![Gripping the camera to prevent damage to the ribbon cable](images/picam2_board_gripper_2.jpg)
 
 ## Step 5
 Next, unscrew the lens from the camera module.  Use the plastic tool to grip the lens module.  This is a small circular part with four prongs that fits over the lens of the camera board (version 2 only) as shown.  To remove the lens, push the removal tool onto the lens (just the top part, with the little plastic flanges) and turn anticlockwise to remove it.
@@ -52,7 +52,7 @@ The printed tool only works if the prongs are pointing anticlockwise, so make su
 
 Once you've removed the lens, be sure to place the camera face down on the desk, or put a piece of tape over the square black lens holder; this will help stop dust settling on the sensor, which is extremely hard to clean.
 
-![Lens removal](./images/picam2_lens_removal.jpg)
+![Lens removal](images/picam2_lens_removal.jpg)
 
 ## Step 6
 Before assembling the parts into the holder, make sure it's free from dust by blowing some air through it, and check there are no strings of plastic in the central hole through the mount.
@@ -60,23 +60,23 @@ Before assembling the parts into the holder, make sure it's free from dust by bl
 ## Step 7
 Next, put the lens into the plastic extension tube.  The lens should go in with the side that was next to the camera sensor on top, and the side that was facing outwards (the one with a small hole in the black plastic) facing into the extension tube.  This should just push-fit, but may take a small amount of force, or  require a layer of tape wrapped around the lens to make it fit tightly (depending on your printer).  If you wrap tape around the lens, trim off any tape that protrudes above the lens with a scalpel or sharp craft knife.
 
-![The lens in the extension tube](./images/insert_camera_lens.jpg)
-![](./images/lens_insertion_2.jpg)
-![](./images/lens_insertion_3.jpg)
+![The lens in the extension tube](images/insert_camera_lens.jpg)
+![](images/lens_insertion_2.jpg)
+![](images/lens_insertion_3.jpg)
 
 ## Step 8
 Fit the extension tube onto the camera board, then put the camera board and extension tube onto the camera platform.  Secure it in place with two M2 screws, which go through the extension tube and the camera board, and into the platform.  You can use two more M2 screws if available to make the joint stronger.
 
-![](./images/mount_to_camera_platform.jpg)
+![](images/mount_to_camera_platform.jpg)
 
 ## Step 9
 Slide a nut into the nut trap on the side of the camera platform.  This probably doesn't need a tool, but you could use a 2.5mm hex key to push it in.
 
-![](./images/slide_in_nut_camera_platform.jpg)
+![](images/slide_in_nut_camera_platform.jpg)
 
 ## Step 10
 Screw the M3 screw into the nut, so that it sticks out the side of the camera platform.
-![](./images/camera_platform_mounting_screw.jpg)
+![](images/camera_platform_mounting_screw.jpg)
 
 ## Step 11
 Well done - you have assembled the optics module.

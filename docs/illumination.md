@@ -12,7 +12,7 @@ In this section we are assembling the sample illumination. This is for transmiss
 
 *If you have purchased a kit you may already have an assembled soldered LED cable*
 
-* Take the [LED][5mm LED](./parts/electronics/white_led.md){qty:1, cat:electronic}
+* Take the [LED][5mm LED](parts/electronics/white_led.md){qty:1, cat:electronic}
 * Cut the longest leg down to about 5mm long using [precision wire cutters](parts/tools/precision-wire-cutters.md){qty:1, cat:tool}
 * Tin this leg with solder
 * Take a [150 Ohm Resistor]{qty:1, note:"- The exact value will depend on the current rating of your LED.", cat:electronic} and cut each leg down to about 5mm long
@@ -40,17 +40,17 @@ In this section we are assembling the sample illumination. This is for transmiss
 ## Mount the dovetail {pagestep}
 
 * Place the [illumination dovetail][Illumination dovetail](fromstep){qty:1, cat:printedpart} onto the stage above the z-actuator of the main body.
-* Secure in place with two [M3x8 cap head screws](parts/fixings/m3x8mm_caphead_screw.md){qty:2, cat:mech} and 2 [M3 Washers](./parts/fixings/m3_washer.md){qty:2, cat:mech} (using [2.5mm Allen key]{qty:1, cat:tool})
+* Secure in place with two [M3x8 cap head screws](parts/fixings/m3x8mm_caphead_screw.md){qty:2, cat:mech} and 2 [M3 Washers](parts/fixings/m3_washer.md){qty:2, cat:mech} (using [2.5mm Allen key]{qty:1, cat:tool})
 
 
 ## Push-fit the lens {pagestep}
 
 
-* Place the [condenser lens](./parts/optics/condenser_lens.md){qty:1, cat:optical} on the [lens tool][Lens tool](fromstep){qty:1, cat:printedtool} flat side down
+* Place the [condenser lens](parts/optics/condenser_lens.md){qty:1, cat:optical} on the [lens tool][Lens tool](fromstep){qty:1, cat:printedtool} flat side down
 * Take the [condenser arm][Condenser arm](fromstep){qty:1, cat:printedpart} and align the opening over the lens
 * Push down until the lens clicks into place.
 
-![](./renders/optics_assembly_condenser_lens.png)
+![](renders/optics_assembly_condenser_lens.png)
 
 ## Add the condenser retaining screw {pagestep}
 

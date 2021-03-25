@@ -27,10 +27,10 @@ To fix this:
 * Select "Expert" tab of PrusaSlicer.
 * Right click on the STL file in this tab
 * Select Add settings > Advanced menu.  
-![How to open the advanced settings menu](./images/smart_brim_prusa_2.jpg)
+![How to open the advanced settings menu](images/smart_brim_prusa_2.jpg)
 * Check the "Slice gap closing radius" box and click OK.  
-![The setting to be changed](./images/smart_brim_prusa_3.jpg)
+![The setting to be changed](images/smart_brim_prusa_3.jpg)
 * Locate the "Slice gap closing radius" in the expert tab
 * Set the value to 0.001 mm.  
-![Once changing the closing radius, slice the model again as shown](./images/smart_brim_prusa_4.jpg)
+![Once changing the closing radius, slice the model again as shown](images/smart_brim_prusa_4.jpg)
 * Re-slice the model

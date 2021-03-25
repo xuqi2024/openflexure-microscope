@@ -5,7 +5,7 @@
 The OpenFlexure microscope is a customisable optical microscope, using either very cheap webcam optics or lab quality, RMS threaded microscope objectives.  It uses an inverted geometry, and has a high quality mechanical stage which can be motorised using low cost geared stepper motors.
 
 
-![An assembled OpenFlexure Microscope, courtesy of GOSH 2018](./images/microscope_gosh.jpg)
+![An assembled OpenFlexure Microscope, courtesy of GOSH 2018](images/microscope_gosh.jpg)
 
 Academic papers describing the microscope are available open-access from [Biomedical Optics Express](https://doi.org/10.1364/BOE.385729) and [Review of Scientific Instruments](http://dx.doi.org/10.1063/1.4941068) and you can read various [media articles](https://github.com/rwb27/openflexure_microscope/wiki/Media-Articles) about it for a more user-friendly introduction.
 

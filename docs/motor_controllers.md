@@ -14,9 +14,9 @@ Three "official" designs for the Sangaboard exist, and these are described below
 
 ### Simple controller using Arduino Nano
 
-Most recommended [motors](./5_motors.md) will come packaged with a simple driver board. These can be connected to an Arduino Nano and a power supply following the diagram below.
+Most recommended [motors](5_motors.md) will come packaged with a simple driver board. These can be connected to an Arduino Nano and a power supply following the diagram below.
 
-![Simple motor controller with Arduino](./images/sangaboard_simple.png)
+![Simple motor controller with Arduino](images/sangaboard_simple.png)
 
 The motor order is x-motor, y-motor, z-motor from top to bottom of this diagram. Since the driver board accepts 5v-12v, You can power it with a 5v power supply, which can be easily made from a USB cable with a USB charger. Cut open a USB cable, connect the Vcc wire (usually the red wire) to the positive pins, and the GND wire (usually the black wire) to the negative pins, confirm you have the right wires using a multimeter. You can then power it with a USB charger.
 
@@ -34,7 +34,7 @@ NB the diagram above shows the wires crossing over between the motors and the co
 
 This option aims to be a super-simple motor controller board, based on an Arduino Nano and a couple of Darlington pair ICs. Electrically, it is more or less identical to the previous option, but replaces the messy wiring with a PCB.  It owes quite a bit to [Fergus Riche's motor board](https://github.com/fr293/motor_board), the hardware developed by [OpenScope](http://2015.igem.org/Team:Cambridge-JIC) and the Arduino-based motor controller used by a number of summer students working with Richard Bowman in Cambridge, particularly James Sharkey.
 
-The PCB design, bill of materials, and purchase links for both are available via [Kitspace](https://kitspace.org/boards/github.com/rwb27/openflexure_nano_motor_controller/).  You can see an image of the [circuit schematic](./images/sangaboard_v2_schematic.png ':ignore')
+The PCB design, bill of materials, and purchase links for both are available via [Kitspace](https://kitspace.org/boards/github.com/rwb27/openflexure_nano_motor_controller/).  You can see an image of the [circuit schematic](images/sangaboard_v2_schematic.png ':ignore')
 
 
 ### Fully integrated board (Sangaboard v0.3)
