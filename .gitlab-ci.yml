@@ -28,21 +28,26 @@ scad-lib-tests:
 # Build STL files
 build:
     stage: build
-    image: ubuntu:18.04
+    image: ubuntu:20.04
+
+    variables:
+      # prevents config waiting for user input, e.g. for tzdata
+      DEBIAN_FRONTEND: noninteractive
 
     before_script:
       - apt-get update -qq
-      - apt-get -y -qq install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates python3-pip
-      - add-apt-repository -y ppa:openscad/releases
-      - apt-get update -qq
-      - apt-get install -y -qq openscad git
+      - apt-get -y -qq install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates python3-pip openscad git
       - pip3 install -r requirements.txt
 
     script:
       - git clone --depth=1 https://gitlab.com/openflexure/openflexure-microscope-extra
+      # Some files seem to appear changed even though they shouldn't be which
+      # messes up our auto version-string embeddeding, so we do a hard git reset
+      # see https://gitlab.com/gitlab-org/gitlab/-/issues/325299
+      - git reset --hard
       # Build STL files with OpenSCAD
       - mkdir -p /root/.local/share
-      - ./build.py --generate-stl-options-json --include-extra-files
+      - ./build.py --generate-stl-options-json --include-extra-files --force-clean
 
     artifacts:
       expire_in: 1 week

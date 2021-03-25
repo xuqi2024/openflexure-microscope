@@ -30,7 +30,7 @@ $fn=32;
 
 // These are the most useful parameters to change!
 motor_lugs = true;
-version_numstring = "6.1.3";
+
 camera = "picamera_2"; //see cameras/camera.scad for valid values
 optics = "rms_f50d13"; //see optics.scad for valid values
 led_r = 4.5/2; //size of the LED used for illumination
@@ -88,13 +88,6 @@ function flex_dims() = let
 // This returns the sine of the angle through which flexures can be bent
 // Note: sin(8.62 deg) = 0.15
 function flex_a() = 0.15;
-
-
-// TODO: Work out what to do with this. This used to be called every time the params file was included
-//       but as we move away from includes it is less useful, and sample_z is no longer global.
-// Compile a sensible version string
-//version_string = str("v",version_numstring, sample_z, motor_lugs?"-M":"");
-//echo(str("Compiling OpenFlexure Microscope ",version_string));
 
 
 stage_hole_inset = flex_dims().y+4; // how far the holes on the XY stage are inset from leg_r

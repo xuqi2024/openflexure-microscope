@@ -13,6 +13,7 @@ import argparse
 import sys
 from ninja import ninja
 from build_system.microscope_build_writer import MicroscopeBuildWriter
+from build_system.util import version_string
 
 parser = argparse.ArgumentParser(
     description="Run the OpenSCAD build for the Openflexure Microscope."
@@ -25,6 +26,11 @@ parser.add_argument(
 parser.add_argument(
     "--include-extra-files",
     help="Copy over STL files from openflexure-microscope-extra/ into the builds/ folder.",
+    action="store_true",
+)
+parser.add_argument(
+    "--force-clean",
+    help="Ensures that the repo is clean before compiling",
     action="store_true",
 )
 args = parser.parse_args()
@@ -251,8 +257,14 @@ def add_extra_stls_to_writer(writer):
 
 # Use ninja to write a build.ninja file which specifies all the STLs to build
 with MicroscopeBuildWriter("builds", "build.ninja", args.include_extra_files, args.generate_stl_options_json) as mbw:
+    version_str = version_string(args.force_clean)
+    print(f'Compiling microscope version "{version_str}"')
+
     # Generate basic STL files
-    mbw.openscad("main_body.stl", "main_body.scad", select_stl_if="always")
+    mbw.openscad("main_body.stl",
+                 "main_body.scad",
+                 parameters={"VERSION_STRING": version_str},
+                 select_stl_if="always")
     generate_rms_optics_modules(mbw)
     generate_platform_optics_modules(mbw)
     generate_bases(mbw)
