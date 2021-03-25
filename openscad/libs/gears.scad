@@ -125,9 +125,16 @@ module thumbwheel(r=10,h=5,knobble_r=1,knobble_angle=45,chamfer=0.5){
 }
 
 module illumination_thumbscrew(){
+    h=14;
+    taper_h=5;
     difference()
     {
-        cylinder(r=5, h=14, $fn=8);
+        hull(){
+            cylinder(r = 4, h=taper_h, $fn=8);
+            translate([0, 0, taper_h]){
+                cylinder(r=5, h=h-taper_h, $fn=8);
+            }
+        }
         translate([0, 0, 12]) nut(3, shaft=true, fudge=1.2, h=999);
     }
 }
