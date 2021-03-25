@@ -52,8 +52,9 @@ You will need to print the following parts:
 * [Main body]{output,qty:1} [(STL file)](parts/printed/main_body.md) - The smart brim may require [custom print settings].
 * 3 [feet]{output,qty:3} [(STL file)](parts/printed/feet.md)
 * 3 [large gears]{output,qty:3} [(STL file)](parts/printed/gears.md)
-* [Illuminationl dovetail]{output,qty:1} [(STL file)](parts/printed/illumination_dovetail.md)
+* [Illumination dovetail]{output,qty:1} [(STL file)](parts/printed/illumination_dovetail.md)
 * [Condenser arm]{output,qty:1} [(STL file)](parts/printed/condenser.md)
+* [Illumination thumbscrew]{output,qty:1} 
 * [Sample clips]{output,qty:2} [(STL file)](parts/printed/sample_clips.md)
 * [Optics module]{output,qty:1} [(STL file)](parts/printed/optics_module_casing.md) - **This must be printed in [black][Black PLA filament]{Qty: 50g}!** ([?](why_optics_black.md "why?"))
 * [pi camera cover]{output,qty:1} [(STL file)](parts/printed/picamera_cover.md)

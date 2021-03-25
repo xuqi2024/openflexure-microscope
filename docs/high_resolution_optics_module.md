@@ -65,8 +65,8 @@ Take the [optics module][Optics module](fromstep){qty:1, cat:printedpart} and co
 
 ## Attach the mounting screw {pagestep}
 
-* Take an [m3 nut]{qty:1} and push it into the nut trap from the top
-* Take an [m3x8 cap screw]{qty: 1} and screw it into the nut.
+* Take an [M3 nut]{qty:1} and push it into the nut trap from the top
+* Take an [M3x8 cap head screws](parts/fixings/m3x8mm_caphead_screw.md){qty: 1} and screw it into the nut.
 * Only screw it in a couple of turns. About 5 mm of thread should still be visible
 
 ## Set the complete module aside {pagestep}

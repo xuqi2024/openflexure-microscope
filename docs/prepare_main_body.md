@@ -7,7 +7,7 @@
 [precision wire cutters]: parts/tools/precision-wire-cutters.md
 
 
-## Removing brim and supports
+## Removing brim and supports {pagestep}
 
 The [main body][Main body](fromstep){cat: PrintedPart, qty:1} has some custom supports and a custom brim to remove.
 
@@ -21,6 +21,17 @@ These are highlighted in red in the following images.
 ![](renders/brim_and_ties1.png)
 ![](renders/brim_and_ties2.png)
 
-Once these have been removed, you can continue assembly with the [prepared main body]{output, qty:1}.
+## Embed mounting nuts in the stage {pagestep}
+
+* Place an [M3 nut]{qty:4} one of the slots at the side of the stage
+* Put an [M3x8 cap head screw][M3x8 cap head screws](parts/fixings/m3x8mm_caphead_screw.md){qty: 1} into the hole above the nut
+* Tighten with a [2.5mm Allen key]{qty:1, cat:tool} until you feel reasonable resistance
+* Unscrew and remove the screw. The nut should stay mounted.
+* Repeat for the other three holes in the stage.
 
 
+## Embed mounting nuts illumination platform {pagestep}
+
+* Repeat the steps used above to add two [M3 nuts][M3 nut]{qty:2} into the platform above the z-axis
+
+The [prepared main body]{output, qty:1} is now ready for assembly.
