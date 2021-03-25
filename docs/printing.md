@@ -1,4 +1,4 @@
-# Printing the plastic parts
+# Print the plastic parts
 
 If you have bought the plastic parts you can skip this step!
 

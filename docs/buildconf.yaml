@@ -2,10 +2,13 @@ License: CERN-OHL-1.2
 CustomCategories:
     PrintedPart:
         Reuse: false
-        DisplayName: Printed Part
+        DisplayName: Printed Parts
     PrintedTool:
         Reuse: true
-        DisplayName: Printed Tool
+        DisplayName: Printed Tools
+    SubAssembly:
+        Reuse: false
+        DisplayName: Sub-Assemblies
 
 DefaultCategory: Part
 

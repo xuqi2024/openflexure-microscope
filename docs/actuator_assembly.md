@@ -1,4 +1,4 @@
-# Actuator assembly
+# Assemble the actuators
 
 There is one "actuator column" for each of the three axes of the OpenFlexure Microscope stage. These allow you to move the sample in X and Y, or focus the microscope by moving in Z. 
 
@@ -11,7 +11,7 @@ There is one "actuator column" for each of the three axes of the OpenFlexure Mic
 
 ![Inset the nut the actuator column](renders/actuator_assembly_nut.png)
 
-* Insert a [brass nut][M3 brass nut]{qty: 3} into the x actuator through the hole in the front.
+* Insert a [brass nut][M3 brass nut]{qty: 3} into the x actuator through the hole in the front of the [main body][prepared main body](fromstep){qty:1, cat:subassembly}.
 * Look through the hole you should see the side of the nut. If it is tilted you can tap the microscope until it sits flat.
 
 ## Attach the gear {pagestep}
@@ -59,6 +59,6 @@ If you had problems with this step see [troubleshooting actuator assembly].
 
 ## Repeat this process for Y and Z {pagestep}
 
-Follow the same procedure for the Y and Z axes. Once complete your microscope should look like this.
+Follow the same procedure for the Y and Z axes. Once complete the [microscope with assembled actuators]{output, qty:1} should look like this:
 
 ![Actuators assembled](renders/actuators_assembled.png)

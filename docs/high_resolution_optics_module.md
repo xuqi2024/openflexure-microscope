@@ -69,6 +69,14 @@ Take the [optics module][Optics module](fromstep){qty:1, cat:printedpart} and co
 * Take an [M3x8 cap head screws](parts/fixings/m3x8mm_caphead_screw.md){qty: 1} and screw it into the nut.
 * Only screw it in a couple of turns. About 5 mm of thread should still be visible
 
+
+## Connect ribbon cable {pagestep}
+
+* Take the [Raspberry Pi ribbon cable]{qty:1}
+* Pull the catch forward on the exposed Pi Camera connector
+* Insert the ribbon cable with the contacts towards the board
+* Close the catch on the connector
+
 ## Set the complete module aside {pagestep}
 
 Set the [compete optics module]{output, qty:1} aside in a safe place.
