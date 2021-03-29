@@ -20,8 +20,10 @@ module add_hull_base(h=1){
     // thin layer at the bottom
     union(){
         intersection(){
-            hull() children();
-            cylinder(r=999,$fn=8,h=h); //make the base thin
+            hull(){
+                children();
+            }
+            cylinder(r=999, $fn=8, h=h); //make the base thin
         }
         children();
     }
@@ -33,8 +35,10 @@ module add_roof(inner_h){
     // would be too much work...
     union(){
         difference(){
-            hull() children();
-            cylinder(r=999,$fn=8,h=inner_h);
+            hull(){
+                children();
+            }
+            cylinder(r=999, $fn=8, h=inner_h);
         }
         children();
     }
@@ -45,7 +49,9 @@ module wall_vertex(r=wall_t/2, h=wall_h, x_tilt=0, y_tilt=0){
     // (i.e. it's sheared rather than tilted).    These form the
     // stiffening "wall" that runs around the base of
     // the legs
-    smatrix(xz=tan(y_tilt), yz=-tan(x_tilt)) cylinder(r=r, h=h, $fn=8);
+    smatrix(xz=tan(y_tilt), yz=-tan(x_tilt)){
+        cylinder(r=r, h=h, $fn=8);
+    }
 }
 module inner_wall_vertex(params, leg_angle, x, h=wall_h, thick=false){
     // A thin cylinder, close to one of the legs.  It
@@ -132,31 +138,34 @@ module wall_inside_xy_stage(params){
     // This starts at the Z nut seat.  I've split it into two
     // blocks, because the shape is not convex so the base
     // would be bigger than the walls otherwise.
-    reflect([1,0,0]) sequential_hull(){
-        mirror([1,0,0]){
+    reflect([1,0,0]){
+        sequential_hull(){
+            mirror([1,0,0]){
+                z_bridge_wall_vertex(params);
+            }
+            wall_h = inner_wall_h(params);
+            //radius on which wall sits.
+            wall_rad = leg_outer_w(params)/2;
+            wall_rad_thick = leg_outer_w(params)/2-wall_t/2;
             z_bridge_wall_vertex(params);
+            inner_wall_vertex(params, 45, -wall_rad, wall_h);
+            mounting_lug_wall_vertex(params);
+            inner_wall_vertex(params, 135, wall_rad, wall_h);
+            //The wall that has the reflection illumination cut-out is double
+            //thickness to improve stiffness
+            inner_wall_vertex(params, 135, -wall_rad_thick, wall_h, thick=true);
+            inner_wall_vertex(params, -135, wall_rad_thick, wall_h, thick=true);
         }
-        z_bridge_wall_vertex(params);
-        inner_wall_vertex(params, 45, -leg_outer_w(params)/2, inner_wall_h(params));
-        mounting_lug_wall_vertex(params);
-        inner_wall_vertex(params, 135, leg_outer_w(params)/2, inner_wall_h(params));
-        //The wall that has the reflection illumination cut-out is double thickness
-        // to improve stiffness
-        inner_wall_vertex(params, 135, -(leg_outer_w(params)/2-wall_t/2), inner_wall_h(params), thick=true);
-        inner_wall_vertex(params, -135, leg_outer_w(params)/2-wall_t/2, inner_wall_h(params), thick=true);
-
-    };
-
+    }
 }
 
 module wall_outside_xy_actuators(params){
     // Add the wall from the XY actuator column to the middle
     sequential_hull(){
-        mounting_lug_wall_vertex(params); // join at the Z anchor
-        // [nb this is no longer actually the z anchor since the new z axis]
+        mounting_lug_wall_vertex(params);
         // anchor at the same angle on the actuator
-        // NB the base of the wall is outside the
-        // base of the screw seat
+        // NOTE: the base of the wall is outside the base of the
+        // actuator housing
         y_actuator_wall_vertex(params, inside=false);
     }
 }

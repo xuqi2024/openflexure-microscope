@@ -98,7 +98,8 @@ function leg_dims(params) = [4,flex_dims().x,flex_z2(params)+flex_dims().z]; // 
 leg_middle_w = 12; // width of the middle part of each leg
 dz = 0.5; //small increment in Z (~ 2 layers)
 
-function leg_outer_w(params) = leg_middle_w + 2*flex_dims().y + 2*leg_dims(params).x; // overall width of parallelogram legs that support the stage
+// overall width of parallelogram legs that support the stage
+function leg_outer_w(params) = leg_middle_w + 2*flex_dims().y + 2*leg_dims(params).x;
 
 //TODO understand and check this. Where are those numbers from?
 // dimensions of the core part of the actuating levers for X and Y -
