@@ -1,6 +1,6 @@
 use <./libs/illumination.scad>;
 use <./libs/utilities.scad>;
-use <./libs/dovetail.scad>;
+use <./libs/locking_dovetail.scad>;
 include <./libs/microscope_parameters.scad>;
 
 module LED_array_holder(params){

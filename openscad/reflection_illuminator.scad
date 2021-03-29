@@ -1,7 +1,7 @@
 use <./libs/utilities.scad>
 use <./optics.scad>
 include <./libs/microscope_parameters.scad>
-use <./libs/old_dovetail.scad>
+use <./libs/static_dovetail.scad>
 
 base_r = 8.5; // must be >= lens_r+1
 

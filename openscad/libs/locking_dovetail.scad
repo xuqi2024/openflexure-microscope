@@ -192,8 +192,9 @@ module clamp_frame(p){
     // and align y axis with the dovetail angle
     translate(female_point(p)){
         rotate(key_lookup("angle", p) - 90){
-        translate([0, -key_lookup("lever", p)]){
-            children();
+            translate([0, -key_lookup("lever", p)]){
+                children();
+            }
         }
     }
 }

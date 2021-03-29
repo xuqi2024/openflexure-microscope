@@ -19,7 +19,6 @@
 use <../libs/utilities.scad>
 use <../libs/compact_nut_seat.scad>
 use <../libs/logo.scad>
-use <../libs/dovetail.scad>
 include <../libs/microscope_parameters.scad> //All the geometric variables are now in here.
 
 params = default_params();
