@@ -84,9 +84,11 @@ module leg(params, brace=flex_dims().x){
         if(n > 2){
             // adjust spacing so it is even
             link_space_adj = flex_sep/n;
-            translate([0, leg_dims(params).y/2, flex_z1+link_space_adj])
-                repeat([0, 0, link_space_adj], n-1)
+            translate([0, leg_dims(params).y/2, flex_z1+link_space_adj]){
+                repeat([0, 0, link_space_adj], n-1){
                     cube([leg_outer_w(params), 2, 0.5],center=true);
+                }
+            }
         }
     }
 }
@@ -104,12 +106,20 @@ module actuator(params){
         //arm (horizontal bit)
         difference(){
             sequential_hull(){
-                translate([-leg_middle_w/2,0,0]) cube([leg_middle_w,brace+fw,4]);
-                translate([-w/2,0,0]) cube([w,brace+fw+0,actuator_dims(params).z]);
-                translate([-w/2,0,0]) cube(actuator_dims(params));
+                translate([-leg_middle_w/2,0,0]){
+                    cube([leg_middle_w,brace+fw,4]);
+                }
+                translate([-w/2,0,0]){
+                    cube([w,brace+fw+0,actuator_dims(params).z]);
+                }
+                translate([-w/2,0,0]){
+                    cube(actuator_dims(params));
+                }
             }
             //don't foul the actuator column
-            translate([0,actuating_nut_r(params),0]) actuator_end_cutout();
+            translate([0,actuating_nut_r(params),0]){
+                actuator_end_cutout();
+            }
         }
 
     }
@@ -118,9 +128,13 @@ module actuator(params){
 module actuator_silhouette(params, h=999){
     // This defines the cut-out from the base structure for the XY
     // actuators.
-    linear_extrude(2*h,center=true) minkowski(){
-        circle(r=flex_dims().y,$fn=12);
-        projection() actuator(params);
+    linear_extrude(2*h,center=true){
+        minkowski(){
+            circle(r=flex_dims().y,$fn=12);
+            projection(){
+                actuator(params);
+            }
+        }
     }
 }
 
@@ -164,7 +178,14 @@ module m3_lug(pos, angle, holes=true){
 
 module xy_limit_switch_mount(params, d=3.3*2, h=6){
     // A mount for the XY limit switch (M3)
-    leg_frame(params, 45) translate([-9, -flex_dims().y-inner_wall_h(params)*sin(6)-3.3+1, inner_wall_h(params)-6]) cylinder(d=d,h=h);
+
+    y_tr = -flex_dims().y-inner_wall_h(params)*sin(6)-3.3+1;
+    z_tr = inner_wall_h(params)-6
+    leg_frame(params, 45){
+        translate([-9, y_tr, z_tr]){
+            cylinder(d=d,h=h);
+        }
+    }
 }
 
 
@@ -281,7 +302,11 @@ module xy_legs_and_actuators(params){
     // This is the xy_actuators including the casing and all 4 legs
 
     // back legs
-    reflect([1,0,0]) leg_frame(params, 135) leg(params);
+    reflect([1,0,0]){
+        leg_frame(params, 135){
+            leg(params);
+        }
+    }
     //front legs and actuator columns
     xy_actuators(params);
 
@@ -299,15 +324,21 @@ module xy_legs_and_actuators(params){
 module internal_xy_structure(params){
 
     difference() {
-        add_hull_base(base_t) wall_inside_xy_stage(params);
+        add_hull_base(base_t){
+            wall_inside_xy_stage(params);
+        }
         central_optics_cut_out(params);
         // Cut-out for reflection optics
         reflection_illuminator_cutout();
     }
     //mounts for the optical endstops for X and
-    if (endstops) reflect([1,0,0]) hull(){
-        inner_wall_vertex(params, 45, -9, inner_wall_h(params));
-        xy_limit_switch_mount(params);
+    if (endstops){
+        reflect([1,0,0]){
+            hull(){
+                inner_wall_vertex(params, 45, -9, inner_wall_h(params));
+                xy_limit_switch_mount(params);
+            }
+        }
     }
 }
 
@@ -317,7 +348,9 @@ module xy_stage_with_nut_traps(params)
     //and including the nut traps.
     stage_t = key_lookup("stage_t", params);
     difference(){
-        translate([0,0,flex_z2(params)]) xy_stage(params, h=stage_t);
+        translate([0,0,flex_z2(params)]){
+            xy_stage(params, h=stage_t);
+        }
         each_leg(params){
             translate([0, -stage_hole_inset, leg_height(params)]){
                 m3_nut_trap_with_shaft(0,0); //mounting holes
@@ -350,13 +383,18 @@ module xy_flexures(params){
     // This is important! If they get cut then the bridges will fail!
     difference(){
         //Make a truncated square with a truncated "corner" at each leg
-        hull() each_leg(params){
-            translate([0,0,flex_z2(params)+flex_dims().z/2+0.5])
-                cube([leg_middle_w,tiny(),flex_dims().z],center=true);
+        hull(){
+            each_leg(params){
+                translate([0,0,flex_z2(params)+flex_dims().z/2+0.5]){
+                    cube([leg_middle_w,tiny(),flex_dims().z],center=true);
+                }
+            }
         }
         //chop out a smaller truncated square
-        hull() each_leg(params){
-            cube([leg_middle_w-2*flex_dims().x,tiny(),999],center=true);
+        hull(){
+            each_leg(params){
+                cube([leg_middle_w-2*flex_dims().x,tiny(),999],center=true);
+            }
         }
     }
 }
@@ -430,11 +468,21 @@ module actuator_walls_and_z_casing(params, z_axis=true){
         union(){
             add_hull_base(base_t) {
                 //link the XY actuators to the wall
-                if (z_axis) reflect([1,0,0]) wall_inside_xy_actuators(params);
-                reflect([1,0,0]) wall_outside_xy_actuators(params);
-                reflect([1,0,0]) wall_between_actuators(params);
+                if (z_axis){
+                    reflect([1,0,0]){
+                        wall_inside_xy_actuators(params);
+                    }
+                }
+                reflect([1,0,0]){
+                    wall_outside_xy_actuators(params);
+                }
+                reflect([1,0,0]){
+                    wall_between_actuators(params);
+                }
                 // outer profile of casing and anchor for the z axis
-                if (z_axis) z_axis_casing(params, condenser_mount=true);
+                if (z_axis){
+                    z_axis_casing(params, condenser_mount=true);
+                }
             }
             reflect([1,0,0]){
                 side_housing(params);
