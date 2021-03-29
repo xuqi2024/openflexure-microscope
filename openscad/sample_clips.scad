@@ -22,15 +22,16 @@ $fn=32;
 
 
 module sample_clip(sample,t=2.5,w=6,roc=-1,slope=30){
-    roc = roc>0 ? roc : sample.z/2 + sample.y*sin(slope) - t/2; //radius of curvature
+    //radius of curvature
+    roc = roc>0 ? roc : sample.z/2 + sample.y*sin(slope) - t/2;
+    
+    //a is the distance from the contact-point cylinder to the
+    //centre of the curved part
     a = sqrt(pow(sample.y, 2) + pow(sample.z - roc - t/2, 2));
-      //a is the distance from the contact-point cylinder to the
-      //centre of the curved part
-    angle = acos( (roc + t/2) / a ) + atan((sample.z - roc - t/2)/sample.y); //angle through which we must rotate the join between
-    //curved part and straight part
-    echo("angle set to:",angle);
-    /*angle = 75; //angle of straight part to the vertical
-    roc =*/
+    //angle through which we must rotate the join between
+    angle = acos( (roc + t/2) / a ) + atan((sample.z - roc - t/2)/sample.y);
+
+
     difference(){
         union(){
             //anchor to stage

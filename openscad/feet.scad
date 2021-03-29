@@ -56,7 +56,7 @@ module skew_flat(tilt, shift=false){
     skew_matrix = [[1, 0, 0, 0],
                    [0, 1, 0, 0],
                    [0, tan(-tilt), 1, z_shift],
-                   [0, 0, 0, 1]]
+                   [0, 0, 0, 1]];
 
     multmatrix(skew_matrix){
         children();
@@ -172,7 +172,7 @@ module foot_letter(letter="", actuator_tilt=0, h=10, base_cleareance=2){
     z_tr_tilted_frame = -y_tr_tilted_frame*tan(actuator_tilt) + h/2 + base_cleareance;
     
     // y and z position in the untilted frame
-    y_tr = y_tr_tilted_fram*cos(actuator_tilt)-z_tr_tilted_fram*sin(actuator_tilt);
+    y_tr = y_tr_tilted_frame*cos(actuator_tilt)-z_tr_tilted_frame*sin(actuator_tilt);
     z_tr = y_tr_tilted_frame*sin(actuator_tilt)+z_tr_tilted_frame*cos(actuator_tilt);
 
     translate([0, y_tr, z_tr]){

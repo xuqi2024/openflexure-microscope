@@ -38,6 +38,7 @@ module tool_handle(){
                         }
                     }
                 }
+            }
             translate([-w/2,(gap*cos(a)-ns.z)/tan(a) + gap*sin(a),0]){
                 cube([w,tiny(),ns.z]);
             }

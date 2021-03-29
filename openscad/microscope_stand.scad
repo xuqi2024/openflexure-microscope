@@ -633,7 +633,7 @@ module nano_supports(){
                        [driver_width+3.0,driver_length+7.5,0],
                        [2*driver_width-2.0,driver_length+7.5,0],
                        [2*driver_width+3.5,driver_length-2.5,0],
-                       [3*driver_width-1.5,driver_length-2.5,0]]
+                       [3*driver_width-1.5,driver_length-2.5,0]];
 
     for (pos = support_positions){
         pi_frame(){
@@ -642,6 +642,7 @@ module nano_supports(){
                     difference(){
                         cylinder(h=driver_support+tiny(), d=7);
                         trylinder_selftap(3, h=999, center=true);
+                    }
                 }
             }
         }
@@ -829,6 +830,10 @@ module pi_stand_frame_xy(primative=false){
     }
 }
 
+//Prototyping of new stand.
+//TODO remove this befoe release
+//to_print();
+//rendered();
 
 module new_bucket_base_primative(params, ex_rad=3){
     pi_base_size = pi_stand_base_size();
@@ -869,25 +874,21 @@ module new_stand(params, pi_stand_h){
             }
         }
     }
-
-    
-
-    
-
 }
 
 pi_stand_h = 42;
 params = default_params();
-//microscope_stand(params);
+microscope_stand(params);
 
-//to_print();
-rendered();
 
+
+//TODO remove this befoe release
 module to_print(){
     new_stand(params, pi_stand_h);
     //pi_stand(pi_stand_h);
 }
 
+//TODO remove this befoe release
 module rendered(){
     color("#505050"){
         render(6){
