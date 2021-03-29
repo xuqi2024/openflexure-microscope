@@ -30,7 +30,9 @@ module LED_array_holder(params){
                     }
                 }
                 translate([0,illumination_dovetail_y(params), 0]){
-                    linear_extrude(dt_height) back_of_block_2d(dt_params);
+                    linear_extrude(dt_height){
+                        back_of_block_2d(dt_params);
+                    }
                 }
             }     
             // the dovetail clip
@@ -55,4 +57,4 @@ module LED_array_holder(params){
 
 }
 
-render(6) LED_array_holder(default_params());
+LED_array_holder(default_params());

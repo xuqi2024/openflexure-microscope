@@ -16,7 +16,9 @@ module lens_tool(h=lens_tool_height()){
         // hollow it out
         cylinder(d=8, h=999, center=true);
         // bevel the top
-        translate([0,0,h-4]) cylinder(d1=8, d2=10.5, h=4.01);
+        translate([0,0,h-4]){
+            cylinder(d1=8, d2=10.5, h=4.01);
+        }
     }
 }
 

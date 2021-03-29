@@ -17,4 +17,6 @@ use <./libs/gears.scad>
 use <./libs/utilities.scad>
 
 
-repeat([0,large_gear_spacing(),0],3,center=true) large_gear();
+repeat([0,large_gear_spacing(),0],3,center=true){
+    large_gear();
+}
