@@ -38,59 +38,59 @@ function large_gear_screw_pos() = [0,0,1.5];
 //outer radius = pitch radius * (1 + 2*pi/Nteeth)
 //our c2c distance is 10+12.5mm=22.5mm,
 module large_gear(){
-	$fn=32;
+    $fn=32;
     pitch_r=c2c_distance*(ratio/(ratio+1));
-	difference(){
-		intersection(){
-			gear(number_of_teeth=teeth_biggear,
-				circular_pitch=pitch,
-				circles=0,
-				gear_thickness=6,
-				hub_thickness=6,
-				hub_diameter=20,
-				rim_thickness=6,
-				bore_diameter=1);	
-			cylinder(r1=pitch_r-2,r2=pitch_r+18,h=20); //stop bottoms of teeth being funny
-		}
-		translate(large_gear_screw_pos()){
+    difference(){
+        intersection(){
+            gear(number_of_teeth=teeth_biggear,
+                circular_pitch=pitch,
+                circles=0,
+                gear_thickness=6,
+                hub_thickness=6,
+                hub_diameter=20,
+                rim_thickness=6,
+                bore_diameter=1);    
+            cylinder(r1=pitch_r-2,r2=pitch_r+18,h=20); //stop bottoms of teeth being funny
+        }
+        translate(large_gear_screw_pos()){
             nut(3,shaft=true,fudge=1.2,h=999);
         }
-	}
+    }
 }
 
-module small_gear(){	
-	$fn=32;
+module small_gear(){    
+    $fn=32;
     h=8;
     flat_h=h-3.5;
     shaft_r=5/2*1.1;
     pitch_r=c2c_distance*1/(ratio+1);
-	difference(){
-		union(){
-			gear(number_of_teeth=teeth_smallgear,
-					circular_pitch=pitch,
-					circles=0,
-					gear_thickness=h,
-					hub_thickness=h,
-					hub_diameter=1,
-					rim_thickness=h,
-					bore_diameter=1);
-				
-			cylinder(r=pitch_r+PI*pitch_r/teeth_smallgear,h=0.5); //help adhesion
-		}
+    difference(){
+        union(){
+            gear(number_of_teeth=teeth_smallgear,
+                    circular_pitch=pitch,
+                    circles=0,
+                    gear_thickness=h,
+                    hub_thickness=h,
+                    hub_diameter=1,
+                    rim_thickness=h,
+                    bore_diameter=1);
+                
+            cylinder(r=pitch_r+PI*pitch_r/teeth_smallgear,h=0.5); //help adhesion
+        }
         //cut-out for motor shaft
-		intersection(){
-			cylinder(r=shaft_r, h=999, center=true);
-			sequential_hull(){
+        intersection(){
+            cylinder(r=shaft_r, h=999, center=true);
+            sequential_hull(){
                 translate([0,0,-tiny()]) cube([999,3,tiny()]*1.1,center=true);
                 translate([0,0,flat_h]) cube([999,3,tiny()]*1.1,center=true);
                 translate([0,0,flat_h+2]) cube([999,7,tiny()]*1.1,center=true);
                 translate([0,0,999]) cube([999,7,tiny()]*1.1,center=true);
             }
-		}
+        }
         //chamfer the top/bottom for better fit
         translate([0,0,h]) cylinder(r1=shaft_r,r2=shaft_r+2,h=2,center=true);
         translate([0,0,0]) cylinder(r2=shaft_r,r1=shaft_r+2,h=2,center=true);
-	}
+    }
 }
 
 

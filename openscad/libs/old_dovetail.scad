@@ -76,10 +76,10 @@ module dovetail_clip(size=[10,2,10],dt=1.5,t=2,back_t=0,slope_front=0,solid_bott
     // solid_bottom will join the arms together at the bottom, which
     // can help with bed adhesion.
     // see dovetail_clip_cutout - most of the options are just passed through.
-	difference(){
-		translate([-size.x/2,0,0]) cube(size);
-		dovetail_clip_cutout(size-[0,back_t+tiny(),0],dt=dt,t=t,slope_front=slope_front,solid_bottom=solid_bottom);
-	}
+    difference(){
+        translate([-size.x/2,0,0]) cube(size);
+        dovetail_clip_cutout(size-[0,back_t+tiny(),0],dt=dt,t=t,slope_front=slope_front,solid_bottom=solid_bottom);
+    }
 }
 
 module dovetail_plug(corner_x, r, dt, zx_profile=[[0,0],[10,0],[12,-1]]){
@@ -125,27 +125,27 @@ module dovetail_m(size=[10,2,10],dt=1.5,t=2,top_taper=1,bottom_taper=0.5,waist=0
     h=size.z; //height
     corner=[w/2-dt,0,0]; //location of the pointy bit of the dovetail
     difference(){
-		union(){
+        union(){
             //back of the dovetail (the mount) plus the start of the
             //dovetail's neck (as far as y=0)
-			sequential_hull(){
+            sequential_hull(){
                 // start with the cube that the dovetail attaches to
-				translate([-w/2-t,-size.y,0]) cube([w+2*t,size.y-r,h]);
+                translate([-w/2-t,-size.y,0]) cube([w+2*t,size.y-r,h]);
                 // then add shapes that take in the centres of the cylinders
                 // from the next step.  This joins together the nicely-rounded
                 // contact points, such that when we subtract out the cylinders
                 // at the corners we get a nice smooth shape.
                 reflect([1,0,0]) translate(corner+[sqrt(3)*r,-r,0]) cylinder(r=tiny(),h=h);
                 reflect([1,0,0]) translate(corner) cylinder(r=tiny(),h=h);
-			}
+            }
             //contact points (with rounded edges to avoid burrs)
-			difference(){
-				union(){
-					reflect([1,0,0]) hull(){
-						translate(corner+[sqrt(3)*r,-r,0]) cylinder(r=r,h=h);	
-						translate([w/2+t-r,-r,0]) cylinder(r=r,h=h);	
+            difference(){
+                union(){
+                    reflect([1,0,0]) hull(){
+                        translate(corner+[sqrt(3)*r,-r,0]) cylinder(r=r,h=h);    
+                        translate([w/2+t-r,-r,0]) cylinder(r=r,h=h);    
                     }
-					//hull() reflect([1,0,0]) translate(corner) rotate(45) translate([sqrt(3)*r,r,0]) repeat([1,0,0],2) cylinder(r=r,h=h);
+                    //hull() reflect([1,0,0]) translate(corner) rotate(45) translate([sqrt(3)*r,r,0]) repeat([1,0,0],2) cylinder(r=r,h=h);
                     // the "plug" is tapered for easy insertion, and may
                     // have optional indents in the middle (a "waist").
                     waist_dx = waist>waist_dx*4 ? waist_dx : 0;
@@ -160,13 +160,13 @@ module dovetail_m(size=[10,2,10],dt=1.5,t=2,top_taper=1,bottom_taper=0.5,waist=0
                                   [h-tiny(),-top_taper/2]];
                     dovetail_plug(corner.x, r, dt, zx_profile);
 
-				}
-			}
-		}
+                }
+            }
+        }
         // We round out the internal corner so that we grip with the edges
         // of the tooth and not the point (you get better contact this way).
-		reflect([1,0,0]) translate(corner) cylinder(r=r,h=3*h,center=true);
-	}
+        reflect([1,0,0]) translate(corner) cylinder(r=r,h=3*h,center=true);
+    }
 }
 
 module dovetail_clip_y(size, dt=1.5, t=2, taper=0, endstop=false){

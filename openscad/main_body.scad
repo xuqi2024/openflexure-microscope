@@ -64,45 +64,45 @@ module leg(params, brace=flex_dims().x){
     // or via "actuator" to make the legs with levers
     fw=flex_dims().x;
 
-	union(){
-       	//leg
-		reflect([1,0,0]){
-			//vertical bars of the leg
-			translate([leg_middle_w/2+flex_dims().y,0,0]){
+    union(){
+           //leg
+        reflect([1,0,0]){
+            //vertical bars of the leg
+            translate([leg_middle_w/2+flex_dims().y,0,0]){
                 hull(){
                     cube(leg_dims(params));
                     //extend the base to make the bars triangular
                     cube([leg_dims(params).x, fw+brace ,tiny()]);
                 }
             }
-		}
+        }
         leg_flexures(params, brace);
 
-		//thin links between legs
+        //thin links between legs
         flex_sep = flex_z2(params)-flex_z1;
         n = floor(flex_sep/leg_link_spacing);
-		if(n > 2){
+        if(n > 2){
             // adjust spacing so it is even
-			link_space_adj = flex_sep/n;
-			translate([0, leg_dims(params).y/2, flex_z1+link_space_adj])
+            link_space_adj = flex_sep/n;
+            translate([0, leg_dims(params).y/2, flex_z1+link_space_adj])
                 repeat([0, 0, link_space_adj], n-1)
                     cube([leg_outer_w(params), 2, 0.5],center=true);
-		}
-	}
+        }
+    }
 }
 
 module actuator(params){
     // A leg that supports the stage, plus a lever to tilt it.
     // No longer includes the flexible nut seat actuating column.
     // TODO: find the code that unifies this with leg()
-	brace=20;
+    brace=20;
     fw=flex_dims().x;
     w = actuator_dims(params).x;
     union(){
         leg(params, brace=brace);
 
-		//arm (horizontal bit)
-		difference(){
+        //arm (horizontal bit)
+        difference(){
             sequential_hull(){
                 translate([-leg_middle_w/2,0,0]) cube([leg_middle_w,brace+fw,4]);
                 translate([-w/2,0,0]) cube([w,brace+fw+0,actuator_dims(params).z]);
@@ -112,7 +112,7 @@ module actuator(params){
             translate([0,actuating_nut_r(params),0]) actuator_end_cutout();
         }
 
-	}
+    }
 }
 
 module actuator_silhouette(params, h=999){
@@ -241,7 +241,7 @@ module xy_stage(params, h=10, on_buildplate=false){
                 }
             }
         }
-	}
+    }
 }
 
 
@@ -257,7 +257,7 @@ module xy_actuators(params, ties_only=false){
         if (! ties_only){
             actuator(params);
         }
-		translate([0,actuating_nut_r(params),0]){
+        translate([0,actuating_nut_r(params),0]){
             if (! ties_only){
                 actuator_column(actuator_h, join_to_casing=ties);
             }
@@ -281,11 +281,11 @@ module xy_legs_and_actuators(params){
     // This is the xy_actuators including the casing and all 4 legs
 
     // back legs
-	reflect([1,0,0]) leg_frame(params, 135) leg(params);
+    reflect([1,0,0]) leg_frame(params, 135) leg(params);
     //front legs and actuator columns
     xy_actuators(params);
 
-	for(i = [0,1]){
+    for(i = [0,1]){
         label = ["X","Y"][i];
         angle = [-45,45][i];
         leg_frame(params, angle){
@@ -317,13 +317,13 @@ module xy_stage_with_nut_traps(params)
     //and including the nut traps.
     stage_t = key_lookup("stage_t", params);
     difference(){
-		translate([0,0,flex_z2(params)]) xy_stage(params, h=stage_t);
-		each_leg(params){
+        translate([0,0,flex_z2(params)]) xy_stage(params, h=stage_t);
+        each_leg(params){
             translate([0, -stage_hole_inset, leg_height(params)]){
                 m3_nut_trap_with_shaft(0,0); //mounting holes
             }
         }
-	}
+    }
 }
 
 module xy_flexures(params){
@@ -348,17 +348,17 @@ module xy_flexures(params){
     // Top flexures: flexures between legs and stage
     // NOTE: these connect the legs together, and pass all the way under the stage.
     // This is important! If they get cut then the bridges will fail!
-	difference(){
+    difference(){
         //Make a truncated square with a truncated "corner" at each leg
-		hull() each_leg(params){
+        hull() each_leg(params){
             translate([0,0,flex_z2(params)+flex_dims().z/2+0.5])
                 cube([leg_middle_w,tiny(),flex_dims().z],center=true);
         }
         //chop out a smaller truncated square
-		hull() each_leg(params){
+        hull() each_leg(params){
             cube([leg_middle_w-2*flex_dims().x,tiny(),999],center=true);
         }
-	}
+    }
 }
 
 module xy_leg_ties(params){
@@ -385,11 +385,11 @@ module xy_leg_ties(params){
 module xy_positioning_system(params){
     // This module creates the main XY positioning mechanism. Including the actuator columns.
     ties = key_lookup("print_ties", params);
-	xy_legs_and_actuators(params);
+    xy_legs_and_actuators(params);
     internal_xy_structure(params);
     xy_stage_with_nut_traps(params);
 
-	// Connect the legs to the stage and structure with flexures
+    // Connect the legs to the stage and structure with flexures
     xy_flexures(params);
 
 
@@ -492,13 +492,13 @@ module main_body(params, version_string){
         z_axis_casing_cutouts(params);
     }
 
-	//z axis - Only the actuator column is housed at this point
+    //z axis - Only the actuator column is housed at this point
     z_actuator_assembly(params);
 
-	difference(){
+    difference(){
         actuator_walls_and_z_casing(params);
         body_logos(params, version_string);
-	}
+    }
 }
 
 //Note that the main body is complex enough you should run Render not preview

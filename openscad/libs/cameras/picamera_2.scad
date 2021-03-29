@@ -65,7 +65,7 @@ module picam2_cutout( beam_length=15){
     ch=2.9; //height of camera box (including foam support)
     camera = [cw,cw,ch]; //size of camera box
     hole_r = 4.3; //size of camera aperture
-	union(){
+    union(){
         sequential_hull(){
             //cut-out for camera
             translate([0,0,-tiny()]) cube([cw+0.5,cw+0.5,tiny()],center=true); //wider at bottom
@@ -94,7 +94,7 @@ module picam2_cutout( beam_length=15){
         cylinder(r=hole_r, h=beam_length);
 
 
-	}
+    }
 }
 //picam2_cutout();
 
@@ -210,9 +210,9 @@ lens_unscrew_r = 5.5/2; //size of the bit we unscrew
 module generous_camera_bits(){
     //The other stuff on the PCB (mostly the ribbon cable)
     camera = [8.5,8.5,2.3]; //size of camera box
-	cw = camera.x+1; //side length of camera box at bottom (slightly larger)
-	union(){
-		//ribbon cable at top of camera
+    cw = camera.x+1; //side length of camera box at bottom (slightly larger)
+    union(){
+        //ribbon cable at top of camera
         sequential_hull(){
             translate([0,0,0]) cube([cw-1,tiny(),4],center=true);
             translate([0,9.4-(4.4/1)/2,0]) cube([cw-1,1,4],center=true);
@@ -220,7 +220,7 @@ module generous_camera_bits(){
         //flex connector
         translate([-1.25,9.4,0]) cube([cw-1+2.5, 4.4+1, 4],center=true);
 
-	}
+    }
 }
 
 module picamera_2_gripper(){

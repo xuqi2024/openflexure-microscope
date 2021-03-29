@@ -19,25 +19,25 @@ module shear_x(amount=1){
     // e.g. if amount=1, then a straight line in Y will be
     // tilted to 45 degrees between X and Y, while X lines are
     // unchanged.  This is used in the Z axis.
-	multmatrix([[1,amount,0,0],
-					 [0,1,0,0],
-					 [0,0,1,0],
-					 [0,0,0,1]]) children();
+    multmatrix([[1,amount,0,0],
+                     [0,1,0,0],
+                     [0,0,1,0],
+                     [0,0,0,1]]) children();
 }
 
 
 module leg_frame(params, angle){
     leg_r = key_lookup("leg_r", params);
     // Transform into the frame of one of the legs of the stage
-	rotate(angle) translate([0,leg_r,]) children();
+    rotate(angle) translate([0,leg_r,]) children();
 }
 module each_leg(params){
     // Repeat for each of the legs of the stage
-	for(angle=[45,135,-135,-45]) leg_frame(params, angle) children();
+    for(angle=[45,135,-135,-45]) leg_frame(params, angle) children();
 }
 module each_actuator(params){
     // Repeat this for both of the actuated legs (the ones with levers)
-	reflect([1,0,0]) leg_frame(params,45) children();
+    reflect([1,0,0]) leg_frame(params,45) children();
 }
 
 module y_actuator_frame(params){
