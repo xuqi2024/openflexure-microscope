@@ -60,17 +60,18 @@ module each_illumination_corner(params){
 /* THE ILLUMINATION DOVETAIL */
 //Note that this is not built from here. it is built in illumination_dovetail.scad
 
+function illumination_dovetail_lug_height() = 3
 
 module illumination_dovetail_branding(params, h, bottom_z){
     // The open flexure logo for the back of the illumination fovetail
 
     //lug height
-    lug_h = 4+2*tiny();
+    lug_h = illumination_dovetail_lug_height();
     //height of the slobed back
     slope_h = h-lug_h ;
     //top and bottom of y position of the sloped back
     bot_y = right_illumination_screw_pos(params).y+5;
-    top_y = illumination_dovetail_y(params)+10;
+    top_y = illumination_dovetail_y(params)+illumination_dovetail_blockdepth(params);
     back_angle = atan((top_y-bot_y)/slope_h);
     logo_z = bottom_z+lug_h +slope_h/2;
     logo_y = (top_y+bot_y)/2+.5;
@@ -91,27 +92,6 @@ module illumination_dovetail_structure(params, h, dt_z, dt_h){
     cube_corner = [-dt_w/2, dt_y, dt_z];
     //distance cubes are moved forward and backward in y respectivly
     delta_y = illumination_dovetail_blockdepth(params);
-    /*sequential_hull(){
-        //Cube just below the actual dovetail
-        translate(cube_corner){
-            cube([dt_w, 15+delta_y, 1]);
-        }
-        //trilobular structure with "corners" at the 2 screws and a back corner position
-        hull(){
-            each_illumination_screw(params){
-                cyl_slot(r=4, h=3+tiny(), dy=3);
-            }
-            translate(illumination_back_corner_pos(params)){
-                scale([1,0.5,1]){
-                    cylinder(r=4, h=tiny());
-                }
-            }
-        }
-        //cube behind dovetail
-        translate(cube_corner + [0, delta_y - tiny(), 0]){
-            cube([dt_w, tiny(), dt_h]);
-        }
-    }*/
     hull(){
         translate([0, dt_y, dt_z]){
             mirror([0,1,0]){
@@ -148,6 +128,8 @@ module illumination_dovetail(params, h=50){
     //height of the dovetail
     dt_h = h - start_z;
 
+    lug_h = illumination_dovetail_lug_height();
+
     difference(){
         illumination_dovetail_structure(params, h, dt_z, dt_h);
         // slots for the mounting screws (to allow adjustment of position)
@@ -155,7 +137,7 @@ module illumination_dovetail(params, h=50){
             // wider than normal M3 clearance hole to ease adjustment of illumination
             m3_clear_loose = 3/2*1.33;
             cyl_slot(r=m3_clear_loose, h=999, dy=3, center=true);
-            translate([0,0,3]){
+            translate([0, 0, lug_h]){
                 cyl_slot(r=6, h=999, dy=3);
             }
         }
