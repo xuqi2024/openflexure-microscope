@@ -136,7 +136,7 @@ function z_nut_y(params) = let(
     lev_len_sq = pow(z_lever_length(params), 2),
     bot_z_flex_z_sq = pow(z_flexures_z1, 2),
     z_lever_y_proj = sqrt(lev_len_sq - bot_z_flex_z_sq)
-    ) z_anchor_y - flex_dims().y/2 + z_lever_y_proj;
+) z_anchor_y - flex_dims().y/2 + z_lever_y_proj;
 
 
 function z_actuator_travel(params) = z_lever_length(params)*0.15; // distance moved by the Z actuator
