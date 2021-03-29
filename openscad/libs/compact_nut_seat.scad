@@ -15,7 +15,7 @@ nut_h = 2.6;
 nut_slot = [nut_w*sin(60), nut_w, nut_h+0.4];
 shaft_r = nut_size/2 * 1.15; //radius of hole to cut for screw
 column_base_r = shaft_r + 2; //radius of the bottom of the actuator column
-//column_clearance_w = nut_slot.x + 2*1.5 + 2*7;
+
 column_core = zero_z(nut_slot) + 2*[1.5+7+1, 1.5+1.5, 0];// NB leave z=0 here
 wall_t = 1.6; //thickness of the wall around the column for the screw seat
 

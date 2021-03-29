@@ -264,7 +264,7 @@ module dovetail_clip_y(size, dt=1.5, t=2, taper=0, endstop=false){
     // taper optionally feathers the dovetail onto an edge
     // the dovetail extends along the +y direction from y=0
     h = size.y;
-    ew = 0;//endstop ? endstop_w : 0;
+    ew = 0;
     reflect([1,0,0]){
         translate([-size.x/2,0,0]){
             mirror([0,0,1]){

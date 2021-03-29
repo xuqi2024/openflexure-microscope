@@ -856,8 +856,6 @@ module new_stand(params, pi_stand_h){
     h=73;
 
     stand_lugs(params, h, pi_stand_h);
-    //stand_top(params, h);
-
 
     pi_base_size = pi_stand_base_size();
     extra_space = [1.5, 1.5, 1.5];

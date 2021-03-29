@@ -49,7 +49,7 @@ module objective_mount(params){
     overlap = 4; // we have this much contact between
                  // the mount and the wedge on the optics module.
     roc=1.5; // radius of curvature of the arms
-    w = objective_mount_nose_w + 2*overlap + 4;//+2*roc; //overall width
+    w = objective_mount_nose_w + 2*overlap + 4; //overall width
 
     difference(){
         hull(){

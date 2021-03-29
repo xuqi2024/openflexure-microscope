@@ -128,7 +128,3 @@ params = default_params();
 h=.6;
 slide_riser(params, h);
 
-// Comment this back in to see slide position
-// translate([0,0,h+slide.z/2]){
-//     cube(slide,center=true);
-// }

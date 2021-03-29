@@ -26,7 +26,7 @@ module lens(d=16, f=40, cut=4.5, n=1.5){
 
 module flanged_lens(d=16, f=40, cut=4.5, fl_d=18, fl_h=1, n=1.5){
     // d is the diamater of the non-flanged section
-    // cut is the height aof the non flanged section.
+    // cut is the height of the non-flanged section.
     $fn=60;
     color("PaleTurquoise", .60){
         render(6){
