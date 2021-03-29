@@ -20,29 +20,43 @@ module fl_led_mount(led_d=5){
     led_y = back_y+3; //don't worry about precise imaging (is this OK?)
     front_y = led_y + front_t;
 
-    union() translate([0,0,0]){
-        difference(){
-            union(){
-                translate([0, back_y, 0]) mirror([0,1,0]) dovetail_m([w, 1, h], t=2*roc);
-                hull(){
-                    translate([-w/2,back_y,0]) cube([w,tiny(),h]);
-                    reflect([1,0,0]) translate([w/2-3*roc, front_y - 3*roc, 0]) cylinder(r=3*roc, h=h, $fn=16);
+    union(){
+        translate([0,0,0]){
+            difference(){
+                union(){
+                    translate([0, back_y, 0]){
+                        mirror([0,1,0]){
+                            dovetail_m([w, 1, h], t=2*roc);
+                        }
+                    }
+                    hull(){
+                        translate([-w/2,back_y,0]){
+                            cube([w,tiny(),h]);
+                        }
+                        reflect([1,0,0]){
+                            translate([w/2-3*roc, front_y - 3*roc, 0]){
+                                cylinder(r=3*roc, h=h, $fn=16);
+                            }
+                        }
+                    }
+                    hull(){
+                        l=3.5;
+                        translate([-w/2+2.5,back_y-1.5+tiny(),led_z-led_d/2-2-l]){
+                            cube([w-5,tiny(),led_d+4+l]);
+                        }
+                        translate([-w/2+2.5,back_y-1.5+tiny()-l,led_z-led_d/2-2]){
+                            cube([w-5,tiny(),led_d+4]);
+                        }
+                    }
                 }
-                hull(){
-                    l=3.5;
-                    translate([-w/2+2.5,back_y-1.5+tiny(),led_z-led_d/2-2-l]) cube([w-5,tiny(),led_d+4+l]);
-                    translate([-w/2+2.5,back_y-1.5+tiny()-l,led_z-led_d/2-2]) cube([w-5,tiny(),led_d+4]);
-                }
-            }
 
-            // add a hole for the LED
-            translate([0,led_y,led_z]){
-                cylinder_with_45deg_top(h=999, r=led_d/2*1.05, $fn=16, extra_height=0, center=true); //LED
-                cylinder_with_45deg_top(h=999, r=(led_d+1)/2*1.05, $fn=16, extra_height=0);
+                // add a hole for the LED
+                translate([0,led_y,led_z]){
+                    cylinder_with_45deg_top(h=999, r=led_d/2*1.05, $fn=16, extra_height=0, center=true);
+                    cylinder_with_45deg_top(h=999, r=(led_d+1)/2*1.05, $fn=16, extra_height=0);
+                }
             }
         }
-
-
     }
 }
 
@@ -71,15 +85,25 @@ module lens_holder(led_d=5){
         }
         //beam
         hull(){ // todo: make this a light trap?
-            translate([0,0,led_h+aperture_h-tiny()]) cylinder(r=tiny(),h=tiny());
-            translate([0,0,led_h+aperture_h+1]) cylinder(r=4,h=tiny());
-            translate([0,0,lens_z]) cylinder(r=lens_r-2,h=tiny());
+            translate([0,0,led_h+aperture_h-tiny()]){
+                cylinder(r=tiny(),h=tiny());
+            }
+            translate([0,0,led_h+aperture_h+1]){
+                cylinder(r=4,h=tiny());
+            }
+            translate([0,0,lens_z]){
+                cylinder(r=lens_r-2,h=tiny());
+            }
         }
 
         //LED
         deformable_hole_trylinder(led_r-0.1,led_r+0.6,h=2*led_h+tiny(), center=true);
-        translate([0,0,led_h]) cylinder(r1=led_r+0.6, r2=aperture_stop_r,h=aperture_h-0.5+tiny());
-        translate([0,0,led_h+aperture_h]) cylinder(r=aperture_stop_r,h=2,center=true);
+        translate([0,0,led_h]){
+            cylinder(r1=led_r+0.6, r2=aperture_stop_r,h=aperture_h-0.5+tiny());
+        }
+        translate([0,0,led_h+aperture_h]){
+            cylinder(r=aperture_stop_r,h=2,center=true);
+        }
         cylinder(r=led_r+0.5, h=1.5, center=true);
     }
 }
@@ -90,8 +114,12 @@ module field_stop(aperture=[3,4], illuminator_d=2*base_r, h=5){
         cylinder(d=illuminator_d, h=h);
 
         hull(){
-            linear_extrude(0.5, center=true) square(aperture, center=true);
-            translate([0,0,h]) cylinder(d=illuminator_d - 5, h=1);
+            linear_extrude(0.5, center=true){
+                square(aperture, center=true);
+            }
+            translate([0,0,h]){
+                cylinder(d=illuminator_d - 5, h=1);
+            }
         }
     }
 }
@@ -107,34 +135,49 @@ module illuminator_holder(){
     difference(){
         union(){
             fl_led_mount();
-            translate([-illuminator_d/2-2,10.5,0]) cube([w,40,h]); //80 was 40 in the one I made earlier...
+            translate([-illuminator_d/2-2,10.5,0]){
+                cube([w,40,h]); //80 was 40 in the one I made earlier...
+            }
         }
-        //translate([0,13,0]) rotate([-90,0,0]) cylinder(h=999,r=999,$fn=5);
 
         // grip the illuminator
-        translate([0,16, h/2]) rotate([-90,0,0]) cylinder(h=999,d=illuminator_d);
-        translate([-w/2+2,15,-1]) cube([w-4, 4+tiny(),999]); // cut out flexible bits
-        translate([-w/2+5,19,-1]) cube([w-5*2, 999,999]); // cut out flexible bits
+        translate([0,16, h/2]){
+            rotate([-90,0,0]){
+                cylinder(h=999,d=illuminator_d);
+            }
+        }
+        translate([-w/2+2,15,-1]){
+            cube([w-4, 4+tiny(),999]); // cut out flexible bits
+        }
+        translate([-w/2+5,19,-1]){
+            cube([w-5*2, 999,999]); // cut out flexible bits
+        }
         // cable tie grooves to squeeze it
-        repeat([0,12,0],4) translate([0,22,h/2]) rotate([-90,0,0]) difference(){
-            cylinder(d=999,h=4.5,$fn=5);
-            cylinder(d=illuminator_d + 2*3, h=999, center=true);
+        repeat([0,12,0],4){
+            translate([0,22,h/2]){
+                rotate([-90,0,0]){
+                    difference(){
+                        cylinder(d=999,h=4.5,$fn=5);
+                        cylinder(d=illuminator_d + 2*3, h=999, center=true);
+                    }
+                }
+            }
         }
         // beam
-        translate([0,0,h/2]) rotate([-90,0,0]) cylinder(d=7, h=999, center=true);
+        translate([0,0,h/2]){
+            rotate([-90,0,0]){
+                cylinder(d=7, h=999, center=true);
+            }
+        }
     }
 }
 
-translate([20,20,0]) rotate(90) illuminator_holder();
-translate([-20,0,0]) field_stop();
+translate([20,20,0]){
+    rotate(90){
+        illuminator_holder();
+    }
+}
+translate([-20,0,0]){
+    field_stop();
+}
 lens_holder();
-
-//difference(){
-//    lens_holder();
-//    //rotate([90,0,0]) //mirror([0,0,1])
-//    translate([0,0,10]) cylinder(r=99,h=999,$fn=5);
-//}
-//for(i=[0:3]) translate([i*15,-20, 0]) difference(){
-//    cylinder(h=0.5 * pow(2,i), d=12);
-//    cylinder(h=999,d=6,center=true);
-//}
