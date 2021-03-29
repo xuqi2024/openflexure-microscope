@@ -16,7 +16,7 @@ nut_slot = [nut_w*sin(60), nut_w, nut_h+0.4];
 shaft_r = nut_size/2 * 1.15; //radius of hole to cut for screw
 column_base_r = shaft_r + 2; //radius of the bottom of the actuator column
 //column_clearance_w = nut_slot.x + 2*1.5 + 2*7;
-column_core = zeroz(nut_slot) + 2*[1.5+7+1, 1.5+1.5, 0];// NB leave z=0 here
+column_core = zero_z(nut_slot) + 2*[1.5+7+1, 1.5+1.5, 0];// NB leave z=0 here
 wall_t = 1.6; //thickness of the wall around the column for the screw seat
 
 function nut_size() = nut_size;
@@ -394,7 +394,7 @@ module screw_seat(h, travel, tilt=0, entry_w=2*column_base_r+3, extra_entry_h=7,
 
         //allow the actuator to poke in
         edge_y = ss_outer(h).y/2;
-        smatrix(zy=sin(tilt)){
+        sparse_matrix_transform(zy=sin(tilt)){
             translate([0,-edge_y,0]){
                 cube([entry_w, edge_y, entry_h*2], center=true);
             }

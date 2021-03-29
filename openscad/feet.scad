@@ -80,7 +80,7 @@ module filleted_bridge(gap, roc_xy=2, roc_xz=2){
     x2 = w/2 - roc_xz;
     y1 = b/2 + roc_xy;
     difference(){
-        translate(-zeroz(gap)/2 -[0,roc_xy,999]){
+        translate(-zero_z(gap)/2 -[0,roc_xy,999]){
             cube(gap + [0,2*roc_xy,roc_xz] + [0,0,999]);
         }
         reflect([0,1,0]){

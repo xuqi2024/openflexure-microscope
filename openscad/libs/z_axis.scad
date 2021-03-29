@@ -257,7 +257,7 @@ module pivot_z_axis(angle){
     // shear; this means the whole axis moves as intended rather
     // than rotating about a particular height (i.e. both flexures
     // pivot about the right y value).
-    smatrix(zy=sin(angle), zt=-sin(angle)*z_anchor_y){
+    sparse_matrix_transform(zy=sin(angle), zt=-sin(angle)*z_anchor_y){
         children();
     }
 }

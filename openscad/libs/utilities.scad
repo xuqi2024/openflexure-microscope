@@ -18,7 +18,7 @@
 // this is a tiny distance. Used to be a parameter d in the code but that caused confusion with diameters
 function tiny() = 0.05;
 
-function zeroz(size) = [size.x, size.y, 0]; //set the Z component of a 3-vector to 0
+function zero_z(size) = [size.x, size.y, 0]; //set the Z component of a 3-vector to 0
 
 module reflect(axis){
     //reflects children about the origin, keeping the originals
@@ -210,7 +210,7 @@ module unrotate(rotation){
     }
 }
 
-module smatrix(xx=1, yy=1, zz=1, xy=0, xz=0, yx=0, yz=0, zx=0, zy=0, xt=0, yt=0, zt=0){
+module sparse_matrix_transform(xx=1, yy=1, zz=1, xy=0, xz=0, yx=0, yz=0, zx=0, zy=0, xt=0, yt=0, zt=0){
     //Apply a matrix transformation, specifying the matrix sparsely
     //This is useful because most helpful matrices are close to the identity.
     matrix = [[xx, xy, xz, xt],

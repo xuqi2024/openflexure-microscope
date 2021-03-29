@@ -49,7 +49,7 @@ module wall_vertex(r=wall_t/2, h=wall_h, x_tilt=0, y_tilt=0){
     // (i.e. it's sheared rather than tilted).    These form the
     // stiffening "wall" that runs around the base of
     // the legs
-    smatrix(xz=tan(y_tilt), yz=-tan(x_tilt)){
+    sparse_matrix_transform(xz=tan(y_tilt), yz=-tan(x_tilt)){
         cylinder(r=r, h=h, $fn=8);
     }
 }

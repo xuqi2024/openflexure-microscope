@@ -185,7 +185,7 @@ band_tool_h = 4;
 
 module prong_frame(){
     //Move the prongs out and tilt them slightly
-    smatrix(xz=0.3, xt=1.9, yt=band_tool_l){
+    sparse_matrix_transform(xz=0.3, xt=1.9, yt=band_tool_l){
         children();
     }
 }
