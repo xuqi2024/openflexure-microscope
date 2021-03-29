@@ -33,15 +33,25 @@ module slide_riser_base(params, h, thickness, y_space){
         xy_stage(params, h=thickness,on_buildplate=true);
 
         //angled cut-out for slide
-        hull() translate([0,0,h]){
-            translate([0,-slide.z,tiny()/2]) cube([slide.x,slide.y,tiny()], center=true);
-            translate([0,999-slide.z,999+tiny()/2]) cube([slide.x,slide.y,tiny()], center=true);
+        hull(){
+            translate([0,0,h]){
+                translate([0,-slide.z,tiny()/2]){
+                    cube([slide.x,slide.y,tiny()], center=true);
+                }
+                translate([0,999-slide.z,999+tiny()/2]){
+                    cube([slide.x,slide.y,tiny()], center=true);
+                }
+            }
         }
         //extra cutout on clip side
-        translate([-999/2,0,h]) cube([999,slide.y/2+y_space,999]);
+        translate([-999/2,0,h]){
+            cube([999,slide.y/2+y_space,999]);
+        }
 
         //cut-out for middle of slide (immersion oil, etc.)
-        translate([-999/2,-slide.y/2+2, h-2]) cube([999,slide.y-4,999]);
+        translate([-999/2,-slide.y/2+2, h-2]){
+            cube([999,slide.y-4,999]);
+        }
     }
 }
 
@@ -64,32 +74,53 @@ module slide_riser(params, h=.6, thickness=4){
                     slide_riser_base(params, h,thickness, y_space);
                     // This is the bar that froms the stationary handle.
                     // It is very long and will be cut down later.
-                    translate([-999+30,slide.y/2+y_space,0]) cube([999,9,12]);
+                    translate([-999+30,slide.y/2+y_space,0]){
+                        cube([999,9,12]);
+                    }
                 }
 
                 //space for clip to push through
-                translate([-slide.y/2+2,0, -1]) cube([slide.y-4,999,clip_w+3]);
+                translate([-slide.y/2+2,0, -1]){
+                    cube([slide.y-4,999,clip_w+3]);
+                }
 
                 //counter bored mounting holesmounting holes
-                each_leg(params) translate([0,-stage_hole_inset,0]){
-                    cylinder(r=3/2*1.15,h=999,center=true);
-                    translate([0,0,thickness+tiny()])cylinder(r=3*1.15,h=999);
+                each_leg(params){
+                    translate([0,-stage_hole_inset,0]){
+                        cylinder(r=3/2*1.15,h=999,center=true);
+                        translate([0,0,thickness+tiny()]){
+                            cylinder(r=3*1.15,h=999);
+                        }
+                    }
                 }
             }
             //Clip and handle
             translate([-clip_l+4,slide.y/2+y_space,0]){
                 difference(){
-                    translate([0,0,clip_w/2])rotate([-90,0,0])rotate([0,0,-90]){
-                            sample_clip([0,clip_l,-clip_y], w=clip_w, roc=clip_r);
+                    translate([0,0,clip_w/2]){
+                        rotate([-90,0,0]){
+                            rotate([0,0,-90]){
+                                sample_clip([0,clip_l,-clip_y], w=clip_w, roc=clip_r);
+                            }
+                        }
                     }
-                    translate([0,-clip_y+clip_angle_h,0])rotate([45,0,0])translate([clip_l,-5,0])cube([10,10,10], center=true);
-
+                    translate([0,-clip_y+clip_angle_h,0]){
+                        rotate([45,0,0]){
+                            translate([clip_l,-5,0]){
+                                cube([10,10,10], center=true);
+                            }
+                        }
+                    }
                 }
-                translate([-999+7,slide.y/2+y_space+clip_r-2,0]) cube([999,9,7]);
+                translate([-999+7,slide.y/2+y_space+clip_r-2,0]){
+                    cube([999,9,7]);
+                }
             }
         }
         // cut off end of the super long handles
-        translate([-999/2-handle_end,0,0])cube([999,999,999],center=true);
+        translate([-999/2-handle_end,0,0]){
+            cube([999,999,999],center=true);
+        }
     }
 }
 
@@ -98,4 +129,6 @@ h=.6;
 slide_riser(params, h);
 
 // Comment this back in to see slide position
-// translate([0,0,h+slide.z/2]) cube(slide,center=true);
+// translate([0,0,h+slide.z/2]){
+//     cube(slide,center=true);
+// }
