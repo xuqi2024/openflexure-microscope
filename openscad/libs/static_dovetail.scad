@@ -46,20 +46,41 @@ module dovetail_clip_cutout(size,dt=1.5,t=2,slope_front=0,solid_bottom=0){
     cutout_bottom = solid_bottom > 0 ? solid_bottom+tiny() : -tiny();
     inner_w = size.x - 2*t; // width between arms
 
-    hull() reflect([1,0,0]) translate([-size.x/2+t,0,cutout_bottom]){
-        translate([dt,size.y-dt,0]) cylinder(r=dt,h=size.z+2*tiny(),$fn=16);
-        translate([0,dt,0]) rotate(-45) cube([dt*2,tiny(),size.z+2*tiny()]);
+    hull(){
+        reflect([1,0,0]){
+            translate([-size.x/2+t,0,cutout_bottom]){
+                translate([dt,size.y-dt,0]){
+                    cylinder(r=dt,h=size.z+2*tiny(),$fn=16);
+                }
+                translate([0,dt,0]){
+                    rotate(-45){
+                        cube([dt*2,tiny(),size.z+2*tiny()]);
+                    }
+                }
+            }
+        }
     }
 
+    //sloped bottom to improve quality of the dovetail clip and
+    //allow insertion of the male dovetail from the bottom
     if(slope_front>0){
-        //sloped bottom to improve quality of the dovetail clip and
-        //allow insertion of the male dovetail from the bottom
-        rotate([45,0,0]) cube([999,1,1]*sqrt(2)*slope_front,center=true); //slope up arms
+        //slope up arms
+        rotate([45,0,0]){
+            cube([999,1,1]*sqrt(2)*slope_front,center=true);
+        }
         //also, slope in the dovetail tooth to avoid marring at the bottom:
-        hull() reflect([0,0,1]) translate([0,0,slope_front])
-            rotate([0,45,0]) cube([(inner_w)/sqrt(2),dt*2,inner_w/sqrt(2)],center=true);
+        hull(){
+            reflect([0,0,1]){
+                translate([0,0,slope_front]){
+                    rotate([0,45,0]){
+                        cube([(inner_w)/sqrt(2),dt*2,inner_w/sqrt(2)],center=true);
+                    }
+                }
+            }
+        }
     }
 }
+
 module dovetail_clip(size=[10,2,10],dt=1.5,t=2,back_t=0,slope_front=0,solid_bottom=0){
     // This forms a clip that will grip a dovetail, with the
     // contact between the m/f parts in the y=0 plane.
@@ -77,40 +98,74 @@ module dovetail_clip(size=[10,2,10],dt=1.5,t=2,back_t=0,slope_front=0,solid_bott
     // can help with bed adhesion.
     // see dovetail_clip_cutout - most of the options are just passed through.
     difference(){
-        translate([-size.x/2,0,0]) cube(size);
-        dovetail_clip_cutout(size-[0,back_t+tiny(),0],dt=dt,t=t,slope_front=slope_front,solid_bottom=solid_bottom);
+        translate([-size.x/2,0,0]){
+            cube(size);
+        }
+        dovetail_clip_cutout(size-[0,back_t+tiny(),0],
+                             dt=dt,
+                             t=t,
+                             slope_front=slope_front,
+                             solid_bottom=solid_bottom);
     }
 }
 
-module dovetail_plug(corner_x, r, dt, zx_profile=[[0,0],[10,0],[12,-1]]){
-    // Just the "plug" of a male dovetail (i.e. not the flat surface
-    // it's attached to, just the bit that fits inside the female).
-    // zx_profile is a list of 2-element vectors, each of which defines
-    //   a point in Z-X space, i.e. first element is height and second
-    //   is the shift in the corner position.  For example,
-    //   zx_profile=[[0,0],[10,0],[12,-1]] creates a plug 12mm+tiny() high
-    //   where the top 2mm are sloped at 60 degrees.  NB the use of tiny().
-    union(){
-        // sorry for the copy-paste code; I'm fairly sure it's less readable
-        // if I arrange things in a way that avoids it...
-        // four fat cylinders make the contact point
-        for(i=[0:len(zx_profile)-2]){
-            hull() for(j=[0:1]){
+module loop_over_zx_profile(zx_profile, corner_x){
+    // Module to loop over the zx_profile. Use to avoid repition in
+    // dovetail plug
+
+    for(i=[0:len(zx_profile)-2]){
+        hull(){
+            for(j=[0:1]){
                 z = zx_profile[i+j][0];
                 x = zx_profile[i+j][1];
-                reflect([1,0,0]) translate([corner_x+x,0,z]) rotate(45) translate([sqrt(3)*r,r,0]) repeat([dt*sqrt(2) - (1+sqrt(3))*r,0,0],2) cylinder(r=r,h=tiny());
-            }
-        }
-        // another four cylinders join the plug to the y=0 plane
-        for(i=[0:len(zx_profile)-2]){
-            hull() for(j=[0:1]){
-                z = zx_profile[i+j][0];
-                x = zx_profile[i+j][1];
-                reflect([1,0,0]) translate([corner_x+x,0,z]) rotate(45) repeat([sqrt(3)*r,r,0],2) cylinder(r=tiny(),h=tiny());
+                reflect([1,0,0]){
+                    translate([corner_x+x,0,z]){
+                        rotate(45){
+                            children();
+                        }
+                    }
+                }
             }
         }
     }
 }
+
+
+module dovetail_plug(corner_x, r, dt, zx_profile=[[0,0],[10,0],[12,-1]]){
+    // Just the  male dovetail without the mounting block.
+    //
+    // zx_profile defines the profile down one side of the dovetail. This
+    //   allows for chamfering the dovetail or for steping the dovetail
+    //   to have multiple defined contact points.
+    //   it is a list of 2-element vectors, each of which defines
+    //   a point in Z-X space, i.e. first element is height and second
+    //   is the shift in the corner position.
+    //   For example,
+    //   zx_profile=[[0,0],[10,0],[12,-1]] creates a plug 12mm+tiny() high
+    //   where the top 2mm are sloped at 60 degrees.
+    //   NOTE: the use of tiny().
+
+    union(){
+    
+        // four flat cylinders make the contact point
+        // Note the loop reflects the two cylinders here
+        loop_over_zx_profile(zx_profile, corner_x){
+            translate([sqrt(3)*r,r,0]){
+                repeat([dt*sqrt(2) - (1+sqrt(3))*r,0,0],2){
+                    cylinder(r=r,h=tiny());
+                }
+            }
+        }
+
+        // another four cylinders join the plug to the y=0 plane
+        loop_over_zx_profile(zx_profile, corner_x){
+            repeat([sqrt(3)*r,r,0],2){
+                cylinder(r=tiny(),h=tiny());
+            }
+        }
+    }
+}
+
 module dovetail_m(size=[10,2,10],dt=1.5,t=2,top_taper=1,bottom_taper=0.5,waist=0,waist_dx=0.5,r=0.5){
     // Male dovetail, contact plane is y=0, dovetail is in y>0
     // size is a box that is centred in X, sits on Z=0, and extends
@@ -200,10 +255,3 @@ module dovetail_clip_y(size, dt=1.5, t=2, taper=0, endstop=false){
         }
     }
 }
-//dovetail_clip_y([12,12,3],taper=2,endstop=true);
-///
-test_size = [14,10,24];
-test_dt = 2;
-//color("blue") dovetail_clip(test_size,dt=test_dt,slope_front=3,solid_bottom=0.5);
-color("green") translate([0,0,-2]) dovetail_m(test_size, waist=10, dt=test_dt,waist_dx=0.2);
-//*/
