@@ -9,13 +9,19 @@ use <librender/assembly_parameters.scad>;
 params = default_params();
 
 // This is taken straight from illumination, h=50 should match illumination_dovetail.scad
-color(extras_colour()) render(6) illumination_dovetail(params, h = 60);
+color(extras_colour()){
+    render(6){
+        illumination_dovetail(params, h = 60);
+    }
+}
 
 // This should match condenser.scad
 color(body_colour()){
     translate([0,0,key_lookup("sample_z", params) + 50]){
         rotate([0,180,0]){
-            render(6) condenser(params, lens_d=13, lens_t=1, lens_assembly_z= 30);
+            render(6){
+                condenser(params, lens_d=13, lens_t=1, lens_assembly_z= 30);
+            }
         }
     }
 }

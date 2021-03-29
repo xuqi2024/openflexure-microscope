@@ -67,14 +67,24 @@ module viton_band_in_situ_vertical(h=25, foot_z=-11, tool_kink=false){
             // Anoyingly cannot do the if inside the squential hull
             if (tool_kink) {
                 sequential_hull(){
-                    translate(p1) cylinder(d=band_d,h=tiny());
-                    translate(p2) cylinder(d=band_d,h=tiny());
-                    translate(p3) cylinder(d=band_d,h=tiny());
+                    translate(p1){
+                        cylinder(d=band_d,h=tiny());
+                    }
+                    translate(p2){
+                        cylinder(d=band_d,h=tiny());
+                    }
+                    translate(p3){
+                        cylinder(d=band_d,h=tiny());
+                    }
                 }
             } else {
                 sequential_hull(){
-                    translate(p1) cylinder(d=band_d,h=tiny());
-                    translate(p3) cylinder(d=band_d,h=tiny());
+                    translate(p1){
+                        cylinder(d=band_d,h=tiny());
+                    }
+                    translate(p3){
+                        cylinder(d=band_d,h=tiny());
+                    }
                 }
             }
         }
@@ -95,15 +105,21 @@ module viton_band_in_situ_vertical(h=25, foot_z=-11, tool_kink=false){
 }
 
 module m3_hex_x25(){
-    color("Silver")import("m3_hex_x25.stl");
+    color("Silver"){
+        import("m3_hex_x25.stl");
+    }
 }
 
 module m4_button_x6(){
-    color("Silver")import("m4_button_x6.stl");
+    color("Silver"){
+        import("m4_button_x6.stl");
+    }
 }
 
 module m3_washer(){
-    color("Silver")import("m3_washer.stl");
+    color("Silver"){
+        import("m3_washer.stl");
+    }
 }
 
 module m3_nut(brass=false, center=false){
@@ -117,27 +133,39 @@ module m3_nut(brass=false, center=false){
 }
 
 module m3_cap_x10(){
-    color("Silver")import("m3_cap_x10.stl");
+    color("Silver"){
+        import("m3_cap_x10.stl");
+    }
 }
 
 module m3_cap_x8(){
-    color("Silver")import("m3_cap_x8.stl");
+    color("Silver"){
+        import("m3_cap_x8.stl");
+    }
 }
 
 module m3_cap_x6(){
-    color("Silver")import("m3_cap_x6.stl");
+    color("Silver"){
+        import("m3_cap_x6.stl");
+    }
 }
 
 module m2_cap_x6(){
-    color("Silver")import("m2_cap_x6.stl");
+    color("Silver"){
+        import("m2_cap_x6.stl");
+    }
 }
 
 module m2_5_cap_x6(){
-    color("Silver")import("m2_5_cap_x6.stl");
+    color("Silver"){
+        import("m2_5_cap_x6.stl");
+    }
 }
 
 module no2_x6_5_selftap(){
-    color("Silver")import("no2_x6_5_selftap.stl");
+    color("Silver"){
+        import("no2_x6_5_selftap.stl");
+    }
 }
 
 

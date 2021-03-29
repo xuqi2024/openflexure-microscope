@@ -54,20 +54,66 @@ module render_body(){
 
 module what_you_need(){
     repeat([0, 40, 0],3,center=true){
-        color(extras_colour())large_gear();
-        translate([-21, 0, 0])rotate([0, 90, 0])rotate([0, 0, 30])m3_hex_x25();
-        translate([-28, 6, 0])m3_washer();
-        translate([-36, 6, 0])m3_washer();
-        translate([-32, -6, 0])m3_nut(brass=true);
-        translate([-32, 0, 0])viton_band();
+        color(extras_colour()){
+            large_gear();
+        }
+        translate([-21, 0, 0]){
+            rotate([0, 90, 0]){
+                rotate([0, 0, 30]){
+                    m3_hex_x25();
+                }
+            }
+        }
+        translate([-28, 6, 0]){
+            m3_washer();
+        }
+        translate([-36, 6, 0]){
+            m3_washer();
+        }
+        translate([-32, -6, 0]){
+            m3_nut(brass=true);
+        }
+        translate([-32, 0, 0]){
+            viton_band();
+        }
         
     }
-    translate([28, 40, 0])rotate([0, 0, 90])render_foot("X", lie_flat=true);
-    translate([28, 0, 0])rotate([0, 0, 90])render_foot("Z", lie_flat=true);
-    translate([28, -40, 0])rotate([0, 0, 90])render_foot("Y", lie_flat=true);
-    color(tools_colour())render(6)translate ([52, 0, 0]) double_ended_band_tool(bent=false);
-    color(tools_colour())render(6)translate ([65, 0, 1.7]) band_tool_holder();
-    color(tools_colour())render(6)translate([65, 40, 0]) nut_tool();
+    translate([28, 40, 0]){
+        rotate([0, 0, 90]){
+            render_foot("X", lie_flat=true);
+        }
+    }
+    translate([28, 0, 0]){
+        rotate([0, 0, 90]){
+            render_foot("Z", lie_flat=true);
+        }
+    }
+    translate([28, -40, 0]){
+        rotate([0, 0, 90]){
+            render_foot("Y", lie_flat=true);
+        }
+    }
+    color(tools_colour()){
+        render(6){
+            translate([52, 0, 0]){
+                double_ended_band_tool(bent=false);
+            }
+        }
+    }
+    color(tools_colour()){
+        render(6){
+            translate([65, 0, 1.7]){
+                band_tool_holder();
+            }
+        }
+    }
+    color(tools_colour()){
+        render(6){
+            translate([65, 40, 0]){
+                nut_tool();
+            }
+        }
+    }
 }
 
 module x_nut(exploded=false){
@@ -152,10 +198,18 @@ module lead_screw_assembly(exploded=false, construction_offset=[0, 0, 0]){
     tr_wash2 = exploded ? [0 ,0, -10] : [0, 0, -1];
     //translate everything so the gear is in place at the bottom.
     translate([0, 0, 1]){
-        translate(tr_screw)m3_hex_x25();
-        color(extras_colour())large_gear();
-        translate(tr_wash1)m3_washer();
-        translate(tr_wash2)m3_washer();
+        translate(tr_screw){
+            m3_hex_x25();
+        }
+        color(extras_colour()){
+            large_gear();
+        }
+        translate(tr_wash1){
+            m3_washer();
+        }
+        translate(tr_wash2){
+            m3_washer();
+        }
         if (exploded){
             construction_line(tr_screw, tr_wash2+construction_offset);
         }

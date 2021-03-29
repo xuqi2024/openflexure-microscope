@@ -8,13 +8,23 @@ use <librender/render_settings.scad>
 
 params = default_params();
 smart_brim_r = key_lookup("smart_brim_r", params);
-color(remove_colour())render(6)exterior_brim(r=smart_brim_r, brim_only=true){
-    main_body(params);
-}
-color(remove_colour())xy_leg_ties(params);
 
-color(remove_colour())xy_actuators(params, ties_only=true);
-color(remove_colour())z_actuator_column(params, ties_only=true);
+color(remove_colour()){
+    render(6){
+        exterior_brim(r=smart_brim_r, brim_only=true){
+            main_body(params);
+        }
+    }
+}
+color(remove_colour()){
+    xy_leg_ties(params);
+}
+color(remove_colour()){
+    xy_actuators(params, ties_only=true);
+}
+color(remove_colour()){
+    z_actuator_column(params, ties_only=true);
+}
 color(body_colour()){
     render(6){
         main_body(render_params());

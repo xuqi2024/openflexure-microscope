@@ -185,8 +185,9 @@ module picamera2_tool(){
             }
             difference(){
                 cylinder(d1 = 7, d2=22.7,h=7);
-                translate([0, 0, -0.05])
-                cylinder(d1 = 4.8, d2=19, h=7.1);
+                translate([0, 0, -0.05]){
+                    cylinder(d1 = 4.8, d2=19, h=7.1);
+                }
             }
         }
     }

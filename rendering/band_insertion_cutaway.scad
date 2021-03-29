@@ -19,16 +19,20 @@ use <librender/assembly_parameters.scad>
 
 module cut_actuator_housing(params, cut=true){
     difference(){
-        xy_screw_seat(params, label="")
+        xy_screw_seat(params, label="");
 
         // cutout actuator hole
         difference(){ 
-            translate([-3,-10,0]) cube([6,10,5]);
+            translate([-3,-10,0]){
+                cube([6,10,5]);
+            }
             actuator_end_cutout();
         }
         // only render half
         if (cut) {
-            rotate([0,-90,0])cylinder(r=99,h=99,$fn=4);
+            rotate([0,-90,0]){
+                cylinder(r=99,h=99,$fn=4);
+            }
         }
     }
 }
