@@ -60,7 +60,7 @@ module each_illumination_corner(params){
 /* THE ILLUMINATION DOVETAIL */
 //Note that this is not built from here. it is built in illumination_dovetail.scad
 
-function illumination_dovetail_lug_height() = 3
+function illumination_dovetail_lug_height() = 3;
 
 module illumination_dovetail_branding(params, h, bottom_z){
     // The open flexure logo for the back of the illumination fovetail

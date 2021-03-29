@@ -180,7 +180,7 @@ module xy_limit_switch_mount(params, d=3.3*2, h=6){
     // A mount for the XY limit switch (M3)
 
     y_tr = -flex_dims().y-inner_wall_h(params)*sin(6)-3.3+1;
-    z_tr = inner_wall_h(params)-6
+    z_tr = inner_wall_h(params)-6;
     leg_frame(params, 45){
         translate([-9, y_tr, z_tr]){
             cylinder(d=d,h=h);
