@@ -53,13 +53,27 @@ module 6led_bottom_mounting_posts(height=-1, radius=-1, outers=true, cutouts=tru
     //holes are (28-2.25*2)=23.5mm apart in Y and (33-4.45*2)=24.1mm apart in X
     r = radius > 0 ? radius : 2;
     h = height > 0 ? height : 4;
-    rotate(45)
-    reflect([1,0,0]) reflect([0,1,0]) translate([24.1/2, 23.5/2, 0]) difference(){
-        if(outers) cylinder(r=r, h=h, $fn=12);
-        if(cutouts) intersection(){
-            translate([0,0,-2]) rotate(75) trylinder_selftap(2, h=h+3);
+    rotate(45){
+        reflect([1,0,0]){
+            reflect([0,1,0]){
+                translate([24.1/2, 23.5/2, 0]){
+                    difference(){
+                        if(outers){
+                            cylinder(r=r, h=h, $fn=12);
+                        }
+                        if(cutouts){
+                            intersection(){
+                                translate([0,0,-2]){
+                                    rotate(75){
+                                        trylinder_selftap(2, h=h+3);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
 
-//translate([0,0,-1]) picam_pcb_bottom();
