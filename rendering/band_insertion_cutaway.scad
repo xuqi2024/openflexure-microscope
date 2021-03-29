@@ -22,7 +22,7 @@ module cut_actuator_housing(params, cut=true){
         xy_screw_seat(params, label="");
 
         // cutout actuator hole
-        difference(){ 
+        difference(){
             translate([-3,-10,0]){
                 cube([6,10,5]);
             }

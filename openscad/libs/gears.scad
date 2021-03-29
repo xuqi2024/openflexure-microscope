@@ -50,7 +50,7 @@ module large_gear(){
                  hub_thickness=6,
                  hub_diameter=20,
                  rim_thickness=6,
-                 bore_diameter=1);    
+                 bore_diameter=1);
             cylinder(r1=pitch_r-2,r2=pitch_r+18,h=20);
         }
         translate(large_gear_screw_pos()){
@@ -59,7 +59,7 @@ module large_gear(){
     }
 }
 
-module small_gear(){    
+module small_gear(){
     $fn=32;
     h=8;
     flat_h=h-3.5;
@@ -75,7 +75,7 @@ module small_gear(){
                  hub_diameter=1,
                  rim_thickness=h,
                  bore_diameter=1);
-                
+
             cylinder(r=pitch_r+PI*pitch_r/teeth_smallgear,h=0.5); //help adhesion
         }
         //cut-out for motor shaft

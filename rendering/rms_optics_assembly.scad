@@ -119,7 +119,7 @@ module camera_and_screws(camera_pos, explode=false){
     screw_z = picamera2_size().z + (explode ? ex_dist : 0);
     holes = [for (i = [2, 3]) picamera2_holes()[i]];
     camera_pos_ex = translate_pos(camera_pos, [0, 0, -ex_dist]);
-    
+
     render_pos = explode ? camera_pos_ex : camera_pos;
 
     place_part(render_pos){
@@ -151,9 +151,9 @@ module rendered_optics_module(pos,
             // Optics module for RMS objective, using Comar 40mm singlet tube lens
             optics_module_rms(
                 params,
-                tube_lens_ffd=47, 
-                tube_lens_f=50, 
-                tube_lens_r=12.7/2+0.1, 
+                tube_lens_ffd=47,
+                tube_lens_f=50,
+                tube_lens_r=12.7/2+0.1,
                 objective_parfocal_distance=45,
                 tube_length=150
             );

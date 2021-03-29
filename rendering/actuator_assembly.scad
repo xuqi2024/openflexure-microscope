@@ -76,7 +76,7 @@ module what_you_need(){
         translate([-32, 0, 0]){
             viton_band();
         }
-        
+
     }
     translate([28, 40, 0]){
         rotate([0, 0, 90]){
@@ -191,7 +191,7 @@ module body_with_assembled_actuators(x_only=false){
 
 module lead_screw_assembly(exploded=false, construction_offset=[0, 0, 0]){
     //The assembly of the gear the M3x25 lead screw and the two washers
-    
+
     //exploded translatiosn for the parts
     tr_screw = exploded ? [0 ,0, 35] : large_gear_screw_pos();
     tr_wash1 = exploded ? [0 ,0, -5] : [0, 0, -.5];

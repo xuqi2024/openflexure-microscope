@@ -166,11 +166,11 @@ module foot_section(foot_angle=0,    //the angle the actuator column makes with 
 module foot_letter(letter="", actuator_tilt=0, h=10, base_cleareance=2){
     //To add a letrer to the side of the foot.
     //For letters that got below the line, base clearance may need increasing
-    
+
     //Calculate the y and z position in the tilted frame
     y_tr_tilted_frame = ss_outer().y/2-.5;
     z_tr_tilted_frame = -y_tr_tilted_frame*tan(actuator_tilt) + h/2 + base_cleareance;
-    
+
     // y and z position in the untilted frame
     y_tr = y_tr_tilted_frame*cos(actuator_tilt)-z_tr_tilted_frame*sin(actuator_tilt);
     z_tr = y_tr_tilted_frame*sin(actuator_tilt)+z_tr_tilted_frame*cos(actuator_tilt);
@@ -219,7 +219,7 @@ module foot(travel=5,       // how far into the foot the actuator can move down
                         union(){
                             foot_section(actuator_tilt, 0, h=2*h){
                                 //main part of foot
-                                screw_seat_shell(); 
+                                screw_seat_shell();
                             }
                             foot_section(actuator_tilt, 0, h=2*h+3){
                                 //lugs on top

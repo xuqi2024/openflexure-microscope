@@ -14,20 +14,20 @@
 // This function returns true if the value is in the list
 // value must be a string.
 // No error checking, for use by is_in only!
-function _is_in_str(value, list) = 
+function _is_in_str(value, list) =
     search([value], list) != [[]];
 
 // Private function:
 // This function returns true if the value is in the list
 // value must be a number.
 // No error checking, for use by is_in only!
-function _is_in_num(value, list) = 
+function _is_in_num(value, list) =
     search(value, list) != [];
 
 
 // This function returns true if the value is in the list
 // value must be a string or a number.
-function is_in(value, list) = 
+function is_in(value, list) =
     assert(is_num(value) || is_string(value) , "is_in: value must be a number or string")
     assert(is_list(list), "is_in: list must be a list")
     is_num(value) ? _is_in_num(value, list) : _is_in_str(value, list);
@@ -44,7 +44,7 @@ function _check_errant_match(list, match) = let(
 ) count[len(match)] == 1 ? 0 : 1;
 
 // Returns true if all emements in list are unique.
-function is_unique(list) = 
+function is_unique(list) =
     assert(is_list(list), "is_unique: list must be a list")
     let(
         matches = search(list, list, 0),
@@ -52,7 +52,7 @@ function is_unique(list) =
         // return wether any matches are greater than one (mathcing more than
         // itself)
         // note cannot search for true or false so using 1 and zero
-        bool_list = [for (match = matches) if (len(match)==1) 0 
+        bool_list = [for (match = matches) if (len(match)==1) 0
             // should put a 1 here to show they matched but in the case of
             // [1, [1]] it will match both, so need to check if they are
             // both lists or both not list
@@ -79,7 +79,7 @@ function _is_list_of_strings(list) =
 // Returns the keus in a dictionary
 // No error checking, for use by valid_dict only!
 function _keylist(dict)  = [for (pair=dict) pair[0]];
- 
+
 function valid_dict(dict) =
     //if the input are not pairs return instantly
     !_is_pairs(dict) ? false : let (
@@ -91,7 +91,7 @@ function valid_dict(dict) =
 
 // Key lookup for key value pair "dictionary".
 // Unlike the built in lookup this works with strings.
-function key_lookup(key, dict) = 
+function key_lookup(key, dict) =
     assert(is_string(key), "`key` must be a string")
     assert(valid_dict(dict), "`dict` must be a valid 'dictionary'")
     let(
@@ -101,7 +101,7 @@ function key_lookup(key, dict) =
 
 // Creates a new dictionary with a key value pair replaced. Pair must already
 // be in dictionary.
-function replace_value(key, value, dict) = 
+function replace_value(key, value, dict) =
     assert(is_string(key), "`key` must be a string")
     assert(valid_dict(dict), "`dict` must be a valid 'dictionary'")
     assert(is_in(key, _keylist(dict)), "`key` not found in dictionary!")

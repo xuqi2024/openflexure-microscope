@@ -72,7 +72,7 @@ module gear(number_of_teeth=15,
     // Limit the circle size to 90% of the gear face.
     circle_diameter = min(0.70*circle_orbit_curcumference/circles,
                           (rim_radius-hub_diameter/2)*0.9);
- 
+
     difference(){
         union(){
             difference(){

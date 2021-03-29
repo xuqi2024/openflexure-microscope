@@ -219,7 +219,7 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
                     cylinder(r=shaft_r, h=999);
                     translate([0,0,-lever_tip+1]){
                         //pointy bottom (stronger)
-                        cylinder(r1=0, r2=shaft_r, h=lever_tip-1); 
+                        cylinder(r1=0, r2=shaft_r, h=lever_tip-1);
                     }
                 }
             }
@@ -318,7 +318,7 @@ module screw_seat_shell(h=1, tilt=0){
         }
         mirror([0,0,1]){
             //ground
-            cylinder(r=999,h=999,$fn=8); 
+            cylinder(r=999,h=999,$fn=8);
         }
     }
 }
@@ -393,7 +393,7 @@ module screw_seat(h, travel, tilt=0, entry_w=2*column_base_r+3, extra_entry_h=7,
         nut_seat_void(h=h + travel, tilt=tilt);
 
         //allow the actuator to poke in
-        edge_y = ss_outer(h).y/2; 
+        edge_y = ss_outer(h).y/2;
         smatrix(zy=sin(tilt)){
             translate([0,-edge_y,0]){
                 cube([entry_w, edge_y, entry_h*2], center=true);

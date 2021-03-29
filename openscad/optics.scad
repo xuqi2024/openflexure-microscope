@@ -232,7 +232,7 @@ module camera_mount_body(
                             //Where the tube meets the camera
                             rotate(camera_mount_rotation){
                                 translate([0,0,camera_mount_top_z]){
-                                    camera_mount_top_slice(); 
+                                    camera_mount_top_slice();
                                 }
                             }
                             //the bottom of the tube
@@ -246,7 +246,7 @@ module camera_mount_body(
                         }
                         //the bottom of the dovetail
                         translate([0,0,dt_bottom]){
-                            objective_fitting_base(params); 
+                            objective_fitting_base(params);
                         }
                         hull(){
                             //the bottom of the dovetail
@@ -261,11 +261,11 @@ module camera_mount_body(
                         hull(){
                             //the bottom of the tube
                             translate([0,0,dt_bottom]){
-                                cylinder(r=bottom_r,h=tiny()); 
+                                cylinder(r=bottom_r,h=tiny());
                             }
                             //the top of the tube
                             translate([0,0,body_top]){
-                                cylinder(r=body_r,h=tiny()); 
+                                cylinder(r=body_r,h=tiny());
                             }
                         }
                     }
@@ -276,7 +276,7 @@ module camera_mount_body(
                         rotate(camera_mount_rotation){
                             translate([0,0,camera_mount_top_z]){
                                 //Where the tube meets the camera
-                                camera_mount_top_slice(); 
+                                camera_mount_top_slice();
                             }
                         }
                         rotate(fl_cube_rotation){
@@ -305,7 +305,7 @@ module camera_mount_body(
                 objective_fitting_cutout(params);
             }
             // screw holes  and faceplate for fl module
-            if(beamsplitter){ 
+            if(beamsplitter){
                 rotate(fl_cube_rotation){
                     translate([0,-2.5,0]){
                         fl_screw_holes(d = 2.5, h = 6);
@@ -331,9 +331,9 @@ module camera_mount_body(
 }
 
 
-module optics_module_rms(params, tube_lens_ffd=16.1, tube_lens_f=20, 
+module optics_module_rms(params, tube_lens_ffd=16.1, tube_lens_f=20,
     tube_lens_r=16/2+0.2, objective_parfocal_distance=45, tube_length=150, beamsplitter=false, gripper_t=1, dovetail=true){
-    
+
     sample_z = key_lookup("sample_z", params);
     assert(sample_z > 60, "RMS objectives won't fit in small microscope frames!");
     assert(objective_mount_y > 12, "RMS objectives won't fit in small microscope frames!");
@@ -443,9 +443,9 @@ if(optics=="rms_f40d16"){
     // Optics module for RMS objective, using Comar 40mm singlet tube lens
     optics_module_rms(
         params,
-        tube_lens_ffd=38, 
-        tube_lens_f=40, 
-        tube_lens_r=16/2+0.1, 
+        tube_lens_ffd=38,
+        tube_lens_f=40,
+        tube_lens_r=16/2+0.1,
         objective_parfocal_distance=45,
         beamsplitter=beamsplitter,
         gripper_t=0.65,
@@ -455,9 +455,9 @@ if(optics=="rms_f40d16"){
     // Optics module for RMS objective using ThorLabs ac127-050-a doublet tube lens
     optics_module_rms(
         params,
-        tube_lens_ffd=47, 
-        tube_lens_f=50, 
-        tube_lens_r=12.7/2+0.1, 
+        tube_lens_ffd=47,
+        tube_lens_f=50,
+        tube_lens_r=12.7/2+0.1,
         objective_parfocal_distance=45,
         beamsplitter=beamsplitter,
         tube_length=(optics=="rms_f50d13" ? 150 : 99999) //use 150 for standard finite-conjugate objectives (cheap ones) or 99999 for infinity-corrected lenses (usually more expensive).

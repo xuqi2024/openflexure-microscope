@@ -471,7 +471,7 @@ module z_cable_tidy_frame(params, z_extra=0){
 
 module z_cable_tidy_frame_undo(params, z_extra=0){
     tilt = z_actuator_tilt(params);
-    z_tr = z_motor_z_pos(params) + z_extra;   
+    z_tr = z_motor_z_pos(params) + z_extra;
     rotate([0, 0, -180]){
         translate([0, 0, -z_tr]){
             rotate([-tilt, 0, 0]){
@@ -492,7 +492,7 @@ module z_cable_housing(params){
                 z_cable_housing_x(params);
             }
         }
-        translate([0,0,-99]){  
+        translate([0,0,-99]){
             cylinder(d=999,h=99);
         }
         z_cable_tidy_frame(params, z_extra=motor_bracket_h()){
@@ -518,10 +518,10 @@ module z_cable_housing_top(params, h){
 
 
 
-module z_cable_housing_x(params){   
+module z_cable_housing_x(params){
     h=z_motor_z_pos(params)+motor_bracket_h();
     housing = [motor_connector_size().y+5, motor_connector_size().x+5, h*3];
-    
+
     hull(){
         z_housing_frame(params, h){
             translate([housing.x/2-3, housing.y/2-3, 0]){

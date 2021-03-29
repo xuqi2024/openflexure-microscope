@@ -55,7 +55,7 @@ module assemble_condenser(frame){
 }
 
 module cutaway_optics(){
-    
+
     rendered_optics_module(om_pos, cut=true);
 
     rendered_condenser(condenser_pos, cut=true);
@@ -71,7 +71,7 @@ module cutaway_optics(){
 
 
 module rendered_condenser(condenser_pos, cut=true){
-    cut_dir = cut ? "+x" : "none"; 
+    cut_dir = cut ? "+x" : "none";
     cutaway(cut_dir, extras_colour()){
         place_part(condenser_pos){
             condenser(params);

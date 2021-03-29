@@ -249,7 +249,7 @@ module support(size, height, baseheight=0, rotation=[0,0,0], supportangle=45, ou
             }
         }
     }
-    
+
     unrotate(rotation){
         translate([0,0,baseheight]){
             linear_extrude(height){
@@ -356,7 +356,7 @@ module square_to_circle(r, h, layers=4, top_cylinder=0){
             }
         }
     }
-    
+
     if(top_cylinder>0){
         translate([0,0,tiny()]){
             cylinder(r=r,h=h+top_cylinder, $fn=sides[layers-1]);
@@ -391,9 +391,9 @@ module lighttrap_cylinder(r1,r2,h,ridge=1.5){
     //It can be subtracted from and object to create a shaft that is good for
     //trapping stray light in an optical path
     //r1 is the radius of the bottom of the shape
-    //     (i.e. the bottom of the bottom truncated cone) 
+    //     (i.e. the bottom of the bottom truncated cone)
     //r2 is the inner radius of the top of the shape
-    //     (i.e. the top of the top truncated cone) 
+    //     (i.e. the top of the top truncated cone)
     //NOTE: to make a uniform width shaft set r2==r1-ridge
 
     //there must be at least one cone or we divide by zero
@@ -555,7 +555,7 @@ module self_tap_hole(mean_r, h, dr=1, dz=0.5, bridge_facets=0, center=false, scr
 
     //default number of facets
     default_facets = floor(180/acos(inner_r/outer_r));
-    bridge_facets = bridge_facets > 0 ? bridge_facets : default_facets; 
+    bridge_facets = bridge_facets > 0 ? bridge_facets : default_facets;
     difference(){
         cylinder(r=outer_r, h=h, center=center);
         repeat([0,0,2*dz], ceil(h/dz/2), center=center){

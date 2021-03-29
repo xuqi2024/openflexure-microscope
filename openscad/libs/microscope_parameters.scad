@@ -57,7 +57,7 @@ function default_params() = [["leg_r", 30],     // radius on which the innermost
                              ["print_ties", true], //sets whether the ties that support printing are on. It is usefull to be able to turn these off for rendering
                              ["smart_brim_r", 5], // The radius of the smart brim on the main body
                              ["actuator_h", 25] //height of the actuator columns
-                            ]; 
+                            ];
 
 
 // height of the top of the leg. Shorter than sample x so that you can get nuts in, and so the slide doesn't crash.

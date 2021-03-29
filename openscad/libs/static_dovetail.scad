@@ -146,7 +146,7 @@ module dovetail_plug(corner_x, r, dt, zx_profile=[[0,0],[10,0],[12,-1]]){
     //   NOTE: the use of tiny().
 
     union(){
-    
+
         // four flat cylinders make the contact point
         // Note the loop reflects the two cylinders here
         loop_over_zx_profile(zx_profile, corner_x){
@@ -217,7 +217,7 @@ module dovetail_m(size=[10,2,10],
                         hull(){
                             translate(corner+[sqrt(3)*r,-r,0]){
                                 cylinder(r=r,h=h);
-                            }  
+                            }
                             translate([w/2+t-r,-r,0]){
                                 cylinder(r=r,h=h);
                             }

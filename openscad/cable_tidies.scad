@@ -36,7 +36,7 @@ module cable_tidy_body(h, curve_both=false){
                 cylinder(d=8, h=h);
             }
         }
-        cable_tidy_body_back(h, curve_both); 
+        cable_tidy_body_back(h, curve_both);
     }
 }
 
@@ -78,7 +78,7 @@ module cable_tidy_body_cutouts(h, front=false){
             }
         }
     }
-    
+
     for(x_tr = [-.5, .5]*motor_screw_separation()){
         translate([x_tr,12,0]){
             cylinder(d=4.5, h=h, center=true);

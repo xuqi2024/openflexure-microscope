@@ -789,7 +789,7 @@ module stand_lugs(params, h, pi_stand_h){
 module new_bucket(params, h, pi_stand_h){
     offset_d=1.5;
     wall_t=3.5;
-    
+
     difference(){
         sequential_hull(){
             new_bucket_base_primative(params, 3);
@@ -857,8 +857,8 @@ module new_stand(params, pi_stand_h){
 
     stand_lugs(params, h, pi_stand_h);
     //stand_top(params, h);
-    
-    
+
+
     pi_base_size = pi_stand_base_size();
     extra_space = [1.5, 1.5, 1.5];
     pi_cutout_size = [pi_base_size.x, pi_base_size.y, pi_stand_h] + extra_space;
@@ -965,7 +965,7 @@ module pi_stand(h=50){
             }
         }
     }
-   
+
 }
 
 module pi_side_connectors(){

@@ -60,7 +60,7 @@ function dovetail_params(
 );
 
 module block_sharp(p){
-    // the block to which we attach the male dovetail 
+    // the block to which we attach the male dovetail
     // or from which we cut the female one
 
     w = key_lookup("overall_width", p);
@@ -100,7 +100,7 @@ module flange_r(p, width=tiny()){
     w = key_lookup("overall_width", p);
     flat = key_lookup("outer_flat", p);
     shiftx = [-width, 0];
-    // we extend the parallelogram into the block slightly, 
+    // we extend the parallelogram into the block slightly,
     // at the same angle.
     shift_in = tiny()*[-cos(key_lookup("angle", p)), -sin(key_lookup("angle", p))];
 
@@ -144,7 +144,7 @@ module dovetail_section_m_sharp(p){
             translate(female_point(p)){
                 circle(key_lookup("relief_r", p));
             }
-        }        
+        }
     }
 }
 
@@ -218,9 +218,9 @@ module clamp_cutout_2d(p){
                 circle(fillet_r);
             }
             translate([0, lever]){
-                circle(fillet_r); 
+                circle(fillet_r);
             }
-        } 
+        }
         // next to flexure
         hull(){
             reflect([1,0]){
@@ -252,7 +252,7 @@ module clamp_cutout_2d(p){
                     circle(fillet_r);
                 }
             }
-        } 
+        }
     }
 }
 module clamp_cutout_empty_2d(p){
@@ -285,7 +285,7 @@ module clamp_cutout_base_2d(p){
     fillet_r = key_lookup("fillet_r", p);
     relief_r = key_lookup("relief_r", p);
     lever = key_lookup("lever", p);
-    
+
     union(){
         // separate the flange from the block
         hull(){
@@ -316,13 +316,13 @@ module clamp_cutout_base_2d(p){
 module clamp_back_2d(p, extra_left=0, extra_right=0, extra_top=0){
     // back of the internal part of the clamp
     // extra_l and extra_r add additional length on
-    // the left/right respectively.  By default (0), 
+    // the left/right respectively.  By default (0),
     // the part matches the size of the external part
     // of the clamp (i.e. it's in line with female_point)
     length = (
         key_lookup("clamp_t", p) -
         key_lookup("fillet_r", p) +
-        extra_left + 
+        extra_left +
         extra_right
     );
     clamp_frame(p){
@@ -352,7 +352,7 @@ module clamping_flange_2d(p){
                 extra_right=key_lookup("flex_l", p)/2 + key_lookup("fillet_r", p);
                 // to avoid fouling the fillet
                 extra_left=-key_lookup("fillet_r", p);
-                // add the flexure to join to the block. 
+                // add the flexure to join to the block.
                 clamp_back_2d(p, extra_right=extra_right, extra_left=extra_left);
             }
 
@@ -380,7 +380,7 @@ module clamping_bolt_and_nut(p){
     // Place the clamping bolt relative to the female point
     clamp_y = key_lookup("lever", p) - key_lookup("pinch_bolt_inset", p);
     fillet_r = key_lookup("fillet_r", p);
-    // We place everything relative to 
+    // We place everything relative to
     clamp_frame(p){
         translate([0, clamp_y, h/2]){
             $fn = 16;
@@ -507,7 +507,7 @@ module dovetail_clamp_m(p){
         }
 
         clamping_bolt_and_nut(p);
-        
+
         // work around "elephant's foot"/brim on mating faces
         undercut_male_dovetail(p);
     }

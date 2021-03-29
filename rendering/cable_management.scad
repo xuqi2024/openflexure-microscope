@@ -39,7 +39,7 @@ module rendered(){
             }
         }
 
-        
+
         y_actuator_frame(params){
             motor28BYJ48(y_motor_pos, y_connector_pos, y_cable_verticies);
         }

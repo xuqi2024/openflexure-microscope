@@ -127,7 +127,7 @@ module objective_base(){
 }
 
 module rendered_objective(){
-    
+
     coloured_render("silver"){
         objective_body();
     }

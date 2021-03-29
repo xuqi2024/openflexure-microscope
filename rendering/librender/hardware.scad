@@ -9,7 +9,7 @@ This file licensed CERN OHL.
 The nuts and bolts are included from "binaries" generated
 using NopSCADlib. NopSCADlib is GPL licenses and in compliance
 with the GPL we provide our generation script generate_hardware.py
-under the GPL. NopSCADLib is available from 
+under the GPL. NopSCADLib is available from
 https://github.com/nophead/NopSCADlib
 the banch we use is:
 https://github.com/julianstirling/NopSCADlib/tree/no2_screw_hack
@@ -29,7 +29,7 @@ module double_reflect(){
 
 module viton_band(){
     // Viton band before assembly
-    
+
     //id = inner diameter
     id = 30;
     band_d=2;

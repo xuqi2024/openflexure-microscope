@@ -45,9 +45,9 @@ module fl_cube_mount(beam_d=5){
                     }
                 }
             }
-              
+
         }
-            
+
         // add a hole for the LED
         translate([0,0,beam_z]){
             cylinder_with_45deg_top(h=999, r=beam_d/2, $fn=16, extra_height=0, center=true);
@@ -63,7 +63,7 @@ module lens_holder(beam_d=3.5){
     //distance from aperture stop to lens
     aperture_to_lens = 6.5;
     aperture_stop_r = 0.6;
-    
+
     lens_z = led_h + aperture_to_lens + aperture_h;
     pedestal_h = 3;
     lens_r = 13/2;
@@ -102,7 +102,7 @@ module lens_holder(beam_d=3.5){
                 cylinder(r=lens_r-2,h=tiny());
             }
         }
-        
+
         //LED
         deformable_hole_trylinder(led_r-0.1,led_r+0.6,h=2*led_h+tiny(), center=true);
         translate([0,0,led_h]){
@@ -112,9 +112,9 @@ module lens_holder(beam_d=3.5){
             cylinder(r=aperture_stop_r,h=2,center=true);
         }
         cylinder(r=led_r+0.5, h=1.5, center=true);
-        
+
         //screws for LED star
-        for(i = [0:1]){ 
+        for(i = [0:1]){
             rotate(180*i){
                 translate([0,LEDstar_r,0]){
                     rotate([0,0,180]){
@@ -157,14 +157,14 @@ module lens_holder(beam_d=3.5){
             }
         }
     }
-    
+
 }
 
 module field_stop(aperture=[3,4], illuminator_d=2*LEDstar_r, h=5){
     // a cylindrical plug with a rectangular aperture in it
     difference(){
         cylinder(d=illuminator_d, h=h);
-        
+
         hull(){
             linear_extrude(0.5, center=true){
                 square(aperture, center=true);
@@ -198,7 +198,7 @@ module slip_plate(w){
                             //bottom of mounting point
                             translate([0,2,2]){
                                 cube([5,4,4], center=true);
-                            }    
+                            }
                             //mounting point to optics module
                             translate([0,0,top_filter_cube+slip_plate_thickness+3]){
                                 rotate([-90,0,0]){
@@ -208,7 +208,7 @@ module slip_plate(w){
                             //top of mounting point
                             translate([-2.5,2,fl_cube_mount_h+slip_plate_thickness-0.05]){
                                 cube([0.01,4,0.1], center=true);
-                            }    
+                            }
 
                         }
                     }
@@ -240,7 +240,7 @@ module slip_plate(w){
                     rotate([-90,60,0]){
                         trylinder_selftap(nominal_d = 2.5,h= 6);
                     }
-                }   
+                }
             }
         }
     }

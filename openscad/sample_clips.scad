@@ -24,7 +24,7 @@ $fn=32;
 module sample_clip(sample,t=2.5,w=6,roc=-1,slope=30){
     //radius of curvature
     roc = roc>0 ? roc : sample.z/2 + sample.y*sin(slope) - t/2;
-    
+
     //a is the distance from the contact-point cylinder to the
     //centre of the curved part
     a = sqrt(pow(sample.y, 2) + pow(sample.z - roc - t/2, 2));

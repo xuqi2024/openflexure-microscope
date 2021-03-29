@@ -17,10 +17,10 @@ module render_frame(frame_dict){
     tool_pos_inplace = create_placement_dict([0, 0, 5]);
     tool_pos_final = create_placement_dict([0, 35, 5], [0, 180, 0]);
     lens_pos = create_placement_dict([0, 35, 7], [0, 180, 0]);
-    
+
     tool_pos_over_cam =  exploded ? tool_pos_exp : tool_pos_inplace;
     tool_pos = removed ? tool_pos_final : tool_pos_over_cam;
-        
+
 
 
     if (exploded){

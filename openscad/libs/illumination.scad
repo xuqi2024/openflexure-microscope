@@ -98,7 +98,7 @@ module illumination_dovetail_structure(params, h, dt_z, dt_h){
                 dovetail_block(illumination_dt_params(params), height=dt_h);
             }
         }
-        
+
         //trilobular structure with "corners" at the 2 screws and a back corner position
         hull(){
             each_illumination_screw(params){

@@ -19,7 +19,7 @@ use <./libs/utilities.scad>
 include <./libs/microscope_parameters.scad>
 // ./libs/cameras/camera.scad will use the correct camera module for generating camera mounts
 // depending on the "camera" variable
-use <./libs/cameras/camera.scad> 
+use <./libs/cameras/camera.scad>
 use <./libs/lenses/lens.scad>
 $fn=24;
 

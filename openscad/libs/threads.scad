@@ -6,7 +6,7 @@
 /*
 This part of the OpenFlexure Microscope
 (c) Richard Bowman 2020
-Released under the CERN Open Hardware License    
+Released under the CERN Open Hardware License
 
 This file was put together by Graham Gibson, as a derivative of
 https://github.com/ZhuangLab/3D-printing/tree/master/nikon_filter_cube

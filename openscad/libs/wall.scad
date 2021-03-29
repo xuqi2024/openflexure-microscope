@@ -220,8 +220,8 @@ module side_housing_placement(params){
 module side_housing(params, h=undef, cavity_h=undef, attach=true){
     //attach: whether the housing it attached to the wall
     actuator_h = key_lookup("actuator_h", params);
-    
-    
+
+
 
     wall_h = is_undef(cavity_h) ? side_housing_h(params) : h;
     c_h = is_undef(cavity_h) ? wall_h+1 : cavity_h;
@@ -275,7 +275,7 @@ module place_on_wall(params, is_y=true, housing=true){
 
     wall_start = is_y ? y_wall_start : [-y_wall_start.x, y_wall_start.y, y_wall_start.z];
     wall_angle = is_y ? y_wall_angle(params) : - y_wall_angle(params);
-    
+
     wall_tr_y = housing ? -housing_size(0).x : -wall_t/2;
     wall_tilt = housing ? 0 : outer_wall_tilt(params);
 

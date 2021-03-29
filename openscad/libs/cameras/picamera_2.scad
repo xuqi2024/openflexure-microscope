@@ -79,12 +79,12 @@ module picam2_cutout( beam_length=15){
     //size of camera box
     camera = [cw,cw,ch];
     //size of camera aperture
-    hole_r = 4.3; 
+    hole_r = 4.3;
     union(){
         sequential_hull(){
             //cut-out for camera (/wider at bottom)
             translate([0,0,-tiny()]){
-                cube([cw+0.5,cw+0.5,tiny()],center=true); 
+                cube([cw+0.5,cw+0.5,tiny()],center=true);
             }
             translate([0,0,0.5]){
                 cube([cw,cw,tiny()],center=true);

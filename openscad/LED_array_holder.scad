@@ -19,7 +19,7 @@ module LED_array_holder(params){
         taper_block = false
     );
 
-    
+
     difference(){
         union(){
             hull(){
@@ -34,13 +34,13 @@ module LED_array_holder(params){
                         back_of_block_2d(dt_params);
                     }
                 }
-            }     
+            }
             // the dovetail clip
             translate([0,illumination_dovetail_y(params), 0]){
                 dovetail_clamp_m(dt_params);
             }
         }
-        // the hole for wires/heat 
+        // the hole for wires/heat
         translate([0,0,1/2]){
             minkowski(){
                 cube([LED_array_w-2,LED_array_w-2,999], center = true); //the hole for the LED array
