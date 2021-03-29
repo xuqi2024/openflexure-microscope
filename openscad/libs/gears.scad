@@ -81,15 +81,27 @@ module small_gear(){
         intersection(){
             cylinder(r=shaft_r, h=999, center=true);
             sequential_hull(){
-                translate([0,0,-tiny()]) cube([999,3,tiny()]*1.1,center=true);
-                translate([0,0,flat_h]) cube([999,3,tiny()]*1.1,center=true);
-                translate([0,0,flat_h+2]) cube([999,7,tiny()]*1.1,center=true);
-                translate([0,0,999]) cube([999,7,tiny()]*1.1,center=true);
+                translate([0,0,-tiny()]){
+                    cube([999,3,tiny()]*1.1,center=true);
+                }
+                translate([0,0,flat_h]){
+                    cube([999,3,tiny()]*1.1,center=true);
+                }
+                translate([0,0,flat_h+2]){
+                    cube([999,7,tiny()]*1.1,center=true);
+                }
+                translate([0,0,999]){
+                    cube([999,7,tiny()]*1.1,center=true);
+                }
             }
         }
         //chamfer the top/bottom for better fit
-        translate([0,0,h]) cylinder(r1=shaft_r,r2=shaft_r+2,h=2,center=true);
-        translate([0,0,0]) cylinder(r2=shaft_r,r1=shaft_r+2,h=2,center=true);
+        translate([0,0,h]){
+            cylinder(r1=shaft_r,r2=shaft_r+2,h=2,center=true);
+        }
+        translate([0,0,0]){
+            cylinder(r2=shaft_r,r1=shaft_r+2,h=2,center=true);
+        }
     }
 }
 
@@ -114,7 +126,9 @@ module thumbwheel(r=10,h=5,knobble_r=1,knobble_angle=45,chamfer=0.5){
                 translate([lobe_r*sin(deg),lobe_r*cos(deg),base_h]){cone_cyl(r=lobe_r,h=lobe_h);}
             }
         }
-        translate([0,0,1.5]) nut(3,shaft=true,fudge=1.2,h=999);
+        translate([0,0,1.5]){
+            nut(3,shaft=true,fudge=1.2,h=999);
+        }
     }
 
     module cone_cyl(r=5,h=5)
@@ -135,7 +149,9 @@ module illumination_thumbscrew(){
                 cylinder(r=5, h=h-taper_h, $fn=8);
             }
         }
-        translate([0, 0, 12]) nut(3, shaft=true, fudge=1.2, h=999);
+        translate([0, 0, 12]){
+            nut(3, shaft=true, fudge=1.2, h=999);
+        }
     }
 }
 
@@ -147,20 +163,44 @@ module motor_clearance(h=15){
     // The shaft is not included.
     linear_extrude(height=h){
         circle(r=14+1.5);
-        hull() reflect([1,0]) translate([motor_screw_separation()/2,0]) circle(r=4.5);
+        hull(){
+            reflect([1,0]){
+                translate([motor_screw_separation()/2,0]){
+                    circle(r=4.5);
+                }
+            }
+        }
     }
-    reflect([1,0,0]) translate([motor_screw_separation()/2,0,0]) rotate(180) trylinder_selftap(4,h=20,center=true);
+    reflect([1,0,0]){
+        translate([motor_screw_separation()/2,0,0]){
+            rotate(180){
+                trylinder_selftap(4,h=20,center=true);
+            }
+        }
+    }
 }
 
 module motor_and_gear_clearance(gear_h=10, h=999){
     // clearance for the small gear, large gear, and motor.
     // It's positioned with the centre of the large gear at the origin.
-    // NB gear_h should match the height of the motor lugs above the
+    // Note: gear_h should match the height of the motor lugs above the
     // flat surface for the large gear, in motor_lugs in compact_nut_seat.scad.
-    linear_extrude(h) offset(1.5) hull() {
-        projection() large_gear();
-        translate([0,c2c_distance]) projection() small_gear();
+    linear_extrude(h){
+        offset(1.5){
+            hull(){
+                projection(){
+                    large_gear();
+                }
+                translate([0,c2c_distance]){
+                    projection(){
+                        small_gear();
+                    }
+                }
+            }
+        }
     }
-    translate([0,c2c_distance-7.8,gear_h]) motor_clearance(h=h-gear_h);
+    translate([0,c2c_distance-7.8,gear_h]){
+        motor_clearance(h=h-gear_h);
+    }
 }
 

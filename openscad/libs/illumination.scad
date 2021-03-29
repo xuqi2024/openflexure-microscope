@@ -113,8 +113,10 @@ module illumination_dovetail_structure(params, h, dt_z, dt_h){
         }
     }*/
     hull(){
-        translate([0, dt_y, dt_z]) mirror([0,1,0]){
-            dovetail_block(illumination_dt_params(params), height=dt_h);
+        translate([0, dt_y, dt_z]){
+            mirror([0,1,0]){
+                dovetail_block(illumination_dt_params(params), height=dt_h);
+            }
         }
         
         //trilobular structure with "corners" at the 2 screws and a back corner position
@@ -159,9 +161,15 @@ module illumination_dovetail(params, h=50){
         }
 
         // cutout to make the dovetail
-        translate([0,dt_y,dt_z]) mirror([0,1,0]) dovetail_f_cutout(illumination_dt_params(params), height=99);
+        translate([0,dt_y,dt_z]){
+            mirror([0,1,0]){
+                dovetail_f_cutout(illumination_dt_params(params), height=99);
+            }
+        }
         // clearance for the motor
-        translate([0,-2,0]) z_motor_clearance(params);
+        translate([0,-2,0]){
+            z_motor_clearance(params);
+        }
     }
     illumination_dovetail_branding(params, h, bottom_z);
 }
@@ -265,7 +273,9 @@ module tall_condenser(params, lens_d, lens_t, lens_assembly_z){
                 cylinder(r=base_r, h=dt_height + bottom_height);
             }
             translate([0,illumination_dovetail_y(params), 0]){
-                linear_extrude(dt_height) back_of_block_2d(dt_params);
+                linear_extrude(dt_height){
+                    back_of_block_2d(dt_params);
+                }
             }
         }
 
