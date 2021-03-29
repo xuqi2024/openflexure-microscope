@@ -166,7 +166,14 @@ module dovetail_plug(corner_x, r, dt, zx_profile=[[0,0],[10,0],[12,-1]]){
     }
 }
 
-module dovetail_m(size=[10,2,10],dt=1.5,t=2,top_taper=1,bottom_taper=0.5,waist=0,waist_dx=0.5,r=0.5){
+module dovetail_m(size=[10,2,10],
+                  dt=1.5,
+                  t=2,
+                  top_taper=1,
+                  bottom_taper=0.5,
+                  waist=0,
+                  waist_dx=0.5,
+                  r=0.5){
     // Male dovetail, contact plane is y=0, dovetail is in y>0
     // size is a box that is centred in X, sits on Z=0, and extends
     // in the -y direction from y=0.  This is the mount for the
@@ -185,24 +192,40 @@ module dovetail_m(size=[10,2,10],dt=1.5,t=2,top_taper=1,bottom_taper=0.5,waist=0
             //dovetail's neck (as far as y=0)
             sequential_hull(){
                 // start with the cube that the dovetail attaches to
-                translate([-w/2-t,-size.y,0]) cube([w+2*t,size.y-r,h]);
+                translate([-w/2-t,-size.y,0]){
+                    cube([w+2*t,size.y-r,h]);
+                }
                 // then add shapes that take in the centres of the cylinders
                 // from the next step.  This joins together the nicely-rounded
                 // contact points, such that when we subtract out the cylinders
                 // at the corners we get a nice smooth shape.
-                reflect([1,0,0]) translate(corner+[sqrt(3)*r,-r,0]) cylinder(r=tiny(),h=h);
-                reflect([1,0,0]) translate(corner) cylinder(r=tiny(),h=h);
+                reflect([1,0,0]){
+                    translate(corner+[sqrt(3)*r,-r,0]){
+                        cylinder(r=tiny(),h=h);
+                    }
+                }
+                reflect([1,0,0]){
+                    translate(corner){
+                        cylinder(r=tiny(),h=h);
+                    }
+                }
             }
             //contact points (with rounded edges to avoid burrs)
             difference(){
                 union(){
-                    reflect([1,0,0]) hull(){
-                        translate(corner+[sqrt(3)*r,-r,0]) cylinder(r=r,h=h);    
-                        translate([w/2+t-r,-r,0]) cylinder(r=r,h=h);    
+                    reflect([1,0,0]){
+                        hull(){
+                            translate(corner+[sqrt(3)*r,-r,0]){
+                                cylinder(r=r,h=h);
+                            }  
+                            translate([w/2+t-r,-r,0]){
+                                cylinder(r=r,h=h);
+                            }
+                        }
                     }
-                    //hull() reflect([1,0,0]) translate(corner) rotate(45) translate([sqrt(3)*r,r,0]) repeat([1,0,0],2) cylinder(r=r,h=h);
-                    // the "plug" is tapered for easy insertion, and may
-                    // have optional indents in the middle (a "waist").
+                    // the "plug" is chamfered for easy insertion, and has
+                    // a waist in the middle. The depth of the waist is set by the
+                    // waist parameter.
                     waist_dx = waist>waist_dx*4 ? waist_dx : 0;
                     waist_dz = waist>waist_dx*4 ? waist_dx*2 : tiny();
                     zx_profile = [[0,-bottom_taper],
@@ -220,7 +243,11 @@ module dovetail_m(size=[10,2,10],dt=1.5,t=2,top_taper=1,bottom_taper=0.5,waist=0
         }
         // We round out the internal corner so that we grip with the edges
         // of the tooth and not the point (you get better contact this way).
-        reflect([1,0,0]) translate(corner) cylinder(r=r,h=3*h,center=true);
+        reflect([1,0,0]){
+            translate(corner){
+                cylinder(r=r,h=3*h,center=true);
+            }
+        }
     }
 }
 
@@ -238,20 +265,42 @@ module dovetail_clip_y(size, dt=1.5, t=2, taper=0, endstop=false){
     // the dovetail extends along the +y direction from y=0
     h = size.y;
     ew = 0;//endstop ? endstop_w : 0;
-    reflect([1,0,0]) translate([-size.x/2,0,0]) mirror([0,0,1]) sequential_hull(){
-        translate([0,dt,0]) cube([t+dt,h-2*dt,tiny()]);
-        cube([t,h,dt]);
-        translate([0,-ew,0]) cube([t,h+ew,dt]);
-        translate([0,-taper,size.z-tiny()]) cube([t,h+2*taper,tiny()]);
+    reflect([1,0,0]){
+        translate([-size.x/2,0,0]){
+            mirror([0,0,1]){
+                sequential_hull(){
+                    translate([0,dt,0]){
+                        cube([t+dt,h-2*dt,tiny()]);
+                    }
+                    cube([t,h,dt]);
+                    translate([0,-ew,0]){
+                        cube([t,h+ew,dt]);
+                    }
+                    translate([0,-taper,size.z-tiny()]){
+                        cube([t,h+2*taper,tiny()]);
+                    }
+                }
+            }
+        }
     }
     if(endstop){
         difference(){
-            hull(){ // make a bridge between the lower tapers
-                translate([0,-taper/2,-size.z+tiny()]) cube([size.x,taper,2*tiny()],center=true);
-                translate([0,0,-tiny()]) cube([size.x,tiny(),2*tiny()],center=true);
+            // make a bridge between the lower tapers
+            hull(){
+                translate([0,-taper/2,-size.z+tiny()]){
+                    cube([size.x,taper,2*tiny()],center=true);
+                }
+                translate([0,0,-tiny()]){
+                    cube([size.x,tiny(),2*tiny()],center=true);
+                }
             }
-            translate([0,0,-size.z+0.5+999/2]) cube([(size.x-2*t-2*dt)-2,999,999],center=true); //cut the middle
-            translate([0,-taper/2,-size.z]) cube([size.x,taper-1.5,0.5*2+tiny()],center=true);
+            //cut the middle
+            translate([0,0,-size.z+0.5+999/2]){
+                cube([(size.x-2*t-2*dt)-2,999,999],center=true);
+            }
+            translate([0,-taper/2,-size.z]){
+                cube([size.x,taper-1.5,0.5*2+tiny()],center=true);
+            }
         }
     }
 }
