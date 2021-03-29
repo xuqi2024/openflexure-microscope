@@ -41,16 +41,17 @@ module large_gear(){
     $fn=32;
     pitch_r=c2c_distance*(ratio/(ratio+1));
     difference(){
+        // intersection used to chamfer the bottom of the gear
         intersection(){
             gear(number_of_teeth=teeth_biggear,
-                circular_pitch=pitch,
-                circles=0,
-                gear_thickness=6,
-                hub_thickness=6,
-                hub_diameter=20,
-                rim_thickness=6,
-                bore_diameter=1);    
-            cylinder(r1=pitch_r-2,r2=pitch_r+18,h=20); //stop bottoms of teeth being funny
+                 circular_pitch=pitch,
+                 circles=0,
+                 gear_thickness=6,
+                 hub_thickness=6,
+                 hub_diameter=20,
+                 rim_thickness=6,
+                 bore_diameter=1);    
+            cylinder(r1=pitch_r-2,r2=pitch_r+18,h=20);
         }
         translate(large_gear_screw_pos()){
             nut(3,shaft=true,fudge=1.2,h=999);
@@ -67,13 +68,13 @@ module small_gear(){
     difference(){
         union(){
             gear(number_of_teeth=teeth_smallgear,
-                    circular_pitch=pitch,
-                    circles=0,
-                    gear_thickness=h,
-                    hub_thickness=h,
-                    hub_diameter=1,
-                    rim_thickness=h,
-                    bore_diameter=1);
+                 circular_pitch=pitch,
+                 circles=0,
+                 gear_thickness=h,
+                 hub_thickness=h,
+                 hub_diameter=1,
+                 rim_thickness=h,
+                 bore_diameter=1);
                 
             cylinder(r=pitch_r+PI*pitch_r/teeth_smallgear,h=0.5); //help adhesion
         }
