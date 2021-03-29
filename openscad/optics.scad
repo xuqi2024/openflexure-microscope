@@ -37,8 +37,6 @@ fl_cube_top_w = fl_cube_w - 2.7;
 $fn=24;
 
 
-if(beamsplitter) echo(str("fl_cube_bottom: ", fl_cube_bottom, " for optics module: ", camera, "_", optics));
-
 function fl_cube_width() = fl_cube_w;
 
 module fl_cube_cutout(taper=true){
@@ -46,15 +44,30 @@ module fl_cube_cutout(taper=true){
     // A cut-out that enables a filter cube to be inserted.
     union(){
         sequential_hull(){
-            translate([-fl_cube_cutout_w/2,-fl_cube_w/2,fl_cube_bottom]) cube([fl_cube_cutout_w,999,fl_cube_cutout_w]);
-            translate([-fl_cube_cutout_w/2+2,-fl_cube_w/2,fl_cube_bottom]) cube([fl_cube_cutout_w-4,999,fl_cube_cutout_w+2]); //sloping sides
-            translate([-fl_cube_cutout_w/2+2,-fl_cube_w/2+2,fl_cube_bottom]) cube([fl_cube_cutout_w-4,fl_cube_w-4,fl_cube_cutout_w+2]);
-            if(taper) translate([-tiny(),-tiny(),fl_cube_bottom]) cube([2*tiny(),2*tiny(),fl_cube_cutout_w*1.5]); //taper gradually to the diameter of the beam
+            translate([-fl_cube_cutout_w/2,-fl_cube_w/2,fl_cube_bottom]){
+                cube([fl_cube_cutout_w,999,fl_cube_cutout_w]);
+            }
+            translate([-fl_cube_cutout_w/2+2,-fl_cube_w/2,fl_cube_bottom]){
+                cube([fl_cube_cutout_w-4,999,fl_cube_cutout_w+2]); //sloping sides
+            }
+            translate([-fl_cube_cutout_w/2+2,-fl_cube_w/2+2,fl_cube_bottom]){
+                cube([fl_cube_cutout_w-4,fl_cube_w-4,fl_cube_cutout_w+2]);
+            }
+            if(taper){
+                //taper gradually to the diameter of the beam
+                translate([-tiny(),-tiny(),fl_cube_bottom]){
+                    cube([2*tiny(),2*tiny(),fl_cube_cutout_w*1.5]);
+                }
+            }
         }
         //a space at the back to allow the grippers for the dichroics to extend back a bit further.
         hull(){
-            translate([-fl_cube_w/2+2,-fl_cube_w/2-1,fl_cube_bottom]) cube([fl_cube_w-4,999,fl_cube_w]);
-            translate([-fl_cube_w/2+4,-fl_cube_w/2,fl_cube_bottom]) cube([fl_cube_w-8,999,fl_cube_w+2]);
+            translate([-fl_cube_w/2+2,-fl_cube_w/2-1,fl_cube_bottom]){
+                cube([fl_cube_w-4,999,fl_cube_w]);
+            }
+            translate([-fl_cube_w/2+4,-fl_cube_w/2,fl_cube_bottom]){
+                cube([fl_cube_w-8,999,fl_cube_w+2]);
+            }
         }
 
     }
@@ -64,7 +77,9 @@ module fl_cube_casing(){
     minkowski(){
         difference(){
             fl_cube_cutout();
-            translate([-999, fl_cube_w/2, -999]) cube(999*2);
+            translate([-999, fl_cube_w/2, -999]){
+                cube(999*2);
+            }
         }
         cylinder(r=1.6, h=0.5);
     }
@@ -73,7 +88,11 @@ module fl_cube_casing(){
 module fl_screw_holes(d,h){
     reflect([1,0,0]){
         union(){
-            translate([fl_cube_w/2+3,0,fl_cube_bottom+fl_cube_w])rotate([90,0,0]) trylinder_selftap(d, h);
+            translate([fl_cube_w/2+3,0,fl_cube_bottom+fl_cube_w]){
+                rotate([90,0,0]){
+                    trylinder_selftap(d, h);
+                }
+            }
         }
     }
 }
@@ -83,8 +102,14 @@ module optical_path(lens_aperture_r, lens_z){
     // a feathered cylindrical beam path.  Camera mount is now cut out
     // of the camera mount body already.
     union(){
-        translate([0,0,camera_mount_top_z-tiny()]) lighttrap_cylinder(r1=5, r2=lens_aperture_r, h=lens_z-camera_mount_top_z+2*tiny()); //beam path
-        translate([0,0,lens_z]) cylinder(r=lens_aperture_r,h=2*tiny()); //lens
+        translate([0,0,camera_mount_top_z-tiny()]){
+            //beam path
+            lighttrap_cylinder(r1=5, r2=lens_aperture_r, h=lens_z-camera_mount_top_z+2*tiny());
+        }
+        translate([0,0,lens_z]){
+            //lens
+            cylinder(r=lens_aperture_r,h=2*tiny());
+        }
     }
 }
 module optical_path_fl(lens_aperture_r, lens_z){
@@ -92,10 +117,20 @@ module optical_path_fl(lens_aperture_r, lens_z){
     rotation = delta_stage ? 120 : 180; // The angle that the fl module exits from (0* is the dovetail)
     rotate(rotation){
         union(){
-            translate([0,0,camera_mount_top_z-tiny()]) lighttrap_sqylinder(r1=5, f1=0, r2=0, f2=fl_cube_w-4, h=fl_cube_bottom-camera_mount_top_z+2*tiny()); //beam path to bottom of cube
-            fl_cube_cutout(); //filter cube
-            translate([0,0,fl_cube_top-tiny()]) lighttrap_sqylinder(r1=1.5, f1=fl_cube_w-4-3, r2=lens_aperture_r, f2=0, h=lens_z-fl_cube_top+4*tiny()); //beam path
-            translate([0,0,lens_z]) cylinder(r=lens_aperture_r,h=2*tiny()); //lens
+            translate([0,0,camera_mount_top_z-tiny()]){
+                //beam path to bottom of cube
+                lighttrap_sqylinder(r1=5, f1=0, r2=0, f2=fl_cube_w-4, h=fl_cube_bottom-camera_mount_top_z+2*tiny());
+            }
+            //filter cube
+            fl_cube_cutout();
+            translate([0,0,fl_cube_top-tiny()]){
+                //beam path
+                lighttrap_sqylinder(r1=1.5, f1=fl_cube_w-4-3, r2=lens_aperture_r, f2=0, h=lens_z-fl_cube_top+4*tiny());
+            }
+            translate([0,0,lens_z]){
+                //lens
+                cylinder(r=lens_aperture_r,h=2*tiny());
+            }
         }
     }
 }
@@ -110,11 +145,19 @@ module lens_gripper(lens_r=10,h=6,lens_h=3.5,base_r=-1,t=0.65,solid=false, flare
 
 module camera_mount_top_slice(){
     // A thin slice of the top of the camera mount
-    linear_extrude(tiny()) projection(cut=true) camera_mount();
+    linear_extrude(tiny()){
+        projection(cut=true){
+            camera_mount();
+        }
+    }
 }
 module objective_fitting_base(params){
     // A thin slice of the mounting wedge that bolts to the microscope body
-    linear_extrude(tiny()) projection() objective_fitting_wedge(params);
+    linear_extrude(tiny()){
+        projection(){
+            objective_fitting_wedge(params);
+        }
+    }
 }
 
 module camera_mount_body(
@@ -134,78 +177,156 @@ module camera_mount_body(
     camera_mount_rotation = delta_stage ? -45:0; // The angle of the camera mount (the ribbon cables exits at 135* from dovetail for '0*' &  180* from dovetail for '-45*')
     fl_cube_rotation = delta_stage ? -60:0; // The angle of the block to hold the fl cube (0* for the fl cube exiting at 180* from the dovetail and -60* for the fl cube exiting at 120* from the dovetail)
     // This is the main body of the mount
+
     union(){
         //The tube + the camera mount
         difference(){
+            // Make the main tube, then add the dovetail and beamsplitter (if needed)
             union(){
-                // Make the main tube, then add the dovetail and beamsplitter (if needed)
+                //hull together the base and the tube
                 sequential_hull(){
-                    //hull together the base and the tube
-                    rotate(camera_mount_rotation)translate([0,0,camera_mount_top_z]) camera_mount_top_slice(); //Where the tube meets the camera
-                    translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=tiny()); //the bottom of the tube
-                    translate([0,0,body_top]) cylinder(r=body_r,h=tiny()); //the top of the tube
-
-                    // allow for extra coordinates above this, if wanted.
-                    // this should really be done with a for loop, but
-                    // that breaks the sequential_hull, hence the kludge.
-                    if(len(extra_rz) > 0) translate([0,0,extra_rz[0][1]-tiny()]) cylinder(r=extra_rz[0][0],h=tiny());
-                    if(len(extra_rz) > 1) translate([0,0,extra_rz[1][1]-tiny()]) cylinder(r=extra_rz[1][0],h=tiny());
-                    if(len(extra_rz) > 2) translate([0,0,extra_rz[2][1]-tiny()]) cylinder(r=extra_rz[2][0],h=tiny());
-                    if(len(extra_rz) > 3) translate([0,0,extra_rz[3][1]-tiny()]) cylinder(r=extra_rz[3][0],h=tiny());
-            }
-            if(dovetail){
-                //Make the dovetail by sequentially hulling from bottom, through tube to dovetail
-                sequential_hull(){
-                    hull(){
-                        // all the things at the bottom
-                        rotate(camera_mount_rotation)translate([0,0,camera_mount_top_z]) camera_mount_top_slice(); //Where the tube meets the camera
-                        translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=tiny()); //the bottom of the tube
-                        translate([0,0,dt_bottom]) objective_fitting_base(params); //the bottom of the dovetail
-                    }
-                    // the dovetail                        
-                    translate([0,0,dt_bottom]) objective_fitting_base(params); //the bottom of the dovetail
-                    hull(){
-                        translate([0,0,dt_bottom]) objective_fitting_base(params); //the bottom of the dovetail
-                        translate([0,0,dt_top]) objective_fitting_base(params); //the top of the dovetail
-                    }
-                    hull(){
-                        // the tube
-                        translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=tiny()); //the bottom of the tube
-                        translate([0,0,body_top]) cylinder(r=body_r,h=tiny()); //the top of the tube
-                    }
-                }
-            }
-            if(beamsplitter){ 
-                // join together the top of the camera, the beamsplitter and the tube
-                hull(){
-                    rotate(camera_mount_rotation)translate([0,0,camera_mount_top_z]) camera_mount_top_slice(); //Where the tube meets the camera
-                    rotate(fl_cube_rotation){
-                        hull(){
-                            fl_cube_casing(); //the box to fit the fl cube in
-                            fl_screw_holes(d = 4, h =8); //the mounts for the fl cube screw holes
+                    //Where the tube meets the camera
+                    rotate(camera_mount_rotation){
+                        translate([0,0,camera_mount_top_z]){
+                            camera_mount_top_slice();
                         }
                     }
-                    translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=tiny()); //the bottom of the tube
-                    translate([0,0,body_top]) cylinder(r=body_r,h=tiny()); //the top of the tube
-                }
-            }
-        }
+                    //the bottom of the tube
+                    translate([0,0,dt_bottom]){
+                        cylinder(r=bottom_r,h=tiny());
+                    }
+                    //the top of the tube
+                    translate([0,0,body_top]){
+                        cylinder(r=body_r,h=tiny());
+                    }
 
-        // Mount for the nut that holds it on
-        translate([0,0,-1]) objective_fitting_cutout(params);
-        // screw holes  and faceplate for fl module
-        if(beamsplitter){ 
-            rotate(fl_cube_rotation){
-                translate([0,-2.5,0])fl_screw_holes(d = 2.5, h = 6);
-                hull(){
-                    translate([0,-fl_cube_w,fl_cube_bottom+fl_cube_w/2+3.5])cube([fl_cube_w+15,fl_cube_w,fl_cube_w+7],center=true);
-                    translate([0,-fl_cube_w-6,fl_cube_bottom++fl_cube_w/2+9])cube([fl_cube_w+20,fl_cube_w,fl_cube_w+6],center = true);
+                    // allow for extra coordinates above this, if wanted.
+                    // Would be best in a for loop, but that breaks the sequential_hull.
+                    if(len(extra_rz) > 0){
+                        translate([0,0,extra_rz[0][1]-tiny()]){
+                            cylinder(r=extra_rz[0][0],h=tiny());
+                        }
+                    }
+                    if(len(extra_rz) > 1){
+                        translate([0,0,extra_rz[1][1]-tiny()]){
+                            cylinder(r=extra_rz[1][0],h=tiny());
+                        }
+                    }
+                    if(len(extra_rz) > 2){
+                        translate([0,0,extra_rz[2][1]-tiny()]){
+                            cylinder(r=extra_rz[2][0],h=tiny());
+                        }
+                    }
+                    if(len(extra_rz) > 3){
+                        translate([0,0,extra_rz[3][1]-tiny()]){
+                            cylinder(r=extra_rz[3][0],h=tiny());
+                        }
+                    }
+                }
+
+                if(dovetail){
+                    //Make the dovetail by sequentially hulling from bottom, through tube to dovetail
+                    sequential_hull(){
+                        // all the things at the bottom
+                        hull(){
+                            //Where the tube meets the camera
+                            rotate(camera_mount_rotation){
+                                translate([0,0,camera_mount_top_z]){
+                                    camera_mount_top_slice(); 
+                                }
+                            }
+                            //the bottom of the tube
+                            translate([0,0,dt_bottom]){
+                                cylinder(r=bottom_r,h=tiny());
+                            }
+                            //the bottom of the dovetail
+                            translate([0,0,dt_bottom]){
+                                objective_fitting_base(params);
+                            }
+                        }
+                        //the bottom of the dovetail
+                        translate([0,0,dt_bottom]){
+                            objective_fitting_base(params); 
+                        }
+                        hull(){
+                            //the bottom of the dovetail
+                            translate([0,0,dt_bottom]){
+                                objective_fitting_base(params);
+                            }
+                            //the top of the dovetail
+                            translate([0,0,dt_top]){
+                                objective_fitting_base(params);
+                            }
+                        }
+                        hull(){
+                            //the bottom of the tube
+                            translate([0,0,dt_bottom]){
+                                cylinder(r=bottom_r,h=tiny()); 
+                            }
+                            //the top of the tube
+                            translate([0,0,body_top]){
+                                cylinder(r=body_r,h=tiny()); 
+                            }
+                        }
+                    }
+                }
+                if(beamsplitter){
+                    // join together the top of the camera, the beamsplitter and the tube
+                    hull(){
+                        rotate(camera_mount_rotation){
+                            translate([0,0,camera_mount_top_z]){
+                                //Where the tube meets the camera
+                                camera_mount_top_slice(); 
+                            }
+                        }
+                        rotate(fl_cube_rotation){
+                            hull(){
+                                //the box to fit the fl cube in
+                                fl_cube_casing();
+                                //the mounts for the fl cube screw holes
+                                fl_screw_holes(d = 4, h =8);
+                            }
+                        }
+                        //TODO: the section bellow is a repeat of above
+                        //the bottom of the tube
+                        translate([0,0,dt_bottom]){
+                            cylinder(r=bottom_r,h=tiny());
+                        }
+                        //the top of the tube
+                        translate([0,0,body_top]){
+                            cylinder(r=body_r,h=tiny());
+                        }
+                    }
+                }
+            }
+
+            // Mount for the nut that holds it on
+            translate([0,0,-1]){
+                objective_fitting_cutout(params);
+            }
+            // screw holes  and faceplate for fl module
+            if(beamsplitter){ 
+                rotate(fl_cube_rotation){
+                    translate([0,-2.5,0]){
+                        fl_screw_holes(d = 2.5, h = 6);
+                    }
+                    hull(){
+                        translate([0,-fl_cube_w,fl_cube_bottom+fl_cube_w/2+3.5]){
+                            cube([fl_cube_w+15,fl_cube_w,fl_cube_w+7],center=true);
+                        }
+                        translate([0,-fl_cube_w-6,fl_cube_bottom++fl_cube_w/2+9]){
+                            cube([fl_cube_w+20,fl_cube_w,fl_cube_w+6],center = true);
+                        }
+                    }
                 }
             }
         }
-    }
-    // add the camera mount
-    rotate(camera_mount_rotation)translate([0,0,camera_mount_top_z]) camera_mount();
+        // add the camera mount
+        rotate(camera_mount_rotation){
+            translate([0,0,camera_mount_top_z]){
+                camera_mount();
+            }
+        }
     }
 }
 
@@ -267,12 +388,15 @@ module optics_module_rms(params, tube_lens_ffd=16.1, tube_lens_f=20,
             // camera cut-out and hole for the beam
             if(beamsplitter){
                 optical_path_fl(tube_lens_aperture, lens_assembly_z);
-            }else{
+            }
+            else{
                 optical_path(tube_lens_aperture, lens_assembly_z);
             }
             // make sure the camera mount makes contact with the lens gripper, but
             // doesn't foul the inside of it
-            translate([0,0,lens_assembly_z]) lens_gripper(lens_r=rms_r-tiny(), lens_h=lens_assembly_h-2.5,h=lens_assembly_h, base_r=lens_assembly_base_r-tiny(), solid=true); //same as the big gripper below
+            translate([0,0,lens_assembly_z]){
+                lens_gripper(lens_r=rms_r-tiny(), lens_h=lens_assembly_h-2.5,h=lens_assembly_h, base_r=lens_assembly_base_r-tiny(), solid=true); //same as the big gripper below
+            }
 
         }
         // A threaded hole for the objective with a lens gripper for the tube lens
@@ -283,15 +407,23 @@ module optics_module_rms(params, tube_lens_ffd=16.1, tube_lens_f=20,
             difference(){
                 hull(){
                     cylinder(r=lens_assembly_base_r,h=tiny(),$fn=50);
-                    translate([0,0,lens_assembly_h-5]) cylinder(r=radius+1.2+0.44, h=5);
+                    translate([0,0,lens_assembly_h-5]){
+                        cylinder(r=radius+1.2+0.44, h=5);
+                    }
                 }
                 sequential_hull(){
                     cylinder(r=lens_assembly_base_r-1, h=2*tiny(),center=true,$fn=50);
-                    translate([0,0,lens_assembly_h-5]) cylinder(r=radius+0.44,h=tiny(),$fn=100);
-                    translate([0,0,999]) cylinder(r=radius+0.44,h=tiny(),$fn=100);
+                    translate([0,0,lens_assembly_h-5]){
+                        cylinder(r=radius+0.44,h=tiny(),$fn=100);
+                    }
+                    translate([0,0,999]){
+                        cylinder(r=radius+0.44,h=tiny(),$fn=100);
+                    }
                 }
             }
-            translate([0,0,lens_assembly_h-5]) inner_thread(radius=radius,pitch=pitch,thread_base_width = 0.60,thread_length=5);
+            translate([0,0,lens_assembly_h-5]){
+                inner_thread(radius=radius,pitch=pitch,thread_base_width = 0.60,thread_length=5);
+            }
 
             // gripper for the tube lens
             lens_gripper(lens_r=tube_lens_r, lens_h=pedestal_h+1,h=pedestal_h+1+2.5, t=gripper_t);
@@ -306,8 +438,6 @@ module optics_module_rms(params, tube_lens_ffd=16.1, tube_lens_f=20,
 
 
 params = default_params();
-
-echo(params);
 
 if(optics=="rms_f40d16"){
     // Optics module for RMS objective, using Comar 40mm singlet tube lens
