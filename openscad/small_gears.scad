@@ -16,4 +16,6 @@
 use <./libs/gears.scad>
 use <./libs/utilities.scad>
 
-repeat([0,small_gear_spacing(),0],3,center=true) small_gear();
+repeat([0, small_gear_spacing(), 0], 3, center=true){
+    small_gear();
+}

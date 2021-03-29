@@ -29,7 +29,15 @@ outer_clearance = 0.5;
 cr = column_base_radius() + outer_clearance;
 
 difference(){
-    translate([0,0,-7]) linear_extrude(actuator_h+5) offset(-outer_clearance) projection(cut=true) nut_seat_void();
+    translate([0,0,-7]){
+        linear_extrude(actuator_h+5){
+            offset(-outer_clearance){
+                projection(cut=true){
+                    nut_seat_void();
+                }
+            }
+        }
+    }
 
     //void for the actuator column
     minkowski(){
@@ -37,10 +45,16 @@ difference(){
         cylinder(r=0.5, h=tiny(), $fn=8);
     }
     //clearance for the lever
-    translate([-cr,0,0]) mirror([0,1,0]) cube([cr*2,999,999]);
+    translate([-cr,0,0]){
+        mirror([0,1,0]){
+            cube([cr*2,999,999]);
+        }
+    }
     //clearance for the column core
     cylinder(r=cr, $fn=16, h=999);
     //mounting bolt
-    translate([0,0,-4])cylinder(r=4,h=6);
+    translate([0,0,-4]){
+        cylinder(r=4,h=6);
+    }
     cylinder(r=2.6,h=999,center=true);
 }

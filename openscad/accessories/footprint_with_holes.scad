@@ -15,6 +15,7 @@ use <../microscope_stand.scad>
 
 difference(){
     footprint();
-
-    projection() mounting_holes();
+    projection(){
+        mounting_holes();
+    }
 }

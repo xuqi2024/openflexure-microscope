@@ -32,8 +32,7 @@ band_inner_diameter = 30;
 /*********
  * MODEL *
  *********/
-actual_band_thickness =
-    ideal_band_thickness - (ideal_band_thickness % nozzle_width);
+actual_band_thickness = ideal_band_thickness - (ideal_band_thickness % nozzle_width);
 band_outer_diameter = band_inner_diameter + actual_band_thickness * 2;
 
 difference(){
