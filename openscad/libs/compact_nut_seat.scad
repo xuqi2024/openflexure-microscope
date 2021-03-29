@@ -37,19 +37,33 @@ module nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=-1){
     r1 = w/2/cos(30); //bottom of nut trap is large
     r2 = r*squeeze; //top of nut trap is very tight
     sequential_hull(){
-        translate([-w/2,999,0]) cube([w,tiny(),h]);
+        translate([-w/2,999,0]){
+            cube([w,tiny(),h]);
+        }
         union(){
-            translate([-w/2,l/2-tiny(),0]) cube([w,tiny(),h]);
-            rotate(30) cylinder(d=w/sin(60), h=h, $fn=6);
+            translate([-w/2,l/2-tiny(),0]){
+                cube([w,tiny(),h]);
+            }
+            rotate(30){
+                cylinder(d=w/sin(60), h=h, $fn=6);
+            }
         }
         a = 1/trap_h;
-        rotate(30) cylinder(r=r1*(1-a) + r2*a, h=h+1, $fn=6);
-        rotate(30) cylinder(r=r2, h=h+trap_h, $fn=6);
+        rotate(30){
+            cylinder(r=r1*(1-a) + r2*a, h=h+1, $fn=6);
+        }
+        rotate(30){
+            cylinder(r=r2, h=h+trap_h, $fn=6);
+        }
     }
     // ensure the hole in the top can be made nicely
     intersection(){
-        translate([-999, -hole_r,0]) cube([999, 2*hole_r, h + trap_h + 0.5]);
-        rotate(30) cylinder(r=r2, h=999, $fn=6);
+        translate([-999, -hole_r,0]){
+            cube([999, 2*hole_r, h + trap_h + 0.5]);
+        }
+        rotate(30){
+            cylinder(r=r2, h=999, $fn=6);
+        }
     }
 
 }
@@ -62,15 +76,16 @@ module m3_nut_trap_with_shaft(slot_angle=0,tilt=0)
     // Trap starts at z=1mm and ends at 7.5mm
     // We recommend have the outer stucture occupies the space from z = 0-9mm
 
-
-    // nut trap
-
-    rotate([tilt,0,0])rotate([0,0,slot_angle]) translate([0,0,1]) union()
-    {
-        nut_trap_and_slot(nut_size, nut_slot);
-        cylinder(r=shaft_r, h=999, $fn=16);
+    rotate([tilt,0,0]){
+        rotate([0,0,slot_angle]){
+            translate([0,0,1]){
+                union(){
+                    nut_trap_and_slot(nut_size, nut_slot);
+                    cylinder(r=shaft_r, h=999, $fn=16);
+                }
+            }
+        }
     }
-
 }
 
 module central_actuator_column(h, top){
@@ -186,27 +201,49 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
         }
 
         // nut trap
-        if(!no_voids) rotate([tilt,0,0]) rotate(slot_angle)
-            translate([0,0,h-top.z]) nut_trap_and_slot(nut_size, nut_slot);
+        if(!no_voids){
+            rotate([tilt,0,0]){
+                rotate(slot_angle){
+                    translate([0,0,h-top.z]){
+                        nut_trap_and_slot(nut_size, nut_slot);
+                    }
+                }
+            }
+        }
 
         // shaft for the screw
         // NB this is raised up from the bottom so it stays within the shaft - this may need to change depending on the length of screw we use...
-        if(!no_voids) rotate([tilt,0,0]) translate([0,0,lever_tip]){
-            cylinder(r=shaft_r, h=999);
-            translate([0,0,-lever_tip+1]) cylinder(r1=0, r2=shaft_r, h=lever_tip-1); //pointy bottom (stronger)
+        if(!no_voids){
+            rotate([tilt,0,0]){
+                translate([0,0,lever_tip]){
+                    cylinder(r=shaft_r, h=999);
+                    translate([0,0,-lever_tip+1]){
+                        //pointy bottom (stronger)
+                        cylinder(r1=0, r2=shaft_r, h=lever_tip-1); 
+                    }
+                }
+            }
         }
 
         // space for lever and flexure
-        translate([-99, -flex_dims().y/2, flex_dims().z]) sequential_hull(){
-            cube([999,flex_dims().y,lever_tip]);
-            translate([0,-999,999]) cube([999,flex_dims().y,lever_tip]);
+        translate([-99, -flex_dims().y/2, flex_dims().z]){
+            sequential_hull(){
+                cube([999,flex_dims().y,lever_tip]);
+                translate([0,-999,999]){
+                    cube([999,flex_dims().y,lever_tip]);
+                }
+            }
         }
 
         // tiny holes, to increase the perimeter of the bottom bit and make it
         // stronger
-        translate([-tiny(),0,flex_dims().z]) cube([2*tiny(), 10, 4]);
+        translate([-tiny(),0,flex_dims().z]){
+            cube([2*tiny(), 10, 4]);
+        }
         // cut off at the bottom
-        mirror([0,0,1]) cylinder(r=999,h=999,$fn=4);
+        mirror([0,0,1]){
+            cylinder(r=999,h=999,$fn=4);
+        }
     }
 }
 
@@ -215,18 +252,27 @@ module actuator_end_cutout(lever_tip=3-0.5 ){
     // This shape cuts off the end of an actuator, leaving a thin strip to
     // connect to the actuator column (the flexure).
     sequential_hull(){
-        translate([-999,-flex_dims().y/2,flex_dims().z]) cube([2,2,2]*999);
-        translate([-999,-flex_dims().y/2,flex_dims().z+lever_tip]) cube([2,2,2]*999);
-        translate([-999,-flex_dims().y/2-999,flex_dims().z+999]) cube([2,2,2]*999);
+        translate([-999,-flex_dims().y/2,flex_dims().z]){
+            cube([2,2,2]*999);
+        }
+        translate([-999,-flex_dims().y/2,flex_dims().z+lever_tip]){
+            cube([2,2,2]*999);
+        }
+        translate([-999,-flex_dims().y/2-999,flex_dims().z+999]){
+            cube([2,2,2]*999);
+        }
     }
 }
 
 module nut_seat_silhouette(r=ss_outer().y/2, dx=ss_outer().x-ss_outer().y, offset=0){
-    // a (2D) shape made from the convex hull of two circles
-    //    hull() reflect([1,0]) translate([x,0]) circle(r=r);
-    // we don't actually build it like that though, as the hull is a slow operation...
+    // a (2D) shape made from the convex hull of two circles od radius r
+    // we don't actually build it like that though, as the hull is a slow operation.
     union(){
-        reflect([1,0]) translate([dx/2,0]) circle(r=r+offset);
+        reflect([1,0]){
+            translate([dx/2,0]){
+                circle(r=r+offset);
+            }
+        }
         square([dx,2*(r+offset)], center=true);
     }
 }
@@ -238,12 +284,19 @@ module nut_seat_void(h=1, tilt=0, center=true){
     // This ensures enough clearance to let the actuator column move.
     r = column_core.y/2;
     x = column_core.x/2 - r;
-    rotate([tilt,0,0]) intersection(){
-        linear_extrude(999,center=center) nut_seat_silhouette(offset=-wall_t);
-        translate([0,0,h]) rotate(90) hole_from_bottom(nut_size*1.1/2, h=999, base_w=999);
+    rotate([tilt,0,0]){
+        intersection(){
+            linear_extrude(999,center=center){
+                nut_seat_silhouette(offset=-wall_t);
+            }
+            translate([0,0,h]){
+                rotate(90){
+                    hole_from_bottom(nut_size*1.1/2, h=999, base_w=999);
+                }
+            }
+        }
     }
 }
-//color("red")nut_seat_void(10,tilt=-10);
 
 module screw_seat_shell(h=1, tilt=0){
     // Outside of the actuator column housing - this is the structure that
@@ -253,13 +306,20 @@ module screw_seat_shell(h=1, tilt=0){
     x = ss_outer(h).x/2 - r;
     double_h = ss_outer(h).z;
     difference(){
-        rotate([tilt,0,0]) hull(){
-            linear_extrude(double_h-3, center=true) nut_seat_silhouette();
-            linear_extrude(double_h, center=true) nut_seat_silhouette(offset=-2);
+        rotate([tilt,0,0]){
+            hull(){
+                linear_extrude(double_h-3, center=true){
+                    nut_seat_silhouette();
+                }
+                linear_extrude(double_h, center=true){
+                    nut_seat_silhouette(offset=-2);
+                }
+            }
         }
-        mirror([0,0,1]) cylinder(r=999,h=999,$fn=8); //ground
-        // hole through which we can insert the nut
-        //rotate([tilt,0,0]) translate([-99,column_core.y/3, h-16]) cube(999); //this gets added later
+        mirror([0,0,1]){
+            //ground
+            cylinder(r=999,h=999,$fn=8); 
+        }
     }
 }
 
@@ -273,17 +333,29 @@ module motor_lugs(h=20, tilt=0, angle=0){
                 difference(){
                     union(){
                         hull(){
-                            translate(screw_pos-[0,0,motor_lug_h()]) cylinder(r=4,h=motor_lug_h());
-                            translate([0,0,screw_pos.z-screw_r-motor_lug_h()]) cylinder(r=5,h=screw_r-5);
+                            translate(screw_pos-[0,0,motor_lug_h()]){
+                                cylinder(r=4,h=motor_lug_h());
+                            }
+                            translate([0,0,screw_pos.z-screw_r-motor_lug_h()]){
+                                cylinder(r=5,h=screw_r-5);
+                            }
                         }
                     }
                     //space for gears
-                    translate([0,0,h]) cylinder(r1=8,r2=17,h=2+tiny());
-                    translate([0,0,h+2]) cylinder(h=999,r=17);
+                    translate([0,0,h]){
+                        cylinder(r1=8,r2=17,h=2+tiny());
+                    }
+                    translate([0,0,h+2]){
+                        cylinder(h=999,r=17);
+                    }
                     //hollow inside of the structure
-                    rotate(-angle) nut_seat_void(h=h, tilt=tilt);
+                    rotate(-angle){
+                        nut_seat_void(h=h, tilt=tilt);
+                    }
                     //mounting screws
-                    translate(screw_pos) trylinder_selftap(4,h=40,center=true);
+                    translate(screw_pos){
+                        trylinder_selftap(4,h=40,center=true);
+                    }
                 }
             }
         }
@@ -298,26 +370,51 @@ module screw_seat(h, travel, tilt=0, entry_w=2*column_base_r+3, extra_entry_h=7,
     difference(){
         union(){
             screw_seat_shell(h=h + travel, tilt=tilt);
-            if(motor_lugs) rotate(180) motor_lugs(h=h + travel, angle=lug_angle, tilt=-tilt);
-            if(len(label) > 0) rotate([tilt,0,0]) translate([0, ss_outer(h).y/2, nut_slot_z - 2]){
-                rotate([90,0,0]) linear_extrude(1, center=true) mirror([1,0])
-                        text(label, size=10, font="Sans", halign="center", valign="top");
+            if(motor_lugs){
+                rotate(180){
+                    motor_lugs(h=h + travel, angle=lug_angle, tilt=-tilt);
+                }
             }
-
+            if(len(label) > 0){
+                rotate([tilt,0,0]){
+                    translate([0, ss_outer(h).y/2, nut_slot_z - 2]){
+                        rotate([90,0,0]){
+                            linear_extrude(1, center=true){
+                                mirror([1,0]){
+                                    text(label, size=10, font="Sans", halign="center", valign="top");
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
-        nut_seat_void(h=h + travel, tilt=tilt); //hollow out the inside
+        //hollow out the inside
+        nut_seat_void(h=h + travel, tilt=tilt);
 
-        edge_y = ss_outer(h).y/2; //allow the actuator to poke in
-        smatrix(zy=sin(tilt)) translate([0,-edge_y,0])
-                    cube([entry_w, edge_y, entry_h*2], center=true);
+        //allow the actuator to poke in
+        edge_y = ss_outer(h).y/2; 
+        smatrix(zy=sin(tilt)){
+            translate([0,-edge_y,0]){
+                cube([entry_w, edge_y, entry_h*2], center=true);
+            }
+        }
 
         //entrance slot for nut
-        rotate([tilt,0,0]) translate([0,0,nut_slot_z]) nut_trap_and_slot(nut_size, nut_slot + [0,0,0.3]);
+        rotate([tilt,0,0]){
+            translate([0,0,nut_slot_z]){
+                nut_trap_and_slot(nut_size, nut_slot + [0,0,0.3]);
+            }
+        }
     }
 }
 
 module screw_seat_outline(h=999,adjustment=0,center=false,tilt=0){
     // The bottom of a screw seat
-    rotate([tilt,0,0]) linear_extrude(h,center=center) nut_seat_silhouette(offset=adjustment);
+    rotate([tilt,0,0]){
+        linear_extrude(h,center=center){
+            nut_seat_silhouette(offset=adjustment);
+        }
+    }
 }
 
