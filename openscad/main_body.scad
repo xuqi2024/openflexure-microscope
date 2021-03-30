@@ -66,7 +66,7 @@ module leg(params, brace=flex_dims().x){
 
     union(){
            //leg
-        reflect([1,0,0]){
+        reflect_x(){
             //vertical bars of the leg
             translate_x(leg_middle_w/2+flex_dims().y){
                 hull(){
@@ -302,7 +302,7 @@ module xy_legs_and_actuators(params){
     // This is the xy_actuators including the casing and all 4 legs
 
     // back legs
-    reflect([1,0,0]){
+    reflect_x(){
         leg_frame(params, 135){
             leg(params);
         }
@@ -333,7 +333,7 @@ module internal_xy_structure(params){
     }
     //mounts for the optical endstops for X and
     if (endstops){
-        reflect([1,0,0]){
+        reflect_x(){
             hull(){
                 inner_wall_vertex(params, 45, -9, inner_wall_h(params));
                 xy_limit_switch_mount(params);
@@ -366,7 +366,7 @@ module xy_flexures(params){
     //The flexure length, increased for some overlap
     flex_len = flex_dims().y + wall_t/2;
     each_leg(params){
-        reflect([1,0,0]){
+        reflect_x(){
             translate([leg_middle_w/2-w, 0, flex_z1+0.5]){
                 //Each flexure is the hull of two offset cuboids.
                 hull(){
@@ -409,9 +409,9 @@ module xy_leg_ties(params){
     x_tr = leg_middle_w/2+flex_dims().y+flex_dims().x/2;
     y_tr = 1-tie_length;
 
-    reflect([1,0,0]){
+    reflect_x(){
         leg_frame(params, 135){
-            reflect([1,0,0]){
+            reflect_x(){
                 translate([x_tr, y_tr, z_tr]){
                     cube([1, tie_length, 0.5]);
                 }
@@ -469,14 +469,14 @@ module actuator_walls_and_z_casing(params, z_axis=true){
             add_hull_base(base_t) {
                 //link the XY actuators to the wall
                 if (z_axis){
-                    reflect([1,0,0]){
+                    reflect_x(){
                         wall_inside_xy_actuators(params);
                     }
                 }
-                reflect([1,0,0]){
+                reflect_x(){
                     wall_outside_xy_actuators(params);
                 }
-                reflect([1,0,0]){
+                reflect_x(){
                     wall_between_actuators(params);
                 }
                 // outer profile of casing and anchor for the z axis
@@ -484,7 +484,7 @@ module actuator_walls_and_z_casing(params, z_axis=true){
                     z_axis_casing(params, condenser_mount=true);
                 }
             }
-            reflect([1,0,0]){
+            reflect_x(){
                 side_housing(params);
             }
             //lugs to bolt the microscope down to base

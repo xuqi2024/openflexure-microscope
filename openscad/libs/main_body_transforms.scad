@@ -52,7 +52,7 @@ module each_leg(params){
 
 module each_actuator(params){
     // Repeat this for both of the actuated legs (the ones with levers)
-    reflect([1,0,0]){
+    reflect_x(){
         leg_frame(params,45){
             children();
         }

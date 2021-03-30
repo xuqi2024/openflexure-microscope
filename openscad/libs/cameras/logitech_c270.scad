@@ -53,7 +53,7 @@ module C270(beam_r=5, beam_h=6){
         }
 
         //mounting holes
-        reflect([1,0,0]){
+        reflect_x(){
             translate_x(mounting_hole_x){
                 mounting_hole();
             }
@@ -71,7 +71,7 @@ module C270(beam_r=5, beam_h=6){
                 cube([10,tiny(),8]);
                 }
         }
-        reflect([0,1,0]){
+        reflect_y(){
             hull(){
                 translate([-4.5,6,-1.5]){
                     cube([9,7.5,8]);

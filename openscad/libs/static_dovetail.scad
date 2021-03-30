@@ -47,7 +47,7 @@ module dovetail_clip_cutout(size,dt=1.5,t=2,slope_front=0,solid_bottom=0){
     inner_w = size.x - 2*t; // width between arms
 
     hull(){
-        reflect([1,0,0]){
+        reflect_x(){
             translate([-size.x/2+t,0,cutout_bottom]){
                 translate([dt,size.y-dt,0]){
                     cylinder(r=dt,h=size.z+2*tiny(),$fn=16);
@@ -70,7 +70,7 @@ module dovetail_clip_cutout(size,dt=1.5,t=2,slope_front=0,solid_bottom=0){
         }
         //also, slope in the dovetail tooth to avoid marring at the bottom:
         hull(){
-            reflect([0,0,1]){
+            reflect_z(){
                 translate_z(slope_front){
                     rotate_y(45){
                         cube([(inner_w)/sqrt(2),dt*2,inner_w/sqrt(2)],center=true);
@@ -118,7 +118,7 @@ module loop_over_zx_profile(zx_profile, corner_x){
             for(j=[0:1]){
                 z = zx_profile[i+j][0];
                 x = zx_profile[i+j][1];
-                reflect([1,0,0]){
+                reflect_x(){
                     translate([corner_x+x,0,z]){
                         rotate(45){
                             children();
@@ -199,12 +199,12 @@ module dovetail_m(size=[10,2,10],
                 // from the next step.  This joins together the nicely-rounded
                 // contact points, such that when we subtract out the cylinders
                 // at the corners we get a nice smooth shape.
-                reflect([1,0,0]){
+                reflect_x(){
                     translate(corner+[sqrt(3)*r,-r,0]){
                         cylinder(r=tiny(),h=h);
                     }
                 }
-                reflect([1,0,0]){
+                reflect_x(){
                     translate(corner){
                         cylinder(r=tiny(),h=h);
                     }
@@ -213,7 +213,7 @@ module dovetail_m(size=[10,2,10],
             //contact points (with rounded edges to avoid burrs)
             difference(){
                 union(){
-                    reflect([1,0,0]){
+                    reflect_x(){
                         hull(){
                             translate(corner+[sqrt(3)*r,-r,0]){
                                 cylinder(r=r,h=h);
@@ -243,7 +243,7 @@ module dovetail_m(size=[10,2,10],
         }
         // We round out the internal corner so that we grip with the edges
         // of the tooth and not the point (you get better contact this way).
-        reflect([1,0,0]){
+        reflect_x(){
             translate(corner){
                 cylinder(r=r,h=3*h,center=true);
             }
@@ -265,7 +265,7 @@ module dovetail_clip_y(size, dt=1.5, t=2, taper=0, endstop=false){
     // the dovetail extends along the +y direction from y=0
     h = size.y;
     ew = 0;
-    reflect([1,0,0]){
+    reflect_x(){
         translate_x(-size.x/2]){
             mirror([0,0,1]){
                 sequential_hull(){

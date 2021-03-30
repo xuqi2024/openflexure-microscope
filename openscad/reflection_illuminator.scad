@@ -32,7 +32,7 @@ module fl_led_mount(led_d=5){
                     translate([-w/2,back_y,0]){
                         cube([w,tiny(),h]);
                     }
-                    reflect([1,0,0]){
+                    reflect_x(){
                         translate([w/2-3*roc, front_y - 3*roc, 0]){
                             cylinder(r=3*roc, h=h, $fn=16);
                         }

@@ -54,8 +54,8 @@ module 6led_bottom_mounting_posts(height=-1, radius=-1, outers=true, cutouts=tru
     r = radius > 0 ? radius : 2;
     h = height > 0 ? height : 4;
     rotate(45){
-        reflect([1,0,0]){
-            reflect([0,1,0]){
+        reflect_x(){
+            reflect_y(){
                 translate([24.1/2, 23.5/2, 0]){
                     difference(){
                         if(outers){

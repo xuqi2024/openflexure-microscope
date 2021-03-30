@@ -39,7 +39,7 @@ module fl_cube_mount(beam_d=5){
                 translate([-w/2,back_y,0]){
                     cube([w,tiny(),fl_cube_mount_h]);
                 }
-                reflect([1,0,0]){
+                reflect_x(){
                     translate([w/2-roc, back_y + excitation_thickness + excitation_offset+excitation_offset,0]){
                         cylinder(r=roc, h=fl_cube_mount_h, $fn=16);
                     }
@@ -127,7 +127,7 @@ module lens_holder(beam_d=3.5){
         //screws for slip plate
         translate([0,LEDstar_r+extra_space+0.1,(lens_z-pedestal_h)/2]){
             rotate_x(90){
-                reflect([1,0,0]){
+                reflect_x(){
                     translate_x(w/2-slip_plate_edge_slot){
                         rotate_z(-30){
                             trylinder_selftap(nominal_d = 2.5, h = 6);
@@ -138,7 +138,7 @@ module lens_holder(beam_d=3.5){
         }
 
         //nut trap for slip plate screws
-        reflect([1,0,0]){
+        reflect_x(){
             hull(){
                 translate([w/2-4,LEDstar_r+extra_space-3,(lens_z-pedestal_h)/2]){
                     rotate_x(90){
@@ -186,7 +186,7 @@ module slip_plate(w){
                         cylinder(r=0.5,h=0.1);
                     }
                 }
-                reflect([90,0,0]){
+                reflect_x(){
                     translate_x((fl_cube_w/2+3)){
                         hull(){
                             //bottom of mounting point
@@ -219,7 +219,7 @@ module slip_plate(w){
                     }
                 }
             }
-            reflect([90,0,0]){
+            reflect_x(){
                 hull(){
                     //slip plate slots
                     translate([w/2-slip_plate_edge_slot,15,0]){

@@ -56,7 +56,7 @@ module fl_cube_outer(){
     $fn=8;
     chamfer_bottom_edge(){
         union(){
-            reflect([1,0,0]){
+            reflect_x(){
                 // outer "arms" that are responsible for the tight fit
                 sequential_hull(){
                     translate([w/2-2-roc*0.8/sqrt(2), w+2-roc*1.2, 0]){
@@ -166,7 +166,7 @@ module fl_cube(){
             }
 
             // attachment for the excitation filter and LED
-            reflect([1,0,0]){
+            reflect_x(){
                 translate([-w/2, bottom + 4, w]){
                     sequential_hull(){
                         depth = w-bottom-4-roc;

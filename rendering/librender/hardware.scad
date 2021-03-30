@@ -20,8 +20,8 @@ use <../../openscad/libs/utilities.scad>
 
 module double_reflect(){
     //Shortcut function to reflext in both the xy and yz plane. Used for creating the band.
-    reflect([1,0,0]){
-        reflect([0,1,0]){
+    reflect_x(){
+        reflect_y(){
             children();
         }
     }
@@ -49,7 +49,7 @@ module viton_band_in_situ_vertical(h=25, foot_z=-11, tool_kink=false){
     band_d=2;
     $fn=32;
     color("gray", 1){
-        reflect([1,0,0]){
+        reflect_x(){
             translate([7, 0, h - 3.5]){
                 rotate([90,0,90]){
                     rotate_extrude(angle=180, convexity=2){

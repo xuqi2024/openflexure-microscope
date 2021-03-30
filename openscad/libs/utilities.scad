@@ -39,19 +39,19 @@ module translate_z(z_tr){
 }
 
 module rotate_x(x_angle){
-    rotate_x(x_angle){
+    rotate([x_angle, 0, 0]){
         children();
     }
 }
 
 module rotate_y(y_angle){
-    rotate_y(y_angle){
+    rotate([0, y_angle, 0]){
         children();
     }
 }
 
 module rotate_z(z_angle){
-    rotate_z(z_angle){
+    rotate([0, 0, z_angle]){
         children();
     }
 }
@@ -60,6 +60,27 @@ module reflect(axis){
     //reflects children about the origin, keeping the originals
     children();
     mirror(axis){
+        children();
+    }
+}
+
+module reflect_x(){
+    //shorthand for reflecting in x
+    reflect([1, 0, 0]){
+        children();
+    }
+}
+
+module reflect_y(){
+    //shorthand for reflecting in y
+    reflect([0, 1, 0]){
+        children();
+    }
+}
+
+module reflect_z(){
+    //shorthand for reflecting in z
+    reflect([0, 0, 1]){
         children();
     }
 }
@@ -149,7 +170,7 @@ module nut_y(d,h=-1,center=false,fudge=1.15,extra_height=0.7,shaft=false,shaft_l
         if(shaft || shaft_length > 0){
             sl = shaft_length>0 ? shaft_length : 999;
             translate_y(h/2){
-                reflect([0,1,0]){
+                reflect_y(){
                     cylinder_with_45deg_top(h=sl,r=d/2*1.05*fudge,$fn=16,extra_height=extra_height);
                 }
             }
@@ -176,7 +197,7 @@ module screw_y(d,h=-1,center=false,fudge=1.05,extra_height=0.7,shaft=false,shaft
         cylinder_with_45deg_top(h=h,r=d*1.05*fudge,$fn=16,extra_height=extra_height);
         if(shaft){
             translate_y(center ? 0 : h/2){
-                reflect([0,1,0]){
+                reflect_y(){
                     cylinder_with_45deg_top(h=shaft_length+h/2,r=d/2*1.05*fudge,$fn=16,extra_height=extra_height);
                 }
             }

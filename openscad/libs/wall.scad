@@ -138,7 +138,7 @@ module wall_inside_xy_stage(params){
     // This starts at the Z nut seat.  I've split it into two
     // blocks, because the shape is not convex so the base
     // would be bigger than the walls otherwise.
-    reflect([1,0,0]){
+    reflect_x(){
         sequential_hull(){
             mirror([1,0,0]){
                 z_bridge_wall_vertex(params);

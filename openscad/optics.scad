@@ -86,7 +86,7 @@ module fl_cube_casing(){
 }
 
 module fl_screw_holes(d,h){
-    reflect([1,0,0]){
+    reflect_x(){
         union(){
             translate([fl_cube_w/2+3,0,fl_cube_bottom+fl_cube_w]){
                 rotate_x(90){

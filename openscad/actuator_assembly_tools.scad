@@ -27,12 +27,12 @@ module tool_handle(){
             rotate_x(-a){
                 hull(){
                     rc=1.5;
-                    reflect([1,0,0]){
+                    reflect_x(){
                         translate([w/2 - rc, rc, rc * tan(45 + a/2)]){
                             sphere(r=rc);
                         }
                     }
-                    reflect([1,0,0]){
+                    reflect_x(){
                         translate([w/2 - rc, rc, gap - rc]){
                             sphere(r=rc);
                         }
@@ -208,7 +208,7 @@ module band_tool_2(handle=true){
     h = band_tool_h; //overall height of the band insertion tool
     union(){
         // the two "blades" that support the band either side of the hook
-        reflect([1,0,0]){
+        reflect_x(){
             prong_frame(){
                 sequential_hull(){
                     blade_point([0,1.5,0], h=0.5);
@@ -219,7 +219,7 @@ module band_tool_2(handle=true){
         }
         // the flat bottom that passes between the hook and the outside of the column
         hull(){
-            reflect([1,0,0]){
+            reflect_x(){
                 //bottom of the tip
                 prong_frame(){
                     translate_y(1.5){
@@ -234,7 +234,7 @@ module band_tool_2(handle=true){
         // connect the business end of the tool to the handle
         difference(){
             hull(){ //join the blades and the handle
-                reflect([1,0,0]){
+                reflect_x(){
                     prong_frame(){
                         translate(blade_anchor){
                             repeat([0,10,0], 2){
@@ -251,7 +251,7 @@ module band_tool_2(handle=true){
             }
             //cut out to get nice rounded corners at the bottom of the slot for the hook
             hull(){
-                reflect([1,0,0]){
+                reflect_x(){
                     prong_frame(){
                         translate(blade_anchor + [-2.25,3,h]){
                             sphere(r=1.5);
@@ -281,7 +281,7 @@ module double_ended_band_tool(bent=false){
     flex_l = roc*3.14/2;
 
     // We make two tools, spaced out by a flexible joiner
-    reflect([0,1,0]){
+    reflect_y(){
         translate_y(middle_w/2+flex_l){
             if(bent){
                 translate([0,roc-3,roc]){
@@ -297,7 +297,7 @@ module double_ended_band_tool(bent=false){
     }
     //flexible links between the two tools and the middle part
     if(bent){
-        reflect([0,1,0]){
+        reflect_y(){
             translate([0,middle_w/2,roc]){
                 difference(){
                     rotate_y(90){

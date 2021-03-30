@@ -62,12 +62,7 @@ module skew_flat(tilt, shift=false){
         children();
     }
 }
-module rx(){
-    //handy shorthand for reflecting in X
-    reflect([1,0,0]){
-        children();
-    }
-}
+
 
 module filleted_bridge(gap, roc_xy=2, roc_xz=2){
     // This can be subtracted from a structure of width gap.x to form
@@ -83,26 +78,26 @@ module filleted_bridge(gap, roc_xy=2, roc_xz=2){
         translate(-zero_z(gap)/2 -[0,roc_xy,999]){
             cube(gap + [0,2*roc_xy,roc_xz] + [0,0,999]);
         }
-        reflect([0,1,0]){
+        reflect_y(){
             sequential_hull(){
-                rx(){
+                reflect_x(){
                     translate([x1, y1, -999]){
                         cylinder(r=roc_xy, h=tiny());
                     }
                 }
-                rx(){
+                reflect_x(){
                     translate([x1, y1, 0]){
                         cylinder(r=roc_xy, h=h+roc_xz);
                     }
                 }
-                rx(){
+                reflect_x(){
                     translate([x2, b/2, h+roc_xz]){
                         rotate_x(-90){
                             cylinder(r=roc_xz, h=tiny());
                         }
                     }
                 }
-                rx(){
+                reflect_x(){
                     translate([x2, -2*tiny(), h+roc_xz]){
                         rotate_x(90){
                             cylinder(r=roc_xz ,h=tiny());

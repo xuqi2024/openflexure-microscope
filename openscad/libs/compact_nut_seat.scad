@@ -114,7 +114,7 @@ module central_actuator_column(h, top){
 module actuator_hooks(h,top){
     //These are the hooks on the actuator
     //Reflect to get two hooks
-    reflect([1,0,0]){
+    reflect_x(){
         //Translate to the correct postion on the actuator
         translate([top.x/2,0,h]){
             //Mirror as build upside down
@@ -147,7 +147,7 @@ module actuator_hooks(h,top){
                     // A tri-lobular shape for the top of the hook formed from the union
                     // of three cylinders.
                     union(){
-                        reflect([0,1,0]){
+                        reflect_y(){
                             translate([4.5,0.5,0]){
                                 cylinder(d=1,h=1);
                             }
@@ -329,7 +329,7 @@ module motor_lugs(h=20, tilt=0, angle=0){
     screw_r = sqrt(pow(screw_pos.x,2)+pow(screw_pos.y,2));
     rotate_x(tilt){
         rotate(angle){
-            reflect([1,0,0]){
+            reflect_x(){
                 difference(){
                     union(){
                         hull(){

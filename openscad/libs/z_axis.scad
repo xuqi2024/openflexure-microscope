@@ -34,7 +34,7 @@ module each_om_contact_plane(){
     // This transform puts y=0 in the plane of contact between the
     // optics module and the mount for it, with the origin at the
     // nominal corner of the wedge.
-    reflect([1,0,0]){
+    reflect_x(){
         translate([-objective_mount_nose_w/2,objective_mount_y,0]){
             rotate(135){
                 children();
@@ -90,7 +90,7 @@ module objective_mount(params){
 
         // cut-outs for flexures to attach
         hull(){
-            reflect([1,0,0]){
+            reflect_x(){
                 translate([1, tiny(), -4]){
                     z_axis_flexures(params, h=5+8);
                 }
@@ -98,7 +98,7 @@ module objective_mount(params){
         }
 
         // cut out the back so it fits in the available space
-        reflect([1,0,0]){
+        reflect_x(){
             translate([-back_lug_x_pos(params),0,-99]){
                 rotate(45){
                     cube(999);
@@ -145,7 +145,7 @@ module objective_fitting_wedge(params, h=undef, nose_shift=0.2, center=false){
                 translate([-nw/2-nose_shift,nose_shift,center?-h/2:0]){
                     cube([nw+2*nose_shift,tiny(),h]);
                 }
-                reflect([1,0,0]){
+                reflect_x(){
                     translate([-nw/2-5+sqrt(2), 5+sqrt(2), 0]){
                         cylinder(r=2, h=h, $fn=16, center=center);
                     }
@@ -191,7 +191,7 @@ module objective_fitting_cutout(params, max_screw=12, y_stop=false, nose_shift=0
 module z_axis_flexure(h=flex_dims().z, z=0){
     // The parts that bend as the Z axis is moved
     union(){
-        reflect([1,0,0]){
+        reflect_x(){
             hull(){
                 translate([-flex_dims().x-1,objective_mount_back_y-tiny(),z]){
                     cube([flex_dims().x,tiny(),h]);
@@ -338,7 +338,7 @@ module z_axis_casing(params, condenser_mount=false){
             }
         }
         hull(){
-            reflect([1,0,0]){
+            reflect_x(){
                 z_bridge_wall_vertex(params);
             }
             translate([-99,z_anchor_y,0]){
@@ -371,7 +371,7 @@ module z_axis_casing_cutouts(params){
     objective_mounting_screw_access(params);
     z_actuator_cutout(params);
     z_motor_clearance(params);
-    reflect([1,0,0]){
+    reflect_x(){
         translate(right_illumination_screw_pos(params)){
             rotate(-20){
                 translate_z(-9){

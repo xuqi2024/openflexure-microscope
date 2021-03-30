@@ -126,7 +126,7 @@ module cable_tidies(params){
     z_cable_tidy_frame_undo(params, z_extra=motor_bracket_h()){
         front_cable_tidy(params);
     }
-    reflect([1, 0, 0]){
+    reflect_x(){
         translate_y(-20){
             side_cable_tidy(params);
         }

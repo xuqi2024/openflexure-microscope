@@ -30,7 +30,7 @@ module rendered(){
     z_connector_pos = create_placement_dict([-27,3,-86], [0,0,-15]);
     z_cable_verticies = [[0,-10,3],[-27,0,3]];
 
-    reflect([1,0,0]){
+    reflect_x(){
         coloured_render("DodgerBlue"){
             translate_z(32.5){
                 y_actuator_frame(params){

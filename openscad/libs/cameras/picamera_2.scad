@@ -197,7 +197,7 @@ module picamera_2_screwholes(){
     sx = 21/2; //position of screw holes
     rotate(45){
         translate_z(bottom){
-            reflect([1,0,0]){
+            reflect_x(){
                 translate_x(sx){
                     rotate(60){
                         cylinder(r1=3.1, r2=1.1, h=5, $fn=3, center=true);
@@ -223,7 +223,7 @@ module picamera_2_bottom_mounting_posts(height=-1, radius=-1, outers=true, cutou
     r = radius > 0 ? radius : 2;
     h = height > 0 ? height : 4;
     rotate(45){
-        reflect([1,0,0]){
+        reflect_x(){
             for(y=[0,12.5]){
                 translate([21/2, y, 0]){
                     difference(){
@@ -273,14 +273,14 @@ module picamera_2_cover(){
                 }
             }
             //mounting screws
-            reflect([1,0,0]){
+            reflect_x(){
                 translate_x(21/2){
                     cylinder(r=3, h=h, $fn=16);
                 }
             }
         }
         //counterbore the mounting screws
-        reflect([1,0,0]){
+        reflect_x(){
             translate([21/2, 0, h-1]){
                 rotate(90){
                     intersection(){

@@ -160,7 +160,7 @@ module microscope_bottom(params, enlarge_legs=1.5, lugs=true, feet=true, legs=tr
     }
 
     hull(){
-        reflect([1,0,0]){
+        reflect_x(){
             projection(cut=true){
                 translate_z(-tiny()){
                     wall_outside_xy_actuators(params);
@@ -173,7 +173,7 @@ module microscope_bottom(params, enlarge_legs=1.5, lugs=true, feet=true, legs=tr
     projection(cut=true){
         translate_z(-tiny()){
             z_axis_casing(params);
-            reflect([1,0,0]){
+            reflect_x(){
                 hull(){
                     side_housing(params);
                 }
@@ -468,7 +468,7 @@ module bucket_base_with_microscope_top(params, h=base_height){
         }
         for(hole_pos=base_mounting_holes(params)){
             if(hole_pos.x>0){
-                reflect([1,0,0]){
+                reflect_x(){
                     // Note this is reflected so that the triangular holes work for both lugs.
                     // Otherwise the x<0 one snaps when you screw into it
                     translate(hole_pos+[0,0,h+foot_height]){
@@ -834,7 +834,7 @@ module new_bucket_base_primative(params, ex_rad=3){
     pi_block_size = [pi_base_size.x, pi_base_size.y, tiny()];
     minkowski(){
         hull(){
-            reflect([1,0,0]){
+            reflect_x(){
                 pi_stand_frame_xy(primative=true){
                     cube(pi_block_size);
                 }

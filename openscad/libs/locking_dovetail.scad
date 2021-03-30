@@ -86,7 +86,7 @@ module back_of_block_2d(p){
     fillet_r = key_lookup("fillet_r", p);
 
     hull(){
-        reflect([1,0,0]){
+        reflect_x(){
             translate([back_w/2 - fillet_r*tan(angle/2), -depth + fillet_r]){
                 circle(r=fillet_r);
             }
