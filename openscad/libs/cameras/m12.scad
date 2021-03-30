@@ -44,7 +44,7 @@ module usbcam_lens_mount(){
         }
         hull(){
             reflect([0,1,0]){
-                translate([0,lens_holder_mounting_screw_y,0]){
+                translate_y(lens_holder_mounting_screw_y){
                     cylinder(r=lens_holder_mounting_screw_lug_r, h=lens_holder_box_h, $fn=12);
                 }
             }
@@ -86,7 +86,7 @@ module m12_camera_mount(){
             }
             //chamfer the screw holes
             reflect([0,1,0]){
-                translate([0,sy,0]){
+                translate_y(sy){
                     cylinder(r1=3, r2=0,h=4, center=true);
                     deformable_hole_trylinder(1.5/2,2.1/2,h=12, center=true);
                 }

@@ -118,7 +118,7 @@ module y_actuator_wall_vertex(params, inside=true){
 module z_actuator_wall_vertex(params, front=true){
     if (front){
         y_tr = z_nut_y(params)+ss_outer().y/2-wall_t/2;
-        translate([0, y_tr, 0]){
+        translate_y(y_tr){
             wall_vertex();
         }
     }
@@ -240,7 +240,7 @@ module side_housing(params, h=undef, cavity_h=undef, attach=true){
                     cylinder(r=outer_r,h=wall_h);
                 }
                 cylinder(r=inner_r,h=wall_h);
-                translate([0, housing_size(wall_h).y, 0]){
+                translate_y(housing_size(wall_h).y){
                     cylinder(r=inner_r,h=wall_h);
                 }
             }
@@ -281,7 +281,7 @@ module place_on_wall(params, is_y=true, housing=true){
     translate(wall_start){
         rotate(wall_angle){
             // move out to the surface (the above are centres of cylinders)
-            translate([0, wall_tr_y, 0]){
+            translate_y(wall_tr_y){
                 // and then align y with the vertical axis of the wall
                 rotate([90-wall_tilt, 0, 0]){
                     // now X and Y are in the plane of the wall, and z=0 is its surface.

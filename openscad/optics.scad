@@ -307,7 +307,7 @@ module camera_mount_body(
             // screw holes  and faceplate for fl module
             if(beamsplitter){
                 rotate(fl_cube_rotation){
-                    translate([0,-2.5,0]){
+                    translate_y(-2.5){
                         fl_screw_holes(d = 2.5, h = 6);
                     }
                     hull(){

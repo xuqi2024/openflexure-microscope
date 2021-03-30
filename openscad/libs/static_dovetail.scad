@@ -52,7 +52,7 @@ module dovetail_clip_cutout(size,dt=1.5,t=2,slope_front=0,solid_bottom=0){
                 translate([dt,size.y-dt,0]){
                     cylinder(r=dt,h=size.z+2*tiny(),$fn=16);
                 }
-                translate([0,dt,0]){
+                translate_y(dt){
                     rotate(-45){
                         cube([dt*2,tiny(),size.z+2*tiny()]);
                     }
@@ -269,11 +269,11 @@ module dovetail_clip_y(size, dt=1.5, t=2, taper=0, endstop=false){
         translate([-size.x/2,0,0]){
             mirror([0,0,1]){
                 sequential_hull(){
-                    translate([0,dt,0]){
+                    translate_y(dt){
                         cube([t+dt,h-2*dt,tiny()]);
                     }
                     cube([t,h,dt]);
-                    translate([0,-ew,0]){
+                    translate_y(-ew){
                         cube([t,h+ew,dt]);
                     }
                     translate([0,-taper,size.z-tiny()]){

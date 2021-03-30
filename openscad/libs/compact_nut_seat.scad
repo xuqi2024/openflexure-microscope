@@ -395,7 +395,7 @@ module screw_seat(h, travel, tilt=0, entry_w=2*column_base_r+3, extra_entry_h=7,
         //allow the actuator to poke in
         edge_y = ss_outer(h).y/2;
         sparse_matrix_transform(zy=sin(tilt)){
-            translate([0,-edge_y,0]){
+            translate_y(-edge_y){
                 cube([entry_w, edge_y, entry_h*2], center=true);
             }
         }

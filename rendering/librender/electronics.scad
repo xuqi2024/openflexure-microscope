@@ -195,7 +195,7 @@ module picamera2_tool(){
 
 module motor28BYJ48_body(){
     holes = [[17.5, 0, 0], [-17.5, 0, 0]];
-    translate([0, 8, 0]){
+    translate_y(8){
         cylinder(d=28, h=19);
         difference(){
             hull(){
@@ -266,7 +266,7 @@ module motor_jst_connector_body(){
             // the "clip"
             jst_connector_clip();
         }
-        translate([0, -1.6, 0]){
+        translate(_y(-1.6){
             cube([99, 4, .6], center=true);
         }
         for (x_pin = [-2, -1, 0, 1, 2]*2.54){
@@ -312,7 +312,7 @@ module jst_connector_clip(){
 }
 
 module jst_pin_void(){
-        translate([0, 2, 0]){
+        translate_y(2){
             cube([1.2, 2, 6], center=true);
         }
         translate_z(6){
@@ -321,7 +321,7 @@ module jst_pin_void(){
         translate([0, .5, 6]){
             cube([1.2, 2.8, 10], center=true);
         }
-        translate([0, -.7, 0]){
+        translate_y(-.7){
             cube([1, 1, 10], center=true);
         }
 };

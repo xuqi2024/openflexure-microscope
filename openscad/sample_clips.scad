@@ -57,7 +57,7 @@ module sample_clip(sample,t=2.5,w=6,roc=-1,slope=30){
                 translate_z(roc+t){
                     rotate([0,90,0]){
                         rotate(angle){
-                            translate([0,roc+t/2,0]){
+                            translate_y(roc+t/2){
                                 cylinder(r=t/2,h=w,center=true);
                             }
                         }

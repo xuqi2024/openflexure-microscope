@@ -65,7 +65,7 @@ module tool_handle(){
 module xz_slice(y=0){
     //slice out just the part of something that sits in the XZ plane
     intersection(){
-        translate([0,y,0]){
+        translate_y(y){
             cube([999,2*tiny(),999],center=true);
         }
         children();
@@ -78,12 +78,12 @@ module nut_tool(){
     l = 5+sso.y/2+3;
     difference(){
         union(){
-            translate([0,-handle_l,0]){
+            translate_y(-handle_l){
                 tool_handle();
             }
             sequential_hull(){
                 xz_slice(){
-                    translate([0,-handle_l,0]){
+                    translate_y(-handle_l){
                         tool_handle();
                     }
                 }
@@ -117,18 +117,18 @@ module band_tool(){
     // 3.5mm from the edge of the (elliptical) wall of the screw seat.
     difference(){
         union(){
-            translate([0,-handle_l,0]){
+            translate_y(-handle_l){
                 tool_handle();
             }
             sequential_hull(){
                 xz_slice(){
-                    translate([0,-handle_l,0]){
+                    translate_y(-handle_l){
                         tool_handle();
                     }
                 }
-                translate([0,l-20,0]){
+                translate_y(l-20){
                     xz_slice(){
-                        translate([0,-handle_l,0]){
+                        translate_y(-handle_l,0]){
                             tool_handle();
                         }
                     }
@@ -145,21 +145,21 @@ module band_tool(){
         }
         // cut-out to clear the hook
         hull(){
-            translate([0,l,1.5]){
+            translate_y(l,1.5]){
                 scale([1,1,0.66]){
                     rotate([90,0,0]){
                         cylinder(r=1.4,h=18,center=true);
                     }
                 }
             }
-            translate([0,l,2+3]){
+            translate_y(l,2+3]){
                 rotate([90,0,0]){
                     cylinder(r=2.3,h=40,center=true);
                 }
             }
         }
         // V shaped end to grip elastic bands
-        translate([0,l,0]){
+        translate_y(l){
             hull(){
                 translate([0,0.3,1.5]){
                     rotate([0,90,0]){
@@ -222,7 +222,7 @@ module band_tool_2(handle=true){
             reflect([1,0,0]){
                 //bottom of the tip
                 prong_frame(){
-                    translate([0,1.5,0]){
+                    translate_y(1.5){
                         cylinder(d=1.5,h=0.5);
                     }
                     translate(blade_anchor){
@@ -244,7 +244,7 @@ module band_tool_2(handle=true){
                     }
                 }
                 xz_slice(){
-                    translate([0,-handle_l,0]){
+                    translate_y(-handle_l){
                         tool_handle();
                     }
                 }
@@ -265,7 +265,7 @@ module band_tool_2(handle=true){
         }
         //the handle
         if(handle){
-            translate([0,-handle_l,0]){
+            translate_y(-handle_l){
                 tool_handle();
             }
         }
@@ -282,7 +282,7 @@ module double_ended_band_tool(bent=false){
 
     // We make two tools, spaced out by a flexible joiner
     reflect([0,1,0]){
-        translate([0,middle_w/2+flex_l,0]){
+        translate_y(middle_w/2+flex_l){
             if(bent){
                 translate([0,roc-3,roc]){
                     rotate([90,0,0]){
@@ -371,6 +371,6 @@ translate ([0,0,holder_offset]){
     band_tool_holder();
 }
 
-translate([0,40,0]){
+translate_y(40){
     nut_tool();
 }

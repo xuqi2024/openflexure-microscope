@@ -117,7 +117,7 @@ module actuator(params){
                 }
             }
             //don't foul the actuator column
-            translate([0,actuating_nut_r(params),0]){
+            translate_y(actuating_nut_r(params)){
                 actuator_end_cutout();
             }
         }
@@ -278,7 +278,7 @@ module xy_actuators(params, ties_only=false){
         if (! ties_only){
             actuator(params);
         }
-        translate([0,actuating_nut_r(params),0]){
+        translate_y(actuating_nut_r(params)){
             if (! ties_only){
                 actuator_column(actuator_h, join_to_casing=ties);
             }
@@ -314,7 +314,7 @@ module xy_legs_and_actuators(params){
         label = ["X","Y"][i];
         angle = [-45,45][i];
         leg_frame(params, angle){
-            translate([0,actuating_nut_r(params),0]){
+            translate_y(actuating_nut_r(params)){
                 xy_screw_seat(params, label);
             }
         }
@@ -441,11 +441,11 @@ module central_optics_cut_out(params) {
     // Central cut-out for optics
     sequential_hull(){
         h=base_t*3;
-        translate([0,back_lug_x_pos(params)+1.5-14/2,0]){
+        translate_y(back_lug_x_pos(params)+1.5-14/2){
             cube([14,2*tiny(),h],center=true);
         }
         cube([2*(back_lug_x_pos(params)-flex_dims().x),1,h],center=true);
-        translate([0,8-(back_lug_x_pos(params)-flex_dims().x-tiny()),0]){
+        translate_y(8-(back_lug_x_pos(params)-flex_dims().x-tiny())){
             cube([16,2*tiny(),h],center=true);
         }
     }
@@ -454,7 +454,7 @@ module central_optics_cut_out(params) {
 module xy_actuator_cut_outs(params){
     each_actuator(params){
         actuator_silhouette(params, xy_actuator_travel(params)+actuator_dims(params).z);
-        translate([0,actuating_nut_r(params),0]){
+        translate_y(actuating_nut_r(params)){
             screw_seat_outline(h=999,adjustment=-tiny(),center=true);
         }
     }

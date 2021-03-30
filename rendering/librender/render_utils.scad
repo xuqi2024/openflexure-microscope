@@ -1,5 +1,6 @@
 include <../../openscad/libs/microscope_parameters.scad>
 use <../../openscad/libs/libdict.scad>
+use <../../openscad/libs/utilities.scad>
 
 module construction_line(p1, p2, width=0.1, line_color="Black"){
     //draws a construction line between two points. Inputs can be x,y,z list or placement dictionary
@@ -32,7 +33,7 @@ module turn_anticlockwise(rad = 5, head = 2.5){
                 circle(r = 0.1);
             }
         }
-        translate([0, -rad, 0]){
+        translate_y(-rad){
             rotate([0, 90, 0]) {
                 cylinder(d1=head*2/3, d2=0.01, h=head, $fn=80);
             }

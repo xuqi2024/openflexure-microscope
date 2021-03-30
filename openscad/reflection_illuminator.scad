@@ -23,7 +23,7 @@ module fl_led_mount(led_d=5){
     union(){
         difference(){
             union(){
-                translate([0, back_y, 0]){
+                translate(_y(back_y){
                     mirror([0,1,0]){
                         dovetail_m([w, 1, h], t=2*roc);
                     }

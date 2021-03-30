@@ -234,7 +234,7 @@ module feet_in_place(params, grow_r=1, grow_h=2){
     difference() {
         union(){
             each_actuator(params){
-                translate([0,actuating_nut_r(params),0]){
+                translate_y(actuating_nut_r(params)){
                     minkowski(){
                         hull(){
                             outer_foot(params, lie_flat=false);
@@ -243,7 +243,7 @@ module feet_in_place(params, grow_r=1, grow_h=2){
                     }
                 }
             }
-            translate([0,z_nut_y(params),0]){
+            translate_y(z_nut_y(params)){
                 minkowski(){
                     hull(){
                         middle_foot(params,lie_flat=false);
@@ -261,7 +261,7 @@ module feet_in_place(params, grow_r=1, grow_h=2){
         }
         translate([-20,52,-15]){
             rotate([-25,0,0]){
-                translate([0,-30,0]){
+                translate_y(-30){
                     cube([40,30,30]);
                 }
             }
@@ -500,7 +500,7 @@ module mounting_holes(params){
     // space for swarf).
     mirror([1,0,0]){
         leg_frame(params, 45){
-            translate([0, actuating_nut_r(params), 0]){
+            translate_y(actuating_nut_r(params)){
                 cylinder(d=4.4, h=20, center=true);
                 rotate(90){
                     trylinder_selftap(3, h=999, center=true);
@@ -517,7 +517,7 @@ module mounting_holes(params){
             }
         }
     }
-    translate([0, base_corner_y(params)+7, 0]){
+    translate_y(base_corner_y(params)+7){
         cylinder(d=4.4, h=20, center=true);
         rotate(30){
             trylinder_selftap(3, h=999, center=true);
@@ -937,21 +937,21 @@ module pi_stand(h=50){
             }
         }
         translate(board_inset+ [0, 0, standoff_h+1]){
-            translate([0, 45.75-17/2, 0]){
+            translate_y(45.75-17/2){
                 cube([200, 17, 14.5]);
             }
-            translate([0, 27-15.5/2, 0]){
+            translate_y(27-15.5/2){
                 cube([200, 15.5, 17]);
             }
-            translate([0, 9-15.5/2, 0]){
+            translate_y(9-15.5/2){
                 cube([200, 15.5, 17]);
             }
 
-            translate([0,-board_inset.y-tiny(),0]){
+            translate_y(-board_inset.y-tiny()){
                 pi_side_connectors();
             }
             hull(){
-                translate([0,-(board_inset.y-1.5),0]){
+                translate_y(-(board_inset.y-1.5)){
                     pi_side_connectors();
                 }
             }

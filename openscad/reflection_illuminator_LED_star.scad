@@ -30,7 +30,7 @@ module fl_cube_mount(beam_d=5){
     echo(top_filter_cube+slip_plate_thickness);
     difference(){
         union(){
-            translate([0, back_y,0]){
+            translate_y(back_y){
                 mirror([0,1,0]){
                     dovetail_m([fl_cube_w-1, 1, fl_cube_mount_h], t=2*roc);
                 }
@@ -84,7 +84,7 @@ module lens_holder(beam_d=3.5){
                 cube([w,LEDstar_r+extra_space,lens_z-pedestal_h]);
             }
             //mounts for screws for LED star
-            translate([0,-LEDstar_r,0]){
+            translate_y(-LEDstar_r){
                 cylinder(r=3,h =lens_z-pedestal_h+tiny());
             }
 
@@ -116,7 +116,7 @@ module lens_holder(beam_d=3.5){
         //screws for LED star
         for(i = [0:1]){
             rotate(180*i){
-                translate([0,LEDstar_r,0]){
+                translate_y(LEDstar_r]){
                     rotate([0,0,180]){
                         trylinder_selftap(nominal_d = 3, h = lens_z-pedestal_h - 1);
                     }

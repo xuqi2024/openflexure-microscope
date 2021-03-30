@@ -20,8 +20,20 @@ function tiny() = 0.05;
 
 function zero_z(size) = [size.x, size.y, 0]; //set the Z component of a 3-vector to 0
 
+module translate_x(x_tr){
+    translate([x_tr, 0, 0]){
+        children();
+    }
+}
+
+module translate_y(y_tr){
+    translate([0, y_tr, 0]){
+        children();
+    }
+}
+
 module translate_z(z_tr){
-    translate_z(z_tr){
+    translate([0, 0, z_tr]){
         children();
     }
 }
@@ -118,7 +130,7 @@ module nut_y(d,h=-1,center=false,fudge=1.15,extra_height=0.7,shaft=false,shaft_l
         }
         if(shaft || shaft_length > 0){
             sl = shaft_length>0 ? shaft_length : 999;
-            translate([0,h/2,0]){
+            translate_y(h/2){
                 reflect([0,1,0]){
                     cylinder_with_45deg_top(h=sl,r=d/2*1.05*fudge,$fn=16,extra_height=extra_height);
                 }
@@ -145,7 +157,7 @@ module screw_y(d,h=-1,center=false,fudge=1.05,extra_height=0.7,shaft=false,shaft
     union(){
         cylinder_with_45deg_top(h=h,r=d*1.05*fudge,$fn=16,extra_height=extra_height);
         if(shaft){
-            translate([0,center ? 0 : h/2,0]){
+            translate_y(center ? 0 : h/2){
                 reflect([0,1,0]){
                     cylinder_with_45deg_top(h=shaft_length+h/2,r=d/2*1.05*fudge,$fn=16,extra_height=extra_height);
                 }
@@ -455,7 +467,7 @@ module trylinder(r=1, flat=1, h=tiny(), center=false){
     hull(){
         for(a=[0,120,240]){
             rotate(a){
-                translate([0,flat/sqrt(3),0]){
+                translate_y(flat/sqrt(3)){
                     cylinder(r=r, h=h, center=center);
                 }
             }

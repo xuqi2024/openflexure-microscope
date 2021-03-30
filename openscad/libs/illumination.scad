@@ -149,7 +149,7 @@ module illumination_dovetail(params, h=50){
             }
         }
         // clearance for the motor
-        translate([0,-2,0]){
+        translate_y(-2){
             z_motor_clearance(params);
         }
     }
@@ -241,7 +241,7 @@ module tall_condenser(params, lens_d, lens_t, lens_assembly_z){
     dovetail_end_y = illumination_dovetail_y(params) - dt_block_depth;
 
     // the dovetail clip
-    translate([0,illumination_dovetail_y(params), 0]){
+    translate_y(illumination_dovetail_y(params)){
         dovetail_clamp_m(dt_params);
     }
 
@@ -254,7 +254,7 @@ module tall_condenser(params, lens_d, lens_t, lens_assembly_z){
             translate_z(-bottom_height){
                 cylinder(r=base_r, h=dt_height + bottom_height);
             }
-            translate([0,illumination_dovetail_y(params), 0]){
+            translate_y(illumination_dovetail_y(params)){
                 linear_extrude(dt_height){
                     back_of_block_2d(dt_params);
                 }

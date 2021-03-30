@@ -198,7 +198,7 @@ module fl_cube(){
         // access hole for the dichroic
         translate(beamsplit){
             rotate([-45,0,0]){
-                translate([0,-dichroic.y/2,0]){
+                translate_y(-dichroic.y/2){
                     scale([1.1,1,1.9]){
                         cube(dichroic, center=true);
                     }

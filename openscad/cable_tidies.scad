@@ -127,7 +127,7 @@ module cable_tidies(params){
         front_cable_tidy(params);
     }
     reflect([1, 0, 0]){
-        translate([0, -20, 0]){
+        translate_y(-20){
             side_cable_tidy(params);
         }
     }

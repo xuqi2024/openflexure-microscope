@@ -29,14 +29,14 @@ module LED_array_holder(params){
                         cylinder(r=2,h=1);
                     }
                 }
-                translate([0,illumination_dovetail_y(params), 0]){
+                translate_y(illumination_dovetail_y(params)){
                     linear_extrude(dt_height){
                         back_of_block_2d(dt_params);
                     }
                 }
             }
             // the dovetail clip
-            translate([0,illumination_dovetail_y(params), 0]){
+            translate_y(illumination_dovetail_y(params)){
                 dovetail_clamp_m(dt_params);
             }
         }

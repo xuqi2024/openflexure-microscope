@@ -166,7 +166,7 @@ module picamera_2_camera_mount(screwhole=true, counterbore=false){
     w = 25;
     difference(){
         rotate(45){
-            translate([0,2.4,0]){
+            translate_y(2.4){
                 sequential_hull(){
                     translate_z(bottom){
                         picam2_board(h=tiny());
@@ -307,7 +307,7 @@ module generous_camera_bits(){
         //ribbon cable at top of camera
         sequential_hull(){
             cube([cw-1,tiny(),4],center=true);
-            translate([0,9.4-(4.4/1)/2,0]){
+            translate_y(9.4-(4.4/1)/2){
                 cube([cw-1,1,4],center=true);
             }
         }
@@ -329,7 +329,7 @@ module picamera_2_gripper(){
         }
 
         //central hole for the camera housing
-        translate([0,camera_housing_y,0]){
+        translate_y(camera_housing_y){
             cube(camera_housing + [0,0,999],center=true);
         }
 

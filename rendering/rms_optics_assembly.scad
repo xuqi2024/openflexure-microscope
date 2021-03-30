@@ -179,7 +179,7 @@ module rendered_optics_module(pos,
                 m3_cap_x8();
             }
             if (exploded){
-                translate([0, -8, 0]){
+                translate_y(-8){
                     construction_line(screw_pos_ex, om_screw_pos);
                 }
             }
