@@ -39,7 +39,7 @@ module leg_flexures(params, brace){
     for (i = [0,1]){
         z_pos=[flex_z1, flex_z2(params)][i];
         brace_pos= [brace, 0][i];
-        translate([0,0,z_pos]){
+        translate_z(z_pos){
             //Hull two blocks to make a big one
             hull(){
                 repeat([0,brace_pos,0],2){
@@ -167,7 +167,7 @@ module m3_lug(pos, angle, holes=true){
                 //the lug hole
                 if (holes) {
                     cylinder(r=3.5,h=50,center=true);
-                    translate([0,0,3]){
+                    translate_z(3){
                         cylinder(r=3*1.1, h=22);
                     }
                 }
@@ -248,7 +248,7 @@ module xy_stage(params, h=10, on_buildplate=false){
                 // hole_from_bottom() is used to create a cylinder which starts
                 // as a square, then and octagon, doubling in number of side until
                 // "circular"
-                translate([0,0,1]){
+                translate_z(1){
                     rotate(45){
                         hole_from_bottom(hole_r,h=999);
                     }
@@ -348,7 +348,7 @@ module xy_stage_with_nut_traps(params)
     //and including the nut traps.
     stage_t = key_lookup("stage_t", params);
     difference(){
-        translate([0,0,flex_z2(params)]){
+        translate_z(flex_z2(params)){
             xy_stage(params, h=stage_t);
         }
         each_leg(params){
@@ -385,7 +385,7 @@ module xy_flexures(params){
         //Make a truncated square with a truncated "corner" at each leg
         hull(){
             each_leg(params){
-                translate([0,0,flex_z2(params)+flex_dims().z/2+0.5]){
+                translate_z(flex_z2(params)+flex_dims().z/2+0.5){
                     cube([leg_middle_w,tiny(),flex_dims().z],center=true);
                 }
             }

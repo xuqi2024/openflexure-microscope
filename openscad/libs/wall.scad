@@ -239,9 +239,7 @@ module side_housing(params, h=undef, cavity_h=undef, attach=true){
                 translate([outer_x_pos, housing_size(wall_h).y-outer_r, 0]){
                     cylinder(r=outer_r,h=wall_h);
                 }
-                translate([0, 0, 0]){
-                    cylinder(r=inner_r,h=wall_h);
-                }
+                cylinder(r=inner_r,h=wall_h);
                 translate([0, housing_size(wall_h).y, 0]){
                     cylinder(r=inner_r,h=wall_h);
                 }

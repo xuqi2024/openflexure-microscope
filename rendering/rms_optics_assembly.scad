@@ -1,4 +1,4 @@
-
+use <../openscad/libs/utilities.scad>
 use <../openscad/libs/microscope_parameters.scad>
 use <../openscad/libs/z_axis.scad>
 use <../openscad/lens_tool.scad>
@@ -192,18 +192,18 @@ module rendered_optics_module(pos,
         if (objective){
             exploded = (explode == "objective") ? true : false;
             obj_z = exploded ? 33.1 : 30.1;
-            translate([0, 0, obj_z]){
+            translate_z(obj_z){
                 rendered_objective();
             }
             if (exploded){
-                translate([0, 0, 70]){
+                translate_z(70){
                     turn_clockwise(15, 5);
                 }
             }
         }
         // lens last as transparent!
         if (lens){
-            translate([0, 0, 18.5]){
+            translate_z(18.5){
                 tube_lens();
             }
         }

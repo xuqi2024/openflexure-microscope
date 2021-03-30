@@ -78,7 +78,7 @@ module m3_nut_trap_with_shaft(slot_angle=0,tilt=0)
 
     rotate([tilt,0,0]){
         rotate([0,0,slot_angle]){
-            translate([0,0,1]){
+            translate_z(1){
                 union(){
                     nut_trap_and_slot(nut_size, nut_slot);
                     cylinder(r=shaft_r, h=999, $fn=16);
@@ -95,17 +95,17 @@ module central_actuator_column(h, top){
     r1 = column_base_r; //size of the bottom part
     r2 = sqrt(top.x*top.x+top.y*top.y)/2; //outer radius of top
     sequential_hull(){
-        translate([0, 0, -99]){
+        translate_z(-99){
             resize([2*r1, top.y, tiny()]){
                 cylinder(r=r1, h=tiny());
             }
         }
-        translate([0, 0, h-top.z - 2*(r2-r1)]){
+        translate_z(h-top.z - 2*(r2-r1)){
             resize([2*r1, top.y, tiny()]){
                 cylinder(r=r1, h=tiny());
             }
         }
-        translate([0, 0, h-top.z/2]){
+        translate_z(h-top.z/2){
             cube(top, center=true);
         }
     }
@@ -126,7 +126,7 @@ module actuator_hooks(h,top){
                         cube([tiny(),top.y,top.z]);
                     }
                     //A thin cylinder inside the block so the nex section is thin
-                    translate([0, 0, 0.5]){
+                    translate_z(0.5){
                         scale([0.5 ,1, 1]){
                             cylinder(d=4.5, h=top.z-2);
                         }
@@ -165,8 +165,8 @@ module actuator_hooks(h,top){
 module actuator_ties(tilt=0, lever_tip=3){
     // The ties for the actuator.
     rotate([tilt,0,0]){
-        translate([0, 0, lever_tip+flex_dims().z+3]){
-                    cube([ss_outer().x-wall_t, 1, 0.5], center=true);
+        translate_z(lever_tip+flex_dims().z+3){
+            cube([ss_outer().x-wall_t, 1, 0.5], center=true);
         }
     }
 }
@@ -204,7 +204,7 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
         if(!no_voids){
             rotate([tilt,0,0]){
                 rotate(slot_angle){
-                    translate([0,0,h-top.z]){
+                    translate_z(h-top.z){
                         nut_trap_and_slot(nut_size, nut_slot);
                     }
                 }
@@ -215,9 +215,9 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
         // NB this is raised up from the bottom so it stays within the shaft - this may need to change depending on the length of screw we use...
         if(!no_voids){
             rotate([tilt,0,0]){
-                translate([0,0,lever_tip]){
+                translate_z(lever_tip){
                     cylinder(r=shaft_r, h=999);
-                    translate([0,0,-lever_tip+1]){
+                    translate_z(-lever_tip+1){
                         //pointy bottom (stronger)
                         cylinder(r1=0, r2=shaft_r, h=lever_tip-1);
                     }
@@ -289,7 +289,7 @@ module nut_seat_void(h=1, tilt=0, center=true){
             linear_extrude(999,center=center){
                 nut_seat_silhouette(offset=-wall_t);
             }
-            translate([0,0,h]){
+            translate_z(h){
                 rotate(90){
                     hole_from_bottom(nut_size*1.1/2, h=999, base_w=999);
                 }
@@ -336,16 +336,16 @@ module motor_lugs(h=20, tilt=0, angle=0){
                             translate(screw_pos-[0,0,motor_lug_h()]){
                                 cylinder(r=4,h=motor_lug_h());
                             }
-                            translate([0,0,screw_pos.z-screw_r-motor_lug_h()]){
+                            translate_z(screw_pos.z-screw_r-motor_lug_h()){
                                 cylinder(r=5,h=screw_r-5);
                             }
                         }
                     }
                     //space for gears
-                    translate([0,0,h]){
+                    translate_z(h){
                         cylinder(r1=8,r2=17,h=2+tiny());
                     }
-                    translate([0,0,h+2]){
+                    translate_z(h+2){
                         cylinder(h=999,r=17);
                     }
                     //hollow inside of the structure
@@ -402,7 +402,7 @@ module screw_seat(h, travel, tilt=0, entry_w=2*column_base_r+3, extra_entry_h=7,
 
         //entrance slot for nut
         rotate([tilt,0,0]){
-            translate([0,0,nut_slot_z]){
+            translate_z(nut_slot_z){
                 nut_trap_and_slot(nut_size, nut_slot + [0,0,0.3]);
             }
         }

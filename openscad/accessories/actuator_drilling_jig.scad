@@ -28,7 +28,7 @@ outer_clearance = 0.5;
 cr = column_base_radius() + outer_clearance;
 
 difference(){
-    translate([0,0,-7]){
+    translate_z(-7){
         linear_extrude(actuator_h+5){
             offset(-outer_clearance){
                 projection(cut=true){
@@ -52,7 +52,7 @@ difference(){
     //clearance for the column core
     cylinder(r=cr, $fn=16, h=999);
     //mounting bolt
-    translate([0,0,-4]){
+    translate_z(-4){
         cylinder(r=4,h=6);
     }
     cylinder(r=2.6,h=999,center=true);

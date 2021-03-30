@@ -10,7 +10,7 @@ module picamera2(lens=true){
     picamera2_back();
 
     if (lens){
-        translate([0,0,3]){
+        translate_z(3){
             picamera2_lens();
         }
     }
@@ -23,13 +23,13 @@ module picamera2_lens(){
             difference(){
                 union(){
                     cylinder(d=6, h=2);
-                    translate([0, 0, 1.95]){
+                    translate_z(1.95){
                         cylinder(d1=6, d2=4, h=1);
                         cube([5, 1.8, 2],center=true);
                         cube([1.8, 5, 2],center=true);
                     }
                 }
-                translate([0, 0, -.02]){
+                translate_z(-.02){
                     cylinder(d1=4, d2=1, h=3);
                 }
             }
@@ -52,7 +52,7 @@ module picamera2_front(){
         translate([-8.5/2, -8.5/2, 1]){
             cube([8.5, 8.5, 2]);
         }
-        translate([0,0,3]){
+        translate_z(3){
             difference(){
                 cylinder(d=7.3, h=1.5);
                 cylinder(d=6.5, h=99, center=true);
@@ -73,7 +73,7 @@ module picamera2_front(){
 }
 
 module picamera2_back(){
-    translate([0,0,-1]){
+    translate_z(-1){
         mirror([0,0,1]){
 
             color("DimGray"){
@@ -178,14 +178,14 @@ module picamera2_tool(){
             cylinder(d = 7, h=1.6);
             cylinder(d = 4.8, h=99,center=true);
         }
-        translate([0, 0, 1.6]){
+        translate_z(1.6){
             difference(){
                 cylinder(d=22.7,h=7);
                 cylinder(d=19,h=99, center=true);
             }
             difference(){
                 cylinder(d1 = 7, d2=22.7,h=7);
-                translate([0, 0, -0.05]){
+                translate_z(-0.05){
                     cylinder(d1 = 4.8, d2=19, h=7.1);
                 }
             }
@@ -257,7 +257,7 @@ module motor_jst_connector(){
 module motor_jst_connector_body(){
     difference(){
         union(){
-            translate([0, 0, 7.7/2]){
+            translate_z(7.7/2){
                 cube([13.2, 4, 7.7], center=true);
             }
             translate([0, .7/2, 7.3]){
@@ -315,7 +315,7 @@ module jst_pin_void(){
         translate([0, 2, 0]){
             cube([1.2, 2, 6], center=true);
         }
-        translate([0, 0, 6]){
+        translate_z(6){
             cube([2, 2.8, 10], center=true);
         }
         translate([0, .5, 6]){

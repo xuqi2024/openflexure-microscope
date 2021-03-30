@@ -55,7 +55,7 @@ module tool_handle(){
         }
         //screw seat (in swung-in position)
         rotate([0,180-swing_a,-90]){
-            translate([0,0,-(gap+sso.z/2)]){
+            translate_z(-(gap+sso.z/2)){
                 screw_seat_shell(25);
             }
         }
@@ -315,20 +315,20 @@ module double_ended_band_tool(bent=false){
                 }
             }
         }
-        translate([0,0,0.5/2]){
+        translate_z(0.5/2){
             cube([ns.x,middle_w+2*tiny(),0.5],center=true);
         }
     }else{
-        translate([0,0,0.5/2]){
+        translate_z(0.5/2){
             cube([ns.x,middle_w+2*flex_l+2*tiny(),0.5],center=true);
         }
     }
     //thicker middle part to support the two ends
     hull(){
-        translate([0,0,0.5]){
+        translate_z(0.5){
             cube([ns.x,middle_w,tiny()],center=true);
         }
-        translate([0,0,roc]){
+        translate_z(roc){
             cube([ns.x,middle_w+2*(roc-0.5),tiny()],center=true);
         }
     }

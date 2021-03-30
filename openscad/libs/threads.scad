@@ -15,7 +15,7 @@ ZhuangLab/3D-printing is CERN OHL 1.2 licensed.
 (c)  Hazen Babcock 2015
 */
 
-
+use <./utilities.scad>
 
 $fn = 200;
 
@@ -119,16 +119,16 @@ module base_thread(inner,
          union(){
             for(i = [-overshoot:(turns*number_divisions+overshoot)]){
                 rotate([0,0,i*angle_step]){
-                    translate([0,0,i*z_step]){
+                    translate_z(i*z_step){
                         reverse_trapezoid(points);
                     }
                 }
             }
         }
-        translate([0,0,-2]){
+        translate_z(-2){
             cylinder(r = cylinder_radius+0.1, h = 2);
         }
-        translate([0,0,thread_length]){
+        translate_z(thread_length){
             cylinder(r = cylinder_radius+0.1, h = 2);
         }
     }

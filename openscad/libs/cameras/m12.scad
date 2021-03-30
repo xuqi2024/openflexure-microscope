@@ -39,7 +39,7 @@ function m12_camera_sensor_height() = 0.5; //Height of the sensor above the PCB
 module usbcam_lens_mount(){
     union(){
         cylinder(r=lens_holder_tube_r, h=lens_holder_tube_h, $fn=16);
-        translate([0,0,lens_holder_box_h/2]){
+        translate_z(lens_holder_box_h/2){
             cube(lens_holder_box, center=true);
         }
         hull(){
@@ -62,7 +62,7 @@ module m12_camera_mount(){
     box_w = 13.2 + 1; //make it slightly fatter so it grips the bed more
     sensor_w = 10 + 0.8; //reasonably tight fit around sensor
     solder_w = (box_w-1.2*2); //the solder terminals need some give
-    translate([0,0,-h]){
+    translate_z(-h){
         difference(){
             linear_extrude(h+tiny()){
                 difference(){
@@ -96,16 +96,16 @@ module m12_camera_mount(){
             // is intentional, to help with bed adhesion
             cube([sensor_w, sensor_w, 2],center=true);
             sequential_hull(){
-                translate([0,0,0.7]){
+                translate_z(0.7){
                     cube([solder_w,solder_w,tiny()],center=true);
                 }
-                translate([0,0,0.7+(solder_w-sensor_w)/2]){
+                translate_z(0.7+(solder_w-sensor_w)/2){
                     cube([sensor_w, sensor_w, tiny()],center=true);
                 }
-                translate([0,0,2]){
+                translate_z(2){
                     cube([sensor_w, sensor_w, tiny()],center=true);
                 }
-                translate([0,0,h+tiny()]){
+                translate_z(h+tiny()){
                     cylinder(r=5,h=tiny());
                 }
             }

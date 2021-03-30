@@ -6,10 +6,10 @@
 
 use <../main_body.scad>
 use <../libs/microscope_parameters.scad>
-
+use <../libs/utilities.scad>
 params = default_params();
 projection(cut=true){
-    translate([0,0,-0.1]){
+    translate_z(-0.1){
         main_body(params);
     }
 }

@@ -83,13 +83,13 @@ module picam2_cutout( beam_length=15){
     union(){
         sequential_hull(){
             //cut-out for camera (/wider at bottom)
-            translate([0,0,-tiny()]){
+            translate_z(-tiny()){
                 cube([cw+0.5,cw+0.5,tiny()],center=true);
             }
-            translate([0,0,0.5]){
+            translate_z(0.5){
                 cube([cw,cw,tiny()],center=true);
             }
-            translate([0,0,ch/2]){
+            translate_z(ch/2){
                 cube([cw,cw,ch],center=true);
             }
             cylinder(r=hole_r, h=2*picamera_2_camera_mount_height(), center=true);
@@ -102,12 +102,12 @@ module picam2_cutout( beam_length=15){
         dz = mh-fh-0.75; // extra height above the flex for the sloping "roof"
         rw = cw - 2*dz;
         hull(){
-            translate([0,0,-tiny()]){
+            translate_z(-tiny()){
                 linear_extrude(fh){
                     picam2_flex_and_components(cw);
                 }
             }
-            translate([0,0,-tiny()]){
+            translate_z(-tiny()){
                 linear_extrude(fh+dz){
                     offset(-dz){
                         picam2_flex_and_components(cw);
@@ -118,12 +118,12 @@ module picam2_cutout( beam_length=15){
 
         //clearance for the LED/resistor on v1 of the camera
         hull(){
-            translate([0,0,-tiny()]){
+            translate_z(-tiny()){
                 linear_extrude(fh){
                     picam1_led();
                 }
             }
-            translate([0,0,-tiny()]){
+            translate_z(-tiny()){
                 linear_extrude(fh+dz){
                     offset(-dz){
                         picam1_led();
@@ -168,20 +168,18 @@ module picamera_2_camera_mount(screwhole=true, counterbore=false){
         rotate(45){
             translate([0,2.4,0]){
                 sequential_hull(){
-                    translate([0,0,bottom]){
+                    translate_z(bottom){
                         picam2_board(h=tiny());
                     }
-                    translate([0,0,-1]){
+                    translate_z(-1){
                         picam2_board(h=tiny());
                     }
-                    translate([0,0,0]){
-                        cube([w-(-1.5-bottom)*2,b,tiny()],center=true);
-                    }
+                    cube([w-(-1.5-bottom)*2,b,tiny()],center=true);
                 }
             }
         }
         rotate(45){
-            translate([0,0,bottom]){
+            translate_z(bottom){
                 picam2_cutout();
             }
         }
@@ -198,7 +196,7 @@ module picamera_2_screwholes(){
     //chamfered screw holes for mounting
     sx = 21/2; //position of screw holes
     rotate(45){
-        translate([0,0,bottom]){
+        translate_z(bottom){
             reflect([1,0,0]){
                 translate([sx,0,0]){
                     rotate(60){
@@ -212,10 +210,10 @@ module picamera_2_screwholes(){
 }
 
 module picamera_2_counterbore(){
-    translate([0,0,bottom-1]){
+    translate_z(bottom-1){
         picamera_2_bottom_mounting_posts(height=999, radius=1.25, cutouts=false);
     }
-    translate([0,0,bottom+1]){
+    translate_z(bottom+1){
         picamera_2_bottom_mounting_posts(height=999, radius=2.8, cutouts=false);
     }
 }
@@ -308,9 +306,7 @@ module generous_camera_bits(){
     union(){
         //ribbon cable at top of camera
         sequential_hull(){
-            translate([0,0,0]){
-                cube([cw-1,tiny(),4],center=true);
-            }
+            cube([cw-1,tiny(),4],center=true);
             translate([0,9.4-(4.4/1)/2,0]){
                 cube([cw-1,1,4],center=true);
             }
@@ -345,7 +341,7 @@ module picamera_2_gripper(){
         }
 
         //indent for PCB
-        translate([0,0,outer.z]){
+        translate_z(outer.z){
             cube(pcb + [0,0,pcb.z],center=true);
         }
     }

@@ -35,7 +35,7 @@ module chamfer_bottom_edge(chamfer=0.3, h=0.5){
                 difference(){
                     square(999, center=true);
                     projection(cut=true){
-                        translate([0,0,-tiny()]){
+                        translate_z(-tiny()){
                             hull(){
                                 children();
                             }
@@ -170,7 +170,7 @@ module fl_cube(){
                 translate([-w/2, bottom + 4, w]){
                     sequential_hull(){
                         depth = w-bottom-4-roc;
-                        translate([0,0,-roc]){
+                        translate_z(-roc){
                             cube([2*roc, depth, tiny()]);
                         }
                         translate([0.5,0,roc]){

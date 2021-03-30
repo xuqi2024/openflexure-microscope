@@ -1,6 +1,6 @@
 
 use <../openscad/libs/libdict.scad>
-
+use <../openscad/libs/utilities.scad>
 use <librender/render_utils.scad>
 use <librender/electronics.scad>
 
@@ -27,7 +27,7 @@ module render_frame(frame_dict){
         construction_line(tool_pos_inplace, tool_pos_exp);
     }
     if (arrow){
-        translate([0, 0, 10]){
+        translate_z(10){
             turn_anticlockwise(15);
         }
     }

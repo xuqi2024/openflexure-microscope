@@ -1,4 +1,5 @@
 use <../openscad/libs/illumination.scad>;
+use <../openscad/libs/utilities.scad>;
 use <../openscad/libs/microscope_parameters.scad>;
 use <../openscad/main_body.scad>
 use <../openscad/libs/libdict.scad>;
@@ -17,7 +18,7 @@ color(extras_colour()){
 
 // This should match condenser.scad
 color(body_colour()){
-    translate([0,0,key_lookup("sample_z", params) + 50]){
+    translate_z(key_lookup("sample_z", params) + 50){
         rotate([0,180,0]){
             render(6){
                 condenser(params, lens_d=13, lens_t=1, lens_assembly_z= 30);

@@ -67,19 +67,19 @@ module objective_mount(params){
 
         // bolt slot to mount objective
         hull(){
-            translate([0,0,z_flexures_z1+8]){
+            translate_z(z_flexures_z1+8){
                 rotate([-90,0,0]){
                     cylinder(d=3.5, h=999);
                 }
             }
-            translate([0,0,z_flexures_z2(params)-5]){
+            translate_z(z_flexures_z2(params)-5){
                 rotate([-90,0,0]){
                     cylinder(d=3.5, h=999);
                 }
             }
         }
         // make the bolt slot keyhole-shaped to allow the screw to be easily inserted
-        translate([0,0,z_flexures_z1+6]){
+        translate_z(z_flexures_z1+6){
             rotate([-90,0,0]){
                 cylinder(d=6.5, h=999);
             }
@@ -171,7 +171,7 @@ module objective_fitting_cutout(params, max_screw=12, y_stop=false, nose_shift=0
         ofc_nut(shaft=true, max_screw=max_screw);
         sequential_hull(){
             ofc_nut();
-            translate([0,0,7]){
+            translate_z(7){
                 ofc_nut();
             }
             translate([0,10,7]){
@@ -279,10 +279,8 @@ module objective_mounting_screw_access(params){
 
     translate([0,objective_mount_back_y, z_flexures_z2(params)/2]){
         hull(){
-            translate([0,0,0]){
-                rotate([-90,0,22]){
-                    cylinder(h=999, d=7, $fn=16);
-                }
+            rotate([-90,0,22]){
+                cylinder(h=999, d=7, $fn=16);
             }
             translate([-1,0,4]){
                 rotate([-90,0,0]){
@@ -299,7 +297,7 @@ module z_motor_clearance(params, motor_h=999){
     actuator_h = key_lookup("actuator_h", params);
     translate([0,z_nut_y(params),0]){
         rotate([z_actuator_tilt(params),0,0]){
-            translate([0,0,actuator_h+z_actuator_travel(params)+2-1]){
+            translate_z(actuator_h+z_actuator_travel(params)+2-1){
                 rotate(180){
                     motor_and_gear_clearance(gear_h=11, h=motor_h);
                     linear_extrude(1, center=true){
@@ -376,7 +374,7 @@ module z_axis_casing_cutouts(params){
     reflect([1,0,0]){
         translate(right_illumination_screw_pos(params)){
             rotate(-20){
-                translate([0,0,-9]){
+                translate_z(-9){
                     m3_nut_trap_with_shaft(0,0);
                 }
             }
@@ -460,7 +458,7 @@ module z_cable_tidy_frame(params, z_extra=0){
     z_tr = z_motor_z_pos(params) + z_extra;
     translate([0, z_nut_y(params), 0]){
         rotate([tilt, 0, 0]){
-            translate([0, 0, z_tr]){
+            translate_z(z_tr){
                 rotate([0, 0, 180]){
                     children();
                 }
@@ -473,7 +471,7 @@ module z_cable_tidy_frame_undo(params, z_extra=0){
     tilt = z_actuator_tilt(params);
     z_tr = z_motor_z_pos(params) + z_extra;
     rotate([0, 0, -180]){
-        translate([0, 0, -z_tr]){
+        translate_z(-z_tr){
             rotate([-tilt, 0, 0]){
                 translate([0, -z_nut_y(params), 0]){
                     children();
@@ -492,7 +490,7 @@ module z_cable_housing(params){
                 z_cable_housing_x(params);
             }
         }
-        translate([0,0,-99]){
+        translate_z(-99){
             cylinder(d=999,h=99);
         }
         z_cable_tidy_frame(params, z_extra=motor_bracket_h()){

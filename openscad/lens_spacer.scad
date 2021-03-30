@@ -31,11 +31,11 @@ module optical_path(lens_aperture_r, lens_z, bottom_z=0){
     // of the camera mount body already.
     union(){
         //beam path
-        translate([0,0,bottom_z-tiny()]){
+        translate_z(bottom_z-tiny()){
             lighttrap_cylinder(r1=5, r2=lens_aperture_r, h=lens_z-bottom_z+2*tiny());
         }
         //lens
-        translate([0,0,lens_z]){
+        translate_z(lens_z){
             cylinder(r=lens_aperture_r,h=2*tiny());
         }
     }
@@ -66,7 +66,7 @@ module lens_spacer_gripper(lens_r, lens_h, pedestal_h, lens_assembly_base_r, len
     lens_assembly_h = lens_h + pedestal_h; //height of the lens assembly
 
     // A lens gripper to hold the objective
-    translate([0,0,lens_assembly_z]){
+    translate_z(lens_assembly_z){
         // gripper
         trylinder_gripper(inner_r=lens_r,
                           grip_h=lens_assembly_h-1.5,
@@ -101,18 +101,18 @@ module lens_spacer(params, lens_r, parfocal_distance, lens_h, lens_spacing){
     //This is the height of the block the camera mounts into.
     camera_mount_height = camera_mount_height();
 
-    translate([0,0,lens_z_microscope-lens_z]){
+    translate_z(lens_z_microscope-lens_z){
         difference(){
             union(){
                 // This is the main body of the mount
                 sequential_hull(){
-                    translate([0,0,camera_mount_height]){
+                    translate_z(camera_mount_height){
                         camera_mount_top_slice();
                     }
-                    translate([0,0,camera_mount_height+5]){
+                    translate_z(camera_mount_height+5){
                         cylinder(r=6,h=tiny());
                     }
-                    translate([0,0,lens_assembly_z]){
+                    translate_z(lens_assembly_z){
                         cylinder(r=lens_assembly_base_r, h=tiny());
                     }
                 }
@@ -120,7 +120,7 @@ module lens_spacer(params, lens_r, parfocal_distance, lens_h, lens_spacing){
                 lens_spacer_gripper(lens_r, lens_h, pedestal_h, lens_assembly_base_r, lens_assembly_z);
 
                 // add the camera mount
-                translate([0,0,camera_mount_height]){
+                translate_z(camera_mount_height){
                     camera_mount(screwhole=false, counterbore=false);
                 }
             }
@@ -128,7 +128,7 @@ module lens_spacer(params, lens_r, parfocal_distance, lens_h, lens_spacing){
                 // cut out the optical path
                 optical_path(lens_aperture(lens_r), lens_assembly_z, 0);
                 //cut out counterbores
-                translate([0,0,camera_mount_height]){
+                translate_z(camera_mount_height){
                     camera_mount_counterbore();
                 }
             }

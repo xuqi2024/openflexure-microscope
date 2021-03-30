@@ -82,27 +82,25 @@ module small_gear(){
         intersection(){
             cylinder(r=shaft_r, h=999, center=true);
             sequential_hull(){
-                translate([0,0,-tiny()]){
+                translate_z(-tiny()){
                     cube([999,3,tiny()]*1.1,center=true);
                 }
-                translate([0,0,flat_h]){
+                translate_z(flat_h){
                     cube([999,3,tiny()]*1.1,center=true);
                 }
-                translate([0,0,flat_h+2]){
+                translate_z(flat_h+2){
                     cube([999,7,tiny()]*1.1,center=true);
                 }
-                translate([0,0,999]){
+                translate_z(999){
                     cube([999,7,tiny()]*1.1,center=true);
                 }
             }
         }
         //chamfer the top/bottom for better fit
-        translate([0,0,h]){
+        translate_z(h){
             cylinder(r1=shaft_r,r2=shaft_r+2,h=2,center=true);
         }
-        translate([0,0,0]){
-            cylinder(r2=shaft_r,r1=shaft_r+2,h=2,center=true);
-        }
+        cylinder(r2=shaft_r,r1=shaft_r+2,h=2,center=true);
     }
 }
 
@@ -127,7 +125,7 @@ module thumbwheel(r=10,h=5,knobble_r=1,knobble_angle=45,chamfer=0.5){
                 translate([lobe_r*sin(deg),lobe_r*cos(deg),base_h]){cone_cyl(r=lobe_r,h=lobe_h);}
             }
         }
-        translate([0,0,1.5]){
+        translate_z(1.5){
             nut(3,shaft=true,fudge=1.2,h=999);
         }
     }
@@ -135,7 +133,7 @@ module thumbwheel(r=10,h=5,knobble_r=1,knobble_angle=45,chamfer=0.5){
     module cone_cyl(r=5,h=5)
     {
         cylinder(r=r,h=h);
-        translate([0,0,-h]){cylinder(r1=.1,r2=r,h=h);}
+        translate_z(-h){cylinder(r1=.1,r2=r,h=h);}
     }
 }
 
@@ -146,11 +144,11 @@ module illumination_thumbscrew(){
     {
         hull(){
             cylinder(r = 4, h=taper_h, $fn=8);
-            translate([0, 0, taper_h]){
+            translate_z(taper_h){
                 cylinder(r=5, h=h-taper_h, $fn=8);
             }
         }
-        translate([0, 0, 12]){
+        translate_z(12){
             nut(3, shaft=true, fudge=1.2, h=999);
         }
     }

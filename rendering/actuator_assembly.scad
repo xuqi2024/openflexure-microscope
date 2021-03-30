@@ -197,7 +197,7 @@ module lead_screw_assembly(exploded=false, construction_offset=[0, 0, 0]){
     tr_wash1 = exploded ? [0 ,0, -5] : [0, 0, -.5];
     tr_wash2 = exploded ? [0 ,0, -10] : [0, 0, -1];
     //translate everything so the gear is in place at the bottom.
-    translate([0, 0, 1]){
+    translate_z(1){
         translate(tr_screw){
             m3_hex_x25();
         }

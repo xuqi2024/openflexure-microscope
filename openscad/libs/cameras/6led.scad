@@ -63,7 +63,7 @@ module 6led_bottom_mounting_posts(height=-1, radius=-1, outers=true, cutouts=tru
                         }
                         if(cutouts){
                             intersection(){
-                                translate([0,0,-2]){
+                                translate_z(-2){
                                     rotate(75){
                                         trylinder_selftap(2, h=h+3);
                                     }

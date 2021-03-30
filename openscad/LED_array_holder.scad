@@ -41,7 +41,7 @@ module LED_array_holder(params){
             }
         }
         // the hole for wires/heat
-        translate([0,0,1/2]){
+        translate_z(1/2){
             minkowski(){
                 cube([LED_array_w-2,LED_array_w-2,999], center = true); //the hole for the LED array
                 cylinder(r=1,h=1);

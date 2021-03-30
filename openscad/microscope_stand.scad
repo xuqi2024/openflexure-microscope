@@ -57,7 +57,7 @@ function base_corner_y(params) = let(
 module foot_footprint(tilt=0){
     // the footprint of one foot/actuator column
     projection(cut=true){
-        translate([0,0,-1]){
+        translate_z(-1){
             screw_seat_shell(tilt=tilt);
         }
     }
@@ -153,7 +153,7 @@ module microscope_bottom(params, enlarge_legs=1.5, lugs=true, feet=true, legs=tr
     // a 2D representation of the bottom of the microscope
     hull(){
         projection(cut=true){
-            translate([0,0,-tiny()]){
+            translate_z(-tiny()){
                 wall_inside_xy_stage(params);
             }
         }
@@ -162,7 +162,7 @@ module microscope_bottom(params, enlarge_legs=1.5, lugs=true, feet=true, legs=tr
     hull(){
         reflect([1,0,0]){
             projection(cut=true){
-                translate([0,0,-tiny()]){
+                translate_z(-tiny()){
                     wall_outside_xy_actuators(params);
                     wall_between_actuators(params);
                 }
@@ -171,7 +171,7 @@ module microscope_bottom(params, enlarge_legs=1.5, lugs=true, feet=true, legs=tr
     }
 
     projection(cut=true){
-        translate([0,0,-tiny()]){
+        translate_z(-tiny()){
             z_axis_casing(params);
             reflect([1,0,0]){
                 hull(){
@@ -195,7 +195,7 @@ module microscope_bottom(params, enlarge_legs=1.5, lugs=true, feet=true, legs=tr
 
     if(lugs){
         projection(cut=true){
-            translate([0,0,-tiny()]){
+            translate_z(-tiny()){
                 mounting_hole_lugs(params, holes=false);
             }
         }
@@ -213,7 +213,7 @@ module microscope_legs(params){
         each_leg(params){
             union(){
                 projection(cut=true){
-                    translate([0,0,-tiny()]){
+                    translate_z(-tiny()){
                         leg(params);
                     }
                 }
@@ -304,21 +304,15 @@ module bucket_base_stackable(params, h=base_height){
     difference(){
         union(){
             sequential_hull(){
-                translate([0,0,0]){
+                linear_extrude(tiny()){
+                    footprint(params);
+                }
+                translate_z(h-6){
                     linear_extrude(tiny()){
-                        offset(0){
-                            footprint(params);
-                        }
+                        footprint(params);
                     }
                 }
-                translate([0,0,h-6]){
-                    linear_extrude(tiny()){
-                        offset(0){
-                            footprint(params);
-                        }
-                    }
-                }
-                translate([0,0,h-tiny()]){
+                translate_z(h-tiny()){
                     linear_extrude(inset_depth){
                         offset(wall_thickness){
                             footprint(params);
@@ -331,21 +325,21 @@ module bucket_base_stackable(params, h=base_height){
 
         // hollow out the inside
         sequential_hull(){
-            translate([0,0,bottom_thickness]){
+            translate_z(bottom_thickness){
                 linear_extrude(tiny()){
                     offset(-wall_thickness){
                         footprint(params);
                     }
                 }
             }
-            translate([0,0,h-10]){
+            translate_z(h-10){
                 linear_extrude(tiny()){
                     offset(-wall_thickness){
                         footprint(params);
                     }
                 }
             }
-            translate([0,0,h-tiny()]){
+            translate_z(h-tiny()){
                 linear_extrude(tiny()){
                     difference(){
                         offset(-3.0){
@@ -362,7 +356,7 @@ module bucket_base_stackable(params, h=base_height){
                     }
                 }
             }
-            translate([0,0,h]){
+            translate_z(h){
                 linear_extrude(999){
                     footprint(params);
                 }
@@ -379,21 +373,21 @@ module top_casing_block(params, h=base_height, os=0, legs=true, lugs=true){
         sequential_hull(){
             // The bottom part has a slightly cropped footprint, so the bridge over the SD card
             // can be straight.
-            translate([0,0,bottom]){
+            translate_z(bottom){
                 linear_extrude(tiny()){
                     offset(os){
                         footprint_after_pi_cutouts(params);
                     }
                 }
             }
-            translate([0,0,min(sd_card_cutout_top, h)]){
+            translate_z(min(sd_card_cutout_top, h)){
                 linear_extrude(tiny()){
                     offset(os){
                         footprint_after_pi_cutouts(params);
                     }
                 }
             }
-            translate([0,0,h]){
+            translate_z(h){
                 linear_extrude(tiny()){
                     offset(os){
                         footprint(params);
@@ -402,14 +396,14 @@ module top_casing_block(params, h=base_height, os=0, legs=true, lugs=true){
             }
         }
         hull_from(){
-            translate([0,0,h]){
+            translate_z(h){
                 linear_extrude(2*tiny()){
                     offset(os){
                         footprint(params);
                     }
                 }
             }
-            translate([0,0,h+foot_height]){
+            translate_z(h+foot_height){
                 linear_extrude(top_h){
                     offset(os*2+wall_thickness){
                         microscope_bottom(params, lugs=lugs, feet=false, legs=legs);
@@ -418,7 +412,7 @@ module top_casing_block(params, h=base_height, os=0, legs=true, lugs=true){
             }
         }
         if (os<0){
-            translate([0,0,h+foot_height]){
+            translate_z(h+foot_height){
                 linear_extrude(2*inset_depth){
                     microscope_bottom(params, lugs=true);
                 }
@@ -454,18 +448,18 @@ module bucket_base_with_microscope_top(params, h=base_height){
         }
 
         // cut-outs so the feet and legs can protrude downwards
-        translate([0,0,h+foot_height]){
+        translate_z(h+foot_height){
             feet_in_place(params, grow_r=allow_space, grow_h=allow_space);
         }
         intersection(){
-            translate([0,0,h+foot_height+allow_space]){
+            translate_z(h+foot_height+allow_space){
                 feet_in_place(params, grow_r=1.5*allow_space, grow_h=4*allow_space);
             }
-            translate([0,0,h+foot_height]){
+            translate_z(h+foot_height){
                 cylinder(r=999,h=999,$fn=4);
             }
         }
-        translate([0,0,h+foot_height-allow_space]){
+        translate_z(h+foot_height-allow_space){
             linear_extrude(999){
                 offset(1.5){
                     microscope_legs(params);
@@ -560,7 +554,7 @@ module microscope_stand(params, h=base_height){
         }
 
         // space for pi connectors
-        translate([0,0,bottom_thickness + raspi_support]){
+        translate_z(bottom_thickness + raspi_support){
             pi_connectors();
         }
 
@@ -573,7 +567,7 @@ module microscope_stand(params, h=base_height){
 
         // if we are building for reflection illumination, cut out the front to allow access
         if(beamsplitter){
-            translate([0,0,h+foot_height]){
+            translate_z(h+foot_height){
                 rotate([90,0,0]){
                     cylinder(d=30,h=999);
                 }
@@ -717,7 +711,7 @@ module motor_driver_case(params){
         difference(){
             bucket_base_stackable(params);
             // space for sangaboard connectors
-            translate([0,0,bottom_thickness+raspi_support]){
+            translate_z(bottom_thickness+raspi_support){
                 sangaboard_connectors();
             }
 
@@ -758,7 +752,7 @@ module stand_lugs(params, h, pi_stand_h){
     for (n = [0:len(hole_pos)-1]){
         hole = hole_pos[n];
         angle = lug_angles()[n];
-        translate([0, 0, lug_z]){
+        translate_z(lug_z){
             difference(){
                 hull(){
                     intersection(){
@@ -767,7 +761,7 @@ module stand_lugs(params, h, pi_stand_h){
                                 cube([10,50,lug_h], center=true);
                             }
                         }
-                        translate([0, 0, -lug_z]){
+                        translate_z(-lug_z){
                             new_bucket(params, h, pi_stand_h);
                         }
                     }
@@ -794,23 +788,23 @@ module new_bucket(params, h, pi_stand_h){
         sequential_hull(){
             new_bucket_base_primative(params, 3);
 
-            translate([0,0,pi_stand_h+5]){
+            translate_z(pi_stand_h+5){
                 new_bucket_base_primative(params, 3);
             }
-            translate([0,0,pi_stand_h+10]){
+            translate_z(pi_stand_h+10){
                 thick_bottom_section(params, h-pi_stand_h-10, wall_t+offset_d);
             }
         }
 
         sequential_hull(){
-            translate([0,0,2]){
+            translate_z(2){
                 new_bucket_base_primative(params, 1);
             }
 
-            translate([0,0,pi_stand_h+5]){
+            translate_z(pi_stand_h+5){
                 new_bucket_base_primative(params, 1);
             }
-            translate([0,0,pi_stand_h+11]){
+            translate_z(pi_stand_h+11){
                 thick_bottom_section(params, h-pi_stand_h-10, offset_d);
             }
         }

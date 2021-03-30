@@ -32,7 +32,7 @@ module rendered(){
 
     reflect([1,0,0]){
         coloured_render("DodgerBlue"){
-            translate([0, 0, 32.5]){
+            translate_z(32.5){
                 y_actuator_frame(params){
                     large_gear();
                 }
@@ -45,7 +45,7 @@ module rendered(){
         }
 
         coloured_render("DodgerBlue"){
-            translate([0,0,side_housing_h(params)]){
+            translate_z(side_housing_h(params)){
                 side_cable_tidy(params);
             }
         }

@@ -35,7 +35,7 @@ module foot_ground_plane(tilt=0, top=0, bottom=-999){
     //top or bottom=0 places the plane on the print bed, which is
     // z=l/2*tan(tilt) in the foot frame (as it's tilted about one
     // corner).
-    translate([0,0,bottom]){
+    translate_z(bottom){
         skew_flat(tilt, true){
             cylinder(r=999,h=top-bottom,$fn=8);
         }
@@ -117,7 +117,7 @@ module thick_section(h=tiny(), center=false, shift=true){
     // A 3D object, corresponding to the linearly-extruded projection of another object.
     linear_extrude(h, center=center){
         projection(cut=true){
-            translate([0,0,shift?-tiny():0]){
+            translate_z(shift ? -tiny() : 0){
                 children();
             }
         }
@@ -128,7 +128,7 @@ module offset_thick_section(h=tiny(), offset=0, center=false, shift=true){
     linear_extrude(h, center=center){
         offset(r=offset){
             projection(cut=true){
-                translate([0,0,shift?-tiny():0]){
+                translate_z(shift ? -tiny() : 0){
                     children();
                 }
             }
@@ -149,7 +149,7 @@ module foot_section(foot_angle=0,    //the angle the actuator column makes with 
                     z=0){
     assert(h<=999, "Maximum h for foot section is 999");
     intersection(){
-        translate([0,0,z]){
+        translate_z(z){
             rotate([section_angle,0,0]){
                 cube([999,999,h],center=true);
             }
@@ -209,11 +209,15 @@ module foot(travel=5,       // how far into the foot the actuator can move down
     tilt = bottom_tilt - actuator_tilt; //the angle of the ground relative to the axis of the foot
     // The following transforms will either make the foot "in place" (i.e. the top is z=0) or
     // printable (i.e. with the bottom on z=0).
-    translate([0,(lie_flat?(l/2*tan(tilt)*sin(actuator_tilt)):h*tan(actuator_tilt)),0]){
+
+    y_tr_flat = l/2*tan(tilt)*sin(actuator_tilt);
+    y_tr_tilted = h*tan(actuator_tilt));
+    y_tr = lie_flat ? y_tr_flat : y_tr_tilted;
+    translate([0, y_tr, 0]){
         //the foot base may be tilted, lie_flat makes this z=0
         rotate([lie_flat?tilt:0,0,0]){
             //makes the bottom z=0
-            translate([0,0,lie_flat?-l/2*tan(tilt):-h]){
+            translate_z(lie_flat ? -l/2*tan(tilt) : -h){
                 union(){
                     difference(){
                         union(){
@@ -276,7 +280,7 @@ module foot(travel=5,       // how far into the foot the actuator can move down
                         //and height/span should match the slot above.
                         skew_flat(bottom_tilt){
                             rotate([actuator_tilt,0,0]){
-                                translate([0,0,h-travel-4-2-endstop_extra_ringheight]){
+                                translate_z(h-travel-4-2-endstop_extra_ringheight){
                                     filleted_bridge([2*column_base_radius()+1.5, 4, 2], roc_xy=4, roc_xz=3);
                                 }
                             }

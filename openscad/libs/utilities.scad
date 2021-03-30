@@ -20,6 +20,12 @@ function tiny() = 0.05;
 
 function zero_z(size) = [size.x, size.y, 0]; //set the Z component of a 3-vector to 0
 
+module translate_z(z_tr){
+    translate_z(z_tr){
+        children();
+    }
+}
+
 module reflect(axis){
     //reflects children about the origin, keeping the originals
     children();
@@ -66,7 +72,7 @@ module nut_from_bottom(d,h=-1,fudge=1.2,shaft=true,chamfer_r=0.75,chamfer_h=0.75
     h=(h<0)?d*0.8:h;
     union(){
         cylinder(h=h,r=0.9*d*fudge,$fn=6);
-        translate([0,0,-0.05]){
+        translate_z(-0.05]){
             cylinder(h=chamfer_h,r1=0.9*d*fudge+chamfer_r,r2=0.9*d*fudge,$fn=6);
         }
         mirror([0,0,1]){
@@ -74,16 +80,16 @@ module nut_from_bottom(d,h=-1,fudge=1.2,shaft=true,chamfer_r=0.75,chamfer_h=0.75
         }
         if(shaft){
             sr=d/2*1.05*(fudge+1)/2; //radius of shaft
-            translate([0,0,h/2]){
+            translate_z(h/2){
                 cylinder(r=sr,h=999,$fn=16,center=true);
             }
             //add a little cut to the roof of the surface so the initial bridges don't have to span the hole.
             intersection(){
                 union(){
-                    translate([0,0,h]){
+                    translate_z(h){
                         cube([999,sr*2,0.5],center=true);
                     }
-                    translate([0,0,h+0.25]){
+                    translate_z(h+0.25){
                         cube([sr*2,sr*2,0.5],center=true);
                     }
                 }
@@ -171,13 +177,13 @@ module chamfered_hole(r=10, h=10, chamfer=1,center=false){
     // A cylinder with angled flanges.
     // This can be substracted from an object of height h to make a
     // chamfered hole.
-    translate([0,0, center ? -h/2 : 0]){
+    translate_z( center ? -h/2 : 0){
         union(){
-            translate([0,0,-tiny()]){
+            translate_z(-tiny()){
                 cylinder(r1=r+chamfer+tiny(),r2=r,h=chamfer+tiny());
             }
             cylinder(r=r,h=h);
-            translate([0,0,h-chamfer]){
+            translate_z(h-chamfer){
                 cylinder(r1=r,r2=r+chamfer+tiny(),h=chamfer+tiny());
             }
         }
@@ -251,7 +257,7 @@ module support(size, height, baseheight=0, rotation=[0,0,0], supportangle=45, ou
     }
 
     unrotate(rotation){
-        translate([0,0,baseheight]){
+        translate_z(baseheight){
             linear_extrude(height){
                 support_2d(){
                     projection(){
@@ -334,7 +340,7 @@ module feather_vertical_edges(flat_h=0.2,fin_r=0.5,fin_h=0.72,object_h=20){
                 children();
                 union(){
                     for(i=[-floor(object_h/fin_h):floor(object_h/fin_h)]){
-                        translate([0,0,i*fin_h+flat_h*1.5]){
+                        translate_z(i*fin_h+flat_h*1.5){
                             cube([999,999,flat_h],center=true);
                         }
                     }
@@ -351,14 +357,14 @@ module square_to_circle(r, h, layers=4, top_cylinder=0){
     sides=[4,8,16,32,64,128,256]; //number of sides
     for(i=[0:(layers-1)]){
         rotate(180/sides[i]){
-            translate([0,0,i*h/layers]){
+            translate_z(i*h/layers){
                 cylinder(r=r/cos(180/sides[i]),h=h/layers+tiny(),$fn=sides[i]);
             }
         }
     }
 
     if(top_cylinder>0){
-        translate([0,0,tiny()]){
+        translate_z(tiny()){
             cylinder(r=r,h=h+top_cylinder, $fn=sides[layers-1]);
         }
     }
@@ -371,10 +377,8 @@ module hole_from_bottom(r, h, base_w=-1, dz=0.5, big_bottom=true){
 
     base = base_w>0 ? [base_w,2*r,2*dz] : [2*r,2*r,tiny()];
     union(){
-        translate([0,0,0]){
-            cube(base,center=true);
-        }
-        translate([0,0,base.z/2-tiny()]){
+        cube(base,center=true);
+        translate_z(base.z/2-tiny()){
             square_to_circle(r, dz*4, 4, h-dz*5+tiny());
         }
         if(big_bottom){
@@ -404,7 +408,7 @@ module lighttrap_cylinder(r1,r2,h,ridge=1.5){
         p = i/(n_cones - 1);
         section_r1 = (1-p)*r1 + p*(r2+ridge);
         section_r2=(1-p)*(r1-ridge) + p*r2;
-        translate([0, 0, i * cone_h - tiny()]){
+        translate_z(i * cone_h - tiny()){
             cylinder(r1=section_r1, r2=section_r2, h=cone_h+2*tiny());
         }
     }
@@ -433,7 +437,7 @@ module lighttrap_sqylinder(r1,f1,r2,f2,h,ridge=1.5){
 
     for(i = [0 : n_cones - 1]){
         p = i/(n_cones - 1);
-        translate([0, 0, i * cone_h - tiny()]){
+        translate_z(i * cone_h - tiny()){
             minkowski(){
                 cylinder(r1=(1-p)*r1 + p*(r2+ridge),
                     r2=(1-p)*(r1-ridge) + p*r2,
@@ -489,31 +493,29 @@ module trylinder_gripper(inner_r=10,h=6,grip_h=3.5,base_r=-1,t=0.65,squeeze=1,fl
     //TODO: reduce repition
     difference(){
         sequential_hull(){
-            translate([0,0,0]){
-                cylinder(r=bottom_r,h=tiny());
-            }
-            translate([0,0,grip_h-0.5]){
+            cylinder(r=bottom_r,h=tiny());
+            translate_z(grip_h-0.5){
                 trylinder(r=inner_r-squeeze+t,flat=2.5*squeeze,h=tiny());
             }
-            translate([0,0,grip_h+0.5]){
+            translate_z(grip_h+0.5){
                 trylinder(r=inner_r-squeeze+t,flat=2.5*squeeze,h=tiny());
             }
-            translate([0,0,h-tiny()]){
+            translate_z(h-tiny()){
                 trylinder(r=inner_r-squeeze+flare+t,flat=2.5*squeeze,h=tiny());
             }
         }
         if(solid==false){
             sequential_hull(){
-                translate([0,0,-tiny()]){
+                translate_z(-tiny()){
                     cylinder(r=bottom_r-t,h=tiny());
                 }
-                translate([0,0,grip_h-0.5]){
+                translate_z(grip_h-0.5){
                     trylinder(r=inner_r-squeeze,flat=2.5*squeeze,h=tiny());
                 }
-                translate([0,0,grip_h+0.5]){
+                translate_z(grip_h+0.5){
                     trylinder(r=inner_r-squeeze,flat=2.5*squeeze,h=tiny());
                 }
-                translate([0,0,h]){
+                translate_z(h){
                     trylinder(r=inner_r-squeeze+flare,flat=2.5*squeeze,h=tiny());
                 }
             }
@@ -535,7 +537,7 @@ module deformable_hole_trylinder(r1, r2, h=99, corner_roc=-1, dz=0.5, center=fal
     repeat([0,0,2*dz], n, center=center){
         union(){
             cylinder(r=r2, h=dz+tiny());
-            translate([0,0,center ? -dz : dz]){
+            translate_z(center ? -dz : dz){
                 trylinder(r=corner_roc, flat=flat_l, h=dz+tiny());
             }
         }
@@ -582,7 +584,7 @@ module exterior_brim(r=4, h=0.2, brim_only=false){
             difference(){
                 offset(r){
                     projection(cut=true){
-                        translate([0,0,-tiny()]){
+                        translate_z(-tiny()){
                             children();
                         }
                     }
@@ -590,7 +592,7 @@ module exterior_brim(r=4, h=0.2, brim_only=false){
                 offset(-r+tiny()){
                     offset(r){
                         projection(cut=true){
-                            translate([0,0,-tiny()]){
+                            translate_z(-tiny()){
                                 children();
                             }
                         }

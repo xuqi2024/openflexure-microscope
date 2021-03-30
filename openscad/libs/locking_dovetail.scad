@@ -19,7 +19,7 @@ ofu_ -> ""
 */
 
 use <./libdict.scad>;
-use <utilities.scad>;
+use <./utilities.scad>;
 
 function dovetail_default_params() = [
     ["depth", 4],            // y distance between outer flat surface and tip
@@ -367,7 +367,7 @@ module clamping_flange(p){
     gap = key_lookup("vertical_gap", p);
     bottom = key_lookup("bottom_t", p) + gap + key_lookup("clamp_support_t", p);
     top = key_lookup("overall_height", p) - gap - key_lookup("top_t", p);
-    translate([0,0,bottom]){
+    translate_z(bottom){
         linear_extrude(top - bottom){
             clamping_flange_2d(p);
         }
@@ -391,7 +391,7 @@ module clamping_bolt_and_nut(p){
             // Nut trap, with angled entry (in the clamp)
             rotate([0, -90, 0]){
                 cylinder(d=3*1.2, h=key_lookup("clamp_t", p)); //shaft of the screw
-                translate([0,0, fillet_r + 2]){
+                translate_z( fillet_r + 2){
                     rotate([0,0,60]){
                         sequential_hull(){
                             // TODO: replace this with a proper parametric nut trap!
@@ -415,7 +415,7 @@ module clamp_support(p){
     fillet_r = key_lookup("fillet_r", p);
 
     // bridge the bottom of the flexure right across the gap
-    translate([0,0,bottom]){
+    translate_z(bottom){
         linear_extrude(support_t){
             // a bridge to support the internal part of the clamp
             // this sits underneath the back of the clamp
@@ -426,7 +426,7 @@ module clamp_support(p){
     }
 
     // bridge the bottom layer of the cut-out next to the flexure
-    translate([0,0,bottom + support_t]){
+    translate_z(bottom + support_t){
         linear_extrude(support_t){
             // a bridge to support the internal part of the clamp
             // this sits underneath the back of the clamp
@@ -492,7 +492,7 @@ module dovetail_clamp_m(p){
                 }
 
                 // void for clamp
-                translate([0,0,2]){
+                translate_z(2){
                     linear_extrude(h-4){
                         concave_fillet(p){
                             clamp_cutout_empty_2d(p);

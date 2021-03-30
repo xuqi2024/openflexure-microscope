@@ -34,7 +34,7 @@ module slide_riser_base(params, h, thickness, y_space){
 
         //angled cut-out for slide
         hull(){
-            translate([0,0,h]){
+            translate_z(h){
                 translate([0,-slide.z,tiny()/2]){
                     cube([slide.x,slide.y,tiny()], center=true);
                 }
@@ -88,7 +88,7 @@ module slide_riser(params, h=.6, thickness=4){
                 each_leg(params){
                     translate([0,-stage_hole_inset,0]){
                         cylinder(r=3/2*1.15,h=999,center=true);
-                        translate([0,0,thickness+tiny()]){
+                        translate_z(thickness+tiny()){
                             cylinder(r=3*1.15,h=999);
                         }
                     }
@@ -97,7 +97,7 @@ module slide_riser(params, h=.6, thickness=4){
             //Clip and handle
             translate([-clip_l+4,slide.y/2+y_space,0]){
                 difference(){
-                    translate([0,0,clip_w/2]){
+                    translate_z(clip_w/2){
                         rotate([-90,0,0]){
                             rotate([0,0,-90]){
                                 sample_clip([0,clip_l,-clip_y], w=clip_w, roc=clip_r);

@@ -9,6 +9,7 @@ This file should render the optics of the microscope...
 
 use <../openscad/libs/microscope_parameters.scad>
 use <../openscad/libs/libdict.scad>
+use <../openscad/libs/utilities.scad>
 use <../openscad/libs/illumination.scad>
 use <../openscad/lens_tool.scad>
 use <librender/render_utils.scad>
@@ -59,10 +60,10 @@ module cutaway_optics(){
     rendered_optics_module(om_pos, cut=true);
 
     rendered_condenser(condenser_pos, cut=true);
-    translate([0,0,condenser_z-35.5]){
+    translate_z(condenser_z-35.5){
         condenser_lens();
     }
-    translate([0,0,condenser_z]){
+    translate_z(condenser_z){
         rotate([180,0,0]){
             led();
         }

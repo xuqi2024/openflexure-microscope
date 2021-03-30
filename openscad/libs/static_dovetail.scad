@@ -71,7 +71,7 @@ module dovetail_clip_cutout(size,dt=1.5,t=2,slope_front=0,solid_bottom=0){
         //also, slope in the dovetail tooth to avoid marring at the bottom:
         hull(){
             reflect([0,0,1]){
-                translate([0,0,slope_front]){
+                translate_z(slope_front){
                     rotate([0,45,0]){
                         cube([(inner_w)/sqrt(2),dt*2,inner_w/sqrt(2)],center=true);
                     }
@@ -290,12 +290,12 @@ module dovetail_clip_y(size, dt=1.5, t=2, taper=0, endstop=false){
                 translate([0,-taper/2,-size.z+tiny()]){
                     cube([size.x,taper,2*tiny()],center=true);
                 }
-                translate([0,0,-tiny()]){
+                translate_z(-tiny()){
                     cube([size.x,tiny(),2*tiny()],center=true);
                 }
             }
             //cut the middle
-            translate([0,0,-size.z+0.5+999/2]){
+            translate_z(-size.z+0.5+999/2){
                 cube([(size.x-2*t-2*dt)-2,999,999],center=true);
             }
             translate([0,-taper/2,-size.z]){

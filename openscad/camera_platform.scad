@@ -49,7 +49,7 @@ module camera_platform(params, base_r, h){
                     cylinder(r=base_r,h=tiny());
                     objective_fitting_base(params);
                 }
-                translate([0,0,h]){
+                translate_z(h){
                     hull(){
                         cylinder(r=base_r,h=tiny());
                         objective_fitting_base(params);
@@ -59,17 +59,17 @@ module camera_platform(params, base_r, h){
             }
 
             // add the camera mount
-            translate([0,0,h]){
+            translate_z(h){
                 camera_bottom_mounting_posts(r=2, h=4);
             }
         }
 
         // Mount for the nut that holds it on
-        translate([0,0,-4]){
+        translate_z(-4){
             objective_fitting_cutout(params, y_stop=true);
         }
         // add the camera mount
-        translate([0,0,h]){
+        translate_z(h){
             camera_bottom_mounting_posts(outers=false, cutouts=true);
         }
     }

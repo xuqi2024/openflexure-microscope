@@ -37,15 +37,15 @@ module sample_clip(sample,t=2.5,w=6,roc=-1,slope=30){
             //anchor to stage
             cylinder(r=w/2,h=t);
 
-            translate([0,0,roc+t]){
+            translate_z(roc+t){
                 rotate([0,90,0]){
                     difference(){
                         cylinder(r=roc+t,h=w,center=true);
                         cylinder(r=roc,h=999,center=true);
-                        translate([0,0,-99]){
+                        translate_z(-99){
                             cube([999,999,999]);
                         }
-                        translate([0,0,-99]){
+                        translate_z(-99){
                             rotate(angle){
                                 cube([999,999,999]);
                             }
@@ -54,7 +54,7 @@ module sample_clip(sample,t=2.5,w=6,roc=-1,slope=30){
                 }
             }
             sequential_hull(){
-                translate([0,0,roc+t]){
+                translate_z(roc+t){
                     rotate([0,90,0]){
                         rotate(angle){
                             translate([0,roc+t/2,0]){

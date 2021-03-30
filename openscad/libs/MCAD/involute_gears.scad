@@ -11,6 +11,7 @@
 // Updated by Julian Stirling in 2020 to remove excess functions unused by the
 //     OpenFlexure Project. And to unify code style somewhat.
 
+use <../utilities.scad>
 
 module gear(number_of_teeth=15,
             circular_pitch=false,
@@ -87,7 +88,7 @@ module gear(number_of_teeth=15,
                 }
 
                 if(gear_thickness < rim_thickness){
-                    translate([0,0,gear_thickness]){
+                    translate_z(gear_thickness){
                         cylinder(r=rim_radius,h=rim_thickness-gear_thickness+1);
                     }
                 }
@@ -98,14 +99,14 @@ module gear(number_of_teeth=15,
                 }
             }
             if(flat == false && hub_thickness > gear_thickness){
-                translate([0,0,gear_thickness]){
+                translate_z(gear_thickness){
                     linear_exturde_flat_option(flat=flat, height=hub_thickness-gear_thickness){
                         circle(r=hub_diameter/2);
                     }
                 }
             }
         }
-        translate([0,0,-1]){
+        translate_z(-1){
             linear_exturde_flat_option(flat =flat, height=2+max(rim_thickness,hub_thickness,gear_thickness)){
                 circle(r=bore_diameter/2);
             }

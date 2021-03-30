@@ -137,7 +137,7 @@ module illumination_dovetail(params, h=50){
             // wider than normal M3 clearance hole to ease adjustment of illumination
             m3_clear_loose = 3/2*1.33;
             cyl_slot(r=m3_clear_loose, h=999, dy=3, center=true);
-            translate([0, 0, lug_h]){
+            translate_z(lug_h){
                 cyl_slot(r=6, h=999, dy=3);
             }
         }
@@ -178,7 +178,7 @@ module condenser_lens_gripper(lens_r, lens_t, base_r){
             cylinder(r=aperture_r+0.8, h=pedestal_h);
         }
         // hole through pedestal for the beam passing through the lens
-        translate([0, 0, -tiny()]){
+        translate_z(-tiny()){
             cylinder(r=aperture_r, h=h);
         }
     }
@@ -202,20 +202,20 @@ module condenser_cutout(lens_r, lens_assembly_z, bottom_height=10){
     aperture_r = lens_r-_aperture_difference;
 
     //Light trap to reduce stray reflectins
-    translate([0, 0, lighttrap_offset]){
+    translate_z(lighttrap_offset){
         lighttrap_cylinder(r1=led_r+1.5, r2=aperture_r, h=lighttrap_h);
     }
 
     // pressfit hole for the LED
-    translate([0, 0, -bottom_height-tiny()]){
+    translate_z(-bottom_height-tiny()){
         deformable_hole_trylinder(led_r, led_r+0.7, h=led_trilinder_h);
     }
 
     // Then next two are a cutout to allow the led to be pushed down to the pressfit hole
-    translate([0, 0, led_countersink-tiny()]){
+    translate_z(led_countersink-tiny()){
         cylinder(r1=led_r+1, r2=led_r, h=2);
     }
-    translate([0, 0, -led_countersink]){
+    translate_z(-led_countersink){
         cylinder(r=led_r+1, h=2*led_countersink+tiny());
     }
 }
@@ -248,10 +248,10 @@ module tall_condenser(params, lens_d, lens_t, lens_assembly_z){
     difference() {
         //this hull is the outer shape of the body of the condenser
         sequential_hull(){
-            translate([0, 0, lens_assembly_z]){
+            translate_z(lens_assembly_z){
                 cylinder(r=base_r, h=tiny());
             }
-            translate([0, 0, -bottom_height]){
+            translate_z(-bottom_height){
                 cylinder(r=base_r, h=dt_height + bottom_height);
             }
             translate([0,illumination_dovetail_y(params), 0]){
@@ -264,7 +264,7 @@ module tall_condenser(params, lens_d, lens_t, lens_assembly_z){
         condenser_cutout(lens_r, lens_assembly_z, bottom_height=bottom_height);
      }
      //finally add the lens gripper
-     translate([0, 0, lens_assembly_z]){
+     translate_z(lens_assembly_z){
         condenser_lens_gripper(lens_r, lens_t, base_r);
      }
 }
