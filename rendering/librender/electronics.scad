@@ -270,7 +270,7 @@ module motor_jst_connector_body(){
             cube([99, 4, .6], center=true);
         }
         for (x_pin = [-2, -1, 0, 1, 2]*2.54){
-            translate([x_pin, 0, 0]){
+            translate_x(x_pin){
                 jst_pin_void();
             }
         }

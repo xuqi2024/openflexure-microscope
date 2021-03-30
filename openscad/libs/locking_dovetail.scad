@@ -396,7 +396,7 @@ module clamping_bolt_and_nut(p){
                         sequential_hull(){
                             // TODO: replace this with a proper parametric nut trap!
                             cylinder(r=3*1.1, h=3.2, $fn=6);
-                            translate([99,0,0]){
+                            translate_x(99){
                                 cylinder(r=3*1.1, h=3.2, $fn=6);
                             }
                         }

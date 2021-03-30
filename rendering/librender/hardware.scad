@@ -36,7 +36,7 @@ module viton_band(){
     $fn=32;
     color("gray", 1){
         rotate_extrude(angle=360, convexity=2){
-            translate([(id+band_d)/2, 0, 0]){
+            translate_x((id+band_d)/2){
                 circle(d=band_d);
             }
         }

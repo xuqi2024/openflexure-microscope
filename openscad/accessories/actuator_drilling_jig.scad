@@ -44,7 +44,7 @@ difference(){
         cylinder(r=0.5, h=tiny(), $fn=8);
     }
     //clearance for the lever
-    translate([-cr,0,0]){
+    translate_x(-cr){
         mirror([0,1,0]){
             cube([cr*2,999,999]);
         }

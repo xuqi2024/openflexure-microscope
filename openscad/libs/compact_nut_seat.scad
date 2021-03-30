@@ -152,7 +152,7 @@ module actuator_hooks(h,top){
                                 cylinder(d=1,h=1);
                             }
                         }
-                        translate([4,0,0]){
+                        translate_x(4){
                             cylinder(d=1,h=1);
                         }
                     }

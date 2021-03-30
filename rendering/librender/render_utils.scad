@@ -29,7 +29,7 @@ module construction_line(p1, p2, width=0.1, line_color="Black"){
 module turn_anticlockwise(rad = 5, head = 2.5){
     color("black"){
         rotate_extrude(angle=270, $fn=80){
-            translate([rad, 0, 0]){
+            translate_x(rad){
                 circle(r = 0.1);
             }
         }

@@ -198,7 +198,7 @@ module picamera_2_screwholes(){
     rotate(45){
         translate_z(bottom){
             reflect([1,0,0]){
-                translate([sx,0,0]){
+                translate_x(sx){
                     rotate(60){
                         cylinder(r1=3.1, r2=1.1, h=5, $fn=3, center=true);
                         cylinder(r=1.1, h=20, $fn=3, center=true);
@@ -274,7 +274,7 @@ module picamera_2_cover(){
             }
             //mounting screws
             reflect([1,0,0]){
-                translate([21/2, 0, 0]){
+                translate_x(21/2){
                     cylinder(r=3, h=h, $fn=16);
                 }
             }
@@ -357,7 +357,7 @@ module picamera_2_lens_gripper(){
         }
         for(a=[0,90,180,270]){
             rotate(a){
-                translate([inner_r,0,0]){
+                translate_x(inner_r){
                     cube([1.5,5,2]);
                 }
             }

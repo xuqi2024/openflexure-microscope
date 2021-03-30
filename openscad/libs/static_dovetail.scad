@@ -98,7 +98,7 @@ module dovetail_clip(size=[10,2,10],dt=1.5,t=2,back_t=0,slope_front=0,solid_bott
     // can help with bed adhesion.
     // see dovetail_clip_cutout - most of the options are just passed through.
     difference(){
-        translate([-size.x/2,0,0]){
+        translate_x(-size.x/2){
             cube(size);
         }
         dovetail_clip_cutout(size-[0,back_t+tiny(),0],
@@ -266,7 +266,7 @@ module dovetail_clip_y(size, dt=1.5, t=2, taper=0, endstop=false){
     h = size.y;
     ew = 0;
     reflect([1,0,0]){
-        translate([-size.x/2,0,0]){
+        translate_x(-size.x/2]){
             mirror([0,0,1]){
                 sequential_hull(){
                     translate_y(dt){

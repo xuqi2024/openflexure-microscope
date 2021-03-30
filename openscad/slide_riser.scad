@@ -118,7 +118,7 @@ module slide_riser(params, h=.6, thickness=4){
             }
         }
         // cut off end of the super long handles
-        translate([-999/2-handle_end,0,0]){
+        translate_x(-999/2-handle_end){
             cube([999,999,999],center=true);
         }
     }

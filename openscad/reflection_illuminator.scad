@@ -175,7 +175,7 @@ translate([20,20,0]){
         illuminator_holder();
     }
 }
-translate([-20,0,0]){
+translate_x(-20){
     field_stop();
 }
 lens_holder();

@@ -545,7 +545,7 @@ module microscope_stand(params, h=base_height){
             translate([-19.24,raspi_board.y/2-15.96,10+bottom_thickness]){
                 rotate([0,0,-15-0.9*(2.35-wall_thickness)]){
                     rotate([0,-7,0]){
-                        translate([-11.5,0,0]){
+                        translate_x(-11.5){
                             cube([11.5, 31.2, 27]);
                         }
                     }
@@ -927,7 +927,7 @@ module pi_stand(h=50){
                 }
             }
             cube([base_size.x, wall_t, h]);
-            translate([base_size.x- (wall_t), 0, 0]){
+            translate_x(base_size.x- (wall_t)){
                 cube([wall_t, base_size.y, h]);
             }
         }
@@ -962,16 +962,16 @@ module pi_stand(h=50){
 
 module pi_side_connectors(){
 
-    translate([11.2-10/2, 0, 0]){
+    translate_x(11.2-10/2){
         cube([10, 200, 4.5]);
     }
-    translate([26-8/2, 0, 0]){
+    translate_x(26-8/2){
         cube([8, 200, 4.5]);
     }
-    translate([39.5-8/2, 0, 0]){
+    translate_x(39.5-8/2){
         cube([8, 200, 4.5]);
     }
-    translate([54-7/2, 0, 0]){
+    translate_x(54-7/2){
         translate([3.5, 0, 3.5]){
             rotate([-90, 0, 0]){
                 cylinder(d1=7, d2=8, h=5);

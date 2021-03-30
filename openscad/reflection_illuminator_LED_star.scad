@@ -80,7 +80,7 @@ module lens_holder(beam_d=3.5){
                 cylinder(r=lens_r-0.5,h=pedestal_h);
             }
             cylinder(r=LEDstar_r, h=lens_z-pedestal_h+tiny());
-            translate([-w/2,0,0]){
+            translate_x(-w/2){
                 cube([w,LEDstar_r+extra_space,lens_z-pedestal_h]);
             }
             //mounts for screws for LED star
@@ -128,7 +128,7 @@ module lens_holder(beam_d=3.5){
         translate([0,LEDstar_r+extra_space+0.1,(lens_z-pedestal_h)/2]){
             rotate([90,0,0]){
                 reflect([1,0,0]){
-                    translate([w/2-slip_plate_edge_slot,0,0]){
+                    translate_x(w/2-slip_plate_edge_slot){
                         rotate([0,0,-30]){
                             trylinder_selftap(nominal_d = 2.5, h = 6);
                         }
@@ -191,7 +191,7 @@ module slip_plate(w){
                     }
                 }
                 reflect([90,0,0]){
-                    translate([(fl_cube_w/2+3),0,0]){
+                    translate_x((fl_cube_w/2+3)){
                         hull(){
                             //bottom of mounting point
                             translate([0,2,2]){
@@ -211,11 +211,11 @@ module slip_plate(w){
                         }
                     }
                 }
-                translate([-illuminator_width()/2-4,0,0]){
+                translate_x(-illuminator_width()/2-4){
                     cube([illuminator_width()+8,2,top_filter_cube+slip_plate_thickness+2]);
                 }
             }
-            translate([-999/2,0,0]){
+            translate_x(-999/2){
                 hull(){
                     cube([999,2,tiny()]);
                     translate_z(2){

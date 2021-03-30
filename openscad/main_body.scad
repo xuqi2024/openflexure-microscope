@@ -43,14 +43,14 @@ module leg_flexures(params, brace){
             //Hull two blocks to make a big one
             hull(){
                 repeat([0,brace_pos,0],2){
-                    translate([-block_size.x/2,0,0]){
+                    translate_x(-block_size.x/2){
                         cube(block_size);
                     }
                 }
             }
             //Repeat two flexures may be seperate depending on brace.
             repeat([0,brace_pos,0],2){
-                translate([-flex_size.x/2,0,0]){
+                translate_x(-flex_size.x/2){
                     cube(flex_size);
                 }
             }
@@ -68,7 +68,7 @@ module leg(params, brace=flex_dims().x){
            //leg
         reflect([1,0,0]){
             //vertical bars of the leg
-            translate([leg_middle_w/2+flex_dims().y,0,0]){
+            translate_x(leg_middle_w/2+flex_dims().y){
                 hull(){
                     cube(leg_dims(params));
                     //extend the base to make the bars triangular
@@ -106,13 +106,13 @@ module actuator(params){
         //arm (horizontal bit)
         difference(){
             sequential_hull(){
-                translate([-leg_middle_w/2,0,0]){
+                translate_x(-leg_middle_w/2){
                     cube([leg_middle_w,brace+fw,4]);
                 }
-                translate([-w/2,0,0]){
+                translate_x(-w/2){
                     cube([w,brace+fw+0,actuator_dims(params).z]);
                 }
-                translate([-w/2,0,0]){
+                translate_x(-w/2){
                     cube(actuator_dims(params));
                 }
             }

@@ -11,13 +11,13 @@ r = 5;
 difference(){
     hull(){
         cylinder(d=2*r, h=6);
-        translate([2*r*(N-1),0,0]){
+        translate_x(2*r*(N-1)){
             cylinder(d=2*r, h=6);
         }
     }
 
     for(i=[0:N-1]){
-        translate([2*r*i,0,0]){
+        translate_x(2*r*i){
             trylinder_selftap(sizes[i], h=999, center=true);
             translate([0, -r+0.5, 0.5]){
                 rotate([90,0,0]){

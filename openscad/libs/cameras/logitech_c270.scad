@@ -54,7 +54,7 @@ module C270(beam_r=5, beam_h=6){
 
         //mounting holes
         reflect([1,0,0]){
-            translate([mounting_hole_x,0,0]){
+            translate_x(mounting_hole_x){
                 mounting_hole();
             }
         }

@@ -288,7 +288,7 @@ module rightangle_prism(size,center=false){
     intersection(){
         cube(size,center=center);
         rotate([0,45,0]){
-            translate([999/2,0,0]){
+            translate_x(999/2){
                 cube([1,1,1]*999,center=true);
             }
         }

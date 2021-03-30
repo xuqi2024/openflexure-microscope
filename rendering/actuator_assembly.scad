@@ -57,7 +57,7 @@ module what_you_need(){
         color(extras_colour()){
             large_gear();
         }
-        translate([-21, 0, 0]){
+        translate_x(-21){
             rotate([0, 90, 0]){
                 rotate([0, 0, 30]){
                     m3_hex_x25();
@@ -73,7 +73,7 @@ module what_you_need(){
         translate([-32, -6, 0]){
             m3_nut(brass=true);
         }
-        translate([-32, 0, 0]){
+        translate_x(-32){
             viton_band();
         }
 
@@ -83,7 +83,7 @@ module what_you_need(){
             render_foot("X", lie_flat=true);
         }
     }
-    translate([28, 0, 0]){
+    translate_x(28){
         rotate([0, 0, 90]){
             render_foot("Z", lie_flat=true);
         }
@@ -95,7 +95,7 @@ module what_you_need(){
     }
     color(tools_colour()){
         render(6){
-            translate([52, 0, 0]){
+            translate_x(52){
                 double_ended_band_tool(bent=false);
             }
         }
