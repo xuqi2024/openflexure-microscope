@@ -98,14 +98,14 @@ module slide_riser(params, h=.6, thickness=4){
             translate([-clip_l+4,slide.y/2+y_space,0]){
                 difference(){
                     translate_z(clip_w/2){
-                        rotate([-90,0,0]){
-                            rotate([0,0,-90]){
+                        rotate_x(-90){
+                            rotate_z(-90){
                                 sample_clip([0,clip_l,-clip_y], w=clip_w, roc=clip_r);
                             }
                         }
                     }
                     translate_y(-clip_y+clip_angle_h){
-                        rotate([45,0,0]){
+                        rotate_x(45){
                             translate([clip_l,-5,0]){
                                 cube([10,10,10], center=true);
                             }

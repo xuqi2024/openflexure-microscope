@@ -117,7 +117,7 @@ module lens_holder(beam_d=3.5){
         for(i = [0:1]){
             rotate(180*i){
                 translate_y(LEDstar_r]){
-                    rotate([0,0,180]){
+                    rotate_z(180){
                         trylinder_selftap(nominal_d = 3, h = lens_z-pedestal_h - 1);
                     }
                 }
@@ -126,10 +126,10 @@ module lens_holder(beam_d=3.5){
 
         //screws for slip plate
         translate([0,LEDstar_r+extra_space+0.1,(lens_z-pedestal_h)/2]){
-            rotate([90,0,0]){
+            rotate_x(90){
                 reflect([1,0,0]){
                     translate_x(w/2-slip_plate_edge_slot){
-                        rotate([0,0,-30]){
+                        rotate_z(-30){
                             trylinder_selftap(nominal_d = 2.5, h = 6);
                         }
                     }
@@ -141,17 +141,13 @@ module lens_holder(beam_d=3.5){
         reflect([1,0,0]){
             hull(){
                 translate([w/2-4,LEDstar_r+extra_space-3,(lens_z-pedestal_h)/2]){
-                    rotate([90,0,0]){
-                        rotate([0,0,0]){
-                            cylinder(d = 5.8, h = 2.4, $fn=6);
-                        }
+                    rotate_x(90){
+                        cylinder(d = 5.8, h = 2.4, $fn=6);
                     }
                 }
                 translate([w/2+4,LEDstar_r+extra_space-3,(lens_z-pedestal_h)/2]){
-                    rotate([90,0,0]){
-                        rotate([0,0,0]){
-                            cylinder(d = 5.8, h = 2.4, $fn=6);
-                        }
+                    rotate_x(90){
+                        cylinder(d = 5.8, h = 2.4, $fn=6);
                     }
                 }
             }
@@ -199,7 +195,7 @@ module slip_plate(w){
                             }
                             //mounting point to optics module
                             translate_z(top_filter_cube+slip_plate_thickness+3){
-                                rotate([-90,0,0]){
+                                rotate_x(-90){
                                         cylinder(r=2, h= 4); //mounting point to optics module
                                 }
                             }

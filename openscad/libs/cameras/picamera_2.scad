@@ -267,7 +267,7 @@ module picamera_2_cover(){
                 }
                 //chamfer the connector edge for ease of access
                 translate([-999/2,-b/2+centre_y,h]){
-                    rotate([-135,0,0]){
+                    rotate_x(-135){
                         cube([999,999,999]);
                     }
                 }
@@ -335,7 +335,7 @@ module picamera_2_gripper(){
 
         //cut-outs for the other bits (cable etc.)
         translate([0,camera_housing_y,camera_housing.z]){
-            rotate([180,0,0]){
+            rotate_x(180){
                 generous_camera_bits();
             }
         }

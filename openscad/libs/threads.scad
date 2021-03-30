@@ -118,7 +118,7 @@ module base_thread(inner,
     difference(){
          union(){
             for(i = [-overshoot:(turns*number_divisions+overshoot)]){
-                rotate([0,0,i*angle_step]){
+                rotate_z(i*angle_step){
                     translate_z(i*z_step){
                         reverse_trapezoid(points);
                     }

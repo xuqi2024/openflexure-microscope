@@ -113,7 +113,7 @@ module gear(number_of_teeth=15,
         }
         if(circles>0){
             for(i=[0:circles-1]){
-                rotate([0,0,i*360/circles]){
+                rotate_z(i*360/circles){
                     translate([circle_orbit_diameter/2,0,-1]){
                         linear_exturde_flat_option(flat =flat, height=max(gear_thickness,rim_thickness)+3){
                             circle(r=circle_diameter/2);
@@ -149,7 +149,7 @@ module gear_shape(number_of_teeth,
         }
 
         for(i = [1:number_of_teeth]){
-            rotate([0,0,i*360/number_of_teeth]){
+            rotate_z(i*360/number_of_teeth){
                 involute_gear_tooth(pitch_radius = pitch_radius,
                                     root_radius = root_radius,
                                     base_radius = base_radius,

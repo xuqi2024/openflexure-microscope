@@ -211,7 +211,7 @@ function housing_size(h) = [motor_connector_size().x+4+2,motor_connector_size().
 
 module side_housing_placement(params){
     translate(y_actuator_wall_vertex_position(params, inside=false)){
-        rotate([0, 0, y_wall_angle(params)-90]){
+        rotate_z(y_wall_angle(params)-90){
             children();
         }
     }
@@ -283,7 +283,7 @@ module place_on_wall(params, is_y=true, housing=true){
             // move out to the surface (the above are centres of cylinders)
             translate_y(wall_tr_y){
                 // and then align y with the vertical axis of the wall
-                rotate([90-wall_tilt, 0, 0]){
+                rotate_x(90-wall_tilt){
                     // now X and Y are in the plane of the wall, and z=0 is its surface.
                     children();
                 }

@@ -56,13 +56,13 @@ module cable_tidy_body_cutouts(h, front=false){
             translate([-10,-12,1]){
                 cube([20,6.1,h-3]);
             }
-            rotate([0,0,-10]){
+            rotate_z(-10){
                 translate([-20,-7,1]){
                     cube([11,5.1,h-3]);
                 }
             }
         }
-        rotate([0,0,-10]){
+        rotate_z(-10){
             translate([-20,-7,-1]){
                 cube([11,5.1,h-1]);
             }
@@ -72,7 +72,7 @@ module cable_tidy_body_cutouts(h, front=false){
         translate([-28+8,-12,1]){
             cube([28,6.1,h-3]);
         }
-        rotate([0,0,-148]){
+        rotate_z(-148){
             translate([0,-5.1,-1]){
                 cube([25,5.1,h-1]);
             }

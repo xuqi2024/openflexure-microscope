@@ -252,15 +252,15 @@ module feet_in_place(params, grow_r=1, grow_h=2){
                 cylinder(r=grow_r, h=grow_h, center=true);
             }
             translate([-9.3,60,0.1]){
-                rotate([0,9,0]){
-                    rotate([-20,0,0]){
+                rotate_y(9){
+                    rotate_x(-20){
                         cube([17.5,10,8]);
                     }
                 }
             }
         }
         translate([-20,52,-15]){
-            rotate([-25,0,0]){
+            rotate_x(-25){
                 translate_y(-30){
                     cube([40,30,30]);
                 }
@@ -543,8 +543,8 @@ module microscope_stand(params, h=base_height){
         //It should be acceptably close for most sane wall sizes.
         pi_frame() {
             translate([-19.24,raspi_board.y/2-15.96,10+bottom_thickness]){
-                rotate([0,0,-15-0.9*(2.35-wall_thickness)]){
-                    rotate([0,-7,0]){
+                rotate_z(-15-0.9*(2.35-wall_thickness)){
+                    rotate_y(-7){
                         translate_x(-11.5){
                             cube([11.5, 31.2, 27]);
                         }
@@ -568,7 +568,7 @@ module microscope_stand(params, h=base_height){
         // if we are building for reflection illumination, cut out the front to allow access
         if(beamsplitter){
             translate_z(h+foot_height){
-                rotate([90,0,0]){
+                rotate_x(90){
                     cylinder(d=30,h=999);
                 }
             }
@@ -631,7 +631,7 @@ module nano_supports(){
 
     for (pos = support_positions){
         pi_frame(){
-            rotate([0,0,40]){
+            rotate_z(40){
                 translate(pos + [5, -6, bottom_thickness-tiny()]){
                     difference(){
                         cylinder(h=driver_support+tiny(), d=7);
@@ -647,7 +647,7 @@ module nano_supports(){
     difference(){
         //two posts with rounded tops and a base
         pi_frame(){
-            rotate([0,0,40]){
+            rotate_z(40){
                 translate([8.5,-21.5,bottom_thickness-tiny()]){
                     translate([49.5-nano_length/2,-6.5,0]){
                         cylinder(h=nano_width+2.4+tiny(), d=5);
@@ -669,7 +669,7 @@ module nano_supports(){
         }
 
         pi_frame(){
-            rotate([0,0,40]){
+            rotate_z(40){
                 translate([8.5,-21.5,bottom_thickness-tiny()]) {
                     //carve out for nano board
                     hull(){
@@ -973,7 +973,7 @@ module pi_side_connectors(){
     }
     translate_x(54-7/2){
         translate([3.5, 0, 3.5]){
-            rotate([-90, 0, 0]){
+            rotate_x(-90){
                 cylinder(d1=7, d2=8, h=5);
             }
         }

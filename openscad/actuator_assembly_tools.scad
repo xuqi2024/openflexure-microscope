@@ -24,7 +24,7 @@ module tool_handle(){
     a = swing_a; //angle through which the tool is moved to tighten the nut
     difference(){
         sequential_hull(){
-            rotate([-a,0,0]){
+            rotate_x(-a){
                 hull(){
                     rc=1.5;
                     reflect([1,0,0]){
@@ -147,13 +147,13 @@ module band_tool(){
         hull(){
             translate_y(l,1.5]){
                 scale([1,1,0.66]){
-                    rotate([90,0,0]){
+                    rotate_x(90){
                         cylinder(r=1.4,h=18,center=true);
                     }
                 }
             }
             translate_y(l,2+3]){
-                rotate([90,0,0]){
+                rotate_x(90){
                     cylinder(r=2.3,h=40,center=true);
                 }
             }
@@ -162,12 +162,12 @@ module band_tool(){
         translate_y(l){
             hull(){
                 translate([0,0.3,1.5]){
-                    rotate([0,90,0]){
+                    rotate_y(90){
                         cylinder(r=1,h=999,center=true);
                     }
                 }
                 translate([0,-0.5,h-1.5]){
-                    rotate([0,90,0]){
+                    rotate_y(90){
                         cylinder(r=1,h=999,center=true);
                     }
                 }
@@ -285,7 +285,7 @@ module double_ended_band_tool(bent=false){
         translate_y(middle_w/2+flex_l){
             if(bent){
                 translate([0,roc-3,roc]){
-                    rotate([90,0,0]){
+                    rotate_x(90){
                         band_tool_2(handle=false);
                     }
                 }
@@ -300,10 +300,10 @@ module double_ended_band_tool(bent=false){
         reflect([0,1,0]){
             translate([0,middle_w/2,roc]){
                 difference(){
-                    rotate([0,90,0]){
+                    rotate_y(90){
                         cylinder(r=roc,h=ns.x,center=true);
                     }
-                    rotate([0,90,0]){
+                    rotate_y(90){
                         cylinder(r=roc-0.5,h=99,center=true);
                     }
                     translate([-99,-99,0]){

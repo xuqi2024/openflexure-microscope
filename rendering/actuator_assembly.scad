@@ -58,8 +58,8 @@ module what_you_need(){
             large_gear();
         }
         translate_x(-21){
-            rotate([0, 90, 0]){
-                rotate([0, 0, 30]){
+            rotate_y(90){
+                rotate_z(30){
                     m3_hex_x25();
                 }
             }
@@ -79,17 +79,17 @@ module what_you_need(){
 
     }
     translate([28, 40, 0]){
-        rotate([0, 0, 90]){
+        rotate_z(90){
             render_foot("X", lie_flat=true);
         }
     }
     translate_x(28){
-        rotate([0, 0, 90]){
+        rotate_z(90){
             render_foot("Z", lie_flat=true);
         }
     }
     translate([28, -40, 0]){
-        rotate([0, 0, 90]){
+        rotate_z(90){
             render_foot("Y", lie_flat=true);
         }
     }

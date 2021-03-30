@@ -76,8 +76,8 @@ module m3_nut_trap_with_shaft(slot_angle=0,tilt=0)
     // Trap starts at z=1mm and ends at 7.5mm
     // We recommend have the outer stucture occupies the space from z = 0-9mm
 
-    rotate([tilt,0,0]){
-        rotate([0,0,slot_angle]){
+    rotate_x(tilt){
+        rotate_z(slot_angle){
             translate_z(1){
                 union(){
                     nut_trap_and_slot(nut_size, nut_slot);
@@ -164,7 +164,7 @@ module actuator_hooks(h,top){
 
 module actuator_ties(tilt=0, lever_tip=3){
     // The ties for the actuator.
-    rotate([tilt,0,0]){
+    rotate_x(tilt){
         translate_z(lever_tip+flex_dims().z+3){
             cube([ss_outer().x-wall_t, 1, 0.5], center=true);
         }
@@ -187,7 +187,7 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
     $fn=16;
     difference(){
         union(){
-            rotate([tilt,0,0]){
+            rotate_x(tilt){
                 central_actuator_column(h, top);
                 // hooks for elastic bands/springs
                 actuator_hooks(h, top);
@@ -202,7 +202,7 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
 
         // nut trap
         if(!no_voids){
-            rotate([tilt,0,0]){
+            rotate_x(tilt){
                 rotate(slot_angle){
                     translate_z(h-top.z){
                         nut_trap_and_slot(nut_size, nut_slot);
@@ -214,7 +214,7 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
         // shaft for the screw
         // NB this is raised up from the bottom so it stays within the shaft - this may need to change depending on the length of screw we use...
         if(!no_voids){
-            rotate([tilt,0,0]){
+            rotate_x(tilt){
                 translate_z(lever_tip){
                     cylinder(r=shaft_r, h=999);
                     translate_z(-lever_tip+1){
@@ -284,7 +284,7 @@ module nut_seat_void(h=1, tilt=0, center=true){
     // This ensures enough clearance to let the actuator column move.
     r = column_core.y/2;
     x = column_core.x/2 - r;
-    rotate([tilt,0,0]){
+    rotate_x(tilt){
         intersection(){
             linear_extrude(999,center=center){
                 nut_seat_silhouette(offset=-wall_t);
@@ -306,7 +306,7 @@ module screw_seat_shell(h=1, tilt=0){
     x = ss_outer(h).x/2 - r;
     double_h = ss_outer(h).z;
     difference(){
-        rotate([tilt,0,0]){
+        rotate_x(tilt){
             hull(){
                 linear_extrude(double_h-3, center=true){
                     nut_seat_silhouette();
@@ -327,7 +327,7 @@ module motor_lugs(h=20, tilt=0, angle=0){
     screw_pos = motor_screw_pos(h);
     // lugs to mount a micro geared stepper motor on a screw_seat.
     screw_r = sqrt(pow(screw_pos.x,2)+pow(screw_pos.y,2));
-    rotate([tilt,0,0]){
+    rotate_x(tilt){
         rotate(angle){
             reflect([1,0,0]){
                 difference(){
@@ -376,9 +376,9 @@ module screw_seat(h, travel, tilt=0, entry_w=2*column_base_r+3, extra_entry_h=7,
                 }
             }
             if(len(label) > 0){
-                rotate([tilt,0,0]){
+                rotate_x(tilt){
                     translate([0, ss_outer(h).y/2, nut_slot_z - 2]){
-                        rotate([90,0,0]){
+                        rotate_x(90){
                             linear_extrude(1, center=true){
                                 mirror([1,0]){
                                     text(label, size=10, font="Sans", halign="center", valign="top");
@@ -401,7 +401,7 @@ module screw_seat(h, travel, tilt=0, entry_w=2*column_base_r+3, extra_entry_h=7,
         }
 
         //entrance slot for nut
-        rotate([tilt,0,0]){
+        rotate_x(tilt){
             translate_z(nut_slot_z){
                 nut_trap_and_slot(nut_size, nut_slot + [0,0,0.3]);
             }
@@ -411,7 +411,7 @@ module screw_seat(h, travel, tilt=0, entry_w=2*column_base_r+3, extra_entry_h=7,
 
 module screw_seat_outline(h=999,adjustment=0,center=false,tilt=0){
     // The bottom of a screw seat
-    rotate([tilt,0,0]){
+    rotate_x(tilt){
         linear_extrude(h,center=center){
             nut_seat_silhouette(offset=adjustment);
         }

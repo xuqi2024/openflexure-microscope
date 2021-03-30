@@ -97,14 +97,14 @@ module filleted_bridge(gap, roc_xy=2, roc_xz=2){
                 }
                 rx(){
                     translate([x2, b/2, h+roc_xz]){
-                        rotate([-90,0,0]){
+                        rotate_x(-90){
                             cylinder(r=roc_xz, h=tiny());
                         }
                     }
                 }
                 rx(){
                     translate([x2, -2*tiny(), h+roc_xz]){
-                        rotate([90,0,0]){
+                        rotate_x(90){
                             cylinder(r=roc_xz ,h=tiny());
                         }
                     }
@@ -150,11 +150,11 @@ module foot_section(foot_angle=0,    //the angle the actuator column makes with 
     assert(h<=999, "Maximum h for foot section is 999");
     intersection(){
         translate_z(z){
-            rotate([section_angle,0,0]){
+            rotate_x(section_angle){
                 cube([999,999,h],center=true);
             }
         }
-        rotate([foot_angle,0,0]){
+        rotate_x(foot_angle){
             // This is set to 1000 so that numbers up to 999 can be put into h
             offset_thick_section(h=1000, center=true, offset=offset){
                 children();
@@ -176,9 +176,9 @@ module foot_letter(letter="", actuator_tilt=0, h=10, base_cleareance=2){
     z_tr = y_tr_tilted_frame*sin(actuator_tilt)+z_tr_tilted_frame*cos(actuator_tilt);
 
     translate([0, y_tr, z_tr]){
-        rotate([actuator_tilt,0,0]){
-            rotate([0,0,180]){
-                rotate([90,0,0]){
+        rotate_x(actuator_tilt){
+            rotate_z(180){
+                rotate_x(90){
                     translate([-h/2,-h/2,0]){
                         linear_extrude(1){
                             text(letter,10);
@@ -215,7 +215,7 @@ module foot(travel=5,       // how far into the foot the actuator can move down
     y_tr = lie_flat ? y_tr_flat : y_tr_tilted;
     translate_y(y_tr){
         //the foot base may be tilted, lie_flat makes this z=0
-        rotate([lie_flat?tilt:0,0,0]){
+        rotate_x(lie_flat ? tilt : 0){
             //makes the bottom z=0
             translate_z(lie_flat ? -l/2*tan(tilt) : -h){
                 union(){
@@ -263,7 +263,7 @@ module foot(travel=5,       // how far into the foot the actuator can move down
                         //cut out the shell close to the microscope centre to allow the actuator
                         //to protrude below the bottom of the body
                         difference(){
-                            rotate([actuator_tilt,0,0]){
+                            rotate_x(actuator_tilt){
                                 translate([0,-l/2,h-travel-0.5]){
                                     cube([entry_w, wall_t*3, 999], center=true);
                                 }
@@ -279,7 +279,7 @@ module foot(travel=5,       // how far into the foot the actuator can move down
                         //NOTE: width should match the band anchor above,
                         //and height/span should match the slot above.
                         skew_flat(bottom_tilt){
-                            rotate([actuator_tilt,0,0]){
+                            rotate_x(actuator_tilt){
                                 translate_z(h-travel-4-2-endstop_extra_ringheight){
                                     filleted_bridge([2*column_base_radius()+1.5, 4, 2], roc_xy=4, roc_xz=3);
                                 }
@@ -292,7 +292,7 @@ module foot(travel=5,       // how far into the foot the actuator can move down
                         //TODO: check properly parametrized
                         if(feet_endstops){
                             translate([0,0.5-(h-travel)*sin(actuator_tilt),h-travel]){
-                                rotate([0,0,-90]){
+                                rotate_z(-90){
                                     scale([1.03,1.08,1]){
                                         endstop_hole(actuator_tilt);
                                     }

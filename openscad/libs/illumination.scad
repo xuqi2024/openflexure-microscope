@@ -77,7 +77,7 @@ module illumination_dovetail_branding(params, h, bottom_z){
     logo_y = (top_y+bot_y)/2+.5;
 
     translate([-11,logo_y,logo_z]){
-        rotate([90-back_angle,0,0]){
+        rotate_x(90-back_angle){
             openflexure_emblem(scale_factor=.1);
         }
     }
@@ -274,7 +274,7 @@ module condenser(params, lens_d=13, lens_t=1, lens_assembly_z= 30){
     //This is the condenser that is printed.
     condenser_angle = key_lookup("condenser_angle", params);
     difference(){
-        rotate([-condenser_angle,0,0]){
+        rotate_x(-condenser_angle){
             tall_condenser(params, lens_d, lens_t, lens_assembly_z);
         }
         mirror([0,0,1]){

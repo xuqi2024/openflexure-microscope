@@ -19,17 +19,17 @@ module endstop_switch(){
 
 module endstop_hole(tilt){
     translate([4.3,-2.4,-2.9]){
-        rotate([0,180,0]){
+        rotate_y(180){
             translate([-1.3,0,-3]){
                 cube([11.4,4.8,0.6+3+0.2]);
             }
             translate([8.6,2.4,0]){
-                rotate([0,tilt,0]){
+                rotate_y(tilt){
                     cylinder(r=1.3,h=20,$fn=40);
                 }
             }
             translate([-0.3,2.4,0]){
-                rotate([0,tilt,0]){
+                rotate_y(tilt){
                     cylinder(r=1.3,h=20,$fn=40);
                 }
             }

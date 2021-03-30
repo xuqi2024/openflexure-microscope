@@ -68,19 +68,19 @@ module objective_mount(params){
         // bolt slot to mount objective
         hull(){
             translate_z(z_flexures_z1+8){
-                rotate([-90,0,0]){
+                rotate_x(-90){
                     cylinder(d=3.5, h=999);
                 }
             }
             translate_z(z_flexures_z2(params)-5){
-                rotate([-90,0,0]){
+                rotate_x(-90){
                     cylinder(d=3.5, h=999);
                 }
             }
         }
         // make the bolt slot keyhole-shaped to allow the screw to be easily inserted
         translate_z(z_flexures_z1+6){
-            rotate([-90,0,0]){
+            rotate_x(-90){
                 cylinder(d=6.5, h=999);
             }
         }
@@ -120,7 +120,7 @@ function objective_mount_screw_pos(params) = [0, objective_mount_back_y, (z_flex
 
 module objective_mount_screw(params){
     translate(objective_mount_screw_pos(params)){
-        rotate([-90,0,0]){
+        rotate_x(-90){
             cylinder(r=3, h=2.5);
             mirror([0,0,1]){
                 cylinder(d=3, h=12);
@@ -283,7 +283,7 @@ module objective_mounting_screw_access(params){
                 cylinder(h=999, d=7, $fn=16);
             }
             translate([-1,0,4]){
-                rotate([-90,0,0]){
+                rotate_x(-90){
                     cylinder(h=tiny(), d=4, $fn=16);
                 }
             }
@@ -296,7 +296,7 @@ module z_motor_clearance(params, motor_h=999){
     // This also labels it as "Z"
     actuator_h = key_lookup("actuator_h", params);
     translate_y(z_nut_y(params)){
-        rotate([z_actuator_tilt(params),0,0]){
+        rotate_x(z_actuator_tilt(params)){
             translate_z(actuator_h+z_actuator_travel(params)+2-1){
                 rotate(180){
                     motor_and_gear_clearance(gear_h=11, h=motor_h);
@@ -445,8 +445,8 @@ module z_housing_frame(params, h, y_actuator=false){
     x_tr = y_actuator ? -23 : 23;
     angle = y_actuator ? 15 : -15;
     translate([x_tr, z_nut_y(params), 0]){
-        rotate([0, 0, angle]){
-            rotate([tilt, 0, 0]){
+        rotate_z(angle){
+            rotate_x(tilt){
                 children();
             }
         }
@@ -457,9 +457,9 @@ module z_cable_tidy_frame(params, z_extra=0){
     tilt = z_actuator_tilt(params);
     z_tr = z_motor_z_pos(params) + z_extra;
     translate_y(z_nut_y(params)){
-        rotate([tilt, 0, 0]){
+        rotate_x(tilt){
             translate_z(z_tr){
-                rotate([0, 0, 180]){
+                rotate_z(180){
                     children();
                 }
             }
@@ -470,9 +470,9 @@ module z_cable_tidy_frame(params, z_extra=0){
 module z_cable_tidy_frame_undo(params, z_extra=0){
     tilt = z_actuator_tilt(params);
     z_tr = z_motor_z_pos(params) + z_extra;
-    rotate([0, 0, -180]){
+    rotate_z(-180){
         translate_z(-z_tr){
-            rotate([-tilt, 0, 0]){
+            rotate_x(-tilt){
                 translate_y(-z_nut_y(params)){
                     children();
                 }

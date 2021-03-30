@@ -64,7 +64,7 @@ module cutaway_optics(){
         condenser_lens();
     }
     translate_z(condenser_z){
-        rotate([180,0,0]){
+        rotate_x(180){
             led();
         }
     }

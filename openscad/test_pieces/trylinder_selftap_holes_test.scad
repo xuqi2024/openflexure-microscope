@@ -20,7 +20,7 @@ difference(){
         translate_x(2*r*i){
             trylinder_selftap(sizes[i], h=999, center=true);
             translate([0, -r+0.5, 0.5]){
-                rotate([90,0,0]){
+                rotate_x(90){
                     linear_extrude(1){
                         text(str(sizes[i]), size=4, halign="center");
                     }

@@ -30,7 +30,7 @@ module cut_actuator_housing(params, cut=true){
         }
         // only render half
         if (cut) {
-            rotate([0,-90,0]){
+            rotate_y(-90){
                 cylinder(r=99,h=99,$fn=4);
             }
         }
@@ -59,7 +59,7 @@ module render_frame(frame_dict){
 
     color(tools_colour(), 1){
         translate([0,0,-45]+tool_tr){
-            rotate([0, 0, 90]){
+            rotate_z(90){
                 double_ended_band_tool(bent=true);
             }
         }

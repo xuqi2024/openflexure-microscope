@@ -38,7 +38,7 @@ module sample_clip(sample,t=2.5,w=6,roc=-1,slope=30){
             cylinder(r=w/2,h=t);
 
             translate_z(roc+t){
-                rotate([0,90,0]){
+                rotate_y(90){
                     difference(){
                         cylinder(r=roc+t,h=w,center=true);
                         cylinder(r=roc,h=999,center=true);
@@ -55,7 +55,7 @@ module sample_clip(sample,t=2.5,w=6,roc=-1,slope=30){
             }
             sequential_hull(){
                 translate_z(roc+t){
-                    rotate([0,90,0]){
+                    rotate_y(90){
                         rotate(angle){
                             translate_y(roc+t/2){
                                 cylinder(r=t/2,h=w,center=true);
@@ -64,12 +64,12 @@ module sample_clip(sample,t=2.5,w=6,roc=-1,slope=30){
                     }
                 }
                 translate([0,sample.y,sample.z+t/2]){
-                    rotate([0,90,0]){
+                    rotate_y(90){
                         cylinder(r=t/2,h=w,center=true);
                     }
                 }
                 translate([0,sample.y+t,sample.z+t]){
-                    rotate([0,90,0]){
+                    rotate_y(90){
                         cylinder(r=t/2,h=w,center=true);
                     }
                 }

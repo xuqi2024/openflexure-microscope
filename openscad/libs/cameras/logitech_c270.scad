@@ -103,7 +103,7 @@ module C270(beam_r=5, beam_h=6){
 
         //exit for cable
         translate([4,20,0]){
-            rotate([-90,0,0]){
+            rotate_x(-90){
                 cylinder(r=3,h=99);
             }
         }

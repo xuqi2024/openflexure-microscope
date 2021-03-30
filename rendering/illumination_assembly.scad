@@ -19,7 +19,7 @@ color(extras_colour()){
 // This should match condenser.scad
 color(body_colour()){
     translate_z(key_lookup("sample_z", params) + 50){
-        rotate([0,180,0]){
+        rotate_y(180){
             render(6){
                 condenser(params, lens_d=13, lens_t=1, lens_assembly_z= 30);
             }

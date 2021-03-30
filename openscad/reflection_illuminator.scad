@@ -140,7 +140,7 @@ module illuminator_holder(){
 
         // grip the illuminator
         translate([0,16, h/2]){
-            rotate([-90,0,0]){
+            rotate_x(-90){
                 cylinder(h=999,d=illuminator_d);
             }
         }
@@ -153,7 +153,7 @@ module illuminator_holder(){
         // cable tie grooves to squeeze it
         repeat([0,12,0],4){
             translate([0,22,h/2]){
-                rotate([-90,0,0]){
+                rotate-90){
                     difference(){
                         cylinder(d=999,h=4.5,$fn=5);
                         cylinder(d=illuminator_d + 2*3, h=999, center=true);
@@ -163,7 +163,7 @@ module illuminator_holder(){
         }
         // beam
         translate_z(h/2){
-            rotate([-90,0,0]){
+            rotate_x(-90){
                 cylinder(d=7, h=999, center=true);
             }
         }

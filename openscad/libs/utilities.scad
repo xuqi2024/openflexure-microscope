@@ -38,6 +38,24 @@ module translate_z(z_tr){
     }
 }
 
+module rotate_x(x_angle){
+    rotate_x(x_angle){
+        children();
+    }
+}
+
+module rotate_y(y_angle){
+    rotate_y(y_angle){
+        children();
+    }
+}
+
+module rotate_z(z_angle){
+    rotate_z(z_angle){
+        children();
+    }
+}
+
 module reflect(axis){
     //reflects children about the origin, keeping the originals
     children();
@@ -219,9 +237,9 @@ module cyl_slot(r=1, h=1, dy=2, center=false){
 module unrotate(rotation){
     //undo a previous rotation
     //Note: this is not the same as rotate(-rotation) due to ordering.
-    rotate([0,0,-rotation.z]){
-        rotate([0,-rotation.y,0]){
-            rotate([-rotation.x,0,0]){
+    rotate_z(-rotation.z){
+        rotate_y(-rotation.y){
+            rotate_x(-rotation.x){
                 children();
             }
         }
@@ -287,7 +305,7 @@ module support(size, height, baseheight=0, rotation=[0,0,0], supportangle=45, ou
 module rightangle_prism(size,center=false){
     intersection(){
         cube(size,center=center);
-        rotate([0,45,0]){
+        rotate_y(45){
             translate_x(999/2){
                 cube([1,1,1]*999,center=true);
             }

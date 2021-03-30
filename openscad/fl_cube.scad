@@ -177,7 +177,7 @@ module fl_cube(){
                             cube([2*roc, depth, 1.5]);
                         }
                         translate([0.5+2*roc + 1.5 - 0.2*(1+sqrt(2)),0,roc+1.5-0.2]){
-                            rotate([-90,0,0]){
+                            rotate_x(-90){
                                 cylinder(r=0.2, h=depth);
                             }
                         }
@@ -187,7 +187,7 @@ module fl_cube(){
         }
         // hole for the beam
         translate(beamsplit){
-            rotate([90,0,0]){
+            rotate_x(90){
                 cylinder(r=5,h=999, center=true, $fn=32);
             }
         }
@@ -197,7 +197,7 @@ module fl_cube(){
         }
         // access hole for the dichroic
         translate(beamsplit){
-            rotate([-45,0,0]){
+            rotate_x(-45){
                 translate_y(-dichroic.y/2){
                     scale([1.1,1,1.9]){
                         cube(dichroic, center=true);

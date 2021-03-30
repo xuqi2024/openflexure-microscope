@@ -34,7 +34,7 @@ module turn_anticlockwise(rad = 5, head = 2.5){
             }
         }
         translate_y(-rad){
-            rotate([0, 90, 0]) {
+            rotate_y(90){
                 cylinder(d1=head*2/3, d2=0.01, h=head, $fn=80);
             }
         }

@@ -89,7 +89,7 @@ module fl_screw_holes(d,h){
     reflect([1,0,0]){
         union(){
             translate([fl_cube_w/2+3,0,fl_cube_bottom+fl_cube_w]){
-                rotate([90,0,0]){
+                rotate_x(90){
                     trylinder_selftap(d, h);
                 }
             }

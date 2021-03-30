@@ -65,14 +65,14 @@ module dovetail_clip_cutout(size,dt=1.5,t=2,slope_front=0,solid_bottom=0){
     //allow insertion of the male dovetail from the bottom
     if(slope_front>0){
         //slope up arms
-        rotate([45,0,0]){
+        rotate_x(45){
             cube([999,1,1]*sqrt(2)*slope_front,center=true);
         }
         //also, slope in the dovetail tooth to avoid marring at the bottom:
         hull(){
             reflect([0,0,1]){
                 translate_z(slope_front){
-                    rotate([0,45,0]){
+                    rotate_y(45){
                         cube([(inner_w)/sqrt(2),dt*2,inner_w/sqrt(2)],center=true);
                     }
                 }

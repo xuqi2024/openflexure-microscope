@@ -385,14 +385,14 @@ module clamping_bolt_and_nut(p){
         translate([0, clamp_y, h/2]){
             $fn = 16;
             // Counterbored hole for screw (in solid block)
-            rotate([0, 90, 0]){
+            rotate_y(90){
                 cylinder(d=3*1.2, h=99);
             }
             // Nut trap, with angled entry (in the clamp)
-            rotate([0, -90, 0]){
+            rotate_y(-90){
                 cylinder(d=3*1.2, h=key_lookup("clamp_t", p)); //shaft of the screw
                 translate_z( fillet_r + 2){
-                    rotate([0,0,60]){
+                    rotate_z(60){
                         sequential_hull(){
                             // TODO: replace this with a proper parametric nut trap!
                             cylinder(r=3*1.1, h=3.2, $fn=6);
