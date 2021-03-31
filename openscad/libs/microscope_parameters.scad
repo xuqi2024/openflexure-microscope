@@ -182,26 +182,6 @@ wall_h=15; // height of the stiffening vertical(ish) walls
 wall_t=2; //thickness of the stiffening walls
 function inner_wall_h(params) = z_flexures_z2(params) - 10; //height of walls inside xy_stage
 
-// base_mounting_holes returns a list of the holes for mounting the microscope
-// to the base. By default it returns all four holes.
-// To get only the back hole run `base_mounting_holes("back")`
-// To get only the front holes run `base_mounting_holes("front")`
-function base_mounting_holes(params, type="all") = let
-(
-    back_lug_hole_x = back_lug_x_pos(params) + wall_t/2 - lug_back_offset().x,
-    back_pos = [[back_lug_hole_x,-8,0],
-               [-back_lug_hole_x,-8,0]],
-    actuator_offset = [-1, -1, 0] * ss_outer().x/2/sqrt(2),
-    y_front_lug_pos = y_actuator_pos(params) + actuator_offset + [-6.5, .5, 0],
-    front_pos =[y_front_lug_pos,
-                [-y_front_lug_pos.x, y_front_lug_pos.y, 0]],
-    back = (type == "back") || (type == "all"),
-    front = (type == "front") || (type == "all"),
-    //Set which holse to output
-    holes = [back?back_pos:[], front?front_pos:[]]
-    //Final list comprehension make a single list of holes
-) [for (h = holes) each h];
-
 function lug_angles() = [-120, 120, 50, -50];
 
 endstop_extra_ringheight=feet_endstops?1:0;

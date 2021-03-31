@@ -23,7 +23,7 @@ module fl_led_mount(led_d=5){
     union(){
         difference(){
             union(){
-                translate(_y(back_y){
+                translate_y(back_y){
                     mirror([0,1,0]){
                         dovetail_m([w, 1, h], t=2*roc);
                     }
@@ -153,7 +153,7 @@ module illuminator_holder(){
         // cable tie grooves to squeeze it
         repeat([0,12,0],4){
             translate([0,22,h/2]){
-                rotate-90){
+                rotate_x(-90){
                     difference(){
                         cylinder(d=999,h=4.5,$fn=5);
                         cylinder(d=illuminator_d + 2*3, h=999, center=true);

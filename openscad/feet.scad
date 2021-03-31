@@ -206,7 +206,7 @@ module foot(travel=5,       // how far into the foot the actuator can move down
     // printable (i.e. with the bottom on z=0).
 
     y_tr_flat = l/2*tan(tilt)*sin(actuator_tilt);
-    y_tr_tilted = h*tan(actuator_tilt));
+    y_tr_tilted = h*tan(actuator_tilt);
     y_tr = lie_flat ? y_tr_flat : y_tr_tilted;
     translate_y(y_tr){
         //the foot base may be tilted, lie_flat makes this z=0

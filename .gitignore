@@ -5,6 +5,9 @@
 *.g
 *.gcode
 
+# Ignore SCA2D output files
+*.sca2d
+
 # Ignore VIM swap files
 *.swp
 

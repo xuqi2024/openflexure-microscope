@@ -266,7 +266,7 @@ module dovetail_clip_y(size, dt=1.5, t=2, taper=0, endstop=false){
     h = size.y;
     ew = 0;
     reflect_x(){
-        translate_x(-size.x/2]){
+        translate_x(-size.x/2){
             mirror([0,0,1]){
                 sequential_hull(){
                     translate_y(dt){

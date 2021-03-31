@@ -116,7 +116,7 @@ module lens_holder(beam_d=3.5){
         //screws for LED star
         for(i = [0:1]){
             rotate(180*i){
-                translate_y(LEDstar_r]){
+                translate_y(LEDstar_r){
                     rotate_z(180){
                         trylinder_selftap(nominal_d = 3, h = lens_z-pedestal_h - 1);
                     }

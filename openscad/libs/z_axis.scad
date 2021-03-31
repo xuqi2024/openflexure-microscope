@@ -237,14 +237,14 @@ module z_axis_struts(params){
             translate_y(z_nut_y(params)){
                 cylinder(d=w, h=lever_h);
             }
-            translate_y(z_anchor_y + w/2 + 2]){
+            translate_y(z_anchor_y + w/2 + 2){
                 cylinder(d=w, h=z_flexures_z1+2*dz);
             }
             translate([-w/2, z_anchor_y - flex_dims().x - tiny(), z_flexures_z1 + dz]){
                 cube([w,tiny(), 5-tiny()]);
             }
         }
-        translate_y(z_nut_y(params)]){
+        translate_y(z_nut_y(params)){
             actuator_end_cutout();
         }
     }
@@ -506,7 +506,7 @@ module z_cable_housing_top(params, h){
     z_cable_tidy_frame(params, , z_extra=motor_bracket_h()){
         linear_extrude(h){
             projection(cut=true){
-                z_cable_tidy_frame_undo(params, , z_extra=motor_bracket_h()-tiny()){
+                z_cable_tidy_frame_undo(params, z_extra=motor_bracket_h()-tiny()){
                     z_cable_housing(params);
                 }
             }

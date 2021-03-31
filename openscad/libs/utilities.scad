@@ -123,7 +123,7 @@ module nut_from_bottom(d,h=-1,fudge=1.2,shaft=true,chamfer_r=0.75,chamfer_h=0.75
     h=(h<0)?d*0.8:h;
     union(){
         cylinder(h=h,r=0.9*d*fudge,$fn=6);
-        translate_z(-0.05]){
+        translate_z(-0.05){
             cylinder(h=chamfer_h,r1=0.9*d*fudge+chamfer_r,r2=0.9*d*fudge,$fn=6);
         }
         mirror([0,0,1]){

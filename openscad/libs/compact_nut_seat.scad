@@ -23,6 +23,7 @@ function nut_size() = nut_size;
 function column_base_radius() = column_base_r;
 function column_core_size() = column_core;
 function nut_slot_size() = nut_slot;
+//outer size of screw seat
 function ss_outer(h=-2) = column_core + [wall_t*2,wall_t*2,(h+2)*2];
 
 module nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=-1){

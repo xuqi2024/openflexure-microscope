@@ -1,3 +1,5 @@
+use <./utilities.scad>
+
 module endstop_switch(){
     cube([8.6,4.8,3]);
     //pads

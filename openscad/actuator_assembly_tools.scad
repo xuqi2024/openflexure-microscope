@@ -128,7 +128,7 @@ module band_tool(){
                 }
                 translate_y(l-20){
                     xz_slice(){
-                        translate_y(-handle_l,0]){
+                        translate_y(-handle_l,0){
                             tool_handle();
                         }
                     }
@@ -145,14 +145,14 @@ module band_tool(){
         }
         // cut-out to clear the hook
         hull(){
-            translate_y(l,1.5]){
+            translate([0,l,1.5]){
                 scale([1,1,0.66]){
                     rotate_x(90){
                         cylinder(r=1.4,h=18,center=true);
                     }
                 }
             }
-            translate_y(l,2+3]){
+            translate([0,l,2+3]){
                 rotate_x(90){
                     cylinder(r=2.3,h=40,center=true);
                 }
