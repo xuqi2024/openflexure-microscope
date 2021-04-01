@@ -17,10 +17,7 @@ code_quality:
             codequality:
               - gl-code-quality-report.json
         expire_in: 1 week
-    only:
-      - tags
-      - merge_requests
-      - web
+    #no only on the code quality so that bases to pipelines can be found for MRs
 
 # Unit testing of the scad library functions
 scad-lib-tests:
