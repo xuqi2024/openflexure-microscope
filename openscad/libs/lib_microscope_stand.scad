@@ -800,7 +800,7 @@ module new_bucket(params, h, pi_stand_h){
 }
 
 
-module pi_stand_frame_xy(primative=false){
+module pi_stand_frame_xy(params, primative=false){
     initial_pos = primative ? [0,0,0] : [5,0,2];
     translate([28, -38, 0]){
         rotate(-y_wall_angle(params)){
@@ -822,7 +822,7 @@ module new_bucket_base_primative(params, ex_rad=3){
     minkowski(){
         hull(){
             reflect_x(){
-                pi_stand_frame_xy(primative=true){
+                pi_stand_frame_xy(params, primative=true){
                     cube(pi_block_size);
                 }
             }
@@ -844,7 +844,7 @@ module new_stand(params, pi_stand_h){
 
     difference(){
         new_bucket(params, h, pi_stand_h);
-        pi_stand_frame_xy(){
+        pi_stand_frame_xy(params){
             translate(-extra_space/2){
                 cube(pi_cutout_size);
             }
@@ -858,6 +858,7 @@ module new_stand(params, pi_stand_h){
 
 //TODO remove this befoe release
 module to_print(){
+    params = default_params();
     pi_stand_h = 42;
     new_stand(params, pi_stand_h);
     //pi_stand(pi_stand_h);
@@ -865,6 +866,7 @@ module to_print(){
 
 //TODO remove this befoe release
 module rendered(){
+    params = default_params();
     pi_stand_h = 42;
     color("#505050"){
         render(6){
@@ -873,7 +875,7 @@ module rendered(){
     }
     color("Dodgerblue"){
         render(6){
-            pi_stand_frame_xy(){
+            pi_stand_frame_xy(params){
                 pi_stand(pi_stand_h);
             }
         }
@@ -889,7 +891,6 @@ function pi_stand_base_size() = let(
 ) board_size + 2 * pi_stand_board_inset();
 
 module pi_stand(h=50){
-    thickness = pi_stand_thickness();
     hole_inset = [3.5, 3.5, 0];
     board_inset = pi_stand_board_inset();
     standoff_h = 4.5;
