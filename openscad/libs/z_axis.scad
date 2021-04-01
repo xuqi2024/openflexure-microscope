@@ -147,7 +147,7 @@ module objective_fitting_wedge(params, h=undef, nose_shift=0.2, center=false){
     translate_y(objective_mount_y){
         mirror([0,1,0]){
             hull(){
-                translate([nose_position]){
+                translate(nose_position){
                     cube([nose_width+2*nose_shift, tiny(), height]);
                 }
                 reflect_x(){
