@@ -5,6 +5,23 @@ stages:
     - deploy
     - zenodo
 
+code_quality:
+    stage: test
+    image: python:3.7
+    allow_failure: true
+    script:
+      - pip install sca2d
+      - sca2d --colour --gitlab-report openscad/
+    artifacts:
+        reports:
+            codequality:
+              - gl-code-quality-report.json
+        expire_in: 1 week
+    only:
+      - tags
+      - merge_requests
+      - web
+
 # Unit testing of the scad library functions
 scad-lib-tests:
     stage: test
