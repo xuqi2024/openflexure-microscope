@@ -21,15 +21,15 @@ use <./locking_dovetail.scad>
 use <./z_axis.scad>
 use <./libdict.scad>
 
-function illumination_dovetail_w(params) = 30; // width of the dovetail
-function illumination_dovetail_y(params) = 35; // position of the mating surface
+function illumination_dovetail_w() = 30; // width of the dovetail
+function illumination_dovetail_y() = 35; // position of the mating surface
 function illumination_dovetail_z(params) = leg_height(params)-2;
-function illumination_dovetail_blockdepth(params) = 12; // depth of the block containing the dovetail
+function illumination_dovetail_blockdepth() = 12; // depth of the block containing the dovetail
 
 // Set the dovetail parameters dictionary based on the above settings:
 function illumination_dt_params(params) = dovetail_params(
-    width = illumination_dovetail_w(params),
-    block_depth = illumination_dovetail_blockdepth(params),
+    width = illumination_dovetail_w(),
+    block_depth = illumination_dovetail_blockdepth(),
     height = 99
 );
 
@@ -71,7 +71,7 @@ module illumination_dovetail_branding(params, h, bottom_z){
     slope_h = h-lug_h ;
     //top and bottom of y position of the sloped back
     bot_y = right_illumination_screw_pos(params).y+5;
-    top_y = illumination_dovetail_y(params)+illumination_dovetail_blockdepth(params);
+    top_y = illumination_dovetail_y()+illumination_dovetail_blockdepth();
     back_angle = atan((top_y-bot_y)/slope_h);
     logo_z = bottom_z+lug_h +slope_h/2;
     logo_y = (top_y+bot_y)/2+.5;
@@ -83,15 +83,10 @@ module illumination_dovetail_branding(params, h, bottom_z){
     }
 }
 
-module illumination_dovetail_structure(params, h, dt_z, dt_h){
+module illumination_dovetail_structure(params, dt_z, dt_h){
     //this is the outer structure that forms the illumination mount.
-    dt_w = illumination_dovetail_w(params);
-    dt_y = illumination_dovetail_y(params);
+    dt_y = illumination_dovetail_y();
 
-    //nominal postion of the corner of the cubes that form this  structure
-    cube_corner = [-dt_w/2, dt_y, dt_z];
-    //distance cubes are moved forward and backward in y respectivly
-    delta_y = illumination_dovetail_blockdepth(params);
     hull(){
         translate([0, dt_y, dt_z]){
             mirror([0,1,0]){
@@ -119,8 +114,7 @@ module illumination_dovetail(params, h=50){
 
     // z position where we mount it
     bottom_z = illumination_dovetail_z(params);
-    dt_w = illumination_dovetail_w(params);
-    dt_y = illumination_dovetail_y(params);
+    dt_y = illumination_dovetail_y();
     // Where the dovetail itself starts (relative to the bottom of the structure)
     start_z = 14;
     // z position of the dovetail, in microscope referecne frame
@@ -131,7 +125,7 @@ module illumination_dovetail(params, h=50){
     lug_h = illumination_dovetail_lug_height();
 
     difference(){
-        illumination_dovetail_structure(params, h, dt_z, dt_h);
+        illumination_dovetail_structure(params, dt_z, dt_h);
         // slots for the mounting screws (to allow adjustment of position)
         each_illumination_screw(params){
             // wider than normal M3 clearance hole to ease adjustment of illumination
@@ -233,15 +227,14 @@ module tall_condenser(params, lens_d, lens_t, lens_assembly_z){
     dt_block_depth = 16;
     dt_height = 20;
     dt_params = dovetail_params(
-        width=illumination_dovetail_w(params),
+        width=illumination_dovetail_w(),
         height=dt_height,  // do we want to keep this so tall?  It would probably be fine if we made it shorter.
         block_depth = dt_block_depth,
         taper_block = true
     );
-    dovetail_end_y = illumination_dovetail_y(params) - dt_block_depth;
 
     // the dovetail clip
-    translate_y(illumination_dovetail_y(params)){
+    translate_y(illumination_dovetail_y()){
         dovetail_clamp_m(dt_params);
     }
 
@@ -254,7 +247,7 @@ module tall_condenser(params, lens_d, lens_t, lens_assembly_z){
             translate_z(-bottom_height){
                 cylinder(r=base_r, h=dt_height + bottom_height);
             }
-            translate_y(illumination_dovetail_y(params)){
+            translate_y(illumination_dovetail_y()){
                 linear_extrude(dt_height){
                     back_of_block_2d(dt_params);
                 }

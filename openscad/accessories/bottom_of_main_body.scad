@@ -4,7 +4,7 @@
 // under the feet, to allow them to protrude through
 // the plate.
 
-use <../main_body.scad>
+use <../libs/main_body_structure.scad>
 use <../libs/microscope_parameters.scad>
 use <../libs/utilities.scad>
 params = default_params();

@@ -137,17 +137,22 @@ module objective_fitting_wedge(params, h=undef, nose_shift=0.2, center=false){
     // the gap at the tip, if we are making the optics module).  If subtracting this
     // to make a mount for the optics module, use nose_shift < 0
 
-    h = is_undef(h) ? z_flexures_z2(params)+4 : h;
-    nw = objective_mount_nose_w; //width of the pointy end
+    height = is_undef(h) ? z_flexures_z2(params)+4 : h;
+    //width of the pointy end
+    nose_width = objective_mount_nose_w;
+    nose_x = -nose_width/2-nose_shift;
+    nose_y = nose_shift;
+    nose_z = center ? -height/2 : 0;
+    nose_position = [nose_x, nose_y, nose_z];
     translate_y(objective_mount_y){
         mirror([0,1,0]){
             hull(){
-                translate([-nw/2-nose_shift,nose_shift,center?-h/2:0]){
-                    cube([nw+2*nose_shift,tiny(),h]);
+                translate([nose_position]){
+                    cube([nose_width+2*nose_shift, tiny(), height]);
                 }
                 reflect_x(){
-                    translate([-nw/2-5+sqrt(2), 5+sqrt(2), 0]){
-                        cylinder(r=2, h=h, $fn=16, center=center);
+                    translate([-nose_width/2-5+sqrt(2), 5+sqrt(2), 0]){
+                        cylinder(r=2, h=height, $fn=16, center=center);
                     }
                 }
             }
@@ -440,7 +445,7 @@ module z_actuator_assembly(params){
 
 
 
-module z_housing_frame(params, h, y_actuator=false){
+module z_housing_frame(params, y_actuator=false){
     tilt = z_actuator_tilt(params);
     x_tr = y_actuator ? -23 : 23;
     angle = y_actuator ? 15 : -15;
@@ -500,8 +505,6 @@ module z_cable_housing(params){
 }
 
 module z_cable_housing_top(params, h){
-    tilt = z_actuator_tilt(params);
-    z_tr = z_motor_z_pos(params) + motor_bracket_h();
     // Must untilt and trasnlate before cutting. Then undo transforms
     z_cable_tidy_frame(params, , z_extra=motor_bracket_h()){
         linear_extrude(h){
@@ -521,7 +524,7 @@ module z_cable_housing_x(params){
     housing = [motor_connector_size().y+5, motor_connector_size().x+5, h*3];
 
     hull(){
-        z_housing_frame(params, h){
+        z_housing_frame(params){
             translate([housing.x/2-3, housing.y/2-3, 0]){
                 cylinder(r=3,h=housing.z, center=true);
             }
@@ -545,12 +548,12 @@ module z_cable_housing_x(params){
 module z_cable_housing_cutout(params, h=99, top=false){
     cutout_size = [motor_connector_size().y+2, motor_connector_size().x+2, 2*h];
     inset = top ? [2,0,0] : [0,0,0];
-    z_housing_frame(params, h, y_actuator=false){
+    z_housing_frame(params, y_actuator=false){
         translate(-inset){
             cube(cutout_size, center=true);
         }
     }
-    z_housing_frame(params, h, y_actuator=true){
+    z_housing_frame(params, y_actuator=true){
         translate([-4,0,0]+inset){
             cube(cutout_size-[8,0,0], center=true);
         }

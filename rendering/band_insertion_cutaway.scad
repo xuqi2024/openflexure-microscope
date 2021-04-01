@@ -11,7 +11,7 @@ use <../openscad/libs/utilities.scad>
 use <../openscad/actuator_assembly_tools.scad>
 use <../openscad/libs/microscope_parameters.scad>
 use <../openscad/feet.scad>
-use <../openscad/main_body.scad>
+use <../openscad/libs/main_body_structure.scad>
 use <../openscad/libs/libdict.scad>
 use <librender/hardware.scad>
 use <librender/render_settings.scad>

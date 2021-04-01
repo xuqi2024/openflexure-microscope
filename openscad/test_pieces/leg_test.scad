@@ -1,4 +1,4 @@
-use <../main_body.scad>
+use <../libs/main_body_structure.scad>
 use <../libs/microscope_parameters.scad>
 use <../libs/libdict.scad>
 

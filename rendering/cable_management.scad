@@ -7,7 +7,7 @@ use <../openscad/libs/gears.scad>
 use <../openscad/libs/wall.scad>
 use <../openscad/libs/main_body_transforms.scad>
 use <../openscad/libs/z_axis.scad>
-use <../openscad/main_body.scad>
+use <../openscad/libs/main_body_structure.scad>
 use <../openscad/cable_tidies.scad>
 
 use <librender/assembly_parameters.scad>

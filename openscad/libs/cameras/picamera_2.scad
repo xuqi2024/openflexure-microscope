@@ -76,8 +76,7 @@ module picam2_cutout( beam_length=15){
     cw = 8.5 + 1.0;
     //height of camera box (including foam support)
     ch=2.9;
-    //size of camera box
-    camera = [cw,cw,ch];
+
     //size of camera aperture
     hole_r = 4.3;
     union(){
@@ -100,7 +99,6 @@ module picam2_cutout( beam_length=15){
         mh = picamera_2_camera_mount_height();
 
         dz = mh-fh-0.75; // extra height above the flex for the sloping "roof"
-        rw = cw - 2*dz;
         hull(){
             translate_z(-tiny()){
                 linear_extrude(fh){

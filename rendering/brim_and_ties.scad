@@ -1,4 +1,4 @@
-use <../openscad/main_body.scad>
+use <../openscad/libs/main_body_structure.scad>
 use <../openscad/libs/z_axis.scad>
 use <../openscad/libs/utilities.scad>
 use <../openscad/libs/libdict.scad>

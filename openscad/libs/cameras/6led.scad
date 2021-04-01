@@ -36,12 +36,6 @@ $fn=32;
 
 function 6led_camera_sensor_height() = m12_camera_sensor_height(); //Height of the sensor above the PCB
 
-
-module 6led_lens_mount(){
-    m12_lens_mount();
-}
-
-
 function 6led_camera_mount_height()=m12_camera_mount_height();
 
 module 6led_camera_mount(){ //this is the same as the M12 mount

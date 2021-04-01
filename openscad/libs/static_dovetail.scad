@@ -171,8 +171,8 @@ module dovetail_m(size=[10,2,10],
                   t=2,
                   top_taper=1,
                   bottom_taper=0.5,
-                  waist=0,
-                  waist_dx=0.5,
+                  waist_height=0,
+                  waist_depth=0.5,
                   r=0.5){
     // Male dovetail, contact plane is y=0, dovetail is in y>0
     // size is a box that is centred in X, sits on Z=0, and extends
@@ -182,7 +182,7 @@ module dovetail_m(size=[10,2,10],
     // female dovetail clip.  The size of the dovetail is set by dt.
     // t sets the thickness of the female dovetail arms; the dovetail
     // is actually size.x-2*t wide.
-    r=r; //radius of curvature - something around nozzle width is good.
+    //r =radius of curvature - something around nozzle width is good.
     w=size.x-2*t; //width of dovetail
     h=size.z; //height
     corner=[w/2-dt,0,0]; //location of the pointy bit of the dovetail
@@ -226,14 +226,16 @@ module dovetail_m(size=[10,2,10],
                     // the "plug" is chamfered for easy insertion, and has
                     // a waist in the middle. The depth of the waist is set by the
                     // waist parameter.
-                    waist_dx = waist>waist_dx*4 ? waist_dx : 0;
-                    waist_dz = waist>waist_dx*4 ? waist_dx*2 : tiny();
+                    // Disable the waist if the height is too small.
+                    waist_dx = waist_height>waist_depth*4 ? waist_depth : 0;
+                    //waist_dz is sets the chamfer
+                    waist_dz = waist_height>waist_depth*4 ? waist_depth*2 : tiny();
                     zx_profile = [[0,-bottom_taper],
                                   [bottom_taper,0],
-                                  [h/2-waist/2,0],
-                                  [h/2-waist/2+waist_dz,-waist_dx],
-                                  [h/2+waist/2-waist_dz,-waist_dx],
-                                  [h/2+waist/2,0],
+                                  [h/2-waist_height/2,0],
+                                  [h/2-waist_height/2+waist_dz,-waist_dx],
+                                  [h/2+waist_height/2-waist_dz,-waist_dx],
+                                  [h/2+waist_height/2,0],
                                   [h-top_taper,0],
                                   [h-tiny(),-top_taper/2]];
                     dovetail_plug(corner.x, r, dt, zx_profile);

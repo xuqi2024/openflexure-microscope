@@ -1,7 +1,7 @@
 use <../openscad/libs/illumination.scad>;
 use <../openscad/libs/utilities.scad>;
 use <../openscad/libs/microscope_parameters.scad>;
-use <../openscad/main_body.scad>
+use <../openscad/libs/main_body_structure.scad>
 use <../openscad/libs/libdict.scad>;
 use <librender/render_settings.scad>;
 use <librender/assembly_parameters.scad>;

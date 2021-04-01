@@ -64,10 +64,10 @@ module camera_mount(screwhole=true, counterbore=false){
 
 module camera_bottom_mounting_posts(h=-1, r=-1, outers=true, cutouts=true){
     if(camera=="logitech_c270"){
-        c270_bottom_mounting_posts();
+        assert(false, "This camera option does not have mounting posts set.");
     }
     else if(camera=="m12"){
-        m12_bottom_mounting_posts();
+        assert(false, "This camera option does not have mounting posts set.");
     }
     else if(camera=="6led"){
         6led_bottom_mounting_posts(height=h, radius=r, outers=outers, cutouts=cutouts);
