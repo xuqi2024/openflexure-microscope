@@ -26,14 +26,16 @@ code_quality:
 # Unit testing of the scad library functions
 scad-lib-tests:
     stage: test
-    image: ubuntu:18.04
+    image: ubuntu:20.04
+
+    variables:
+      # prevents config waiting for user input, e.g. for tzdata
+      DEBIAN_FRONTEND: noninteractive
 
     before_script:
       - apt-get update -qq
-      - apt-get -y -qq install software-properties-common apt-transport-https
-      - add-apt-repository -y ppa:openscad/releases
-      - apt-get update -qq
-      - apt-get install -y -qq openscad
+      - apt-get -y -qq install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates python3-pip openscad git
+      - pip3 install -r requirements.txt
 
     script:
       - openscad/libs/test/test_dict.py
