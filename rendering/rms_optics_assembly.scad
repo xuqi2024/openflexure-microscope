@@ -2,7 +2,7 @@ use <../openscad/libs/utilities.scad>
 use <../openscad/libs/microscope_parameters.scad>
 use <../openscad/libs/z_axis.scad>
 use <../openscad/lens_tool.scad>
-use <../openscad/optics.scad>
+use <../openscad/libs/lib_optics.scad>
 use <librender/render_utils.scad>
 use <librender/render_settings.scad>
 use <librender/optics.scad>

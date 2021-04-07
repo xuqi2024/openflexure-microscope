@@ -26,7 +26,7 @@ use <./libs/locking_dovetail.scad>
 use <./libs/z_axis.scad>
 include <./libs/microscope_parameters.scad> // NB this defines "camera" and "optics"
 use <./libs/threads.scad>
-use <optics.scad>
+use <./libs/lib_optics.scad>
 use <./libs/lenses/lens.scad>
 use <./libs/cameras/camera.scad> // Defines camera_bottom_mounting_posts
 
