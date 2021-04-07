@@ -13,9 +13,10 @@ stages:
       # prevents config waiting for user input, e.g. for tzdata
       DEBIAN_FRONTEND: noninteractive
 
+    # Install everything needed for all OpenSCAD jobs so they run in a consistent environment
     before_script:
       - apt-get update -qq
-      - apt-get -y -qq install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates python3-pip openscad git
+      - apt-get -y -qq install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates python3-pip openscad git xvfb imagemagick unzip inkscape
       - pip3 install -r requirements.txt
 
 # Unit testing of the scad library functions
