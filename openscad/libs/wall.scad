@@ -102,7 +102,7 @@ module mounting_lug_wall_vertex(params){
 
 
 function y_actuator_wall_vertex_position(params, inside=true) = let(
-    tansverse_distance = ss_outer().x/2 - wall_t/2,
+    tansverse_distance = actuator_housing_xy_size().x/2 - wall_t/2,
     x_sign = inside? 1 : -1
 ) y_actuator_pos(params) + [x_sign, x_sign, 0]*tansverse_distance/sqrt(2);
 
@@ -117,7 +117,7 @@ module y_actuator_wall_vertex(params, inside=true){
 
 module z_actuator_wall_vertex(params, front=true){
     if (front){
-        y_tr = z_nut_y(params)+ss_outer().y/2-wall_t/2;
+        y_tr = z_nut_y(params)+actuator_housing_xy_size().y/2-wall_t/2;
         translate_y(y_tr){
             wall_vertex();
         }

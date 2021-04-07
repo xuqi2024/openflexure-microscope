@@ -20,6 +20,8 @@ function tiny() = 0.05;
 
 function zero_z(size) = [size.x, size.y, 0]; //set the Z component of a 3-vector to 0
 
+function if_undefined_set_default(argument, default) = is_undef(argument) ? default : argument;
+
 module translate_x(x_tr){
     translate([x_tr, 0, 0]){
         children();

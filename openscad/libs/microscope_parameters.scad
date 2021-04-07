@@ -27,7 +27,6 @@
 use <./libdict.scad>
 
 // These are the most useful parameters to change!
-motor_lugs = true;
 
 camera = "picamera_2"; //see cameras/camera.scad for valid values
 optics = "rms_f50d13"; //see optics.scad for valid values
@@ -54,7 +53,8 @@ function default_params() = [["leg_r", 30],     // radius on which the innermost
                              ["condenser_angle", 0], //angle of the top of the condenser relative to the xy plane
                              ["print_ties", true], //sets whether the ties that support printing are on. It is usefull to be able to turn these off for rendering
                              ["smart_brim_r", 5], // The radius of the smart brim on the main body
-                             ["actuator_h", 25] //height of the actuator columns
+                             ["actuator_h", 25], //height of the actuator columns
+                             ["include_motor_lugs", true]
                             ];
 
 
@@ -99,16 +99,9 @@ dz = 0.5; //small increment in Z (~ 2 layers)
 // overall width of parallelogram legs that support the stage
 function leg_outer_w(params) = leg_middle_w + 2*flex_dims().y + 2*leg_dims(params).x;
 
-//TODO understand and check this. Where are those numbers from?
-// dimensions of the core part of the actuating levers for X and Y -
-// NB should match the column_base_r in compact_nut_seat.scad
-function actuator_dims(params) = let(
-    width = 3*1.2+2*2
- ) [width, actuating_nut_r(params), 6];
-
 // TODO: Work out why this has this name and change it
 // distance from leg_r to the actuating nut/screw for the XY axes
-// Length of actuator is the diference in sistance between flexures
+// Length of actuator is the diference in distance between flexures
 // at top and bottom of leg, multiplied by the lever ratio
 function actuating_nut_r(params) = let(
     xy_lever_ratio = key_lookup("xy_lever_ratio", params)

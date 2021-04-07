@@ -7,24 +7,68 @@ An attempt at an alternative to my ageing "nut_seat_with_flex" design...
 */
 
 use <./utilities.scad>
+use <./libdict.scad>
 include <./microscope_parameters.scad>
 
-nut_size = 3;
-nut_w = 6.3*1.1; //nominal width of the nut (vertex-to-vertex, bigger than flat-flat distance - 6.3 is theoretical value and the 1.03 is determined by experiment)
-nut_h = 2.6;
-nut_slot = [nut_w*sin(60), nut_w, nut_h+0.4];
-shaft_r = nut_size/2 * 1.15; //radius of hole to cut for screw
-column_base_r = shaft_r + 2; //radius of the bottom of the actuator column
 
-column_core = zero_z(nut_slot) + 2*[1.5+7+1, 1.5+1.5, 0];// NB leave z=0 here
-wall_t = 1.6; //thickness of the wall around the column for the screw seat
 
-function nut_size() = nut_size;
-function column_base_radius() = column_base_r;
-function column_core_size() = column_core;
-function nut_slot_size() = nut_slot;
-//outer size of screw seat
-function ss_outer(h=-2) = column_core + [wall_t*2,wall_t*2,(h+2)*2];
+
+/**
+* Nominal thread size of the actuator nut
+*/
+function actuator_nut_size() = 3;
+
+/**
+* Radius of hole to cut for actuator screw
+*/
+function actuator_shaft_radius() = actuator_nut_size()/2 * 1.15;
+
+/**
+* Radius of the bottom of the actuator column
+* Note that this sets width of the actuator column. However, the column
+* itself is stretched into an oval to match the depth of the top cube of
+* the column (i.e. where the nut trap is)
+*/
+function column_base_radius() = actuator_shaft_radius() + 2;
+
+/**
+* The dimensions of the actuating lever for the x and y axes
+*/
+function actuator_dims(params) = let(
+    width = column_base_radius()*2
+ ) [width, actuating_nut_r(params), 6];
+
+/**
+* The dimensions of the but slot in the actuator
+*/
+function actuator_nut_slot_size() = let(
+    //nominal width of the nut (vertex-to-vertex) multiplied by a clearance factor of 10%
+    nut_w = 6.3*1.1,
+    nut_h = 2.6
+) [nut_w*sin(60), nut_w, nut_h+0.4];
+
+
+//TODO find out where all the magic numbers come from
+function column_core_size() = let(
+    nut_slot_xy =  zero_z(actuator_nut_slot_size()),
+    // Adding extra material to the column. Note, must leave z=0 here
+    extra_xy =  2*[1.5+7+1, 1.5+1.5, 0]
+) nut_slot_xy + extra_xy;
+
+/**
+* Thickness of the actuator housing wall
+*/
+function actuator_wall_t() = 1.6;
+
+/**
+* The xy size of the the actuator housing (outer dimensions)
+* Note that this returns a 3-vector with z=0
+*/
+function actuator_housing_xy_size() = let(
+    extra_size_for_walls = [2, 2, 0]*actuator_wall_t()
+) column_core_size() + extra_size_for_walls;
+
+function actuator_entry_width() = 2*column_base_radius()+3;
 
 module nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=-1){
     // A cut-out that will hold a nut.  The nut slots in horizontally
@@ -81,8 +125,8 @@ module m3_nut_trap_with_shaft(slot_angle=0,tilt=0)
         rotate_z(slot_angle){
             translate_z(1){
                 union(){
-                    nut_trap_and_slot(nut_size, nut_slot);
-                    cylinder(r=shaft_r, h=999, $fn=16);
+                    nut_trap_and_slot(actuator_nut_size(), actuator_nut_slot_size());
+                    cylinder(r=actuator_shaft_radius(), h=999, $fn=16);
                 }
             }
         }
@@ -93,7 +137,7 @@ module central_actuator_column(h, top){
     //The central column of the actuator including the square head. The column extends down
     //past the bottom of the base and must be cut
     $fn=16;
-    r1 = column_base_r; //size of the bottom part
+    r1 = column_base_radius(); //size of the bottom part
     r2 = sqrt(top.x*top.x+top.y*top.y)/2; //outer radius of top
     sequential_hull(){
         translate_z(-99){
@@ -167,7 +211,7 @@ module actuator_ties(tilt=0, lever_tip=3){
     // The ties for the actuator.
     rotate_x(tilt){
         translate_z(lever_tip+flex_dims().z+3){
-            cube([ss_outer().x-wall_t, 1, 0.5], center=true);
+            cube([actuator_housing_xy_size().x-actuator_wall_t(), 1, 0.5], center=true);
         }
     }
 }
@@ -183,7 +227,7 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
     //join_to_casing: if set to true, the column is joined to the casing by thin threads
     //no_voids: don't leave a void for the nut or screw, used for the drilling jig.
 
-    top = nut_slot + [3,3,nut_size + 1.5]; //size of the top part
+    top = actuator_nut_slot_size() + [3,3,actuator_nut_size() + 1.5]; //size of the top part
     slot_angle = flip_nut_slot ? 180 : 0; //enter from -y if needed
     $fn=16;
     difference(){
@@ -206,7 +250,7 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
             rotate_x(tilt){
                 rotate(slot_angle){
                     translate_z(h-top.z){
-                        nut_trap_and_slot(nut_size, nut_slot);
+                        nut_trap_and_slot(actuator_nut_size(), actuator_nut_slot_size());
                     }
                 }
             }
@@ -217,10 +261,10 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
         if(!no_voids){
             rotate_x(tilt){
                 translate_z(lever_tip){
-                    cylinder(r=shaft_r, h=999);
+                    cylinder(r=actuator_shaft_radius(), h=999);
                     translate_z(-lever_tip+1){
                         //pointy bottom (stronger)
-                        cylinder(r1=0, r2=shaft_r, h=lever_tip-1);
+                        cylinder(r1=0, r2=actuator_shaft_radius(), h=lever_tip-1);
                     }
                 }
             }
@@ -265,9 +309,11 @@ module actuator_end_cutout(lever_tip=3-0.5 ){
     }
 }
 
-module nut_seat_silhouette(r=ss_outer().y/2, dx=ss_outer().x-ss_outer().y, offset=0){
+module nut_seat_silhouette(offset=0){
     // a (2D) shape made from the convex hull of two circles od radius r
     // we don't actually build it like that though, as the hull is a slow operation.
+    r=actuator_housing_xy_size().y/2;
+    dx=actuator_housing_xy_size().x-actuator_housing_xy_size().y;
     union(){
         reflect([1,0]){
             translate([dx/2,0]){
@@ -283,16 +329,16 @@ module nut_seat_void(h=1, tilt=0, center=true){
     // h is the height of the top (excluding nut hole)
     // center=true will cause it to punch through the bottom.
     // This ensures enough clearance to let the actuator column move.
-    r = column_core.y/2;
-    x = column_core.x/2 - r;
+    r = column_core_size().y/2;
+    x = column_core_size().x/2 - r;
     rotate_x(tilt){
         intersection(){
             linear_extrude(999,center=center){
-                nut_seat_silhouette(offset=-wall_t);
+                nut_seat_silhouette(offset=-actuator_wall_t());
             }
             translate_z(h){
                 rotate(90){
-                    hole_from_bottom(nut_size*1.1/2, h=999, base_w=999);
+                    hole_from_bottom(actuator_nut_size()*1.1/2, h=999, base_w=999);
                 }
             }
         }
@@ -303,9 +349,10 @@ module screw_seat_shell(h=1, tilt=0){
     // Outside of the actuator column housing - this is the structure that
     // the gear sits on top of.  It needs to be hollowed out before use
     // (see screw_seat)
-    r = ss_outer(h).y/2;
-    x = ss_outer(h).x/2 - r;
-    double_h = ss_outer(h).z;
+    r = actuator_housing_xy_size().y/2;
+    x = actuator_housing_xy_size().x/2 - r;
+    // Create a slightly over double height column and cut off bottom
+    double_h = (h+2)*2;
     difference(){
         rotate_x(tilt){
             hull(){
@@ -363,22 +410,27 @@ module motor_lugs(h=20, tilt=0, angle=0){
     }
 }
 
-module screw_seat(h, travel, tilt=0, entry_w=2*column_base_r+3, extra_entry_h=7, motor_lugs=false, lug_angle=0, label=""){
+module screw_seat(params, h, travel, tilt=0, extra_entry_h=7, include_motor_lugs=undef, lug_angle=0, label=""){
     // This forms a hollow column, usually built around an actuator_column to
     // support the screw (see screw_seat_shell)
+
+    create_motor_lugs = if_undefined_set_default(include_motor_lugs,
+                                                 key_lookup("include_motor_lugs", params));    
+
     entry_h = extra_entry_h + travel; //ensure the actuator can move
-    nut_slot_z = h-nut_size-1.5-nut_slot.z;
+    nut_slot_z = h-actuator_nut_size()-1.5-actuator_nut_slot_size().z;
     difference(){
         union(){
             screw_seat_shell(h=h + travel, tilt=tilt);
-            if(motor_lugs){
+
+            if(create_motor_lugs){
                 rotate(180){
                     motor_lugs(h=h + travel, angle=lug_angle, tilt=-tilt);
                 }
             }
             if(len(label) > 0){
                 rotate_x(tilt){
-                    translate([0, ss_outer(h).y/2, nut_slot_z - 2]){
+                    translate([0, actuator_housing_xy_size().y/2, nut_slot_z - 2]){
                         rotate_x(90){
                             linear_extrude(1, center=true){
                                 mirror([1,0]){
@@ -394,17 +446,17 @@ module screw_seat(h, travel, tilt=0, entry_w=2*column_base_r+3, extra_entry_h=7,
         nut_seat_void(h=h + travel, tilt=tilt);
 
         //allow the actuator to poke in
-        edge_y = ss_outer(h).y/2;
+        edge_y = actuator_housing_xy_size().y/2;
         sparse_matrix_transform(zy=sin(tilt)){
             translate_y(-edge_y){
-                cube([entry_w, edge_y, entry_h*2], center=true);
+                cube([actuator_entry_width(), edge_y, entry_h*2], center=true);
             }
         }
 
         //entrance slot for nut
         rotate_x(tilt){
             translate_z(nut_slot_z){
-                nut_trap_and_slot(nut_size, nut_slot + [0,0,0.3]);
+                nut_trap_and_slot(actuator_nut_size(), actuator_nut_slot_size() + [0,0,0.3]);
             }
         }
     }

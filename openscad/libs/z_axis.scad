@@ -403,14 +403,17 @@ module z_actuator_column(params, ties_only=false){
     }
 }
 
-module z_actuator_housing(params, motor_lugs=motor_lugs){
+module z_actuator_housing(params, include_motor_lugs=undef){
     // This houses the actuator column and provides screw seat/motor lugs
     h = key_lookup("actuator_h", params);
+    inc_motor_lugs = if_undefined_set_default(include_motor_lugs,
+                                              key_lookup("include_motor_lugs", params)); 
     translate_y(z_nut_y(params)){
-        screw_seat(h,
+        screw_seat(params,
+                   h,
                    tilt=z_actuator_tilt(params),
                    travel=z_actuator_travel(params),
-                   motor_lugs=motor_lugs,
+                   include_motor_lugs=inc_motor_lugs,
                    lug_angle=180);
     }
 }

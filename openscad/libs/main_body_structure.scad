@@ -19,7 +19,7 @@ function base_mounting_holes(params, type="all") = let
     back_lug_hole_x = back_lug_x_pos(params) + wall_t/2 - lug_back_offset().x,
     back_pos = [[back_lug_hole_x,-8,0],
                [-back_lug_hole_x,-8,0]],
-    actuator_offset = [-1, -1, 0] * ss_outer().x/2/sqrt(2),
+    actuator_offset = [-1, -1, 0] * actuator_housing_xy_size().x/2/sqrt(2),
     y_front_lug_pos = y_actuator_pos(params) + actuator_offset + [-6.5, .5, 0],
     front_pos =[y_front_lug_pos,
                 [-y_front_lug_pos.x, y_front_lug_pos.y, 0]],
@@ -297,10 +297,13 @@ module xy_actuators(params, ties_only=false){
 }
 
 module xy_screw_seat(params, label=""){
+
     h = key_lookup("actuator_h", params);
-    screw_seat(h,
+    include_motor_lugs = key_lookup("include_motor_lugs", params);
+    screw_seat(params,
+               h,
                travel=xy_actuator_travel(params),
-               motor_lugs=motor_lugs,
+               include_motor_lugs=include_motor_lugs,
                extra_entry_h=actuator_dims(params).z+2,
                label=label);
 }

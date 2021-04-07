@@ -10,17 +10,26 @@ use <./libs/utilities.scad>
 use <./libs/compact_nut_seat.scad>
 include <./libs/microscope_parameters.scad>
 
-ns = nut_slot_size();
-shaft_d = nut_size()*1.1;
+ns = actuator_nut_slot_size();
+shaft_d = actuator_nut_size()*1.1;
 gap = 9; //size of the gap between gear and screw seat
 swing_a = 30; //angle through which the tool swings
-sso = ss_outer(25); //outer size of screw seat
-handle_w = shaft_d+4; //width of the "handle" part
-handle_l = sso.x/2+gap; //length of handle part
+handle_l = actuator_housing_xy_size().x/2+gap; //length of handle part
 holder_height = 20; //height of the band insertion tool holder
 
+
+//#TODO: Stop using default params here
+/**
+* The height to get the band over the actuator. This is the
+* actuator height plus the diameter of the band cord.
+*/
+function height_over_actuator() = let(
+    params = default_params(),
+    actuator_h = key_lookup("actuator_h", params)
+) actuator_h +2;
+
 module tool_handle(){
-    w = handle_w; //width of the handle
+    w = shaft_d+4; //width of the handle
     a = swing_a; //angle through which the tool is moved to tighten the nut
     difference(){
         sequential_hull(){
@@ -42,7 +51,7 @@ module tool_handle(){
             translate([-w/2,(gap*cos(a)-ns.z)/tan(a) + gap*sin(a),0]){
                 cube([w,tiny(),ns.z]);
             }
-            translate([-w/2,sso.x/2*cos(swing_a)+gap*sin(swing_a),0]){
+            translate([-w/2,actuator_housing_xy_size().x/2*cos(swing_a)+gap*sin(swing_a),0]){
                 cube([w,tiny(),ns.z]);
             }
             translate([-ns.x/2,handle_l,0]){
@@ -55,7 +64,7 @@ module tool_handle(){
         }
         //screw seat (in swung-in position)
         rotate([0,180-swing_a,-90]){
-            translate_z(-(gap+sso.z/2)){
+            translate_z(-(gap+height_over_actuator())){
                 screw_seat_shell(25);
             }
         }
@@ -75,7 +84,7 @@ module xz_slice(y=0){
 module nut_tool(){
     w = ns.x-0.6; //width of tool tip (needs to fit through the slot that's ns.x wide
     h = ns.z-0.7; //height of tool tip (needs to fit through slot)
-    l = 5+sso.y/2+3;
+    l = 5+actuator_housing_xy_size().y/2+3;
     difference(){
         union(){
             translate_y(-handle_l){
@@ -99,10 +108,10 @@ module nut_tool(){
         //nut
         translate([0,l,-tiny()]){
             rotate(30){
-                cylinder(r=nut_size()*1.15, h=999, $fn=6);
+                cylinder(r=actuator_nut_size()*1.15, h=999, $fn=6);
             }
         }
-        translate([0,l-nut_size()*1.15+0.4,-tiny()]){
+        translate([0,l-actuator_nut_size()*1.15+0.4,-tiny()]){
             cylinder(r=1,h=999,$fn=12);
         }
     }
@@ -112,7 +121,7 @@ module nut_tool(){
 module band_tool(){
     w = ns.x-0.5; //width of tool tip
     h = 4.5; //height of tool tip (needs to fit through slot)
-    l = sso.z/2+foot_height+5;
+    l = height_over_actuator()+foot_height+5;
     // presently, the hook on the actuator is a 1mm radius cylinder, centred
     // 3.5mm from the edge of the (elliptical) wall of the screw seat.
     difference(){
@@ -179,7 +188,7 @@ module band_tool(){
     }
 }
 
-band_tool_l = sso.z/2+foot_height+holder_height;
+band_tool_l = height_over_actuator()+foot_height+holder_height;
 band_tool_w = ns.x-0.5;
 band_tool_h = 4;
 
@@ -318,7 +327,8 @@ module double_ended_band_tool(bent=false){
         translate_z(0.5/2){
             cube([ns.x,middle_w+2*tiny(),0.5],center=true);
         }
-    }else{
+    }
+    else{
         translate_z(0.5/2){
             cube([ns.x,middle_w+2*flex_l+2*tiny(),0.5],center=true);
         }

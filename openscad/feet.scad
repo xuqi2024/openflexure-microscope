@@ -50,7 +50,7 @@ module skew_flat(tilt, shift=false){
     // touched by the edge of the foot in the unskewed frame - and the skew will
     // move that side of the model downwards.  It's all because we rotate the
     // model about the corner, rather than the centre...
-    l = ss_outer().y;
+    l = actuator_housing_xy_size().y;
     z_shift = shift ? l/2*tan(tilt) : 0;
 
     skew_matrix = [[1, 0, 0, 0],
@@ -163,7 +163,7 @@ module foot_letter(letter="", actuator_tilt=0, h=10, base_cleareance=2){
     //For letters that got below the line, base clearance may need increasing
 
     //Calculate the y and z position in the tilted frame
-    y_tr_tilted_frame = ss_outer().y/2-.5;
+    y_tr_tilted_frame = actuator_housing_xy_size().y/2-.5;
     z_tr_tilted_frame = -y_tr_tilted_frame*tan(actuator_tilt) + h/2 + base_cleareance;
 
     // y and z position in the untilted frame
@@ -189,14 +189,13 @@ module foot(travel=5,       // how far into the foot the actuator can move down
             bottom_tilt=0,  // the angle of the bottom of the foot
             hover=0,        // distance between the foot and the ground
             actuator_tilt=0,// the angle of the top of the foot
-            entry_w=2*column_base_radius()+3,
             lie_flat=true,
             letter=""){
     // The feet sit at the bottoms of the actuator columns.  Their main
     // function is to anchor the Viton bands and provide downward force.
 
-    w = ss_outer().x; //size of the outside of the screw seat column
-    l = ss_outer().y;
+    w = actuator_housing_xy_size().x; //size of the outside of the screw seat column
+    l = actuator_housing_xy_size().y;
     cw = column_core_size().x; //size of the inside of the screw seat column
     cl = column_core_size().y;
     wall_t = (w-cw)/2; //thickness of the wall
@@ -260,7 +259,7 @@ module foot(travel=5,       // how far into the foot the actuator can move down
                         difference(){
                             rotate_x(actuator_tilt){
                                 translate([0,-l/2,h-travel-0.5]){
-                                    cube([entry_w, wall_t*3, 999], center=true);
+                                    cube([actuator_entry_width(), wall_t*3, 999], center=true);
                                 }
                             }
                             //NOTE: We do not cut all the way through the foot. This is to keep the foot strong.
@@ -320,7 +319,7 @@ module outer_foot(params, lie_flat=false,letter=""){
 }
 
 module feet_for_printing(params, lie_flat=true){
-    x_tr = ss_outer().x+1.5;
+    x_tr = actuator_housing_xy_size().x+1.5;
     translate([x_tr, 0]){
         outer_foot(params, lie_flat=lie_flat,letter="X");
     }
