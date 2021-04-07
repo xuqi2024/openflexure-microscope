@@ -99,6 +99,16 @@ module repeat(delta, N, center=false){
     }
 }
 
+module xz_slice(y=0){
+    //slice out just the part of something that sits in the XZ plane
+    intersection(){
+        translate_y(y){
+            cube([999,2*tiny(),999],center=true);
+        }
+        children();
+    }
+}
+
 module nut(d,h=-1,center=false,fudge=1.18,shaft=false){
     //make a nut, for metric bolt of nominal diameter d
     //d: nominal bolt diameter (e.g. 3 for M3)

@@ -8,7 +8,7 @@ An illustration for the OpenFlexure Microscope; how to put the nut in
 
 use <../openscad/libs/compact_nut_seat.scad>
 use <../openscad/libs/utilities.scad>
-use <../openscad/actuator_assembly_tools.scad>
+use <../openscad/libs/lib_actuator_assembly_tools.scad>
 use <../openscad/libs/microscope_parameters.scad>
 use <../openscad/feet.scad>
 use <../openscad/libs/main_body_structure.scad>
@@ -60,7 +60,7 @@ module render_frame(frame_dict){
     color(tools_colour(), 1){
         translate([0,0,-45]+tool_tr){
             rotate_z(90){
-                double_ended_band_tool(bent=true);
+                band_tool(params, bent=true);
             }
         }
     }

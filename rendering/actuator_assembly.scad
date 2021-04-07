@@ -1,7 +1,7 @@
 
 use <../openscad/libs/gears.scad>
 use <../openscad/libs/utilities.scad>
-use <../openscad/actuator_assembly_tools.scad>
+use <../openscad/libs/lib_actuator_assembly_tools.scad>
 use <../openscad/libs/main_body_structure.scad>
 use <../openscad/feet.scad>
 use <librender/hardware.scad>
@@ -53,6 +53,7 @@ module render_body(){
 }
 
 module what_you_need(){
+    params = render_params();
     repeat([0, 40, 0],3,center=true){
         color(extras_colour()){
             large_gear();
@@ -96,14 +97,14 @@ module what_you_need(){
     color(tools_colour()){
         render(6){
             translate_x(52){
-                double_ended_band_tool(bent=false);
+                band_tool(params, bent=false);
             }
         }
     }
     color(tools_colour()){
         render(6){
             translate([65, 0, 1.7]){
-                band_tool_holder();
+                band_tool_holder(params);
             }
         }
     }
