@@ -26,8 +26,6 @@
 
 use <./libdict.scad>
 
-$fn=32;
-
 // These are the most useful parameters to change!
 motor_lugs = true;
 
