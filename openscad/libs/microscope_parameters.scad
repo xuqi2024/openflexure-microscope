@@ -154,10 +154,16 @@ function motor_screw_pos(h) = let(
     shaft_pos = motor_shaft_pos(h)
 ) [motor_screw_separation()/2,shaft_pos.y+7.8,shaft_pos.z+motor_lug_h()];
 
-function y_actuator_pos(params) = let(
+function x_actuator_pos(params) = let(
     leg_r = key_lookup("leg_r", params),
     radial_distance = leg_r+actuating_nut_r(params)
-) [-1, 1, 0]*radial_distance/sqrt(2);
+) [1, 1, 0]*radial_distance/sqrt(2);
+
+function y_actuator_pos(params) = let(
+    x_pos = x_actuator_pos(params)
+) [-x_pos.x, x_pos.y, x_pos.z];
+
+function z_actuator_pos(params) = [0, z_nut_y(params), 0];
 
 function y_motor_z_pos(params) = let(
     actuator_h = key_lookup("actuator_h", params)
