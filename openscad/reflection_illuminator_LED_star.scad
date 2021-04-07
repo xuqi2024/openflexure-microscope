@@ -1,7 +1,7 @@
-use <./libs/utilities.scad>;
-use <./optics.scad>;
-include <./libs/microscope_parameters.scad>;
-use <./libs/static_dovetail.scad>;
+use <./libs/utilities.scad>
+use <./optics.scad>
+include <./libs/microscope_parameters.scad>
+use <./libs/static_dovetail.scad>
 
 LEDstar_r = 19/2;
 extra_space = 2.8; //The extra space needed between the radius of the LED star and the size of the screw head

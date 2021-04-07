@@ -18,8 +18,8 @@ key_lookup("$1", p)
 ofu_ -> ""
 */
 
-use <./libdict.scad>;
-use <./utilities.scad>;
+use <./libdict.scad>
+use <./utilities.scad>
 
 function dovetail_default_params() = [
     ["depth", 4],            // y distance between outer flat surface and tip
