@@ -9,7 +9,7 @@ cutting the smaller of the two - so the microscope sits on a 3mm wide
 lip.  This works more nicely than just a big pocket.
 
 */
-use <../microscope_stand.scad>
+use <../libs/lib_microscope_stand.scad>
 
 difference(){
     offset(0.1){

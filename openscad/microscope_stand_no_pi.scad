@@ -1,4 +1,4 @@
-use <microscope_stand.scad>
+use <./libs/lib_microscope_stand.scad>
 use <./libs/utilities.scad>
 use <./libs/microscope_parameters.scad>
 
