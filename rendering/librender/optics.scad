@@ -32,9 +32,9 @@ module flanged_lens(d=16, f=40, cut=4.5, fl_d=18, fl_h=1, n=1.5){
         render(6){
             union(){
                 translate_z(fl_h-tiny()) {
-                    base_lens(d, f, cut+tiny());
+                    base_lens(d, f, cut+tiny(), n=1.5);
                 }
-                cylinder(h=fl_h, d=fl_d, n);
+                cylinder(h=fl_h, d=fl_d);
             }
         }
     }

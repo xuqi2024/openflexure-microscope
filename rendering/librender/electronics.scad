@@ -266,7 +266,7 @@ module motor_jst_connector_body(){
             // the "clip"
             jst_connector_clip();
         }
-        translate(_y(-1.6){
+        translate_y(-1.6){
             cube([99, 4, .6], center=true);
         }
         for (x_pin = [-2, -1, 0, 1, 2]*2.54){
@@ -324,7 +324,7 @@ module jst_pin_void(){
         translate_y(-.7){
             cube([1, 1, 10], center=true);
         }
-};
+}
 
 
 module motor28BYJ48_wire(m_pos, c_pos, m_pin, c_pin, points=[]){
