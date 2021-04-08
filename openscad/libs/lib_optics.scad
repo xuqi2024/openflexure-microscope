@@ -104,6 +104,7 @@ module optical_path(optics_config, lens_aperture_r, lens_z){
 }
 module optical_path_fl(optics_config, lens_aperture_r, lens_z){
     // The cut-out part of a camera mount, with a space to slot in a filter cube.
+    camera_mount_top_z = key_lookup("camera_mount_top_z", optics_config);
     rotation = delta_stage ? 120 : 180; // The angle that the fl module exits from (0* is the dovetail)
     rotate(rotation){
         union(){

@@ -16,7 +16,7 @@ function rms_f50d13_config(camera_type = "picamera_2", beamsplitter=false) = let
 ) config_dict;
 
 function rms_infinity_f50d13_config(camera_type = "picamera_2", beamsplitter=false) = let(
-    finite_config = rms_f50d13_picamera(camera_type, beamsplitter),
+    finite_config = rms_f50d13_config(camera_type, beamsplitter),
     replacements = [["tube_length", 99999], ["camera_mount_top_z", dt_bottom() - 3 - 20]]
 ) replace_multiple_values(replacements, finite_config);
 
