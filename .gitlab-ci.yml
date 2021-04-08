@@ -11,8 +11,8 @@ stages:
 
     variables:
       # prevents config waiting for user input, e.g. for tzdata
-      - DEBIAN_FRONTEND: noninteractive
-      - DEBCONF_NONINTERACTIVE_SEEN: "true"
+      DEBIAN_FRONTEND: noninteractive
+      DEBCONF_NONINTERACTIVE_SEEN: "true"
 
     # Install everything needed for all OpenSCAD jobs so they run in a consistent environment
     before_script:
