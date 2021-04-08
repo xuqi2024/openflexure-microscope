@@ -68,9 +68,9 @@ def generate_rms_optics_modules(writer):
                 output = f"optics_{camera}_{optics}{bs_text}.stl"
 
                 parameters = {
-                    "optics": optics,
-                    "camera": camera,
-                    "beamsplitter": beamsplitter,
+                    "OPTICS": optics,
+                    "CAMERA": camera,
+                    "BEAMSPLITTER": beamsplitter,
                 }
 
                 if optics in RMS_OPTICS:
@@ -83,13 +83,13 @@ def generate_rms_optics_modules(writer):
                     raise ValueError("Unknown RMS optics module!?")
 
                 select_stl_if = {"objective_type": objective_type,
-                                  "camera": camera,
-                                  "reflection_illumination": beamsplitter,
-                                  "base_type": base_type}
+                                 "camera": camera,
+                                 "reflection_illumination": beamsplitter,
+                                 "base_type": base_type}
 
                 writer.openscad(
                     output,
-                    "optics.scad",
+                    "rms_optics_module.scad",
                     parameters=parameters,
                     select_stl_if=select_stl_if,
                 )
