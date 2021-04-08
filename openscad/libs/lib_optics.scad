@@ -105,7 +105,8 @@ module optical_path(optics_config, lens_aperture_r, lens_z){
 module optical_path_fl(optics_config, lens_aperture_r, lens_z){
     // The cut-out part of a camera mount, with a space to slot in a filter cube.
     camera_mount_top_z = key_lookup("camera_mount_top_z", optics_config);
-    rotation = delta_stage ? 120 : 180; // The angle that the fl module exits from (0* is the dovetail)
+    bs_rotation = key_lookup("beamsplitter_rotation", optics_config);
+    rotation = 180 + bs_rotation; // The angle that the fl module exits from (0* is the dovetail)
     rotate(rotation){
         union(){
             translate_z(camera_mount_top_z-tiny()){
@@ -169,10 +170,14 @@ module camera_mount_body(
     // Make a camera mount, with a cylindrical body and a dovetail.
     // Just add a lens mount on top for a complete optics module!
     dt_h=dt_top-dt_bottom();
-    camera_mount_rotation = delta_stage ? -45:0; // The angle of the camera mount (the ribbon cables exits at 135* from dovetail for '0*' &  180* from dovetail for '-45*')
-    fl_cube_rotation = delta_stage ? -60:0; // The angle of the block to hold the fl cube (0* for the fl cube exiting at 180* from the dovetail and -60* for the fl cube exiting at 120* from the dovetail)
-    // This is the main body of the mount
+    camera_rotation = key_lookup("camera_rotation", optics_config);
+    bs_rotation = key_lookup("beamsplitter_rotation", optics_config);
+    // The angle of the camera mount (the ribbon cables exits at 135 defgees from mount for '0' &  180 degrees from mount for '-45')
+    camera_mount_rotation = camera_rotation; 
+    // The angle of the block to hold the fl cube (0 for the fl cube exiting at 180 degree from the mount and -60 for the fl cube exiting at 120 from the mount)
+    fl_cube_rotation = bs_rotation;
 
+    // This is the main body of the mount
     union(){
         //The tube + the camera mount
         difference(){

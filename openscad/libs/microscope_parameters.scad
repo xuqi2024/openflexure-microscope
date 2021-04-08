@@ -27,7 +27,6 @@
 use <./libdict.scad>
 
 led_r = 4.5/2; //size of the LED used for illumination
-delta_stage = false;
 
 // This sets the basic geometry of the default microscope
 // Stages can be built with modified parameters but with **no guarantee** that any other

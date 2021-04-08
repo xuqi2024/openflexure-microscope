@@ -12,7 +12,9 @@ function rms_f50d13_config(camera_type = "picamera_2", beamsplitter=false) = let
                    ["beamsplitter", beamsplitter],
                    ["gripper_t", 1],
                    ["tube_length", 150],
-                   ["camera_mount_top_z", dt_bottom() - 3 - 8]]
+                   ["camera_mount_top_z", dt_bottom() - 3 - 8],
+                   ["camera_rotation", 0],
+                   ["beamsplitter_rotation", 0]]
 ) config_dict;
 
 function rms_infinity_f50d13_config(camera_type = "picamera_2", beamsplitter=false) = let(
@@ -30,7 +32,9 @@ function rms_f40d16_config(camera_type = "picamera_2", beamsplitter=false) = let
                    ["beamsplitter", beamsplitter],
                    ["gripper_t", 0.65],
                    ["tube_length", 150],
-                   ["camera_mount_top_z", dt_bottom() - 3]]
+                   ["camera_mount_top_z", dt_bottom() - 3],
+                   ["camera_rotation", 0],
+                   ["beamsplitter_rotation", 0]]
 ) config_dict;
 
 function pilens_config(camera_type = "picamera_2") = let(
