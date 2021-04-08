@@ -7,9 +7,9 @@
 */
 
 
-include <./libs/microscope_parameters.scad>
-include <./libs/lib_optics.scad>
-include <./libs/optics_configurations.scad>
+use <./libs/microscope_parameters.scad>
+use <./libs/lib_optics.scad>
+use <./libs/optics_configurations.scad>
 
 params = default_params();
 opics_config = pilens_picamera();

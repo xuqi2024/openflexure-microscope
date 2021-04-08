@@ -267,7 +267,7 @@ module camera_mount_body(
                         rotate(fl_cube_rotation){
                             hull(){
                                 //the box to fit the fl cube in
-                                fl_cube_casing(camera_mount_top_z, fl_cube_cutout);
+                                fl_cube_casing(camera_mount_top_z);
                                 //the mounts for the fl cube screw holes
                                 fl_screw_holes(camera_mount_top_z, d = 4, h =8);
                             }
