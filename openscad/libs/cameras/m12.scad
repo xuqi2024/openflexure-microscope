@@ -20,6 +20,7 @@
 
 
 use <../utilities.scad>
+use <../libdict.scad>
 
 // Camera geometry (mostly of the bottom of the lens mount)
 lens_holder_tube_r = 13.5/2; // the tube into which the lens screws
@@ -33,8 +34,8 @@ camera_component_clearance = 1; // it's easiest to have the PCB slightly below t
 
 $fn=32;
 
-function m12_camera_sensor_height() = 0.5; //Height of the sensor above the PCB
-
+function m12_camera_dict() = [["mount_height", 4],
+                              ["sensor_height", 0.5]];//Height of the sensor above the PCB
 
 module usbcam_lens_mount(){
     union(){
@@ -52,11 +53,8 @@ module usbcam_lens_mount(){
     }
 }
 
-
-function m12_camera_mount_height()=4;
-
 module m12_camera_mount(){
-    h = m12_camera_mount_height();
+    h = key_lookup("mount_height", m12_camera_dict());
     sy = lens_holder_mounting_screw_y;
     sr = lens_holder_mounting_screw_lug_r+0.5;
     box_w = 13.2 + 1; //make it slightly fatter so it grips the bed more

@@ -26,9 +26,6 @@
 
 use <./libdict.scad>
 
-// These are the most useful parameters to change!
-
-camera = "picamera_2"; //see cameras/camera.scad for valid values
 led_r = 4.5/2; //size of the LED used for illumination
 delta_stage = false;
 

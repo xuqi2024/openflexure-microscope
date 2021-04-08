@@ -29,12 +29,12 @@
 
 
 use <../utilities.scad>
+use <../libdict.scad>
 
+function picamera_2_camera_dict() = [["mount_height", 4.5],
+                                     ["sensor_height", 2]];//Height of the sensor above the PCB
 
-function picamera_2_camera_mount_height() = 4.5;
-bottom = picamera_2_camera_mount_height() * -1;
-
-function picamera_2_camera_sensor_height() = 2; //Height of the sensor above the PCB
+function picamera_2_bottom_z() = -key_lookup("mount_height", picamera_2_camera_dict());
 
 module picam2_flex_and_components(cw=8.5+1){
     // A 2D perimeter inside which the flex and components of the camera sit.
@@ -72,6 +72,7 @@ module picam2_cutout( beam_length=15){
     // off the brown ribbon cable and removing the PCB first helps when extracting
     // the camera module again.
 
+    mount_height = key_lookup("mount_height", picamera_2_camera_dict());
     //width camera box (NOTE: this is deliberately loose fitting)
     cw = 8.5 + 1.0;
     //height of camera box (including foam support)
@@ -91,12 +92,12 @@ module picam2_cutout( beam_length=15){
             translate_z(ch/2){
                 cube([cw,cw,ch],center=true);
             }
-            cylinder(r=hole_r, h=2*picamera_2_camera_mount_height(), center=true);
+            cylinder(r=hole_r, h=2*mount_height, center=true);
         }
 
         //clearance for the ribbon cable at top of camera
         fh=2.5; // the height of the flex
-        mh = picamera_2_camera_mount_height();
+        mh = mount_height;
 
         dz = mh-fh-0.75; // extra height above the flex for the sloping "roof"
         hull(){
@@ -166,18 +167,18 @@ module picamera_2_camera_mount(screwhole=true, counterbore=false){
         rotate(45){
             translate_y(2.4){
                 sequential_hull(){
-                    translate_z(bottom){
+                    translate_z(picamera_2_bottom_z()){
                         picam2_board(h=tiny());
                     }
                     translate_z(-1){
                         picam2_board(h=tiny());
                     }
-                    cube([w-(-1.5-bottom)*2,b,tiny()],center=true);
+                    cube([w-(-1.5-picamera_2_bottom_z())*2,b,tiny()],center=true);
                 }
             }
         }
         rotate(45){
-            translate_z(bottom){
+            translate_z(picamera_2_bottom_z()){
                 picam2_cutout();
             }
         }
@@ -194,7 +195,7 @@ module picamera_2_screwholes(){
     //chamfered screw holes for mounting
     sx = 21/2; //position of screw holes
     rotate(45){
-        translate_z(bottom){
+        translate_z(picamera_2_bottom_z()){
             reflect_x(){
                 translate_x(sx){
                     rotate(60){
@@ -208,10 +209,10 @@ module picamera_2_screwholes(){
 }
 
 module picamera_2_counterbore(){
-    translate_z(bottom-1){
+    translate_z(picamera_2_bottom_z()-1){
         picamera_2_bottom_mounting_posts(height=999, radius=1.25, cutouts=false);
     }
-    translate_z(bottom+1){
+    translate_z(picamera_2_bottom_z()+1){
         picamera_2_bottom_mounting_posts(height=999, radius=2.8, cutouts=false);
     }
 }

@@ -34,9 +34,9 @@ camera_component_clearance = 1; // it's easiest to have the PCB slightly below t
 
 $fn=32;
 
-function 6led_camera_sensor_height() = m12_camera_sensor_height(); //Height of the sensor above the PCB
+//Same as the M12 camera
+function 6led_camera_dict() = m12_camera_dict();
 
-function 6led_camera_mount_height()=m12_camera_mount_height();
 
 module 6led_camera_mount(){ //this is the same as the M12 mount
     m12_camera_mount();

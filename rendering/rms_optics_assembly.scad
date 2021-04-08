@@ -149,7 +149,7 @@ module rendered_optics_module(pos,
     cut_dir = cut ? "+x" : "none";
     place_part(pos){
         cutaway(cut_dir, optics_module_colour()){
-            optics_config = rms_f50d13_picamera();
+            optics_config = rms_f50d13_config();
             optics_module_rms(params, optics_config);
         }
         if (nut){

@@ -19,15 +19,13 @@
 
 
 use <../utilities.scad>
-
-
+use <../libdict.scad>
 
 $fn=48;
 
+function c270_camera_dict() = [["mount_height", 4.5],
+                               ["sensor_height", 0.2]];//Height of the sensor above the PCB
 
-function c270_camera_mount_height() = 4.5;
-bottom = c270_camera_mount_height() * -1;
-function c270_camera_sensor_height() = 0.2; //Height of the sensor above the PCB
 
 module mounting_hole(){
     translate_z(-5){
@@ -116,15 +114,16 @@ module c270_camera_mount(){
     // hull-ed onto the lens assembly.
     h = 58;
     w = 25;
+
+    mount_height = key_lookup("mount_height", c270_camera_dict());
     rotate(-45){
         difference(){
-            translate([-w/2, -13, bottom]){
-                cube([w, h, c270_camera_mount_height()]);
+            translate([-w/2, -13, -mount_height]){
+                cube([w, h, mount_height]);
             }
-            translate_z(bottom){
+            translate_z(-mount_height){
                 C270();
             }
         }
     }
 }
-c270_camera_mount();
