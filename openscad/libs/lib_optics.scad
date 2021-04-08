@@ -78,14 +78,14 @@ module fl_screw_holes(camera_mount_top_z, d, h){
     }
 }
 
-module optical_path(camera_mount_top_z, lens_aperture_r, lens_z){
+module optical_path(lens_aperture_r, lens_z, bottom_z=0){
     // The cut-out part of a camera mount, consisting of
     // a feathered cylindrical beam path.  Camera mount is now cut out
     // of the camera mount body already.
     union(){
-        translate_z(camera_mount_top_z-tiny()){
+        translate_z(bottom_z-tiny()){
             //beam path
-            lighttrap_cylinder(r1=5, r2=lens_aperture_r, h=lens_z-camera_mount_top_z+2*tiny());
+            lighttrap_cylinder(r1=5, r2=lens_aperture_r, h=lens_z-bottom_z+2*tiny());
         }
         translate_z(lens_z){
             //lens
@@ -93,20 +93,20 @@ module optical_path(camera_mount_top_z, lens_aperture_r, lens_z){
         }
     }
 }
-module optical_path_fl(camera_mount_top_z, lens_aperture_r, lens_z){
+module optical_path_fl(lens_aperture_r, lens_z, bottom_z=0){
     // The cut-out part of a camera mount, with a space to slot in a filter cube.
     rotation = delta_stage ? 120 : 180; // The angle that the fl module exits from (0* is the dovetail)
     rotate(rotation){
         union(){
-            translate_z(camera_mount_top_z-tiny()){
+            translate_z(bottom_z-tiny()){
                 //beam path to bottom of cube
-                lighttrap_sqylinder(r1=5, f1=0, r2=0, f2=fl_cube_w-4, h=fl_cube_bottom(camera_mount_top_z)-camera_mount_top_z+2*tiny());
+                lighttrap_sqylinder(r1=5, f1=0, r2=0, f2=fl_cube_w-4, h=fl_cube_bottom(bottom_z)-bottom_z+2*tiny());
             }
             //filter cube
-            fl_cube_cutout(camera_mount_top_z);
-            translate_z(fl_cube_top(camera_mount_top_z)-tiny()){
+            fl_cube_cutout(bottom_z);
+            translate_z(fl_cube_top(bottom_z)-tiny()){
                 //beam path
-                lighttrap_sqylinder(r1=1.5, f1=fl_cube_w-4-3, r2=lens_aperture_r, f2=0, h=lens_z-fl_cube_top(camera_mount_top_z)+4*tiny());
+                lighttrap_sqylinder(r1=1.5, f1=fl_cube_w-4-3, r2=lens_aperture_r, f2=0, h=lens_z-fl_cube_top(bottom_z)+4*tiny());
             }
             translate_z(lens_z){
                 //lens
@@ -321,6 +321,7 @@ module camera_mount_body(
 module optics_module_rms(params, optics_config, dovetail=true){
 
     sample_z = key_lookup("sample_z", params);
+    assert(key_lookup("optics_type", optics_config)=="RMS", "Use an RMS optics configuration to create a RMS optics module.");
     assert(sample_z > 60, "RMS objectives won't fit in small microscope frames!");
     assert(objective_mount_y > 12, "RMS objectives won't fit in small microscope frames!");
 
@@ -384,10 +385,10 @@ module optics_module_rms(params, optics_config, dovetail=true){
             camera_mount_body(params, optics_config, body_r=lens_assembly_base_r, bottom_r=10.5, body_top=lens_assembly_z, dt_top=dovetail_top, dovetail=dovetail);
             // camera cut-out and hole for the beam
             if(beamsplitter){
-                optical_path_fl(camera_mount_top_z, tube_lens_aperture, lens_assembly_z);
+                optical_path_fl(tube_lens_aperture, lens_assembly_z, camera_mount_top_z);
             }
             else{
-                optical_path(camera_mount_top_z, tube_lens_aperture, lens_assembly_z);
+                optical_path(tube_lens_aperture, lens_assembly_z, camera_mount_top_z);
             }
             // make sure the camera mount makes contact with the lens gripper, but
             // doesn't foul the inside of it
@@ -429,6 +430,91 @@ module optics_module_rms(params, optics_config, dovetail=true){
             difference(){
                 cylinder(r=tube_lens_aperture + 1.0,h=2);
                 cylinder(r=tube_lens_aperture,h=999,center=true);
+            }
+        }
+    }
+}
+
+function lens_aperture(lens_r) = lens_r - 1.5;
+
+module lens_spacer_gripper(lens_r, lens_h, pedestal_h, lens_assembly_base_r, lens_assembly_z){
+
+    lens_assembly_h = lens_h + pedestal_h; //height of the lens assembly
+
+    // A lens gripper to hold the objective
+    translate_z(lens_assembly_z){
+        // gripper
+        trylinder_gripper(inner_r=lens_r,
+                          grip_h=lens_assembly_h-1.5,
+                          h=lens_assembly_h,
+                          base_r=lens_assembly_base_r,
+                          flare=0.4,
+                          squeeze=lens_r*0.15);
+        // pedestal to raise the tube lens up within the gripper
+        difference(){
+            cylinder(r=lens_aperture(lens_r) + 1.0,h=pedestal_h);
+            cylinder(r=lens_aperture(lens_r),h=999,center=true);
+        }
+    }
+}
+
+module lens_spacer(params, optics_config){
+    // Mount a lens some distance from the camera
+
+    assert(key_lookup("optics_type", optics_config)=="spacer", "Use spacer optics configuration to create a lens spacer.");
+    
+    //unpack lens spacer parameters
+    lens_r = key_lookup("lens_r", optics_config);
+    parfocal_distance = key_lookup("parfocal_distance", optics_config);
+    lens_h = key_lookup("lens_h", optics_config);
+    lens_spacing = key_lookup("lens_spacing", optics_config);
+
+    //z position of lens once in microscope
+    //lens sits parfocal_distance below the sample
+    lens_z_microscope = key_lookup("sample_z", params) - parfocal_distance;
+
+    // z_position of the lens for this piece.
+    //This is the height of the camera_sensor above the circuit board plus the spacing between the lens and the sensor
+    lens_z = camera_sensor_height()+lens_spacing;
+
+    pedestal_h = 4; // extra height on the gripper, to allow it to flex
+    lens_assembly_z = lens_z - pedestal_h; //z position of the bottom of the lens assembly
+
+    lens_assembly_base_r = lens_r+1; //outer size of the lens grippers
+
+    //This is the height of the block the camera mounts into.
+    camera_mount_height = camera_mount_height();
+
+    translate_z(lens_z_microscope-lens_z){
+        difference(){
+            union(){
+                // This is the main body of the mount
+                sequential_hull(){
+                    translate_z(camera_mount_height){
+                        camera_mount_top_slice();
+                    }
+                    translate_z(camera_mount_height+5){
+                        cylinder(r=6,h=tiny());
+                    }
+                    translate_z(lens_assembly_z){
+                        cylinder(r=lens_assembly_base_r, h=tiny());
+                    }
+                }
+
+                lens_spacer_gripper(lens_r, lens_h, pedestal_h, lens_assembly_base_r, lens_assembly_z);
+
+                // add the camera mount
+                translate_z(camera_mount_height){
+                    camera_mount(screwhole=false, counterbore=false);
+                }
+            }
+            union(){
+                // cut out the optical path
+                optical_path(lens_aperture(lens_r), lens_assembly_z, 0);
+                //cut out counterbores
+                translate_z(camera_mount_height){
+                    camera_mount_counterbore();
+                }
             }
         }
     }
