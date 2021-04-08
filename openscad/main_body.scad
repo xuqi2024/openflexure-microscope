@@ -25,7 +25,7 @@ main_body_stl(VERSION_STRING);
 module main_body_stl(version_string){
     params = default_params();
     smart_brim_r = key_lookup("smart_brim_r", params);
-    exterior_brim(r=enable_smart_brim ? smart_brim_r : 0){
+    exterior_brim(r=smart_brim_r){
         main_body(params, version_string);
     }
 }

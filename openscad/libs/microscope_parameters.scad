@@ -29,9 +29,6 @@ use <./libdict.scad>
 led_r = 4.5/2; //size of the LED used for illumination
 delta_stage = false;
 
-enable_smart_brim = true;
-tall_bucket_base = false; //If true creates a taller bucket base for the infinity corrected optics.
-
 // This sets the basic geometry of the default microscope
 // Stages can be built with modified parameters but with **no guarantee** that any other
 // set of parameters will work.

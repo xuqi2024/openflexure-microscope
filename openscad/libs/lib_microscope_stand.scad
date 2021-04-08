@@ -29,7 +29,7 @@ driver_width = 32.0;
 driver_length = 35.0;
 driver_support = 4.0;
 
-base_height = tall_bucket_base?45:30;
+
 
 //the y poistion where the base forms a point
 function base_corner_y(params) = let(
@@ -286,7 +286,7 @@ module footprint_after_pi_cutouts(params){
     }
 }
 
-module bucket_base_stackable(params, h=base_height){
+module bucket_base_stackable(params, h){
     // The stackable "bucket" before holes and supports
     difference(){
         union(){
@@ -352,7 +352,7 @@ module bucket_base_stackable(params, h=base_height){
     }
 }
 
-module top_casing_block(params, h=base_height, os=0, legs=true, lugs=true){
+module top_casing_block(params, h, os=0, legs=true, lugs=true){
     // The "bucket" baseplate before holes and supports (i.e. a solid object)
     bottom = os<0?bottom_thickness:0;
     top_h = os<0?tiny():inset_depth;
@@ -408,7 +408,7 @@ module top_casing_block(params, h=base_height, os=0, legs=true, lugs=true){
     }
 }
 
-module bucket_base_with_microscope_top(params, h=base_height){
+module bucket_base_with_microscope_top(params, h){
     // A bucket base for the microscope, without cut-outs
     difference(){
         union(){
@@ -512,11 +512,11 @@ module mounting_holes(params){
     }
 }
 
-module microscope_stand(params, h=base_height){
+module microscope_stand(params, h){
     // A stand for the microscope, with integrated Raspberry Pi
     difference(){
         union(){
-            bucket_base_with_microscope_top(params);
+            bucket_base_with_microscope_top(params, h);
 
             // supports for the pi circuit board
             pi_supports();
@@ -689,18 +689,18 @@ module nano_supports(){
     }
 }
 
-module motor_driver_case(params){
+module motor_driver_case(params, h){
     // A stackable "bucket" that holds the motor board under the microscope stand
     union(){
         difference(){
-            bucket_base_stackable(params);
+            bucket_base_stackable(params, h);
             // space for sangaboard connectors
             translate_z(bottom_thickness+raspi_support){
                 sangaboard_connectors();
             }
 
             // motor cables
-            translate([0,z_nut_y(params),base_height]){
+            translate([0,z_nut_y(params), h]){
                 cube([20,50,15],center=true);
             }
 

@@ -15,5 +15,12 @@
 use <./libs/microscope_parameters.scad>
 use <./libs/lib_microscope_stand.scad>
 
-params = default_params();
-microscope_stand(params);
+TALL_BUCKET_BASE = false;
+
+microscope_stand_stl(TALL_BUCKET_BASE);
+
+module microscope_stand_stl(tall_bucket_base){
+    base_height = tall_bucket_base?45:30;
+    params = default_params();
+    microscope_stand(params, base_height);
+}

@@ -135,11 +135,11 @@ def generate_stand_with_pi(writer):
         if tall_base:
             output = "microscope_stand_tall.stl"
             select_stl_if = {"base_type": "rpi_base_tall"}
-            parameters = {"tall_bucket_base": True}
+            parameters = {"TALL_BUCKET_BASE": True}
         else:
             output = "microscope_stand.stl"
             select_stl_if = {"base_type": "rpi_base"}
-            parameters = {"tall_bucket_base": False}
+            parameters = {"TALL_BUCKET_BASE": False}
 
         writer.openscad(
             output, "microscope_stand.scad", parameters, select_stl_if=select_stl_if
