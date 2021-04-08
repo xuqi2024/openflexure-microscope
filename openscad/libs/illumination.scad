@@ -178,7 +178,7 @@ module condenser_lens_gripper(lens_r, lens_t, base_r){
     }
 }
 
-module condenser_cutout(lens_r, lens_assembly_z, bottom_height=10){
+module condenser_cutout(led_r, lens_r, lens_assembly_z, bottom_height=10){
     // This is the cutout for the beam to pass through the condenser. It contains a light trap
     // and a pressfit hole for the LED. In thr reference frame module the LED would be pointing upwards.
     // Not that the LED countersink is at z=0 because the `tall_condenser` module that uses this
@@ -214,7 +214,7 @@ module condenser_cutout(lens_r, lens_assembly_z, bottom_height=10){
     }
 }
 
-module tall_condenser(params, lens_d, lens_t, lens_assembly_z){
+module tall_condenser(params, led_r, lens_d, lens_t, lens_assembly_z){
     // Note that this is the shape before it is is rotated, and cut for printing.
     // This module is useful because the optical path is vertical
     // In this module the lens is at the top of the structure.
@@ -254,7 +254,7 @@ module tall_condenser(params, lens_d, lens_t, lens_assembly_z){
             }
         }
 
-        condenser_cutout(lens_r, lens_assembly_z, bottom_height=bottom_height);
+        condenser_cutout(led_r, lens_r, lens_assembly_z, bottom_height=bottom_height);
      }
      //finally add the lens gripper
      translate_z(lens_assembly_z){
@@ -263,7 +263,7 @@ module tall_condenser(params, lens_d, lens_t, lens_assembly_z){
 }
 
 //TODO the lens_assembly_z should be adjusted to a focal length parameter
-module condenser(params, lens_d=13, lens_t=1, lens_assembly_z= 30){
+module condenser(params, led_r=4.5/2, lens_d=13, lens_t=1, lens_assembly_z= 30){
     //This is the condenser that is printed.
     condenser_angle = key_lookup("condenser_angle", params);
     difference(){

@@ -108,7 +108,9 @@ module nut_tool(){
 
 }
 
-function band_tool_arm_length(params) = height_over_actuator(params)+foot_height+holder_height();
+function band_tool_arm_length(params) = let(
+    foot_height = key_lookup("foot_height", params)
+) height_over_actuator(params)+foot_height+holder_height();
 
 module prong_frame(params){
     //Move the prongs out and tilt them slightly

@@ -356,6 +356,7 @@ module top_casing_block(params, h, os=0, legs=true, lugs=true){
     // The "bucket" baseplate before holes and supports (i.e. a solid object)
     bottom = os<0?bottom_thickness:0;
     top_h = os<0?tiny():inset_depth;
+    foot_height = key_lookup("foot_height", params);
     union(){
         sequential_hull(){
             // The bottom part has a slightly cropped footprint, so the bridge over the SD card
@@ -410,6 +411,7 @@ module top_casing_block(params, h, os=0, legs=true, lugs=true){
 
 module bucket_base_with_microscope_top(params, h){
     // A bucket base for the microscope, without cut-outs
+    foot_height = key_lookup("foot_height", params);
     difference(){
         union(){
             difference(){
@@ -514,6 +516,8 @@ module mounting_holes(params){
 
 module microscope_stand(params, h){
     // A stand for the microscope, with integrated Raspberry Pi
+
+    foot_height = key_lookup("foot_height", params);
     difference(){
         union(){
             bucket_base_with_microscope_top(params, h);

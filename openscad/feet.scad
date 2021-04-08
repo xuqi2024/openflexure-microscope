@@ -17,7 +17,7 @@
 *                                                                 *
 ******************************************************************/
 
-include <./libs/microscope_parameters.scad> //for foot_height
+include <./libs/microscope_parameters.scad>
 use <./libs/utilities.scad>
 use <./libs/compact_nut_seat.scad>
 
@@ -198,6 +198,7 @@ module foot(travel=5,       // how far into the foot the actuator can move down
     cw = column_core_size().x; //size of the inside of the screw seat column
     cl = column_core_size().y;
     wall_t = (w-cw)/2; //thickness of the wall
+    foot_height = key_lookup("foot_height", params);
     h = foot_height - hover; //defined in parameters.scad, set hover=2 to not touch ground, useful for the middle foot.
     tilt = bottom_tilt - actuator_tilt; //the angle of the ground relative to the axis of the foot
     // The following transforms will either make the foot "in place" (i.e. the top is z=0) or

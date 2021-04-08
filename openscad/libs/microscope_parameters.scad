@@ -26,12 +26,12 @@
 
 use <./libdict.scad>
 
-led_r = 4.5/2; //size of the LED used for illumination
-
-// This sets the basic geometry of the default microscope
-// Stages can be built with modified parameters but with **no guarantee** that any other
-// set of parameters will work.
-// These parameters define the default size for the structural elements of the micoroscope, optics parameters are set seperately.
+/**
+* Sets the basic geometry of the default microscope
+* Stages can be built with modified parameters but with **no guarantee** that any other
+* set of parameters will work.
+* These parameters define the default size for the structural elements of the micoroscope, optics parameters are set seperately.
+*/
 function default_params() = [["leg_r", 30],     // radius on which the innermost part of legs sit. (This sets the stage size)
                              ["sample_z", 75 ], // z position of sample
                              ["stage_t", 15],   //thickness of the XY stage (at thickest point, most is 1mm less)
@@ -43,7 +43,8 @@ function default_params() = [["leg_r", 30],     // radius on which the innermost
                              ["print_ties", true], //sets whether the ties that support printing are on. It is usefull to be able to turn these off for rendering
                              ["smart_brim_r", 5], // The radius of the smart brim on the main body
                              ["actuator_h", 25], //height of the actuator columns
-                             ["include_motor_lugs", true]
+                             ["include_motor_lugs", true], //sets whether the motor lugs are included
+                             ["foot_height", 15] //the height of the feet
                             ];
 
 
@@ -60,8 +61,8 @@ function leg_height(params) = let(
 z_strut_l = 18; //length of struts supporting Z carriage
 objective_mount_y = 18; // y position of clip for optics
 objective_mount_nose_w = 6; // width of the pointy end of the mount
-condenser_clip_w = 14; // width of the dovetail clip for the condenser
-foot_height=15;
+
+
 
 // This variables set the dimensions of flexures.
 // It is well tested with PLA.
