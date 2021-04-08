@@ -5,17 +5,25 @@ stages:
     - deploy
     - zenodo
 
-# Unit testing of the scad library functions
-scad-lib-tests:
-    stage: test
-    image: ubuntu:18.04
+## Template for all OpenSCAD jobs to ensure they run the same
+.scad-job:
+    image: ubuntu:20.04
 
+    variables:
+      # prevents config waiting for user input, e.g. for tzdata
+      DEBIAN_FRONTEND: noninteractive
+      DEBCONF_NONINTERACTIVE_SEEN: "true"
+
+    # Install everything needed for all OpenSCAD jobs so they run in a consistent environment
     before_script:
       - apt-get update -qq
-      - apt-get -y -qq install software-properties-common apt-transport-https
-      - add-apt-repository -y ppa:openscad/releases
-      - apt-get update -qq
-      - apt-get install -y -qq openscad
+      - apt-get -o DPkg::Options::=--force-confdef -y -qq install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates python3-pip openscad git xvfb imagemagick unzip inkscape
+      - pip3 install -r requirements.txt
+
+# Unit testing of the scad library functions
+scad-lib-tests:
+    extends: .scad-job
+    stage: test
 
     script:
       - openscad/libs/test/test_dict.py
@@ -27,17 +35,8 @@ scad-lib-tests:
 
 # Build STL files
 build:
+    extends: .scad-job
     stage: build
-    image: ubuntu:20.04
-
-    variables:
-      # prevents config waiting for user input, e.g. for tzdata
-      DEBIAN_FRONTEND: noninteractive
-
-    before_script:
-      - apt-get update -qq
-      - apt-get -y -qq install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates python3-pip openscad git
-      - pip3 install -r requirements.txt
 
     script:
       - git clone --depth=1 https://gitlab.com/openflexure/openflexure-microscope-extra
@@ -63,17 +62,8 @@ build:
 
 # render assemblies - uses xvfb as a virtual x-server
 render:
+    extends: .scad-job
     stage: build
-    image: ubuntu:20.04
-
-    variables:
-      # prevents config waiting for user input, e.g. for tzdata
-      DEBIAN_FRONTEND: noninteractive
-
-    before_script:
-      - apt-get update -qq
-      - apt-get -y -qq install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates xvfb imagemagick unzip inkscape openscad python3-pip
-      - pip3 install -r requirements.txt
 
     script:
       - xvfb-run --auto-servernum --server-args "-screen 0 1024x768x24" ./render.py

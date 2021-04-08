@@ -2,8 +2,9 @@
 import sys
 import os
 import subprocess
-from ninja import _program
+from ninja import BIN_DIR
 from build_system.render_build_writer import RenderBuildWriter, Camera
+
 
 NINJA_FILE = "render.ninja"
 
@@ -140,11 +141,11 @@ def generate_picam(writer):
     cameras = [
         Camera(position=[-6, 3, 11], angle=[46, 0, 90], distance=140),
         Camera(position=[0, 0, 0], angle=[29, 0, 90], distance=140),
-        Camera(position=[1, 18, 8], angle=[52, 0, 90], distance=140)
+        Camera(position=[1, 18, 8], angle=[52, 0, 90], distance=140),
     ]
     imgsize = [2400, 2000]
     for i, camera in enumerate(cameras):
-        frame = i+1
+        frame = i + 1
         output_file = f"docs/renders/picam{frame}.png"
         writer.openscad_render(output_file, input_file, camera, imgsize, frame)
 
@@ -170,10 +171,15 @@ with RenderBuildWriter(build_filename=NINJA_FILE) as rbw:
     generate_picam(rbw)
 
 subprocess.run(
-    ["unzip", "-o", "-d", "rendering/librender/", "rendering/librender/hardware.zip"]
+    ["unzip", "-o", "-d", "rendering/librender/", "rendering/librender/hardware.zip"],
+    check=True,
 )
 
-_program("ninja", ["-f", NINJA_FILE] + sys.argv[1:])
+
+subprocess.run(
+    [os.path.join(BIN_DIR, "ninja"), "-f", NINJA_FILE] + sys.argv[1:], check=True
+)
+
 
 # inkscape annotations, make sure the SVGs use relative links. we don't use
 # ninja for these because it's pretty fast and it's too much work to figure out
@@ -184,7 +190,8 @@ subprocess.run(
         "--without-gui",
         "--export-png=docs/renders/optics_assembly_tube_lens.png",
         "rendering/annotations/annotate_optics_assembly_tube_lens.svg",
-    ]
+    ],
+    check=True,
 )
 subprocess.run(
     [
@@ -192,5 +199,6 @@ subprocess.run(
         "--without-gui",
         "--export-png=docs/renders/optics_assembly_condenser_lens.png",
         "rendering/annotations/annotate_optics_assembly_condenser_lens.svg",
-    ]
+    ],
+    check=True,
 )
