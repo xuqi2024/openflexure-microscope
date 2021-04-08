@@ -3,6 +3,7 @@ use <../openscad/libs/microscope_parameters.scad>
 use <../openscad/libs/z_axis.scad>
 use <../openscad/lens_tool.scad>
 use <../openscad/libs/lib_optics.scad>
+use <../openscad/libs/optics_configurations.scad>
 use <librender/render_utils.scad>
 use <librender/render_settings.scad>
 use <librender/optics.scad>
@@ -148,15 +149,8 @@ module rendered_optics_module(pos,
     cut_dir = cut ? "+x" : "none";
     place_part(pos){
         cutaway(cut_dir, optics_module_colour()){
-            // Optics module for RMS objective, using Comar 40mm singlet tube lens
-            optics_module_rms(
-                params,
-                tube_lens_ffd=47,
-                tube_lens_f=50,
-                tube_lens_r=12.7/2+0.1,
-                objective_parfocal_distance=45,
-                tube_length=150
-            );
+            opics_config = rms_f50d13_picamera();
+            optics_module_rms(params, opics_config);
         }
         if (nut){
             exploded = (explode == "nut") ? true : false;

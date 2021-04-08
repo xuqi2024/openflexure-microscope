@@ -29,11 +29,9 @@ use <./libdict.scad>
 // These are the most useful parameters to change!
 
 camera = "picamera_2"; //see cameras/camera.scad for valid values
-optics = "rms_f50d13"; //see optics.scad for valid values
 led_r = 4.5/2; //size of the LED used for illumination
 endstops = false; //whether to build mounts for optical endstops inside the microscope.
 feet_endstops = false; //whether to include cut-outs for endstop switches in the feet.
-beamsplitter = true; //enables a cut-out in some optics modules for a beamsplitter
 delta_stage = false;
 
 enable_smart_brim = true;
