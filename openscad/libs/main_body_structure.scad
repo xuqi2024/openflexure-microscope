@@ -183,19 +183,6 @@ module m3_lug(pos, angle, holes=true){
     }
 }
 
-module xy_limit_switch_mount(params, d=3.3*2, h=6){
-    // A mount for the XY limit switch (M3)
-
-    y_tr = -flex_dims().y-inner_wall_h(params)*sin(6)-3.3+1;
-    z_tr = inner_wall_h(params)-6;
-    leg_frame(params, 45){
-        translate([-9, y_tr, z_tr]){
-            cylinder(d=d,h=h);
-        }
-    }
-}
-
-
 module reflection_illuminator_cutout(){
     // The shape for a hole in the main body for the reflection illuminator to poke through.
 
@@ -340,15 +327,6 @@ module internal_xy_structure(params){
         central_optics_cut_out(params);
         // Cut-out for reflection optics
         reflection_illuminator_cutout();
-    }
-    //mounts for the optical endstops for X and
-    if (endstops){
-        reflect_x(){
-            hull(){
-                inner_wall_vertex(params, 45, -9, inner_wall_h(params));
-                xy_limit_switch_mount(params);
-            }
-        }
     }
 }
 

@@ -20,7 +20,6 @@
 include <./libs/microscope_parameters.scad> //for foot_height
 use <./libs/utilities.scad>
 use <./libs/compact_nut_seat.scad>
-use <./libs/endstop.scad>
 
 
 module foot_ground_plane(tilt=0, top=0, bottom=-999){
@@ -274,7 +273,7 @@ module foot(travel=5,       // how far into the foot the actuator can move down
                         //and height/span should match the slot above.
                         skew_flat(bottom_tilt){
                             rotate_x(actuator_tilt){
-                                translate_z(h-travel-4-2-endstop_extra_ringheight){
+                                translate_z(h-travel-4-2){
                                     filleted_bridge([2*column_base_radius()+1.5, 4, 2], roc_xy=4, roc_xz=3);
                                 }
                             }
@@ -282,17 +281,6 @@ module foot(travel=5,       // how far into the foot the actuator can move down
                         //cut off the foot below the "ground plane" (i.e. print bed)
                         foot_ground_plane(tilt, top=0);
 
-                        //Void for endstop switch
-                        //TODO: check properly parametrized
-                        if(feet_endstops){
-                            translate([0,0.5-(h-travel)*sin(actuator_tilt),h-travel]){
-                                rotate_z(-90){
-                                    scale([1.03,1.08,1]){
-                                        endstop_hole(actuator_tilt);
-                                    }
-                                }
-                            }
-                        }
                     }
                     foot_letter(letter,actuator_tilt);
                 }

@@ -30,8 +30,6 @@ use <./libdict.scad>
 
 camera = "picamera_2"; //see cameras/camera.scad for valid values
 led_r = 4.5/2; //size of the LED used for illumination
-endstops = false; //whether to build mounts for optical endstops inside the microscope.
-feet_endstops = false; //whether to include cut-outs for endstop switches in the feet.
 delta_stage = false;
 
 enable_smart_brim = true;
@@ -179,6 +177,6 @@ function inner_wall_h(params) = z_flexures_z2(params) - 10; //height of walls in
 
 function lug_angles() = [-120, 120, 50, -50];
 
-endstop_extra_ringheight=feet_endstops?1:0;
+
 
 fl_cube_w = 16; //width of the fluorescence filter cube
