@@ -16,13 +16,13 @@ include <./microscope_parameters.scad> //All the geometric variables are now in 
 // To get only the front holes run `base_mounting_holes("front")`
 function base_mounting_holes(params, type="all") = let
 (
-    back_lug_hole_x = back_lug_x_pos(params) + wall_t/2 - lug_back_offset().x,
+    back_lug_hole_x = back_lug_x_pos(params) + microscope_wall_t()/2 - lug_back_offset().x,
     back_pos = [[back_lug_hole_x,-8,0],
                [-back_lug_hole_x,-8,0]],
     actuator_offset = [-1, -1, 0] * actuator_housing_xy_size().x/2/sqrt(2),
     y_front_lug_pos = y_actuator_pos(params) + actuator_offset + [-6.5, .5, 0],
     front_pos =[y_front_lug_pos,
-                [-y_front_lug_pos.x, y_front_lug_pos.y, 0]],
+               [-y_front_lug_pos.x, y_front_lug_pos.y, 0]],
     back = (type == "back") || (type == "all"),
     front = (type == "front") || (type == "all"),
     //Set which holse to output
@@ -40,11 +40,11 @@ module leg_flexures(params, brace){
     //  * if brace=flex_dims().x there is one double width fexure
     //  * if brace>flex_dims().x there are two seperare flexures
     leg_block_t = key_lookup("leg_block_t", params);
-    block_size = [leg_middle_w, leg_dims(params).y, leg_block_t];
+    block_size = [leg_middle_w(), leg_dims(params).y, leg_block_t];
     flex_size = [leg_outer_w(params), leg_dims(params).y, flex_dims().z];
 
     for (i = [0,1]){
-        z_pos=[flex_z1, flex_z2(params)][i];
+        z_pos=[lower_xy_flex_z(), upper_xy_flex_z(params)][i];
         brace_pos= [brace, 0][i];
         translate_z(z_pos){
             //Hull two blocks to make a big one
@@ -75,7 +75,7 @@ module leg(params, brace=flex_dims().x){
            //leg
         reflect_x(){
             //vertical bars of the leg
-            translate_x(leg_middle_w/2+flex_dims().y){
+            translate_x(leg_middle_w()/2+flex_dims().y){
                 hull(){
                     cube(leg_dims(params));
                     //extend the base to make the bars triangular
@@ -86,12 +86,12 @@ module leg(params, brace=flex_dims().x){
         leg_flexures(params, brace);
 
         //thin links between legs
-        flex_sep = flex_z2(params)-flex_z1;
-        n = floor(flex_sep/leg_link_spacing);
+        flex_sep = upper_xy_flex_z(params)-lower_xy_flex_z();
+        n = floor(flex_sep/leg_link_spacing());
         if(n > 2){
             // adjust spacing so it is even
             link_space_adj = flex_sep/n;
-            translate([0, leg_dims(params).y/2, flex_z1+link_space_adj]){
+            translate([0, leg_dims(params).y/2, lower_xy_flex_z()+link_space_adj]){
                 repeat([0, 0, link_space_adj], n-1){
                     cube([leg_outer_w(params), 2, 0.5],center=true);
                 }
@@ -113,8 +113,8 @@ module actuator(params){
         //arm (horizontal bit)
         difference(){
             sequential_hull(){
-                translate_x(-leg_middle_w/2){
-                    cube([leg_middle_w,brace+fw,4]);
+                translate_x(-leg_middle_w()/2){
+                    cube([leg_middle_w(),brace+fw,4]);
                 }
                 translate_x(-w/2){
                     cube([w,brace+fw+0,actuator_dims(params).z]);
@@ -192,8 +192,8 @@ module reflection_illuminator_cutout(){
     bottom_cutout_w = illuminator_width() + 4;
 
     // Create a trapezoidal shape with width=top_cutout_w at the top.
-    // This is the widest cutout we cab make at height 'wall_h' without the bridge
-    // having a corner in it.
+    // This is the widest cutout we can make at height 'reflection_cutout_height()'
+    // without the bridge having a corner in it.
     hull() {
         translate([-(bottom_cutout_w)/2, -49, -0.5]){
             cube([bottom_cutout_w, 49, 1]);
@@ -201,7 +201,7 @@ module reflection_illuminator_cutout(){
         translate([-(mid_cutout_w)/2, -49, 10]){
             cube([mid_cutout_w, 49, 1]);
         }
-        translate([-top_cutout_w/2, -49, wall_h]){
+        translate([-top_cutout_w/2, -49, reflection_cutout_height()-1]){
             cube([top_cutout_w, 49, 1]);
         }
     }
@@ -216,8 +216,8 @@ module xy_stage(params, h=10, on_buildplate=false){
     // buildplate. If true, the bottom is flat, if false the bottom is made from
     // bridges round the edge, that then work inwards.
 
-    side_length = leg_middle_w+2*flex_dims().y;
-    cut_out_side_length = leg_middle_w-2*flex_dims().x;
+    side_length = leg_middle_w()+2*flex_dims().y;
+    cut_out_side_length = leg_middle_w()-2*flex_dims().x;
     thickness = on_buildplate?h:h-1;
     z = on_buildplate?0:1;
     hole_r = key_lookup("stage_hole_r", params);
@@ -321,7 +321,7 @@ module xy_legs_and_actuators(params){
 module internal_xy_structure(params){
 
     difference() {
-        add_hull_base(base_t){
+        add_hull_base(microscope_base_t()){
             wall_inside_xy_stage(params);
         }
         central_optics_cut_out(params);
@@ -336,11 +336,11 @@ module xy_stage_with_nut_traps(params)
     //and including the nut traps.
     stage_t = key_lookup("stage_t", params);
     difference(){
-        translate_z(flex_z2(params)){
+        translate_z(upper_xy_flex_z(params)){
             xy_stage(params, h=stage_t);
         }
         each_leg(params){
-            translate([0, -stage_hole_inset, leg_height(params)]){
+            translate([0, -stage_hole_inset(), leg_height(params)]){
                 m3_nut_trap_with_shaft(0,0); //mounting holes
             }
         }
@@ -352,10 +352,10 @@ module xy_flexures(params){
     //Bottom flexures: flexures between legs and inner walls
     w=flex_dims().x;
     //The flexure length, increased for some overlap
-    flex_len = flex_dims().y + wall_t/2;
+    flex_len = flex_dims().y + microscope_wall_t()/2;
     each_leg(params){
         reflect_x(){
-            translate([leg_middle_w/2-w, 0, flex_z1+0.5]){
+            translate([leg_middle_w()/2-w, 0, lower_xy_flex_z()+0.5]){
                 //Each flexure is the hull of two offset cuboids.
                 hull(){
                     repeat([flex_len,-flex_len,0],2){
@@ -373,15 +373,15 @@ module xy_flexures(params){
         //Make a truncated square with a truncated "corner" at each leg
         hull(){
             each_leg(params){
-                translate_z(flex_z2(params)+flex_dims().z/2+0.5){
-                    cube([leg_middle_w,tiny(),flex_dims().z],center=true);
+                translate_z(upper_xy_flex_z(params)+flex_dims().z/2+0.5){
+                    cube([leg_middle_w(),tiny(),flex_dims().z],center=true);
                 }
             }
         }
         //chop out a smaller truncated square
         hull(){
             each_leg(params){
-                cube([leg_middle_w-2*flex_dims().x,tiny(),999],center=true);
+                cube([leg_middle_w()-2*flex_dims().x,tiny(),999],center=true);
             }
         }
     }
@@ -391,10 +391,10 @@ module xy_leg_ties(params){
     // Small ties that connect the legs to the walls of the structure to stop the
     // legs moving during printing. These muse be cut after printing.
 
-    z_tr = wall_h*0.7;
+    z_tr = actuator_wall_h()*0.7;
     // Note that the walls slope in by 6 degrees so must compensate tie length
     tie_length = flex_dims().y + z_tr*tan(6) + 2;
-    x_tr = leg_middle_w/2+flex_dims().y+flex_dims().x/2;
+    x_tr = leg_middle_w()/2+flex_dims().y+flex_dims().x/2;
     y_tr = 1-tie_length;
 
     reflect_x(){
@@ -428,7 +428,7 @@ module xy_positioning_system(params){
 module central_optics_cut_out(params) {
     // Central cut-out for optics
     sequential_hull(){
-        h=base_t*3;
+        h=microscope_base_t()*3;
         translate_y(back_lug_x_pos(params)+1.5-14/2){
             cube([14,2*tiny(),h],center=true);
         }
@@ -454,7 +454,7 @@ module actuator_walls_and_z_casing(params, z_axis=true){
     // z-axis. This casing includes the mount for the illumination dovetail.
     difference(){
         union(){
-            add_hull_base(base_t) {
+            add_hull_base(microscope_base_t()) {
                 //link the XY actuators to the wall
                 if (z_axis){
                     reflect_x(){
@@ -492,7 +492,7 @@ module body_logos(params, message){
     // The openflexure and opehardware logos. Plus a customisable message.
     size = 0.25;
     place_on_wall(params, is_y=false){
-        translate([9,wall_h-2-15*size,-0.5]){
+        translate([9,actuator_wall_h()-2-15*size,-0.5]){
             scale([size,size,10]){
                 openflexure_logo_above();
             }
@@ -500,7 +500,7 @@ module body_logos(params, message){
     }
 
     place_on_wall(params){
-        translate([-34, wall_h-2-15*size, -.5]){
+        translate([-34, actuator_wall_h()-2-15*size, -.5]){
             mirror([1,0,0]){
                 scale([size,size,10]){
                     oshw_logo_and_text(message);

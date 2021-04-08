@@ -22,8 +22,8 @@
 ******************************************************************/
 
 use <./libs/utilities.scad>
-include <./libs/microscope_parameters.scad> // NB this defines "camera" and "optics"
-
+include <./libs/microscope_parameters.scad>
+use <./libs/lib_optics.scad>
 
 module chamfer_bottom_edge(chamfer=0.3, h=0.5){
     difference(){
@@ -50,7 +50,7 @@ module chamfer_bottom_edge(chamfer=0.3, h=0.5){
 module fl_cube_outer(){
     // The outer body for fl_cube()
     roc = 0.6;
-    w = fl_cube_w;
+    w = fl_cube_w();
     foot = roc*0.7;
     bottom_t = roc*3;
     $fn=8;
@@ -117,7 +117,7 @@ module fl_cube(){
     // This prints with the Y axis vertical - to save rotating all the
     // cylinders, it's written here as printed.
     roc = 0.6;
-    w = fl_cube_w;
+    w = fl_cube_w();
     foot = roc*0.7;
     bottom_t = roc*3;
     dichroic = [12,16,1.1];

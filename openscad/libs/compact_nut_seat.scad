@@ -371,7 +371,8 @@ module screw_seat_shell(h=1, tilt=0){
     }
 }
 
-module motor_lugs(h=20, tilt=0, angle=0){
+//TODO: h is currently the actator height plus travel. This should be a parameter rather than calculated ad-hoc
+module motor_lugs(h, tilt=0, angle=0){
     screw_pos = motor_screw_pos(h);
     // lugs to mount a micro geared stepper motor on a screw_seat.
     screw_r = sqrt(pow(screw_pos.x,2)+pow(screw_pos.y,2));

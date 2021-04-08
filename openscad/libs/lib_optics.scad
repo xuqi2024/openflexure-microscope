@@ -21,26 +21,28 @@ function bottom_position(optics_config) = let(
 
 //bottom of the beamsplitter filter cube (0 except for the RMS f=50mm modules where it's -8 or -20)
 function fl_cube_bottom(optics_config) = bottom_position(optics_config) + camera_sensor_height(optics_config) + 6; 
-function fl_cube_top(optics_config) = fl_cube_bottom(optics_config) + fl_cube_w + 2.7; //top of beamsplitter cube
-fl_cube_top_w = fl_cube_w - 2.7;
+function fl_cube_top(optics_config) = fl_cube_bottom(optics_config) + fl_cube_w() + 2.7; //top of beamsplitter cube
+
+function fl_cube_w() = 16; //width of the fluorescence filter cube
+fl_cube_top_w = fl_cube_w() - 2.7;
 $fn=24;
 
 
-function fl_cube_width() = fl_cube_w;
+function fl_cube_width() = fl_cube_w();
 
 module fl_cube_cutout(optics_config, taper=true){
-    fl_cube_cutout_w = fl_cube_w+1; //make the cutout a little bigger than the fl_cube
+    fl_cube_cutout_w = fl_cube_w()+1; //make the cutout a little bigger than the fl_cube
     // A cut-out that enables a filter cube to be inserted.
     union(){
         sequential_hull(){
-            translate([-fl_cube_cutout_w/2,-fl_cube_w/2,fl_cube_bottom(optics_config)]){
+            translate([-fl_cube_cutout_w/2,-fl_cube_w()/2,fl_cube_bottom(optics_config)]){
                 cube([fl_cube_cutout_w,999,fl_cube_cutout_w]);
             }
-            translate([-fl_cube_cutout_w/2+2,-fl_cube_w/2,fl_cube_bottom(optics_config)]){
+            translate([-fl_cube_cutout_w/2+2,-fl_cube_w()/2,fl_cube_bottom(optics_config)]){
                 cube([fl_cube_cutout_w-4,999,fl_cube_cutout_w+2]); //sloping sides
             }
-            translate([-fl_cube_cutout_w/2+2,-fl_cube_w/2+2,fl_cube_bottom(optics_config)]){
-                cube([fl_cube_cutout_w-4,fl_cube_w-4,fl_cube_cutout_w+2]);
+            translate([-fl_cube_cutout_w/2+2,-fl_cube_w()/2+2,fl_cube_bottom(optics_config)]){
+                cube([fl_cube_cutout_w-4,fl_cube_w()-4,fl_cube_cutout_w+2]);
             }
             if(taper){
                 //taper gradually to the diameter of the beam
@@ -51,11 +53,11 @@ module fl_cube_cutout(optics_config, taper=true){
         }
         //a space at the back to allow the grippers for the dichroics to extend back a bit further.
         hull(){
-            translate([-fl_cube_w/2+2,-fl_cube_w/2-1,fl_cube_bottom(optics_config)]){
-                cube([fl_cube_w-4,999,fl_cube_w]);
+            translate([-fl_cube_w()/2+2,-fl_cube_w()/2-1,fl_cube_bottom(optics_config)]){
+                cube([fl_cube_w()-4,999,fl_cube_w()]);
             }
-            translate([-fl_cube_w/2+4,-fl_cube_w/2,fl_cube_bottom(optics_config)]){
-                cube([fl_cube_w-8,999,fl_cube_w+2]);
+            translate([-fl_cube_w()/2+4,-fl_cube_w()/2,fl_cube_bottom(optics_config)]){
+                cube([fl_cube_w()-8,999,fl_cube_w()+2]);
             }
         }
 
@@ -66,7 +68,7 @@ module fl_cube_casing(optics_config){
     minkowski(){
         difference(){
             fl_cube_cutout(optics_config);
-            translate([-999, fl_cube_w/2, -999]){
+            translate([-999, fl_cube_w()/2, -999]){
                 cube(999*2);
             }
         }
@@ -77,7 +79,7 @@ module fl_cube_casing(optics_config){
 module fl_screw_holes(optics_config, d, h){
     reflect_x(){
         union(){
-            translate([fl_cube_w/2+3,0,fl_cube_bottom(optics_config)+fl_cube_w]){
+            translate([fl_cube_w()/2+3,0,fl_cube_bottom(optics_config)+fl_cube_w()]){
                 rotate_x(90){
                     trylinder_selftap(d, h);
                 }
@@ -111,13 +113,13 @@ module optical_path_fl(optics_config, lens_aperture_r, lens_z){
         union(){
             translate_z(camera_mount_top_z-tiny()){
                 //beam path to bottom of cube
-                lighttrap_sqylinder(r1=5, f1=0, r2=0, f2=fl_cube_w-4, h=fl_cube_bottom(optics_config)-camera_mount_top_z+2*tiny());
+                lighttrap_sqylinder(r1=5, f1=0, r2=0, f2=fl_cube_w()-4, h=fl_cube_bottom(optics_config)-camera_mount_top_z+2*tiny());
             }
             //filter cube
             fl_cube_cutout(optics_config);
             translate_z(fl_cube_top(optics_config)-tiny()){
                 //beam path
-                lighttrap_sqylinder(r1=1.5, f1=fl_cube_w-4-3, r2=lens_aperture_r, f2=0, h=lens_z-fl_cube_top(optics_config)+4*tiny());
+                lighttrap_sqylinder(r1=1.5, f1=fl_cube_w()-4-3, r2=lens_aperture_r, f2=0, h=lens_z-fl_cube_top(optics_config)+4*tiny());
             }
             translate_z(lens_z){
                 //lens
@@ -311,11 +313,11 @@ module camera_mount_body(
                         fl_screw_holes(optics_config, d = 2.5, h = 6);
                     }
                     hull(){
-                        translate([0,-fl_cube_w,fl_cube_bottom(optics_config)+fl_cube_w/2+3.5]){
-                            cube([fl_cube_w+15,fl_cube_w,fl_cube_w+7],center=true);
+                        translate([0,-fl_cube_w(),fl_cube_bottom(optics_config)+fl_cube_w()/2+3.5]){
+                            cube([fl_cube_w()+15,fl_cube_w(),fl_cube_w()+7],center=true);
                         }
-                        translate([0,-fl_cube_w-6,fl_cube_bottom(optics_config)+fl_cube_w/2+9]){
-                            cube([fl_cube_w+20,fl_cube_w,fl_cube_w+6],center = true);
+                        translate([0,-fl_cube_w()-6,fl_cube_bottom(optics_config)+fl_cube_w()/2+9]){
+                            cube([fl_cube_w()+20,fl_cube_w(),fl_cube_w()+6],center = true);
                         }
                     }
                 }
@@ -553,7 +555,7 @@ module camera_platform(params, optics_config, base_r){
 
     // platform height is 5mm below the lens spacer (board is 1mm thick mounting posts are 4mm tall)
     platform_h = lens_spacer_z(params, optics_config) - 5;
-    assert(platform_h > z_flexures_z2(params), "Platform height too low for z-axis mounting");
+    assert(platform_h > upper_z_flex_z(params), "Platform height too low for z-axis mounting");
 
 
     // Make a camera platform with a dovetail on the side and a platform on the top

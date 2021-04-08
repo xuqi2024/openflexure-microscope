@@ -86,7 +86,7 @@ module slide_riser(params, h=.6, thickness=4){
 
                 //counter bored mounting holesmounting holes
                 each_leg(params){
-                    translate_y(-stage_hole_inset){
+                    translate_y(-stage_hole_inset()){
                         cylinder(r=3/2*1.15,h=999,center=true);
                         translate_z(thickness+tiny()){
                             cylinder(r=3*1.15,h=999);

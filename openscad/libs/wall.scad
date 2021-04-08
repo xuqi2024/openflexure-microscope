@@ -43,17 +43,20 @@ module add_roof(inner_h){
         children();
     }
 }
-module wall_vertex(r=wall_t/2, h=wall_h, x_tilt=0, y_tilt=0){
+module wall_vertex(r=undef, h=undef, x_tilt=0, y_tilt=0){
     // A cylinder, rotated by the given angles about X and Y,
     // but with the top and bottom kept in the XY plane
     // (i.e. it's sheared rather than tilted).    These form the
     // stiffening "wall" that runs around the base of
     // the legs
+    radius = if_undefined_set_default(r, microscope_wall_t()/2);
+    height = if_undefined_set_default(h, actuator_wall_h());
     sparse_matrix_transform(xz=tan(y_tilt), yz=-tan(x_tilt)){
-        cylinder(r=r, h=h, $fn=8);
+        cylinder(r=radius, h=height, $fn=8);
     }
 }
-module inner_wall_vertex(params, leg_angle, x, h=wall_h, thick=false){
+
+module inner_wall_vertex(params, leg_angle, x, h, thick=false){
     // A thin cylinder, close to one of the legs.  It
     // tilts inwards to clear the leg.  These form the
     // corners of the stiffening "wall" that runs around
@@ -69,7 +72,7 @@ module inner_wall_vertex(params, leg_angle, x, h=wall_h, thick=false){
     // edge is vertical (i.e. the bit at 45 degrees to
     // the leg frame)
     y_tilt = x>0?6:-6;
-    r = thick?wall_t:wall_t/2;
+    r = thick ? microscope_wall_t() : microscope_wall_t()/2;
     y=-flex_dims().y-r;
 
     leg_frame(params, leg_angle){
@@ -82,12 +85,12 @@ module inner_wall_vertex(params, leg_angle, x, h=wall_h, thick=false){
 module z_bridge_wall_vertex(params){
     // This is the vertex of the "inner wall" nearest the
     // new (cantilevered) Z axis.
-    inner_wall_vertex(params, 45, leg_outer_w(params)/2+wall_t/2, inner_wall_h(params));
+    inner_wall_vertex(params, 45, leg_outer_w(params)/2+microscope_wall_t()/2, inner_wall_h(params));
 }
 
-function mounting_lug_wall_vertex_position(params) = [-back_lug_x_pos(params)-wall_t/2, -wall_t/2, 0];
+function mounting_lug_wall_vertex_position(params) = [-back_lug_x_pos(params)-microscope_wall_t()/2, -microscope_wall_t()/2, 0];
 
-function outer_wall_tilt(params) = atan(wall_t/inner_wall_h(params));
+function outer_wall_tilt(params) = atan(microscope_wall_t()/inner_wall_h(params));
 
 module mounting_lug_wall_vertex(params){
     // This is the vertex of the supporting wall nearest
@@ -102,7 +105,7 @@ module mounting_lug_wall_vertex(params){
 
 
 function y_actuator_wall_vertex_position(params, inside=true) = let(
-    tansverse_distance = actuator_housing_xy_size().x/2 - wall_t/2,
+    tansverse_distance = actuator_housing_xy_size().x/2 - microscope_wall_t()/2,
     x_sign = inside? 1 : -1
 ) y_actuator_pos(params) + [x_sign, x_sign, 0]*tansverse_distance/sqrt(2);
 
@@ -117,13 +120,13 @@ module y_actuator_wall_vertex(params, inside=true){
 
 module z_actuator_wall_vertex(params, front=true){
     if (front){
-        y_tr = z_nut_y(params)+actuator_housing_xy_size().y/2-wall_t/2;
+        y_tr = z_nut_y(params)+actuator_housing_xy_size().y/2-microscope_wall_t()/2;
         translate_y(y_tr){
             wall_vertex();
         }
     }
     else{
-        x_tr = -(z_anchor_w()/2+wall_t/2+1);
+        x_tr = -(z_anchor_w()/2+microscope_wall_t()/2+1);
         y_tr = z_anchor_y() + 1;
         translate([x_tr, y_tr, 0]){
             wall_vertex();
@@ -146,7 +149,7 @@ module wall_inside_xy_stage(params){
             wall_h = inner_wall_h(params);
             //radius on which wall sits.
             wall_rad = leg_outer_w(params)/2;
-            wall_rad_thick = leg_outer_w(params)/2-wall_t/2;
+            wall_rad_thick = leg_outer_w(params)/2-microscope_wall_t()/2;
             z_bridge_wall_vertex(params);
             inner_wall_vertex(params, 45, -wall_rad, wall_h);
             mounting_lug_wall_vertex(params);
@@ -274,7 +277,7 @@ module place_on_wall(params, is_y=true, housing=true){
     wall_start = is_y ? y_wall_start : [-y_wall_start.x, y_wall_start.y, y_wall_start.z];
     wall_angle = is_y ? y_wall_angle(params) : - y_wall_angle(params);
 
-    wall_tr_y = housing ? -housing_size(0).x : -wall_t/2;
+    wall_tr_y = housing ? -housing_size(0).x : -microscope_wall_t()/2;
     wall_tilt = housing ? 0 : outer_wall_tilt(params);
 
     // pivot about the starting corner of the wall so X is along it

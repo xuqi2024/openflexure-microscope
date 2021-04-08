@@ -36,10 +36,10 @@ function base_corner_y(params) = let(
     leg_r = key_lookup("leg_r", params),
     // calculate the radius that the center of the wall inside the xy stage is on
     // drawing a line from origin through a back leg
-    on_rad = leg_r-flex_dims().y-wall_t/2+leg_outer_w(params)/2,
+    on_rad = leg_r-flex_dims().y-microscope_wall_t()/2+leg_outer_w(params)/2,
     // project this point ont the y axis:
     on_y_ax = -on_rad/sqrt(2)
-) on_y_ax - wall_t/2 - 15;
+) on_y_ax - microscope_wall_t()/2 - 15;
 
 module foot_footprint(tilt=0){
     // the footprint of one foot/actuator column

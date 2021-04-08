@@ -45,7 +45,7 @@ module each_om_contact_plane(){
 
 module objective_mount(params){
     // The fitting to which the optics module is attached
-    h = z_flexures_z2(params) + 4*sqrt(2);
+    h = upper_z_flex_z(params) + 4*sqrt(2);
     overlap = 4; // we have this much contact between
                  // the mount and the wedge on the optics module.
     roc=1.5; // radius of curvature of the arms
@@ -67,19 +67,19 @@ module objective_mount(params){
 
         // bolt slot to mount objective
         hull(){
-            translate_z(z_flexures_z1()+8){
+            translate_z(lower_z_flex_z()+8){
                 rotate_x(-90){
                     cylinder(d=3.5, h=999);
                 }
             }
-            translate_z(z_flexures_z2(params)-5){
+            translate_z(upper_z_flex_z(params)-5){
                 rotate_x(-90){
                     cylinder(d=3.5, h=999);
                 }
             }
         }
         // make the bolt slot keyhole-shaped to allow the screw to be easily inserted
-        translate_z(z_flexures_z1()+6){
+        translate_z(lower_z_flex_z()+6){
             rotate_x(-90){
                 cylinder(d=6.5, h=999);
             }
@@ -116,7 +116,7 @@ module objective_mount(params){
 
 
 //TODO find out what these are and whther they are still needed!
-function objective_mount_screw_pos(params) = [0, objective_mount_back_y(), (z_flexures_z2(params) + z_flexures_z1())/2];
+function objective_mount_screw_pos(params) = [0, objective_mount_back_y(), (upper_z_flex_z(params) + lower_z_flex_z())/2];
 
 module objective_mount_screw(params){
     translate(objective_mount_screw_pos(params)){
@@ -137,7 +137,7 @@ module objective_fitting_wedge(params, h=undef, nose_shift=0.2, center=false){
     // the gap at the tip, if we are making the optics module).  If subtracting this
     // to make a mount for the optics module, use nose_shift < 0
 
-    height = is_undef(h) ? z_flexures_z2(params)+4 : h;
+    height = is_undef(h) ? upper_z_flex_z(params)+4 : h;
     //width of the pointy end
     nose_width = objective_mount_nose_w();
     nose_x = -nose_width/2-nose_shift;
@@ -211,7 +211,7 @@ module z_axis_flexure(h=flex_dims().z, z=0){
 
 module z_axis_flexures(params, h=flex_dims().z){
     // The parts that bend as the Z axis is moved
-    for(z=[z_flexures_z1(), z_flexures_z2(params)]){
+    for(z=[lower_z_flex_z(), upper_z_flex_z(params)]){
         z_axis_flexure(h=h, z=z);
     }
 }
@@ -219,13 +219,16 @@ module z_axis_flexures(params, h=flex_dims().z){
 module z_axis_struts(params){
     // The parts that tilt as the Z axis is moved, including the lever that
     // connects to the actuator column (but not the column itself).
+
+    //delta_z is 2-3 layers when printed
+    delta_z = min_z_feature();
     intersection(){ // The two horizontal parts
-        for(z=[z_flexures_z1(), z_flexures_z2(params)]){
+        for(z=[lower_z_flex_z(), upper_z_flex_z(params)]){
             hull(){
-                translate([-99,objective_mount_back_y()+flex_dims().y,z+dz]){
+                translate([-99,objective_mount_back_y()+flex_dims().y,z+delta_z]){
                     cube([999,z_strut_l(),1]);
                 }
-                translate([-99,objective_mount_back_y()+flex_dims().y+3,z+dz]){
+                translate([-99,objective_mount_back_y()+flex_dims().y+3,z+delta_z]){
                     cube([999,z_strut_l()-6,5]);
                 }
             }
@@ -243,9 +246,9 @@ module z_axis_struts(params){
                 cylinder(d=w, h=lever_h);
             }
             translate_y(z_anchor_y() + w/2 + 2){
-                cylinder(d=w, h=z_flexures_z1()+2*dz);
+                cylinder(d=w, h=lower_z_flex_z()+2*delta_z);
             }
-            translate([-w/2, z_anchor_y() - flex_dims().x - tiny(), z_flexures_z1() + dz]){
+            translate([-w/2, z_anchor_y() - flex_dims().x - tiny(), lower_z_flex_z() + delta_z]){
                 cube([w,tiny(), 5-tiny()]);
             }
         }
@@ -282,7 +285,7 @@ module z_axis_clearance(params){
 module objective_mounting_screw_access(params){
     // access hole for the objective mounting screw
 
-    translate([0,objective_mount_back_y(), z_flexures_z2(params)/2]){
+    translate([0,objective_mount_back_y(), upper_z_flex_z(params)/2]){
         hull(){
             rotate([-90,0,22]){
                 cylinder(h=999, d=7, $fn=16);
@@ -319,7 +322,7 @@ module z_motor_clearance(params, motor_h=999){
 module top_of_z_axis_casing(params){
     actuator_h = key_lookup("actuator_h", params);
     // The top of the Z axis casing, in case you want to join things onto it
-    translate([-z_anchor_w()/2-1.5, z_anchor_y() - 1, z_flexures_z2(params)]){
+    translate([-z_anchor_w()/2-1.5, z_anchor_y() - 1, upper_z_flex_z(params)]){
         cube([z_anchor_w()+3, tiny(), tiny()]);
     }
     translate_y(z_nut_y(params)){
@@ -334,7 +337,7 @@ module z_axis_casing(params, condenser_mount=false){
     intersection(){
         linear_extrude(height=999){
             minkowski(){
-                circle(r=wall_t+1);
+                circle(r=microscope_wall_t()+1);
                 hull(){
                     projection(){
                         z_axis_struts(params);
@@ -347,7 +350,7 @@ module z_axis_casing(params, condenser_mount=false){
                 z_bridge_wall_vertex(params);
             }
             translate([-99,z_anchor_y(),0]){
-                cube([999,4,z_flexures_z2(params)+2]);
+                cube([999,4,upper_z_flex_z(params)+2]);
             }
             translate_y(z_nut_y(params)){
                 cylinder(d=10,h=20);

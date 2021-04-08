@@ -47,51 +47,135 @@ function default_params() = [["leg_r", 30],     // radius on which the innermost
                              ["foot_height", 15] //the height of the feet
                             ];
 
+////// 3D printing specific paramenters //////
 
-// height of the top of the leg. Shorter than sample x so that you can get nuts in, and so the slide doesn't crash.
+/**
+* The minimum recomended size in z of a feature. This is approximatly 2-3 layers when printed
+*/
+function min_z_feature() = 0.5;
+
+
+////// Structural parameters //////
+
+/**
+* Height of the top of the leg.
+* Shorter than sample_z so that you can get nuts into the stage nut traps,
+* and so the slide doesn't crash into the legs.
+*/
 function leg_height(params) = let(
     sample_z = key_lookup("sample_z", params),
     stage_t = key_lookup("stage_t", params),
     leg_block_t = key_lookup("leg_block_t", params)
 ) sample_z - stage_t + leg_block_t;
 
+/**
+* The distance holes on the XY stage are inset from leg_r (the radius on which the legs sit)
+*/
+function stage_hole_inset() = flex_dims().y+4; 
 
-// This variables set the dimensions of flexures.
-// It is well tested with PLA.
+/**
+* Width of the middle part of each leg
+*/
+function leg_middle_w() = 12;
+
+/**
+* Vertical spacing between the hoziontal links on each leg
+*/
+function leg_link_spacing() = 10;
+
+/**
+* Thickness of the base of the main body
+*/
+function microscope_base_t() = 1;
+
+/**
+* Position of the x actuator
+*/
+function x_actuator_pos(params) = let(
+    leg_r = key_lookup("leg_r", params),
+    radial_distance = leg_r+actuating_nut_r(params)
+) [1, 1, 0]*radial_distance/sqrt(2);
+
+/**
+* Position of the y actuator
+*/
+function y_actuator_pos(params) = let(
+    x_pos = x_actuator_pos(params)
+) [-x_pos.x, x_pos.y, x_pos.z];
+
+/**
+* Position of the z actuator
+*/
+function z_actuator_pos(params) = [0, z_nut_y(params), 0];
+
+////// Flexure parameters //////
+/**
+* The dimensions of the flexures for the main body
+* These dimensions are well tested with PLA.
+*/
 function flex_dims() = let
 (
-    flex_w = 4, // width  of flexures
-    flex_l = 1.5,    // length of flexures
-    flex_t = 0.75// thickness  of flexures
+    // width  of flexures
+    flex_w = 4,
+    // length of flexures
+    flex_l = 1.5,
+    // thickness  of flexures
+    flex_t = 0.75
 )  [flex_w, flex_l, flex_t];
 
-// This returns the sine of the angle through which flexures can be bent
-// Note: sin(8.62 deg) = 0.15
+/**
+* Sine of the angle through which flexures can be bent
+* This is 0.15 corresponding to 8.62 degrees
+*/
 function flex_a() = 0.15;
 
-stage_hole_inset = flex_dims().y+4; // how far the holes on the XY stage are inset from leg_r
-flex_z1 = 0;      // z position of lower flexures for XY axis
-function flex_z2(params) = leg_height(params) - key_lookup("leg_block_t", params); //height of upper XY flexures
-z_strut_t = 6;  // (z) thickness of struts for Z axis
-function leg_dims(params) = [4,flex_dims().x,flex_z2(params)+flex_dims().z]; // size of vertical legs
-leg_middle_w = 12; // width of the middle part of each leg
-dz = 0.5; //small increment in Z (~ 2 layers)
 
-// overall width of parallelogram legs that support the stage
-function leg_outer_w(params) = leg_middle_w + 2*flex_dims().y + 2*leg_dims(params).x;
+/**
+* z position of lower flexures for XY axis
+*/
+function lower_xy_flex_z() = 0;
 
-// TODO: Work out why this has this name and change it
-// distance from leg_r to the actuating nut/screw for the XY axes
-// Length of actuator is the diference in distance between flexures
-// at top and bottom of leg, multiplied by the lever ratio
+/**
+* z position of upper flexures for XY axis
+*/
+function upper_xy_flex_z(params) = leg_height(params) - key_lookup("leg_block_t", params);
+
+/**
+* Dimensions of the thin vertical legs that support the stage
+*/
+function leg_dims(params) = let(
+    height = upper_xy_flex_z(params)+flex_dims().z
+) [4, flex_dims().x, height];
+
+/**
+* Overall width of a pair of legs (parallelogram linkage) that support the stage
+*/
+function leg_outer_w(params) = leg_middle_w() + 2*flex_dims().y + 2*leg_dims(params).x;
+
+/**
+* The radius upon which the x and y actuating nut sits in the frame of reference of the leg
+* The total distance from the centre of the microscope to the x and y actuating nuts is then
+* calculated as `leg_r + actuating_nut_r(params)` where `leg_r` is set in the
+* parameters dictionary
+*
+* This is also the length of actuating lever for x and y.
+* It is calculated from the diference in distance between flexures
+* at top and bottom of leg, multiplied by the lever ratio.
+*/
 function actuating_nut_r(params) = let(
     xy_lever_ratio = key_lookup("xy_lever_ratio", params)
-) (flex_z2(params) - flex_z1) * xy_lever_ratio;
-
-function xy_actuator_travel(params) = actuating_nut_r(params)*0.15; // distance moved by XY axis actuators
+) (upper_xy_flex_z(params) - lower_xy_flex_z()) * xy_lever_ratio;
 
 
-////// Z axis parameters. Many are defined here to avoid cyclic imports /////
+//TODO explain this!
+/**
+* distance moved by XY axis actuators
+*/
+function xy_actuator_travel(params) = actuating_nut_r(params)*0.15; 
+
+
+////// Z axis parameters. Many are defined here to avoid cyclic imports //////
+
 
 /**
 * Length of struts supporting Z carriage.
@@ -111,12 +195,12 @@ function objective_mount_nose_w() = 6;
 /**
 * height of the lower flexure on z actuator
 */
-function z_flexures_z1() = 8;
+function lower_z_flex_z() = 8;
 
 /**
 * height of the upper flexure on z actuator
 */
-function z_flexures_z2(params) = min(leg_height(params) - 12, 35);
+function upper_z_flex_z(params) = min(leg_height(params) - 12, 35);
 
 /**
 * y position of the back of the objective mount
@@ -131,73 +215,136 @@ function z_anchor_y() = objective_mount_back_y() + z_strut_l() + 2*flex_dims().y
 /**
 * Width of the fixed structure where that joints to the z-axis flexures
 */
-function z_anchor_w() = 20; //
+function z_anchor_w() = 20;
 
-//required actuator lever length
+/**
+* The length of the actuating lever for the z_axis
+* 
+* This is calculated from the desired lever ratio and the length
+* the struts that form the parallelogram linkage for the z-axis.
+* The flexure length is added to the strut length under the approximation
+* that the flexures act like a hinge located in the middle of the flexure.
+*/
 function z_lever_length(params) = let(
     z_lever_ratio = key_lookup("z_lever_ratio", params)
 ) (z_strut_l() + flex_dims().y)*z_lever_ratio;
 
-
+/**
+* The y position of the z-actuator nut.
+*/
 function z_nut_y(params) = let(
     // Note that the lever is tilted so we need to find the y projection
     // from the z lever length and the z position of the bottom z flexure
     lev_len_sq = pow(z_lever_length(params), 2),
-    bot_z_flex_z_sq = pow(z_flexures_z1(), 2),
+    bot_z_flex_z_sq = pow(lower_z_flex_z(), 2),
     z_lever_y_proj = sqrt(lev_len_sq - bot_z_flex_z_sq)
 ) z_anchor_y() - flex_dims().y/2 + z_lever_y_proj;
 
 
-function z_actuator_travel(params) = z_lever_length(params)*0.15; // distance moved by the Z actuator
-function z_actuator_tilt(params) = -asin(z_flexures_z1()/z_lever_length(params)); //angle of the Z actuator
+//TODO explain this!
+/**
+* distance moved by z axis
+*/
+function z_actuator_travel(params) = z_lever_length(params)*0.15;
 
+/**
+* The angle (in degrees) through which the z_actuator is tilted
+*/
+function z_actuator_tilt(params) = -asin(lower_z_flex_z()/z_lever_length(params));
+
+
+////// Motor parameters. //////
+
+/**
+* Approximate size of the connector for the 28BYJ-48 stepper motors
+*/
 function motor_connector_size() = [5.5, 14.5, 8];
-//height of the printed lug:
+
+/**
+* Height of the printed lug on which the motors are mounted
+*/
 function motor_lug_h() = 11;
-//height of the lug/bracket on the motor itself:
+
+/**
+* height(tickness) of the lug/bracket on the motor itself
+*/
 function motor_bracket_h() = 0.8;
+
+/**
+* Motor shaft position relative to the x-z poistion of the actuating nut.
+* h is the actuator height plus the travel for the axis.
+*/
 function motor_shaft_pos(h) = [0,-20,h+2];
+
+/**
+* Distance between the screws that attach the motor to the microscope
+*/
 function motor_screw_separation() = 35;
+
+/**
+* Position of the motor screws in the same frame of reference as motor_shaft_pos
+*/
 function motor_screw_pos(h) = let(
     shaft_pos = motor_shaft_pos(h)
 ) [motor_screw_separation()/2,shaft_pos.y+7.8,shaft_pos.z+motor_lug_h()];
 
-function x_actuator_pos(params) = let(
-    leg_r = key_lookup("leg_r", params),
-    radial_distance = leg_r+actuating_nut_r(params)
-) [1, 1, 0]*radial_distance/sqrt(2);
-
-function y_actuator_pos(params) = let(
-    x_pos = x_actuator_pos(params)
-) [-x_pos.x, x_pos.y, x_pos.z];
-
-function z_actuator_pos(params) = [0, z_nut_y(params), 0];
-
+/**
+* The z-position (height) of the y-motor
+*/
 function y_motor_z_pos(params) = let(
     actuator_h = key_lookup("actuator_h", params)
 ) motor_screw_pos(actuator_h+xy_actuator_travel(params)).z;
 
-//Note this is not a true z position as it is the position along the tilted axis
+/**
+* The z-position (height) of the z-motor
+* Note this is not a true z position as it is the position along the tilted axis
+*/
 function z_motor_z_pos(params) = let(
     actuator_h = key_lookup("actuator_h", params)
 ) motor_screw_pos(actuator_h+z_actuator_travel(params)).z;
 
 
+////// Microscope mounting lug parameters //////
+
+/**
+* The distance that the back of the microscope mounting lugs is offset from the
+* centre of the hole in the lug
+*/
 function lug_back_offset() = [-5, -8, 0];
 
+/**
+* Sets the position of the back lugs (These are the lugs by the legs)
+* The front lugs are set by the position of the actuator housing.
+* To get all holes see base_mounting_holes in microscope_structure.scad
+*/
 function back_lug_x_pos(params) = let(
     leg_r = key_lookup("leg_r", params),
     tenth_of_height = max(5,leg_dims(params).z*0.1)
 ) (leg_r-flex_dims().y-tenth_of_height)*sqrt(2);
 
-leg_link_spacing = 10;
-base_t=1; // thickness of the flat base of the structure
-wall_h=15; // height of the stiffening vertical(ish) walls
-wall_t=2; //thickness of the stiffening walls
-function inner_wall_h(params) = z_flexures_z2(params) - 10; //height of walls inside xy_stage
-
+/**
+* The angle which the four lugs face in the order that the hole positions
+* are listed in base_mounting_holes in microscope_structure.scad.
+*/
 function lug_angles() = [-120, 120, 50, -50];
 
+/**
+* Height of walls between the actuators
+*/
+function actuator_wall_h() = 15;
 
+/**
+* Thickness of the walls on the main body
+* The wall where the reflection illumination cut-out is has double thickness
+*/ 
+function microscope_wall_t() = 2;
 
-fl_cube_w = 16; //width of the fluorescence filter cube
+/**
+* Height of walls inside xy_stage
+*/
+function inner_wall_h(params) = upper_z_flex_z(params) - 10; 
+
+/**
+* Height of the cutout in the main body wall for the reflection optics
+*/
+function reflection_cutout_height() = 16;

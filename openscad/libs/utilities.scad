@@ -433,16 +433,16 @@ module square_to_circle(r, h, layers=4, top_cylinder=0){
     }
 }
 
-module hole_from_bottom(r, h, base_w=-1, dz=0.5, big_bottom=true){
+module hole_from_bottom(r, h, base_w=-1, delta_z=0.5, big_bottom=true){
     // This creates a shape that can be used to create a 3D printable
     // hole in a large bridge. Builds up in layer to avoid unprintable
     // cantilevered paths.
 
-    base = base_w>0 ? [base_w,2*r,2*dz] : [2*r,2*r,tiny()];
+    base = base_w>0 ? [base_w,2*r,2*delta_z] : [2*r,2*r,tiny()];
     union(){
         cube(base,center=true);
         translate_z(base.z/2-tiny()){
-            square_to_circle(r, dz*4, 4, h-dz*5+tiny());
+            square_to_circle(r, delta_z*4, 4, h-delta_z*5+tiny());
         }
         if(big_bottom){
             mirror([0,0,1]){
@@ -586,27 +586,27 @@ module trylinder_gripper(inner_r=10,h=6,grip_h=3.5,base_r=-1,t=0.65,squeeze=1,fl
     }
 }
 
-module deformable_hole_trylinder(r1, r2, h=99, corner_roc=-1, dz=0.5, center=false){
+module deformable_hole_trylinder(r1, r2, h=99, corner_roc=-1, delta_z=0.5, center=false){
     // A cylinder with feathered edges, to make a hole that is
     // slightly deformable, in an otherwise rigid structure.
     // r1: inner radius
     // r2: outer radius
     // h, center: as for cylinder
     // corner_roc: radius of curvature of the trylinder
-    // dz: thickness of layers
-    n = floor(h/(2*dz)); //number of layers in the structure
+    // delta_z: thickness of layers
+    n = floor(h/(2*delta_z)); //number of layers in the structure
     flat_l = 2*sqrt(r2*r2 - r1*r1);
     corner_roc = corner_roc < 0 ? r1 - flat_l/(2*sqrt(3)) : corner_roc;
-    repeat([0,0,2*dz], n, center=center){
+    repeat([0,0,2*delta_z], n, center=center){
         union(){
-            cylinder(r=r2, h=dz+tiny());
-            translate_z(center ? -dz : dz){
-                trylinder(r=corner_roc, flat=flat_l, h=dz+tiny());
+            cylinder(r=r2, h=delta_z+tiny());
+            translate_z(center ? -delta_z : delta_z){
+                trylinder(r=corner_roc, flat=flat_l, h=delta_z+tiny());
             }
         }
     }
 }
-module self_tap_hole(mean_r, h, dr=1, dz=0.5, bridge_facets=0, center=false, screw=true){
+module self_tap_hole(mean_r, h, dr=1, delta_z=0.5, bridge_facets=0, center=false, screw=true){
     // A cylinder with bridges around the edges, aiming to make
     // a hole with nicely feathered edges.
     // mean_r is the radius of the thing you're inserting.  The
@@ -623,11 +623,11 @@ module self_tap_hole(mean_r, h, dr=1, dz=0.5, bridge_facets=0, center=false, scr
     bridge_facets = bridge_facets > 0 ? bridge_facets : default_facets;
     difference(){
         cylinder(r=outer_r, h=h, center=center);
-        repeat([0,0,2*dz], ceil(h/dz/2), center=center){
+        repeat([0,0,2*delta_z], ceil(h/delta_z/2), center=center){
             for(i=[1:bridge_facets]){
                 rotate(i*360/bridge_facets){
-                    translate([-999,inner_r,screw ? i/bridge_facets*2*dz : 0]){
-                        cube([999*2,999,dz]);
+                    translate([-999,inner_r,screw ? i/bridge_facets*2*delta_z : 0]){
+                        cube([999*2,999,delta_z]);
                     }
                 }
             }

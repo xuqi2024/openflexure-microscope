@@ -9,17 +9,17 @@ slip_plate_thickness=2;
 slip_plate_edge_slot  =3;
 excitation_thickness = 2; // The thickness of the excitation filter
 excitation_offset = 2; //The amount of holder either side of the exciation filter.
-top_filter_cube =LEDstar_r-fl_cube_w/2+extra_space;
-beam_z = top_filter_cube+fl_cube_w/2;
+top_filter_cube =LEDstar_r-fl_cube_w()/2+extra_space;
+beam_z = top_filter_cube+fl_cube_w()/2;
 roc = 0.6;
 w = illuminator_width(); //nominal width of the mount (is the width between the outsides of the dovetail clip points)
-dovetail_pinch = fl_cube_w - 4*roc - 1 - 3; //width between the pinch-points of the dovetail
-fl_cube_mount_h = fl_cube_w + top_filter_cube+2; //should probably be fl_cube_w
+dovetail_pinch = fl_cube_w() - 4*roc - 1 - 3; //width between the pinch-points of the dovetail
+fl_cube_mount_h = fl_cube_w() + top_filter_cube+2; //should probably be fl_cube_w()
 filter = [10,14,1.5];
 beamsplit = [0, 0, w/2]; //NB different to fl_cube because we're printing with z=z here.
 
 front_t = 2;
-back_y = fl_cube_w/2 + roc + 1.5; //flat of dovetail (we actually start 1.5mm behind this)
+back_y = fl_cube_w()/2 + roc + 1.5; //flat of dovetail (we actually start 1.5mm behind this)
 led_y = back_y+3; //don't worry about precise imaging //TODO what does this mean?
 front_y = led_y + front_t;
 
@@ -32,7 +32,7 @@ module fl_cube_mount(beam_d=5){
         union(){
             translate_y(back_y){
                 mirror([0,1,0]){
-                    dovetail_m([fl_cube_w-1, 1, fl_cube_mount_h], t=2*roc);
+                    dovetail_m([fl_cube_w()-1, 1, fl_cube_mount_h], t=2*roc);
                 }
             }
             hull(){
@@ -187,7 +187,7 @@ module slip_plate(w){
                     }
                 }
                 reflect_x(){
-                    translate_x((fl_cube_w/2+3)){
+                    translate_x((fl_cube_w()/2+3)){
                         hull(){
                             //bottom of mounting point
                             translate([0,2,2]){
@@ -230,7 +230,7 @@ module slip_plate(w){
                     }
                 }
                     //mounting hole to optics module
-                translate([(fl_cube_w/2+3),0,(top_filter_cube)+slip_plate_thickness+2]){
+                translate([(fl_cube_w()/2+3),0,(top_filter_cube)+slip_plate_thickness+2]){
                     rotate([-90,60,0]){
                         trylinder_selftap(nominal_d = 2.5,h= 6);
                     }
@@ -243,7 +243,7 @@ module slip_plate(w){
 module excitation_slot(){
     excitation_width = 13;
     translate([-excitation_width/2,back_y + excitation_offset + excitation_thickness/2,-slip_plate_thickness-tiny()]){
-        cube([excitation_width,excitation_thickness,top_filter_cube+ fl_cube_w-excitation_offset]);
+        cube([excitation_width,excitation_thickness,top_filter_cube+ fl_cube_w()-excitation_offset]);
     }
 }
 
