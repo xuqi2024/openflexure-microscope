@@ -338,7 +338,6 @@ module optics_module_rms(params, optics_config, dovetail=true){
     sample_z = key_lookup("sample_z", params);
     assert(key_lookup("optics_type", optics_config)=="RMS", "Use an RMS optics configuration to create a RMS optics module.");
     assert(sample_z > 60, "RMS objectives won't fit in small microscope frames!");
-    assert(objective_mount_y > 12, "RMS objectives won't fit in small microscope frames!");
 
 
     // The optics configuration specifices  parameters that are unpacked are below

@@ -56,14 +56,6 @@ function leg_height(params) = let(
 ) sample_z - stage_t + leg_block_t;
 
 
-
-// The variables below affect the position of the objective mount
-z_strut_l = 18; //length of struts supporting Z carriage
-objective_mount_y = 18; // y position of clip for optics
-objective_mount_nose_w = 6; // width of the pointy end of the mount
-
-
-
 // This variables set the dimensions of flexures.
 // It is well tested with PLA.
 function flex_dims() = let
@@ -76,7 +68,6 @@ function flex_dims() = let
 // This returns the sine of the angle through which flexures can be bent
 // Note: sin(8.62 deg) = 0.15
 function flex_a() = 0.15;
-
 
 stage_hole_inset = flex_dims().y+4; // how far the holes on the XY stage are inset from leg_r
 flex_z1 = 0;      // z position of lower flexures for XY axis
@@ -99,30 +90,66 @@ function actuating_nut_r(params) = let(
 
 function xy_actuator_travel(params) = actuating_nut_r(params)*0.15; // distance moved by XY axis actuators
 
-// Z axis
-z_flexures_z1 = 8; // height of the lower flexure on z actuator
-function z_flexures_z2(params) = min(leg_height(params) - 12, 35); // height of the upper flexure on z actuator
-objective_mount_back_y = objective_mount_y + 2; //back of objective mount
-z_anchor_y = objective_mount_back_y + z_strut_l + 2*flex_dims().y; // fixed end of the flexure-hinged lever that actuates the Z axis
-z_anchor_w = 20; //width of the Z anchor
+
+////// Z axis parameters. Many are defined here to avoid cyclic imports /////
+
+/**
+* Length of struts supporting Z carriage.
+*/
+function z_strut_l() = 18; 
+
+/**
+* y position of the optics mounting wedge
+*/
+function objective_mount_y() = 18;
+
+/**
+* width of the pointy end of the mount
+*/
+function objective_mount_nose_w() = 6;
+
+/**
+* height of the lower flexure on z actuator
+*/
+function z_flexures_z1() = 8;
+
+/**
+* height of the upper flexure on z actuator
+*/
+function z_flexures_z2(params) = min(leg_height(params) - 12, 35);
+
+/**
+* y position of the back of the objective mount
+*/
+function objective_mount_back_y() = objective_mount_y() + 2;
+
+/**
+* y position of the fixed end of the flexure-hinged lever that actuates the Z axis
+*/
+function z_anchor_y() = objective_mount_back_y() + z_strut_l() + 2*flex_dims().y;
+
+/**
+* Width of the fixed structure where that joints to the z-axis flexures
+*/
+function z_anchor_w() = 20; //
 
 //required actuator lever length
 function z_lever_length(params) = let(
     z_lever_ratio = key_lookup("z_lever_ratio", params)
-) (z_strut_l + flex_dims().y)*z_lever_ratio;
+) (z_strut_l() + flex_dims().y)*z_lever_ratio;
 
 
 function z_nut_y(params) = let(
     // Note that the lever is tilted so we need to find the y projection
     // from the z lever length and the z position of the bottom z flexure
     lev_len_sq = pow(z_lever_length(params), 2),
-    bot_z_flex_z_sq = pow(z_flexures_z1, 2),
+    bot_z_flex_z_sq = pow(z_flexures_z1(), 2),
     z_lever_y_proj = sqrt(lev_len_sq - bot_z_flex_z_sq)
-) z_anchor_y - flex_dims().y/2 + z_lever_y_proj;
+) z_anchor_y() - flex_dims().y/2 + z_lever_y_proj;
 
 
 function z_actuator_travel(params) = z_lever_length(params)*0.15; // distance moved by the Z actuator
-function z_actuator_tilt(params) = -asin(z_flexures_z1/z_lever_length(params)); //angle of the Z actuator
+function z_actuator_tilt(params) = -asin(z_flexures_z1()/z_lever_length(params)); //angle of the Z actuator
 
 function motor_connector_size() = [5.5, 14.5, 8];
 //height of the printed lug:

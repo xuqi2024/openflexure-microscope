@@ -123,8 +123,8 @@ module z_actuator_wall_vertex(params, front=true){
         }
     }
     else{
-        x_tr = -(z_anchor_w/2+wall_t/2+1);
-        y_tr = z_anchor_y + 1;
+        x_tr = -(z_anchor_w()/2+wall_t/2+1);
+        y_tr = z_anchor_y() + 1;
         translate([x_tr, y_tr, 0]){
             wall_vertex();
         }
