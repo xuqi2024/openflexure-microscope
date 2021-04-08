@@ -12,6 +12,6 @@ use <./libs/lib_optics.scad>
 use <./libs/optics_configurations.scad>
 
 params = default_params();
-opics_config = pilens_picamera();
+opitcs_config = pilens_picamera();
 
-lens_spacer(params, opics_config);
+lens_spacer(params, opitcs_config);

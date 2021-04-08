@@ -458,6 +458,18 @@ module lens_spacer_gripper(lens_r, lens_h, pedestal_h, lens_assembly_base_r, len
     }
 }
 
+/**
+* Calculate the z_position of the lens spacer.
+* z position of lens is parfocal_distance below the sample
+* To reach the bottom of the spacer also subtract camera_sensor_height
+* and the desired lens spacing
+*/
+function lens_spacer_z(params, optics_config) = let(
+    sample_z = key_lookup("sample_z", params),
+    parfocal_distance = key_lookup("parfocal_distance", optics_config),
+    lens_spacing = key_lookup("lens_spacing", optics_config)
+) sample_z - (parfocal_distance + camera_sensor_height() + lens_spacing);
+
 module lens_spacer(params, optics_config){
     // Mount a lens some distance from the camera
 
@@ -465,13 +477,8 @@ module lens_spacer(params, optics_config){
     
     //unpack lens spacer parameters
     lens_r = key_lookup("lens_r", optics_config);
-    parfocal_distance = key_lookup("parfocal_distance", optics_config);
     lens_h = key_lookup("lens_h", optics_config);
     lens_spacing = key_lookup("lens_spacing", optics_config);
-
-    //z position of lens once in microscope
-    //lens sits parfocal_distance below the sample
-    lens_z_microscope = key_lookup("sample_z", params) - parfocal_distance;
 
     // z_position of the lens for this piece.
     //This is the height of the camera_sensor above the circuit board plus the spacing between the lens and the sensor
@@ -485,7 +492,7 @@ module lens_spacer(params, optics_config){
     //This is the height of the block the camera mounts into.
     camera_mount_height = camera_mount_height();
 
-    translate_z(lens_z_microscope-lens_z){
+    translate_z(lens_spacer_z(params, optics_config)){
         difference(){
             union(){
                 // This is the main body of the mount
@@ -516,6 +523,57 @@ module lens_spacer(params, optics_config){
                     camera_mount_counterbore();
                 }
             }
+        }
+    }
+}
+
+/**
+* camera_platform(params, base_r, h)
+*
+* * params - the microscope parameter dictionary
+* * optics_config - optics configuration dictionary
+* * base_r - radius of mount body
+*/
+module camera_platform(params, optics_config, base_r){
+
+    assert(key_lookup("optics_type", optics_config)=="spacer", "Use spacer optics configuration to create a camera_platform.");
+
+    // platform height is 5mm below the lens spacer (board is 1mm thick mounting posts are 4mm tall)
+    platform_h = lens_spacer_z(params, optics_config) - 5;
+    assert(platform_h > z_flexures_z2(params), "Platform height too low for z-axis mounting");
+
+
+    // Make a camera platform with a dovetail on the side and a platform on the top
+    difference(){
+        union(){
+            // This is the main body of the mount
+            sequential_hull(){
+                hull(){
+                    cylinder(r=base_r,h=tiny());
+                    objective_fitting_base(params);
+                }
+                translate_z(platform_h){
+                    hull(){
+                        cylinder(r=base_r,h=tiny());
+                        objective_fitting_base(params);
+                        camera_bottom_mounting_posts(h=tiny());
+                    }
+                }
+            }
+
+            // add the camera mount
+            translate_z(platform_h){
+                camera_bottom_mounting_posts(r=2, h=4);
+            }
+        }
+
+        // Mount for the nut that holds it on
+        translate_z(-4){
+            objective_fitting_cutout(params, y_stop=true);
+        }
+        // add the camera mount
+        translate_z(platform_h){
+            camera_bottom_mounting_posts(outers=false, cutouts=true);
         }
     }
 }

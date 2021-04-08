@@ -551,15 +551,12 @@ module microscope_stand(params, h=base_height){
         }
 
         mounting_holes(params);
-
-        // if we are building for reflection illumination, cut out the front to allow access
-        if(beamsplitter){
-            translate_z(h+foot_height){
-                rotate_x(90){
-                    cylinder(d=30,h=999);
-                }
+        translate_z(h+foot_height){
+            rotate_x(90){
+                cylinder(d=30,h=999);
             }
         }
+
     }
 }
 
