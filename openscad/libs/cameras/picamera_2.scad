@@ -36,20 +36,20 @@ function picamera_2_camera_dict() = [["mount_height", 4.5],
 
 function picamera_2_bottom_z() = -key_lookup("mount_height", picamera_2_camera_dict());
 
-module picam2_flex_and_components(cw=8.5+1){
+module picam2_flex_and_components(camera_width=8.5+1){
     // A 2D perimeter inside which the flex and components of the camera sit.
     // NB this should fit both v1 and v2 of the module
-    // cw is the width of the camera module's casing, nominally 8 or 8.5mm but
+    // camera_width is the width of the camera module's casing, nominally 8 or 8.5mm but
     // deliberately printed a bit generous to ensure it fits easily without
     // damaging the flex.
 
     //flex (also clears v1 connector)
-    translate([-cw/2,cw/2-1]){
-        square([cw,13.4-cw/2+1]);
+    translate([-camera_width/2,camera_width/2-1]){
+        square([camera_width,13.4-camera_width/2+1]);
     }
     //connector
-    translate([-cw/2-2.5,6.7]){
-        square([cw+2.5, 5.4]);
+    translate([-camera_width/2-2.5,6.7]){
+        square([camera_width+2.5, 5.4]);
     }
 }
 
@@ -74,9 +74,9 @@ module picam2_cutout( beam_length=15){
 
     mount_height = key_lookup("mount_height", picamera_2_camera_dict());
     //width camera box (NOTE: this is deliberately loose fitting)
-    cw = 8.5 + 1.0;
+    camera_width = 8.5 + 1.0;
     //height of camera box (including foam support)
-    ch=2.9;
+    camera_height=2.9;
 
     //size of camera aperture
     hole_r = 4.3;
@@ -84,32 +84,31 @@ module picam2_cutout( beam_length=15){
         sequential_hull(){
             //cut-out for camera (/wider at bottom)
             translate_z(-tiny()){
-                cube([cw+0.5,cw+0.5,tiny()],center=true);
+                cube([camera_width+0.5,camera_width+0.5,tiny()],center=true);
             }
             translate_z(0.5){
-                cube([cw,cw,tiny()],center=true);
+                cube([camera_width,camera_width,tiny()],center=true);
             }
-            translate_z(ch/2){
-                cube([cw,cw,ch],center=true);
+            translate_z(camera_height/2){
+                cube([camera_width,camera_width,camera_height],center=true);
             }
             cylinder(r=hole_r, h=2*mount_height, center=true);
         }
 
         //clearance for the ribbon cable at top of camera
-        fh=2.5; // the height of the flex
-        mh = mount_height;
+        flex_h=2.5; // the height of the flex
 
-        dz = mh-fh-0.75; // extra height above the flex for the sloping "roof"
+        extra_h = mount_height-flex_h-0.75; // extra height above the flex for the sloping "roof"
         hull(){
             translate_z(-tiny()){
-                linear_extrude(fh){
-                    picam2_flex_and_components(cw);
+                linear_extrude(flex_h){
+                    picam2_flex_and_components(camera_width);
                 }
             }
             translate_z(-tiny()){
-                linear_extrude(fh+dz){
-                    offset(-dz){
-                        picam2_flex_and_components(cw);
+                linear_extrude(flex_h+extra_h){
+                    offset(-extra_h){
+                        picam2_flex_and_components(camera_width);
                     }
                 }
             }
@@ -118,13 +117,13 @@ module picam2_cutout( beam_length=15){
         //clearance for the LED/resistor on v1 of the camera
         hull(){
             translate_z(-tiny()){
-                linear_extrude(fh){
+                linear_extrude(flex_h){
                     picam1_led();
                 }
             }
             translate_z(-tiny()){
-                linear_extrude(fh+dz){
-                    offset(-dz){
+                linear_extrude(flex_h+extra_h){
+                    offset(-extra_h){
                         picam1_led();
                     }
                 }
@@ -301,18 +300,18 @@ lens_unscrew_r = 5.5/2; //size of the bit we unscrew
 module generous_camera_bits(){
     //The other stuff on the PCB (mostly the ribbon cable)
     camera = [8.5,8.5,2.3]; //size of camera box
-    cw = camera.x+1; //side length of camera box at bottom (slightly larger)
+    camera_width = camera.x+1; //side length of camera box at bottom (slightly larger)
     union(){
         //ribbon cable at top of camera
         sequential_hull(){
-            cube([cw-1,tiny(),4],center=true);
+            cube([camera_width-1,tiny(),4],center=true);
             translate_y(9.4-(4.4/1)/2){
-                cube([cw-1,1,4],center=true);
+                cube([camera_width-1,1,4],center=true);
             }
         }
         //flex connector
         translate([-1.25,9.4,0]){
-            cube([cw-1+2.5, 4.4+1, 4],center=true);
+            cube([camera_width-1+2.5, 4.4+1, 4],center=true);
         }
     }
 }
