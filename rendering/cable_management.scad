@@ -1,7 +1,7 @@
 
 
 
-
+use <../openscad/libs/microscope_parameters.scad>
 use <../openscad/libs/utilities.scad>
 use <../openscad/libs/gears.scad>
 use <../openscad/libs/wall.scad>

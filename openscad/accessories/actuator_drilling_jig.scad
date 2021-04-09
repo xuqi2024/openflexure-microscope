@@ -16,10 +16,11 @@
 *                                                                 *
 ******************************************************************/
 
+use <../libs/microscope_parameters.scad>
 use <../libs/utilities.scad>
+use <../libs/libdict.scad>
 use <../libs/compact_nut_seat.scad>
 use <../libs/logo.scad>
-use <../libs/microscope_parameters.scad>
 
 params = default_params();
 actuator_h = key_lookup("actuator_h", params);

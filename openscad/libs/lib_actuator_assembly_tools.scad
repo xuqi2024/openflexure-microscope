@@ -1,7 +1,9 @@
 
+
 use <./utilities.scad>
-use <./compact_nut_seat.scad>
 use <./microscope_parameters.scad>
+use <./libdict.scad>
+use <./compact_nut_seat.scad>
 
 $fn=16;
 /**

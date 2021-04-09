@@ -19,6 +19,7 @@
 ******************************************************************/
 
 use <../microscope_parameters.scad>
+use <../libdict.scad>
 use <./logitech_c270.scad>
 use <./picamera_2.scad>
 use <./m12.scad>
