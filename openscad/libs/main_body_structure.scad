@@ -8,7 +8,7 @@ use <./main_body_transforms.scad>
 use <../reflection_illuminator.scad>
 use <./libdict.scad>
 include <./microscope_parameters.scad> //All the geometric variables are now in here.
-
+$fn = 32;
 
 // base_mounting_holes returns a list of the holes for mounting the microscope
 // to the base. By default it returns all four holes.
@@ -169,13 +169,13 @@ module m3_lug(pos, angle, holes=true){
                     translate(lug_back_offset()){
                         cube([10,tiny(),10]);
                     }
-                    cylinder(r=4*1.1,h=3);
+                    cylinder(d=8.8,h=3);
                 }
                 //the lug hole
                 if (holes) {
-                    cylinder(r=3.5,h=50,center=true);
+                    cylinder(d=3.5,h=50,center=true);
                     translate_z(3){
-                        cylinder(r=3*1.1, h=22);
+                        cylinder(d=6.5, h=22);
                     }
                 }
             }
