@@ -268,7 +268,7 @@ module condenser(params, led_r=4.5/2, lens_d=13, lens_t=1, lens_assembly_z= 30){
     condenser_angle = key_lookup("condenser_angle", params);
     difference(){
         rotate_x(-condenser_angle){
-            tall_condenser(params, lens_d, lens_t, lens_assembly_z);
+            tall_condenser(params, led_r, lens_d, lens_t, lens_assembly_z);
         }
         mirror([0,0,1]){
             cylinder(r=999,h=999,$fn=4);

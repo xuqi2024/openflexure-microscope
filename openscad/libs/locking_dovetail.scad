@@ -341,7 +341,7 @@ module clamping_flange_2d(p){
                     // Note: this is defined in x, not in the clamp_frame.
                     clamp_t = key_lookup("clamp_t", p);
                     fillet_r = key_lookup("fillet_r", p);
-                    angle = key_lookup("fillet_r", p);
+                    angle = key_lookup("angle", p);
                     flange_width = (clamp_t - fillet_r)/sin(angle);
                     // external end
                     flange_r(p, width= flange_width);
