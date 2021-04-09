@@ -8,7 +8,7 @@ An attempt at an alternative to my ageing "nut_seat_with_flex" design...
 
 use <./utilities.scad>
 use <./libdict.scad>
-include <./microscope_parameters.scad>
+use <./microscope_parameters.scad>
 
 
 

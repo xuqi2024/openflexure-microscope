@@ -1,5 +1,5 @@
-include <./libs/microscope_parameters.scad>
-include <./libs/lib_actuator_assembly_tools.scad>
+use <./libs/microscope_parameters.scad>
+use <./libs/lib_actuator_assembly_tools.scad>
 
 
 module tools_for_printing(){

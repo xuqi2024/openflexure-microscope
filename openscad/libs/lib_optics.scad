@@ -1,13 +1,14 @@
 
 use <./utilities.scad>
 use <./z_axis.scad>
-include <./microscope_parameters.scad> // NB this defines "camera" and "optics"
+use <./microscope_parameters.scad>
 use <./threads.scad>
 use <./libdict.scad>
-use <./cameras/camera.scad> // this will define the 2 functions and 1 module for the camera mount, using the camera defined in the "camera" parameter.
+// camera.scad has generic camera modules forward the correct
+// camera module depending on the optics configuration
+use <./cameras/camera.scad>
 
 //TODO: stop saying dovetail here as there is no dovetail!
-
 //TODO: split up huge modules
 
 function dt_bottom() = -2; //bottom of dovetail (<0 to allow some play)

@@ -12,7 +12,7 @@
 use <./utilities.scad>
 use <./main_body_transforms.scad>
 use <./compact_nut_seat.scad>
-include <./microscope_parameters.scad> //All the geometric variables are now in here.
+use <./microscope_parameters.scad>
 use <./libdict.scad>
 
 module add_hull_base(h=1){

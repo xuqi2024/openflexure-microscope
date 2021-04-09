@@ -1,9 +1,9 @@
 
 use <./utilities.scad>
 use <./compact_nut_seat.scad>
-include <./microscope_parameters.scad>
+use <./microscope_parameters.scad>
 
-
+$fn=16;
 /**
 * Height of the band insertion tool holder
 */
@@ -28,7 +28,6 @@ module tool_handle_end_cross_section(){
 * This is the back of the nut tool handle. It has a rounded sloped shape
 */
 module sloped_back_of_handle(w, h){
-    $fn = 16;
     radius = 1.5;
     translate([0, radius, radius])
     rotate_x(-30){
@@ -98,7 +97,7 @@ module nut_tool_end(){
 }
 
 module nut_tool(){
-    $fn=16;
+
     handle_l = actuator_housing_xy_size().x/2+9; //length of handle part
 
     translate_y(-(handle_l-tiny())){
@@ -291,7 +290,7 @@ module _bent_band_tool(params, h, roc, flex_t, flex_l, middle_w){
 * Create the band tool for inserting the viton o-ring.
 */
 module band_tool(params, bent=false){
-    $fn=16;
+
     //overall height of the band insertion tool
     h = 4;
     //Radius of curvature of the flexible linkers when bent
@@ -325,7 +324,6 @@ module band_tool(params, bent=false){
 
 
 module band_tool_holder(params){
-    $fn=16;
     holder_offset = 1.7;
     //the holder is built from the difference between two minkowski sums of the band insertion tool
     translate ([0,0,holder_offset]){

@@ -19,7 +19,7 @@
 use <../libs/utilities.scad>
 use <../libs/compact_nut_seat.scad>
 use <../libs/logo.scad>
-include <../libs/microscope_parameters.scad> //All the geometric variables are now in here.
+use <../libs/microscope_parameters.scad>
 
 params = default_params();
 actuator_h = key_lookup("actuator_h", params);

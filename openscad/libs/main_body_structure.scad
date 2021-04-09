@@ -7,7 +7,7 @@ use <./wall.scad>
 use <./main_body_transforms.scad>
 use <../reflection_illuminator.scad>
 use <./libdict.scad>
-include <./microscope_parameters.scad> //All the geometric variables are now in here.
+use <./microscope_parameters.scad> //All the geometric variables are now in here.
 $fn = 32;
 
 // base_mounting_holes returns a list of the holes for mounting the microscope

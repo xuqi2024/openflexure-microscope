@@ -17,11 +17,11 @@
 *                                                                 *
 ******************************************************************/
 
-include <./libs/microscope_parameters.scad>
+use <./libs/microscope_parameters.scad>
 use <./libs/utilities.scad>
 use <./libs/compact_nut_seat.scad>
 
-
+$fn=16;
 module foot_ground_plane(tilt=0, top=0, bottom=-999){
     //This represents where the ground would be, given that the
     //foot is usually printed tilted, pivoting around it's +y edge

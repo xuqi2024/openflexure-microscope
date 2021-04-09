@@ -17,7 +17,7 @@ use <./libs/utilities.scad>
 use <./libs/main_body_structure.scad>
 use <sample_clips.scad>
 use <./libs/main_body_transforms.scad>
-include <./libs/microscope_parameters.scad>
+use <./libs/microscope_parameters.scad>
 
 
 sep = 26;

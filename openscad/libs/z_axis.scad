@@ -28,7 +28,7 @@ use <./main_body_transforms.scad>
 use <./wall.scad>
 use <./gears.scad>
 use <./illumination.scad>
-include <./microscope_parameters.scad>
+use <./microscope_parameters.scad>
 use <./libdict.scad>
 module each_om_contact_plane(){
     // This transform puts y=0 in the plane of contact between the

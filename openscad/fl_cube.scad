@@ -22,7 +22,7 @@
 ******************************************************************/
 
 use <./libs/utilities.scad>
-include <./libs/microscope_parameters.scad>
+use <./libs/microscope_parameters.scad>
 use <./libs/lib_optics.scad>
 
 module chamfer_bottom_edge(chamfer=0.3, h=0.5){

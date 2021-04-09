@@ -14,8 +14,8 @@
 
 use <./libs/utilities.scad>
 use <./libs/libdict.scad>
-include <./libs/microscope_parameters.scad>
-include <./libs/main_body_structure.scad>
+use <./libs/microscope_parameters.scad>
+use <./libs/main_body_structure.scad>
 
 //Note that the main body is complex enough you should run Render not preview
 // To use in preview wrap with render(6)

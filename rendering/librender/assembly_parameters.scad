@@ -1,4 +1,4 @@
-include <../../openscad/libs/microscope_parameters.scad>
+use <../../openscad/libs/microscope_parameters.scad>
 use <../../openscad/libs/libdict.scad>
 use <render_utils.scad>
 

@@ -1,6 +1,6 @@
 use <./libs/utilities.scad>
 use <./libs/lib_optics.scad>
-include <./libs/microscope_parameters.scad>
+use <./libs/microscope_parameters.scad>
 use <./libs/static_dovetail.scad>
 
 LEDstar_r = 19/2;

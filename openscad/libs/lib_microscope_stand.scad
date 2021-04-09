@@ -1,6 +1,6 @@
 
 use <./utilities.scad>
-include <./microscope_parameters.scad>
+use <./microscope_parameters.scad>
 use <./compact_nut_seat.scad>
 use <./main_body_transforms.scad>
 use <./main_body_structure.scad>

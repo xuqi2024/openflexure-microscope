@@ -16,7 +16,7 @@
 
 use <./utilities.scad>
 use <./logo.scad>
-include <./microscope_parameters.scad>
+use <./microscope_parameters.scad>
 use <./locking_dovetail.scad>
 use <./z_axis.scad>
 use <./libdict.scad>
