@@ -27,7 +27,7 @@ function illumination_dovetail_z(params) = leg_height(params)-2;
 function illumination_dovetail_blockdepth() = 12; // depth of the block containing the dovetail
 
 // Set the dovetail parameters dictionary based on the above settings:
-function illumination_dt_params(params) = dovetail_params(
+function illumination_dt_params() = dovetail_params(
     width = illumination_dovetail_w(),
     block_depth = illumination_dovetail_blockdepth(),
     height = 99
@@ -90,7 +90,7 @@ module illumination_dovetail_structure(params, dt_z, dt_h){
     hull(){
         translate([0, dt_y, dt_z]){
             mirror([0,1,0]){
-                dovetail_block(illumination_dt_params(params), height=dt_h);
+                dovetail_block(illumination_dt_params(), height=dt_h);
             }
         }
 
@@ -139,7 +139,7 @@ module illumination_dovetail(params, h=50){
         // cutout to make the dovetail
         translate([0,dt_y,dt_z]){
             mirror([0,1,0]){
-                dovetail_f_cutout(illumination_dt_params(params), height=99);
+                dovetail_f_cutout(illumination_dt_params(), height=99);
             }
         }
         // clearance for the motor
@@ -215,7 +215,7 @@ module condenser_cutout(led_r, lens_r, lens_assembly_z, bottom_height=10){
     }
 }
 
-module tall_condenser(params, led_r, lens_d, lens_t, lens_assembly_z){
+module tall_condenser(led_r, lens_d, lens_t, lens_assembly_z){
     // Note that this is the shape before it is is rotated, and cut for printing.
     // This module is useful because the optical path is vertical
     // In this module the lens is at the top of the structure.
@@ -269,7 +269,7 @@ module condenser(params, led_r=4.5/2, lens_d=13, lens_t=1, lens_assembly_z= 30){
     condenser_angle = key_lookup("condenser_angle", params);
     difference(){
         rotate_x(-condenser_angle){
-            tall_condenser(params, led_r, lens_d, lens_t, lens_assembly_z);
+            tall_condenser(led_r, lens_d, lens_t, lens_assembly_z);
         }
         mirror([0,0,1]){
             cylinder(r=999,h=999,$fn=4);

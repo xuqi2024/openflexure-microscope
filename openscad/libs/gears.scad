@@ -154,7 +154,6 @@ module motor_shaft_cut_out(h){
 module small_gear(){
     $fn=small_gear_fn();
     h=8;
-    pitch_r = small_gear_pitch_radius();
     difference(){
         union(){
             gear(number_of_teeth=n_teeth_small_gear(),
@@ -166,7 +165,6 @@ module small_gear(){
                  rim_thickness=h,
                  bore_diameter=1);
             //Flange on the bottom of the gear improve adhesion during printing
-            flange_r = pitch_r+PI*pitch_r/n_teeth_small_gear();
             cylinder(r=small_gear_flange_radius(),h=0.5);
         }
         motor_shaft_cut_out(h);
@@ -176,7 +174,7 @@ module small_gear(){
 /**
 * Thumbwheels for hand actuation of the microscope
 */
-module thumbwheel(r=10, h=5){
+module thumbwheel(){
     lobe_r = 10;
     lobe_h = 5;
     base_low_r = 10;

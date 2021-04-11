@@ -164,7 +164,6 @@ module camera_mount_body(
     dt_top, //height of the top of the dovetail
     extra_rz = [], //extra [r,z] values to extend the mount
     bottom_r=8, //radius of the bottom of the mount
-    dt_waist=true, //whether to make the middle of the dovetail looser for easy insertion
     dovetail=true //set this to false to remove the attachment point
 ){
 
@@ -173,7 +172,6 @@ module camera_mount_body(
 
     // Make a camera mount, with a cylindrical body and a dovetail.
     // Just add a lens mount on top for a complete optics module!
-    dt_h=dt_top-dt_bottom();
     camera_rotation = key_lookup("camera_rotation", optics_config);
     bs_rotation = key_lookup("beamsplitter_rotation", optics_config);
     // The angle of the camera mount (the ribbon cables exits at 135 defgees from mount for '0' &  180 degrees from mount for '-45')

@@ -97,8 +97,6 @@ module back_of_block_2d(p){
 module flange_r(p, width=tiny()){
     // the angled part of a male dovetail
 
-    w = key_lookup("overall_width", p);
-    flat = key_lookup("outer_flat", p);
     shiftx = [-width, 0];
     // we extend the parallelogram into the block slightly,
     // at the same angle.
@@ -121,9 +119,7 @@ function male_point(p) = let(
 
 function female_point(p) = let(
     w = key_lookup("overall_width", p),
-    flat = key_lookup("outer_flat", p),
-    depth = key_lookup("depth", p),
-    angle = key_lookup("angle", p)
+    flat = key_lookup("outer_flat", p)
 ) [w/2 - flat, 0];
 
 module dovetail_section_m_sharp(p){
@@ -202,13 +198,10 @@ module clamp_frame(p){
 module clamp_cutout_2d(p){
     // 2D cutout to make a male dovetail clamp
     fillet_r = key_lookup("fillet_r", p);
-    fp = female_point(p);
-    mp = male_point(p);
     lever = key_lookup("lever", p);
     flex_l = key_lookup("flex_l", p);
     flex_t = key_lookup("flex_t", p);
     clamp_t = key_lookup("clamp_t", p);
-    relief_r = key_lookup("relief_r", p);
     clamp_angle = key_lookup("clamp_angle", p);
     $fn=16;
     clamp_frame(p){
@@ -282,9 +275,7 @@ module clamp_cutout_empty_2d(p){
 
 module clamp_cutout_base_2d(p){
     // 2D cutout to separate the point of the clamp from the base
-    fillet_r = key_lookup("fillet_r", p);
     relief_r = key_lookup("relief_r", p);
-    lever = key_lookup("lever", p);
 
     union(){
         // separate the flange from the block

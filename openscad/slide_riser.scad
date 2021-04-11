@@ -19,13 +19,9 @@ use <sample_clips.scad>
 use <./libs/main_body_transforms.scad>
 use <./libs/microscope_parameters.scad>
 
-
-sep = 26;
 $fn=24;
 
-slide = [75.8,25.8,1.0];
-
-
+function slide_dims() = [75.8,25.8,1.0];
 
 module slide_riser_base(params, h, thickness, y_space){
     difference(){
@@ -35,22 +31,22 @@ module slide_riser_base(params, h, thickness, y_space){
         //angled cut-out for slide
         hull(){
             translate_z(h){
-                translate([0,-slide.z,tiny()/2]){
-                    cube([slide.x,slide.y,tiny()], center=true);
+                translate([0,-slide_dims().z,tiny()/2]){
+                    cube([slide_dims().x,slide_dims().y,tiny()], center=true);
                 }
-                translate([0,999-slide.z,999+tiny()/2]){
-                    cube([slide.x,slide.y,tiny()], center=true);
+                translate([0,999-slide_dims().z,999+tiny()/2]){
+                    cube([slide_dims().x,slide_dims().y,tiny()], center=true);
                 }
             }
         }
         //extra cutout on clip side
         translate([-999/2,0,h]){
-            cube([999,slide.y/2+y_space,999]);
+            cube([999,slide_dims().y/2+y_space,999]);
         }
 
         //cut-out for middle of slide (immersion oil, etc.)
-        translate([-999/2,-slide.y/2+2, h-2]){
-            cube([999,slide.y-4,999]);
+        translate([-999/2,-slide_dims().y/2+2, h-2]){
+            cube([999,slide_dims().y-4,999]);
         }
     }
 }
@@ -65,7 +61,7 @@ module slide_riser(params, h=.6, thickness=4){
     // This is reduced by the tilted cutout:
     clip_overlap = 5;
     clip_y = clip_overlap+y_space;
-    clip_angle_h = 1+h+slide.z;
+    clip_angle_h = 1+h+slide_dims().z;
     handle_end = 75;
     difference(){
         union(){
@@ -74,14 +70,14 @@ module slide_riser(params, h=.6, thickness=4){
                     slide_riser_base(params, h,thickness, y_space);
                     // This is the bar that froms the stationary handle.
                     // It is very long and will be cut down later.
-                    translate([-999+30,slide.y/2+y_space,0]){
+                    translate([-999+30,slide_dims().y/2+y_space,0]){
                         cube([999,9,12]);
                     }
                 }
 
                 //space for clip to push through
-                translate([-slide.y/2+2,0, -1]){
-                    cube([slide.y-4,999,clip_w+3]);
+                translate([-slide_dims().y/2+2,0, -1]){
+                    cube([slide_dims().y-4,999,clip_w+3]);
                 }
 
                 //counter bored mounting holesmounting holes
@@ -95,12 +91,12 @@ module slide_riser(params, h=.6, thickness=4){
                 }
             }
             //Clip and handle
-            translate([-clip_l+4,slide.y/2+y_space,0]){
+            translate([-clip_l+4,slide_dims().y/2+y_space,0]){
                 difference(){
                     translate_z(clip_w/2){
                         rotate_x(-90){
                             rotate_z(-90){
-                                sample_clip([0,clip_l,-clip_y], w=clip_w, roc=clip_r);
+                                sample_clip([0,clip_l,-clip_y], w=clip_w, radius_of_curvature=clip_r);
                             }
                         }
                     }
@@ -112,7 +108,7 @@ module slide_riser(params, h=.6, thickness=4){
                         }
                     }
                 }
-                translate([-999+7,slide.y/2+y_space+clip_r-2,0]){
+                translate([-999+7,slide_dims().y/2+y_space+clip_r-2,0]){
                     cube([999,9,7]);
                 }
             }
@@ -124,7 +120,10 @@ module slide_riser(params, h=.6, thickness=4){
     }
 }
 
-params = default_params();
-h=.6;
-slide_riser(params, h);
+module slide_riser_stl(){
+    params = default_params();
+    h=.6;
+    slide_riser(params, h);
+}
 
+slide_riser_stl();

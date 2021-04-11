@@ -272,7 +272,6 @@ module place_on_wall(params, is_y=true, housing=true){
     // The wall runs from the outside y actuator wall vertex to the
     // mounting lug wall vertex
     y_wall_start = mounting_lug_wall_vertex_position(params);
-    y_wall_end = y_actuator_wall_vertex_position(params, inside=false);
 
     wall_start = is_y ? y_wall_start : [-y_wall_start.x, y_wall_start.y, y_wall_start.z];
     wall_angle = is_y ? y_wall_angle(params) : - y_wall_angle(params);

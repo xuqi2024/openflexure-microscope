@@ -15,21 +15,18 @@
 
 use <./libs/utilities.scad>
 
-//this is for mini culture plates, 39mm outer diameter and 12.4mm high
-sample=[0,19/2,12.4-1.5-9]; //position of clamping point relative to bolt
+$fn=32; 
 
-$fn=32;
-
-
-module sample_clip(sample,t=2.5,w=6,roc=-1,slope=30){
-    //radius of curvature
-    roc = roc>0 ? roc : sample.z/2 + sample.y*sin(slope) - t/2;
+module sample_clip(clamp_point, t=2.5, w=6, radius_of_curvature=undef, slope=30){
+    
+    default_roc = clamp_point.z/2 + clamp_point.y*sin(slope) - t/2;
+    roc = if_undefined_set_default(radius_of_curvature, default_roc);
 
     //a is the distance from the contact-point cylinder to the
     //centre of the curved part
-    a = sqrt(pow(sample.y, 2) + pow(sample.z - roc - t/2, 2));
+    a = sqrt(pow(clamp_point.y, 2) + pow(clamp_point.z - roc - t/2, 2));
     //angle through which we must rotate the join between
-    angle = acos( (roc + t/2) / a ) + atan((sample.z - roc - t/2)/sample.y);
+    angle = acos( (roc + t/2) / a ) + atan((clamp_point.z - roc - t/2)/clamp_point.y);
 
 
     difference(){
@@ -63,12 +60,12 @@ module sample_clip(sample,t=2.5,w=6,roc=-1,slope=30){
                         }
                     }
                 }
-                translate([0,sample.y,sample.z+t/2]){
+                translate([0,clamp_point.y,clamp_point.z+t/2]){
                     rotate_y(90){
                         cylinder(r=t/2,h=w,center=true);
                     }
                 }
-                translate([0,sample.y+t,sample.z+t]){
+                translate([0,clamp_point.y+t,clamp_point.z+t]){
                     rotate_y(90){
                         cylinder(r=t/2,h=w,center=true);
                     }
@@ -80,15 +77,18 @@ module sample_clip(sample,t=2.5,w=6,roc=-1,slope=30){
     }
 }
 
-
+// TODO make these an accesory
 //this is for mini culture plates, 39mm outer diameter and 12.4mm high
 //sample_clip([0,19/2+3,12.4-1.5],slope=7.5); //mini culture dish
 
-//for a standard microscope slide, use [0,20,-1] to clamp from both holes next to one leg
-for(a=[0,180]){
-    rotate([0,-90,a]){
-        translate([7/2,-10,-7+1]){
-            sample_clip([0,20,-1], w=7, roc=7);
+module sample_clips_stl(){
+    for(a=[0,180]){
+        rotate([0,-90,a]){
+            translate([7/2,-10,-7+1]){
+                sample_clip([0,20,-1], w=7, radius_of_curvature=7);
+            }
         }
     }
 }
+
+sample_clips_stl();

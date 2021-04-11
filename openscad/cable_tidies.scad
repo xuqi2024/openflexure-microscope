@@ -133,5 +133,9 @@ module cable_tidies(params){
     }
 }
 
-params = default_params();
-cable_tidies(params);
+
+module cable_tidies_stl(){
+    params = default_params();
+    cable_tidies(params);
+}
+cable_tidies_stl();

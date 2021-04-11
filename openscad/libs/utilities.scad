@@ -109,32 +109,32 @@ module xz_slice(y=0){
     }
 }
 
-module nut(d,h=-1,center=false,fudge=1.18,shaft=false){
+module nut(d,h=undef,center=false,fudge=1.18,shaft=false){
     //make a nut, for metric bolt of nominal diameter d
     //d: nominal bolt diameter (e.g. 3 for M3)
     //h: height of nut
     //center: works as for cylinder
     //fudge: multiply the diameter by this number (1.22 works when vertical)
     //shaft: include a long cylinder representing the bolt shaft, diameter=d*1.05
-    h=(h<0)?d*0.8:h;
+    height = if_undefined_set_default(h, d*0.8);
     union(){
-        cylinder(h=h,center=center,r=0.9*d*fudge,$fn=6);
+        cylinder(h=height,center=center,r=0.9*d*fudge,$fn=6);
         if(shaft){
             cylinder(r=d/2*1.05*(fudge+1)/2,h=999,$fn=16,center=true);
         }
     }
 }
 
-module nut_from_bottom(d,h=-1,fudge=1.2,shaft=true,chamfer_r=0.75,chamfer_h=0.75){
+module nut_from_bottom(d,h=undef,fudge=1.2,shaft=true,chamfer_r=0.75,chamfer_h=0.75){
     //make a nut, for metric bolt of nominal diameter d
     //d: nominal bolt diameter (e.g. 3 for M3)
     //h: height of nut
     //center: works as for cylinder
     //fudge: multiply the diameter by this number (1.22 works when vertical)
     //shaft: include a long cylinder representing the bolt shaft, diameter=d*1.05
-    h=(h<0)?d*0.8:h;
+    height = if_undefined_set_default(h, d*0.8);
     union(){
-        cylinder(h=h,r=0.9*d*fudge,$fn=6);
+        cylinder(h=height,r=0.9*d*fudge,$fn=6);
         translate_z(-0.05){
             cylinder(h=chamfer_h,r1=0.9*d*fudge+chamfer_r,r2=0.9*d*fudge,$fn=6);
         }
@@ -143,115 +143,61 @@ module nut_from_bottom(d,h=-1,fudge=1.2,shaft=true,chamfer_r=0.75,chamfer_h=0.75
         }
         if(shaft){
             sr=d/2*1.05*(fudge+1)/2; //radius of shaft
-            translate_z(h/2){
+            translate_z(height/2){
                 cylinder(r=sr,h=999,$fn=16,center=true);
             }
             //add a little cut to the roof of the surface so the initial bridges don't have to span the hole.
             intersection(){
                 union(){
-                    translate_z(h){
+                    translate_z(height){
                         cube([999,sr*2,0.5],center=true);
                     }
-                    translate_z(h+0.25){
+                    translate_z(height+0.25){
                         cube([sr*2,sr*2,0.5],center=true);
                     }
                 }
-                cylinder(h=h+1,r=0.9*d*fudge,$fn=6);
+                cylinder(h=height+1,r=0.9*d*fudge,$fn=6);
             }
         }
     }
 }
 
-module nut_y(d,h=-1,center=false,fudge=1.15,extra_height=0.7,shaft=false,shaft_length=0,top_access=false){
+module nut_y(d,h=undef,center=false,fudge=1.15,extra_height=0.7,shaft_length=0){
     //make a nut, for metric bolt of nominal diameter d
     //d: nominal bolt diameter (e.g. 3 for M3)
     //h: height of nut
     //center: works as for cylinder
     //fudge: multiply the diameter by this number (1.22 works when vertical)
     //shaft: include a long cylinder representing the bolt shaft, diameter=d*1.05
-    //top_access: extend the nut upwards to allow it to drop in.
-    h=(h<0)?d*0.8:h;
+    height = if_undefined_set_default(h, d*0.8);
     r=0.9*d*fudge;
     union(){
-        rotate([-90,top_access?30:0,0]){
-            cylinder(h=h,center=center,r=r,$fn=6);
+        rotate([-90, 0, 0]){
+            cylinder(h=height,center=center,r=r,$fn=6);
         }
-        translate([-r*sin(30),center?-h/2:0,0]){
-            cube([2*r*sin(30),h,r*cos(30)+extra_height]);
-        }
-        if(shaft || shaft_length > 0){
+        
+        if(shaft_length > 0){
             sl = shaft_length>0 ? shaft_length : 999;
-            translate_y(h/2){
+            translate_y(height/2){
                 reflect_y(){
                     cylinder_with_45deg_top(h=sl,r=d/2*1.05*fudge,$fn=16,extra_height=extra_height);
                 }
             }
             //Center could be used instead of reflect
         }
-        if(top_access){ //hole from the top
-            translate([-r*cos(30),center?-h/2:0,0]){
-                cube([2*r*cos(30),h,999]);
-            }
+
+        // extra space on top 
+        center_y = center ? -height/2 : 0;
+        flat_length = 2*r*sin(30);
+        center_to_flat = r*cos(30);
+
+        translate([-flat_length/2, center_y ,0]){
+            cube([flat_length, height, center_to_flat+extra_height]);
         }
+
     }
 }
 
-module screw_y(d,h=-1,center=false,fudge=1.05,extra_height=0.7,shaft=false,shaft_length=999){
-    //make a nut, for metric bolt of nominal diameter d
-    //d: nominal bolt diameter (e.g. 3 for M3)
-    //h: height of nut
-    //center: works as for cylinder
-    //fudge: multiply the diameter by this number (1.22 works when vertical)
-    //shaft: include a long cylinder representing the bolt shaft, diameter=d*1.05
-    h=(h<0)?d*0.8:h; //height of screw head
-    r=0.9*d*fudge; //radius of screw head
-    union(){
-        cylinder_with_45deg_top(h=h,r=d*1.05*fudge,$fn=16,extra_height=extra_height);
-        if(shaft){
-            translate_y(center ? 0 : h/2){
-                reflect_y(){
-                    cylinder_with_45deg_top(h=shaft_length+h/2,r=d/2*1.05*fudge,$fn=16,extra_height=extra_height);
-                }
-            }
-            //Center could be used instead of reflect
-        }
-    }
-}
-
-module pinch_y(d, screw_l=999, counterbore_l=999, nut_l=-1, gap=[], t=2,extra_height=0.7,top_access=false){
-    //gap with a nut/bolt to squeeze it
-    nut_l = nut_l<0 ? d : nut_l; //default nut height
-    gap = len(gap)==3 ? gap : [4*d, d, 4*d];
-    union(){
-        translate([0,gap.y/2+t]){
-            screw_y(d,h=counterbore_l,shaft=true,shaft_length=2*screw_l,extra_height=extra_height);
-        }
-        cube(gap,center=true);
-        translate([0,-gap.y/2-t]){
-            mirror([0,1,0]){
-                nut_y(d, h=nut_l,center=false,shaft=false,top_access=top_access);
-            }
-        }
-    }
-}
-
-
-module chamfered_hole(r=10, h=10, chamfer=1,center=false){
-    // A cylinder with angled flanges.
-    // This can be substracted from an object of height h to make a
-    // chamfered hole.
-    translate_z( center ? -h/2 : 0){
-        union(){
-            translate_z(-tiny()){
-                cylinder(r1=r+chamfer+tiny(),r2=r,h=chamfer+tiny());
-            }
-            cylinder(r=r,h=h);
-            translate_z(h-chamfer){
-                cylinder(r1=r,r2=r+chamfer+tiny(),h=chamfer+tiny());
-            }
-        }
-    }
-}
 
 module cyl_slot(r=1, h=1, dy=2, center=false){
     // An elongated cylinder use to make a slot for a screw. Slot is oriented in the y direction
@@ -356,39 +302,24 @@ module sequential_hull(){
     }
 }
 
-module union_preserving_holes(){
-    //given a number of children, return the union of them, but preserve holes in each part
-    difference(){
-        union(){  //the union of all the parts
-            children();
-        }
-        union(){ //the union of all the holes
-            for(i=[0:$children-1]){
-                difference(){
-                    hull(){
-                        children(i);
-                    }
-                    children(i);
-                }
-            }
-        }
-    }
-}
 
-// TODO: Find out why this is called this.
-module cylinder_with_45deg_top(h,r,center=false,extra_height=0.7,$fn=$fn){
+// TODO: Give this a better name
+module cylinder_with_45deg_top(h,r,center=false,extra_height=0.7){
+    // Block on top of the hortizontal cylinder. Hulled with the cylinder
+    // This forms a 45 degree sloped roof for printing
+    top_block_dims = [2*sin(45/2)*r, 2*tiny(), h];
+    top_block_z = center ? 0 : h/2;
+    top_block_tr = [0, r-tiny(), top_block_z];
     union(){
         rotate([90,0,180]){
             hull(){
-                cylinder(h=h,r=r,$fn=$fn,center=center);
-                translate([0,r-0.001,center?0:h/2]){
-                    cube([2*sin(45/2)*r,0.002,h],center=true);
+                cylinder(h=h,r=r,center=center);
+                translate(top_block_tr){
+                    cube(top_block_dims, center=true);
                 }
             }
-        }
-        rotate([90,0,180]){
-            translate([0,r-0.001,(center?0:h/2)]){
-                cube([2*sin(45/2)*r,0.002+2*extra_height,h],center=true);
+            translate(top_block_tr){
+                cube(top_block_dims + [0, 2*extra_height, 0], center=true);
             }
         }
     }
@@ -470,13 +401,12 @@ module lighttrap_cylinder(r1,r2,h,ridge=1.5){
     for(i = [0 : n_cones - 1]){
         p = i/(n_cones - 1);
         section_r1 = (1-p)*r1 + p*(r2+ridge);
-        section_r2=(1-p)*(r1-ridge) + p*r2;
+        section_r2 = (1-p)*(r1-ridge) + p*r2;
         translate_z(i * cone_h - tiny()){
             cylinder(r1=section_r1, r2=section_r2, h=cone_h+2*tiny());
         }
     }
 }
-lighttrap_sqylinder(r1=5,f1=5,f2=5,r2=5-1.5,h=20,ridge=1.5);
 
 module lighttrap_sqylinder(r1,f1,r2,f2,h,ridge=1.5){
     //A shape made up of rounded truncated pyramids to form a
@@ -500,12 +430,13 @@ module lighttrap_sqylinder(r1,f1,r2,f2,h,ridge=1.5){
 
     for(i = [0 : n_cones - 1]){
         p = i/(n_cones - 1);
+        section_r1 = (1-p)*r1 + p*(r2+ridge);
+        section_r2 = (1-p)*(r1-ridge) + p*r2;
+        section_flat_l = ((1-p)*f1 + p*f2);
         translate_z(i * cone_h - tiny()){
             minkowski(){
-                cylinder(r1=(1-p)*r1 + p*(r2+ridge),
-                    r2=(1-p)*(r1-ridge) + p*r2,
-                    h=cone_h);
-                cube([1,1,0]*((1-p)*f1 + p*f2) + [0,0,2*tiny()], center=true);
+                cylinder(r1=section_r1, r2=section_r2, h=cone_h);
+                cube([section_flat_l, section_flat_l, 2*tiny()], center=true);
             }
         }
     }
@@ -596,40 +527,13 @@ module deformable_hole_trylinder(r1, r2, h=99, corner_roc=-1, delta_z=0.5, cente
     // delta_z: thickness of layers
     n = floor(h/(2*delta_z)); //number of layers in the structure
     flat_l = 2*sqrt(r2*r2 - r1*r1);
-    corner_roc = corner_roc < 0 ? r1 - flat_l/(2*sqrt(3)) : corner_roc;
+    default_corner_radius = r1 - flat_l/(2*sqrt(3));
+    corner_radius = if_undefined_set_default(corner_roc, default_corner_radius); 
     repeat([0,0,2*delta_z], n, center=center){
         union(){
             cylinder(r=r2, h=delta_z+tiny());
             translate_z(center ? -delta_z : delta_z){
-                trylinder(r=corner_roc, flat=flat_l, h=delta_z+tiny());
-            }
-        }
-    }
-}
-module self_tap_hole(mean_r, h, dr=1, delta_z=0.5, bridge_facets=0, center=false, screw=true){
-    // A cylinder with bridges around the edges, aiming to make
-    // a hole with nicely feathered edges.
-    // mean_r is the radius of the thing you're inserting.  The
-    // "hard" edge of the hole will be mean_r + dr/2 and the "soft"
-    // inner edge will be at mean_r - dr/2;
-    // bridge_facets determines the number of bridges used - can be
-    // safely left at the default value.
-    // center has the same meaning as in cylinder.
-    inner_r = mean_r - dr/2;
-    outer_r = mean_r + dr/2;
-
-    //default number of facets
-    default_facets = floor(180/acos(inner_r/outer_r));
-    bridge_facets = bridge_facets > 0 ? bridge_facets : default_facets;
-    difference(){
-        cylinder(r=outer_r, h=h, center=center);
-        repeat([0,0,2*delta_z], ceil(h/delta_z/2), center=center){
-            for(i=[1:bridge_facets]){
-                rotate(i*360/bridge_facets){
-                    translate([-999,inner_r,screw ? i/bridge_facets*2*delta_z : 0]){
-                        cube([999*2,999,delta_z]);
-                    }
-                }
+                trylinder(r=corner_radius, flat=flat_l, h=delta_z+tiny());
             }
         }
     }

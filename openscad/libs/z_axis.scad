@@ -164,7 +164,8 @@ module objective_fitting_wedge(params, h=undef, nose_shift=0.2, center=false){
 module ofc_nut(shaft=false, max_screw=12){
     // For convenience, this is the nut that we use to hold the optics module on.
     // it is used from objective_fitting_cutout only.
-    nut_y(3, h=2.5, extra_height=0, shaft=shaft, shaft_length=shaft?max_screw-4:0);
+    shaft_length = shaft ? max_screw-4 : 0;
+    nut_y(3, h=2.5, extra_height=0, shaft_length=shaft_length);
 }
 
 module objective_fitting_cutout(params, max_screw=12, y_stop=false, nose_shift=0.2){

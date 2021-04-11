@@ -586,7 +586,6 @@ module nano_supports(){
 
     nano_width = 18.0;
     nano_length = 43.0;
-    nano_support = 13.0;
     driver_width = 32.0;
     driver_length = 35.0;
     driver_support = 4.0;

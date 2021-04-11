@@ -185,7 +185,8 @@ module foot_letter(letter="", actuator_tilt=0, h=10, base_cleareance=2){
     }
 }
 
-module foot(travel=5,       // how far into the foot the actuator can move down
+module foot(params,
+            travel=5,       // how far into the foot the actuator can move down
             bottom_tilt=0,  // the angle of the bottom of the foot
             hover=0,        // distance between the foot and the ground
             actuator_tilt=0,// the angle of the top of the foot
@@ -197,7 +198,6 @@ module foot(travel=5,       // how far into the foot the actuator can move down
     w = actuator_housing_xy_size().x; //size of the outside of the screw seat column
     l = actuator_housing_xy_size().y;
     cw = column_core_size().x; //size of the inside of the screw seat column
-    cl = column_core_size().y;
     wall_t = (w-cw)/2; //thickness of the wall
     foot_height = key_lookup("foot_height", params);
     h = foot_height - hover; //defined in parameters.scad, set hover=2 to not touch ground, useful for the middle foot.
@@ -293,7 +293,8 @@ module foot(travel=5,       // how far into the foot the actuator can move down
 
 
 module middle_foot(params, lie_flat=false,letter="Z"){
-        foot(travel=z_actuator_travel(params),
+        foot(params,
+             travel=z_actuator_travel(params),
              bottom_tilt=0,
              actuator_tilt=z_actuator_tilt(params),
              hover=2,
@@ -302,22 +303,24 @@ module middle_foot(params, lie_flat=false,letter="Z"){
 }
 
 module outer_foot(params, lie_flat=false,letter=""){
-    foot(travel=xy_actuator_travel(params),
+    foot(params,
+         travel=xy_actuator_travel(params),
          bottom_tilt=15,
          lie_flat=lie_flat,
          letter=letter);
 }
 
-module feet_for_printing(params, lie_flat=true){
+module feet_stl(){
+    params = default_params();
     x_tr = actuator_housing_xy_size().x+1.5;
     translate([x_tr, 0]){
-        outer_foot(params, lie_flat=lie_flat,letter="X");
+        outer_foot(params, lie_flat=true, letter="X");
     }
-    middle_foot(params,lie_flat=lie_flat,letter="Z");
+    middle_foot(params,lie_flat=true, letter="Z");
     translate([-x_tr, 0]){
-        outer_foot(params, lie_flat=lie_flat,letter="Y");
+        outer_foot(params, lie_flat=true, letter="Y");
     }
 }
 
-params = default_params();
-feet_for_printing(params, lie_flat=true);
+
+feet_stl();

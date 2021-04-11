@@ -36,7 +36,7 @@ module openflexure_emblem(h=1, scale_factor=1){
         }
     }
 }
-module openflexure_logo(h=1, resize=[0,0]){
+module openflexure_logo(h=1){
     // The full logo, including text
     // This is 47 mm tall in Inkscape, and exported using base units=mm
     // We resize it to be about the right size for the microscope
@@ -49,7 +49,7 @@ module openflexure_logo(h=1, resize=[0,0]){
     }
 }
 
-module openflexure_logo_above(h=1, resize=[0,0]){
+module openflexure_logo_above(h=1){
     // The logo including text, with embelem above text
     linear_extrude(h){
         scale(0.85){

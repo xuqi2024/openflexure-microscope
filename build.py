@@ -235,7 +235,7 @@ def generate_small_parts(writer):
         select_stl_if={"reflection_illumination": True},
     )
     writer.openscad("leg_test.stl", "test_pieces/leg_test.scad", select_stl_if="always")
-    writer.openscad("LED_array_holder.stl", "LED_array_holder.scad")
+    writer.openscad("led_array_holder.stl", "led_array_holder.scad")
 
 def add_extra_stls_to_writer(writer):
     for camera in ["6ledcam", "dashcam"]:

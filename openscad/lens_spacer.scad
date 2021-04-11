@@ -11,7 +11,10 @@ use <./libs/microscope_parameters.scad>
 use <./libs/lib_optics.scad>
 use <./libs/optics_configurations.scad>
 
-params = default_params();
-opitcs_config = pilens_config();
+lens_spacer_stl();
 
-lens_spacer(params, opitcs_config);
+module lens_spacer_stl(){
+    params = default_params();
+    opitcs_config = pilens_config();
+    lens_spacer(params, opitcs_config);
+}

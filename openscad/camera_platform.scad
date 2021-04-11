@@ -4,7 +4,11 @@ use <./libs/microscope_parameters.scad>
 use <./libs/lib_optics.scad>
 use <./libs/optics_configurations.scad>
 
-params = default_params();
-optics_config = pilens_config();
+camera_platform_stl();
 
-camera_platform(params, optics_config, 5);
+module camera_platform_stl(){
+    params = default_params();
+    optics_config = pilens_config();
+
+    camera_platform(params, optics_config, 5);
+}

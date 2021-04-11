@@ -46,7 +46,6 @@ function thread_points(inner,
                        number_divisions) = let(
     //see outer_thread for input definitions
     cylinder_radius = cylinder_radius(radius, thread_height),
-    inner_diameter = 2.0 * 3.14159 * radius,
     angle_step = angle_step(number_divisions),
     z_step = z_step(pitch, number_divisions),
     // This is the angle that tech section overlaps by
@@ -107,7 +106,7 @@ module base_thread(inner,
     turns = thread_length/pitch;
     angle_step = angle_step(number_divisions);
     z_step = z_step(pitch, number_divisions);
-    points = thread_points(inner=true,
+    points = thread_points(inner=inner,
                            radius=radius,
                            thread_height=thread_height,
                            thread_base_width=thread_base_width,

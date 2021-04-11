@@ -70,12 +70,12 @@ function actuator_housing_xy_size() = let(
 
 function actuator_entry_width() = 2*column_base_radius()+3;
 
-module nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=-1){
+module nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=undef){
     // A cut-out that will hold a nut.  The nut slots in horizontally
     // along the +y axis, and is pulled up and into the tight part of the
     // nut seat when a screw is inserted.
     hole_r = r*1.15/2;
-    trap_h = trap_h<0 ? r : trap_h;
+    trap_height = if_undefined_set_default(trap_h, r);
     w = slot.x; //width of the nut entry slot (should be slightly larger than the nut)
     l = slot.y; //length/depth of the slot (now ignored)
     h = slot.z; //height of the slot
@@ -93,18 +93,18 @@ module nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=-1){
                 cylinder(d=w/sin(60), h=h, $fn=6);
             }
         }
-        a = 1/trap_h;
+        a = 1/trap_height;
         rotate(30){
             cylinder(r=r1*(1-a) + r2*a, h=h+1, $fn=6);
         }
         rotate(30){
-            cylinder(r=r2, h=h+trap_h, $fn=6);
+            cylinder(r=r2, h=h+trap_height, $fn=6);
         }
     }
     // ensure the hole in the top can be made nicely
     intersection(){
         translate([-999, -hole_r,0]){
-            cube([999, 2*hole_r, h + trap_h + 0.5]);
+            cube([999, 2*hole_r, h + trap_height + 0.5]);
         }
         rotate(30){
             cylinder(r=r2, h=999, $fn=6);
@@ -329,8 +329,6 @@ module nut_seat_void(h=1, tilt=0, center=true){
     // h is the height of the top (excluding nut hole)
     // center=true will cause it to punch through the bottom.
     // This ensures enough clearance to let the actuator column move.
-    r = column_core_size().y/2;
-    x = column_core_size().x/2 - r;
     rotate_x(tilt){
         intersection(){
             linear_extrude(999,center=center){
@@ -349,8 +347,6 @@ module screw_seat_shell(h=1, tilt=0){
     // Outside of the actuator column housing - this is the structure that
     // the gear sits on top of.  It needs to be hollowed out before use
     // (see screw_seat)
-    r = actuator_housing_xy_size().y/2;
-    x = actuator_housing_xy_size().x/2 - r;
     // Create a slightly over double height column and cut off bottom
     double_h = (h+2)*2;
     difference(){
