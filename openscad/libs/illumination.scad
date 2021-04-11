@@ -150,16 +150,17 @@ module illumination_dovetail(params, h=50){
     illumination_dovetail_branding(params, h, bottom_z);
 }
 
-
-// This is the difference between the lens radius and the aperture radius
-// used in both condenser_lens_gripper and condenser_cutout
-_aperture_difference = 1.1;
+/*
+* This is the difference between the lens radius and the aperture radius
+* used in both condenser_lens_gripper and condenser_cutout
+*/
+function condenser_aperture_difference() = 1.1;
 
 module condenser_lens_gripper(lens_r, lens_t, base_r){
     // the lens holder on the end or the condenser
     pedestal_h = 5.5;
     h = pedestal_h+lens_t+1.5;
-    aperture_r = lens_r-_aperture_difference;
+    aperture_r = lens_r-condenser_aperture_difference();
 
     difference() {
         union() {
@@ -193,7 +194,7 @@ module condenser_cutout(led_r, lens_r, lens_assembly_z, bottom_height=10){
     lighttrap_offset = led_height+led_countersink;
     lighttrap_h = lens_assembly_z-lighttrap_offset+tiny();
     led_trilinder_h = bottom_height+lighttrap_offset+2*tiny();
-    aperture_r = lens_r-_aperture_difference;
+    aperture_r = lens_r-condenser_aperture_difference();
 
     //Light trap to reduce stray reflectins
     translate_z(lighttrap_offset){
