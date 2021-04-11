@@ -1,6 +1,11 @@
 use <./libs/microscope_parameters.scad>
 use <./libs/lib_microscope_stand.scad>
 
-params = default_params();
+DRIVER_TYPE = "sangaboard";
 
-motor_driver_case(params, 30);
+driver_case_stl(driver_type=DRIVER_TYPE);
+
+module driver_case_stl(driver_type){
+    params = default_params();
+    motor_driver_case(params, driver_type, 30);
+}

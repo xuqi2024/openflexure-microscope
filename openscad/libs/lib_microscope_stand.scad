@@ -9,27 +9,16 @@ use <./z_axis.scad>
 use <../feet.scad>
 use <./libdict.scad>
 
-bottom_thickness = 1.0;
-inset_depth = 3.0;
-allow_space = 1.5;
-wall_thickness = 1.5; //default 1.5 - 2.35 is good for ABS
-raspi_support = 4.0;
+function stand_bottom_thickness() = 1.0;
+function stand_top_indent_depth() = 3.0;
+
+function stand_wall_thickness() = 1.5; //default 1.5 - 2.35 is good for ABS
+function pi_standoff_h() = 4.0;
 
 //TODO: move the pi-specific stuff into its own file
-raspi_board = [85, 56, 19];
+function pi_board_dims() = [85, 56, 19];
 
-include_breadboard_holes = true;
-
-//TODO: move the motor driver specific stuff into motor_driver_case.scad
-motor_driver_electronics = "sangaboard";
-nano_width = 18.0;
-nano_length = 43.0;
-nano_support = 13.0;
-driver_width = 32.0;
-driver_length = 35.0;
-driver_support = 4.0;
-
-
+function sd_card_cutout_top() = 20;
 
 //the y poistion where the base forms a point
 function base_corner_y(params) = let(
@@ -54,7 +43,7 @@ module pi_frame(){
     // coordinate system relative to the corner of the pi.
     translate([0,15]){
         rotate(-45){
-            translate([-raspi_board.x/2, -raspi_board.y/2]){
+            translate([-pi_board_dims().x/2, -pi_board_dims().y/2]){
                 children();
             }
         }
@@ -65,18 +54,18 @@ module pi_footprint(){
     // basic space for the Pi (in 2D)
     pi_frame(){
         translate([-1,-1]){
-            square([raspi_board.x+2,raspi_board.y+2]);
+            square([pi_board_dims().x+2,pi_board_dims().y+2]);
         }
     }
 }
 
-sd_card_cutout_top = 20;
+
 
 module pi_connectors(){
     pi_frame(){
         // USB/network ports
-        translate([raspi_board.x/2,-1,1]){
-            cube(raspi_board + [2,2,-1]);
+        translate([pi_board_dims().x/2,-1,1]){
+            cube(pi_board_dims() + [2,2,-1]);
         }
 
         // micro-USB power and HDMI
@@ -85,8 +74,8 @@ module pi_connectors(){
         }
 
         // micro-SD card cutout
-        translate([-25,raspi_board.y/2-16,-10]){
-            cube([30, sd_card_cutout_top + 10, 16]);
+        translate([-25,pi_board_dims().y/2-16,-10]){
+            cube([30, sd_card_cutout_top() + 10, 16]);
         }
     }
 }
@@ -107,7 +96,7 @@ module pi_hole_frame(){
 module pi_support_frame(){
     // position supports for each of the pi's mounting screws
     pi_frame(){
-        translate([3.5,3.5,bottom_thickness-tiny()]){
+        translate([3.5,3.5,stand_bottom_thickness()-tiny()]){
             repeat([58,0,0],2){
                 repeat([0,49,0], 2){
                     children();
@@ -121,7 +110,7 @@ module pi_supports(){
     // pillars into which the pi can be screwed (holes are hollowed out later)
     difference(){
         pi_support_frame(){
-            cylinder(h=raspi_support+tiny(), d=7);
+            cylinder(h=pi_standoff_h()+tiny(), d=7);
         }
     }
 }
@@ -269,7 +258,7 @@ module footprint(params){
         translate([0, z_nut_y(params)]){
             foot_footprint(tilt=z_actuator_tilt(params));
         }
-        offset(wall_thickness){
+        offset(stand_wall_thickness()){
             pi_footprint();
         }
     }
@@ -300,8 +289,8 @@ module bucket_base_stackable(params, h){
                     }
                 }
                 translate_z(h-tiny()){
-                    linear_extrude(inset_depth){
-                        offset(wall_thickness){
+                    linear_extrude(stand_top_indent_depth()){
+                        offset(stand_wall_thickness()){
                             footprint(params);
                         }
                     }
@@ -312,16 +301,16 @@ module bucket_base_stackable(params, h){
 
         // hollow out the inside
         sequential_hull(){
-            translate_z(bottom_thickness){
+            translate_z(stand_bottom_thickness()){
                 linear_extrude(tiny()){
-                    offset(-wall_thickness){
+                    offset(-stand_wall_thickness()){
                         footprint(params);
                     }
                 }
             }
             translate_z(h-10){
                 linear_extrude(tiny()){
-                    offset(-wall_thickness){
+                    offset(-stand_wall_thickness()){
                         footprint(params);
                     }
                 }
@@ -354,8 +343,8 @@ module bucket_base_stackable(params, h){
 
 module top_casing_block(params, h, os=0, legs=true, lugs=true){
     // The "bucket" baseplate before holes and supports (i.e. a solid object)
-    bottom = os<0?bottom_thickness:0;
-    top_h = os<0?tiny():inset_depth;
+    bottom = os<0?stand_bottom_thickness():0;
+    top_h = os<0?tiny():stand_top_indent_depth();
     foot_height = key_lookup("foot_height", params);
     union(){
         sequential_hull(){
@@ -368,7 +357,7 @@ module top_casing_block(params, h, os=0, legs=true, lugs=true){
                     }
                 }
             }
-            translate_z(min(sd_card_cutout_top, h)){
+            translate_z(min(sd_card_cutout_top(), h)){
                 linear_extrude(tiny()){
                     offset(os){
                         footprint_after_pi_cutouts(params);
@@ -393,7 +382,7 @@ module top_casing_block(params, h, os=0, legs=true, lugs=true){
             }
             translate_z(h+foot_height){
                 linear_extrude(top_h){
-                    offset(os*2+wall_thickness){
+                    offset(os*2+stand_wall_thickness()){
                         microscope_bottom(params, lugs=lugs, feet=false, legs=legs);
                     }
                 }
@@ -401,7 +390,7 @@ module top_casing_block(params, h, os=0, legs=true, lugs=true){
         }
         if (os<0){
             translate_z(h+foot_height){
-                linear_extrude(2*inset_depth){
+                linear_extrude(2*stand_top_indent_depth()){
                     microscope_bottom(params, lugs=true);
                 }
             }
@@ -410,6 +399,7 @@ module top_casing_block(params, h, os=0, legs=true, lugs=true){
 }
 
 module bucket_base_with_microscope_top(params, h){
+    allow_space = 1.5;
     // A bucket base for the microscope, without cut-outs
     foot_height = key_lookup("foot_height", params);
     difference(){
@@ -419,7 +409,7 @@ module bucket_base_with_microscope_top(params, h){
 
                 difference(){
                     // we hollow out the casing, but not underneath the legs or lugs.
-                    top_casing_block(params, h=h, os=-wall_thickness, legs=false, lugs=false);
+                    top_casing_block(params, h=h, os=-stand_wall_thickness(), legs=false, lugs=false);
                     for(hole_pos=base_mounting_holes(params)){
                         hull(){
                             // double-subtract under the mounting holes to make attachment points
@@ -473,16 +463,6 @@ module bucket_base_with_microscope_top(params, h){
 module mounting_holes(params){
     // holes to mount the buckets together (stacking) or to a breadboard
 
-    // Allow the base to be bolted to a metric optical breadboard
-    // with M6 holes on 25mm centres
-    if (include_breadboard_holes){
-        for(p=[[0,0,0], [25,25,0], [-25,25,0], [0,50,0], [0,-25,0]]){
-            translate(p){
-                cylinder(d=6.6,h=999,center=true);
-            }
-        }
-    }
-
     // holes at 3 corners to allow mounting to something underneath/stacking
     // NB the bottom hole is larger to allow for screwing through it, the top
     // is approximately "self tapping" (a triangular hole, to allow for some
@@ -533,8 +513,8 @@ module microscope_stand(params, h){
         //I made it work for my wall size, then interpolated.
         //It should be acceptably close for most sane wall sizes.
         pi_frame() {
-            translate([-19.24,raspi_board.y/2-15.96,10+bottom_thickness]){
-                rotate_z(-15-0.9*(2.35-wall_thickness)){
+            translate([-19.24,pi_board_dims().y/2-15.96,10+stand_bottom_thickness()]){
+                rotate_z(-15-0.9*(2.35-stand_wall_thickness())){
                     rotate_y(-7){
                         translate_x(-11.5){
                             cube([11.5, 31.2, 27]);
@@ -545,7 +525,7 @@ module microscope_stand(params, h){
         }
 
         // space for pi connectors
-        translate_z(bottom_thickness + raspi_support){
+        translate_z(stand_bottom_thickness() + pi_standoff_h()){
             pi_connectors();
         }
 
@@ -567,8 +547,8 @@ module microscope_stand(params, h){
 module sangaboard_connectors(){
     //Create cutouts for sangaboard connectors
     pi_frame(){
-        translate([raspi_board.x/2,-1,1]){
-            cube(raspi_board + [2,2,-1]);
+        translate([pi_board_dims().x/2,-1,1]){
+            cube(pi_board_dims() + [2,2,-1]);
         }
         translate([10, -99, -2]){
             cube([35,100,18]);
@@ -579,7 +559,7 @@ module sangaboard_connectors(){
 module sangaboard_support_frame(){
     // position supports for each of the sangaboard's mounting screws
     pi_frame(){
-        translate([3.5,3.5,bottom_thickness-tiny()]){
+        translate([3.5,3.5,stand_bottom_thickness()-tiny()]){
             repeat([57,0,0],2){
                 repeat([0,47,0], 2){
                     children();
@@ -593,7 +573,7 @@ module sangaboard_supports(){
     // pillars into which the pi can be screwed
     difference(){
         sangaboard_support_frame(){
-            cylinder(h=raspi_support+tiny(), d=7);
+            cylinder(h=pi_standoff_h()+tiny(), d=7);
         }
         // holes for the sangaboard go all the way through
         sangaboard_support_frame(){
@@ -603,6 +583,14 @@ module sangaboard_supports(){
 }
 
 module nano_supports(){
+
+    nano_width = 18.0;
+    nano_length = 43.0;
+    nano_support = 13.0;
+    driver_width = 32.0;
+    driver_length = 35.0;
+    driver_support = 4.0;
+
 
     support_positions=[[2.5,2.5,0],
                        [driver_width-2.5,2.5,0],
@@ -620,7 +608,7 @@ module nano_supports(){
     for (pos = support_positions){
         pi_frame(){
             rotate_z(40){
-                translate(pos + [5, -6, bottom_thickness-tiny()]){
+                translate(pos + [5, -6, stand_bottom_thickness()-tiny()]){
                     difference(){
                         cylinder(h=driver_support+tiny(), d=7);
                         trylinder_selftap(3, h=999, center=true);
@@ -636,7 +624,7 @@ module nano_supports(){
         //two posts with rounded tops and a base
         pi_frame(){
             rotate_z(40){
-                translate([8.5,-21.5,bottom_thickness-tiny()]){
+                translate([8.5,-21.5,stand_bottom_thickness()-tiny()]){
                     translate([49.5-nano_length/2,-6.5,0]){
                         cylinder(h=nano_width+2.4+tiny(), d=5);
                     }
@@ -658,7 +646,7 @@ module nano_supports(){
 
         pi_frame(){
             rotate_z(40){
-                translate([8.5,-21.5,bottom_thickness-tiny()]) {
+                translate([8.5,-21.5,stand_bottom_thickness()-tiny()]) {
                     //carve out for nano board
                     hull(){
                         translate([52.1-nano_length/2,-9.5,2+tiny()]){
@@ -693,13 +681,13 @@ module nano_supports(){
     }
 }
 
-module motor_driver_case(params, h){
+module motor_driver_case(params, driver_type, h){
     // A stackable "bucket" that holds the motor board under the microscope stand
     union(){
         difference(){
             bucket_base_stackable(params, h);
             // space for sangaboard connectors
-            translate_z(bottom_thickness+raspi_support){
+            translate_z(stand_bottom_thickness()+pi_standoff_h()){
                 sangaboard_connectors();
             }
 
@@ -711,10 +699,10 @@ module motor_driver_case(params, h){
             mounting_holes(params);
         }
 
-        if(motor_driver_electronics=="sangaboard"){
+        if(driver_type=="sangaboard"){
             sangaboard_supports();
         }
-        if (motor_driver_electronics=="arduino_nano"){
+        if (driver_type=="arduino_nano"){
             nano_supports();
         }
     }
@@ -888,7 +876,7 @@ function pi_stand_board_inset() = [3, 3, 0];
 function pi_stand_thickness() = 2;
 function pi_stand_base_size() = let(
     t = pi_stand_thickness(),
-    board_size = [raspi_board.x, raspi_board.y, t]
+    board_size = [pi_board_dims().x, pi_board_dims().y, t]
 ) board_size + 2 * pi_stand_board_inset();
 
 module pi_stand(h=50){
