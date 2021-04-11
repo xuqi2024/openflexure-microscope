@@ -22,39 +22,43 @@ use <../libs/libdict.scad>
 use <../libs/compact_nut_seat.scad>
 use <../libs/logo.scad>
 
-params = default_params();
-actuator_h = key_lookup("actuator_h", params);
 
-outer_clearance = 0.5;
-cr = column_base_radius() + outer_clearance;
+actuator_drilling_jig();
 
-difference(){
-    translate_z(-7){
-        linear_extrude(actuator_h+5){
-            offset(-outer_clearance){
-                projection(cut=true){
-                    nut_seat_void();
+module actuator_drilling_jig(){
+    params = default_params();
+    actuator_h = key_lookup("actuator_h", params);
+    outer_clearance = 0.5;
+    clearance_radius = column_base_radius() + outer_clearance;
+
+    difference(){
+        translate_z(-7){
+            linear_extrude(actuator_h+5){
+                offset(-outer_clearance){
+                    projection(cut=true){
+                        nut_seat_void();
+                    }
                 }
             }
         }
-    }
 
-    //void for the actuator column
-    minkowski(){
-        actuator_column(actuator_h+1, no_voids=true, flip_nut_slot=true);
-        cylinder(r=0.5, h=tiny(), $fn=8);
-    }
-    //clearance for the lever
-    translate_x(-cr){
-        mirror([0,1,0]){
-            cube([cr*2,999,999]);
+        //void for the actuator column
+        minkowski(){
+            actuator_column(actuator_h+1, no_voids=true, flip_nut_slot=true);
+            cylinder(r=0.5, h=tiny(), $fn=8);
         }
+        //clearance for the lever
+        translate_x(-clearance_radius){
+            mirror([0,1,0]){
+                cube([clearance_radius*2,999,999]);
+            }
+        }
+        //clearance for the column core
+        cylinder(r=clearance_radius, $fn=16, h=999);
+        //mounting bolt
+        translate_z(-4){
+            cylinder(r=4,h=6);
+        }
+        cylinder(r=2.6,h=999,center=true);
     }
-    //clearance for the column core
-    cylinder(r=cr, $fn=16, h=999);
-    //mounting bolt
-    translate_z(-4){
-        cylinder(r=4,h=6);
-    }
-    cylinder(r=2.6,h=999,center=true);
 }

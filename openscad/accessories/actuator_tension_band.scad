@@ -20,22 +20,21 @@
 *                                                                 *
 ******************************************************************/
 
-/**************
- * PARAMETERS *
- **************/
+
 $fn = 64;
-nozzle_width = 0.4;
-band_height = 1.8;
-ideal_band_thickness = 1.5;
-band_inner_diameter = 30;
 
-/*********
- * MODEL *
- *********/
-actual_band_thickness = ideal_band_thickness - (ideal_band_thickness % nozzle_width);
-band_outer_diameter = band_inner_diameter + actual_band_thickness * 2;
+actuator_tension_band(nozzle_width=0.4);
 
-difference(){
-    cylinder(h=band_height, d=band_outer_diameter, center = true);
-    cylinder(h=band_height+1, d=band_inner_diameter, center = true);
+module actuator_tension_band(nozzle_width){
+    band_height = 1.8;
+    ideal_band_thickness = 1.5;
+    band_inner_diameter = 30;
+
+    actual_band_thickness = ideal_band_thickness - (ideal_band_thickness % nozzle_width);
+    band_outer_diameter = band_inner_diameter + actual_band_thickness * 2;
+
+    difference(){
+        cylinder(h=band_height, d=band_outer_diameter, center = true);
+        cylinder(h=band_height+1, d=band_inner_diameter, center = true);
+    }
 }

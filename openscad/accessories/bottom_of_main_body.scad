@@ -7,9 +7,14 @@
 use <../libs/main_body_structure.scad>
 use <../libs/microscope_parameters.scad>
 use <../libs/utilities.scad>
-params = default_params();
-projection(cut=true){
-    translate_z(-0.1){
-        main_body(params);
+
+bottom_of_main_body();
+
+module bottom_of_main_body(){
+    params = default_params();
+    projection(cut=true){
+        translate_z(-0.1){
+            main_body(params);
+        }
     }
 }
