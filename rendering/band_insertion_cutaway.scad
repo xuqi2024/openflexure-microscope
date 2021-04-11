@@ -79,55 +79,49 @@ module render_frame(frame_dict){
     }
 }
 
-frame1 = [["foot_tr", [0,0,-40]],
-          ["band_tr", [0,0,-40]],
-          ["tool_tr", [0,0,-37]],
-          ["casing_cut", false],
-          ["casing_alpha", 1],
-          ["foot_alpha", 1],
-          ["tool_kink", true]];
+function frame_parameters(frame_number) = let(
+    frame1 = [["foot_tr", [0,0,-40]],
+              ["band_tr", [0,0,-40]],
+              ["tool_tr", [0,0,-37]],
+              ["casing_cut", false],
+              ["casing_alpha", 1],
+              ["foot_alpha", 1],
+              ["tool_kink", true]],
 
-frame2 = [["foot_tr", [0,0,-40]],
-          ["band_tr", [0,0,-40]],
-          ["tool_tr", [0,0,-37]],
-          ["casing_cut", true],
-          ["casing_alpha", .5],
-          ["foot_alpha", .5],
-          ["tool_kink", true]];
+    frame2 = [["foot_tr", [0,0,-40]],
+              ["band_tr", [0,0,-40]],
+              ["tool_tr", [0,0,-37]],
+              ["casing_cut", true],
+              ["casing_alpha", .5],
+              ["foot_alpha", .5],
+              ["tool_kink", true]],
 
-frame3 = [["foot_tr", [0,0,0]],
-          ["band_tr", [0,0,0]],
-          ["tool_tr", [0,0,0]],
-          ["casing_cut", true],
-          ["casing_alpha", .5],
-          ["foot_alpha", .5],
-          ["tool_kink", true]];
+    frame3 = [["foot_tr", [0,0,0]],
+              ["band_tr", [0,0,0]],
+              ["tool_tr", [0,0,0]],
+              ["casing_cut", true],
+              ["casing_alpha", .5],
+              ["foot_alpha", .5],
+              ["tool_kink", true]],
 
-frame4 = [["foot_tr", [0,0,0]],
-          ["band_tr", [0,0,0]],
-          ["tool_tr", [0,0,-40]],
-          ["casing_cut", true],
-          ["casing_alpha", .5],
-          ["foot_alpha", .5],
-          ["tool_kink", false]];
+    frame4 = [["foot_tr", [0,0,0]],
+              ["band_tr", [0,0,0]],
+              ["tool_tr", [0,0,-40]],
+              ["casing_cut", true],
+              ["casing_alpha", .5],
+              ["foot_alpha", .5],
+              ["tool_kink", false]],
 
-frame5 = [["foot_tr", [0,0,0]],
-          ["band_tr", [0,0,0]],
-          ["tool_tr", [0,0,-40]],
-          ["casing_cut", false],
-          ["casing_alpha", 1],
-          ["foot_alpha", 1],
-          ["tool_kink", false]];
+    frame5 = [["foot_tr", [0,0,0]],
+              ["band_tr", [0,0,0]],
+              ["tool_tr", [0,0,-40]],
+              ["casing_cut", false],
+              ["casing_alpha", 1],
+              ["foot_alpha", 1],
+              ["tool_kink", false]],
 
-FRAME=2;
-if (FRAME==1){
-    render_frame(frame1);
-}else if (FRAME==2){
-    render_frame(frame2);
-}else if (FRAME==3){
-    render_frame(frame3);
-}else if (FRAME==4){
-    render_frame(frame4);
-}else if (FRAME==5){
-    render_frame(frame5);
-}
+    frames = [frame1, frame2, frame3, frame4, frame5]
+) frames[frame_number-1];
+
+FRAME = 2;
+render_frame(frame_parameters(FRAME));

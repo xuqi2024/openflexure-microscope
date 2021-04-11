@@ -46,27 +46,20 @@ module render_frame(frame_dict){
 
 }
 
-frame1 = [["exploded", true],
-          ["arrow", false],
-          ["removed", false]];
 
-frame2 = [["exploded", false],
-          ["arrow", true],
-          ["removed", false]];
-
-frame3 = [["exploded", false],
-          ["arrow", false],
-          ["removed", true]];
+function frame_parameters(frame_number) = let(
+    frame1 = [["exploded", true],
+              ["arrow", false],
+              ["removed", false]],
+    frame2 = [["exploded", false],
+              ["arrow", true],
+              ["removed", false]],
+    frame3 = [["exploded", false],
+              ["arrow", false],
+              ["removed", true]],
+    frames = [frame1, frame2, frame3]
+) frames[frame_number-1];
 
 
 FRAME=3;
-
-if (FRAME==1){
-    render_frame(frame1);
-}else if (FRAME==2){
-    render_frame(frame2);
-}
-else if (FRAME==3){
-    render_frame(frame3);
-}
-
+render_frame(frame_parameters(FRAME));
