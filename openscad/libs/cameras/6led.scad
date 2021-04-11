@@ -22,15 +22,6 @@
 use <../utilities.scad>
 use <./m12.scad>
 
-// Camera geometry (mostly of the bottom of the lens mount)
-lens_holder_tube_r = 13.5/2; // the tube into which the lens screws
-lens_holder_tube_h = 12.6; // the height of the tube above the PCB
-lens_holder_clearance = 0.35; // extra space around the camera to make sure it fits
-lens_holder_box_h = 3.6;
-lens_holder_box = [2,2,0] * lens_holder_tube_r + [0,0,1] * lens_holder_box_h; // box at the bottom of the tube
-lens_holder_mounting_screw_y = 9; // position of the lugs for mounting screws
-lens_holder_mounting_screw_lug_r = 2.2; // size of above.
-camera_component_clearance = 1; // it's easiest to have the PCB slightly below the mount
 
 $fn=32;
 
@@ -56,11 +47,9 @@ module 6led_bottom_mounting_posts(height=-1, radius=-1, outers=true, cutouts=tru
                             cylinder(r=r, h=h, $fn=12);
                         }
                         if(cutouts){
-                            intersection(){
-                                translate_z(-2){
-                                    rotate(75){
-                                        trylinder_selftap(2, h=h+3);
-                                    }
+                            translate_z(-2){
+                                rotate(75){
+                                    trylinder_selftap(2, h=h+3);
                                 }
                             }
                         }

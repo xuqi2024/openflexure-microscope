@@ -292,11 +292,6 @@ module picamera_2_cover(){
 }
 
 
-pcb = [25.4+0.5,24+0.5,2]; //size of the picam PCB (+0.5mm so it fits)
-camera_housing = [9,9,2.5]; //size of the plastic housing
-camera_housing_y = 2.5; //shift of the camera housing from the centre
-lens_unscrew_r = 5.5/2; //size of the bit we unscrew
-
 module generous_camera_bits(){
     //The other stuff on the PCB (mostly the ribbon cable)
     camera = [8.5,8.5,2.3]; //size of camera box
@@ -320,19 +315,28 @@ module picamera_2_gripper(){
     // this little bit of plastic grips the plastic camera housing
     // and allows you to safely unscrew the lens
     // it protects the (surprisingly delicate) flex that connects the camera to the PCB.
-    outer = pcb+[4,-5,camera_housing.z]; //size of the tool
+
+    //size of the picam PCB (+0.5mm so it fits)
+    pcb_dims = [25.4+0.5,24+0.5,2];
+    //size of the pastic housing
+    camera_housing = [9,9,2.5];
+    //shift of the camera housing from the centre
+    camera_housing_y_shift = 2.5;
+
+    //size of the tool
+    outer = pcb_dims+[4,-5,camera_housing.z];
     difference(){
         translate([0,-1,outer.z/2]){
             cube(outer, center=true);
         }
 
         //central hole for the camera housing
-        translate_y(camera_housing_y){
+        translate_y(camera_housing_y_shift){
             cube(camera_housing + [0,0,999],center=true);
         }
 
         //cut-outs for the other bits (cable etc.)
-        translate([0,camera_housing_y,camera_housing.z]){
+        translate([0, camera_housing_y_shift, camera_housing.z]){
             rotate_x(180){
                 generous_camera_bits();
             }
@@ -340,7 +344,7 @@ module picamera_2_gripper(){
 
         //indent for PCB
         translate_z(outer.z){
-            cube(pcb + [0,0,pcb.z],center=true);
+            cube(pcb_dims + [0,0,pcb_dims.z],center=true);
         }
     }
 }
