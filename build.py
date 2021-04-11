@@ -149,12 +149,14 @@ def generate_motor_buckets(writer):
     for board_type in MOTOR_DRIVER_ELECTRONICS:
 
         parameters = {"DRIVER_TYPE": board_type}
+        select_stl_if = {"motor_driver_electronics": board_type,
+                         "motorised": True}
 
         writer.openscad(
             f"motor_driver_case_{board_type}.stl",
             "motor_driver_case.scad",
             parameters,
-            select_stl_if={**parameters, "motorised": True},
+            select_stl_if=select_stl_if
         )
 
 
