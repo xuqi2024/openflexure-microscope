@@ -25,7 +25,8 @@ function fl_cube_bottom(optics_config) = bottom_position(optics_config) + camera
 function fl_cube_top(optics_config) = fl_cube_bottom(optics_config) + fl_cube_w() + 2.7; //top of beamsplitter cube
 
 function fl_cube_w() = 16; //width of the fluorescence filter cube
-fl_cube_top_w = fl_cube_w() - 2.7;
+function fl_cube_roc() = 0.6;
+
 $fn=24;
 
 

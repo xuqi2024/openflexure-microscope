@@ -47,12 +47,9 @@ module chamfer_bottom_edge(chamfer=0.3, h=0.5){
     }
 }
 
-module fl_cube_outer(){
+module fl_cube_outer(roc, w, foot, bottom_t){
     // The outer body for fl_cube()
-    roc = 0.6;
-    w = fl_cube_w();
-    foot = roc*0.7;
-    bottom_t = roc*3;
+
     $fn=8;
     chamfer_bottom_edge(){
         union(){
@@ -116,7 +113,7 @@ module fl_cube(){
     // Filter cube that slots into a suitably-modified optics module
     // This prints with the Y axis vertical - to save rotating all the
     // cylinders, it's written here as printed.
-    roc = 0.6;
+    roc = fl_cube_roc();
     w = fl_cube_w();
     foot = roc*0.7;
     bottom_t = roc*3;
@@ -129,7 +126,7 @@ module fl_cube(){
     $fn=8;
     difference(){
         union(){
-            fl_cube_outer();
+            fl_cube_outer(roc, w, foot, bottom_t);
 
             // mount for 45 degree dichroic, with bottom retaining clip
             // y and z position of coated tip of dichroic + clearance room
@@ -165,6 +162,7 @@ module fl_cube(){
                 }
             }
 
+            //TODO - this should use the static dovetail library
             // attachment for the excitation filter and LED
             reflect_x(){
                 translate([-w/2, bottom + 4, w]){
