@@ -11,7 +11,20 @@
 // Updated by Julian Stirling in 2020 to remove excess functions unused by the
 //     OpenFlexure Project. And to unify code style somewhat.
 
-use <../utilities.scad>
+
+/**
+* Calculate the outer radius for a gear from pitch radius and number of teeth
+*/
+function gear_outer_radius(pitch_r, n_teeth) = pitch_r*(1 + 2/n_teeth);
+
+/**
+* Calculate the pitch radius for a gear the circular pitch and the number of teeth
+* The pitch radius is the ditance from the centre of gear to the meshing point.
+* This is calcualted as:
+*    pitch radius = Nteeth * circular_pitch / 360
+*/
+function gear_pitch_radius(circular_pitch, n_teeth) = n_teeth*circular_pitch/360;
+
 
 module gear(number_of_teeth=15,
             circular_pitch=false,
@@ -88,7 +101,7 @@ module gear(number_of_teeth=15,
                 }
 
                 if(gear_thickness < rim_thickness){
-                    translate_z(gear_thickness){
+                    translate([0, 0, gear_thickness]){
                         cylinder(r=rim_radius,h=rim_thickness-gear_thickness+1);
                     }
                 }
@@ -99,21 +112,21 @@ module gear(number_of_teeth=15,
                 }
             }
             if(flat == false && hub_thickness > gear_thickness){
-                translate_z(gear_thickness){
+                translate([0, 0, gear_thickness]){
                     linear_exturde_flat_option(flat=flat, height=hub_thickness-gear_thickness){
                         circle(r=hub_diameter/2);
                     }
                 }
             }
         }
-        translate_z(-1){
+        translate([0, 0, -1]){
             linear_exturde_flat_option(flat =flat, height=2+max(rim_thickness,hub_thickness,gear_thickness)){
                 circle(r=bore_diameter/2);
             }
         }
         if(circles>0){
             for(i=[0:circles-1]){
-                rotate_z(i*360/circles){
+                rotate([0, 0, i*360/circles]){
                     translate([circle_orbit_diameter/2,0,-1]){
                         linear_exturde_flat_option(flat =flat, height=max(gear_thickness,rim_thickness)+3){
                             circle(r=circle_diameter/2);
@@ -149,7 +162,7 @@ module gear_shape(number_of_teeth,
         }
 
         for(i = [1:number_of_teeth]){
-            rotate_z(i*360/number_of_teeth){
+            rotate([0, 0, i*360/number_of_teeth]){
                 involute_gear_tooth(pitch_radius = pitch_radius,
                                     root_radius = root_radius,
                                     base_radius = base_radius,
