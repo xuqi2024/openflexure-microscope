@@ -517,7 +517,7 @@ module trylinder_gripper(inner_r=10,h=6,grip_h=3.5,base_r=-1,t=0.65,squeeze=1,fl
     }
 }
 
-module deformable_hole_trylinder(r1, r2, h=99, corner_roc=-1, delta_z=0.5, center=false){
+module deformable_hole_trylinder(r1, r2, h=99, corner_roc=undef, delta_z=0.5, center=false){
     // A cylinder with feathered edges, to make a hole that is
     // slightly deformable, in an otherwise rigid structure.
     // r1: inner radius
