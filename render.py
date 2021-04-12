@@ -68,7 +68,7 @@ def generate_optics_assembly_screw(writer):
 
 
 def generate_optics_assembly_condenser_lens(writer):
-    input_file = "rendering/rms_optics_assembly.scad"
+    input_file = "rendering/optics_assembly.scad"
     camera = Camera(position=[29, 0, 59], angle=[69, 0, 90], distance=290)
     imgsize = [1000, 2000]
 
@@ -82,7 +82,8 @@ def generate_optics_assembled(writer):
     camera = Camera(position=[30, 5, 60], angle=[90, 0, 110], distance=440)
     output_file = "docs/renders/optics_assembled.png"
     imgsize = [1200, 2400]
-    writer.openscad_render(output_file, input_file, camera, imgsize)
+    frame = 4
+    writer.openscad_render(output_file, input_file, camera, imgsize, frame)
 
 
 def generate_band(writer):
