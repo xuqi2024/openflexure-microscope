@@ -5,6 +5,35 @@ stages:
     - deploy
     - zenodo
 
+## Template for all OpenSCAD jobs to ensure they run the same
+.scad-job:
+    image: ubuntu:20.04
+
+    variables:
+      # prevents config waiting for user input, e.g. for tzdata
+      DEBIAN_FRONTEND: noninteractive
+      DEBCONF_NONINTERACTIVE_SEEN: "true"
+
+    # Install everything needed for all OpenSCAD jobs so they run in a consistent environment
+    before_script:
+      - apt-get update -qq
+      - apt-get -o DPkg::Options::=--force-confdef -y -qq install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates python3-pip openscad git xvfb imagemagick unzip inkscape
+      - pip3 install -r requirements.txt
+
+# Unit testing of the scad library functions
+scad-lib-tests:
+    extends: .scad-job
+    stage: test
+
+    script:
+      - openscad/libs/test/test_dict.py
+
+    only:
+      - tags
+      - merge_requests
+      - web
+
+# Code quality runs SCA2D to do static analysis of the .scad code 
 code_quality:
     stage: test
     image: python:3.7
@@ -17,47 +46,19 @@ code_quality:
             codequality:
               - gl-code-quality-report.json
         expire_in: 1 week
+    # Note this runs more often than others, this is to make sure that the result
+    # both the head and base of merge requests have code quality reports to allow the
+    # MR quality changes to display
     only:
       - tags
       - merge_requests
       - web
       - branches
 
-# Unit testing of the scad library functions
-scad-lib-tests:
-    stage: test
-    image: ubuntu:20.04
-
-    variables:
-      # prevents config waiting for user input, e.g. for tzdata
-      DEBIAN_FRONTEND: noninteractive
-
-    before_script:
-      - apt-get update -qq
-      - apt-get -y -qq install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates python3-pip openscad git
-      - pip3 install -r requirements.txt
-
-    script:
-      - openscad/libs/test/test_dict.py
-
-    only:
-      - tags
-      - merge_requests
-      - web
-
 # Build STL files
 build:
+    extends: .scad-job
     stage: build
-    image: ubuntu:20.04
-
-    variables:
-      # prevents config waiting for user input, e.g. for tzdata
-      DEBIAN_FRONTEND: noninteractive
-
-    before_script:
-      - apt-get update -qq
-      - apt-get -y -qq install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates python3-pip openscad git
-      - pip3 install -r requirements.txt
 
     script:
       - git clone --depth=1 https://gitlab.com/openflexure/openflexure-microscope-extra
@@ -83,17 +84,8 @@ build:
 
 # render assemblies - uses xvfb as a virtual x-server
 render:
+    extends: .scad-job
     stage: build
-    image: ubuntu:20.04
-
-    variables:
-      # prevents config waiting for user input, e.g. for tzdata
-      DEBIAN_FRONTEND: noninteractive
-
-    before_script:
-      - apt-get update -qq
-      - apt-get -y -qq install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates xvfb imagemagick unzip inkscape openscad python3-pip
-      - pip3 install -r requirements.txt
 
     script:
       - xvfb-run --auto-servernum --server-args "-screen 0 1024x768x24" ./render.py
