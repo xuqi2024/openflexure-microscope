@@ -31,14 +31,15 @@ module tool_handle_end_cross_section(){
 */
 module sloped_back_of_handle(w, h){
     radius = 1.5;
-    translate([0, radius, radius])
-    rotate_x(-30){
-        hull(){
-            reflect_x(){
-                translate_x(w/2 - radius){
-                    sphere(r=radius);
-                    translate_z(h-2*radius){
+    translate([0, radius, radius]){
+        rotate_x(-30){
+            hull(){
+                reflect_x(){
+                    translate_x(w/2 - radius){
                         sphere(r=radius);
+                        translate_z(h-2*radius){
+                            sphere(r=radius);
+                        }
                     }
                 }
             }
