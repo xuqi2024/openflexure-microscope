@@ -43,8 +43,9 @@ class BaseTestScadDict(unittest.TestCase):
         subprocess.run(["openscad", "-o", self.temp_path, self.temp_scad_file], check=True)
         with open(self.temp_path, 'r') as file_obj:
             output = file_obj.read()
-        self.assertEqual(has_warnings, warns(output))
-        self.assertEqual(has_errors, errors(output))
+        message = "\n\nOpenSCAD output is below:\n" + output
+        self.assertEqual(has_warnings, warns(output), msg=message)
+        self.assertEqual(has_errors, errors(output), msg=message)
 
 # Use a new class for each to force serial execution!
 class TestIsInStr1(BaseTestScadDict):
