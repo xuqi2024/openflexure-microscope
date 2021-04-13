@@ -32,16 +32,34 @@ function is_in(value, list) =
     assert(is_list(list), "is_in: list must be a list")
     is_num(value) ? _is_in_num(value, list) : _is_in_str(value, list);
 
-// An errant match is when a non-list matches with the first element in a list
-// a list match a non list though. Cannot know which element is the non-list
-// but we do know that it is errant if exactly one of them is not a list
+/**
+ * Sum a list
+ * This recursive function sums a list.  It should be called with one
+ * argument (the list); the other two arguments simply allow it to be
+ * "tail-recursive" which lets OpenSCAD optimise it better.  This is
+ * very close to the example given in the OpenSCAD docs.
+ */
+function _libdict_sum_list(list, starting_element=0, running_total=0) = 
+    starting_element >= len(list) ?
+        running_total :
+        _libdict_sum_list(list, starting_element + 1, running_total + list[starting_element]);
+
+/**
+ * When checking a list for uniqueness, we can get "errant matches".
+ * An errant match is when a non-list matches with the first element in a list.
+ * i.e. it would consider [1, [1,0]] to be non-unique. We cannot know which 
+ * element is the non-list but we do know that it is errant if exactly one 
+ * of them is not a list.
+ * If two elements are non-lists, they must be identical in order to have matched.  
+ * Similarly, if all elements are lists, they must be identical because ``search`` 
+ * will have matched them as whole lists.
+ * The argument "list" is the list we are checking for uniqueness, and "match" is 
+ * a vector of indices that have been returned by ``search``.
+ */
 function _check_errant_match(list, match) = let(
     non_list = [for (m = match) is_list(list[m])? 0 : 1],
-    // note when recording count_nl (counting non lists) it is first recorded before anything is iterated.
-    // the second recording happens after i is iterated to 0, then count_nl counts whether non_list[0] is 1
-    count = [for (i=-1, count_nl=0; i<len(match);i=i+1,count_nl=count_nl+(i<len(match)?non_list[i]:0)) count_nl]
-    // the last element (count[len(match)] is equal to 1 on an errant match)
-) count[len(match)] == 1 ? 0 : 1;
+    number_of_non_lists = _libdict_sum_list(non_list)
+) number_of_non_lists == 1 ? 0 : 1;
 
 // Returns true if all emements in list are unique.
 function is_unique(list) =
