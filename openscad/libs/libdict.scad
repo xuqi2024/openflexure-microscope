@@ -39,7 +39,7 @@ function _check_errant_match(list, match) = let(
     non_list = [for (m = match) is_list(list[m])? 0 : 1],
     // note when recording count_nl (counting non lists) it is first recorded before anything is iterated.
     // the second recording happens after i is iterated to 0, then count_nl counts whether non_list[0] is 1
-    count = [for (i=-1, count_nl=0; i<len(match);i=i+1,count_nl=count_nl+non_list[i]) count_nl]
+    count = [for (i=-1, count_nl=0; i<len(match);i=i+1,count_nl=count_nl+(i<len(match)?non_list[i]:0)) count_nl]
     // the last element (count[len(match)] is equal to 1 on an errant match)
 ) count[len(match)] == 1 ? 0 : 1;
 
