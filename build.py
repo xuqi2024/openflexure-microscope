@@ -41,7 +41,7 @@ args, ninja_args = parser.parse_known_args()
 
 CAMERAS = ["picamera_2", "m12"]
 
-# Thses are the optics configuration of objective and tube lens pairs.
+# These are the optics configuration of objective and tube lens pairs.
 # Currently we only support the F50D13 option in the offical build.
 # "rms_f40d16" not built as standard now as we do not regularly check it
 # but is still in OpenSCAD incase needed.
