@@ -8,10 +8,10 @@ An illustration for the OpenFlexure Microscope; how to put the nut in
 
 use <../openscad/libs/compact_nut_seat.scad>
 use <../openscad/libs/utilities.scad>
-use <../openscad/actuator_assembly_tools.scad>
+use <../openscad/libs/lib_actuator_assembly_tools.scad>
 use <../openscad/libs/microscope_parameters.scad>
 use <../openscad/feet.scad>
-use <../openscad/main_body.scad>
+use <../openscad/libs/main_body_structure.scad>
 use <../openscad/libs/libdict.scad>
 use <librender/hardware.scad>
 use <librender/render_settings.scad>
@@ -19,16 +19,20 @@ use <librender/assembly_parameters.scad>
 
 module cut_actuator_housing(params, cut=true){
     difference(){
-        xy_screw_seat(params, label="")
+        xy_screw_seat(params, label="");
 
         // cutout actuator hole
-        difference(){ 
-            translate([-3,-10,0]) cube([6,10,5]);
+        difference(){
+            translate([-3,-10,0]){
+                cube([6,10,5]);
+            }
             actuator_end_cutout();
         }
         // only render half
         if (cut) {
-            rotate([0,-90,0])cylinder(r=99,h=99,$fn=4);
+            rotate_y(-90){
+                cylinder(r=99,h=99,$fn=4);
+            }
         }
     }
 }
@@ -55,8 +59,8 @@ module render_frame(frame_dict){
 
     color(tools_colour(), 1){
         translate([0,0,-45]+tool_tr){
-            rotate([0, 0, 90]){
-                double_ended_band_tool(bent=true);
+            rotate_z(90){
+                band_tool(params, bent=true);
             }
         }
     }
@@ -75,55 +79,49 @@ module render_frame(frame_dict){
     }
 }
 
-frame1 = [["foot_tr", [0,0,-40]],
-          ["band_tr", [0,0,-40]],
-          ["tool_tr", [0,0,-37]],
-          ["casing_cut", false],
-          ["casing_alpha", 1],
-          ["foot_alpha", 1],
-          ["tool_kink", true]];
+function frame_parameters(frame_number) = let(
+    frame1 = [["foot_tr", [0,0,-40]],
+              ["band_tr", [0,0,-40]],
+              ["tool_tr", [0,0,-37]],
+              ["casing_cut", false],
+              ["casing_alpha", 1],
+              ["foot_alpha", 1],
+              ["tool_kink", true]],
 
-frame2 = [["foot_tr", [0,0,-40]],
-          ["band_tr", [0,0,-40]],
-          ["tool_tr", [0,0,-37]],
-          ["casing_cut", true],
-          ["casing_alpha", .5],
-          ["foot_alpha", .5],
-          ["tool_kink", true]];
+    frame2 = [["foot_tr", [0,0,-40]],
+              ["band_tr", [0,0,-40]],
+              ["tool_tr", [0,0,-37]],
+              ["casing_cut", true],
+              ["casing_alpha", .5],
+              ["foot_alpha", .5],
+              ["tool_kink", true]],
 
-frame3 = [["foot_tr", [0,0,0]],
-          ["band_tr", [0,0,0]],
-          ["tool_tr", [0,0,0]],
-          ["casing_cut", true],
-          ["casing_alpha", .5],
-          ["foot_alpha", .5],
-          ["tool_kink", true]];
+    frame3 = [["foot_tr", [0,0,0]],
+              ["band_tr", [0,0,0]],
+              ["tool_tr", [0,0,0]],
+              ["casing_cut", true],
+              ["casing_alpha", .5],
+              ["foot_alpha", .5],
+              ["tool_kink", true]],
 
-frame4 = [["foot_tr", [0,0,0]],
-          ["band_tr", [0,0,0]],
-          ["tool_tr", [0,0,-40]],
-          ["casing_cut", true],
-          ["casing_alpha", .5],
-          ["foot_alpha", .5],
-          ["tool_kink", false]];
+    frame4 = [["foot_tr", [0,0,0]],
+              ["band_tr", [0,0,0]],
+              ["tool_tr", [0,0,-40]],
+              ["casing_cut", true],
+              ["casing_alpha", .5],
+              ["foot_alpha", .5],
+              ["tool_kink", false]],
 
-frame5 = [["foot_tr", [0,0,0]],
-          ["band_tr", [0,0,0]],
-          ["tool_tr", [0,0,-40]],
-          ["casing_cut", false],
-          ["casing_alpha", 1],
-          ["foot_alpha", 1],
-          ["tool_kink", false]];
+    frame5 = [["foot_tr", [0,0,0]],
+              ["band_tr", [0,0,0]],
+              ["tool_tr", [0,0,-40]],
+              ["casing_cut", false],
+              ["casing_alpha", 1],
+              ["foot_alpha", 1],
+              ["tool_kink", false]],
 
-FRAME=2;
-if (FRAME==1){
-    render_frame(frame1);
-}else if (FRAME==2){
-    render_frame(frame2);
-}else if (FRAME==3){
-    render_frame(frame3);
-}else if (FRAME==4){
-    render_frame(frame4);
-}else if (FRAME==5){
-    render_frame(frame5);
-}
+    frames = [frame1, frame2, frame3, frame4, frame5]
+) frames[frame_number-1];
+
+FRAME = 2;
+render_frame(frame_parameters(FRAME));

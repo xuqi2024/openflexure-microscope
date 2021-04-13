@@ -15,37 +15,61 @@
 
 use <./libs/utilities.scad>
 
-//this is for mini culture plates, 39mm outer diameter and 12.4mm high
-sample=[0,19/2,12.4-1.5-9]; //position of clamping point relative to bolt
+$fn=32; 
 
-$fn=32;
+module sample_clip(clamp_point, t=2.5, w=6, radius_of_curvature=undef, slope=30){
+    
+    default_roc = clamp_point.z/2 + clamp_point.y*sin(slope) - t/2;
+    roc = if_undefined_set_default(radius_of_curvature, default_roc);
+
+    //a is the distance from the contact-point cylinder to the
+    //centre of the curved part
+    a = sqrt(pow(clamp_point.y, 2) + pow(clamp_point.z - roc - t/2, 2));
+    //angle through which we must rotate the join between
+    angle = acos( (roc + t/2) / a ) + atan((clamp_point.z - roc - t/2)/clamp_point.y);
 
 
-module sample_clip(sample,t=2.5,w=6,roc=-1,slope=30){
-    roc = roc>0 ? roc : sample.z/2 + sample.y*sin(slope) - t/2; //radius of curvature
-    a = sqrt(pow(sample.y, 2) + pow(sample.z - roc - t/2, 2));
-      //a is the distance from the contact-point cylinder to the
-      //centre of the curved part
-    angle = acos( (roc + t/2) / a ) + atan((sample.z - roc - t/2)/sample.y); //angle through which we must rotate the join between
-    //curved part and straight part
-    echo("angle set to:",angle);
-    /*angle = 75; //angle of straight part to the vertical
-    roc =*/
     difference(){
         union(){
             //anchor to stage
             cylinder(r=w/2,h=t);
 
-            translate([0,0,roc+t]) rotate([0,90,0]) difference(){
-                cylinder(r=roc+t,h=w,center=true);
-                cylinder(r=roc,h=999,center=true);
-                translate([0,0,-99]) rotate(0) cube([999,999,999]);
-                translate([0,0,-99]) rotate(angle) cube([999,999,999]);
+            translate_z(roc+t){
+                rotate_y(90){
+                    difference(){
+                        cylinder(r=roc+t,h=w,center=true);
+                        cylinder(r=roc,h=999,center=true);
+                        translate_z(-99){
+                            cube([999,999,999]);
+                        }
+                        translate_z(-99){
+                            rotate(angle){
+                                cube([999,999,999]);
+                            }
+                        }
+                    }
+                }
             }
             sequential_hull(){
-                translate([0,0,roc+t]) rotate([0,90,0]) rotate(angle) translate([0,roc+t/2,0]) cylinder(r=t/2,h=w,center=true);
-                translate([0,sample.y,sample.z+t/2]) rotate([0,90,0]) cylinder(r=t/2,h=w,center=true);
-                translate([0,sample.y+t,sample.z+t]) rotate([0,90,0]) cylinder(r=t/2,h=w,center=true);
+                translate_z(roc+t){
+                    rotate_y(90){
+                        rotate(angle){
+                            translate_y(roc+t/2){
+                                cylinder(r=t/2,h=w,center=true);
+                            }
+                        }
+                    }
+                }
+                translate([0,clamp_point.y,clamp_point.z+t/2]){
+                    rotate_y(90){
+                        cylinder(r=t/2,h=w,center=true);
+                    }
+                }
+                translate([0,clamp_point.y+t,clamp_point.z+t]){
+                    rotate_y(90){
+                        cylinder(r=t/2,h=w,center=true);
+                    }
+                }
             }
 
         }
@@ -53,16 +77,18 @@ module sample_clip(sample,t=2.5,w=6,roc=-1,slope=30){
     }
 }
 
-
+// TODO make these an accesory
 //this is for mini culture plates, 39mm outer diameter and 12.4mm high
 //sample_clip([0,19/2+3,12.4-1.5],slope=7.5); //mini culture dish
 
-//for a standard microscope slide, use [0,20,0] to clamp from both holes next to one leg
-for(a=[0,180]) rotate([0,-90,a]) translate([7/2,-10,-7+1])
-sample_clip([0,20,-1], w=7, roc=7); //microscope slide
-/*
-translate([10,0,0]) sample_clip([0,20,0]);
-translate([20,0,0]) sample_clip([0,20,10]);
-translate([30,0,0]) sample_clip([0,10,3]);
-translate([40,0,0]) sample_clip([0,10,15]);
-*/
+module sample_clips_stl(){
+    for(a=[0,180]){
+        rotate([0,-90,a]){
+            translate([7/2,-10,-7+1]){
+                sample_clip([0,20,-1], w=7, radius_of_curvature=7);
+            }
+        }
+    }
+}
+
+sample_clips_stl();

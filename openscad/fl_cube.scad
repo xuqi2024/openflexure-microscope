@@ -22,8 +22,8 @@
 ******************************************************************/
 
 use <./libs/utilities.scad>
-include <./libs/microscope_parameters.scad> // NB this defines "camera" and "optics"
-
+use <./libs/microscope_parameters.scad>
+use <./libs/lib_optics.scad>
 
 module chamfer_bottom_edge(chamfer=0.3, h=0.5){
     difference(){
@@ -31,50 +31,80 @@ module chamfer_bottom_edge(chamfer=0.3, h=0.5){
 
         minkowski(){
             cylinder(r1=2*chamfer, r2=0, h=2*h, center=true);
-            linear_extrude(tiny()) difference(){
-                square(999, center=true);
-                projection(cut=true) translate([0,0,-tiny()]) hull() children();
+            linear_extrude(tiny()){
+                difference(){
+                    square(999, center=true);
+                    projection(cut=true){
+                        translate_z(-tiny()){
+                            hull(){
+                                children();
+                            }
+                        }
+                    }
+                }
             }
         }
     }
 }
 
-module fl_cube_outer(){
+module fl_cube_outer(roc, w, foot, bottom_t){
     // The outer body for fl_cube()
-    roc = 0.6;
-    w = fl_cube_w;
-    foot = roc*0.7;
-    bottom_t = roc*3;
-    $fn=8;
-    chamfer_bottom_edge() union(){
-        reflect([1,0,0]){
-            // outer "arms" that are responsible for the tight fit
-            sequential_hull(){
-                translate([w/2-2-roc*0.8/sqrt(2), w+2-roc*1.2, 0]) cylinder(r=roc, h=w);
-                translate([w/2-roc, w-roc/sqrt(2), 0]) cylinder(r=roc, h=w);
-                translate([w/2-roc, foot+bottom_t+roc, 0]) cylinder(r=roc, h=w);
-            }
-            translate([w/2-3*roc, foot+bottom_t+roc, 0]) difference(){
-                // the curved bits at the bottom
-                resize([0,(bottom_t+roc)*2,0]) cylinder(r=3*roc, h=w, $fn=24);
-                // cut out the inner radius
-                cylinder(r=roc, h=999, center=true);
-                // restrict it to a quarter-turn
-                mirror([1,0,0]) translate([-roc,0,-99]) cube(999);
-                mirror([1,0,0]) translate([0,-roc,-99]) cube(999);
-            }
-        }
-        // join the two arms together at the bottom
-        translate([0,foot+bottom_t/2, w/2]) cube([w - roc*3*2 + 2*tiny(), bottom_t, w], center=true);
 
-        // feet at the bottom (and also in the middle of the top part)
-        for(p = [[-w/2+roc*3, roc, roc+0.5],
-                 [w/2-roc*3, roc, roc+0.5],
-                 [0, roc, w-roc],
-                 [w/2-2-roc*0.3/sqrt(2), w+2-roc*1.2, w/2],
-                 [-(w/2-2-roc*0.3/sqrt(2)), w+2-roc*1.0, w/2]
-                ]){
-            translate(p) sphere(r=roc,$fn=8);
+    $fn=8;
+    chamfer_bottom_edge(){
+        union(){
+            reflect_x(){
+                // outer "arms" that are responsible for the tight fit
+                sequential_hull(){
+                    translate([w/2-2-roc*0.8/sqrt(2), w+2-roc*1.2, 0]){
+                        cylinder(r=roc, h=w);
+                    }
+                    translate([w/2-roc, w-roc/sqrt(2), 0]){
+                        cylinder(r=roc, h=w);
+                    }
+                    translate([w/2-roc, foot+bottom_t+roc, 0]){
+                        cylinder(r=roc, h=w);
+                    }
+                }
+                translate([w/2-3*roc, foot+bottom_t+roc, 0]){
+                    difference(){
+                        // the curved bits at the bottom
+                        resize([0,(bottom_t+roc)*2,0]){
+                            cylinder(r=3*roc, h=w, $fn=24);
+                        }
+                        // cut out the inner radius
+                        cylinder(r=roc, h=999, center=true);
+                        // restrict it to a quarter-turn
+                        mirror([1,0,0]){
+                            translate([-roc,0,-99]){
+                                cube(999);
+                            }
+                        }
+                        mirror([1,0,0]){
+                            translate([0,-roc,-99]){
+                                cube(999);
+                            }
+                        }
+                    }
+                }
+            }
+            // join the two arms together at the bottom
+            translate([0,foot+bottom_t/2, w/2]){
+                cube([w - roc*3*2 + 2*tiny(), bottom_t, w], center=true);
+            }
+
+            //TODO: Find what this means?
+            // feet at the bottom (and also in the middle of the top part)
+            points = [[-w/2+roc*3, roc, roc+0.5],
+                      [w/2-roc*3, roc, roc+0.5],
+                      [0, roc, w-roc],
+                      [w/2-2-roc*0.3/sqrt(2), w+2-roc*1.2, w/2],
+                      [-(w/2-2-roc*0.3/sqrt(2)), w+2-roc*1.0, w/2]];
+            for(p = points){
+                translate(p){
+                    sphere(r=roc,$fn=8);
+                }
+            }
         }
     }
 }
@@ -83,8 +113,8 @@ module fl_cube(){
     // Filter cube that slots into a suitably-modified optics module
     // This prints with the Y axis vertical - to save rotating all the
     // cylinders, it's written here as printed.
-    roc = 0.6;
-    w = fl_cube_w;
+    roc = fl_cube_roc();
+    w = fl_cube_w();
     foot = roc*0.7;
     bottom_t = roc*3;
     dichroic = [12,16,1.1];
@@ -96,36 +126,83 @@ module fl_cube(){
     $fn=8;
     difference(){
         union(){
-            fl_cube_outer();
+            fl_cube_outer(roc, w, foot, bottom_t);
 
             // mount for 45 degree dichroic, with bottom retaining clip
-            by = beamsplit.y + dichroic.y/2/sqrt(2) + 0.3; //coated tip of dichroic + wiggle room
-            bz = beamsplit.z - dichroic.y/2/sqrt(2) + 0.3; //coated tip of dichroic + wiggle room
-            bby = beamsplit.y + dichroic.y/2/sqrt(2) - dichroic.z/sqrt(2); //back tip of dichroic
-            bbz = beamsplit.z - dichroic.y/2/sqrt(2) - dichroic.z/sqrt(2); //back tip of dichroic
+            // y and z position of coated tip of dichroic + clearance room
+            by = beamsplit.y + dichroic.y/2/sqrt(2) + 0.3;
+            bz = beamsplit.z - dichroic.y/2/sqrt(2) + 0.3;
+            // y and z position of back tip of dichroic
+            bby = beamsplit.y + dichroic.y/2/sqrt(2) - dichroic.z/sqrt(2);
+            bbz = beamsplit.z - dichroic.y/2/sqrt(2) - dichroic.z/sqrt(2);
             sequential_hull(){
-                translate([-inner_w/2, bottom, 0]) cube([inner_w, tiny(), beamsplit.z + beamsplit.y - bottom - dichroic_t*sqrt(2)]); // tall back of triangle
-                translate([-inner_w/2, bby, 0]) cube([inner_w, tiny(), bbz]); //pointy end of triangle
-                translate([-inner_w/2+2, by, 0]) cube([inner_w-4, 1.5, bz]); //far end
-                translate([-inner_w/2+2, by, bz]) cube([inner_w-4, 1.5, tiny()]); //start of retaining clip
-                translate([-inner_w/2, by - 4, 4 + 2*dichroic_t]) cube([inner_w, 2, tiny()]); //end of retaining clip
-                translate([-inner_w/2, by - 5, 4 + 2*dichroic_t]) cube([inner_w, 2, 1]); //overhanging bit
+                // tall back of triangle
+                translate([-inner_w/2, bottom, 0]){
+                    cube([inner_w, tiny(), beamsplit.z + beamsplit.y - bottom - dichroic_t*sqrt(2)]);
+                }
+                //pointy end of triangle
+                translate([-inner_w/2, bby, 0]){
+                    cube([inner_w, tiny(), bbz]);
+                }
+                //far end
+                translate([-inner_w/2+2, by, 0]){
+                    cube([inner_w-4, 1.5, bz]);
+                }
+                translate([-inner_w/2+2, by, bz]){
+                    //start of retaining clip
+                    cube([inner_w-4, 1.5, tiny()]);
+                }
+                //end of retaining clip
+                translate([-inner_w/2, by - 4, 4 + 2*dichroic_t]){
+                    cube([inner_w, 2, tiny()]);
+                }
+                //overhanging bit
+                translate([-inner_w/2, by - 5, 4 + 2*dichroic_t]){
+                    cube([inner_w, 2, 1]);
+                }
             }
 
+            //TODO - this should use the static dovetail library
             // attachment for the excitation filter and LED
-            reflect([1,0,0]) translate([-w/2, bottom + 4, w]) sequential_hull(){
-                depth = w-bottom-4-roc;
-                translate([0,0,-roc]) cube([2*roc, depth, tiny()]);
-                translate([0.5,0,roc]) cube([2*roc, depth, 1.5]);
-                translate([0.5+2*roc + 1.5 - 0.2*(1+sqrt(2)),0,roc+1.5-0.2]) rotate([-90,0,0]) cylinder(r=0.2, h=depth);//cube([2*roc + 1.5, depth, d]);
+            reflect_x(){
+                translate([-w/2, bottom + 4, w]){
+                    sequential_hull(){
+                        depth = w-bottom-4-roc;
+                        translate_z(-roc){
+                            cube([2*roc, depth, tiny()]);
+                        }
+                        translate([0.5,0,roc]){
+                            cube([2*roc, depth, 1.5]);
+                        }
+                        translate([0.5+2*roc + 1.5 - 0.2*(1+sqrt(2)),0,roc+1.5-0.2]){
+                            rotate_x(-90){
+                                cylinder(r=0.2, h=depth);
+                            }
+                        }
+                    }
+                }
             }
         }
         // hole for the beam
-        translate(beamsplit) rotate([90,0,0]) cylinder(r=5,h=999, center=true, $fn=32);
+        translate(beamsplit){
+            rotate_x(90){
+                cylinder(r=5,h=999, center=true, $fn=32);
+            }
+        }
         // hole for the emission filter
-        translate([-emission_filter.x/2, bottom - roc*1.5, beamsplit.z-emission_filter.y/2]) cube([emission_filter.x, emission_filter.z, 999]);
+        translate([-emission_filter.x/2, bottom - roc*1.5, beamsplit.z-emission_filter.y/2]){
+            cube([emission_filter.x, emission_filter.z, 999]);
+        }
         // access hole for the dichroic
-        translate(beamsplit) rotate([-45,0,0]) translate([0,-dichroic.y/2,0]) scale([1.1,1,1.9]) cube(dichroic, center=true);
+        translate(beamsplit){
+            rotate_x(-45){
+                translate_y(-dichroic.y/2){
+                    scale([1.1,1,1.9]){
+                        cube(dichroic, center=true);
+                    }
+                }
+            }
+        }
     }
 }
 

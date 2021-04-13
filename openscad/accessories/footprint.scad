@@ -10,6 +10,6 @@ You might also want to look at footprint_pocket.scad and footprint_with_holes.sc
 
 */
 
-use <../microscope_stand.scad>
+use <../libs/lib_microscope_stand.scad>
 
 footprint();

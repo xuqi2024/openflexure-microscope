@@ -11,10 +11,11 @@ You might also want to look at footprint_pocket.scad and footprint.scad.
 
 */
 
-use <../microscope_stand.scad>
+use <../libs/lib_microscope_stand.scad>
 
 difference(){
     footprint();
-
-    projection() mounting_holes();
+    projection(){
+        mounting_holes();
+    }
 }

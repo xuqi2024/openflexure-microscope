@@ -9,7 +9,7 @@ This file licensed CERN OHL.
 The nuts and bolts are included from "binaries" generated
 using NopSCADlib. NopSCADlib is GPL licenses and in compliance
 with the GPL we provide our generation script generate_hardware.py
-under the GPL. NopSCADLib is available from 
+under the GPL. NopSCADLib is available from
 https://github.com/nophead/NopSCADlib
 the banch we use is:
 https://github.com/julianstirling/NopSCADlib/tree/no2_screw_hack
@@ -20,8 +20,8 @@ use <../../openscad/libs/utilities.scad>
 
 module double_reflect(){
     //Shortcut function to reflext in both the xy and yz plane. Used for creating the band.
-    reflect([1,0,0]){
-        reflect([0,1,0]){
+    reflect_x(){
+        reflect_y(){
             children();
         }
     }
@@ -29,14 +29,14 @@ module double_reflect(){
 
 module viton_band(){
     // Viton band before assembly
-    
+
     //id = inner diameter
     id = 30;
     band_d=2;
     $fn=32;
     color("gray", 1){
         rotate_extrude(angle=360, convexity=2){
-            translate([(id+band_d)/2, 0, 0]){
+            translate_x((id+band_d)/2){
                 circle(d=band_d);
             }
         }
@@ -49,7 +49,7 @@ module viton_band_in_situ_vertical(h=25, foot_z=-11, tool_kink=false){
     band_d=2;
     $fn=32;
     color("gray", 1){
-        reflect([1,0,0]){
+        reflect_x(){
             translate([7, 0, h - 3.5]){
                 rotate([90,0,90]){
                     rotate_extrude(angle=180, convexity=2){
@@ -67,14 +67,24 @@ module viton_band_in_situ_vertical(h=25, foot_z=-11, tool_kink=false){
             // Anoyingly cannot do the if inside the squential hull
             if (tool_kink) {
                 sequential_hull(){
-                    translate(p1) cylinder(d=band_d,h=tiny());
-                    translate(p2) cylinder(d=band_d,h=tiny());
-                    translate(p3) cylinder(d=band_d,h=tiny());
+                    translate(p1){
+                        cylinder(d=band_d,h=tiny());
+                    }
+                    translate(p2){
+                        cylinder(d=band_d,h=tiny());
+                    }
+                    translate(p3){
+                        cylinder(d=band_d,h=tiny());
+                    }
                 }
             } else {
                 sequential_hull(){
-                    translate(p1) cylinder(d=band_d,h=tiny());
-                    translate(p3) cylinder(d=band_d,h=tiny());
+                    translate(p1){
+                        cylinder(d=band_d,h=tiny());
+                    }
+                    translate(p3){
+                        cylinder(d=band_d,h=tiny());
+                    }
                 }
             }
         }
@@ -95,15 +105,21 @@ module viton_band_in_situ_vertical(h=25, foot_z=-11, tool_kink=false){
 }
 
 module m3_hex_x25(){
-    color("Silver")import("m3_hex_x25.stl");
+    color("Silver"){
+        import("m3_hex_x25.stl");
+    }
 }
 
 module m4_button_x6(){
-    color("Silver")import("m4_button_x6.stl");
+    color("Silver"){
+        import("m4_button_x6.stl");
+    }
 }
 
 module m3_washer(){
-    color("Silver")import("m3_washer.stl");
+    color("Silver"){
+        import("m3_washer.stl");
+    }
 }
 
 module m3_nut(brass=false, center=false){
@@ -117,27 +133,39 @@ module m3_nut(brass=false, center=false){
 }
 
 module m3_cap_x10(){
-    color("Silver")import("m3_cap_x10.stl");
+    color("Silver"){
+        import("m3_cap_x10.stl");
+    }
 }
 
 module m3_cap_x8(){
-    color("Silver")import("m3_cap_x8.stl");
+    color("Silver"){
+        import("m3_cap_x8.stl");
+    }
 }
 
 module m3_cap_x6(){
-    color("Silver")import("m3_cap_x6.stl");
+    color("Silver"){
+        import("m3_cap_x6.stl");
+    }
 }
 
 module m2_cap_x6(){
-    color("Silver")import("m2_cap_x6.stl");
+    color("Silver"){
+        import("m2_cap_x6.stl");
+    }
 }
 
 module m2_5_cap_x6(){
-    color("Silver")import("m2_5_cap_x6.stl");
+    color("Silver"){
+        import("m2_5_cap_x6.stl");
+    }
 }
 
 module no2_x6_5_selftap(){
-    color("Silver")import("no2_x6_5_selftap.stl");
+    color("Silver"){
+        import("no2_x6_5_selftap.stl");
+    }
 }
 
 

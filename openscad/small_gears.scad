@@ -16,4 +16,13 @@
 use <./libs/gears.scad>
 use <./libs/utilities.scad>
 
-repeat([0,small_gear_spacing(),0],3,center=true) small_gear();
+printable_small_gears();
+
+module printable_small_gears(){
+    // Calculate the spacing from the gear pitch radius.
+    // Add 4mm of clearance
+    spacing = 2*small_gear_pitch_radius() + 4;
+    repeat([0, spacing, 0], 3, center=true){
+        small_gear();
+    }
+}

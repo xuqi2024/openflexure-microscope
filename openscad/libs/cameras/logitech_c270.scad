@@ -19,19 +19,21 @@
 
 
 use <../utilities.scad>
-
-
+use <../libdict.scad>
 
 $fn=48;
 
+function c270_camera_dict() = [["mount_height", 4.5],
+                               ["sensor_height", 0.2]];//Height of the sensor above the PCB
 
-function c270_camera_mount_height() = 4.5;
-bottom = c270_camera_mount_height() * -1;
-function c270_camera_sensor_height() = 0.2; //Height of the sensor above the PCB
 
 module mounting_hole(){
-    translate([0,0,-5]) cylinder(r=0.8*1.2,h=999,$fn=12);
-    translate([0,0,-0.5]) cylinder(r1=0.8*1.2,h=1,r2=0.8*1.2+1,$fn=12);
+    translate_z(-5){
+        cylinder(r=0.8*1.2,h=999,$fn=12);
+    }
+    translate_z(-0.5){
+        cylinder(r1=0.8*1.2,h=1,r2=0.8*1.2+1,$fn=12);
+    }
 }
 
 module C270(beam_r=5, beam_h=6){
@@ -43,35 +45,66 @@ module C270(beam_r=5, beam_h=6){
         //beam clearance
         hull(){
             cube([8,8,6],center=true);
-            translate([0,0,-beam_h]) cylinder(r=beam_r,h=2*tiny(),center=true);
+            translate_z(-beam_h){
+                cylinder(r=beam_r,h=2*tiny(),center=true);
+            }
         }
 
         //mounting holes
-        reflect([1,0,0]) translate([mounting_hole_x,0,0]) mounting_hole();
-
-        //clearance for PCB
-        translate([0,0,0]){
-            hull(){
-                translate([-10/2,-13.5,0]) cube([10,tiny(),8]);
-                translate([-21.5/2,-4,0]) cube([21.5,41,8]);
-                translate([-10/2,45,0]) cube([10,tiny(),8]);
+        reflect_x(){
+            translate_x(mounting_hole_x){
+                mounting_hole();
             }
-            reflect([0,1,0]) hull(){
-                translate([-4.5,6,-1.5]) cube([9,7.5,8]);
-                translate([-5.5,6,-1.5]) cube([11,6.5,8]);
-            }
-            difference(){
-                hull(){
-                    translate([0,22.5,0+4]) cube([20.5,28,15],center=true);
-                    translate([0,34,0+4]) cube([10,9.5*2,15],center=true);
-                }
-                translate([-5,39.5,-999]) mirror([1,0,0]) cube([999,999,999]);
-            }
-            translate([-6,42.3,0]) mounting_hole();
         }
 
+        //clearance for PCB
+        hull(){
+            translate([-10/2,-13.5,0]){
+                cube([10,tiny(),8]);
+                }
+            translate([-21.5/2,-4,0]){
+                cube([21.5,41,8]);
+                }
+            translate([-10/2,45,0]){
+                cube([10,tiny(),8]);
+                }
+        }
+        reflect_y(){
+            hull(){
+                translate([-4.5,6,-1.5]){
+                    cube([9,7.5,8]);
+                }
+                translate([-5.5,6,-1.5]){
+                    cube([11,6.5,8]);
+                }
+            }
+        }
+        difference(){
+            hull(){
+                translate([0,22.5,0+4]){
+                    cube([20.5,28,15],center=true);
+                }
+                translate([0,34,0+4]){
+                    cube([10,9.5*2,15],center=true);
+                }
+            }
+            translate([-5,39.5,-999]){
+                mirror([1,0,0]){
+                    cube([999,999,999]);
+                }
+            }
+        }
+        translate([-6,42.3,0]){
+            mounting_hole();
+        }
+
+
         //exit for cable
-        translate([4,20,0]) rotate([-90,0,0]) cylinder(r=3,h=99);
+        translate([4,20,0]){
+            rotate_x(-90){
+                cylinder(r=3,h=99);
+            }
+        }
     }
 }
 
@@ -81,9 +114,16 @@ module c270_camera_mount(){
     // hull-ed onto the lens assembly.
     h = 58;
     w = 25;
-    rotate(-45) difference(){
-        translate([-w/2, -13, bottom]) cube([w, h, c270_camera_mount_height()]);
-        translate([0,0,bottom]) C270();
+
+    mount_height = key_lookup("mount_height", c270_camera_dict());
+    rotate(-45){
+        difference(){
+            translate([-w/2, -13, -mount_height]){
+                cube([w, h, mount_height]);
+            }
+            translate_z(-mount_height){
+                C270();
+            }
+        }
     }
 }
-c270_camera_mount();

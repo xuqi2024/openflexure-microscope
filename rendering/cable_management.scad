@@ -1,13 +1,13 @@
 
 
 
-
+use <../openscad/libs/microscope_parameters.scad>
 use <../openscad/libs/utilities.scad>
 use <../openscad/libs/gears.scad>
 use <../openscad/libs/wall.scad>
 use <../openscad/libs/main_body_transforms.scad>
 use <../openscad/libs/z_axis.scad>
-use <../openscad/main_body.scad>
+use <../openscad/libs/main_body_structure.scad>
 use <../openscad/cable_tidies.scad>
 
 use <librender/assembly_parameters.scad>
@@ -30,22 +30,22 @@ module rendered(){
     z_connector_pos = create_placement_dict([-27,3,-86], [0,0,-15]);
     z_cable_verticies = [[0,-10,3],[-27,0,3]];
 
-    reflect([1,0,0]){
+    reflect_x(){
         coloured_render("DodgerBlue"){
-            translate([0, 0, 32.5]){
+            translate_z(32.5){
                 y_actuator_frame(params){
                     large_gear();
                 }
             }
         }
 
-        
+
         y_actuator_frame(params){
             motor28BYJ48(y_motor_pos, y_connector_pos, y_cable_verticies);
         }
 
         coloured_render("DodgerBlue"){
-            translate([0,0,side_housing_h(params)]){
+            translate_z(side_housing_h(params)){
                 side_cable_tidy(params);
             }
         }

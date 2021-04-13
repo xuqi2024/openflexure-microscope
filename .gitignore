@@ -5,6 +5,10 @@
 *.g
 *.gcode
 
+# Ignore SCA2D output files
+*.sca2d
+gl-code-quality-report.json
+
 # Ignore VIM swap files
 *.swp
 

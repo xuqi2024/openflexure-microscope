@@ -33,6 +33,28 @@ scad-lib-tests:
       - merge_requests
       - web
 
+# Code quality runs SCA2D to do static analysis of the .scad code 
+code_quality:
+    stage: test
+    image: python:3.7
+    allow_failure: true
+    script:
+      - pip install sca2d
+      - sca2d --colour --gitlab-report openscad/
+    artifacts:
+        reports:
+            codequality:
+              - gl-code-quality-report.json
+        expire_in: 1 week
+    # Note this runs more often than others, this is to make sure that the result
+    # both the head and base of merge requests have code quality reports to allow the
+    # MR quality changes to display
+    only:
+      - tags
+      - merge_requests
+      - web
+      - branches
+
 # Build STL files
 build:
     extends: .scad-job

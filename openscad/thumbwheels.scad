@@ -3,4 +3,6 @@
 use <./libs/gears.scad>
 use <./libs/utilities.scad>
 
-repeat([0,thumbwheel_spacing(),0],3,center=true) thumbwheel();
+repeat([0, 44, 0], 3, center=true){
+    thumbwheel();
+}

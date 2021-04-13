@@ -36,7 +36,7 @@ module cable_tidy_body(h, curve_both=false){
                 cylinder(d=8, h=h);
             }
         }
-        cable_tidy_body_back(h, curve_both); 
+        cable_tidy_body_back(h, curve_both);
     }
 }
 
@@ -56,13 +56,13 @@ module cable_tidy_body_cutouts(h, front=false){
             translate([-10,-12,1]){
                 cube([20,6.1,h-3]);
             }
-            rotate([0,0,-10]){
+            rotate_z(-10){
                 translate([-20,-7,1]){
                     cube([11,5.1,h-3]);
                 }
             }
         }
-        rotate([0,0,-10]){
+        rotate_z(-10){
             translate([-20,-7,-1]){
                 cube([11,5.1,h-1]);
             }
@@ -72,13 +72,13 @@ module cable_tidy_body_cutouts(h, front=false){
         translate([-28+8,-12,1]){
             cube([28,6.1,h-3]);
         }
-        rotate([0,0,-148]){
+        rotate_z(-148){
             translate([0,-5.1,-1]){
                 cube([25,5.1,h-1]);
             }
         }
     }
-    
+
     for(x_tr = [-.5, .5]*motor_screw_separation()){
         translate([x_tr,12,0]){
             cylinder(d=4.5, h=h, center=true);
@@ -126,12 +126,16 @@ module cable_tidies(params){
     z_cable_tidy_frame_undo(params, z_extra=motor_bracket_h()){
         front_cable_tidy(params);
     }
-    reflect([1, 0, 0]){
-        translate([0, -20, 0]){
+    reflect_x(){
+        translate_y(-20){
             side_cable_tidy(params);
         }
     }
 }
 
-params = default_params();
-cable_tidies(params);
+
+module cable_tidies_stl(){
+    params = default_params();
+    cable_tidies(params);
+}
+cable_tidies_stl();

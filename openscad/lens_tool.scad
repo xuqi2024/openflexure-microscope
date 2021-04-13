@@ -3,6 +3,8 @@
 
 // (c) 2017 Richard Bowman, released under CERN open hardware license.
 
+use <./libs/utilities.scad>
+
 function lens_tool_height() = 20;
 
 module lens_tool(h=lens_tool_height()){
@@ -16,7 +18,9 @@ module lens_tool(h=lens_tool_height()){
         // hollow it out
         cylinder(d=8, h=999, center=true);
         // bevel the top
-        translate([0,0,h-4]) cylinder(d1=8, d2=10.5, h=4.01);
+        translate_z(h-4){
+            cylinder(d1=8, d2=10.5, h=4.01);
+        }
     }
 }
 
