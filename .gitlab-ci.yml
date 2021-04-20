@@ -74,8 +74,8 @@ build:
       expire_in: 1 week
       name: "${CI_PROJECT_NAME}-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}"
       paths:
-        - builds/*.stl
-        - builds/*.json
+        - docs/models/*.stl
+        - docs/models/*.json
 
     only:
       - tags
@@ -105,26 +105,20 @@ render:
 # Build docs- this is at a later stage so it has access to the models
 build-docs:
     stage: build-docs
-    image: ubuntu:18.04
-
     dependencies:
       - build
       - render
+    image: "python:3.7"
 
     before_script:
-      - apt-get update -qq
-      - apt-get -y -qq install software-properties-common
-      - apt-get -y -qq install git git-lfs
+      - python --version
+      - pip install gitbuilding
 
     script:
-      # Build documentation
-      # TODO: Implement git-building to render .md to .html
-      - git lfs install
-      - git config --local lfs.fetchexclude "/docs/original_images,/design_files"
-      - git lfs fetch
-      - git lfs checkout
-
-      - python3 ./build_docs.py
+      - cd docs
+      - gitbuilding build-html
+      - cd ..
+      - mv docs/_site builds
 
     artifacts:
       expire_in: 1 week
