@@ -364,7 +364,7 @@ module square_to_circle(r, h, layers=4, top_cylinder=0){
     }
 }
 
-module hole_from_bottom(r, h, base_w=-1, delta_z=0.5, big_bottom=true){
+module hole_from_bottom(r, h, base_w=-1, delta_z=0.5, layers=4, big_bottom=true){
     // This creates a shape that can be used to create a 3D printable
     // hole in a large bridge. Builds up in layer to avoid unprintable
     // cantilevered paths.
@@ -373,7 +373,7 @@ module hole_from_bottom(r, h, base_w=-1, delta_z=0.5, big_bottom=true){
     union(){
         cube(base,center=true);
         translate_z(base.z/2-tiny()){
-            square_to_circle(r, delta_z*4, 4, h-delta_z*5+tiny());
+            square_to_circle(r, delta_z*4, layers, h-delta_z*5+tiny());
         }
         if(big_bottom){
             mirror([0,0,1]){
