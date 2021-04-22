@@ -36,6 +36,8 @@ function picamera_2_camera_dict() = [["mount_height", 4.5],
 
 function picamera_2_bottom_z() = -key_lookup("mount_height", picamera_2_camera_dict());
 
+function picamera_2_hole_spacing() = 21;
+
 module picam2_flex_and_components(camera_width=8.5+1){
     // A 2D perimeter inside which the flex and components of the camera sit.
     // NB this should fit both v1 and v2 of the module
@@ -192,11 +194,11 @@ module picamera_2_camera_mount(screwhole=true, counterbore=false){
 
 module picamera_2_screwholes(){
     //chamfered screw holes for mounting
-    sx = 21/2; //position of screw holes
+    screw_x = picamera_2_hole_spacing()/2;
     rotate(45){
         translate_z(picamera_2_bottom_z()){
             reflect_x(){
-                translate_x(sx){
+                translate_x(screw_x){
                     rotate(60){
                         cylinder(r1=3.1, r2=1.1, h=5, $fn=3, center=true);
                         cylinder(r=1.1, h=20, $fn=3, center=true);
@@ -220,10 +222,11 @@ module picamera_2_bottom_mounting_posts(height=-1, radius=-1, outers=true, cutou
     // posts to mount to pi camera from below
     r = radius > 0 ? radius : 2;
     h = height > 0 ? height : 4;
+    screw_x = picamera_2_hole_spacing()/2;
     rotate(45){
         reflect_x(){
             for(y=[0,12.5]){
-                translate([21/2, y, 0]){
+                translate([screw_x, y, 0]){
                     difference(){
                         if(outers){
                             cylinder(r=r, h=h, $fn=12);
@@ -247,44 +250,53 @@ module picamera_2_bottom_mounting_posts(height=-1, radius=-1, outers=true, cutou
 module picamera_2_cover(){
     // A cover for the camera PCB, slips over the bottom of the camera
     // mount.  This version should be compatible with v1 and v2 of the board
-    b = 24;
-    w = 25;
     h = 3;
-    t = 1; //wall thickness
-    centre_y=2.4;
+    outer_size = [25, 21, h];
+    //wall thickness
+    t = 1;
+    //position of the outer edge in y
+    edge_y = 14.4;
+    screw_x = picamera_2_hole_spacing()/2;
+    box_tr = [-outer_size.x/2, edge_y-outer_size.y, 0];
+    //cutout for connector is loose in x and huge in x/z
+    connector_cutout = [21, 50, 50];
+    //cutout should start 18mm from the back edge of the housing
+    connector_y = edge_y - 18;
     difference(){
         union(){
             //bottom and sides
             difference(){
-                translate([-w/2,-b/2+centre_y,0]){
-                    cube([w, b, h]);
+                translate(box_tr){
+                    cube(outer_size);
                 }
                 // cut out centre to form walls on 3 sides
-                translate([-w/2+t,-b/2+centre_y-t,0.75]){
-                    cube([w-2*t, b, h]);
+                translate(box_tr + [t, -t, 0.75]){
+                    cube(outer_size - [2*t, 0, 0]);
                 }
-                //chamfer the connector edge for ease of access
-                translate([-999/2,-b/2+centre_y,h]){
-                    rotate_x(-135){
-                        cube([999,999,999]);
-                    }
+                // cut out for connector
+                translate_y(connector_y-connector_cutout.y/2){
+                    cube(connector_cutout, center=true);
                 }
             }
-            //mounting screws
+
+            //Bulge for counterbore. (Slightly elongated cylinder)
             reflect_x(){
-                translate_x(21/2){
-                    cylinder(r=3, h=h, $fn=16);
+                translate_x(screw_x){
+                    hull(){
+                        cylinder(r=3.2, h=h, $fn=16);
+                        translate_x(0.5){
+                            cylinder(r=3.2, h=h, $fn=16);
+                        }
+                    }
                 }
             }
         }
         //counterbore the mounting screws
         reflect_x(){
-            translate([21/2, 0, h-1]){
-                rotate(90){
-                    intersection(){
-                        cylinder(r=2, h=999, $fn=16, center=true);
-                        hole_from_bottom(r=1.1, h=999, base_w=999);
-                    }
+            translate([screw_x, 0, h-2]){
+                intersection(){
+                    cylinder(r=2.4, h=999, $fn=16, center=true);
+                    hole_from_bottom(r=1.3, h=999, base_w=999, layers=2);
                 }
             }
         }
