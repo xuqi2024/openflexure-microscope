@@ -45,7 +45,7 @@ module cutaway_optics(){
     rendered_optics_module(optics_module_pos(), cut=true);
 
     rendered_condenser(condenser_pos(), cut=true);
-    translate_z(condenser_z()-35.5){
+    translate_z(condenser_z()-36.5){
         condenser_lens();
     }
     translate_z(condenser_z()){

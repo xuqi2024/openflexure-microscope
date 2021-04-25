@@ -4,6 +4,7 @@ use <../openscad/libs/z_axis.scad>
 use <../openscad/lens_tool.scad>
 use <../openscad/libs/lib_optics.scad>
 use <../openscad/libs/optics_configurations.scad>
+
 use <librender/assembly_parameters.scad>
 use <librender/render_utils.scad>
 use <librender/render_settings.scad>
@@ -12,7 +13,7 @@ use <librender/electronics.scad>
 use <librender/hardware.scad>
 use <librender/rendered_components.scad>
 
-FRAME = 6;
+FRAME = 4;
 
 if (FRAME <= 3){
     assemble_om(FRAME);
@@ -105,15 +106,19 @@ module assemble_om(frame){
 }
 
 module camera_and_screws(camera_pos, explode=false){
-    ex_dist = 20;
-    screw_z = picamera2_size().z + (explode ? ex_dist : 0);
+    ex_dist = 13;
+    screw_z = picamera2_size().z + 2 + (explode ? 2*ex_dist : 0);
     holes = [for (i = [2, 3]) picamera2_holes()[i]];
     camera_pos_ex = translate_pos(camera_pos, [0, 0, -ex_dist]);
 
     render_pos = explode ? camera_pos_ex : camera_pos;
+    cover_pos = explode ? picamera_cover_pos(ex_dist=ex_dist) : picamera_cover_pos();
 
     place_part(render_pos){
         picamera2(lens = false);
+        place_part(cover_pos){
+            rendered_picamera_2_cover();
+        }
         for (hole_pos = holes){
             translate(hole_pos - [0, 0, screw_z]){
                 mirror([0,0,1]){
