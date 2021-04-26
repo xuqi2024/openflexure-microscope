@@ -65,17 +65,24 @@ function optics_module_pos_on_tool() = create_placement_dict([0, 0, 42] ,[0, 180
 function tube_lens_tool_pos() = create_placement_dict([0, 0, lens_tool_height()+3.6], [0, 180, 0]);
 function optics_module_mount_pos() = objective_mount_screw_pos(PARAMS);
 
+function picamera_cover_pos(ex_dist=0) =  let(
+    tr = [0, 0, -4-ex_dist],
+    rotation = [0, 0, -90]
+) create_placement_dict(tr, rotation);
+
 function optics_module_nut_pos() = create_placement_dict(optics_module_mount_pos() - [0, 3.25, 1], [90, 0, 0], [0, 0, 30]);
 function optics_module_screw_pos() = create_placement_dict(optics_module_mount_pos() - [0, -4, 1], [-90, 0, 0], [0, 0, 30]);
 
 function condenser_z() = illumination_dovetail_z(PARAMS) + 65;
 function condenser_angle() = key_lookup("condenser_angle", PARAMS);
-function condenser_pos() = create_placement_dict([0, 0, condenser_z()], [0, 0, 180], [180+condenser_angle(), 0, 0]);
+function condenser_pos() = create_placement_dict([0, 0, condenser_z()],
+                                                 [0, 0, 180],
+                                                 [180+condenser_angle(), 0, 0]);
 function condenser_pos_above_tool() = create_placement_dict([0, 0, 90],
                                                             [0, 0, -90],
                                                             [180+condenser_angle(), 0, 0]);
-function condenser_pos_on_tool() = create_placement_dict([0, 0, 57],
+function condenser_pos_on_tool() = create_placement_dict([0, 0, 56],
                                                          [0, 0, -90],
                                                          [180+condenser_angle(), 0, 0]);
 
-function condenser_lens_tool_pos() = create_placement_dict([0, 0, lens_tool_height()+1.51]);
+function condenser_lens_tool_pos() = create_placement_dict([0, 0, lens_tool_height()+0.01]);
