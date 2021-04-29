@@ -1,2 +1,0 @@
-# Motor driver case
-If you are controlling the microscope with motors, this "bucket" fits underneath the [microscope stand](./microscope_stand.md) and holds the [control electronics](../electronics/motor_driver.md) - usually a Sangaboard.

@@ -32,3 +32,5 @@ DefaultCategory: Part
 PageBOMTitle: "## For this section you will need:"
 #uncomment line below to disable fussy warnings
 #Fussy: False
+ForceOutput:
+  - models/*.stl
