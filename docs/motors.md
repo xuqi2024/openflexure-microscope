@@ -3,6 +3,8 @@
 {{BOM}}
 
 
+[M4x6mm button head screws]: parts/mechanical.yml#ButtonScrew_M4x6mm_SS
+
 ## Attach the small gears {pagestep}
 
 * Take a [stepper motor][28BYJ-48 micro geared stepper motors](parts/electronics/stepper_motors.md){qty:3, cat:electronic} and a [small gear][small gears](fromstep){qty:3, cat:printedpart}
@@ -22,7 +24,7 @@ Note that each motor has a cable tidy cap that is different. Which cap to use sh
 * Check that the small gear and the large gear are meshed correctly
 * Take the X [cable tidy cap][cable tidy caps](fromstep){qty:3, cat:printedpart, note: "- Each cap is a different shape"} and place it over the motor
 * Check that the motor cable is running through the cable tidy rather than pinched underneath.
-* Fasten the motor and cable tidy caps to the motor lugs with two [M4x6mm button head screws](parts/fixings/m4x6mm_buttonhead_screw.md){qty:6, cat:mech}
+* Fasten the motor and cable tidy caps to the motor lugs with two [M4x6mm button head screws]{qty:6, cat:mech}
 * Repeat for Y and Z actuators. For the Z actuator use the rectangular slot to the left of the actuator.
 
 

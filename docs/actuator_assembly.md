@@ -3,9 +3,13 @@
 There is one "actuator column" for each of the three axes of the OpenFlexure Microscope stage. These allow you to move the sample in X and Y, or focus the microscope by moving in Z. 
 
 
-
-
 {{BOM}}
+
+[M3x25mm stainless steel hex bolt]: parts/mechanical.yml#HexBolt_M3x25mm_SS
+[M3 brass nut]: parts/mechanical.yml#Nut_M3_Brass
+[M3 stainless steel washers]: parts/mechanical.yml#Washer_M3_SS
+[30mmx2mm Viton O-ring]: parts/mechanical.yml#O-Ring_30x2_Viton
+
 ![Parts required for actuator assembly](renders/actuator_assembly_parts.png)
 
 ## Insert the nut {pagestep}

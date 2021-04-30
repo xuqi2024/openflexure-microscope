@@ -7,6 +7,8 @@ The imaging optics for this version of the microscope consist of an RMS objectiv
 
 {{BOM}}
 
+[M3 nut]: parts/mechanical.yml#Nut_M3_SS
+[No 2 6.5mm self tapping screws]: parts/mechanical.yml#SelfTap_PoziPan_No2x6.5_SS
 
 ## Visually inspect the optics module {pagestep}
 
@@ -65,7 +67,7 @@ Take the [optics module][Optics module](fromstep){qty:1, cat:printedpart} and co
 ## Attach the mounting screw {pagestep}
 
 * Take an [M3 nut]{qty:1, cat:mech} and push it into the nut trap from the top
-* Take an [M3x8 cap head screws](parts/fixings/m3x8mm_caphead_screw.md){qty: 1, cat:mech} and screw it into the nut.
+* Take an [M3x8 cap head screws](parts/mechanical.yml#CapScrew_M3x8mm_SS){qty: 1, cat:mech} and screw it into the nut.
 * Only screw it in a couple of turns. About 5 mm of thread should still be visible
 
 ![Attach mounting screw](renders/optics_assembly_screw.png)

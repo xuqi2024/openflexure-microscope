@@ -5,7 +5,6 @@ If you have bought the plastic parts you can skip this step!
 {{BOM}}
 
 [PLA filament]: parts/materials/pla_filament.md "{cat:material}"
-[Black PLA filament]: parts/materials/pla_filament.md "{cat:material}"
 [RepRap-style printer]: parts/tools/rep-rap.md
 [utility knife]: parts/tools/utility-knife.md
 
