@@ -18,7 +18,7 @@ The assembly is broken up into several steps:
 1. [.](illumination.md){step}
 1. [.](motors.md){step}
 1. [.](attach_clips.md){step}
-1. [.](high_res_wiring.md){step}
+1. [.](wiring.md){step}
 
 
 **TODO: add reflection option**

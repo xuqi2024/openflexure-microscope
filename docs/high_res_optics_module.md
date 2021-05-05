@@ -10,6 +10,9 @@ The imaging optics for this version of the microscope consist of an RMS objectiv
 [M3 nut]: parts/mechanical.yml#Nut_M3_SS
 [No 2 6.5mm self tapping screws]: parts/mechanical.yml#SelfTap_PoziPan_No2x6.5_SS
 
+[Raspberry Pi Camera Module v2]: parts/electronics.yml#PiCamera_2
+[Raspberry Pi ribbon cable]: parts/electronics.yml#PiCamera_RibbonCable
+
 ## Visually inspect the optics module {pagestep}
 
 Take the [optics module][Optics module](fromstep){qty:1, cat:printedpart} and confirm that:
@@ -22,7 +25,7 @@ Take the [optics module][Optics module](fromstep){qty:1, cat:printedpart} and co
 ## Insert the tube lens {pagestep}
 
 * Place the [lens tool][Lens tool](fromstep){qty:1, cat:printedtool} on a steady surface
-* Place the [13mm achromatic lens]{qty:1, cat:optical} on the lens tool
+* Place the [12.7 mm achromatic lens](parts/optics.yml#TubeLens){qty:1, cat:optical} on the lens tool
 * Check the lens has the more curved side facing down
 * Take the optics module and place carefully over lens
 * Push down hard to seat the lens in the optics module
@@ -56,7 +59,7 @@ Take the [optics module][Optics module](fromstep){qty:1, cat:printedpart} and co
 
 ## Attach the objective {pagestep}
 
-* Take your [microscope objective]{qty:1, note:"- This page provides more information on choosing an objective.", cat:optical} and the partially assembled optics module
+* Take your [microscope objective](parts/optics.yml#Objective){qty:1, note:"- This page provides more information on choosing an objective.", cat:optical} and the partially assembled optics module
 * Place objective on top of optics module
 * **Check that the optics module is not tilted!**
 * Carefully and slowly screw the objective into the optics module, taking care to ensure it does not tilt.

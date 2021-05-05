@@ -4,10 +4,11 @@
 
 
 [M4x6mm button head screws]: parts/mechanical.yml#ButtonScrew_M4x6mm_SS
+[28BYJ-48 micro geared stepper motors]: parts/electronics.yml#28BYJ-48
 
 ## Attach the small gears {pagestep}
 
-* Take a [stepper motor][28BYJ-48 micro geared stepper motors](parts/electronics/stepper_motors.md){qty:3, cat:electronic} and a [small gear][small gears](fromstep){qty:3, cat:printedpart}
+* Take a [stepper motor][28BYJ-48 micro geared stepper motors]{qty:3, cat:electronic} and a [small gear][small gears](fromstep){qty:3, cat:printedpart}
 * Place the motor on the work surface with the shaft pointing up
 * Apply a small drop of [threadlock adhesive]{qty: 6 drops, cat:consumable} to each side of the motor shaft near the top
 * Align the flat sides of the motor shaft with the flat sides of the hole in the gear.
