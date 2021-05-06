@@ -1,12 +1,36 @@
-OverviewPage: index.md
-
+Authors: 
+    - Richard Bowman
+Affiliation: The Openflexure Community
+Email: "contact@openflexure.org"
+License: CERN-OHL-1.2
 CustomCategories:
     PrintedPart:
         Reuse: false
+        DisplayName: Printed Parts
     PrintedTool:
         Reuse: true
-
+        DisplayName: Printed Tools
+    SubAssembly:
+        Reuse: false
+        DisplayName: Sub-Assemblies
+    Material:
+        Reuse: false
+        DisplayName: Materials
+    Consumable:
+        Reuse: false
+        DisplayName: Consumables
+    Optical:
+        Reuse: false
+        DisplayName: Optical Components
+    Electronic:
+        Reuse: false
+        DisplayName: Electronic Components
+    Mech:
+        Reuse: false
+        DisplayName: Mechancial Components
 DefaultCategory: Part
-
+PageBOMTitle: "## For this section you will need:"
 #uncomment line below to disable fussy warnings
 #Fussy: False
+ForceOutput:
+  - models/*.stl

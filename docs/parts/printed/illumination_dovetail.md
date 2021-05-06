@@ -1,2 +1,0 @@
-# Illumination dovetail
-This is the vertical post, onto which the [condenser](./condenser.md) is mounted.  It can be printed from ``illumination_dovetail.stl`` and is used in all versions of the microscope.

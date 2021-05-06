@@ -1,2 +1,0 @@
-# Stepper Motors
-We use micro-geared 28BYJ-48 stepper motors to control the motion of the microscope's stage.  These can be obtained from Amazon, eBay, AliExpress and the like.  They are geared down by a factor of 64 and have 64 half-steps per revolution, giving 4096 steps per revolution.  We generally use the 5v versions of these motors.

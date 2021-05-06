@@ -35,7 +35,7 @@ This project is open-source and is released under the CERN open hardware license
 This project is open so that anyone can get involved, and you don't have to learn OpenSCAD to help (although that would be great).  Ways you can contribute include:
 
 * [Join our forum](https://openflexure.discourse.group/)
-* Get involved in [discussions on gitter] (we use this less than the forum)(https://gitter.im/OpenFlexure-Microscope/Lobby) [![Join the chat at https://gitter.im/OpenFlexure-Microscope/Lobby](https://badges.gitter.im/OpenFlexure-Microscope/Lobby.svg)](https://gitter.im/OpenFlexure-Microscope/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+* Get involved in [discussions on gitter](https://gitter.im/OpenFlexure-Microscope/Lobby) [![Join the chat at https://gitter.im/OpenFlexure-Microscope/Lobby](https://badges.gitter.im/OpenFlexure-Microscope/Lobby.svg)](https://gitter.im/OpenFlexure-Microscope/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) (We use this less than the forum)
 * Share your microscope images (of both microscopes and what you've seen with them) on social media - you can mention @openflexure on Twitter.
 * [Raise an issue on the helpdesk](https://gitlab.com/openflexure/openflexure-helpdesk/-/issues) if you spot something that's wrong, or something that could be improved.  Helpdesk issues can be about anything to do with the project including the instructions/documentation, the software, etc.
 * Suggest better text or images for the instructions.
@@ -49,8 +49,6 @@ If you want to play with the OpenSCAD files or change the documentation, you sho
 
 ### Development environment
 We mostly use VSCode to edit the OpenSCAD files, and then use OpenSCAD with the editor hidden and the "automatic reload and compile" option ticked.  This is much nicer for a big multi-file project like the microscope than relying on OpenSCAD's built-in editor, and also works nicely with version control.
-
-You can edit ``microscope_parameters.scad`` to change which options you build in the OpenSCAD window, but it's best not to commit changes to that file unless you need to change the default values.
 
 ### Automatic builds
 The build system is based on Python and Ninja, see [compiling](COMPILE.md) for more details.
@@ -84,16 +82,6 @@ With LFS installed Git will download the latest version of the images used in th
 git lfs fetch
 git lfs checkout
 ```
-
-**Download all files**
-
-To make Git always download *everything* in the repository run the following commands in your terminal:
-```
-git config --local lfs.fetchexclude ""
-git lfs fetch
-git lfs checkout
-```
-
 
 ## Related Repositories
 
