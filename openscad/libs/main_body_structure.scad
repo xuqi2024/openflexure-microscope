@@ -173,9 +173,8 @@ module m3_lug(pos, angle, holes=true){
                 }
                 //the lug hole
                 if (holes) {
-                    cylinder(d=3.5,h=50,center=true);
                     translate_z(3){
-                        cylinder(d=6.5, h=22);
+                        m3_cap_counterbore(10, 10);
                     }
                 }
             }
