@@ -13,7 +13,7 @@ use <./libdict.scad>
 //TODO re-implement this
 function stand_wall_thickness() = 2.5;
 function stand_base_thickness() = 2;
-function pi_board_dims() = [85, 56, 19];
+function microscope_depth() = 3;
 
 module foot_footprint(tilt=0){
     // the footprint of one foot/actuator column
@@ -128,7 +128,7 @@ module thick_bottom_section(params, h, offset_r, center=false){
 module stand_lugs(params, h, pi_stand_h){
     lug_body_h = 9;
     lug_h = 20;
-    lug_z = h-lug_h-3;
+    lug_z = h-lug_h-microscope_depth();
 
     hole_pos = base_mounting_holes(params);
     for (n = [0:len(hole_pos)-1]){
@@ -238,7 +238,7 @@ module microscope_stand(params, pi_stand_h){
     stand_lugs(params, h, pi_stand_h);
 
     pi_base_size = pi_stand_base_size();
-    extra_space = [1.5, 1.5, .8];
+    extra_space = [1, 1, .8];
     tr_for_extra_space = [-extra_space.x/2, -extra_space.y/2, 0];
     pi_space = [pi_base_size.x, pi_base_size.y, pi_stand_h];
     front_wall_space = [pi_base_size.x, pi_stand_front_width(), pi_stand_h];
@@ -247,7 +247,9 @@ module microscope_stand(params, pi_stand_h){
     
     front_wall_cutout_size = front_wall_space + extra_space + [99, 0, 0];
     difference(){
+
         microscope_stand_shell(params, h, pi_stand_h);
+
         pi_stand_frame_xy(params){
             translate(tr_for_extra_space){
                 cube(pi_cutout_size);
@@ -255,18 +257,58 @@ module microscope_stand(params, pi_stand_h){
                     cube(front_wall_cutout_size);
                 }
             }
-            
             //Cutout for the side connectors
             translate([5, -50, 2]){
-                cube([60, 100, 30]);
+                cube([60, 100, 25]);
             }
+            translate(pi_stand_side_screw_pos()){
+                rotate_x(90){
+                    m3_cap_counterbore(10, 10);
+                }
+            }
+        }
+        translate_z(h-microscope_depth()){
+            reflection_illuminator_cutout();
+        }
+    }
+    pi_stand_frame_xy(params){
+        stand_base_size = pi_stand_base_size();
+        stand_block_size = pi_stand_mount_block_size();
+        position = pi_stand_mount_block_pos() + [0, 1, 0];
+        side_len = stand_base_size.x-stand_block_size.x;
+        difference(){
+            union(){
+                translate(position){
+                    translate_x(-10){
+                        cube([10, stand_block_size.y-1, 10]);
+                    }
+                    translate_x(-side_len){
+                        cube([side_len, 2, 5]);
+                    }
+                }
+            }
+            translate(pi_stand_front_screw_pos()){
+                rotate_y(90){
+                    m3_cap_counterbore(10, 99);
+                }
+                hull(){
+                    for(z_tr = [0, 20]){
+                        translate([-10,0,z_tr]){
+                            rotate_y(90){
+                                nut(3,3);
+                            }
+                        }
+                    }
+                }
+            }
+
         }
     }
 }
 
 
 
-
+function pi_board_dims() = [85, 56, 19];
 function pi_stand_board_inset() = [3, 3, 0];
 function pi_stand_wall_t() = pi_stand_board_inset().x - 0.5;
 function pi_stand_thickness() = 2;
@@ -281,17 +323,40 @@ function pi_stand_front_pos() = let(
     x_tr = pi_stand_base_size().x - pi_stand_wall_t()
 ) [x_tr, 0, 0];
 
+
+function pi_stand_mount_block_size() = let(
+    usb_height = 17,
+    height = pi_stand_standoff_h() + usb_height,
+    width = pi_stand_front_width()-pi_stand_base_size().y
+) [10, width, height];
+
+function pi_stand_mount_block_pos() = let(
+    block_depth = pi_stand_wall_t()-pi_stand_mount_block_size().x
+) pi_stand_front_pos() + [block_depth, pi_stand_base_size().y, 0];
+
+function pi_stand_front_screw_pos() = let(
+    block_pos = pi_stand_mount_block_pos()
+) [block_pos.x+3, block_pos.y+6, 5];
+
+function pi_stand_side_screw_pos() = [10, -3, 32];
+
+function pi_stand_standoff_h() = 5.5;
+
 module pi_stand(h=50){
+    pi_stand_base();
+    pi_stand_walls(h);
+}
+
+module pi_stand_base(){
     hole_inset = [3.5, 3.5, 0];
     board_inset = pi_stand_board_inset();
-    standoff_h = 4.5;
+    standoff_h = pi_stand_standoff_h();
+    base_size = pi_stand_base_size();
 
     function pi_holes() = [[0, 0, 0]+hole_inset+board_inset,
                            [58, 0, 0]+hole_inset+board_inset,
                            [0, 49, 0]+hole_inset+board_inset,
                            [58, 49, 0]+hole_inset+board_inset];
-
-    base_size = pi_stand_base_size();
 
     difference(){
         union(){
@@ -301,21 +366,45 @@ module pi_stand(h=50){
                     cylinder(d=5.5, h=standoff_h, $fn=12);
                 }
             }
-            cube([base_size.x, pi_stand_wall_t(), h]);
-            translate(pi_stand_front_pos()){
-                cube([pi_stand_wall_t(), pi_stand_front_width(), h]);
-                translate([pi_stand_wall_t()-10, base_size.y]){
-                    cube([10, pi_stand_front_width()-base_size.y,  standoff_h+14]);
-                }
-            }
-
         }
         for (hole = pi_holes()){
             translate(hole){
                 cylinder(d=2.5, h=99, center=true, $fn=3);
             }
         }
-        translate(board_inset+ [0, 0, standoff_h+1]){
+    }
+}
+
+
+module pi_stand_walls(h){
+    board_inset = pi_stand_board_inset();
+    base_size = pi_stand_base_size();
+    standoff_h = pi_stand_standoff_h();
+
+    difference(){
+        union(){
+            cube([base_size.x, pi_stand_wall_t(), h]);
+            translate(pi_stand_front_pos()){
+                cube([pi_stand_wall_t(), pi_stand_front_width(), h]);
+            }
+            translate(pi_stand_mount_block_pos()){
+                cube(pi_stand_mount_block_size());
+            }
+        }
+
+        translate(pi_stand_front_screw_pos()){
+            rotate_y(90){
+                m3_cap_counterbore(10, 10);
+            }
+        }
+        translate(pi_stand_side_screw_pos()){
+            rotate_x(90){
+                m3_cap_counterbore(10, 10);
+            }
+        }
+        
+        //Cutouts for the pi connectors
+        translate(board_inset + [0, 0, standoff_h+1]){
             translate_y(45.75-17/2){
                 cube([200, 17, 14.5]);
             }
@@ -336,8 +425,8 @@ module pi_stand(h=50){
             }
         }
     }
-
 }
+
 
 module pi_side_connectors(){
 

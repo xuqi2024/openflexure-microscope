@@ -194,6 +194,10 @@ module reflection_illuminator_cutout(){
     // This is the widest cutout we can make at height 'reflection_cutout_height()'
     // without the bridge having a corner in it.
     hull() {
+        //cut below for stand
+        translate([-(bottom_cutout_w)/2, -49, -22]){
+            cube([bottom_cutout_w, 49, 1]);
+        }
         translate([-(bottom_cutout_w)/2, -49, -0.5]){
             cube([bottom_cutout_w, 49, 1]);
         }
