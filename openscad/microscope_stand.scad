@@ -17,10 +17,39 @@ use <./libs/lib_microscope_stand.scad>
 
 TALL_BUCKET_BASE = false;
 
-microscope_stand_stl(TALL_BUCKET_BASE);
+//microscope_stand_stl(TALL_BUCKET_BASE);
 
 module microscope_stand_stl(tall_bucket_base){
-    base_height = tall_bucket_base?45:30;
+    base_height = 42;
     params = default_params();
     microscope_stand(params, base_height);
+}
+
+rendered();
+//to_print();
+
+//TODO remove this befoe release
+module to_print(){
+    params = default_params();
+    pi_stand_h = 42;
+    microscope_stand(params, pi_stand_h);
+    //pi_stand(pi_stand_h);
+}
+
+//TODO remove this befoe release
+module rendered(){
+    params = default_params();
+    pi_stand_h = 42;
+    color("#505050"){
+        render(6){
+            microscope_stand(params, pi_stand_h);
+        }
+    }
+    color("Dodgerblue"){
+        render(6){
+            pi_stand_frame_xy(params){
+                pi_stand(pi_stand_h);
+            }
+        }
+    }
 }
