@@ -308,7 +308,7 @@ module microscope_stand(params, pi_stand_h){
 
 
 
-function pi_board_dims() = [85, 56, 19];
+function pi_board_dims() = [85, 56, 1.5];
 function pi_stand_board_inset() = [3, 3, 0];
 function pi_stand_wall_t() = pi_stand_board_inset().x - 0.5;
 function pi_stand_thickness() = 2;
@@ -338,7 +338,7 @@ function pi_stand_front_screw_pos() = let(
     block_pos = pi_stand_mount_block_pos()
 ) [block_pos.x+3, block_pos.y+6, 5];
 
-function pi_stand_side_screw_pos() = [10, -3, 35];
+function pi_stand_side_screw_pos() = [14, -3, 35];
 
 function pi_stand_block_hole_pos() = let(
     block_pos = pi_stand_mount_block_pos(),
@@ -354,17 +354,24 @@ module pi_stand(h=50){
     pi_stand_walls(h);
 }
 
-function pi_hole_pos() = let(
+function pi_hole_pos(inset_for_stand=false) = let(
     hole_inset = [3.5, 3.5, 0],
-    board_inset = pi_stand_board_inset(),
+    board_inset = inset_for_stand ?  pi_stand_board_inset() : [0, 0, 0],
     h1 = [0, 0, 0]+hole_inset+board_inset,
     h2 = [58, 0, 0]+hole_inset+board_inset,
     h3 = [0, 49, 0]+hole_inset+board_inset,
     h4 = [58, 49, 0]+hole_inset+board_inset
 ) [h1, h2, h3, h4];
 
-module pi_tap_holes(){
-    for (hole = pi_hole_pos()){
+module pi_tap_holes(connector_side=true, inside=true){
+    all_holes = pi_hole_pos(true);
+    connector_holes = connector_side ? [0, 1] : [];
+    inside_holes = inside ? [2, 3] : [];
+    //only create tap holes for selected holes
+    tap_holes = concat(connector_holes, inside_holes);
+    echo(tap_holes);
+    for (hole_num = tap_holes){
+        hole = all_holes[hole_num];
         translate(hole){
             cylinder(d=2.7, h=99, center=true, $fn=3);
         }
@@ -376,32 +383,34 @@ module pi_stand_base(){
 
     standoff_h = pi_stand_standoff_h();
     base_size = pi_stand_base_size();
-
+    hole_pos = pi_hole_pos(true);
     difference(){
         union(){
             cube(base_size);
-            for (hole = pi_hole_pos()){
+            for (hole = hole_pos){
                 translate(hole){
                     cylinder(d=5.5, h=standoff_h, $fn=12);
                 }
             }
+            for (hole = [hole_pos[0], hole_pos[1]]){
+                translate(hole + [0, 0, standoff_h]){
+                    sphere(d=2.6, $fn=10);
+                }
+            }
         }
-        pi_tap_holes();
+        pi_tap_holes(connector_side=false);
         translate_y(base_size.y/2){
             cube(25, center=true);
         }
     }
 }
 
-// TODO: split me
+
 module pi_stand_walls(h){
-    board_inset = pi_stand_board_inset();
+
     base_size = pi_stand_base_size();
-    standoff_h = pi_stand_standoff_h();
-    side_screw_pos = pi_stand_side_screw_pos();
     wall_t = pi_stand_wall_t();
-    nut_block_depth = 5;
-    nut_tr_pos = [side_screw_pos.x, wall_t+nut_block_depth/2 ,side_screw_pos.z];
+    
     difference(){
         union(){
             cube([base_size.x, wall_t, h]);
@@ -411,73 +420,50 @@ module pi_stand_walls(h){
             translate(pi_stand_mount_block_pos()){
                 cube(pi_stand_mount_block_size());
             }
-            translate(nut_tr_pos){
-                hull(){
-                    cube([8, nut_block_depth+tiny(), 6], center=true);
-                    translate([0, -nut_block_depth/2, -nut_block_depth]){
-                        cube([8, tiny(), 6], center=true);
-                    }
-                }
-            }
+            pi_stand_nut_trap();
+            sanga_lugs();
         }
 
-        hull(){
-            for(z_tr = [0, 20]){
-                translate(nut_tr_pos + [0, 1, z_tr]){
-                    rotate_z(-90){
-                        rotate_y(90){
-                            nut(3, 2.6);
-                        }
-                    }
-                }
-            }
-        }
+        pi_connector_holes();
+        sanga_connector_holes()
 
         translate(pi_stand_front_screw_pos()){
             rotate_y(90){
                 m3_cap_counterbore(10, 10);
             }
         }
-        translate(side_screw_pos){
+        translate(pi_stand_side_screw_pos()){
             rotate_x(90){
                 //Change to through holes
                 m3_cap_counterbore(1, 999);
             }
         }
-
         translate(pi_stand_block_hole_pos()){
             cylinder(d=2.7, h=99, $fn=3);
         }
+        
+    }
+}
 
 
-        //Cutouts for the pi connectors
-        translate(board_inset + [0, 0, standoff_h+1]){
-            translate_y(45.75-17/2){
-                cube([200, 17, 14.5]);
-            }
-            translate_y(27-15.5/2){
-                cube([200, 15.5, 17]);
-            }
-            translate_y(9-15.5/2){
-                cube([200, 15.5, 17]);
-            }
-
-            translate_y(-board_inset.y-tiny()){
-                pi_side_connectors();
-            }
-            hull(){
-                translate_y(-(board_inset.y-1.5)){
-                    pi_side_connectors();
-                }
-            }
-        }
-        translate(board_inset + [11.2-12/2, -100, sanga_stand_height()]){
-            cube([12, 200, 7.5]);
+module sanga_connector_holes(){
+    wall_t = pi_stand_wall_t();
+    board_inset = pi_stand_board_inset();
+    sanga_connector_height = sanga_stand_height()+tiny()+3;
+    sanga_connector_pos = [board_inset.x + 11.2, 0, sanga_connector_height];
+    translate(sanga_connector_pos){
+        translate_y((wall_t-10)/2){
+            cube([12, 10, 8], center=true);
+            cube([10, 200, 4.5], center=true);
         }
     }
-    side_holes = [pi_hole_pos()[0], pi_hole_pos()[1]];
-    difference(){
-        translate_z(sanga_stand_height()-5){
+}
+
+module sanga_lugs(){
+    side_holes = [pi_hole_pos(true)[0], pi_hole_pos(true)[1]];
+    
+    translate_z(sanga_stand_height()-5){
+        difference(){
             union(){
                 for (hole = side_holes){
                     hull(){
@@ -490,11 +476,66 @@ module pi_stand_walls(h){
                     }
                 }
             }
+            pi_tap_holes(inside=false);
         }
-        pi_tap_holes();
     }
 }
 
+module pi_stand_nut_trap(){
+    side_screw_pos = pi_stand_side_screw_pos();
+    wall_t = pi_stand_wall_t();
+    nut_block_depth = 5;
+    nut_tr_pos = [side_screw_pos.x, wall_t+nut_block_depth/2 ,side_screw_pos.z];
+    translate(nut_tr_pos){
+        difference(){
+            hull(){
+                cube([8, nut_block_depth+tiny(), 6], center=true);
+                translate([0, -nut_block_depth/2, -nut_block_depth]){
+                    cube([8, tiny(), 6], center=true);
+                }
+            }
+            hull(){
+                for(z_tr = [0, 20]){
+                    translate([0, 1, z_tr]){
+                        rotate_z(-90){
+                            rotate_y(90){
+                                nut(3, 2.6);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+        
+}
+
+module pi_connector_holes(){
+    board_inset = pi_stand_board_inset();
+    standoff_h = pi_stand_standoff_h();
+    translate(board_inset + [0, 0, standoff_h+1]){
+        translate_x(pi_stand_base_size().x-10){
+            translate_y(45.75-17/2){
+                cube([200, 17, 14.5]);
+            }
+            translate_y(27-15.5/2){
+                cube([200, 15.5, 17]);
+            }
+            translate_y(9-15.5/2){
+                cube([200, 15.5, 17]);
+            }
+        }
+
+        translate_y(-board_inset.y-tiny()){
+            pi_side_connectors();
+        }
+        hull(){
+            translate_y(-(board_inset.y-1.5)){
+                pi_side_connectors();
+            }
+        }
+    }
+}
 
 module pi_side_connectors(){
 

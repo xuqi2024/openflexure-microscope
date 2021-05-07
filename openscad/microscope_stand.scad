@@ -22,11 +22,11 @@ microscope_stand_stl(TALL_BUCKET_BASE);
 module microscope_stand_stl(tall_bucket_base){
     pi_stand_h = 42;
     params = default_params();
-    microscope_stand(params, pi_stand_h);
-    translate([110, -80, 0]){
-        rotate([0,0,60]){
+    //microscope_stand(params, pi_stand_h);
+    //translate([110, -80, 0]){
+        //rotate([0,0,60]){
             pi_stand(pi_stand_h);
-        }
-    }
+        //}
+    //}
 }
 
