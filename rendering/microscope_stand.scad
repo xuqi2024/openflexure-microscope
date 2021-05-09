@@ -2,8 +2,10 @@
 
 use <../openscad/libs/microscope_parameters.scad>
 use <../openscad/libs/lib_microscope_stand.scad>
+use <./librender/electronics.scad>
 
 microscope_stand_rendered();
+
 
 module microscope_stand_rendered(){
     params = default_params();
@@ -18,6 +20,11 @@ module microscope_stand_rendered(){
             pi_stand_frame_xy(params){
                 pi_stand(pi_stand_h);
             }
+        }
+    }
+    pi_stand_frame_xy(params){
+        translate(pi_stand_board_inset() + [0, 0, pi_stand_standoff_h()]){
+            rpi_4b();
         }
     }
 }

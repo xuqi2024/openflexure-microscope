@@ -1,6 +1,67 @@
 
 use <../../openscad/libs/utilities.scad>
+use <../../openscad/libs/lib_microscope_stand.scad>
 use <render_utils.scad>
+
+$fn = 12;
+
+module rpi_4b(){
+    size = pi_board_dims();
+    rpi_4b_board();
+    translate([2, size.y/2, size.z]){
+        csi_port(vertical=true);
+    }
+    translate([45, 11, size.z]){
+        csi_port(vertical=true);
+    }
+    translate([54, 0, size.z]){
+        audio_jack_socket();
+    }
+    translate([size.x, 9, size.z]){
+        rotate_z(90){
+            dual_usb_socket();
+        }
+    }
+    translate([size.x, 27, size.z]){
+        rotate_z(90){
+            dual_usb_socket(usb3=true);
+        }
+    }
+    translate([size.x, 46, size.z]){
+        rotate_z(90){
+            ethernet_socket();
+        }
+    }
+}
+
+module rpi_4b_board(){
+    size = pi_board_dims();
+    //Translate camera to centre in xy, and board top to z=0
+    coloured_render("green"){
+        difference(){
+            filleted_board(size, r=2);
+            for (hole = pi_hole_pos()){
+                translate(hole){
+                    cylinder(d=6, h=10, center=true);
+                }
+            }
+        }
+    }
+
+    coloured_render("darkkhaki"){
+        for (hole = pi_hole_pos()){
+            translate(hole){
+                difference(){
+                    cylinder(d=6, h=size.z);
+                    cylinder(d=2.8, h=99, center=true);
+                }
+            }
+        }
+    }
+
+}
+
+
 
 module picamera2(lens=true){
     $fn = 20;
@@ -75,16 +136,8 @@ module picamera2_front(){
 module picamera2_back(){
     translate_z(-1){
         mirror([0,0,1]){
-
-            color("DimGray"){
-                translate([-9, -21/2, 0]){
-                    cube([1, 21, 2.5]);
-                }
-            }
-            color("Tan"){
-                translate([-8, -19/2, 0]){
-                    cube([4, 19, 2.5]);
-                }
+            translate_x(-8){
+                csi_port();
             }
 
             //chips appox for visual similarity
@@ -116,6 +169,143 @@ module chip(x, y, w, h, t){
     }
 }
 
+module csi_port(vertical=false){
+    rotation = vertical ? 90 : 0;
+    z_tr = vertical ? 4 : 0;
+    translate_z(z_tr){
+        rotate_y(rotation){
+            color("DimGray"){
+                translate([-1, -21/2, 0]){
+                    cube([1, 21, 2.5]);
+                }
+            }
+            color("Tan"){
+                translate([0, -19/2, 0]){
+                    cube([4, 19, 2.5]);
+                }
+            }
+        }
+    }
+}
+
+module audio_jack_socket(){
+    color("DimGray"){
+        translate_z(3.5){
+            difference(){
+                union(){
+                    translate_y(6){
+                        cube([7, 12, 6], center=true);
+                    }
+                    
+                    rotate_x(90){
+                        cylinder(d=6, h=5, center=true);
+                    }
+                }
+                rotate_x(90){
+                    cylinder(d=3.5, h=99, center=true);
+                }
+            }
+        }
+    }
+}
+
+module dual_usb_socket(usb3=false){
+    usb_col = usb3 ? "DodgerBlue" : "DimGray";
+    usb_zs = [4.5, 12.5];
+    translate_y(-3){
+        color("Silver"){
+            difference(){
+                dual_usb_socket_outer();
+
+                for (z_tr = usb_zs){
+                    translate_z(z_tr){
+                        cube([12, 30, 5], center=true);
+                    }
+                }
+            }
+        }
+        color(usb_col){
+            for (z_tr = usb_zs){
+                translate([-11/2, .5, z_tr+.5]){
+                    cube([11, 15, 1.5]);
+                }
+            }
+        }
+    }
+}
+
+
+module dual_usb_socket_outer(){
+    translate([-13/2, 0, 1.5]){
+        cube([13, 17.5, 14]);
+    }
+    for (i = [-1, 1]){
+        translate([i*12.5/2 -.25, 9.5, -3]){
+            difference(){
+                cube([0.5, 8, 6]);
+                translate([-tiny(), 2, -2]){
+                    cube([1, 4, 6]);
+                }
+            }
+        }
+    }
+    translate([-15/2, 0, 2.5]){
+        cube([15, .5, 12]);
+    }
+    translate([-11/2, 0, .5]){
+        cube([11, .5, 16]);
+    }
+}
+
+module ethernet_socket(){
+    translate_y(-3){
+        color("Silver"){
+            difference(){
+                translate_x(-8){
+                    cube([16, 21, 13.3]);
+                }
+                translate_y(-tiny()){
+                    ethernet_socket_cutout(depth=13.5, enlarge=.5);
+                }
+            }
+        }
+        color("DimGray"){
+            difference(){
+                ethernet_socket_cutout(depth=13, enlarge=.5);
+                translate_y(-tiny()){
+                    ethernet_socket_cutout(depth=13);
+                }
+            }
+        }
+        color("Green"){
+            translate([-4.75, 0, 2.75]){
+                cube([3, 2*tiny(), 1.5], center=true);
+            }
+        }
+        color("Yellow"){
+            translate([4.75, 0, 2.75]){
+                cube([3, 2*tiny(), 1.5], center=true);
+            }
+        }
+    }
+}
+
+module ethernet_socket_cutout(depth, enlarge=0){
+    size = [12, depth, 7] + [enlarge, 0, enlarge];
+    nub1_size = [6.3, depth, 7] + [enlarge, 0, enlarge];
+    nub2_size = [4, depth, 7] + [enlarge, 0, enlarge];
+    translate([-size.x/2, 0, 3.7-enlarge/2]){
+        cube(size);
+    }
+    translate([-nub1_size.x/2, 0, 2.2-enlarge/2]){
+        cube(nub1_size);
+    }
+    translate([-nub2_size.x/2, 0, 1-enlarge/2]){
+        cube(nub2_size);
+    }
+}
+
+
 function picamera2_size() = [23.862, 25, 1];
 function picamera2_cam_pos_x() = 9.462;
 
@@ -129,7 +319,7 @@ function picamera2_holes() = let(
 module picamera2_board_blank(x, y, t, cam_pos_x){
     //Translate camera to centre in xy, and board top to z=0
     translate([x/2-cam_pos_x, 0 ,-t]){
-        filleted_board(x, y, t, r=2);
+        filleted_board([x, y, t], r=2, center=true);
     }
 }
 
@@ -453,22 +643,25 @@ module motor28BYJ48(motor_pos, connector_pos, wire_points=[]){
     }
 }
 
+//board only ever centres in xy
+module filleted_board(size, r=2, center=false){
 
-module filleted_board(x, y, t, r=2){
-    x_tr = x/2-r;
-    y_tr = y/2-r;
+    x_tr1 = center ? size.x/2-r : r;
+    x_tr2 = center ? -(size.x/2-r) : size.x-r;
+    y_tr1 = center ? size.y/2-r : r;
+    y_tr2 = center ? -(size.y/2-r) : size.y-r;
     hull(){
-        translate([x_tr, y_tr, 0]){
-            cylinder(r=r, h=t);
+        translate([x_tr1, y_tr1, 0]){
+            cylinder(r=r, h=size.z);
         }
-        translate([x_tr, -y_tr, 0]){
-            cylinder(r=r, h=t);
+        translate([x_tr1, y_tr2, 0]){
+            cylinder(r=r, h=size.z);
         }
-        translate([-x_tr, y_tr, 0]){
-            cylinder(r=r, h=t);
+        translate([x_tr2, y_tr1, 0]){
+            cylinder(r=r, h=size.z);
         }
-        translate([-x_tr, -y_tr, 0]){
-            cylinder(r=r, h=t);
+        translate([x_tr2, y_tr2, 0]){
+            cylinder(r=r, h=size.z);
         }
     }
 }
