@@ -369,7 +369,6 @@ module pi_tap_holes(connector_side=true, inside=true){
     inside_holes = inside ? [2, 3] : [];
     //only create tap holes for selected holes
     tap_holes = concat(connector_holes, inside_holes);
-    echo(tap_holes);
     for (hole_num = tap_holes){
         hole = all_holes[hole_num];
         translate(hole){
@@ -393,7 +392,7 @@ module pi_stand_base(){
                 }
             }
             for (hole = [hole_pos[0], hole_pos[1]]){
-                translate(hole + [0, 0, standoff_h]){
+                translate(hole + [0, 0, standoff_h-.8]){
                     sphere(d=2.6, $fn=10);
                 }
             }
@@ -425,11 +424,11 @@ module pi_stand_walls(h){
         }
 
         pi_connector_holes();
-        sanga_connector_holes()
+        sanga_connector_holes();
 
         translate(pi_stand_front_screw_pos()){
             rotate_y(90){
-                m3_cap_counterbore(10, 10);
+                m3_cap_counterbore(999, 999);
             }
         }
         translate(pi_stand_side_screw_pos()){
