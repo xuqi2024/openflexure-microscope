@@ -541,9 +541,6 @@ module pi_side_connectors(){
     translate_x(11.2-10/2){
         cube([10, 200, 4.5]);
     }
-    translate_x(11.2-10/2){
-        cube([10, 200, 4.5]);
-    }
     translate_x(26-8/2){
         cube([8, 200, 4.5]);
     }

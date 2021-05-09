@@ -6,13 +6,39 @@ use <render_utils.scad>
 $fn = 12;
 
 module rpi_4b(){
-    size = pi_board_dims();
     rpi_4b_board();
+    rpi_4b_ports();
+    rpi_4b_top_chips();
+}
+
+module rpi_4b_top_chips(){
+    translate_z(pi_board_dims().z){
+        chip(12, 42, 10.7, 13, 1, "Silver");
+        chip(29, 32.5, 15, 15, 1, "Silver");
+        chip(29, 32.5, 13, 13, 1.5, "Silver");
+        chip(44, 32.5, 10, 15, 1.5);
+        chip(60, 24, 8, 8, .5);
+        chip(59, 38, 6, 6, .5);
+        chip(68.5, 34, 3.5, 7, 2);
+    }
+}
+
+module rpi_4b_ports(){
+    size = pi_board_dims();
     translate([2, size.y/2, size.z]){
         csi_port(vertical=true);
     }
     translate([45, 11, size.z]){
         csi_port(vertical=true);
+    }
+    translate([11.2, 0, size.z]){
+        usb_c_socket();
+    }
+    translate([26, 0, size.z]){
+        mini_hdmi_socket();
+    }
+    translate([39.5, 0, size.z]){
+        mini_hdmi_socket();
     }
     translate([54, 0, size.z]){
         audio_jack_socket();
@@ -30,6 +56,21 @@ module rpi_4b(){
     translate([size.x, 46, size.z]){
         rotate_z(90){
             ethernet_socket();
+        }
+    }
+    translate([7, size.y-3, size.z]){
+        double_header_pins(20);
+    }
+    translate([61.5, 44, size.z]){
+        rotate_z(90){
+            double_header_pins(2);
+        }
+    }
+    mirror([0, 0, 1]){
+        translate_y(size.y/2){
+            rotate_z(-90){
+                micro_sd_slot();
+            }
         }
     }
 }
@@ -161,8 +202,8 @@ module picamera2_back(){
     }
 }
 
-module chip(x, y, w, h, t){
-    color("#404040"){
+module chip(x, y, w, h, t, colour="#404040"){
+    color(colour){
         translate([x-w/2, y-h/2, 0]){
             cube([w, h, t]);
         }
@@ -208,6 +249,98 @@ module audio_jack_socket(){
         }
     }
 }
+
+module mini_hdmi_socket(){
+    color("Silver"){
+        translate_y(-1.8){
+            difference(){
+                minkowski(){
+                    mini_hdmi_shape();
+                    rotate_x(-90){
+                        cylinder(r=.5, h=tiny());
+                    }
+                }
+                translate_y(-1){
+                    mini_hdmi_shape();
+                }
+                for(x_tr = [2.5, -2.5]){
+                    translate_x(x_tr){
+                        cube([1, 2, 99], center=true);
+                    }
+                }
+            }
+        }
+    }
+    color("DimGray"){
+        translate([-2, 0, 1]){
+            cube([4, 4 , 1]);
+        }
+        translate_y(4){
+            mini_hdmi_shape(1);
+        }
+    }
+}
+
+module mini_hdmi_shape(depth=8){
+    hull(){
+        for(x_tr = [2.5, -2.5]){
+            translate([x_tr, 0, 1]){
+                rotate_x(-90){
+                    cylinder(d=1, h=depth);
+                }
+            }
+        }
+        translate([-3, 0, 2.5]){
+            cube([6, depth, .5]);
+        }
+    }
+}
+
+module usb_c_socket(){
+    color("Silver"){
+        translate_y(-1.8){
+            difference(){
+                minkowski(){
+                    usb_c_shape();
+                    rotate_x(-90){
+                        cylinder(r=.5, h=tiny());
+                    }
+                }
+                translate_y(-1){
+                    usb_c_shape();
+                }
+                for(x_tr = [2.5, -2.5]){
+                    translate_x(x_tr){
+                        cube([1, 2, 99], center=true);
+                    }
+                }
+            }
+        }
+    }
+    color("DimGray"){
+        translate([-3, -1.5, 1]){
+            cube([6, 7 , 1]);
+        }
+        translate_y(4){
+            usb_c_shape(1.7);
+        }
+    }
+}
+
+module usb_c_shape(depth=7.3){
+    hull(){
+        for(x_tr = [3, -3]){
+            for(z_tr = [1, 2]){
+                translate([x_tr, 0, z_tr]){
+                    rotate_x(-90){
+                        cylinder(d=1, h=depth);
+                    }
+                }
+            }
+        }
+    }
+}
+
 
 module dual_usb_socket(usb3=false){
     usb_col = usb3 ? "DodgerBlue" : "DimGray";
@@ -305,6 +438,53 @@ module ethernet_socket_cutout(depth, enlarge=0){
     }
 }
 
+module micro_sd_slot(){
+    
+    color("Silver"){
+        translate_y(1.5){
+            difference(){
+                translate_x(-12/2){
+                    cube([12 , 11.3, 1.5]);
+                }
+                translate_z(.75){
+                    cube([11.5 , 20, 1], center=true);
+                }
+                translate([1, 0, 1.5]){
+                    cube([8 , 3, 2], center=true);
+                }
+            }
+        }
+    }
+}
+
+module double_header_pins(rows=20){
+    for (row_num = [0:rows-1]){
+        translate_x(row_num*2.54){
+            double_header_pin();
+        }
+    }
+}
+
+module double_header_pin(){
+    translate_x(2.54/2){
+        color("DimGray"){
+            hull(){
+                for (y_tr = [1.4, -1.4]){
+                    translate_y(y_tr){
+                        cylinder(d=2.54, h=2.3, $fn=6);
+                    }
+                }
+            }
+        }
+        color("Gold"){
+            for (y_tr = [2.54/2, -2.54/2]){
+                translate([-0.3, -0.3+y_tr, -3]){
+                    cube([0.6, 0.6, 11.5]);
+                }
+            }
+        }
+    }
+}
 
 function picamera2_size() = [23.862, 25, 1];
 function picamera2_cam_pos_x() = 9.462;
