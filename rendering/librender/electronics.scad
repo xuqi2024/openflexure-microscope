@@ -5,6 +5,130 @@ use <render_utils.scad>
 
 $fn = 12;
 
+function sangaboard_v0_4_dims() = [65, 57, 1.6];
+
+module sangaboard_v0_4(){
+    sangaboard_v0_4_board();
+    sangaboard_v0_4_connectors();
+    sangaboard_v0_4_chip();
+}
+
+module sangaboard_v0_4_chip(){
+    size = sangaboard_v0_4_dims();
+    translate_z(size.z){
+        chip(24, 30, 10, 10, 1);
+        chip(37, 17, 10, 4, 2);
+        chip(37, 28, 10, 4, 2);
+        chip(38.5, 44, 5, 4, 2);
+    }
+}
+
+module sangaboard_v0_4_connectors(){
+    size = sangaboard_v0_4_dims();
+
+    translate([54, 26.7, size.z]){
+        for (i = [-1:1]){
+            translate_y(i*8.7){
+                rotate_z(180){
+                    motor_jst_socket();
+                }
+            }
+        }
+    }
+
+    translate([11.2, 0, size.z]){
+        micro_usb_socket();
+    }
+
+    translate([0, 45, size.z]){
+        rotate_z(-90){
+            micro_usb_socket();
+        }
+    }
+
+    translate(pi_header_pin_xy() + [0, 0, size.z]){
+        translate_x(6*2.54){
+            double_header_pins(1);
+        }
+        translate_x(8*2.54){
+            double_header_pins(3);
+        }
+        translate_y(-8){
+            translate_x(3*2.54){
+                double_header_pins(2);
+            }
+            translate_x(6*2.54){
+                double_header_pins(2);
+            }
+            translate_x(9*2.54){
+                double_header_pins(1);
+            }
+        }
+    }
+
+    translate([46.5, size.y-2.7, size.z]){
+        rotate(-90){
+            double_header_pins(3);
+        }
+    }
+    translate([52.5, size.y-2.7, size.z]){
+        rotate(-90){
+            double_header_pins(6);
+        }
+    }
+    translate([size.x-14.8, 11.3, size.z]){
+        rotate(-90){
+            double_header_pins(4);
+        }
+    }
+    translate([size.x-6.5, 11.3, size.z]){
+        rotate(-90){
+            double_header_pins(2);
+        }
+    }
+    
+    mirror([0, 0, 1]){
+        translate(pi_header_pin_xy()){
+            female_double_headers(5);
+            translate_x(12*2.54){
+                female_double_headers(2);
+            }
+        }
+    }
+}
+
+module sangaboard_v0_4_board(){
+    size = sangaboard_v0_4_dims();
+    coloured_render("green"){
+        difference(){
+            linear_extrude(size.z){
+                //Fillet must be less that 1mm to not close pi-slot hole!
+                fillet_2d(r=.9){
+                    difference(){
+                        fillet_2d(r=2){
+                            square([size.x, size.y]);
+                        }
+                        translate([44, -1]){
+                            square([2, 21]);
+                        }
+                        translate_y(size.y/2){
+                            square([10, 17], center=true);
+                        }
+                    }
+                }
+            }
+            for (hole = pi_hole_pos()){
+                translate(hole){
+                    cylinder(d=2.7, h=10, center=true);
+                }
+            }
+        }
+    }
+}
+
+function pi_header_pin_xy() = [8.3, pi_board_dims().y-3, 0];
+
+
 module rpi_4b(){
     rpi_4b_board();
     rpi_4b_ports();
@@ -58,10 +182,10 @@ module rpi_4b_ports(){
             ethernet_socket();
         }
     }
-    translate([7, size.y-3, size.z]){
+    translate(pi_header_pin_xy() + [0, 0, size.z]){
         double_header_pins(20);
     }
-    translate([61.5, 44, size.z]){
+    translate([61.5, 45.3, size.z]){
         rotate_z(90){
             double_header_pins(2);
         }
@@ -309,11 +433,6 @@ module usb_c_socket(){
                 translate_y(-1){
                     usb_c_shape();
                 }
-                for(x_tr = [2.5, -2.5]){
-                    translate_x(x_tr){
-                        cube([1, 2, 99], center=true);
-                    }
-                }
             }
         }
     }
@@ -331,6 +450,49 @@ module usb_c_shape(depth=7.3){
     hull(){
         for(x_tr = [3, -3]){
             for(z_tr = [1, 2]){
+                translate([x_tr, 0, z_tr]){
+                    rotate_x(-90){
+                        cylinder(d=1, h=depth);
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+module micro_usb_socket(){
+    color("Silver"){
+        translate_y(-0.8){
+            difference(){
+                minkowski(){
+                    micro_usb_shape();
+                    rotate_x(-90){
+                        cylinder(r=.5, h=tiny());
+                    }
+                }
+                translate_y(-1){
+                    micro_usb_shape();
+                }
+            }
+        }
+    }
+    color("DimGray"){
+        translate([-3, 0, 1.5]){
+            cube([6, 4 , .5]);
+        }
+        translate_y(2){
+            micro_usb_shape(1.7);
+        }
+    }
+}
+
+module micro_usb_shape(depth=5.4){
+    hull(){
+        for(i = [-1, 1]){
+            for(j = [-1, 1]){
+                x_tr = 2.5*i + 0.5*i*j;
+                z_tr = 1.5 + 0.5*j;
                 translate([x_tr, 0, z_tr]){
                     rotate_x(-90){
                         cylinder(d=1, h=depth);
@@ -457,6 +619,36 @@ module micro_sd_slot(){
     }
 }
 
+module female_double_headers(rows=20){
+    for (row_num = [0:rows-1]){
+        translate_x(row_num*2.54){
+            female_double_header();
+        }
+    }
+}
+
+module female_double_header(){
+    color("DimGray"){
+        difference(){
+            translate_z(8.6/2){
+                cube([2.54, 2.54*2, 8.6], center=true);
+            }
+            for (y_tr = [2.54/2, -2.54/2]){
+                translate([0, y_tr, 6]){
+                    cube([1, 1, 10], center=true);
+                }
+            }
+        }
+    }
+    color("Silver"){
+        for (y_tr = [2.54/2, -2.54/2]){
+            translate_y(y_tr){
+                cube([0.6, 0.6, 6], center=true);
+            }
+        }
+    }
+}
+
 module double_header_pins(rows=20){
     for (row_num = [0:rows-1]){
         translate_x(row_num*2.54){
@@ -466,21 +658,19 @@ module double_header_pins(rows=20){
 }
 
 module double_header_pin(){
-    translate_x(2.54/2){
-        color("DimGray"){
-            hull(){
-                for (y_tr = [1.4, -1.4]){
-                    translate_y(y_tr){
-                        cylinder(d=2.54, h=2.3, $fn=6);
-                    }
+    color("DimGray"){
+        hull(){
+            for (y_tr = [1.4, -1.4]){
+                translate_y(y_tr){
+                    cylinder(d=2.54, h=2.3, $fn=6);
                 }
             }
         }
-        color("Gold"){
-            for (y_tr = [2.54/2, -2.54/2]){
-                translate([-0.3, -0.3+y_tr, -3]){
-                    cube([0.6, 0.6, 11.5]);
-                }
+    }
+    color("Gold"){
+        for (y_tr = [2.54/2, -2.54/2]){
+            translate([-0.3, -0.3+y_tr, -3]){
+                cube([0.6, 0.6, 11.5]);
             }
         }
     }
@@ -610,6 +800,38 @@ module motor28BYJ48_wo_wire(){
         }
     }
 }
+
+module motor_jst_socket(){
+    coloured_render("WhiteSmoke"){
+        difference(){
+            translate_z(7/2){
+                cube([15, 5.8, 7], center=true);
+            }
+            translate_z(7/2+2.5){
+                cube([13.4, 4.2, 7], center=true);
+            }
+            for( x_tr = [-0.5, 0.5]*9.5){
+                translate([x_tr, -2, 10/2+ 3]){
+                    cube([1.25, 5, 10], center=true);
+                }
+            }
+            translate([0, -2, 10/2+ 4]){
+                cube([16, 1, 10], center=true);
+            }
+        }
+    }
+    coloured_render("Silver"){
+        for (pin_num = [-2:2]){
+            x_tr = pin_num*2.54;
+            translate([x_tr, -1, 9.5/2-3]){
+                cube([0.6, 0.6, 9.5], center=true);
+            }
+        }
+    }
+}
+
+// z postion of connector when in socket
+function motor_jst_connector_z() = 2.5;
 
 module motor_jst_connector(){
     coloured_render("WhiteSmoke"){

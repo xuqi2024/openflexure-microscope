@@ -291,9 +291,11 @@ module microscope_stand(params, pi_stand_h){
                 rotate_y(90){
                     m3_cap_counterbore(10, 99);
                 }
+            }
+            translate(pi_stand_front_nut_trap_pos()){
                 hull(){
                     for(z_tr = [0, 20]){
-                        translate([-10,0,z_tr]){
+                        translate_z(z_tr){
                             rotate_y(90){
                                 nut(3, 2.6);
                             }
@@ -301,7 +303,6 @@ module microscope_stand(params, pi_stand_h){
                     }
                 }
             }
-
         }
     }
 }
@@ -338,7 +339,21 @@ function pi_stand_front_screw_pos() = let(
     block_pos = pi_stand_mount_block_pos()
 ) [block_pos.x+3, block_pos.y+6, 5];
 
+function pi_stand_front_screw_pos() = let(
+    block_pos = pi_stand_mount_block_pos()
+) [block_pos.x+3, block_pos.y+6, 5];
+
+function pi_stand_front_nut_trap_pos() = pi_stand_front_screw_pos() - [7, 0, 0];
+
 function pi_stand_side_screw_pos() = [14, -3, 35];
+
+function pi_stand_nut_block_depth() = 5;
+
+function pi_stand_side_nut_trap_pos() = let(
+    wall_t = pi_stand_wall_t(),
+    nut_block_depth = pi_stand_nut_block_depth(),
+    side_screw_pos = pi_stand_side_screw_pos()
+) [side_screw_pos.x, wall_t+nut_block_depth/2 ,side_screw_pos.z];
 
 function pi_stand_block_hole_pos() = let(
     block_pos = pi_stand_mount_block_pos(),
@@ -483,8 +498,8 @@ module sanga_lugs(){
 module pi_stand_nut_trap(){
     side_screw_pos = pi_stand_side_screw_pos();
     wall_t = pi_stand_wall_t();
-    nut_block_depth = 5;
-    nut_tr_pos = [side_screw_pos.x, wall_t+nut_block_depth/2 ,side_screw_pos.z];
+    nut_block_depth = pi_stand_nut_block_depth();
+    nut_tr_pos = pi_stand_side_nut_trap_pos();
     translate(nut_tr_pos){
         difference(){
             hull(){
@@ -495,7 +510,7 @@ module pi_stand_nut_trap(){
             }
             hull(){
                 for(z_tr = [0, 20]){
-                    translate([0, 1, z_tr]){
+                    translate([0, 0.1, z_tr]){
                         rotate_z(-90){
                             rotate_y(90){
                                 nut(3, 2.6);

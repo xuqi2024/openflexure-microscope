@@ -247,6 +247,7 @@ module sparse_matrix_transform(xx=1, yy=1, zz=1, xy=0, xz=0, yx=0, yz=0, zx=0, z
     }
 }
 
+//TODO: What does this do? Do we still want it?
 module support(size, height, baseheight=0, rotation=[0,0,0], supportangle=45, outline=false){
     //generate "support material" in the STL file for selective supporting of things
     module support_2d(){
@@ -580,4 +581,29 @@ module exterior_brim(r=4, h=0.2, brim_only=false){
     }
 }
 
+module external_fillet_2d(r=3)
+{
+    offset(r=r){
+        offset(r=-r){
+            children();
+        }
+    }
+}
 
+module internal_fillet_2d(r=3)
+{
+    offset(r=-r){
+        offset(r=r){
+            children();
+        }
+    }
+}
+
+module fillet_2d(r=3)
+{
+    external_fillet_2d(r=r){
+        internal_fillet_2d(r=r){
+            children();
+        }
+    }
+}
