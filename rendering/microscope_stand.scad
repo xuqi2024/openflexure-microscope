@@ -2,25 +2,23 @@
 use <../openscad/libs/utilities.scad>
 use <../openscad/libs/microscope_parameters.scad>
 use <../openscad/libs/lib_microscope_stand.scad>
+use <../openscad/nano_converter_plate.scad>
 use <./librender/electronics.scad>
-use <librender/hardware.scad>
+use <./librender/render_utils.scad>
+use <./librender/hardware.scad>
 
-microscope_stand_rendered();
+microscope_stand_rendered(true);
 
 
-module microscope_stand_rendered(){
+module microscope_stand_rendered(use_nano=false){
     params = default_params();
     pi_stand_h = 42;
-    color("#505050"){
-        render(6){
-            microscope_stand(params, pi_stand_h);
-        }
+    coloured_render("#505050"){
+        microscope_stand(params, pi_stand_h);
     }
-    color("Dodgerblue"){
-        render(6){
-            pi_stand_frame_xy(params){
-                pi_stand(pi_stand_h);
-            }
+    coloured_render("Dodgerblue"){
+        pi_stand_frame_xy(params){
+            pi_stand(pi_stand_h);
         }
     }
     pi_stand_frame_xy(params){
@@ -32,7 +30,14 @@ module microscope_stand_rendered(){
         }
 
         translate(sanga_pos){
-            sangaboard_v0_4();
+            if (use_nano){
+                coloured_render("Dodgerblue"){
+                    nano_converter_plate();
+                }
+            }
+            else{
+                sangaboard_v0_4();
+            }
         }
 
         translate_z(sangaboard_v0_4_dims().z){
@@ -41,6 +46,13 @@ module microscope_stand_rendered(){
             }
             translate(sanga_pos + pi_hole_pos()[1]){
                 no2_x6_5_selftap();
+            }
+            if (use_nano){
+                block_hole_pos = pi_stand_block_hole_pos();
+                plate_screw_pos = [block_hole_pos.x, block_hole_pos.y, sanga_pos.z];
+                translate(plate_screw_pos){
+                    no2_x6_5_selftap();
+                }
             }
         }
         translate_z(pi_board_dims().z){

@@ -109,14 +109,23 @@ module xz_slice(y=0){
     }
 }
 
+module no2_selftap_counterbore(bore_h=999, hole_h=999){
+    $fn = 14;
+    generic_counterbore(bore_d=5.6, bore_h=bore_h, hole_d=2.5, hole_h=hole_h);
+}
+
 // Counterbored through hole for an m3 cap screw counterbore is above z=0
 // through hole is below z=0
 module m3_cap_counterbore(bore_h=999, hole_h=999){
     $fn = 14;
+    generic_counterbore(bore_d=6.5, bore_h=bore_h, hole_d=3.5, hole_h=hole_h);
+}
+
+module generic_counterbore(bore_d, bore_h, hole_d, hole_h){
     translate_z(-hole_h){
-        cylinder(d=3.5, h=hole_h+tiny());
+        cylinder(d=hole_d, h=hole_h+tiny());
     }
-    cylinder(d=6.5, h=bore_h);
+    cylinder(d=bore_d, h=bore_h);
 }
 
 module nut(d,h=undef,center=false,fudge=1.18,shaft=false){
