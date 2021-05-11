@@ -29,6 +29,12 @@ There is one "actuator column" for each of the three axes of the OpenFlexure Mic
 * Push the screw through the hole at the top of the x actuator until it reaches the nut
 * Screw the bolt into the nut (If the nut turns hold it in place with the [nut tool](fromstep){qty:1, cat:printedtool})
 
+## Oil the lead screw {pagestep}
+
+* Lift the gear so you can see about 5mm of screw thread underneath
+* Add one drop of [light oil]{qty:3 drops, cat:consumable, Note: " - Don't skip this or you will damage the screws"} onto the screw thread
+
+![oil lead screw](renders/actuator_assembly_oil.png)
 
 ## Prepare the actuator {pagestep}
 
