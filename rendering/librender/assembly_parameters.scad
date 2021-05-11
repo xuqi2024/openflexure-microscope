@@ -51,6 +51,10 @@ function x_lead_assembly_placement_exp() = create_placement_dict(x_lead_assembly
 function y_lead_assembly_placement() = create_placement_dict(y_lead_assembly_pos());
 function z_lead_assembly_placement() = create_placement_dict(z_lead_assembly_pos(), z_actuator_rot());
 
+function x_lead_oil_placement() = create_placement_dict(x_lead_assembly_pos()+[2,2,2],
+                                                        [0, 0, 20],
+                                                        [0, -100, 0]);
+
 function x_foot_placement() = create_placement_dict(x_actuator_pos(PARAMS), [0, 0, -45]);
 function y_foot_placement() = create_placement_dict(y_actuator_pos(PARAMS), [0, 0, 45]);
 function z_foot_placement() = create_placement_dict(z_actuator_pos(PARAMS));

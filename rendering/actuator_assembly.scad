@@ -5,6 +5,7 @@ use <../openscad/libs/lib_actuator_assembly_tools.scad>
 use <../openscad/libs/main_body_structure.scad>
 use <../openscad/feet.scad>
 use <librender/hardware.scad>
+use <librender/tools.scad>
 use <librender/render_utils.scad>
 use <librender/assembly_parameters.scad>
 use <librender/render_settings.scad>
@@ -12,7 +13,7 @@ use <../openscad/libs/libdict.scad>
 
 
 
-FRAME=6;
+FRAME=5;
 if (FRAME==1){
     what_you_need();
 }else if (FRAME==2){
@@ -24,9 +25,15 @@ else if (FRAME==4){
     body_with_x_gear(exploded=false);
 }
 else if (FRAME==5){
-    body_with_assembled_actuators(x_only=true);
+    body_with_x_gear(exploded=false, lifted=true);
+    place_part(x_lead_oil_placement()){
+        oil_bottle();
+    }
 }
 else if (FRAME==6){
+    body_with_assembled_actuators(x_only=true);
+}
+else if (FRAME==7){
     body_with_assembled_actuators(x_only=false);
 }
 
@@ -176,9 +183,12 @@ module body_with_x_nut(exploded=false){
     x_nut(exploded=exploded);
 }
 
-module body_with_x_gear(exploded=false){
+module body_with_x_gear(exploded=false, lifted=false){
     body_with_x_nut();
-    x_lead_screw_assembly(exploded=exploded);
+    z_tr = lifted ? 5 : 0;
+    translate_z(z_tr){
+        x_lead_screw_assembly(exploded=exploded);
+    }
 }
 
 module body_with_assembled_actuators(x_only=false){

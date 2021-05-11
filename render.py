@@ -120,6 +120,7 @@ def generate_actuator_assembly(writer):
         Camera(position=[4, 35, 35], angle=[71, 0, 186], distance=330),
         Camera(position=[4, 35, 35], angle=[71, 0, 186], distance=330),
         Camera(position=[4, 35, 35], angle=[71, 0, 186], distance=330),
+        Camera(position=[20, 6, 35], angle=[82, 0, 166], distance=500),
         Camera(position=[4, 35, 35], angle=[71, 0, 186], distance=330),
         Camera(position=[4, 35, 35], angle=[71, 0, 186], distance=330),
     ]
@@ -129,6 +130,7 @@ def generate_actuator_assembly(writer):
         "actuator_assembly_nut.png",
         "actuator_assembly_gear.png",
         "actuator_assembly_gear2.png",
+        "actuator_assembly_oil.png",
         "actuator_assembly_x.png",
         "actuators_assembled.png",
     ]
