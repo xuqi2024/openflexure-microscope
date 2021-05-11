@@ -34,7 +34,7 @@ There is one "actuator column" for each of the three axes of the OpenFlexure Mic
 * Lift the gear so you can see about 5mm of screw thread underneath
 * Add one drop of [light oil]{qty:3 drops, cat:consumable, Note: " - Don't skip this or you will damage the screws"} onto the screw thread
 
-![oil lead screw](actuator_assembly_oil.png)
+![oil lead screw](renders/actuator_assembly_oil.png)
 
 ## Prepare the actuator {pagestep}
 
