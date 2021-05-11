@@ -109,6 +109,8 @@ def version_string(force_clean):
     """
     if not repo_is_clean():
         if force_clean:
+            print("Warning! Git repository is not clean:")
+            print(ret)
             exit(1)
         return "Custom"
 
@@ -135,8 +137,7 @@ def repo_is_clean():
     # With `--porcelain` the output of `git status` should be empty is repo is clean
     if len(ret) == 0:
         return True
-    print("Warning! Git repository is not clean:")
-    print(ret)
+
     return False
 
 def is_release(tag):
