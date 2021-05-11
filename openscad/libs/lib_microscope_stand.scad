@@ -420,7 +420,7 @@ module pi_stand_base(){
 }
 
 
-module pi_stand_walls(h){
+module pi_stand_walls(h, block_usbc=true){
 
     base_size = pi_stand_base_size();
     wall_t = pi_stand_wall_t();
@@ -456,6 +456,9 @@ module pi_stand_walls(h){
             cylinder(d=2.7, h=99, $fn=3);
         }
         
+    }
+    if (block_usbc){
+        usb_c_blocker();
     }
 }
 
@@ -570,4 +573,21 @@ module pi_side_connectors(){
         }
     }
 
+}
+
+module usb_c_blocker(){
+    standoff_h = pi_stand_standoff_h();
+    usb_c_x_pos = 11.2 + pi_stand_board_inset().x;
+    //Translate to bottom centre of hole
+    translate([usb_c_x_pos, 0, standoff_h+1]){
+        translate([-8/2, 0, .75]){
+            cube([8, 1, 3]);
+        }
+        translate([-12/2, 0, .75]){
+            cube([12, 1, 1]);
+        }
+        translate([-12/2, 0, 2.75]){
+            cube([12, 1, 1]);
+        }
+    }
 }
