@@ -462,12 +462,14 @@ module pi_stand_walls(h, block_usbc=true){
     }
 }
 
+function sanga_connector_x() = 11.2;
 
 module sanga_connector_holes(){
     wall_t = pi_stand_wall_t();
     board_inset = pi_stand_board_inset();
-    sanga_connector_height = sanga_stand_height()+tiny()+3;
-    sanga_connector_pos = [board_inset.x + 11.2, 0, sanga_connector_height];
+    connector_z = sanga_stand_height()+tiny()+3;
+    connector_x = sanga_connector_x() + board_inset.x;
+    sanga_connector_pos = [connector_x, 0, connector_z];
     translate(sanga_connector_pos){
         translate_y((wall_t-10)/2){
             cube([12, 10, 8], center=true);

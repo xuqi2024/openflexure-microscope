@@ -7,7 +7,7 @@ use <./librender/electronics.scad>
 use <./librender/render_utils.scad>
 use <./librender/hardware.scad>
 
-microscope_stand_rendered(true);
+microscope_stand_rendered();
 
 
 module microscope_stand_rendered(use_nano=false){
