@@ -8,7 +8,7 @@ from .util import merge_dicts
 class JsonGenerator:
     def __init__(self, build_dir, option_docs, standard_configurations, required_stls):
         self._all_select_stl_params = set()
-        self._stl_options = []
+        self._stl_rules = []
         self._build_dir = build_dir
         self._option_docs = option_docs
         self._standard_configurations = standard_configurations
@@ -48,81 +48,101 @@ class JsonGenerator:
                 self._all_select_stl_params = self._all_select_stl_params.union(
                     select.keys()
                 )
-                self._stl_options.append(
+                self._stl_rules.append(
                     {"stl": output, "input_file": input_file, "parameters": select}
                 )
 
-    def write(self):
-        # condense all used parameters down to sets of possible values
-        available_options = {}
-        for v in self._stl_options:
-            available_options = merge_dicts(available_options, v["parameters"])
+
+    @property
+    def all_options(self):
+        '''
+        Check all STL rules and create a dictionary of all parameters and their
+        possible values. Possible values are a list of strings or bool is the option
+        is boolean.
+        '''
+        # condense all parameter dictionaries down to a master list of parameters with
+        # sets of possible values
+        all_options = {}
+        for rule in self._stl_rules:
+            all_options = merge_dicts(all_options, rule["parameters"])
 
         # filter out parameters that are never changed and rename {True, False}
         # values to "bool"
-        changeable_options = {}
-        for name, options in available_options.items():
-            if (False in options) or (True in options):
-                changeable_options[name] = "bool"
+        filtered_options = {}
+        for parameter, values in all_options.items():
+            if (False in values) or (True in values):
+                filtered_options[parameter] = "bool"
             else:
-                changeable_options[name] = options
+                filtered_options[parameter] = list(values)
+        return filtered_options
 
-        # make sure we have some docs for these options
-        option_docs_dict = dict([(v["key"], v) for v in self._option_docs])
-        for k in changeable_options:
-            if k not in option_docs_dict:
+    def validate_option_docs(self, all_options):
+        """
+        Raises an error if the document STL options do not match the
+        build options
+        """
+        option_docs_dict = {v["key"]:v for v in self._option_docs}
+
+        for parameter in all_options:
+            if parameter not in option_docs_dict:
                 raise Exception(
-                    f"No documentation found for '{k}' option, please add it to 'option_docs'"
+                    f"No documentation found for '{parameter}' option, please add it to 'option_docs'"
                 )
-            docs = option_docs_dict[k]
-            if "description" not in docs:
+            parameter_docs = option_docs_dict[parameter]
+            if "description" not in parameter_docs:
                 raise Exception(
-                    f"No description found for '{k}' option, please add it to 'option_docs'"
+                    f"No description found for '{parameter}' option, please add it to 'option_docs'"
                 )
-            if "default" not in docs:
+            if "default" not in parameter_docs:
                 raise Exception(
-                    f"No default value found for '{k}' option, please add it to 'option_docs'"
+                    f"No default value found for '{parameter}' option, please add it to 'option_docs'"
                 )
-            if "options" in docs:
+            if "options" in parameter_docs:
                 # make a list of all documented options
-                opts = [o["key"] for o in docs["options"]]
+                documented_options = [o["key"] for o in parameter_docs["options"]]
+                parameter_options = all_options[parameter]
 
                 # make sure it's the same as the set of used options
-                if set(opts) != changeable_options[k]:
+                if set(documented_options) != set(parameter_options):
                     raise Exception(
                         "\nOptions compiled is not equal to documented options for:\n"
-                        f"key: {k}\n"
-                        f"documented option: {sorted(list(opts))}\n"
-                        f"STL options: {sorted(list(changeable_options[k]))}"
+                        f"key: {parameter}\n"
+                        f"documented option: {sorted(documented_options)}\n"
+                        f"STL options: {sorted(parameter_options)}"
                     )
 
-                # replace the set with the list so we take on the ordering from option_docs
-                changeable_options[k] = opts
+    def write(self):
+        """
+        Write STL options to file
+        """
 
-        self._stl_options.sort(key=operator.itemgetter("stl"))
+        all_options = self.all_options
+        # make sureall options are documented
+        self.validate_option_docs(all_options)
 
-        def encode_set(s):
+        self._stl_rules.sort(key=operator.itemgetter("stl"))
+
+        def encode_set(input_set):
             """ encode 'set' as sorted 'list' when converting to JSON """
-            if type(s) is set:
-                return sorted(list(s))
-            else:
-                raise TypeError("Expecting 'set' got {}".format(type(s)))
+            if isinstance(input_set, set):
+                return sorted(list(input_set))
+            raise TypeError("Expecting 'set' got {}".format(type(input_set)))
 
         # equivalent to mkdir -p, tries to make the folder but doesn't error if it's already there
         pathlib.Path(self._build_dir).mkdir(parents=True, exist_ok=True)
 
-        p = os.path.join(self._build_dir, "stl_options.json")
-        with open(p, "w") as f:
+        json_path = os.path.join(self._build_dir, "stl_options.json")
+        with open(json_path, "w") as file_obj:
             json.dump(
                 {
-                    "stls": self._stl_options,
-                    "options": changeable_options,
+                    "stls": self._stl_rules,
+                    "options": all_options,
                     "docs": self._option_docs,
                     "required": self._required_stls,
                     "presets": self._standard_configurations,
                 },
-                f,
+                file_obj,
                 indent=2,
                 default=encode_set,
             )
-        print(f"generated {p}")
+        print(f"generated {json_path}")

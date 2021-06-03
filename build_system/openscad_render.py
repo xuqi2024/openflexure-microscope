@@ -12,9 +12,17 @@ import sys
 import re
 from .util import get_openscad_exe
 
-executable = get_openscad_exe()
-ret = subprocess.run([executable, '--hardwarnings'] + sys.argv[1:], check=True, capture_output=True)
-std_err = ret.stderr.decode('UTF-8')
-print(std_err)
-if re.findall(r'^WARNING:', std_err, flags=re.MULTILINE) != []:
-    exit(1)
+def main(args):
+    """
+    Run openscad with hardwarnings and return any messages from std_error on std_out.
+    If OpenSCAD warnings are thrown exit the program with an error.
+    """
+    executable = get_openscad_exe()
+    ret = subprocess.run([executable, '--hardwarnings'] + args, check=True, capture_output=True)
+    std_err = ret.stderr.decode('UTF-8')
+    print(std_err)
+    if re.findall(r'^WARNING:', std_err, flags=re.MULTILINE) != []:
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
