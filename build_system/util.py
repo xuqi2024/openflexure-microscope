@@ -110,6 +110,7 @@ def version_string(force_clean):
     if not repo_is_clean():
         if force_clean:
             print("Warning! Git repository is not clean:")
+            ret = run_git(["status", "--porcelain"])
             print(ret)
             exit(1)
         return "Custom"

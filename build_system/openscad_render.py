@@ -10,7 +10,7 @@ instead a blank .png is output. See: https://github.com/openscad/openscad/issues
 import subprocess
 import sys
 import re
-from util import get_openscad_exe
+from .util import get_openscad_exe
 
 executable = get_openscad_exe()
 ret = subprocess.run([executable, '--hardwarnings'] + sys.argv[1:], check=True, capture_output=True)

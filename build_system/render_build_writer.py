@@ -2,7 +2,6 @@
 In this submodule we create a class that writes a "render.ninja" file for the microscope renderings.
 """
 
-import os
 from dataclasses import dataclass
 
 from .ninja_writer import NinjaWriter
