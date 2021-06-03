@@ -10,7 +10,8 @@ instead a blank .png is output. See: https://github.com/openscad/openscad/issues
 import subprocess
 import sys
 import re
-from .util import get_openscad_exe
+#Note that because of how the script is called externally the way we import confuses pylint
+from util import get_openscad_exe #pylint: disable=no-name-in-module
 
 def main(args):
     """
