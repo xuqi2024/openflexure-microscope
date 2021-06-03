@@ -35,3 +35,13 @@ PageBOMTitle: "## For this section you will need:"
 ForceOutput:
   - models/*.stl
   - models/stl_options.json
+Navigation:
+  - Link: high_res_microscope.md
+    Title: High-resolution microscope
+  - Link: low_cost_microscope.md
+    Title: Low-cost microscope
+  - Link: nano_sangaboard.md
+    Title: Sangaboard-compatible motor controller
+  - Link: troubleshooting.md
+    Title: Troubleshooting
+
