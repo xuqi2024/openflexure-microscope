@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''
-This is the main build script for the open flexure microscope. Run
+This is the main build script for the OpenFlexure Microscope. Run
 `./build.py -h` to see options.
 
 The selection for which STLs are generated is in build_system/stl_generator

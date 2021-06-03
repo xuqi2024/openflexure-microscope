@@ -1,3 +1,7 @@
+"""
+This module handles the JSON files generated for the STL selector
+"""
+
 import json
 import os
 import operator
@@ -6,6 +10,11 @@ from .util import merge_dicts
 
 
 class JsonGenerator:
+    """
+    Generates the JSON files for the STL selector. This file describes all
+    STL files and the when they should be selected, the documentation for
+    the selector interface, and any standard configurations
+    """
     def __init__(self, build_dir, option_docs, standard_configurations, required_stls):
         self._all_select_stl_params = set()
         self._stl_rules = []
@@ -14,12 +23,7 @@ class JsonGenerator:
         self._standard_configurations = standard_configurations
         self._required_stls = required_stls
 
-    def register(
-        self,
-        output,
-        input_file,
-        select_stl_if=None,
-    ):
+    def register(self, output, input_file, select_stl_if=None):
         """
         Register the stl and its parameters for JSON output.
 

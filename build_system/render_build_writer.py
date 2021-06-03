@@ -17,11 +17,17 @@ class Camera:
     distance: float = 240
 
     def as_string(self):
+        """
+        Combines all the camera paramters into a single string for the openscad cli
+        """
         combined = list(self.position) + list(self.angle) + [self.distance]
         return ",".join([str(i) for i in combined])
 
 
 def format_render_params(camera, imgsize, frame=None):
+    """
+    Format the standard parameters input into render
+    """
     imgsize_str = ",".join([str(i) for i in imgsize])
     params = f"--camera={camera.as_string()} --imgsize={imgsize_str}"
     if frame is not None:
@@ -30,6 +36,9 @@ def format_render_params(camera, imgsize, frame=None):
 
 
 class RenderBuildWriter(NinjaWriter):
+    """
+    A ninja writer for creating OpenSCAD renders
+    """
     def __init__(self, build_filename):
         super().__init__(build_filename=build_filename)
 
@@ -47,6 +56,9 @@ class RenderBuildWriter(NinjaWriter):
         self.rule("imagemagick_sequence", command="convert $in +append '$out'")
 
     def openscad_render(self, output, input_file, camera, imgsize, frame=None):
+        """
+        Invokes ninja task generation using the 'openscad_render' rule
+        """
         self.build(
             output,
             rule="openscad_render",
@@ -55,4 +67,7 @@ class RenderBuildWriter(NinjaWriter):
         )
 
     def imagemagick_sequence(self, output, input_files):
+        """
+        Invokes ninja task generation using the 'imagemagick_sequence' rule
+        """
         self.build(output, rule="imagemagick_sequence", inputs=input_files)
