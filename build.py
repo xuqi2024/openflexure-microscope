@@ -36,7 +36,6 @@ parser.add_argument(
 args = parser.parse_args()
 
 
-# TODO: reinstate `logitech_c270` if it can be made compatible.
 CAMERAS = ["picamera_2", "m12"]
 
 # Thses are the optics configuration of objective and tube lens pairs.
@@ -46,13 +45,6 @@ CAMERAS = ["picamera_2", "m12"]
 RMS_OPTICS = ["rms_f50d13"]
 INF_RMS_OPTICS = ["rms_infinity_f50d13"]
 
-# TODO: reinstate "c270_lens", "m12_lens" once the have a compatible optics module
-SIMPLE_OPTICS = ["pilens", "dashcam_lens", "6ledcam_lens"]
-
-# Generate a list of optics options for later
-ALL_OPTICS = RMS_OPTICS + SIMPLE_OPTICS
-
-# TODO: Add stands in for 6ledcam, dashcam, m12 once they are supported
 # These are (camera, lens) tuples
 # The when building the lens is assumed to be the lens of the camera!
 PLATFORM_OPTICS_MODULE_OPTIONS = [("picamera_2", "pilens")]
