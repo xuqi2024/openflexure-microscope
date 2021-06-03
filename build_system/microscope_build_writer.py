@@ -40,13 +40,7 @@ class MicroscopeBuildWriter(NinjaWriter):
         )
         self.rule("copy", command="cp $in $out")
 
-    def openscad(
-        self,
-        output,
-        input_file,
-        parameters=None,
-        select_stl_if=None,
-    ):
+    def openscad(self, output, input_file, parameters=None, select_stl_if=None):
         """
         Invokes ninja task generation using the 'openscad' rule. If
         --generate-stl-options-json is enabled it registers the stl and its

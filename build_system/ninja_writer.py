@@ -8,6 +8,7 @@ class NinjaWriter():
     def __init__(self, build_filename="build.ninja"):
         self._build_filename = build_filename
         self._build_file = None
+        self._ninja = None
 
     def __enter__(self):
         # Create the ninja build file
