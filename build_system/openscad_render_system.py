@@ -141,9 +141,17 @@ class RenderSystem():
                 if warns[0] != r'WARNING: Viewall and autocenter disabled in favor of $vp*':
                     sys.exit(1)
             png_files = [render.png_file for render in renders]
-            for i, png_file in enumerate(png_files):
-                frame = os.path.join(tmpdir, f'frame{i:05}.png')
-                shutil.copy(frame, png_file)
+            _copy_output_files(png_files)
+
+def _copy_output_files(png_files):
+    """
+    Copy the output files from the temp directory to their desired location.
+    """
+    for i, png_file in enumerate(png_files):
+        frame = os.path.join(gettempdir(), f'frame{i:05}.png')
+        copydir = os.path.dirname(png_file)
+        os.makedirs(copydir, exist_ok=True)
+        shutil.copy(frame, png_file)
 
 def _create_scad_for_renders(renders):
     n_frames = len(renders)
