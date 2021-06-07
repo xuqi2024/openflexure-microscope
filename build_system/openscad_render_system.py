@@ -6,8 +6,9 @@ import shutil
 import re
 import os
 from dataclasses import dataclass
-from .util import get_openscad_exe
 from tempfile import gettempdir
+from .util import get_openscad_exe
+
 
 @dataclass
 class Camera:
@@ -38,12 +39,24 @@ class ScadRender():
 class RenderSystem():
 
     def __init__(self):
+        self.zip_assets = []
         self.renders = []
+
+    def register_zip_assets(self, zip_file):
+        self.zip_assets.append(zip_file)
 
     def register_scad_render(self, render):
         self.renders.append(render)
 
     def render(self):
+        for zipfile in self.zip_assets:
+            subprocess.run(
+                ["unzip", "-o", "-d", os.path.dirname(zipfile), zipfile],
+                check=True,
+            )
+        self._run_openscad()
+
+    def _run_openscad(self):
         tmpdir = gettempdir()
         tmpscad = os.path.join(tmpdir, 'scadfile.scad')
         #note that openscad will append 00000, 00001, etc to the name just before the extension
@@ -56,13 +69,16 @@ class RenderSystem():
             with open(tmpscad, 'w') as scadfile:
                 scadfile.write(scad)
             executable = get_openscad_exe()
+
+            imgsize_str = ",".join([str(i) for i in size])
+            imgsize_arg = f'--imgsize={imgsize_str}'
             #note we cannot use hardwarnings as we change the camera angle which always throws
             # a stupid warning see:
             # https://github.com/openscad/openscad/issues/3646
             # https://github.com/openscad/openscad/pull/3660/
-
+            scad_args = ['--animate', str(n_renders), imgsize_arg, '-o', output_template]
             ret = subprocess.run(
-                [executable, tmpscad, '--animate', str(n_renders), '-o', output_template],
+                [executable, tmpscad] + scad_args,
                 check=True,
                 capture_output=True
             )
@@ -75,7 +91,7 @@ class RenderSystem():
                     sys.exit(1)
             png_files = [render.png_file for render in renders]
             for i, png_file in enumerate(png_files):
-                frame = tmpscad = os.path.join(tmpdir, f'frame{i:05}.png')
+                frame = os.path.join(tmpdir, f'frame{i:05}.png')
                 shutil.copy(frame, png_file)
 
     def _create_scad_for_renders(self, renders):

@@ -5,9 +5,10 @@ use <librender/render_utils.scad>
 use <librender/electronics.scad>
 
 
+FRAME=3;
+render_picamera_frame(picam_frame_parameters(FRAME));
 
-
-module render_frame(frame_dict){
+module render_picamera_frame(frame_dict){
 
     exploded = key_lookup("exploded", frame_dict);
     arrow = key_lookup("arrow", frame_dict);
@@ -47,7 +48,7 @@ module render_frame(frame_dict){
 }
 
 
-function frame_parameters(frame_number) = let(
+function picam_frame_parameters(frame_number) = let(
     frame1 = [["exploded", true],
               ["arrow", false],
               ["removed", false]],
@@ -61,5 +62,4 @@ function frame_parameters(frame_number) = let(
 ) frames[frame_number-1];
 
 
-FRAME=3;
-render_frame(frame_parameters(FRAME));
+

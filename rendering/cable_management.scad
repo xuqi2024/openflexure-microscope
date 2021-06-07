@@ -14,9 +14,9 @@ use <librender/assembly_parameters.scad>
 use <librender/electronics.scad>
 use <librender/render_utils.scad>
 
-rendered();
+render_cable_management();
 
-module rendered(){
+module render_cable_management(){
     params = render_params();
     coloured_render("WhiteSmoke"){
         main_body(params);
