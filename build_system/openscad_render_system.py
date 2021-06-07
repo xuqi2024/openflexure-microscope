@@ -128,11 +128,16 @@ class RenderSystem():
             # https://github.com/openscad/openscad/issues/3646
             # https://github.com/openscad/openscad/pull/3660/
             scad_args = ['--animate', str(n_renders), imgsize_arg, '-o', output_template]
-            ret = subprocess.run(
-                [executable, tmpscad] + scad_args,
-                check=True,
-                capture_output=True
-            )
+            try:
+                ret = subprocess.run(
+                    [executable, tmpscad] + scad_args,
+                    check=True,
+                    capture_output=True
+                )
+            except subprocess.CalledProcessError as error:
+                std_err = error.stderr.decode('UTF-8')
+                print(std_err)
+                raise
             std_err = ret.stderr.decode('UTF-8')
             print(std_err)
             warns = re.findall(r'^WARNING:.*?%', std_err, flags=re.MULTILINE)
