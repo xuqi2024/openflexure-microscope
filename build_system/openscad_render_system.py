@@ -128,6 +128,7 @@ class RenderSystem():
             # https://github.com/openscad/openscad/issues/3646
             # https://github.com/openscad/openscad/pull/3660/
             scad_args = ['--animate', str(n_renders), imgsize_arg, '-o', output_template]
+            print(f"\nStarting OpenSCAD for images of size {imgsize_str}...\n\n")
             try:
                 ret = subprocess.run(
                     [executable, tmpscad] + scad_args,
@@ -137,6 +138,7 @@ class RenderSystem():
             except subprocess.CalledProcessError as error:
                 std_err = error.stderr.decode('UTF-8')
                 print(std_err)
+                print(f"\n\nFailed OpenSCAD code:\n\n{scad}\n\n")
                 raise
             std_err = ret.stderr.decode('UTF-8')
             print(std_err)
