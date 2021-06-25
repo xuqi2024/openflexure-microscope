@@ -333,7 +333,7 @@ module top_of_z_axis_casing(params){
     }
 }
 
-module z_axis_casing(params, condenser_mount=false){
+module z_axis_casing(params, condenser_mount=false, cable_housing = true){
     // Casing for the Z axis - needs to have the axis subtracted from it
     intersection(){
         linear_extrude(height=999){
@@ -370,7 +370,8 @@ module z_axis_casing(params, condenser_mount=false){
             }
         }
     }
-    z_cable_housing(params);
+    // conditional statement allows the wings to be removed
+    if (cable_housing) z_cable_housing(params);
 }
 
 module z_axis_casing_cutouts(params){
