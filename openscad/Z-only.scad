@@ -6,20 +6,18 @@ use <./libs/libdict.scad>
 use <./libs/z_axis.scad>
 use <./libs/wall.scad>
 
-params = default_params();
-
-z_only(params);
-
-module z_only(params, cable_guides = false, spacer = false){
+module z_only(params, cable_guides = false, spacer = false, cable_housing = false){
     //This is the z-axis of the main body 
     // The conditional statement allows cable guides to be included or omitted.
     difference(){
         union(){
             add_hull_base(microscope_base_t()); 
             // The wings have been removed from this design of the z-axis. 
-            z_axis_casing(params, condenser_mount=true, cable_housing = false);
-            if (spacer){
-                //////////
+            if (cable_housing){
+                z_axis_casing(params, condenser_mount=true, cable_housing = true);
+            }
+            else{
+                z_axis_casing(params, condenser_mount=true, cable_housing = false);
             }
         }
         mounting_hole_lugs(params);
