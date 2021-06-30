@@ -31,9 +31,6 @@ use <./illumination.scad>
 use <./microscope_parameters.scad>
 use <./libdict.scad>
 
-params = default_params();
-z_axis_casing(params, condenser_mount=true, cable_housing = false, rectangular = true);
-
 module each_om_contact_plane(){
     // This transform puts y=0 in the plane of contact between the
     // optics module and the mount for it, with the origin at the
@@ -392,18 +389,45 @@ module z_axis_casing(params, condenser_mount=false, cable_housing = true, rectan
     if (cable_housing) z_cable_housing(params);
 }
 
-module z_axis_casing_cutouts(params){
+// Boring holes for the screws in the spacer and rectangular z-axis
+module boring_holes(){
+    hull(){
+        translate([10,-4,20])  cylinder(r = 5 + tiny(), h = 0.5);
+        translate([0,0,2.8]) cylinder(r = 5 + tiny(), h = 0.5);
+    }   
+}
+
+module z_axis_casing_cutouts(params, rectangular = false){
     // The Z axis casing is a solid shape, we need to cut out clearance for the moving bits
     // This module contains all the bits we need to cut out.
     z_axis_clearance(params);
     objective_mounting_screw_access(params);
     z_actuator_cutout(params);
     z_motor_clearance(params);
-    reflect_x(){
-        translate(right_illumination_screw_pos(params)){
-            rotate(-20){
-                translate_z(-9){
-                    m3_nut_trap_with_shaft(0,0);
+    // Introducing an if statement to make nut traps or screw holes depending on whether the top is rectangular or triangular
+    if (rectangular){
+    ///
+    ///
+    ///
+    ///
+    ///
+    ///
+    ///NEED TO CHANGE THE CODE SO THAT BORING HOLES AND SCREW HOLES ARE PRESENT INSTEAD OF NUT TRAPS WEHN RECTANGULAR!
+    ///
+    ///
+    ///
+    ///
+    ///
+    ///
+
+    }
+    else{
+        reflect_x(){
+            translate(right_illumination_screw_pos(params)){
+                rotate(-20){
+                    translate_z(-9){
+                        m3_nut_trap_with_shaft(0,0);
+                    }
                 }
             }
         }
