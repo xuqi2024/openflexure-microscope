@@ -406,12 +406,14 @@ module z_axis_casing_cutouts(params, rectangular = false){
     z_motor_clearance(params);
     if (rectangular){
         rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))  rotate_z(90)    boring_holes(boring_radius =3.5);
+        rotate_y(180)   translate([0,0,-61.2-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))   cylinder(r = 3.5 + tiny(), h = 2);
         rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))   cylinder(r = 2, h = 4);
         rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  rotate_z(135)    boring_holes(boring_radius =3.5);
+        rotate_y(180)   translate([0,0,-61.2-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  cylinder(r = 3.5 + tiny(), h = 2);
         rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  cylinder(r = 2, h = 4);
-        rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(right_back_corner_pos(params))  boring_holes(boring_radius =3.5);
+        rotate_y(180)   translate([0,0,-60.2-illumination_dovetail_z(params)]) translate(right_back_corner_pos(params))  cylinder(r = 3.5 + tiny(), h = 100);
         rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(right_back_corner_pos(params))   cylinder(r = 2, h = 4);
-        rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(left_back_corner_pos(params))  rotate_z(225)    boring_holes(boring_radius =3.5);
+        rotate_y(180)   translate([0,0,-60.2-illumination_dovetail_z(params)]) translate(left_back_corner_pos(params))  cylinder(r = 3.5 + tiny(), h = 100);
         rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(left_back_corner_pos(params))  cylinder(r = 2, h = 4);
     }
     else{
