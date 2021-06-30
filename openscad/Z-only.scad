@@ -5,7 +5,7 @@ use <./libs/utilities.scad>
 use <./libs/libdict.scad>
 use <./libs/z_axis.scad>
 use <./libs/wall.scad>
-
+$fn = 32;
 params = default_params();
 z_only(params, cable_guides = false, spacer = false, cable_housing = false, rectangular = true);
 
@@ -35,7 +35,12 @@ module z_only(params, cable_guides = false, spacer = false, cable_housing = fals
         }
         mounting_hole_lugs(params);
         //This also cuts the walls hence why it is two objects
-        z_axis_casing_cutouts(params);
+        if (rectangular){
+            z_axis_casing_cutouts(params, rectangular = true);
+        }
+        else{
+            z_axis_casing_cutouts(params);
+        }
         xy_actuator_cut_outs(params);
         central_optics_cut_out(params);
         z_axis_clearance(params);

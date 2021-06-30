@@ -404,24 +404,25 @@ module z_axis_casing_cutouts(params, rectangular = false){
     objective_mounting_screw_access(params);
     z_actuator_cutout(params);
     z_motor_clearance(params);
-    // Introducing an if statement to make nut traps or screw holes depending on whether the top is rectangular or triangular
     if (rectangular){
-    ///
-    ///
-    ///
-    ///
-    ///
-    ///
-    ///NEED TO CHANGE THE CODE SO THAT BORING HOLES AND SCREW HOLES ARE PRESENT INSTEAD OF NUT TRAPS WEHN RECTANGULAR!
-    ///
-    ///
-    ///
-    ///
-    ///
-    ///
-
+        rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))  rotate_z(90)    boring_holes();
+        rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))   cylinder(r = 2, h = 4);
+        rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  rotate_z(135)    boring_holes();
+        rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  cylinder(r = 2, h = 4);
+        rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(right_back_corner_pos(params))  boring_holes();
+        rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(right_back_corner_pos(params))   cylinder(r = 2, h = 4);
+        rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(left_back_corner_pos(params))  rotate_z(225)    boring_holes();
+        rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(left_back_corner_pos(params))  cylinder(r = 2, h = 4);
     }
     else{
+        // Adding the central screw hole and nut trap
+        translate_z(-9){
+            translate(illumination_back_corner_pos(params)){
+                rotate([0,0,180]){
+                    m3_nut_trap_with_shaft(0,0);
+                }
+            }
+        }
         reflect_x(){
             translate(right_illumination_screw_pos(params)){
                 rotate(-20){
