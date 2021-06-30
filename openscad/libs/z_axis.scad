@@ -390,10 +390,10 @@ module z_axis_casing(params, condenser_mount=false, cable_housing = true, rectan
 }
 
 // Boring holes for the screws in the spacer and rectangular z-axis
-module boring_holes(){
+module boring_holes(boring_radius){
     hull(){
-        translate([10,-4,20])  cylinder(r = 5 + tiny(), h = 0.5);
-        translate([0,0,2.8]) cylinder(r = 5 + tiny(), h = 0.5);
+        translate([10,-4,20])  cylinder(r = boring_radius + tiny(), h = 0.5);
+        translate([0,0,2.8]) cylinder(r = boring_radius + tiny(), h = 0.5);
     }   
 }
 
@@ -405,13 +405,13 @@ module z_axis_casing_cutouts(params, rectangular = false){
     z_actuator_cutout(params);
     z_motor_clearance(params);
     if (rectangular){
-        rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))  rotate_z(90)    boring_holes();
+        rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))  rotate_z(90)    boring_holes(boring_radius =3.5);
         rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))   cylinder(r = 2, h = 4);
-        rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  rotate_z(135)    boring_holes();
+        rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  rotate_z(135)    boring_holes(boring_radius =3.5);
         rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  cylinder(r = 2, h = 4);
-        rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(right_back_corner_pos(params))  boring_holes();
+        rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(right_back_corner_pos(params))  boring_holes(boring_radius =3.5);
         rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(right_back_corner_pos(params))   cylinder(r = 2, h = 4);
-        rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(left_back_corner_pos(params))  rotate_z(225)    boring_holes();
+        rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(left_back_corner_pos(params))  rotate_z(225)    boring_holes(boring_radius =3.5);
         rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(left_back_corner_pos(params))  cylinder(r = 2, h = 4);
     }
     else{
