@@ -30,6 +30,10 @@ use <./gears.scad>
 use <./illumination.scad>
 use <./microscope_parameters.scad>
 use <./libdict.scad>
+
+params = default_params();
+z_axis_casing(params, condenser_mount=true, cable_housing = false, rectangular = true);
+
 module each_om_contact_plane(){
     // This transform puts y=0 in the plane of contact between the
     // optics module and the mount for it, with the origin at the
@@ -333,7 +337,7 @@ module top_of_z_axis_casing(params){
     }
 }
 
-module z_axis_casing(params, condenser_mount=false, cable_housing = true){
+module z_axis_casing(params, condenser_mount=false, cable_housing = true, rectangular = false){
     // Casing for the Z axis - needs to have the axis subtracted from it
     intersection(){
         linear_extrude(height=999){
@@ -359,13 +363,27 @@ module z_axis_casing(params, condenser_mount=false, cable_housing = true){
         }
     }
     if(condenser_mount){
-        hull(){
-            // At the bottom, connect to the top of the housing and the motor lugs
-            top_of_z_axis_casing(params);
-            // The top is a flat shape that the illumination arm screws onto.
-            each_illumination_corner(params){
-                mirror([0,0,1]){
-                    cylinder(r=5,h=7);
+        if(rectangular){
+            hull(){
+                // At the bottom, connect to the top of the housing and the motor lugs
+                top_of_z_axis_casing(params);
+                // The top is a flat shape that the illumination arm screws onto.
+                rectangular_illumination_corners(params){
+                    mirror([0,0,1]){
+                        cylinder(r=5,h=7);
+                    }
+                }
+            }
+        }
+        else{
+            hull(){
+                // At the bottom, connect to the top of the housing and the motor lugs
+                top_of_z_axis_casing(params);
+                // The top is a flat shape that the illumination arm screws onto.
+                each_illumination_corner(params){
+                    mirror([0,0,1]){
+                        cylinder(r=5,h=7);
+                    }
                 }
             }
         }
