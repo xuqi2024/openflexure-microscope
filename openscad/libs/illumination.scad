@@ -36,6 +36,10 @@ function illumination_dt_params() = dovetail_params(
 function right_illumination_screw_pos(params) = [20, z_nut_y(params), illumination_dovetail_z(params)];
 function left_illumination_screw_pos(params) = [-20, z_nut_y(params), illumination_dovetail_z(params)];
 function illumination_back_corner_pos(params) = [0, (key_lookup("leg_r", params)+ leg_outer_w(params))/sqrt(2) + 4, illumination_dovetail_z(params)];
+// Defining the positions of the back corners of the rectangle for the top of the spacer
+function right_back_corner_pos(params) = [20, (key_lookup("leg_r", params)+ leg_outer_w(params))/sqrt(2) + 4, illumination_dovetail_z(params)];
+function left_back_corner_pos(params) = [-20, (key_lookup("leg_r", params)+ leg_outer_w(params))/sqrt(2) + 4, illumination_dovetail_z(params)];
+
 
 module each_illumination_screw(params){
     // A transform to repeat objects at each screw hole
@@ -48,8 +52,18 @@ module each_illumination_screw(params){
 }
 
 module each_illumination_corner(params){
-    // A transform to repeat objects at each corner of the illumination mount
+    // A transform to repeat objects at each corner of the illumination mount for a triangular top
     corners = [right_illumination_screw_pos(params), left_illumination_screw_pos(params), illumination_back_corner_pos(params)];
+    for(pos=corners){
+        translate(pos){
+            children();
+        }
+    }
+}
+
+module rectangular_illumination_corners(params){
+    // A transform to repeat objects at each corner of the illumination mount for a rectangular top
+    corners = [right_illumination_screw_pos(params), left_illumination_screw_pos(params), right_back_corner_pos(params), left_back_corner_pos(params)];
     for(pos=corners){
         translate(pos){
             children();
