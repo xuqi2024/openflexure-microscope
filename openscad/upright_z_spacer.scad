@@ -26,8 +26,9 @@ module spacer(params){
         // Screw head boring holes
         translate([0,0,-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))  rotate_z(45)    boring_holes();
         translate([0,0,-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))   cylinder(r = 2, h = 4);
-        translate([0,0,-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  rotate_z(135)    boring_holes();
+        translate([0,0,-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  rotate_z(180)    boring_holes();
         translate([0,0,4-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  cylinder(r = 2, h = 4);
+        translate([0,0,2.8-illumination_dovetail_z(params)]) translate(illumination_back_corner_pos(params))  cylinder(r = 4, h = 40);
         // Inserting the nut traps at the top of the spacer
         translate([0,0,-44])    spacer_top_screw_holes();
     }
@@ -39,13 +40,6 @@ module spacer_body(params){
         translate([0,0,spacer_height-illumination_dovetail_z(params)])    spacer_top();
         spacer_base(params);
     }
-}
-
-module boring_holes(){
-    hull(){
-        translate([10,-4,20])  cylinder(r = 5 + tiny(), h = 0.5);
-        translate([0,0,2.8]) cylinder(r = 5 + tiny(), h = 0.5);
-    }   
 }
 
 module spacer_top(){
