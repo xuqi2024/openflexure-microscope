@@ -229,7 +229,7 @@ module condenser_cutout(led_r, lens_r, lens_assembly_z, bottom_height=10){
     }
 }
 
-module tall_condenser(led_r, lens_d, lens_t, lens_assembly_z){
+module tall_condenser(led_r, lens_d, lens_t, lens_assembly_z, include_mounting=true){
     // Note that this is the shape before it is is rotated, and cut for printing.
     // This module is useful because the optical path is vertical
     // In this module the lens is at the top of the structure.
@@ -249,8 +249,10 @@ module tall_condenser(led_r, lens_d, lens_t, lens_assembly_z){
     );
 
     // the dovetail clip
-    translate_y(illumination_dovetail_y()){
-        dovetail_clamp_m(dt_params);
+    if (include_mounting){
+        translate_y(illumination_dovetail_y()){
+            dovetail_clamp_m(dt_params);
+        }
     }
 
     difference() {
@@ -262,9 +264,11 @@ module tall_condenser(led_r, lens_d, lens_t, lens_assembly_z){
             translate_z(-bottom_height){
                 cylinder(r=base_r, h=dt_height + bottom_height);
             }
-            translate_y(illumination_dovetail_y()){
-                linear_extrude(dt_height){
-                    back_of_block_2d(dt_params);
+            if (include_mounting){
+                translate_y(illumination_dovetail_y()){
+                    linear_extrude(dt_height){
+                        back_of_block_2d(dt_params);
+                    }
                 }
             }
         }
@@ -278,12 +282,12 @@ module tall_condenser(led_r, lens_d, lens_t, lens_assembly_z){
 }
 
 //TODO the lens_assembly_z should be adjusted to a focal length parameter
-module condenser(params, led_r=4.5/2, lens_d=13, lens_t=1, lens_assembly_z= 30){
+module condenser(params, led_r=4.5/2, lens_d=13, lens_t=1, lens_assembly_z= 30, include_mounting=true){
     //This is the condenser that is printed.
     condenser_angle = key_lookup("condenser_angle", params);
     difference(){
         rotate_x(-condenser_angle){
-            tall_condenser(led_r, lens_d, lens_t, lens_assembly_z);
+            tall_condenser(led_r, lens_d, lens_t, lens_assembly_z, include_mounting=include_mounting);
         }
         mirror([0,0,1]){
             cylinder(r=999,h=999,$fn=4);
