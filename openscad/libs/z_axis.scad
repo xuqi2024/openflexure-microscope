@@ -31,6 +31,9 @@ use <./illumination.scad>
 use <./microscope_parameters.scad>
 use <./libdict.scad>
 
+params = default_params();
+hole_r = key_lookup("stage_hole_r", params);
+
 module each_om_contact_plane(){
     // This transform puts y=0 in the plane of contact between the
     // optics module and the mount for it, with the origin at the
@@ -392,7 +395,7 @@ module z_axis_casing(params, condenser_mount=false, cable_housing = true, rectan
 // Boring holes for the screws in the spacer and rectangular z-axis
 module boring_holes(boring_radius){
     hull(){
-        translate([10,-4,20])  cylinder(r = boring_radius + tiny(), h = 0.5);
+        translate([8,-8,20])  cylinder(r = boring_radius + tiny(), h = 0.5);
         translate([0,0,2.8]) cylinder(r = boring_radius + tiny(), h = 0.5);
     }   
 }
@@ -405,16 +408,16 @@ module z_axis_casing_cutouts(params, rectangular = false){
     z_actuator_cutout(params);
     z_motor_clearance(params);
     if (rectangular){
-        rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))  rotate_z(90)    boring_holes(boring_radius =3.5);
-        rotate_y(180)   translate([0,0,-61.2-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))   cylinder(r = 3.5 + tiny(), h = 2);
-        rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))   cylinder(r = 2, h = 4);
-        rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  rotate_z(135)    boring_holes(boring_radius =3.5);
-        rotate_y(180)   translate([0,0,-61.2-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  cylinder(r = 3.5 + tiny(), h = 2);
-        rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  cylinder(r = 2, h = 4);
+        rotate_y(180)   translate([0,0,-63.2-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))  rotate_z(90)    boring_holes(boring_radius =3.5);
+        rotate_y(180)   translate([0,0,-60.2-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))   cylinder(r = 3.5 + tiny(), h = 4);
+        rotate_y(180)   translate([0,0,-60.1-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))   rotate_y(180)   hole_from_bottom(r = 2,h=999, big_bottom = false);
+        rotate_y(180)   translate([0,0,-63.2-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  rotate_z(180)    boring_holes(boring_radius =3.5);
+        rotate_y(180)   translate([0,0,-60.2-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  cylinder(r = 3.5 + tiny(), h = 4);
+        rotate_y(180)   translate([0,0,-60.1-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  rotate_y(180)   hole_from_bottom(r = 2,h=999, big_bottom = false);
         rotate_y(180)   translate([0,0,-60.2-illumination_dovetail_z(params)]) translate(right_back_corner_pos(params))  cylinder(r = 3.5 + tiny(), h = 100);
-        rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(right_back_corner_pos(params))   cylinder(r = 2, h = 4);
         rotate_y(180)   translate([0,0,-60.2-illumination_dovetail_z(params)]) translate(left_back_corner_pos(params))  cylinder(r = 3.5 + tiny(), h = 100);
-        rotate_y(180)   translate([0,0,-64-illumination_dovetail_z(params)]) translate(left_back_corner_pos(params))  cylinder(r = 2, h = 4);
+        rotate_y(180)   translate([0,0,-60.1-illumination_dovetail_z(params)]) translate(right_back_corner_pos(params))   rotate_y(180)   hole_from_bottom(r = 2,h=999, big_bottom = false);
+        rotate_y(180)   translate([0,0,-60.1-illumination_dovetail_z(params)]) translate(left_back_corner_pos(params))  rotate_y(180)   hole_from_bottom(r = 2,h=999, big_bottom = false);
     }
     else{
         // Adding the central screw hole and nut trap
