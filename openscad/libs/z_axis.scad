@@ -370,7 +370,9 @@ module z_axis_casing(params, condenser_mount=false, cable_housing = true, rectan
                 // The top is a flat shape that the illumination arm screws onto.
                 rectangular_illumination_corners(params){
                     mirror([0,0,1]){
-                        cylinder(r=5,h=7);
+                        // Making the cylinders larger than those on the triangular top by 1mm 
+                        // TO DO make this is a function
+                        cylinder(r=6,h=7);
                     }
                 }
             }
@@ -408,10 +410,10 @@ module z_axis_casing_cutouts(params, rectangular = false){
     z_actuator_cutout(params);
     z_motor_clearance(params);
     if (rectangular){
-        rotate_y(180)   translate([0,0,-63.2-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))  rotate_z(90)    boring_holes(boring_radius =3.5);
+        rotate_y(180)   translate([0,0,-59.2-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))  rotate_z(45)    boring_holes(boring_radius =4.5);
         rotate_y(180)   translate([0,0,-60.2-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))   cylinder(r = 3.5 + tiny(), h = 4);
         rotate_y(180)   translate([0,0,-60.1-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))   rotate_y(180)   hole_from_bottom(r = 2,h=999, big_bottom = false);
-        rotate_y(180)   translate([0,0,-63.2-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  rotate_z(180)    boring_holes(boring_radius =3.5);
+        rotate_y(180)   translate([0,0,-59.2-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  rotate_z(225)    boring_holes(boring_radius =4.5);
         rotate_y(180)   translate([0,0,-60.2-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  cylinder(r = 3.5 + tiny(), h = 4);
         rotate_y(180)   translate([0,0,-60.1-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  rotate_y(180)   hole_from_bottom(r = 2,h=999, big_bottom = false);
         rotate_y(180)   translate([0,0,-60.2-illumination_dovetail_z(params)]) translate(right_back_corner_pos(params))  cylinder(r = 3.5 + tiny(), h = 100);
