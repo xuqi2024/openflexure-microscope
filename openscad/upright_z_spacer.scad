@@ -13,7 +13,7 @@ use <./libs/gears.scad>
 $fn = 32;
 params = default_params();
 spacer_height = 25;
-spacer(params);
+render(6)   spacer(params);
 
 module spacer(params){
     difference(){
@@ -24,7 +24,7 @@ module spacer(params){
         translate([0,0,-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  cylinder(r = 2, h = 4);
         translate([0,0,-illumination_dovetail_z(params)]) translate(illumination_back_corner_pos(params))  cylinder(r = 2, h = 4);
         // Screw head boring holes
-        translate([0,0,-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))  rotate_z(45)    boring_holes(boring_radius = 5);
+        translate([0,0,-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))  rotate_z(90)    boring_holes(boring_radius = 5);
         translate([0,0,-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))   cylinder(r = 2, h = 4);
         translate([0,0,-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  rotate_z(180)    boring_holes(boring_radius = 5);
         translate([0,0,4-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  cylinder(r = 2, h = 4);
@@ -64,9 +64,9 @@ module spacer_base(){
 }
 
 module spacer_top_screw_holes(){
-    translate(right_illumination_screw_pos(params))    m3_nut_trap_with_shaft(0,0);
-    translate(left_illumination_screw_pos(params))     m3_nut_trap_with_shaft(0,0);
-    translate(right_back_corner_pos(params))    rotate([0,0,180])    m3_nut_trap_with_shaft(0,0);
-    translate(left_back_corner_pos(params))     rotate([0,0,180])   m3_nut_trap_with_shaft(0,0);
+    translate(right_illumination_screw_pos(params))    rotate([0,0,35])    m3_nut_trap_with_shaft(0,0);
+    translate(left_illumination_screw_pos(params))     rotate([0,0,-35])    m3_nut_trap_with_shaft(0,0);
+    translate(right_back_corner_pos(params))    rotate([0,0,215])    m3_nut_trap_with_shaft(0,0);
+    translate(left_back_corner_pos(params))     rotate([0,0,135])   m3_nut_trap_with_shaft(0,0);
 }
 
