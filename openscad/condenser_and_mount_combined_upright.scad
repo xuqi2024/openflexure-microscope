@@ -1,5 +1,3 @@
-// Creating an condenser and condenser mount for the Upright microscope. 
-
 use <./libs/microscope_parameters.scad>
 use <./libs/illumination.scad>
 use <./libs/lib_optics.scad>
@@ -16,7 +14,55 @@ camera_mount_height = camera_mount_height(optics_config);
 platform_h = lens_spacer_z(params, optics_config) - 5;
 screw_x = picamera_2_hole_spacing()/2;
 
-render(6)   condenser_and_base(params, optics_config);
+render(6)   condenser_platform(params, optics_config, 5);
+
+module condenser_platform(params, optics_config, base_r){
+
+    assert(key_lookup("optics_type", optics_config)=="spacer", "Use spacer optics configuration to create a camera_platform.");
+
+    // platform height is 5mm below the lens spacer (board is 1mm thick mounting posts are 4mm tall)
+    platform_h = lens_spacer_z(params, optics_config) - 5;
+    assert(platform_h > upper_z_flex_z(params), "Platform height too low for z-axis mounting");
+
+
+    // Make a camera platform with a dovetail on the side and a platform on the top
+    difference(){
+        union(){
+            // This is the main body of the mount
+            sequential_hull(){
+                hull(){
+                    cylinder(r=base_r,h=tiny());
+                    objective_fitting_base(params);
+                }
+                translate_z(platform_h){
+                    hull(){
+                        cylinder(r=base_r,h=tiny());
+                        objective_fitting_base(params);
+                        camera_bottom_mounting_posts(optics_config, h=tiny());
+                    }
+                }
+            }
+
+            // add the camera mount
+            translate_z(platform_h){
+                camera_bottom_mounting_posts(optics_config, r=2, h=4);
+            }
+        }
+
+        // Mount for the nut that holds it on
+        translate_z(-4){
+            objective_fitting_cutout(params, y_stop=true);
+        }
+        // add the camera mount
+        translate_z(platform_h){
+            camera_bottom_mounting_posts(optics_config, outers=false, cutouts=true);
+        }
+    }
+}
+
+
+
+
 
 module condenser_base_hull(){
     // Creates a base for the cylindrical consenser tube to stand on
