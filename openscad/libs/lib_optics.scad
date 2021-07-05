@@ -549,7 +549,7 @@ module lens_spacer(params, optics_config){
 * * optics_config - optics configuration dictionary
 * * base_r - radius of mount body
 */
-module camera_platform(params, optics_config, base_r){
+module camera_platform(params, optics_config, base_r, upright = false){
 
     assert(key_lookup("optics_type", optics_config)=="spacer", "Use spacer optics configuration to create a camera_platform.");
 
@@ -583,8 +583,15 @@ module camera_platform(params, optics_config, base_r){
         }
 
         // Mount for the nut that holds it on
-        translate_z(-4){
-            objective_fitting_cutout(params, y_stop=true);
+        if(upright){
+            translate_z(17.5){
+                objective_fitting_cutout(params, y_stop=true);
+            }
+        }
+        else{
+            translate_z(-4){
+                objective_fitting_cutout(params, y_stop=true);
+            }
         }
         // add the camera mount
         translate_z(platform_h){
