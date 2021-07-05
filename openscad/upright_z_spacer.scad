@@ -13,7 +13,15 @@ use <./libs/gears.scad>
 $fn = 32;
 params = default_params();
 spacer_height = 25;
-render(6)   spacer(params);
+
+render(6){
+    difference(){
+        spacer(params);        
+        translate([-30,-30,-1])  cube([60,80,40]);
+        translate([-50,10,-1])  cube([60,80,40]);
+    }
+}
+
 
 module spacer(params){
     difference(){
@@ -64,8 +72,8 @@ module spacer_base(){
 }
 
 module spacer_top_screw_holes(){
-    translate(right_illumination_screw_pos(params))    rotate([0,0,35])    m3_nut_trap_with_shaft(0,0);
-    translate(left_illumination_screw_pos(params))     rotate([0,0,-35])    m3_nut_trap_with_shaft(0,0);
+    translate(right_illumination_screw_pos(params))    rotate([0,0,10])    m3_nut_trap_with_shaft(0,0);
+    translate(left_illumination_screw_pos(params))     rotate([0,0,-10])    m3_nut_trap_with_shaft(0,0);
     translate(right_back_corner_pos(params))    rotate([0,0,215])    m3_nut_trap_with_shaft(0,0);
     translate(left_back_corner_pos(params))     rotate([0,0,135])   m3_nut_trap_with_shaft(0,0);
 }
