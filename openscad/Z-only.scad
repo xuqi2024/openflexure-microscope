@@ -8,7 +8,15 @@ use <./libs/wall.scad>
 $fn = 32;
 params = default_params();
 
-render(6)   z_only(params, cable_guides = false, spacer = false, cable_housing = false, rectangular = true);
+render(6)   z_only_with_smart_brim(params);
+
+module z_only_with_smart_brim(params){
+    smart_brim_r = key_lookup("smart_brim_r", params);
+    exterior_brim(r=smart_brim_r){
+        z_only(params, cable_guides = false, spacer = false, cable_housing = false, rectangular = true);
+
+    }
+}
 
 module z_only(params, cable_guides = false, spacer = false, cable_housing = false, rectangular = false){
     //This is the z-axis of the main body 
