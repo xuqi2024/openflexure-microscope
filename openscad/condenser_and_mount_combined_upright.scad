@@ -69,7 +69,7 @@ module condenser_platform(params, optics_config, base_r){
             }
         }
         // Mount for the nut that holds it on
-        translate_z(17.5)   upright_objective_fitting_cutout(params, y_stop=true);
+        translate([0,tiny(),17.5])   upright_objective_fitting_cutout(params, y_stop=true);
     }
 }
 
