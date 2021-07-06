@@ -8,14 +8,7 @@ use <./libs/wall.scad>
 $fn = 32;
 params = default_params();
 
-render(6){
-    difference(){
-        z_only(params, cable_guides = false, spacer = false, cable_housing = false, rectangular = true);
-        translate([-30,10,-1])  cube([60,80,40]);
-        translate([-30,-30,30])  cube([60,80,40]);
-        translate([-45,10,30])  cube([60,80,40]);
-    }
-}
+render(6)   z_only(params, cable_guides = false, spacer = false, cable_housing = false, rectangular = true);
 
 module z_only(params, cable_guides = false, spacer = false, cable_housing = false, rectangular = false){
     //This is the z-axis of the main body 
