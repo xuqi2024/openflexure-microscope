@@ -10,12 +10,14 @@ use <./libs/illumination.scad>
 use <./libs/compact_nut_seat.scad>
 use <./libs/main_body_transforms.scad>
 use <./libs/gears.scad>
+use <./Z-only.scad>
+
 $fn = 32;
 params = default_params();
 spacer_height = 25;
 
-render(6)   spacer(params);        
-        
+render(6)    spacer(params);       
+
 module spacer(params){
     difference(){
         // Spacer main body
@@ -32,6 +34,8 @@ module spacer(params){
         translate([0,0,2.8-illumination_dovetail_z(params)]) translate(illumination_back_corner_pos(params))  cylinder(r = 4, h = 40);
         // Inserting the nut traps at the top of the spacer
         translate([0,0,-44])    spacer_top_screw_holes();
+        // Cut-out for motor
+        translate([0,66,0])    cylinder(r = 12.5, h = 40);
     }
 }
 
