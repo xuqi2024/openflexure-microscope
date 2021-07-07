@@ -45,10 +45,10 @@ module spacer_body(params){
 
 module spacer_top(){
     hull(){
-        translate(right_illumination_screw_pos(params)) cylinder(r=5,h=2);
-        translate(left_illumination_screw_pos(params))  cylinder(r=5,h=2);
-        translate(right_back_corner_pos(params))    cylinder(r=5,h=2);
-        translate(left_back_corner_pos(params)) cylinder(r=5,h=2);
+        translate(right_illumination_screw_pos(params)) cylinder(r=6,h=2);
+        translate(left_illumination_screw_pos(params))  cylinder(r=6,h=2);
+        translate(right_back_corner_pos(params))    cylinder(r=6,h=2);
+        translate(left_back_corner_pos(params)) cylinder(r=6,h=2);
     }
 }
 
