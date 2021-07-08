@@ -412,14 +412,14 @@ module z_axis_casing_cutouts(params, rectangular = false){
     if (rectangular){
         rotate_y(180)   translate([0,0,-59.2-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))  rotate_z(45)    boring_holes(boring_radius =4.5);
         rotate_y(180)   translate([0,0,-60.2-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))   cylinder(r = 4.5 + tiny(), h = 4);
-        rotate_y(180)   translate([0,0,-60.1-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))   rotate_y(180)   hole_from_bottom(r = 2,h=999, big_bottom = false);
+        rotate_y(180)   translate([0,0,-60.1-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))   rotate_y(180)   hole_from_bottom(r = 2,h=999, base_w = 9 + 2*tiny(), big_bottom = false);
         rotate_y(180)   translate([0,0,-59.2-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  rotate_z(225)    boring_holes(boring_radius =4.5);
         rotate_y(180)   translate([0,0,-60.2-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  cylinder(r = 4.5 + tiny(), h = 4);
-        rotate_y(180)   translate([0,0,-60.1-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  rotate_y(180)   hole_from_bottom(r = 2,h=999, big_bottom = false);
+        rotate_y(180)   translate([0,0,-60.1-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  rotate_y(180)   hole_from_bottom(r = 2,h=999, base_w = 9 + 2*tiny(), big_bottom = false);
         rotate_y(180)   translate([0,0,-60.2-illumination_dovetail_z(params)]) translate(right_back_corner_pos(params))  cylinder(r = 3.5 + tiny(), h = 100);
         rotate_y(180)   translate([0,0,-60.2-illumination_dovetail_z(params)]) translate(left_back_corner_pos(params))  cylinder(r = 3.5 + tiny(), h = 100);
-        rotate_y(180)   translate([0,0,-60.1-illumination_dovetail_z(params)]) translate(right_back_corner_pos(params))   rotate_y(180)   hole_from_bottom(r = 2,h=999, big_bottom = false);
-        rotate_y(180)   translate([0,0,-60.1-illumination_dovetail_z(params)]) translate(left_back_corner_pos(params))  rotate_y(180)   hole_from_bottom(r = 2,h=999, big_bottom = false);
+        rotate_y(180)   translate([0,0,-60.1-illumination_dovetail_z(params)]) translate(right_back_corner_pos(params))   rotate_y(180)   hole_from_bottom(r = 2,h=999, base_w = 9 + 2*tiny(), big_bottom = false);
+        rotate_y(180)   translate([0,0,-60.1-illumination_dovetail_z(params)]) translate(left_back_corner_pos(params))  rotate_y(180)   hole_from_bottom(r = 2,h=999, base_w = 9 + 2*tiny(), big_bottom = false);
     }
     else{
         // Adding the central screw hole and nut trap
