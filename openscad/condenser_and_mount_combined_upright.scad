@@ -1,5 +1,3 @@
-// Creating an condenser with a base for the Upright microscope. 
-
 use <./libs/microscope_parameters.scad>
 use <./libs/illumination.scad>
 use <./libs/lib_optics.scad>
@@ -14,10 +12,10 @@ use <./libs/z_axis.scad>
 $fn = 32;
 params = default_params(); 
 optics_config = pilens_config();
-camera_mount_height = camera_mount_height(optics_config);
 platform_h = lens_spacer_z(params, optics_config) - 5;
 screw_x = picamera_2_hole_spacing()/2;
 
+// Creating a condenser with a platform attached for the Upright microscope. 
 render(6)   condenser_and_platform(params, optics_config);
 
 module condenser_top_hull(){
@@ -28,13 +26,14 @@ module condenser_top_hull(){
             translate([screw_x,0,0])   cylinder(r = 2, h = 0.5);
             translate([-screw_x,12.5,0])   cylinder(r = 2, h = 0.5);
             translate([screw_x,12.5,0])   cylinder(r = 2, h = 0.5);
-            //Pointed corner part to prevent overhang of condenser
+            //Creates a curved arc for one side of the hull to prevent overhang of condenser
             cylinder(r =10+tiny(), h = 0.5);
         }
     }
 }
 
 module upright_objective_fitting_cutout(){
+    // Creates a mount for the nut and screw hole that holds it on
     difference(){
         objective_fitting_cutout(params, y_stop=true);
         translate([-50, -10,35])   cube([100,100,1000]);
@@ -68,13 +67,13 @@ module condenser_platform(params, optics_config, base_r){
                 }
             }
         }
-        // Mount for the nut that holds it on
-        translate([0,tiny(),17.5])   upright_objective_fitting_cutout(params, y_stop=true);
+        // Mount for the nut and screw hole that holds it on
+        translate([0,tiny(),17.5])   upright_objective_fitting_cutout(params, y_stop=false);
     }
 }
 
-// Boring holes for the LED to be inserted into the condenser
 module LED_boring_holes(boring_radius){
+    // Boring holes for the LED to be inserted into the condenser
     translate([0,0,41+tiny()]){
         rotate_z(225){
             hull(){
@@ -86,6 +85,7 @@ module LED_boring_holes(boring_radius){
 }
 
 module condenser_and_platform(params, optics_config){
+    // Combines the isolated condenser unit with the platform to create a single structure.  
     difference(){
         union(){
             condenser_platform(params, optics_config);
