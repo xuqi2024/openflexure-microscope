@@ -41,7 +41,7 @@ module spacer(params){
 
 module spacer_body(params){
     hull(){
-        // Making the height of the spacer 3cm
+        // Making the height of the spacer 25mm
         translate([0,0,spacer_height-illumination_dovetail_z(params)])    spacer_top();
         spacer_base(params);
     }
@@ -49,6 +49,7 @@ module spacer_body(params){
 
 module spacer_top(){
     hull(){
+        // Creating the rectangular top of the spacer
         translate(right_illumination_screw_pos(params)) cylinder(r=6,h=3);
         translate(left_illumination_screw_pos(params))  cylinder(r=6,h=3);
         translate(right_back_corner_pos(params))    cylinder(r=6,h=3);
@@ -59,7 +60,8 @@ module spacer_top(){
 module spacer_base(){
     translate([0,0,-62]){
         hull(){
-            each_illumination_corner(params){
+            // Creating the triangular bottom of the spacer using the position of the corners as previously defined
+            each_illumination_corner(params){ 
                 mirror([0,0,1]){
                     cylinder(r=5,h=upright_z_spacer_height);
                 }
@@ -69,8 +71,10 @@ module spacer_base(){
 }
 
 module spacer_top_screw_holes(){
+    // Inserting the nut traps and screw holes into the spacer
     translate(right_illumination_screw_pos(params))    m3_nut_trap_with_shaft(0,0);
     translate(left_illumination_screw_pos(params))    m3_nut_trap_with_shaft(0,0);
+    // Rotating the back nut traps to minimise "threading" 
     translate(right_back_corner_pos(params))    rotate([0,0,225])    m3_nut_trap_with_shaft(0,0);
     translate(left_back_corner_pos(params))     rotate([0,0,135])   m3_nut_trap_with_shaft(0,0);
 }
