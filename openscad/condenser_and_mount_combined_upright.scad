@@ -14,6 +14,7 @@ params = default_params();
 optics_config = pilens_config();
 platform_h = lens_spacer_z(params, optics_config) - 5;
 screw_x = picamera_2_hole_spacing()/2;
+screw_shift = 10; // Vertical distance the mounting screw needs to be translated by to insert into the z-axis of the main body
 
 // Creating a condenser with a platform attached for the Upright microscope. 
 render(6)   condenser_and_platform(params, optics_config);
@@ -68,7 +69,7 @@ module condenser_platform(params, optics_config, base_r){
             }
         }
         // Mount for the nut and screw hole that holds it on
-        translate([0,tiny(),17.5])   upright_objective_fitting_cutout(params, y_stop=false);
+        translate([0,tiny(),screw_shift])   upright_objective_fitting_cutout(params, y_stop=false);
     }
 }
 
