@@ -16,9 +16,6 @@ platform_h = lens_spacer_z(params, optics_config) - 5;
 screw_x = picamera_2_hole_spacing()/2;
 screw_shift = 10; // Vertical distance the mounting screw needs to be translated by to insert into the z-axis of the main body
 
-// Creating a condenser with a platform attached for the Upright microscope. 
-render(6)   condenser_and_platform(params, optics_config);
-
 module condenser_top_hull(){
     // Creates a base for the cylindrical consenser tube to stand on
     rotate_z(45){

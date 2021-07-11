@@ -5,11 +5,7 @@ use <./libs/utilities.scad>
 use <./libs/libdict.scad>
 use <./libs/z_axis.scad>
 use <./libs/wall.scad>
-
-$fn = 32;
-params = default_params();
-
-render(6)   z_only_with_smart_brim(params);
+$fn=32;
 
 module z_only_with_smart_brim(params){
     // Adds a smart brim to the z-only module to prevent the back from peeling upwards when printing

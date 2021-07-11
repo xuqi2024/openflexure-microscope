@@ -11,12 +11,8 @@ use <./libs/compact_nut_seat.scad>
 use <./libs/main_body_transforms.scad>
 use <./libs/gears.scad>
 use <./Z-only.scad>
-
 $fn = 32;
-params = default_params();
 spacer_height = 25;
-
-render(6)    spacer(params);       
 
 module spacer(params){
     difference(){
