@@ -17,18 +17,18 @@
 
 ## Attach the motors {pagestep}
 
-Note that each motor has a cable tidy cap that is different. Which cap to use should be apparent from the shape. Motors should be added to the x and y actuators of the main body and the rectangular z axis. No motor is required on the z actuator of the main body for an upright microscope.”
+Note that each motor has a cable tidy cap that is different. Which cap to use should be apparent from the shape. Motors should be added to the x and y actuators of the main body and the rectangular z-axis. No motor is required on the z-actuator of the main body for an upright microscope.”
 
 * Get a [2.5mm Allen key]{qty:1, cat:tool} ready
-* Feed the cable from the motor through the rectangular wall in the outer wall by the x actuator.
+* Feed the cable from the motor through the rectangular wall in the outer wall by the x-actuator.
 * Place the motor on the motor lugs with the small gear towards the outside of the microscope
 * Check that the small gear and the large gear are meshed correctly
 * Take the x [cable tidy cap][cable tidy caps](fromstep){qty:3, cat:printedpart, note: "- Each cap is a different shape"} and place it over the motor
 * Check that the motor cable is running through the cable tidy rather than pinched underneath.
 * Fasten the motor and cable tidy caps to the motor lugs of the x and y actuators of the main body with two [M4x6mm button head screws]{qty:4, cat:mech}
-* Attach a cable tidy cap to the motor lugs of the z actuator of the main body with two [M4x6mm button head screws]{qty:2, cat:mech} **NOTE: there is no motor attached to the z actuator of the main body**
-* Attach a motor to the z actuator of the rectangular z axis with two [M4x6mm button head screws]{qty:2, cat:mech} **NOTE: there is no cable tidy cap for the rectangular z axis**
-* Repeat for y and z actuators. For the z actuator use the rectangular slot to the left of the actuator.
+* Attach a cable tidy cap to the motor lugs of the z-actuator of the main body with two [M4x6mm button head screws]{qty:2, cat:mech} **NOTE: there is no motor attached to the z-actuator of the main body**
+* Attach a motor to the z-actuator of the rectangular z-axis with two [M4x6mm button head screws]{qty:2, cat:mech} **NOTE: there is no cable tidy cap for the rectangular z-axis**
+* Repeat for y and z actuators. For the z-actuator use the rectangular slot to the left of the actuator.
 
 
 ![](renders/cable_management.png)

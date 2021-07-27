@@ -1,4 +1,4 @@
-# Prepare the main body and rectangular z axis
+# Prepare the main body and rectangular z-axis
 
 {{BOM}}
 
