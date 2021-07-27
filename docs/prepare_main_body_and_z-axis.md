@@ -19,6 +19,7 @@ These are highlighted in red in the following images.
 
 **TO DO: Add images of the rectangular z-axis with the smart brim highlighted**
 
+![](images/Complete.JPG)
 ![](renders/brim_and_ties1.png)
 ![](renders/brim_and_ties2.png)
 
