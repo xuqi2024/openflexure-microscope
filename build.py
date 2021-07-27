@@ -270,15 +270,15 @@ with MicroscopeBuildWriter("docs/models", "build.ninja", args.include_extra_file
     print(f'Compiling microscope version "{version_str}"')
 
     # Generate basic STL files
-    #mbw.openscad("main_body.stl",
-                 #"main_body.scad",
-                 #parameters={"VERSION_STRING": version_str},
-                 #select_stl_if="always")
-    #generate_rms_optics_modules(mbw)
-    #generate_platform_optics_modules(mbw)
-    #generate_bases(mbw)
-    #generate_gears_and_thumbwheels(mbw)
-    #generate_small_parts(mbw)
+    mbw.openscad("main_body.stl",
+                 "main_body.scad",
+                 parameters={"VERSION_STRING": version_str},
+                 select_stl_if="always")
+    generate_rms_optics_modules(mbw)
+    generate_platform_optics_modules(mbw)
+    generate_bases(mbw)
+    generate_gears_and_thumbwheels(mbw)
+    generate_small_parts(mbw)
     generate_upright_microscope_parts(mbw)
     # Include extra STL files
     if args.include_extra_files:
