@@ -2,7 +2,8 @@
 
 If you have bought the plastic parts you can skip this step!
 
-**TO DO: measure the required mass of PLA required and change its value stated below**
+**You can build an upright microscope using a version 6 body. If you are using a version 6 main body, screw a self-tapping screw into the back screw hole of the rectangular z-axis to secure it in place, this will help stabilise the microscope when holding the additional weight of the lens.**
+
 
 {{BOM}}
 
@@ -38,4 +39,4 @@ Now you have tested your [printer][RepRap-style printer]{qty:1,cat:tool} and [fi
 
 ## Clean-up of printed parts {pagestep}
 
-Carefully remove the printing brim from all parts (except the main body) with a [utility knife]{qty: 1, cat: tool}.
+Carefully remove the printing brim from all parts (except the main body and rectangular z-axis) with a [utility knife]{qty: 1, cat: tool}.
