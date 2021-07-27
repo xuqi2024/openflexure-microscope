@@ -239,6 +239,21 @@ def generate_small_parts(writer):
     writer.openscad("leg_test.stl", "test_pieces/leg_test.scad", select_stl_if="always")
     writer.openscad("led_array_holder.stl", "led_array_holder.scad")
 
+def generate_upright_microscope_parts(writer):
+    writer.openscad(
+        "z_only_with_smart_brim.stl",
+        "z_only.scad",
+    )
+    writer.openscad(
+        "upright_z_spacer.stl",
+        "upright_z_spacer.scad",
+    )
+    writer.openscad(
+        "upright_condenser_and_mount.stl",
+        "upright_condenser_and_mount.scad"
+    )
+
+
 def add_extra_stls_to_writer(writer):
     for camera in ["6ledcam", "dashcam"]:
 
@@ -255,15 +270,16 @@ with MicroscopeBuildWriter("docs/models", "build.ninja", args.include_extra_file
     print(f'Compiling microscope version "{version_str}"')
 
     # Generate basic STL files
-    mbw.openscad("main_body.stl",
-                 "main_body.scad",
-                 parameters={"VERSION_STRING": version_str},
-                 select_stl_if="always")
-    generate_rms_optics_modules(mbw)
-    generate_platform_optics_modules(mbw)
-    generate_bases(mbw)
-    generate_gears_and_thumbwheels(mbw)
-    generate_small_parts(mbw)
+    #mbw.openscad("main_body.stl",
+                 #"main_body.scad",
+                 #parameters={"VERSION_STRING": version_str},
+                 #select_stl_if="always")
+    #generate_rms_optics_modules(mbw)
+    #generate_platform_optics_modules(mbw)
+    #generate_bases(mbw)
+    #generate_gears_and_thumbwheels(mbw)
+    #generate_small_parts(mbw)
+    generate_upright_microscope_parts(mbw)
     # Include extra STL files
     if args.include_extra_files:
         add_extra_stls_to_writer(mbw)
@@ -271,3 +287,4 @@ with MicroscopeBuildWriter("docs/models", "build.ninja", args.include_extra_file
 # Run the "ninja.build" file we just created, to generate STLs
 sys.argv = [sys.argv[0]]
 ninja()
+
