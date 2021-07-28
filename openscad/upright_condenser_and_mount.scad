@@ -14,7 +14,7 @@ params = default_params();
 optics_config = pilens_config();
 platform_h = lens_spacer_z(params, optics_config) - 5;
 screw_x = picamera_2_hole_spacing()/2;
-screw_shift = 10; // Vertical distance the mounting screw needs to be translated by to insert into the z-axis of the main body
+screw_shift = 15; // Vertical distance the mounting screw needs to be translated by to insert into the z-axis of the main body
 condenser_and_platform(params, optics_config);
 
 module condenser_top_hull(){

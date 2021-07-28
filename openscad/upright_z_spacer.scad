@@ -13,6 +13,7 @@ use <./libs/gears.scad>
 use <./Z-only.scad>
 $fn = 32;
 spacer_height = 25;
+params = default_params();
 spacer(params);
 
 module spacer(params){
