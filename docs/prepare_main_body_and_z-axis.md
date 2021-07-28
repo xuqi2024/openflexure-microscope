@@ -8,7 +8,7 @@
 
 ## Removing brim and supports {pagestep}
 
-The [main body][Main body](fromstep){cat: PrintedPart, qty:1} and [rectangular z-axis][Rectangular z-axis](fromstep){cat: PrintedPart, qty:1} have some custom supports and a custom brim to remove.
+The [main body][Main body](fromstep){cat: PrintedPart, qty:1} and [Rectangular z-axis](fromstep){cat: PrintedPart, qty:1} have some custom supports and a custom brim to remove.
 
 * Outer smart brim - Remove with [utility knife]{qty:1,cat:tool}
 * Inner smart brim - Remove with [utility knife]{qty:1}

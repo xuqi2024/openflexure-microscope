@@ -21,7 +21,7 @@ Now you have tested your [printer][RepRap-style printer]{qty:1,cat:tool} and [fi
 * [Lens tool]{output,qty:1}: [lens_tool.stl](models/lens_tool.stl){previewpage}
 * [Main body]{output,qty:1}: [main_body.stl](models/main_body.stl){previewpage} - The smart brim may require [custom print settings].
 * [Rectangular z-axis]{output,qty:1}: [Z-only_rectangular_version_9.stl](models/Z-only_rectangular_version_9.stl){previewpage} - The smart brim may require [custom print settings].
-* [Upright z-spacer]{output,qty:1}: [upright_z_spacer_with_cutout.stl](models/upright_z_spacer_with_cutout.stl){previewpage}
+* [z-spacer]{output,qty:1}: [upright_z_spacer_with_cutout.stl](models/upright_z_spacer_with_cutout.stl){previewpage}
 * 4 [feet]{output,qty:4}: [feet.stl](models/feet.stl){previewpage}
 * 4 [large gears]{output,qty:4}: [large_gears.stl](models/large_gears.stl){previewpage}
 * 3 [small gears]{output,qty:3}: [small_gears.stl](models/small_gears.stl){previewpage}
