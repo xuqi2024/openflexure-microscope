@@ -17,9 +17,8 @@ The [main body][Main body](fromstep){cat: PrintedPart, qty:1} and [rectangular z
 
 These are highlighted in red in the following images.
 
-**TO DO: Add images of the rectangular z-axis with the smart brim highlighted**
-
-![](images/Complete.JPG)
+![](images/upright/rectangular_z_axis_with_smart_brim.jpg)
+![](images/upright/preparing_rectangular_z_axis.jpg)
 ![](renders/brim_and_ties1.png)
 ![](renders/brim_and_ties2.png)
 

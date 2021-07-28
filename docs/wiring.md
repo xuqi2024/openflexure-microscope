@@ -1,8 +1,6 @@
 # Complete the wiring
 
 
-**TODO: This page is a placeholder it needs to be completed**
-
 
 {{BOM}}
 

@@ -23,9 +23,6 @@
 * Place [M3x8 cap head screws](parts/mechanical.yml#CapScrew_M3x8mm_SS){qty: 3, cat:mech} into the two externally showing holes at the front of the main body and a third screw through the top of the vertical boring hole. Screw tightly into the nuts. 
 * Place a [M3 nut]{qty:4, cat:mech} into each of the 4 nut traps in the z-spacer 
 * Place the upside-down rectangular z-axis with the optics module now attached onto the z-spacer. 
-* While holding these together, place 4 [M3x8 cap head screws](parts/mechanical.yml#CapScrew_M3x8mm_SS){qty: 4, cat:mech}  into the 4 boring holes in the rectangular z-axis and screw tightly into place. Your microscope should now look like this:
-
- **TO DO: insert stl here**
-
+* While holding these together, place 4 [M3x8 cap head screws](parts/mechanical.yml#CapScrew_M3x8mm_SS){qty: 4, cat:mech}  into the 4 boring holes in the rectangular z-axis and screw tightly into place. 
 
 
