@@ -42,6 +42,9 @@ Take the [lens spacer][Lens spacer](fromstep){qty:1, cat:printedpart} and confir
 * Place the lens over on the top of the lens spacer, with the side that was next to the camera sensor on top
 * Push the lens into the lens spacer with pressure on the very edge of the lens.
 
+![](images/upright/push_fit_lens_apparatus.jpg)
+![](images/upright/push_fit_lens.jpg)
+
 ## Attach the Pi Camera {pagestep}
 
 * Take the Pi Camera and place it ontop of the [pi camera platform](fromstep){qty:1, cat:printedpart}.
