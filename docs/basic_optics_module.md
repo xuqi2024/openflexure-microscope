@@ -8,7 +8,7 @@ The imaging optics for this version of the microscope consist of an the Raspberr
 [No 2 6.5mm self tapping screws]: parts/mechanical.yml#SelfTap_PoziPan_No2x6.5_SS
 
 [Raspberry Pi Camera Module v2]: parts/electronics.yml#PiCamera_2
-[Raspberry Pi ribbon cable]: parts/electronics.yml#PiCamera_RibbonCable
+[Raspberry Pi ribbon cable 30cm]: parts/electronics.yml#PiCamera_RibbonCable_300mm
 
 ## Visually inspect the lens spacer {pagestep}
 
