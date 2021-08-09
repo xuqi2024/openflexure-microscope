@@ -50,6 +50,7 @@ In this section we are assembling the sample illumination. This is for transmiss
 * Take the [condenser and mount][Condenser and mount](fromstep){qty:1, cat:printedpart} and align the opening over the lens
 * Push down until the lens clicks into place
 
+![](images/upright/lens_tool_with_lens.jpg)
 ![](images/upright/push_fit_lens_apparatus.jpg)
 ![](images/upright/push_fit_lens.jpg)
 

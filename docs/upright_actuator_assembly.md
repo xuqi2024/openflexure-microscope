@@ -71,4 +71,5 @@ If you had problems with this step see [troubleshooting actuator assembly].
 
 Follow the same procedure for the y and z axis in the main body and the [Rectangular z-axis](models/Z-only_rectangular_version_9.md){qty:1, cat:printedpart}. Once complete the actuators should look like the following image of the [complete rectangular z-axis]{output, qty:1}:
 
-![](images/upright/rectangular_z_axis_gear_foot.jpg)
+![](images/upright/z-axis_with_foot.jpg)
+![](images/upright/z-axis_with_foot_underneath.jpg)
