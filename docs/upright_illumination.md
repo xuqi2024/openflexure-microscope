@@ -50,7 +50,8 @@ In this section we are assembling the sample illumination. This is for transmiss
 * Take the [condenser and mount][Condenser and mount](fromstep){qty:1, cat:printedpart} and align the opening over the lens
 * Push down until the lens clicks into place
 
-**TO DO: add an stl of an upright condenser and mount with a push fit lens**
+![](images/upright/push_fit_lens_apparatus.jpg)
+![](images/upright/push_fit_lens.jpg)
 
 ## Push-fit the LED {pagestep}
 
@@ -67,5 +68,5 @@ In this section we are assembling the sample illumination. This is for transmiss
 * Take the complete condenser and mount and pass is through the bottom of the main body until the top of the condenser is in line with the stage.
 * Insert the exposed mounting screw into the screw hole in the z-actuator of the main body.
 * Insert the [2.5mm Allen key]{qty:1, cat:tool} through the teardrop shaped hole on the front of the microscope. Until it engages with the mounting screw.
-* Slide optics module up the keyhole as high as it will go while keeping the Allen key engaged with the screw. **Note: the top of the condenser should be 2-4mm below the top of the stage**
+* Slide the condenser and mount up the keyhole until the top of the condenser is 2-4mm below the top of the stage while keeping the Allen key engaged with the screw. 
 * Tighten the screw with the Allen key to lock the optics in place.

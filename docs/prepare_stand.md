@@ -13,6 +13,9 @@
 * Unscrew and remove the screw. The nut should stay mounted.
 * Repeat for the other three mounting lugs
 
+## Embed mounting nuts illumination platform {pagestep}
+
+* Repeat the steps used above to add three [M3 nuts][M3 nut]{qty:3, cat:mech} into the platform above the z-axis of the main body.
 
 The [prepared microscope stand]{output, qty:1} is now ready for assembly.
 

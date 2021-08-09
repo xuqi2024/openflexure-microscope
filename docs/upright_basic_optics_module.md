@@ -1,6 +1,8 @@
 # Assemble the basic optics module
 
-The imaging optics for this version of the microscope consist of an the Raspberry pi camera and the lens from the camera. To create a microscope the wide angle lens is reversed and separated from the camera. This makes quite a good microscope objective with a field of view about 400μm across and a resolution of around 2μm. When using lenses for observations the Raspberry Pi Camera is further away from the Sangaboard, hence it is recommended to use a 600mm Raspberry Pi ribbon cable as the additional length makes adjustments easier. When using a Raspberry Pi Camera a 300mm cable is sufficient.
+These are the instructions for the basic optics module, however high resolution optics will also work. When using high resolution optics, a 400mm Raspberry Pi ribbon cable or longer is preferable as the additional height of the Raspberry Pi Camera makes adjustments easier. 
+
+The imaging optics for this version of the microscope consist of the Raspberry Pi Camera and the lens from the camera. To create a microscope the wide angle lens is reversed and separated from the camera. This makes quite a good microscope objective with a field of view about 400μm across and a resolution of around 2μm. 
 
 {{BOM}}
 
@@ -8,7 +10,7 @@ The imaging optics for this version of the microscope consist of an the Raspberr
 [No 2 6.5mm self tapping screws]: parts/mechanical.yml#SelfTap_PoziPan_No2x6.5_SS
 
 [Raspberry Pi Camera Module v2]: parts/electronics.yml#PiCamera_2
-[Raspberry Pi ribbon cable]: parts/electronics.yml#PiCamera_RibbonCable
+[Raspberry Pi ribbon cable (30cm)]: parts/electronics.yml#PiCamera_RibbonCable_300mm
 
 ## Visually inspect the lens spacer {pagestep}
 
@@ -42,8 +44,6 @@ Take the [lens spacer][Lens spacer](fromstep){qty:1, cat:printedpart} and confir
 * Place the lens over on the top of the lens spacer, with the side that was next to the camera sensor on top
 * Push the lens into the lens spacer with pressure on the very edge of the lens.
 
-![](images/upright/push_fit_lens_apparatus.jpg)
-![](images/upright/push_fit_lens.jpg)
 
 ## Attach the Pi Camera {pagestep}
 
@@ -61,7 +61,7 @@ Take the [lens spacer][Lens spacer](fromstep){qty:1, cat:printedpart} and confir
 
 ## Connect ribbon cable {pagestep}
 
-* Take the [Raspberry Pi ribbon cable]{qty:1, cat:electronic}
+* Take the [Raspberry Pi ribbon cable (30cm)]{qty:1, cat:electronic}
 * Pull the catch forward on the exposed Pi Camera connector
 * Insert the ribbon cable with the contacts towards the board
 * Close the catch on the connector
