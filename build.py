@@ -252,6 +252,18 @@ def generate_upright_microscope_parts(writer):
         "upright_condenser_and_mount.stl",
         "upright_condenser_and_mount.scad"
     )
+    writer.openscad(
+        "0.1mm_z_spacer.stl"
+        "0.1mm_z_spacer.scad"
+    )
+    writer.openscad(
+        "5mm_z_spacer.stl"
+        "5mm_z_spacer.scad"
+    )
+    writer.openscad(
+        "10mm_z_spacer.stl"
+        "10mm_z_spacer.scad"
+    )
 
 
 def add_extra_stls_to_writer(writer):
