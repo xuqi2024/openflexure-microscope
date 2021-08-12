@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+
+'''
+This script produces all the documentation renders for the OpenFlexure microscope.
+'''
+
 import sys
 import os
 import subprocess
@@ -8,6 +13,8 @@ from build_system.render_build_writer import RenderBuildWriter, Camera
 
 NINJA_FILE = "render.ninja"
 
+# Disable missing docstrings in this file as they explain exactly what they generate
+# pylint: disable=missing-function-docstring
 
 def generate_optics_assembly_tube_lens(writer):
     input_file = "rendering/rms_optics_assembly.scad"

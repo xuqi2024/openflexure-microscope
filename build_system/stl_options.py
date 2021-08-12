@@ -5,6 +5,11 @@ This module sets the STL options which define:
     * STLs that are requred for a valid microscope
 """
 
+# Disable unused valuables in this file as some documented options may
+# not be needed currently
+# pylint: disable=unused-variable
+
+
 def get_standard_configurations():
     """
     Return the STL selector parameters for the standard microscope configurations
@@ -109,7 +114,7 @@ def _get_camera_options(include_extra_files):
         "key": "logitech_c270",
         "title": "Logitech C270",
         "description": "The Logitech C270 webcam",
-    },
+    }
     m12_doc = {
         "key": "m12",
         "title": "M12 Camera",

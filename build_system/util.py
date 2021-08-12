@@ -15,7 +15,7 @@ def get_openscad_exe():
         return "/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD"
     return "openscad"
 
-def merge_dicts(d1, d2):
+def merge_dicts(dict1, dict2):
     """
     Recursively merge two dictionaries condensing all non-dict values into
     sets. The result is a dict containing sets of all the values used.
@@ -43,40 +43,40 @@ def merge_dicts(d1, d2):
     {'a': {1, 2}}
 
     Arguments:
-        d1 {dict}
-        d2 {dict}
+        dict1 {dict}
+        dict2 {dict}
 
     """
     merged = {}
-    for d in [d1, d2]:
-        for k, v in d.items():
-            if type(v) is dict:
-                if k not in merged:
-                    merged[k] = {}
-                if type(merged[k]) is not dict:
+    for dictionary in [dict1, dict2]:
+        for key, value in dictionary.items():
+            if isinstance(value, dict):
+                if key not in merged:
+                    merged[key] = {}
+                if not isinstance(merged[key], dict):
                     raise TypeError(
                         "Expecting 'dict' at key '{}', got {}".format(
-                            k, type(merged[k])
+                            key, type(merged[key])
                         )
                     )
 
-                merged[k] = merge_dicts(merged[k], v)
+                merged[key] = merge_dicts(merged[key], value)
 
-            elif type(v) is set:
-                if k not in merged:
-                    merged[k] = set()
-                if type(merged[k]) is not set:
+            elif isinstance(value, set):
+                if key not in merged:
+                    merged[key] = set()
+                if not isinstance(merged[key], set):
                     raise TypeError(
-                        "Expecting 'set' at key '{}', got {}".format(k, type(merged[k]))
+                        "Expecting 'set' at key '{}', got {}".format(key, type(merged[key]))
                     )
 
-                merged[k] = merged[k].union(v)
+                merged[key] = merged[key].union(value)
 
             else:
-                if k not in merged:
-                    merged[k] = set()
+                if key not in merged:
+                    merged[key] = set()
 
-                merged[k].add(v)
+                merged[key].add(value)
 
     return merged
 
@@ -93,10 +93,10 @@ def parameters_to_string(parameters):
     for name in parameters:
         value = parameters[name]
         # Convert bools to lowercase
-        if type(value) == bool:
+        if isinstance(value, bool):
             value = str(value).lower()
         # Wrap strings in quotes
-        elif type(value) == str:
+        elif isinstance(value, str):
             value = f'"{value}"'
 
         strings.append("-D '{}={}'".format(name, value))
@@ -110,8 +110,9 @@ def version_string(force_clean):
     if not repo_is_clean():
         if force_clean:
             print("Warning! Git repository is not clean:")
+            ret = run_git(["status", "--porcelain"])
             print(ret)
-            exit(1)
+            sys.exit(1)
         return "Custom"
 
     tag = get_commit_tag()
@@ -121,7 +122,7 @@ def version_string(force_clean):
     commit_hash = get_commit_hash()
     if commit_hash is None:
         if force_clean:
-            exit(1)
+            sys.exit(1)
         return "Custom"
     return commit_hash[0:7]
 
@@ -177,4 +178,3 @@ def run_git(git_args, warn_on_error=True):
             print("Warning! Could not read git repository!")
         return None
     return ret.stdout.decode("UTF-8")
-
