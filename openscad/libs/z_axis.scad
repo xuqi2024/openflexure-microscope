@@ -398,6 +398,31 @@ module boring_holes(boring_radius){
         translate([0,0,2.8]) cylinder(r = boring_radius + tiny(), h = 0.5);
     }   
 }
+// Counterbored holes for the rectangular mount on the Z axis
+// These holes are counterbored from the bottom, and can optionally
+// be slanted by shifting the lower end along the Y axis.
+module z_axis_mount_counterbore(counterbore_r=4.5, shaft_r=2, y_shift=0, h=30){
+    // A disc that has the right cross-section for a counterbored hole.
+    module counterbore_disc(){
+        cylinder(r = counterbore_r, h = tiny());
+    }
+    intersection(){
+        // This is the hole for the screw shaft - it has a large volume above z=0,
+        // so we join it to the counterbore by taking an intersection.
+        mirror([0,0,1]) hole_from_bottom(r = shaft_r, h=999, base_w=999, big_bottom = true);
+
+        // This is the counterbore, i.e. where we insert the screw.
+        // The counterbore needs to include the shaft below z=0 as well, because
+        // it's joined by an intersection.  See docs on hole_from_bottom.
+        sequential_hull(){
+            translate_z(-99) counterbore_disc();
+            translate_z(4) counterbore_disc();
+            translate([0,y_shift,h])  counterbore_disc();
+        }
+    }
+}
+
+
 
 module z_axis_casing_cutouts(params, rectangular = false){
     // The Z axis casing is a solid shape, we need to cut out clearance for the moving bits
@@ -408,20 +433,12 @@ module z_axis_casing_cutouts(params, rectangular = false){
     z_motor_clearance(params);
     if (rectangular){
         // Creating diagonally slanted cylindrical boring holes for the screws to be able to be inserted through to reach the screw holes
-        rotate_y(180)   translate([0,0,-59.2-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))  rotate_z(45)    boring_holes(boring_radius =4.5);
-        rotate_y(180)   translate([0,0,-59.2-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  rotate_z(225)    boring_holes(boring_radius =4.5);
-        // Creating cylindrical holes situated at the base of the boring holes so the head of the screw sits flat in its position
-        rotate_y(180)   translate([0,0,-60.2-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))   cylinder(r = 4.5 + tiny(), h = 4);
-        rotate_y(180)   translate([0,0,-60.2-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  cylinder(r = 4.5 + tiny(), h = 4);
-        // Creating screw holes for the front two screws to thread through
-        rotate_y(180)   translate([0,0,-60.1-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))   rotate([0,180,45])   hole_from_bottom(r = 2,h=999, base_w = 9, big_bottom = false);
-        rotate_y(180)   translate([0,0,-60.1-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  rotate([0,180,-45])  hole_from_bottom(r = 2,h=999, base_w = 9, big_bottom = false);
+        translate(right_illumination_screw_pos(params) - [0,0,4])  mirror([0,0,1]) rotate(-90) z_axis_mount_counterbore(y_shift=17, h=30);
+        translate(left_illumination_screw_pos(params) - [0,0,4])  mirror([0,0,1]) rotate(90) z_axis_mount_counterbore(y_shift=17, h=30);
+        
         // Cutting out boring holes for the screws to be able to be inserted through to reach the screw holes at the back of the z-axis
-        rotate_y(180)   translate([0,0,-60.2-illumination_dovetail_z(params)]) translate(right_back_corner_pos(params))  cylinder(r = 3.5 + tiny(), h = 100);
-        rotate_y(180)   translate([0,0,-60.2-illumination_dovetail_z(params)]) translate(left_back_corner_pos(params))  cylinder(r = 3.5 + tiny(), h = 100);
-        // Creating screw holes for the back two screws to thread through
-        rotate_y(180)   translate([0,0,-60.1-illumination_dovetail_z(params)]) translate(right_back_corner_pos(params))   rotate([0,180,-45])   hole_from_bottom(r = 2,h=999, base_w = 7, big_bottom = false);
-        rotate_y(180)   translate([0,0,-60.1-illumination_dovetail_z(params)]) translate(left_back_corner_pos(params))  rotate([0,180,45])   hole_from_bottom(r = 2,h=999, base_w = 7, big_bottom = false);
+        translate(right_back_corner_pos(params) - [0,0,4]) mirror([0,0,1]) z_axis_mount_counterbore(counterbore_r=3.5);
+        translate(left_back_corner_pos(params) - [0,0,4]) mirror([0,0,1]) z_axis_mount_counterbore(counterbore_r=3.5);
     }
     else{
         // Adding the central screw hole and nut trap
