@@ -60,7 +60,7 @@ module spacer_top(){
     }
 }
 
-module spacer_base(){
+module spacer_base(params){
     translate([0,0,-62]){
         hull(){
             // Creating the triangular bottom of the spacer using the position of the corners as previously defined
