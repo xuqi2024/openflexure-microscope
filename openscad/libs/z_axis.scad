@@ -31,9 +31,6 @@ use <./illumination.scad>
 use <./microscope_parameters.scad>
 use <./libdict.scad>
 
-function params = default_params();
-function hole_r = key_lookup("stage_hole_r", params);
-
 module each_om_contact_plane(){
     // This transform puts y=0 in the plane of contact between the
     // optics module and the mount for it, with the origin at the
