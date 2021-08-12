@@ -432,13 +432,17 @@ module z_axis_casing_cutouts(params, rectangular = false){
     z_actuator_cutout(params);
     z_motor_clearance(params);
     if (rectangular){
-        // Creating diagonally slanted cylindrical boring holes for the screws to be able to be inserted through to reach the screw holes
-        translate(right_illumination_screw_pos(params) - [0,0,4])  mirror([0,0,1]) rotate(-90) z_axis_mount_counterbore(y_shift=17, h=30);
-        translate(left_illumination_screw_pos(params) - [0,0,4])  mirror([0,0,1]) rotate(90) z_axis_mount_counterbore(y_shift=17, h=30);
-        
-        // Cutting out boring holes for the screws to be able to be inserted through to reach the screw holes at the back of the z-axis
-        translate(right_back_corner_pos(params) - [0,0,4]) mirror([0,0,1]) z_axis_mount_counterbore(counterbore_r=3.5);
-        translate(left_back_corner_pos(params) - [0,0,4]) mirror([0,0,1]) z_axis_mount_counterbore(counterbore_r=3.5);
+        reflect_x(){
+            // Counterbored holes, from underneath the rectangular mounting platform
+            // These are used to screw the Z axis on to the spacer, for the upright
+            // microscope.
+            translate(right_illumination_screw_pos(params) - [0,0,2.5]){
+                mirror([0,0,1]) rotate(-90) z_axis_mount_counterbore(y_shift=17, h=30);
+            }  
+            translate(right_back_corner_pos(params) - [0,0,2.5]){
+                mirror([0,0,1]) z_axis_mount_counterbore(counterbore_r=3.5);
+            }
+        }
     }
     else{
         // Adding the central screw hole and nut trap
