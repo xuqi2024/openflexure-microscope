@@ -31,8 +31,8 @@ use <./illumination.scad>
 use <./microscope_parameters.scad>
 use <./libdict.scad>
 
-params = default_params();
-hole_r = key_lookup("stage_hole_r", params);
+function params = default_params();
+function hole_r = key_lookup("stage_hole_r", params);
 
 module each_om_contact_plane(){
     // This transform puts y=0 in the plane of contact between the
@@ -410,14 +410,19 @@ module z_axis_casing_cutouts(params, rectangular = false){
     z_actuator_cutout(params);
     z_motor_clearance(params);
     if (rectangular){
+        // Creating diagonally slanted cylindrical boring holes for the screws to be able to be inserted through to reach the screw holes
         rotate_y(180)   translate([0,0,-59.2-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))  rotate_z(45)    boring_holes(boring_radius =4.5);
-        rotate_y(180)   translate([0,0,-60.2-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))   cylinder(r = 4.5 + tiny(), h = 4);
-        rotate_y(180)   translate([0,0,-60.1-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))   rotate([0,180,45])   hole_from_bottom(r = 2,h=999, base_w = 9, big_bottom = false);
         rotate_y(180)   translate([0,0,-59.2-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  rotate_z(225)    boring_holes(boring_radius =4.5);
+        // Creating cylindrical holes situated at the base of the boring holes so the head of the screw sits flat in its position
+        rotate_y(180)   translate([0,0,-60.2-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))   cylinder(r = 4.5 + tiny(), h = 4);
         rotate_y(180)   translate([0,0,-60.2-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  cylinder(r = 4.5 + tiny(), h = 4);
+        // Creating screw holes for the front two screws to thread through
+        rotate_y(180)   translate([0,0,-60.1-illumination_dovetail_z(params)]) translate(right_illumination_screw_pos(params))   rotate([0,180,45])   hole_from_bottom(r = 2,h=999, base_w = 9, big_bottom = false);
         rotate_y(180)   translate([0,0,-60.1-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  rotate([0,180,-45])  hole_from_bottom(r = 2,h=999, base_w = 9, big_bottom = false);
+        // Cutting out boring holes for the screws to be able to be inserted through to reach the screw holes at the back of the z-axis
         rotate_y(180)   translate([0,0,-60.2-illumination_dovetail_z(params)]) translate(right_back_corner_pos(params))  cylinder(r = 3.5 + tiny(), h = 100);
         rotate_y(180)   translate([0,0,-60.2-illumination_dovetail_z(params)]) translate(left_back_corner_pos(params))  cylinder(r = 3.5 + tiny(), h = 100);
+        // Creating screw holes for the back two screws to thread through
         rotate_y(180)   translate([0,0,-60.1-illumination_dovetail_z(params)]) translate(right_back_corner_pos(params))   rotate([0,180,-45])   hole_from_bottom(r = 2,h=999, base_w = 7, big_bottom = false);
         rotate_y(180)   translate([0,0,-60.1-illumination_dovetail_z(params)]) translate(left_back_corner_pos(params))  rotate([0,180,45])   hole_from_bottom(r = 2,h=999, base_w = 7, big_bottom = false);
     }
