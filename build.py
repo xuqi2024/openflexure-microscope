@@ -10,8 +10,9 @@ The selection for which extra STLs are copied in is in build_system/stl_copy
 '''
 
 import argparse
-import sys
-from ninja import ninja
+import os
+import subprocess
+from ninja import BIN_DIR
 from build_system.microscope_build_writer import MicroscopeBuildWriter
 from build_system.util import version_string
 
@@ -33,7 +34,9 @@ parser.add_argument(
     help="Ensures that the repo is clean before compiling",
     action="store_true",
 )
-args = parser.parse_args()
+
+# we get the flags above and will pass the rest to ninja
+args, ninja_args = parser.parse_known_args()
 
 
 CAMERAS = ["picamera_2", "m12"]
@@ -309,5 +312,4 @@ def write_ninja_file(extra_files, generate_json):
 if __name__ == "__main__":
     write_ninja_file(args.include_extra_files, args.generate_stl_options_json)
     # Run the "ninja.build" file we just created, to generate STLs
-    sys.argv = [sys.argv[0]]
-    ninja()
+    subprocess.run([os.path.join(BIN_DIR, "ninja")] + ninja_args, check=True)
