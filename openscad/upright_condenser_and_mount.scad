@@ -31,7 +31,7 @@ module condenser_top_hull(){
     }
 }
 
-module upright_objective_fitting_cutout(){
+module upright_objective_fitting_cutout(params, y_stop=true){
     // Creates a mount for the nut and screw hole that holds it on
     difference(){
         objective_fitting_cutout(params, y_stop=true);
