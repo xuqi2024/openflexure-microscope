@@ -233,7 +233,7 @@ module microscope_stand_base_section(params, ex_rad=3){
 
 // TODO: split me
 module microscope_stand(params, pi_stand_h){
-    h=73;
+    h=pi_stand_h+31;
 
     stand_lugs(params, h, pi_stand_h);
 
