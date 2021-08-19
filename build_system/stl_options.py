@@ -5,6 +5,11 @@ This module sets the STL options which define:
     * STLs that are requred for a valid microscope
 """
 
+# Disable unused valuables in this file as some documented options may
+# not be needed currently
+# pylint: disable=unused-variable
+
+
 def get_standard_configurations():
     """
     Return the STL selector parameters for the standard microscope configurations

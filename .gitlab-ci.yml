@@ -17,7 +17,9 @@ stages:
     # Install everything needed for all OpenSCAD jobs so they run in a consistent environment
     before_script:
       - apt-get update -qq
-      - apt-get -o DPkg::Options::=--force-confdef -y -qq install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates python3-pip openscad git xvfb imagemagick unzip inkscape
+      - apt-get -o DPkg::Options::=--force-confdef -y -qq install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates python3-pip git xvfb imagemagick unzip inkscape wget
+      - wget https://build.openflexure.org/assets/openscad_2021.01-1~20.04_amd64.deb -O /tmp/openscad_2021.01-1~20.04_amd64.deb
+      - apt -o DPkg::Options::=--force-confdef -y -qq install /tmp/openscad_2021.01-1~20.04_amd64.deb
       - pip3 install -r requirements.txt
 
 # Unit testing of the scad library functions
@@ -54,6 +56,17 @@ code_quality:
       - merge_requests
       - web
       - branches
+
+lint_build_system:
+    stage: test
+    image: python:3.7
+    script:
+      - pip install -r requirements.txt
+      - ./lint_build_system.py
+    only:
+      - tags
+      - merge_requests
+      - web
 
 # Build STL files
 build:

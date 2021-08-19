@@ -389,6 +389,14 @@ module z_axis_casing_cutouts(params){
             }
         }
     }
+    // Adding the central screw hole and nut trap
+    translate_z(-9){
+        translate(illumination_back_corner_pos(params)){
+            rotate([0,0,180]){
+                m3_nut_trap_with_shaft(0,0);
+            }
+        }
+    }
 }
 
 ////////////// These modules define the actuator column and housing (where the screw/nut/band go)

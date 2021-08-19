@@ -25,6 +25,7 @@ render.ninja
 .ninja_log
 docs/renders/
 rendering/annotations/*.png
+stl_options.json
 
 # Ignore IDE files
 .vscode/

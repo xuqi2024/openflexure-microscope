@@ -1,63 +1,107 @@
-/******************************************************************
-*                                                                 *
-* OpenFlexure Microscope: OpenSCAD Utility functions              *
-*                                                                 *
-* This is part of the OpenFlexure microscope, an open-source      *
-* microscope and 3-axis translation stage.  It gets really good   *
-* precision over a ~10mm range, by using plastic flexure          *
-* mechanisms.                                                     *
-*                                                                 *
-* (c) Richard Bowman, January 2016                                *
-* Released under the CERN Open Hardware License                   *
-*                                                                 *
-******************************************************************/
+// LibFile: utilities.scad
+//   A collection of utilities originally developed for the OpenFlexure
+//   microscope.
+//   
+//   (c) Richard Bowman, January 2016
+//   Released under the CERN Open Hardware License
+
+// Until we figure out a neater way to do this, I am using a commoncode
+// block to include this file for the examples.  Using the Include: block
+// will be confusing because we don't install it in the libraries folder
+// by default...
+// CommonCode:
+//    use <./openscad/libs/utilities.scad>;
 
 
-//utilities
-
-// this is a tiny distance. Used to be a parameter d in the code but that caused confusion with diameters
+// Function: tiny()
+// Description: 
+//   This is a tiny distance. In many places, it is helpful to shift
+//   surfaces by a small distance, e.g. to ensure overlap or avoid
+//   degenerate points.  `tiny()` is that distance, currently 0.05.
+//   
+//   `tiny()` was formerly known as `d` in the code 
+//   but that caused confusion with diameters.
 function tiny() = 0.05;
 
+// Function: zero_z()
+// Usage: zero_z(vector)
+// Description: 
+//   Return a copy of a 3-element vector, with the third (z) component set to 0
 function zero_z(size) = [size.x, size.y, 0]; //set the Z component of a 3-vector to 0
 
 function if_undefined_set_default(argument, default) = is_undef(argument) ? default : argument;
 
+// Function: translate_x()
+// Usage: translate_x(dist)
+// Description: 
+//   Translate in the X direction.  Equivalent to `translate([dist, 0, 0])`.
 module translate_x(x_tr){
     translate([x_tr, 0, 0]){
         children();
     }
 }
 
+// Function: translate_y()
+// Usage: translate_y(dist)
+// Description: 
+//   Translate in the Y direction.  Equivalent to `translate([0, dist, 0])`.
 module translate_y(y_tr){
     translate([0, y_tr, 0]){
         children();
     }
 }
 
+// Function: translate_z()
+// Usage: translate_z(dist)
+// Description: 
+//   Translate in the Z direction.  Equivalent to `translate([0, 0, dist])`.
 module translate_z(z_tr){
     translate([0, 0, z_tr]){
         children();
     }
 }
 
+// Function: rotate_x()
+// Usage: rotate_x(angle)
+// Description: Rotate about X axis. Equivalent to `rotate([angle, 0, 0])`.
 module rotate_x(x_angle){
     rotate([x_angle, 0, 0]){
         children();
     }
 }
 
+// Function: rotate_y()
+// Usage: rotate_y(angle)
+// Description: Rotate about Y axis. Equivalent to `rotate([0, angle, 0])`.
 module rotate_y(y_angle){
     rotate([0, y_angle, 0]){
         children();
     }
 }
 
+// Function: rotate_z()
+// Usage: rotate_z(angle)
+// Description: Rotate about Z axis. Equivalent to `rotate([0, 0, angle])`.
 module rotate_z(z_angle){
     rotate([0, 0, z_angle]){
         children();
     }
 }
 
+// Function: reflect()
+// Usage: reflect(axis)
+// Arguments:
+//   axis = a 2- or 3D vector giving the axis to reflect in
+// Description:
+//   Duplicate the children of this module, once unmodified, and
+//   once mirrored about the specified axis.  The mirrored copy
+//   is equivalent to `mirror(axis) children()`.
+//   
+//   Conveninece functions `reflect_x`, `reflect_y`, and `reflect_z`
+//   are defined to reflect about the respective axes.
+// Examples(3D):
+//   reflect([1,0,0]) translate([10,0,0]) cube(10);
+//   reflect_x() translate([10,0,0]) cube(10);
 module reflect(axis){
     //reflects children about the origin, keeping the originals
     children();
@@ -65,6 +109,7 @@ module reflect(axis){
         children();
     }
 }
+
 
 module reflect_x(){
     //shorthand for reflecting in x
@@ -87,6 +132,18 @@ module reflect_z(){
     }
 }
 
+// Module: repeat()
+// Usage: repeat(delta, N, center=false)
+// Arguments:
+//   delta = vector specifying the displacement between adjacent copies
+//   N = total number of copies
+//   ---
+//   center = The default, `false`, places the first copy at its original location and the last is displaced by `(N-1)*delta`.  Set to `true` to centre the copies on the original location.
+// Description:
+//   Create a linear arry of copies of a geometry.
+// Examples:
+//   repeat([10,0,0], 4) cube(5);
+//   repeat([10,0,0], 4, center=true) cube(5, center=true);
 module repeat(delta, N, center=false){
     //repeat children along a regular array
     center_tr = (center ?  -(N-1)/2 : 0) * delta;
@@ -217,13 +274,18 @@ module nut_y(d,h=undef,center=false,fudge=1.15,extra_height=0.7,shaft_length=0){
     }
 }
 
-
+// Module: cyl_slot()
+// Usage: cyl_slot(r=1, h=1, dy=2, center=false)
+// Description: An elongated cylinder use to make a slot for a screw. Slot is oriented in the y direction
+// Arguments:
+//   r = raduis of the slots
+//   h = the height
+//   dy = the length of the slot (centre to centre on circles) total length is dy+2*r
+//   center = if true the shape is centred on all axes.
+// Examples:
+//   cyl_slot(r=2, h=10, dy=20);
 module cyl_slot(r=1, h=1, dy=2, center=false){
-    // An elongated cylinder use to make a slot for a screw. Slot is oriented in the y direction
-    // r: raduis of the slots
-    // h: the height
-    // dy: the length of the slot (centre to centre on circles) total length is dy+2*r
-    // center: if true the shape is centred on all axes.
+    
 
     hull(){
         repeat([0, dy, 0], 2, center=true){
@@ -232,18 +294,42 @@ module cyl_slot(r=1, h=1, dy=2, center=false){
     }
 }
 
+// Module: unrotate()
+// Usage: unrotate(rotation)
+// Description: 
+//   Undoing a rotation is not as simple as `rotate(-rotation)` because
+//   `rotate()` applies three separate rotations in order.
+//   `unrotate()` reverses this, by applying the rotations in reverse order.
+// Example(3D):
+//   angles = [30, 60, 45];
+//   unrotate(angles) rotate(angles) cylinder(r=2, h=10);
+// Example(3D):
+//   // This doesn't undo the rotation as you might expect!
+//   angles = [30, 60, 45];
+//   rotate(-angles) rotate(angles) cylinder(r=2, h=10);
 module unrotate(rotation){
     //undo a previous rotation
     //Note: this is not the same as rotate(-rotation) due to ordering.
-    rotate_z(-rotation.z){
+    rotate_x(-rotation.x){
         rotate_y(-rotation.y){
-            rotate_x(-rotation.x){
+            rotate_z(-rotation.z){
                 children();
             }
         }
     }
 }
 
+// Module: sparse_matrix_transform()
+// Usage: sparse_matrix_transform(xx=1, yy=1, zz=1, xy=0, xz=0, yx=0, yz=0, zx=0, zy=0, xt=0, yt=0, zt=0)
+// Description:
+//   Sometimes, a matrix transformation is the right way to get something done.
+//   However, specifying a full 4x4 matrix can be a bit clumsy - especially as
+//   lots of useful transformations are quite close to the identity matrix.
+//   This module allows you to specify individual matrix elements.  Unspecified
+//   elements will default to the identity matrix.
+// Examples:
+//   sparse_matrix_transform(yz=0.5) cylinder(r=5, h=20);
+//   sparse_matrix_transform(zy=0.5) cylinder(r=5, h=20);
 module sparse_matrix_transform(xx=1, yy=1, zz=1, xy=0, xz=0, yx=0, yz=0, zx=0, zy=0, xt=0, yt=0, zt=0){
     //Apply a matrix transformation, specifying the matrix sparsely
     //This is useful because most helpful matrices are close to the identity.
@@ -312,6 +398,32 @@ module rightangle_prism(size,center=false){
     }
 }
 
+// Module: sequential_hull()
+// Usage: sequential_hull()
+// Description: 
+//   Take the convex hull between each pair in a sequence of geometries.
+//   
+//   `sequential_hull()` allows the construction of relatively complicated
+//   shapes, by "hulling" between pairs of objects.  It must have at least
+//   two child modules, though it becomes useful when you have rather more.
+//   Using it in conjunction with a sequence of spheres, for example, will
+//   create a wire that passes each point.
+// Example:
+//   sequential_hull(){
+//   -- $fn=8;
+//       translate([0,0,0]) sphere(2);
+//       translate([0,0,15]) sphere(2);
+//       translate([15,0,15]) sphere(2);
+//       translate([0,15,15]) sphere(2);
+//   }
+// Example:
+//   sequential_hull(){
+//       translate([0,0,0]) cylinder(r=2, h=tiny());
+//       translate([0,0,5]) cylinder(r=4, h=tiny());
+//       translate([0,0,7]) cylinder(r=2, h=tiny());
+//       translate([0,0,10]) cylinder(r=6, h=3);
+//       translate([0,0,20]) cylinder(r=2, h=tiny());
+//   }
 module sequential_hull(){
     //given a sequence of >2 children, take the convex hull between each pair - a helpful, general extrusion technique.
     for(i=[0:$children-2]){
@@ -323,7 +435,7 @@ module sequential_hull(){
 }
 
 
-// TODO: Give this a better name
+//TODO: Give this a better name
 module cylinder_with_45deg_top(h,r,center=false,extra_height=0.7){
     // Block on top of the hortizontal cylinder. Hulled with the cylinder
     // This forms a 45 degree sloped roof for printing
@@ -365,6 +477,20 @@ module feather_vertical_edges(flat_h=0.2,fin_r=0.5,fin_h=0.72,object_h=20){
     }
 }
 
+// Module: square_to_circle()
+// Description:
+//   Gradually transition from a square to a circle.
+//
+//   Create a stack of polygons, starting with a square and doubling the
+//   number of sides each layer, until we end up with a "circle".
+//   
+//   Optionally, we can add a cylinder on top, matching the top layer.
+// Arguments:
+//   r = The radius of the nominal cylinder
+//   h = The overall height of the structure
+//   ---
+//   layers = The number of layers (default is 4).  Each layer will have a height of `h/layers`
+//   top_cylinder = The height of the top cylinder.  The top cylinder will have the same number of facets as the final layer, and the whole structure will have a height of `h + top_cylinder`.
 module square_to_circle(r, h, layers=4, top_cylinder=0){
     // A stack of thin shapes, starting as a square and
     // gradually gaining sides to turn into a cylinder
@@ -384,6 +510,75 @@ module square_to_circle(r, h, layers=4, top_cylinder=0){
     }
 }
 
+// Module: hole_from_bottom()
+// Usage: hole_from_bottom(r, h, base_w=-1, delta_z=0.5, layers=4, big_bottom=true)
+// Description:
+//   A cylinder that is gradually formed from a slot or square at the base.
+//   This allows a hole to be formed in the "roof" of a void, with only
+//   minimal "stringing" when printed with a fused filament fabrication printer.
+//   
+//   The most important thing to get right is the first layer, which should be
+//   a slot, spanning the full width of the void.  This means that most competent
+//   slicers will be able to correctly bridge across the void, parallel to the
+//   slot.  You can set the width of the slot using `base_w`, though the neatest
+//   way to do this is often with an intersection (see the example).
+//   
+//   Once you have bridged over the void, leaving a slot for the hole, the next
+//   layer will have a square hole.  This should mean the printer bridges over
+//   the slot in the layer(s) below, perpendicular to the edges.  Subsequent
+//   layers will then fill in the corners, until we have a nice cylinder.
+//   
+//   You can set `base_w` carefully and just subtract this from the "roof" of
+//   a void.  However, it is often easier to set `base_w=999` and 
+//   `big_bottom=true`, then take the intersection with your void, see the 
+//   example.
+// Arguments:
+//   r = The radius of the cylinder
+//   h = The height of the cylinder
+//   ---
+//   base_w = The width of the slot at the bottom.  By default it will be 2*r.
+//   delta_z = The thickness of the layers.  I suggest twice your printer's layer thickness is a sensible value.
+//   layers = The number of steps between square and cylinder (default 4)
+//   big_bottom = If true (default), add a very large volume below z=0
+// Example(VPT=[0,0,10], VPR=[120, 0, 30], NoAxes):
+//   difference(){
+//        translate([-10, -10, 0]) cube(20); // The base structure
+//   
+//        intersection(){
+//            cylinder(r=8, h=999, center=true); // This is our void
+//   
+//            // We set the height of our void by the Z position of 
+//            // hole_from_bottom
+//            translate([0,0,10]) hole_from_bottom(r=2, h=999, base_w=999, big_bottom=true);
+//        }
+//      
+//        // Cut through the structure so we can see inside
+//        rotate(225) translate([-99, 0, -1]) cube(999);
+//    }
+// Example(2D, NoAxes):
+//    -- module example_1(){
+//    --     difference(){
+//    --         translate([-10, -10, 0]) cube(20); // The base structure
+//    --     
+//    --         intersection(){
+//    --             cylinder(r=8, h=999, center=true); // This is our void
+//    --     
+//    --             // We set the height of our void by the Z position of 
+//    --             // hole_from_bottom
+//    --             translate([0,0,10]) hole_from_bottom(r=2, h=999, base_w=999, big_bottom=true);
+//    --         }
+//    --     }
+//    -- }
+//    // This code renders some slices through the first example
+//    for(i = [0:3]){
+//        z = 9.75 + 0.5*i;
+//        translate([i*25, 0, 0]) projection(cut=true) translate([0,0,-z]) example_1();
+//    }
+// Example(3D, VPD=50):
+//    hole_from_bottom(r=2, h=10, base_w=10, big_bottom=false);
+// Example(3D, VPD=50):
+//    hole_from_bottom(r=2, h=10, big_bottom=true);
+// See Also: square_to_circle()
 module hole_from_bottom(r, h, base_w=-1, delta_z=0.5, layers=4, big_bottom=true){
     // This creates a shape that can be used to create a 3D printable
     // hole in a large bridge. Builds up in layer to avoid unprintable
@@ -403,17 +598,31 @@ module hole_from_bottom(r, h, base_w=-1, delta_z=0.5, layers=4, big_bottom=true)
     }
 }
 
-
+// Module: lighttrap_cylinder)
+// Usage: lighttrap_cylinder(r1, r2, h, ridge=1.5);
+// Arguments:
+//   r1 = the radius of the bottom of the shape (i.e. the bottom of the bottom truncated cone)
+//   r2 = the inner radius of the top of the shape (i.e. the top of the top truncated cone)
+//   h = the overall height
+//   ---
+//   ridge = The height and change in `r` of each ridge (the angle is fixed at 45 degrees)
+// Description:
+//   A shape made up of truncated cones to form a christmas-tree-like shape.
+//   
+//   This is designed to be subtracted from a solid block, to form a light path
+//   that has minimal reflections from the walls of the cut-out, because the 
+//   surfaces are angled.
+//   
+//   NB for a nominally "straight-edged" cylinder, you must set `r2 = r1 - ridge`.
+// Example:
+//    lighttrap_cylinder(5, 5-1.5, 21);
+// Example:
+//    difference(){
+//        translate([-10, -10, 0]) cube(20);
+//        lighttrap_cylinder(5, 5-1.5, 21);
+//        translate([-99, -999, -1]) cube(999);
+//    }
 module lighttrap_cylinder(r1,r2,h,ridge=1.5){
-    //A shape made up of truncated cones to form a christmas-tree-like shape.
-    //It can be subtracted from and object to create a shaft that is good for
-    //trapping stray light in an optical path
-    //r1 is the radius of the bottom of the shape
-    //     (i.e. the bottom of the bottom truncated cone)
-    //r2 is the inner radius of the top of the shape
-    //     (i.e. the top of the top truncated cone)
-    //NOTE: to make a uniform width shaft set r2==r1-ridge
-
     //there must be at least one cone or we divide by zero
     n_cones = max(floor(h/ridge),1);
     cone_h = h/n_cones;
