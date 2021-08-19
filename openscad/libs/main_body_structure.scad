@@ -173,9 +173,8 @@ module m3_lug(pos, angle, holes=true){
                 }
                 //the lug hole
                 if (holes) {
-                    cylinder(d=3.5,h=50,center=true);
                     translate_z(3){
-                        cylinder(d=6.5, h=22);
+                        m3_cap_counterbore(10, 10);
                     }
                 }
             }
@@ -183,10 +182,9 @@ module m3_lug(pos, angle, holes=true){
     }
 }
 
-module reflection_illuminator_cutout(){
+module reflection_illuminator_cutout(extra_depth=0){
     // The shape for a hole in the main body for the reflection illuminator to poke through.
 
-    //
     top_cutout_w = 17.8;
     mid_cutout_w = illuminator_width() + 1;
     bottom_cutout_w = illuminator_width() + 4;
@@ -195,6 +193,10 @@ module reflection_illuminator_cutout(){
     // This is the widest cutout we can make at height 'reflection_cutout_height()'
     // without the bridge having a corner in it.
     hull() {
+        //cut below for stand
+        translate([-(bottom_cutout_w)/2, -49, -22-extra_depth]){
+            cube([bottom_cutout_w, 49, 1]);
+        }
         translate([-(bottom_cutout_w)/2, -49, -0.5]){
             cube([bottom_cutout_w, 49, 1]);
         }

@@ -166,6 +166,25 @@ module xz_slice(y=0){
     }
 }
 
+module no2_selftap_counterbore(bore_h=999, hole_h=999){
+    $fn = 14;
+    generic_counterbore(bore_d=5.6, bore_h=bore_h, hole_d=2.5, hole_h=hole_h);
+}
+
+// Counterbored through hole for an m3 cap screw counterbore is above z=0
+// through hole is below z=0
+module m3_cap_counterbore(bore_h=999, hole_h=999){
+    $fn = 14;
+    generic_counterbore(bore_d=6.5, bore_h=bore_h, hole_d=3.5, hole_h=hole_h);
+}
+
+module generic_counterbore(bore_d, bore_h, hole_d, hole_h){
+    translate_z(-hole_h){
+        cylinder(d=hole_d, h=hole_h+tiny());
+    }
+    cylinder(d=bore_d, h=bore_h);
+}
+
 module nut(d,h=undef,center=false,fudge=1.18,shaft=false){
     //make a nut, for metric bolt of nominal diameter d
     //d: nominal bolt diameter (e.g. 3 for M3)
@@ -323,6 +342,7 @@ module sparse_matrix_transform(xx=1, yy=1, zz=1, xy=0, xz=0, yx=0, yz=0, zx=0, z
     }
 }
 
+//TODO: What does this do? Do we still want it?
 module support(size, height, baseheight=0, rotation=[0,0,0], supportangle=45, outline=false){
     //generate "support material" in the STL file for selective supporting of things
     module support_2d(){
@@ -779,4 +799,29 @@ module exterior_brim(r=4, h=0.2, brim_only=false){
     }
 }
 
+module external_fillet_2d(r=3)
+{
+    offset(r=r){
+        offset(r=-r){
+            children();
+        }
+    }
+}
 
+module internal_fillet_2d(r=3)
+{
+    offset(r=-r){
+        offset(r=r){
+            children();
+        }
+    }
+}
+
+module fillet_2d(r=3)
+{
+    external_fillet_2d(r=r){
+        internal_fillet_2d(r=r){
+            children();
+        }
+    }
+}

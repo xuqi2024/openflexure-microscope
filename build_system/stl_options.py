@@ -193,37 +193,19 @@ def _get_base_options():
     return base_option_doc
 
 
-def _get_motor_driver_options():
-    """
-    Return the motor driver options and documentation strings for the STL selector
-    """
-    # Documentation strings for types of motor driver in the STL selector
-    sangaboard_doc = {
-        "key": "sangaboard",
-        "title": "Sangaboard",
-        "description": "A v0.3 Sangaboard. (Custom board)",
-    }
-    arduino_nano_doc = {
-        "key": "arduino_nano",
-        "title": "Ardunio Nano",
-        "description": ("Homemade driver using Arduino Nano and the driver boards "
-                        "that come with the motors."),
-    }
-    # Set the documentation strings for selecting the motor driver in the STL selector
-    driver_doc = {
-        "key": "motor_driver_electronics",
-        "default": "sangaboard",
-        "description": "The type of electronics used to drive the motors",
-        "options": [sangaboard_doc, arduino_nano_doc],
-    }
-    return driver_doc
-
-
 def _get_advanced_options():
     """
     Return a list of dictionaries. Each dictionary describes and "advanced" option in
     the STL selector.
     """
+
+    nano_sangaboard_doc = {
+        "key": "use_nano_sangaboard",
+        "default": False,
+        "advanced": True,
+        "description": ("Mount for Sangaboard compatible Arduino Nano circuit. Use if Sangaboard "
+                        "v0.4 is unavailable."),
+    }
 
     slider_riser_doc = {
         "key": "slide_riser",
@@ -267,6 +249,7 @@ def _get_advanced_options():
     }
 
     return [
+        nano_sangaboard_doc,
         slider_riser_doc,
         reflection_illumination_doc,
         actuator_drilling_jig_doc,
@@ -285,7 +268,6 @@ def get_option_docs(include_extra_files):
         _get_objective_options(),
         _get_camera_options(include_extra_files),
         _get_motorised_options(),
-        _get_motor_driver_options(),
         _get_base_options()
     ]
 
