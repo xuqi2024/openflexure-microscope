@@ -151,8 +151,8 @@ def nano_converter(writer):
     """Motor driver electronics case"""
     
 
-    select_stl_if = {"motor_driver_electronics": "arduino_nano",
-                         "motorised": True}
+    select_stl_if = {"use_nano_sangaboard": True,
+                     "motorised": True}
 
     writer.openscad(
         "nano_converter_plate.stl",

@@ -13,9 +13,12 @@ use <./libdict.scad>
 //TODO re-implement this
 function stand_wall_thickness() = 2.5;
 function stand_base_thickness() = 2;
+function stand_inner_offset_r() = 1.5;
+function stand_outer_offset_r() = stand_inner_offset_r() + stand_wall_thickness();
 function microscope_depth() = 3;
 function microscope_stand_height(vert_h) = vert_h + 31;
 
+    
 
 module foot_footprint(tilt=0){
     // the footprint of one foot/actuator column
@@ -162,36 +165,37 @@ module stand_lugs(params, h, vert_h){
     }
 }
 
+module footprint(params){
+    microscope_stand_base_section(params, stand_outer_offset_r());
+}
 
 //The outer shell of the microscope stand
 module microscope_stand_shell(params, h, vert_h){
 
-    inner_offset_r = 1.5;
-    outer_offset_r = inner_offset_r + stand_wall_thickness();
     assert(h-vert_h-10>15, "Stand is too short to print. Either increase height or reduce height of the pi stand");
 
     difference(){
         sequential_hull(){
-            microscope_stand_base_section(params, outer_offset_r);
+            microscope_stand_base_section(params, stand_outer_offset_r());
 
             translate_z(vert_h+5){
-                microscope_stand_base_section(params, outer_offset_r);
+                microscope_stand_base_section(params, stand_outer_offset_r());
             }
             translate_z(vert_h+10){
-                thick_bottom_section(params, h-vert_h-10, outer_offset_r);
+                thick_bottom_section(params, h-vert_h-10, stand_outer_offset_r());
             }
         }
 
         sequential_hull(){
             translate_z(stand_base_thickness()){
-                microscope_stand_base_section(params, inner_offset_r);
+                microscope_stand_base_section(params, stand_inner_offset_r());
             }
 
             translate_z(vert_h+5){
-                microscope_stand_base_section(params, inner_offset_r);
+                microscope_stand_base_section(params, stand_inner_offset_r());
             }
             translate_z(vert_h+10+tiny()){
-                thick_bottom_section(params, h-vert_h-10, inner_offset_r);
+                thick_bottom_section(params, h-vert_h-10, stand_inner_offset_r());
             }
         }
     }
@@ -351,10 +355,6 @@ function pi_stand_front_screw_pos() = let(
     block_pos = pi_stand_mount_block_pos()
 ) [block_pos.x+3, block_pos.y+6, 5];
 
-function pi_stand_front_screw_pos() = let(
-    block_pos = pi_stand_mount_block_pos()
-) [block_pos.x+3, block_pos.y+6, 5];
-
 function pi_stand_front_nut_trap_pos() = pi_stand_front_screw_pos() - [7, 0, 0];
 
 function pi_stand_side_screw_pos() = [14, -3, 35];
@@ -406,7 +406,6 @@ module pi_tap_holes(connector_side=true, inside=true){
 }
 
 module pi_stand_base(){
-    hole_inset = [3.5, 3.5, 0];
 
     standoff_h = pi_stand_standoff_h();
     base_size = pi_stand_base_size();
@@ -514,8 +513,7 @@ module sanga_lugs(){
 }
 
 module pi_stand_nut_trap(){
-    side_screw_pos = pi_stand_side_screw_pos();
-    wall_t = pi_stand_wall_t();
+
     nut_block_depth = pi_stand_nut_block_depth();
     nut_tr_pos = pi_stand_side_nut_trap_pos();
     translate(nut_tr_pos){
