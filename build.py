@@ -57,9 +57,6 @@ ALL_OPTICS = RMS_OPTICS + SIMPLE_OPTICS
 # The when building the lens is assumed to be the lens of the camera!
 PLATFORM_OPTICS_MODULE_OPTIONS = [("picamera_2", "pilens")]
 
-MOTOR_DRIVER_ELECTRONICS = ["sangaboard", "arduino_nano"]
-
-
 def generate_rms_optics_modules(writer):
     for camera in CAMERAS:
         for optics in RMS_OPTICS + INF_RMS_OPTICS:
@@ -143,27 +140,36 @@ def generate_stand_with_pi(writer):
         writer.openscad(
             output, "microscope_stand.scad", parameters, select_stl_if=select_stl_if
         )
+    # Also generate the tray for the pi itself
+    writer.openscad(
+        "pi_stand.stl",
+        "pi_stand.scad",
+        select_stl_if={"base_type": {"rpi_base", "rpi_base_tall"}}
+    )
 
-def generate_motor_buckets(writer):
+def nano_converter(writer):
     """Motor driver electronics case"""
-    for board_type in MOTOR_DRIVER_ELECTRONICS:
+    
 
-        parameters = {"DRIVER_TYPE": board_type}
-        select_stl_if = {"motor_driver_electronics": board_type,
+    select_stl_if = {"motor_driver_electronics": "arduino_nano",
                          "motorised": True}
 
-        writer.openscad(
-            f"motor_driver_case_{board_type}.stl",
-            "motor_driver_case.scad",
-            parameters,
-            select_stl_if=select_stl_if
-        )
+    writer.openscad(
+        "nano_converter_plate.stl",
+        "nano_converter_plate.scad",
+        select_stl_if=select_stl_if
+    )
+    writer.openscad(
+        "nano_converter_plate_gripper.stl",
+        "nano_converter_plate_gripper.scad",
+        select_stl_if=select_stl_if
+    )
 
 
 def generate_bases(writer):
     generate_no_pi_stand(writer)
     generate_stand_with_pi(writer)
-    generate_motor_buckets(writer)
+    nano_converter(writer)
 
 
 def generate_gears_and_thumbwheels(writer):
