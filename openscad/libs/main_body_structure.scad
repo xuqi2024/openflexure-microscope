@@ -182,10 +182,9 @@ module m3_lug(pos, angle, holes=true){
     }
 }
 
-module reflection_illuminator_cutout(){
+module reflection_illuminator_cutout(extra_depth=0){
     // The shape for a hole in the main body for the reflection illuminator to poke through.
 
-    //
     top_cutout_w = 17.8;
     mid_cutout_w = illuminator_width() + 1;
     bottom_cutout_w = illuminator_width() + 4;
@@ -195,7 +194,7 @@ module reflection_illuminator_cutout(){
     // without the bridge having a corner in it.
     hull() {
         //cut below for stand
-        translate([-(bottom_cutout_w)/2, -49, -22]){
+        translate([-(bottom_cutout_w)/2, -49, -22-extra_depth]){
             cube([bottom_cutout_w, 49, 1]);
         }
         translate([-(bottom_cutout_w)/2, -49, -0.5]){
