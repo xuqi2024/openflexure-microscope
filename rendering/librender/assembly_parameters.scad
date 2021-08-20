@@ -174,17 +174,19 @@ function camera_platform_allen_key_pos() = create_placement_dict(optics_module_m
 
 
 function condenser_z() = illumination_dovetail_z(PARAMS) + 65;
-function condenser_angle() = key_lookup("condenser_angle", PARAMS);
+
 function condenser_pos() = create_placement_dict([0, 0, condenser_z()],
                                                  [0, 0, 180],
-                                                 [180+condenser_angle(), 0, 0]);
+                                                 [180, 0, 0]);
+
 function condenser_pos_exp() = translate_pos(condenser_pos(), [0, 0, 30]);
+
 function condenser_pos_above_tool() = create_placement_dict([0, 0, 90],
                                                             [0, 0, -90],
-                                                            [180+condenser_angle(), 0, 0]);
+                                                            [180, 0, 0]);
 function condenser_pos_on_tool() = create_placement_dict([0, 0, 56],
                                                          [0, 0, -90],
-                                                         [180+condenser_angle(), 0, 0]);
+                                                         [180, 0, 0]);
 
 function condenser_lens_tool_pos() = create_placement_dict([0, 0, lens_tool_height()+0.01]);
 function condenser_lens_pos_relative() = create_placement_dict([0, 0, 36.5], [180, 0, 0]);

@@ -1,0 +1,51 @@
+use <../openscad/libs/illumination.scad>
+use <../openscad/libs/utilities.scad>
+use <../openscad/libs/microscope_parameters.scad>
+use <../openscad/libs/main_body_structure.scad>
+use <../openscad/libs/libdict.scad>
+use <librender/render_settings.scad>
+use <librender/assembly_parameters.scad>
+use <librender/electronics.scad>
+
+FRAME = 2;
+
+if (FRAME == 1){
+    illumination_assembly();
+}
+else{
+    illumination_board_assembly();
+}
+
+module illumination_board_assembly(){
+    illumination_board();
+}
+
+module illumination_assembly(){
+    params = render_params();
+
+    // This is taken straight from illumination, h=50 should match illumination_dovetail.scad
+    color(extras_colour()){
+        render(6){
+            illumination_dovetail(params, h = 60);
+        }
+    }
+
+    // This should match condenser.scad
+    color(body_colour()){
+        translate_z(key_lookup("sample_z", params) + 50){
+            rotate_y(180){
+                render(6){
+                    condenser(params, lens_d=13, lens_t=1, lens_assembly_z= 30);
+                }
+            }
+        }
+    }
+
+
+    // main body
+    color(body_colour()){
+        render(6){
+            main_body(params);
+        }
+    }
+}

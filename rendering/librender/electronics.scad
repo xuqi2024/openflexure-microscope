@@ -1,9 +1,53 @@
 
 use <../../openscad/libs/utilities.scad>
-use <../../openscad/libs/lib_microscope_stand.scad>
+use <../../openscad/libs/logo.scad>
 use <render_utils.scad>
 
 $fn = 12;
+
+
+module illumination_board(){
+    board_t = 1.5;
+    coloured_render("green"){
+        difference(){
+            translate_z(-board_t){
+                cylinder(d=15, h=board_t, $fn=24);
+            }
+            for (x_tr = [5, -5]){
+                translate_x(x_tr){
+                    cylinder(d=2.2, h=99, center=true);
+                }
+            }
+        }
+    }
+    translate([-1.27, 2.7, 0]){
+        single_angled_header_pins(2);
+    }
+    coloured_render("white"){
+        translate([-4.4,-3, 0]){
+            openflexure_emblem(h=tiny(), scale_factor=.04);
+        }
+        translate([-5,-4.3, 0]){
+            linear_extrude(tiny()){
+                text("openflexure.org", size=1.1, font="Calibri", halign="left");
+            }
+        }
+        translate_z(-board_t){
+            cube([2.8, 3.5, 1.5], center=true);
+        }
+    }
+    translate_z(-board_t){
+        coloured_render("orange"){
+            cube([2.5, 3.2, 1.6], center=true);
+        }
+        reflect_z(){
+            chip(0,-3,2.6, 1.5, 1);
+            chip(.5,-4.8,2, 1.25, 1.2, "darkkhaki");
+            chip(2.2,-3.5,.8,,1.75,.7, "darkkhaki");
+        }
+    }
+}
+
 
 function sangaboard_v0_4_dims() = [65, 57, 1.6];
 
@@ -684,6 +728,75 @@ module double_header_pin(){
             }
         }
     }
+}
+
+module single_header_pins(rows=20){
+    for (row_num = [0:rows-1]){
+        translate_x(row_num*2.54){
+            single_header_pin();
+        }
+    }
+}
+
+module single_header_pin(){
+    color("DimGray"){
+        hull(){
+            translate([-2/2, -3.5/2, 0]){
+                cube([2, 3.5, 2.3]);
+            }
+            translate([-2.55/2, -.8/2, 0]){
+                cube([2.55, .8, 2.3]);
+            }
+        }
+    }
+    color("Gold"){
+        translate([-0.3, -0.3, -3]){
+            cube([0.6, 0.6, 11.5]);
+        }
+    }
+}
+
+module single_angled_header_pins(rows=20){
+    for (row_num = [0:rows-1]){
+        translate_x(row_num*2.54){
+            single_angled_header_pin();
+        }
+    }
+}
+
+module single_angled_header_pin(){
+    translate_z(3.5/2){
+        rotate_x(-90){
+            translate_z(2.54){
+                color("DimGray"){
+                    hull(){
+                        translate([-2/2, -3.5/2, 0]){
+                            cube([2, 3.5, 2.3]);
+                        }
+                        translate([-2.55/2, -.8/2, 0]){
+                            cube([2.55, .8, 2.3]);
+                        }
+                    }
+                }
+                color("Gold"){
+                    translate([-0.3, -0.3, -2.54]){
+                        cube([0.6, 0.6, 11.5]);
+                    }
+                }
+            }
+        }
+    }
+    color("Gold"){
+        translate([-0.3, -0.3, -3]){
+            cube([0.6, 0.6, 3+3.5/2]);
+        }
+        translate_z(3.5/2){
+            rotate_y(-90){
+                cylinder(d=.6, h=.6, center=true);
+            }
+        }
+    }
+
 }
 
 function picamera2_size() = [23.862, 25, 1];

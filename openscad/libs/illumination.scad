@@ -196,43 +196,30 @@ module condenser_lens_gripper(lens_r, lens_t, base_r){
     }
 }
 
-module condenser_cutout(led_r, lens_r, lens_assembly_z, bottom_height=10){
-    // This is the cutout for the beam to pass through the condenser. It contains a light trap
-    // and a pressfit hole for the LED. In thr reference frame module the LED would be pointing upwards.
-    // Not that the LED countersink is at z=0 because the `tall_condenser` module that uses this
-    // is cut to make the condenser.
-    // The LED gripper hole continues bellow z=0 because the final plane of the top of the condenser is
-    // angled, and so that the tall condenser has a hole all the way through for debugging.
+module condenser_cutout(lens_r, lens_assembly_z){
+    // This is the cutout for the beam to pass through the condenser.
+    // It contains a light trap and mouning for the illumination board
 
-    // the led brim rests against the countersink
-    led_countersink = 1;
-    // how much space is reserved for the body of the led
-    led_height = 8;
-    lighttrap_offset = led_height+led_countersink;
-    lighttrap_h = lens_assembly_z-lighttrap_offset+tiny();
-    led_trilinder_h = bottom_height+lighttrap_offset+2*tiny();
+    mounting_hole_sep = 10;
+    board_d = 15;
+    board_t = 1.5;
+    component_h = 1.5;
+    lighttrap_h = lens_assembly_z+tiny();
     aperture_r = lens_r-condenser_aperture_difference();
 
     //Light trap to reduce stray reflectins
-    translate_z(lighttrap_offset){
-        lighttrap_cylinder(r1=led_r+1.5, r2=aperture_r, h=lighttrap_h);
+
+    lighttrap_cylinder(r1=3.5, r2=aperture_r, h=lighttrap_h);
+    reflect_x(){
+        translate_x(mounting_hole_sep/2){
+            cylinder(d=2.7, h=12, center=true, $fn=3);
+        }
     }
 
-    // pressfit hole for the LED
-    translate_z(-bottom_height-tiny()){
-        deformable_hole_trylinder(led_r, led_r+0.7, h=led_trilinder_h);
-    }
-
-    // Then next two are a cutout to allow the led to be pushed down to the pressfit hole
-    translate_z(led_countersink-tiny()){
-        cylinder(r1=led_r+1, r2=led_r, h=2);
-    }
-    translate_z(-led_countersink){
-        cylinder(r=led_r+1, h=2*led_countersink+tiny());
-    }
 }
 
-module tall_condenser(led_r, lens_d, lens_t, lens_assembly_z, include_mounting=true){
+
+module condenser(led_r=4.5/2, lens_d=13, lens_t=1, lens_assembly_z= 30, include_mounting=true){
     // Note that this is the shape before it is is rotated, and cut for printing.
     // This module is useful because the optical path is vertical
     // In this module the lens is at the top of the structure.
@@ -240,8 +227,6 @@ module tall_condenser(led_r, lens_d, lens_t, lens_assembly_z, include_mounting=t
 
     lens_r = lens_d/2;
     base_r = lens_r+2;
-     // the bottom is an extra bit that is sliced off when the condenser is rotated and cut before printing
-    bottom_height = 10;
     dt_block_depth = 16;
     dt_height = 20;
     dt_params = dovetail_params(
@@ -264,9 +249,8 @@ module tall_condenser(led_r, lens_d, lens_t, lens_assembly_z, include_mounting=t
             translate_z(lens_assembly_z){
                 cylinder(r=base_r, h=tiny());
             }
-            translate_z(-bottom_height){
-                cylinder(r=base_r, h=dt_height + bottom_height);
-            }
+
+            cylinder(r=base_r, h=dt_height);
             if (include_mounting){
                 translate_y(illumination_dovetail_y()){
                     linear_extrude(dt_height){
@@ -276,7 +260,7 @@ module tall_condenser(led_r, lens_d, lens_t, lens_assembly_z, include_mounting=t
             }
         }
 
-        condenser_cutout(led_r, lens_r, lens_assembly_z, bottom_height=bottom_height);
+        condenser_cutout(lens_r, lens_assembly_z);
      }
      //finally add the lens gripper
      translate_z(lens_assembly_z){
@@ -284,17 +268,4 @@ module tall_condenser(led_r, lens_d, lens_t, lens_assembly_z, include_mounting=t
      }
 }
 
-//TODO the lens_assembly_z should be adjusted to a focal length parameter
-module condenser(params, led_r=4.5/2, lens_d=13, lens_t=1, lens_assembly_z= 30, include_mounting=true){
-    //This is the condenser that is printed.
-    condenser_angle = key_lookup("condenser_angle", params);
-    difference(){
-        rotate_x(-condenser_angle){
-            tall_condenser(led_r, lens_d, lens_t, lens_assembly_z, include_mounting=include_mounting);
-        }
-        mirror([0,0,1]){
-            cylinder(r=999,h=999,$fn=4);
-        }
-    }
-}
 
