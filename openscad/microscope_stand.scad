@@ -1,15 +1,7 @@
-// A "bucket" base for the microscope to raise it up and house
-// the electronics.
-// There are two buckets on a motorised microscope, one to
-// hold the Raspberry Pi and one to hold the motor driver.
-// The motor driver case stacks underneath, as it's optional.
-//
-// The buckets (with the exception of the top one that holds
-// the microscope body) are stackable - so other accessories
-// like a battery pack or SSD for storage could be stacked
-// underneath
+// Stand for the standard microscope configuration. The microscope screws
+// onto this base, and a drawer houses the electronics.
 
-// (c) Richard Bowman 2019
+// (c) Richard Bowman 2021
 // Released under the CERN Open Hardware License
 
 use <./libs/microscope_parameters.scad>
@@ -20,7 +12,6 @@ TALL_BUCKET_BASE = false;
 microscope_stand_stl(TALL_BUCKET_BASE);
 
 module microscope_stand_stl(tall_bucket_base){
-    base_height = tall_bucket_base?45:30;
     params = default_params();
-    microscope_stand(params, base_height);
+    microscope_stand(params, tall_bucket_base);
 }
