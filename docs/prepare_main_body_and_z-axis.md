@@ -8,19 +8,20 @@
 
 ## Removing brim and supports {pagestep}
 
-The [main body][Main body](fromstep){cat: PrintedPart, qty:1} and [rectangular z-axis][Rectangular z-axis](fromstep){cat: PrintedPart, qty:1} have some custom supports and a custom brim to remove.
+The [main body][Main body](fromstep){cat: PrintedPart, qty:1} and [Rectangular z-axis](fromstep){cat: PrintedPart, qty:1} have some custom supports and a custom brim to remove.
 
 * Outer smart brim - Remove with [utility knife]{qty:1,cat:tool}
 * Inner smart brim - Remove with [utility knife]{qty:1}
-* Ties inside actuator column (6 total) - Remove with [precision wire cutters]{qty:1,cat:tool,note:" - Can use a utility knife if these are unavailable."}
-* Ties for rear legs (4 total) - Remove with [precision wire cutters]{qty:1}
+* Ties inside actuator column (6 total main body, 2 in rectangular z-axis) - Remove with [precision wire cutters]{qty:1,cat:tool,note:" - Can use a utility knife if these are unavailable."}
+* Ties for rear legs (4 total main body) - Remove with [precision wire cutters]{qty:1}
 
 These are highlighted in red in the following images.
 
-**TO DO: Add images of the rectangular z-axis with the smart brim highlighted**
-
+![](images/upright/rectangular_z_axis_with_smart_brim.jpg)
+![](images/upright/preparing_rectangular_z_axis.jpg)
 ![](renders/brim_and_ties1.png)
 ![](renders/brim_and_ties2.png)
+
 
 ## Embed mounting nuts in the stage {pagestep}
 

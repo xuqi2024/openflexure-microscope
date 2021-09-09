@@ -101,6 +101,13 @@ PiCamera_RibbonCable:
     Length: 15cm
     Pitch: 1mm
     Pins: 15
+PiCamera_RibbonCable_300mm:
+  Name: Raspberry Pi Camera Ribbon Cable (30cm)
+  Description: 30 cm Ribbon cable for Raspberry Pi Camera Module V2.1. This is a 15 pin FPC cable with 1mm pitch. 
+  Specs:
+    Length: 30cm
+    Pitch: 1mm
+    Pins: 15
 RaspberryPi:
   Name: Raspberry Pi 4B
   Description: Raspberry Pi 4B. The microscope software supports Versions 3B, 3B+, and 4B. 4B is recommended.

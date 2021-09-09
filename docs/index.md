@@ -13,3 +13,6 @@ This configuration of the microscope uses a traditional microscope objective for
 ### [Motorised microscope with low-cost optics](low_cost_microscope.md)
 This configuration of the microscope uses the original lens from a Raspberry Pi camera module.
 
+### [Upright microscope](upright-microscope.md)
+
+
