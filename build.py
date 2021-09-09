@@ -245,16 +245,12 @@ def generate_upright_microscope_parts(writer):
         "z_only.scad",
     )
     writer.openscad(
-        "upright_z_spacer.stl",
-        "upright_z_spacer.scad",
-    )
-    writer.openscad(
         "upright_condenser_and_mount.stl",
         "upright_condenser_and_mount.scad",
     )
     writer.openscad(
-        "0.1mm_z_spacer.stl",
-        "0.1mm_z_spacer.scad",
+        "1mm_z_spacer.stl",
+        "1mm_z_spacer.scad",
     )
     writer.openscad(
         "5mm_z_spacer.stl",
