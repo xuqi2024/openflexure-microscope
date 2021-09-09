@@ -57,6 +57,17 @@ code_quality:
       - web
       - branches
 
+lint_build_system:
+    stage: test
+    image: python:3.7
+    script:
+      - pip install -r requirements.txt
+      - ./lint_build_system.py
+    only:
+      - tags
+      - merge_requests
+      - web
+
 # Build STL files
 build:
     extends: .scad-job
