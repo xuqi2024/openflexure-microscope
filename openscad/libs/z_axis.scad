@@ -30,6 +30,7 @@ use <./gears.scad>
 use <./illumination.scad>
 use <./microscope_parameters.scad>
 use <./libdict.scad>
+
 module each_om_contact_plane(){
     // This transform puts y=0 in the plane of contact between the
     // optics module and the mount for it, with the origin at the
@@ -333,7 +334,7 @@ module top_of_z_axis_casing(params){
     }
 }
 
-module z_axis_casing(params, condenser_mount=false){
+module z_axis_casing(params, condenser_mount=false, cable_housing = true, rectangular = false){
     // Casing for the Z axis - needs to have the axis subtracted from it
     intersection(){
         linear_extrude(height=999){
@@ -359,32 +360,105 @@ module z_axis_casing(params, condenser_mount=false){
         }
     }
     if(condenser_mount){
-        hull(){
-            // At the bottom, connect to the top of the housing and the motor lugs
-            top_of_z_axis_casing(params);
-            // The top is a flat shape that the illumination arm screws onto.
-            each_illumination_corner(params){
-                mirror([0,0,1]){
-                    cylinder(r=5,h=7);
+        if(rectangular){
+            hull(){
+                // At the bottom, connect to the top of the housing and the motor lugs
+                top_of_z_axis_casing(params);
+                // The top is a flat shape that the illumination arm screws onto.
+                rectangular_illumination_corners(params){
+                    mirror([0,0,1]){
+                        // Making the cylinders larger than those on the triangular top by 1mm 
+                        // TO DO make this is a function
+                        cylinder(r=6,h=7);
+                    }
+                }
+            }
+        }
+        else{
+            hull(){
+                // At the bottom, connect to the top of the housing and the motor lugs
+                top_of_z_axis_casing(params);
+                // The top is a flat shape that the illumination arm screws onto.
+                each_illumination_corner(params){
+                    mirror([0,0,1]){
+                        cylinder(r=5,h=7);
+                    }
                 }
             }
         }
     }
-    z_cable_housing(params);
+    // conditional statement allows the wings to be removed
+    if (cable_housing) z_cable_housing(params);
 }
 
-module z_axis_casing_cutouts(params){
+// Boring holes for the screws in the spacer and rectangular z-axis
+module boring_holes(boring_radius){
+    hull(){
+        translate([8,-8,20])  cylinder(r = boring_radius + tiny(), h = 0.5);
+        translate([0,0,2.8]) cylinder(r = boring_radius + tiny(), h = 0.5);
+    }   
+}
+// Counterbored holes for the rectangular mount on the Z axis
+// These holes are counterbored from the bottom, and can optionally
+// be slanted by shifting the lower end along the Y axis.
+module z_axis_mount_counterbore(counterbore_r=4.5, shaft_r=2, y_shift=0, h=30){
+    // A disc that has the right cross-section for a counterbored hole.
+    module counterbore_disc(){
+        cylinder(r = counterbore_r, h = tiny());
+    }
+    intersection(){
+        // This is the hole for the screw shaft - it has a large volume above z=0,
+        // so we join it to the counterbore by taking an intersection.
+        mirror([0,0,1]) hole_from_bottom(r = shaft_r, h=999, base_w=999, big_bottom = true);
+
+        // This is the counterbore, i.e. where we insert the screw.
+        // The counterbore needs to include the shaft below z=0 as well, because
+        // it's joined by an intersection.  See docs on hole_from_bottom.
+        sequential_hull(){
+            translate_z(-99) counterbore_disc();
+            translate_z(4) counterbore_disc();
+            translate([0,y_shift,h])  counterbore_disc();
+        }
+    }
+}
+
+
+
+module z_axis_casing_cutouts(params, rectangular = false){
     // The Z axis casing is a solid shape, we need to cut out clearance for the moving bits
     // This module contains all the bits we need to cut out.
     z_axis_clearance(params);
     objective_mounting_screw_access(params);
     z_actuator_cutout(params);
     z_motor_clearance(params);
-    reflect_x(){
-        translate(right_illumination_screw_pos(params)){
-            rotate(-20){
-                translate_z(-9){
+    if (rectangular){
+        reflect_x(){
+            // Counterbored holes, from underneath the rectangular mounting platform
+            // These are used to screw the Z axis on to the spacer, for the upright
+            // microscope.
+            translate(right_illumination_screw_pos(params) - [0,0,2.5]){
+                mirror([0,0,1]) rotate(-90) z_axis_mount_counterbore(y_shift=17, h=30);
+            }  
+            translate(right_back_corner_pos(params) - [0,0,2.5]){
+                mirror([0,0,1]) z_axis_mount_counterbore(counterbore_r=3.5);
+            }
+        }
+    }
+    else{
+        // Adding the central screw hole and nut trap
+        translate_z(-9){
+            translate(illumination_back_corner_pos(params)){
+                rotate([0,0,180]){
                     m3_nut_trap_with_shaft(0,0);
+                }
+            }
+        }
+        reflect_x(){
+            translate(right_illumination_screw_pos(params)){
+                rotate(-20){
+                    translate_z(-9){
+                        m3_nut_trap_with_shaft(0,0);
+                    }
                 }
             }
         }

@@ -275,6 +275,29 @@ def generate_small_parts(writer):
     writer.openscad("leg_test.stl", "test_pieces/leg_test.scad", select_stl_if="always")
     writer.openscad("led_array_holder.stl", "led_array_holder.scad")
 
+def generate_upright_microscope_parts(writer):
+    writer.openscad(
+        "z_only_with_smart_brim.stl",
+        "z_only.scad",
+    )
+    writer.openscad(
+        "upright_condenser_and_mount.stl",
+        "upright_condenser_and_mount.scad",
+    )
+    writer.openscad(
+        "1mm_z_spacer.stl",
+        "1mm_z_spacer.scad",
+    )
+    writer.openscad(
+        "5mm_z_spacer.stl",
+        "5mm_z_spacer.scad",
+    )
+    writer.openscad(
+        "10mm_z_spacer.stl",
+        "10mm_z_spacer.scad",
+    )
+
+
 def add_extra_stls_to_writer(writer):
     """
     Instruct ninja to also copy external STL files into the output directory
