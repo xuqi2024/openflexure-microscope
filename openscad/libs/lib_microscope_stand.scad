@@ -401,6 +401,7 @@ module pi_tap_holes(connector_side=true, inside=true){
         hole = all_holes[hole_num];
         translate(hole){
             no2_selftap_hole(h=99, center=true);
+        }
     }
 }
 
