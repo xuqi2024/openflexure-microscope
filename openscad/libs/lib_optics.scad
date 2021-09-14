@@ -576,9 +576,9 @@ module camera_platform(params, optics_config, base_r){
                 }
             }
 
-            // add the camera mount
+            // add the camera mount posts
             translate_z(platform_h){
-                camera_bottom_mounting_posts(optics_config, r=2, h=4);
+                camera_bottom_mounting_posts(optics_config, cutouts=false);
             }
         }
 
@@ -586,7 +586,7 @@ module camera_platform(params, optics_config, base_r){
         translate_z(-4){
             objective_fitting_cutout(params, y_stop=true);
         }
-        // add the camera mount
+        // add the camera mount holes
         translate_z(platform_h){
             camera_bottom_mounting_posts(optics_config, outers=false, cutouts=true);
         }

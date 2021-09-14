@@ -400,8 +400,7 @@ module pi_tap_holes(connector_side=true, inside=true){
     for (hole_num = tap_holes){
         hole = all_holes[hole_num];
         translate(hole){
-            cylinder(d=2.7, h=99, center=true, $fn=3);
-        }
+            no2_selftap_hole(h=99, center=true);
     }
 }
 
@@ -465,7 +464,7 @@ module pi_stand_walls(h, block_usbc=true){
             }
         }
         translate(pi_stand_block_hole_pos()){
-            cylinder(d=2.7, h=99, $fn=3);
+            no2_selftap_hole(h=99);
         }
         
     }
