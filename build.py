@@ -332,6 +332,7 @@ def write_ninja_file(extra_files, generate_json):
         generate_bases(mbw)
         generate_gears_and_thumbwheels(mbw)
         generate_small_parts(mbw)
+        generate_upright_microscope_parts(mbw)
         # Include extra STL files
         if args.include_extra_files:
             add_extra_stls_to_writer(mbw)
