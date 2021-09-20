@@ -92,7 +92,7 @@ module nano_conv_plate_nano_cutout(){
         cube([8, 6, 20], center=true);
     }
     translate_y(55){
-        cylinder(d=2.7, h=99, center=true, $fn=3);
+        no2_selftap_hole(h=99, center=true);
     }
 }
 
@@ -121,7 +121,7 @@ module zc_a0591_board_mounts(type="hole", hole_nos = [0, 1, 2, 3]){
     for (pos = hole_pos){
         translate(pos){
             if (type == "hole"){
-                cylinder(d=2.7, h=99, center=false, $fn=3);
+                no2_selftap_hole(h=99, center=false);
             }
             else{
                 cylinder(d=4.5, h=1.8, center=false, $fn=12);

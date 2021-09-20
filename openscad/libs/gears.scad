@@ -252,7 +252,7 @@ module motor_clearance(h=15){
     reflect_x(){
         translate_x(motor_screw_separation()/2){
             rotate(180){
-                trylinder_selftap(4,h=20,center=true);
+                m4_selftap_hole(h=20,center=true);
             }
         }
     }

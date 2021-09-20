@@ -399,7 +399,7 @@ module motor_lugs(h, tilt=0, angle=0){
                     }
                     //mounting screws
                     translate(screw_pos){
-                        trylinder_selftap(4,h=40,center=true);
+                        m4_selftap_hole(h=40,center=true);
                     }
                 }
             }

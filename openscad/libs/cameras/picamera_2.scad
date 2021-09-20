@@ -195,13 +195,14 @@ module picamera_2_camera_mount(screwhole=true, counterbore=false){
 module picamera_2_screwholes(){
     //chamfered screw holes for mounting
     screw_x = picamera_2_hole_spacing()/2;
-    rotate(45){
+    rotate_z(45){
         translate_z(picamera_2_bottom_z()){
             reflect_x(){
                 translate_x(screw_x){
-                    rotate(60){
-                        cylinder(r1=3.1, r2=1.1, h=5, $fn=3, center=true);
-                        cylinder(r=1.1, h=20, $fn=3, center=true);
+                    rotate_z(60){
+                        translate_z(-tiny()){
+                            no2_selftap_hole(h=10);
+                        }
                     }
                 }
             }
@@ -232,11 +233,8 @@ module picamera_2_bottom_mounting_posts(height=-1, radius=-1, outers=true, cutou
                             cylinder(r=r, h=h, $fn=12);
                         }
                         if(cutouts){
-                            intersection(){
-                                cylinder(h=13, d=2*1.7, center=true, $fn=3);
-                                rotate(60){
-                                    cylinder(h=999, d=2*1.7*1.4, center=true, $fn=3);
-                                }
+                            translate_z(h-6+tiny()){
+                                no2_selftap_hole(h=6);
                             }
                         }
                     }
