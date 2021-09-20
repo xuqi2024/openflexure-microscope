@@ -9,22 +9,25 @@ use <./libs/cameras/camera.scad>
 use <./libs/cameras/picamera_2.scad>
 use <./libs/z_axis.scad>
 
-$fn = 32;
-params = default_params(); 
-optics_config = pilens_config();
-platform_h = lens_spacer_z(params, optics_config) - 5;
-screw_x = picamera_2_hole_spacing()/2;
-screw_shift = 15; // Vertical distance the mounting screw needs to be translated by to insert into the z-axis of the main body
-condenser_and_platform(params, optics_config);
+upright_condenser_and_mount_stl(params = default_params() , optics_config = pilens_config() );
+
+module upright_condenser_and_mount_stl(params,optics_config){
+    $fn = 32;
+    condenser_and_platform(params, optics_config);
+}
 
 module condenser_top_hull(){
-    // Creates a base for the cylindrical consenser tube to stand on
+    // Creates a base for the cylindrical consenser tube to stand on.
+    // Variable screw_x does not denote an actual screw position,
+    // it is there because this module builds on the design of the 
+    // camera_platform for the low-cost optics where the screw_x defines the corners of the platform
+
     rotate_z(45){
         hull(){
-            translate([-screw_x,0,0])   cylinder(r = 2, h = 0.5);
-            translate([screw_x,0,0])   cylinder(r = 2, h = 0.5);
-            translate([-screw_x,12.5,0])   cylinder(r = 2, h = 0.5);
-            translate([screw_x,12.5,0])   cylinder(r = 2, h = 0.5);
+            //translate([-screw_x,0,0])   cylinder(r = 2, h = 0.5);
+            //translate([screw_x,0,0])   cylinder(r = 2, h = 0.5);
+            //translate([-screw_x,12.5,0])   cylinder(r = 2, h = 0.5);
+            //translate([screw_x,12.5,0])   cylinder(r = 2, h = 0.5);
             //Creates a curved arc for one side of the hull to prevent overhang of condenser
             cylinder(r =10+tiny(), h = 0.5);
         }
@@ -46,7 +49,8 @@ module condenser_platform(params, optics_config, base_r){
     // platform height is 5mm below the lens spacer (board is 1mm thick mounting posts are 4mm tall)
     platform_h = lens_spacer_z(params, optics_config) - 5;
     assert(platform_h > upper_z_flex_z(params), "Platform height too low for z-axis mounting");
-
+    // screw_x = picamera_2_hole_spacing()/2;
+    screw_shift = 15; // Vertical distance the mounting screw needs to be translated by to insert into the z-axis of the main body
 
     // Make a camera platform with a dovetail on the side and a platform on the top
     difference(){
@@ -74,7 +78,7 @@ module condenser_platform(params, optics_config, base_r){
 module LED_boring_holes(boring_radius){
     // Boring holes for the LED to be inserted into the condenser
     translate([0,0,41+tiny()]){
-        rotate_z(225){
+        rotate_z(180){
             hull(){
                 cylinder(r = boring_radius + tiny(), h = 0.5);
                 translate([0,25,-30]) cylinder(r = boring_radius + tiny(), h = 0.5);
@@ -85,13 +89,15 @@ module LED_boring_holes(boring_radius){
 
 module condenser_and_platform(params, optics_config){
     // Combines the isolated condenser unit with the platform to create a single structure.  
+        platform_h = lens_spacer_z(params, optics_config) - 5;
     difference(){
         union(){
-            condenser_platform(params, optics_config);
+            condenser_platform(params, optics_config, base_r=5);
             translate([0,0,platform_h])   condenser(params, lens_d=13, lens_t=1, lens_assembly_z= 30, include_mounting = false);
         }
         // Creating a large hole for the LED and wires to go through in the base
-        translate([0,0,41-tiny()]) cylinder(r=5, h = 10);
+        led_access_h=10;
+        translate([0,0,platform_h+0.5-led_access_h+tiny()]) cylinder(r=5, h = led_access_h);
         LED_boring_holes(boring_radius = 6);
     }
 }
