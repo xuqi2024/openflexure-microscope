@@ -600,11 +600,9 @@ module z_cable_housing(params){
 module z_cable_housing_top(params, h){
     // Must untilt and trasnlate before cutting. Then undo transforms
     z_cable_tidy_frame(params, z_extra=motor_bracket_h()){
-        linear_extrude(h){
-            projection(cut=true){
-                z_cable_tidy_frame_undo(params, z_extra=motor_bracket_h()-tiny()){
-                    z_cable_housing(params);
-                }
+        thick_section(h=h, center=false, shift=false){
+            z_cable_tidy_frame_undo(params, z_extra=motor_bracket_h()-tiny()){
+                z_cable_housing(params);
             }
         }
     }

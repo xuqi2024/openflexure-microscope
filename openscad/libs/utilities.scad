@@ -519,6 +519,28 @@ module concave_fillet(r){
     }
 }
 
+module thick_section(h=tiny(), center=false, shift=true){
+    // A 3D object, corresponding to the linearly-extruded projection of another object.
+    // The projection is at z=0 if shift=false, or a tiny distance above z=0 if shift=true.
+    offset_thick_section(h=h, center=center, shift=shift){
+        children();
+    }
+}
+module offset_thick_section(h=tiny(), offset=0, center=false, shift=true){
+    // A 3D object, corresponding to the linearly-extruded projection of another object, where
+    // the projection is offset before extrusion.
+    // The projection is at z=0 if shift=false, or a tiny distance above z=0 if shift=true.
+    linear_extrude(h, center=center){
+        offset(r=offset){
+            projection(cut=true){
+                translate_z(shift ? -tiny() : 0){
+                    children();
+                }
+            }
+        }
+    }
+}
+
 //TODO: Give this a better name
 module cylinder_with_45deg_top(h,r,center=false,extra_height=0.7){
     // Block on top of the hortizontal cylinder. Hulled with the cylinder
