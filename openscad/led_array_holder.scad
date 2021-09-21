@@ -11,8 +11,8 @@ module led_array_holder(){
     dt_height = 15; // height of the clamp (~15mm is tall enough, lower and it
                     // gets harder to ensure it is horizontal as it can twist).
     dt_params = dovetail_params(
-        width=illumination_dovetail_w(),
-        height=dt_height,  // do we want to keep this so tall?  It would probably be fine if we made it shorter.
+        overall_width=illumination_dovetail_w(),
+        overall_height=dt_height,  // do we want to keep this so tall?  It would probably be fine if we made it shorter.
         block_depth = dt_block_depth,
         taper_block = false
     );

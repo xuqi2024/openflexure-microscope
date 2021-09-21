@@ -45,14 +45,14 @@ function dovetail_default_params() = [
 
 function dovetail_params(
     // This is an experiment in how to handle the commonly-changed parameters more nicely
-    height=16,
-    width=30,
+    overall_height=16,
+    overall_width=30,
     block_depth=12,
     taper_block=false
 ) = replace_multiple_values(
     [
-        ["overall_height", height],
-        ["overall_width", width],
+        ["overall_height", overall_height],
+        ["overall_width", overall_width],
         ["block_depth", block_depth],
         ["taper_block", taper_block],
     ],

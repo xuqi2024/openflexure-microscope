@@ -35,7 +35,7 @@ module illumination_assembly(){
         translate_z(key_lookup("sample_z", params) + 50){
             rotate_y(180){
                 render(6){
-                    condenser(params, lens_d=13, lens_t=1, lens_assembly_z= 30);
+                    condenser(lens_d=13, lens_t=1, lens_assembly_z= 30);
                 }
             }
         }
