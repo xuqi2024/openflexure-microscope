@@ -9,7 +9,10 @@ use <./libs/cameras/camera.scad>
 use <./libs/cameras/picamera_2.scad>
 use <./libs/z_axis.scad>
 
-upright_condenser_and_mount_stl(params = default_params() , optics_config = pilens_config() );
+render(6) upright_condenser_and_mount_stl(params = default_params() , optics_config = pilens_config() );
+
+// Test for led_boring_holes
+//translate([20,0,0]) led_boring_holes(boring_radius = 6);
 
 module upright_condenser_and_mount_stl(params,optics_config){
     $fn = 32;
@@ -18,20 +21,8 @@ module upright_condenser_and_mount_stl(params,optics_config){
 
 module condenser_top_hull(){
     // Creates a base for the cylindrical consenser tube to stand on.
-    // Variable screw_x does not denote an actual screw position,
-    // it is there because this module builds on the design of the 
-    // camera_platform for the low-cost optics where the screw_x defines the corners of the platform
+    cylinder(r =10+tiny(), h = 0.5);
 
-    rotate_z(45){
-        hull(){
-            //translate([-screw_x,0,0])   cylinder(r = 2, h = 0.5);
-            //translate([screw_x,0,0])   cylinder(r = 2, h = 0.5);
-            //translate([-screw_x,12.5,0])   cylinder(r = 2, h = 0.5);
-            //translate([screw_x,12.5,0])   cylinder(r = 2, h = 0.5);
-            //Creates a curved arc for one side of the hull to prevent overhang of condenser
-            cylinder(r =10+tiny(), h = 0.5);
-        }
-    }
 }
 
 module upright_objective_fitting_cutout(params, y_stop=true){
@@ -75,15 +66,32 @@ module condenser_platform(params, optics_config, base_r){
     }
 }
 
-module LED_boring_holes(boring_radius){
+module led_boring_holes(boring_radius){
     // Boring holes for the LED to be inserted into the condenser
-    translate([0,0,41+tiny()]){
-        rotate_z(180){
-            hull(){
-                cylinder(r = boring_radius + tiny(), h = 0.5);
-                translate([0,25,-30]) cylinder(r = boring_radius + tiny(), h = 0.5);
+    led_access_h=10;
+    // Diameter of LED flange is 6mm. This needs to fit through teh square/octagonal hole of the hole_from_bottom
+    led_diameter = 7;
+    translate([0,0,tiny()]){
+        intersection(){
+            union(){
+                translate([0,0,0.5-led_access_h+tiny()]) {
+                    cylinder(r=boring_radius, h = led_access_h);
+                }
+                translate([0,0,-4]){
+                    hull(){
+                        cylinder(r = boring_radius + tiny(), h = 0.5);
+                        translate([0,-25,-30]) {
+                            cylinder(r = boring_radius + tiny(), h = 0.5);
+                        }
+                    }
+                }
             }
-        }  
+            translate([0,0,-2.0]){
+                hole_from_bottom(r=led_diameter/2, h=2, base_w=999, delta_z=0.4, layers=2, big_bottom=true);
+            }
+        }
+          
+        
     } 
 }
 
@@ -96,8 +104,8 @@ module condenser_and_platform(params, optics_config){
             translate([0,0,platform_h])   condenser(params, lens_d=13, lens_t=1, lens_assembly_z= 30, include_mounting = false);
         }
         // Creating a large hole for the LED and wires to go through in the base
-        led_access_h=10;
-        translate([0,0,platform_h+0.5-led_access_h+tiny()]) cylinder(r=5, h = led_access_h);
-        LED_boring_holes(boring_radius = 6);
+        translate([0,0,platform_h+0.5]){
+            led_boring_holes(boring_radius = 6);
+        }
     }
 }
