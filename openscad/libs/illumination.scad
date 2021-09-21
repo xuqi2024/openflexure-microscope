@@ -202,18 +202,34 @@ module condenser_cutout(lens_r, lens_assembly_z){
     // This is the cutout for the beam to pass through the condenser.
     // It contains a light trap and mouning for the diffuser
 
-    lighttrap_h = lens_assembly_z+tiny();
+    apeture_tray_z=1;
+    apeture_tray_t=1;
+    light_trap_start_z = apeture_tray_z+apeture_tray_t+tiny();
+
+    lighttrap_h = lens_assembly_z+3*tiny()-light_trap_start_z;
     aperture_r = lens_r-condenser_aperture_difference();
+    light_trap_width=6;
+    apeture_tray_width = light_trap_width-0.5;
 
     //Light trap to reduce stray reflectins
 
-    lighttrap_cylinder(r1=3.5, r2=aperture_r, h=lighttrap_h);
+    translate_z(light_trap_start_z){
+        r1=2;
+        f1 = light_trap_width-2*r1;
+        lighttrap_sqylinder(r1=r1, f1=f1, r2=aperture_r,f2=0, h=lighttrap_h, $fn=8);
+    }
+    translate_z(apeture_tray_z+apeture_tray_t/2){
+        translate_y(-4){
+            cube([apeture_tray_width, apeture_tray_width+10, apeture_tray_t], center=true);
+        }
+    }
+    cube([5,5,light_trap_start_z+1], center=true);
+
     reflect_x(){
         translate_x(illumination_mounting_hole_sep()/2){
             no2_selftap_hole(h=12, center=true);
         }
     }
-
 }
 
 
