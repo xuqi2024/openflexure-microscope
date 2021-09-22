@@ -9,7 +9,7 @@ use <./libs/cameras/camera.scad>
 use <./libs/cameras/picamera_2.scad>
 use <./libs/z_axis.scad>
 
-render(6) upright_condenser_and_mount_stl(params = default_params() , optics_config = pilens_config() );
+upright_condenser_and_mount_stl(params = default_params() , optics_config = pilens_config() );
 
 // Test for led_boring_holes
 //translate([20,0,0]) led_boring_holes(boring_radius = 6);
@@ -28,8 +28,10 @@ module condenser_top_hull(){
 module upright_objective_fitting_cutout(params, y_stop=true){
     // Creates a mount for the nut and screw hole that holds it on
     difference(){
-        objective_fitting_cutout(params, y_stop=true);
-        translate([-50, -10,35])   cube([100,100,1000]);
+        objective_fitting_cutout(params, y_stop=y_stop);
+        translate([-50, -10,35]){
+            cube([100,100,1000]);
+        }
     }
 }
 
@@ -62,7 +64,9 @@ module condenser_platform(params, optics_config, base_r){
             }
         }
         // Mount for the nut and screw hole that holds it on
-        translate([0,tiny(),screw_shift])   upright_objective_fitting_cutout(params, y_stop=false);
+        translate([0,tiny(),screw_shift]){
+            upright_objective_fitting_cutout(params, y_stop=true);
+        }
     }
 }
 
@@ -73,7 +77,7 @@ module led_boring_holes(boring_radius){
     led_diameter = 7;
     translate([0,0,tiny()]){
         intersection(){
-            union(){
+            hull(){
                 translate([0,0,0.5-led_access_h+tiny()]) {
                     cylinder(r=boring_radius, h = led_access_h);
                 }
@@ -101,7 +105,9 @@ module condenser_and_platform(params, optics_config){
     difference(){
         union(){
             condenser_platform(params, optics_config, base_r=5);
-            translate([0,0,platform_h])   condenser(params, lens_d=13, lens_t=1, lens_assembly_z= 30, include_mounting = false);
+            translate([0,0,platform_h]){
+                condenser(params, lens_d=13, lens_t=1, lens_assembly_z= 30, include_mounting = false);
+            }
         }
         // Creating a large hole for the LED and wires to go through in the base
         translate([0,0,platform_h+0.5]){
