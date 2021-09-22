@@ -11,13 +11,11 @@ use <./libs/compact_nut_seat.scad>
 use <./libs/main_body_transforms.scad>
 use <./libs/gears.scad>
 use <./z_only.scad>
-$fn = 32;
-params = default_params();
-sample_z = key_lookup("sample_z", params);
 
-function spacer_height(upright_sample_thickness) = (sample_z - illumination_dovetail_z(params)) *2 + upright_sample_thickness;
+function spacer_height(params, upright_sample_thickness) = (key_lookup("sample_z", params) - illumination_dovetail_z(params)) *2 + upright_sample_thickness;
 
 module spacer_stl(params, upright_sample_thickness){
+    $fn=32;
     spacer(params, upright_sample_thickness);
 }
 
@@ -36,7 +34,7 @@ module spacer(params, upright_sample_thickness){
         translate([0,0,4-illumination_dovetail_z(params)]) translate(left_illumination_screw_pos(params))  cylinder(r = 2, h = 4);
         translate([0,0,2.8-illumination_dovetail_z(params)]) translate(illumination_back_corner_pos(params))  cylinder(r = 4, h = 70);
         // Inserting the nut traps at the top of the spacer
-        translate([0,0,spacer_height(upright_sample_thickness)-69])    spacer_top_screw_holes();
+        translate([0,0,spacer_height(params, upright_sample_thickness)-69])    spacer_top_screw_holes(params);
         // Cut-out for motor
         translate([0,66,-tiny()])    cylinder(r = 12.5, h = 70);
     }
@@ -45,12 +43,12 @@ module spacer(params, upright_sample_thickness){
 module spacer_body(params, upright_sample_thickness){
     hull(){
         // Making the height of the spacer 25mm
-        translate([0,0,spacer_height(upright_sample_thickness)-illumination_dovetail_z(params)])    spacer_top();
+        translate([0,0,spacer_height(params, upright_sample_thickness)-illumination_dovetail_z(params)])    spacer_top(params);
         spacer_base(params);
     }
 }
 
-module spacer_top(){
+module spacer_top(params){
     hull(){
         // Creating the rectangular top of the spacer
         translate(right_illumination_screw_pos(params)) cylinder(r=6,h=3);
@@ -73,7 +71,7 @@ module spacer_base(params){
     }
 }
 
-module spacer_top_screw_holes(){
+module spacer_top_screw_holes(params){
     // Inserting the nut traps and screw holes into the spacer
     translate(right_illumination_screw_pos(params))    m3_nut_trap_with_shaft(0,0);
     translate(left_illumination_screw_pos(params))    m3_nut_trap_with_shaft(0,0);
