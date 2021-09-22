@@ -5,21 +5,24 @@ use <./libs/utilities.scad>
 use <./libs/libdict.scad>
 use <./libs/z_axis.scad>
 use <./libs/wall.scad>
-$fn=32;
-params = default_params();
-z_only_with_smart_brim(params);
+
+z_only_with_smart_brim_stl( params = default_params() );
+
+module z_only_with_smart_brim_stl(params){
+    $fn=32;
+    z_only_with_smart_brim(params);
+}
 
 module z_only_with_smart_brim(params){
     // Adds a smart brim to the z-only module to prevent the back from peeling upwards when printing
     // Smart brim is required instead of typical brim to prevent the brim affecting the internal structures
     smart_brim_r = key_lookup("smart_brim_r", params);
     exterior_brim(r=smart_brim_r){
-        z_only(params, cable_guides = false, spacer = false, cable_housing = false, rectangular = true);
-
+        z_only(params, cable_guides = false, cable_housing = false, rectangular = true);
     }
 }
 
-module z_only(params, cable_guides = false, spacer = false, cable_housing = false, rectangular = false){
+module z_only(params, cable_guides = false, cable_housing = false, rectangular = false){
     //This is the z-axis of the main body 
     difference(){
         union(){
@@ -67,7 +70,8 @@ module z_only(params, cable_guides = false, spacer = false, cable_housing = fals
     difference(){
         z_actuator_assembly(params);
         // Removing the extruding cylinders from the actuator
-        translate([-50,0,-100])
-        cube(size = 100);
+        translate([-50,0,-100]){
+            cube(size = 100);
+        }
     }
 }
