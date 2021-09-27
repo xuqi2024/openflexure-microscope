@@ -214,23 +214,32 @@ module no2_selftap_hole(h=10, center=false){
     trylinder(r=.3, flat=1.73, h=h, center=center);
 }
 
-module no2_selftap_counterbore(bore_h=999, hole_h=999){
+module no2_selftap_counterbore(bore_h=999, hole_h=999, flip_z=false){
     $fn = 14;
     generic_counterbore(bore_d=5.6, bore_h=bore_h, hole_d=2.5, hole_h=hole_h);
 }
 
 // Counterbored through hole for an m3 cap screw counterbore is above z=0
-// through hole is below z=0
-module m3_cap_counterbore(bore_h=999, hole_h=999){
+// through hole is below z=0. If flip_z is used the hole is not only flipped in z,
+// it is also designed so that the counterbore can print prperly upsidedown
+module m3_cap_counterbore(bore_h=999, hole_h=999, flip_z=false){
     $fn = 14;
     generic_counterbore(bore_d=6.5, bore_h=bore_h, hole_d=3.5, hole_h=hole_h);
 }
 
-module generic_counterbore(bore_d, bore_h, hole_d, hole_h){
-    translate_z(-hole_h){
-        cylinder(d=hole_d, h=hole_h+tiny());
+module generic_counterbore(bore_d, bore_h, hole_d, hole_h, flip_z=false){
+    if (flip_z){
+        translate_z(-hole_h){
+            cylinder(d=hole_d, h=hole_h+tiny());
+        }
+        cylinder(d=bore_d, h=bore_h);
     }
-    cylinder(d=bore_d, h=bore_h);
+    else{
+        hole_from_bottom(r=hole_d/2, h=hole_h, big_bottom=false);
+        translate_z(-(bore_h-tiny())){
+            cylinder(d=bore_d, h=bore_h+tiny());
+        }
+    }
 }
 
 module nut(d,h=undef,center=false,fudge=1.18,shaft=false){

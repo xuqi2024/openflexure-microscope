@@ -213,10 +213,10 @@ module condenser_cutout(lens_r, lens_assembly_z){
 
     //Light trap to reduce stray reflectins
 
-    translate_z(light_trap_start_z){
+    translate_z(light_trap_start_z-tiny()){
         r1=2;
         f1 = light_trap_width-2*r1;
-        lighttrap_sqylinder(r1=r1, f1=f1, r2=aperture_r,f2=0, h=lighttrap_h, $fn=8);
+        lighttrap_sqylinder(r1=r1, f1=f1, r2=aperture_r,f2=0, h=lighttrap_h+4*tiny(), $fn=16);
     }
     translate_z(apeture_tray_z+apeture_tray_t/2){
         translate_y(-4){
@@ -227,7 +227,11 @@ module condenser_cutout(lens_r, lens_assembly_z){
 
     reflect_x(){
         translate_x(illumination_mounting_hole_sep()/2){
-            no2_selftap_hole(h=12, center=true);
+            translate_z(-tiny()){
+                rotate_z(30){
+                    no2_selftap_hole(h=7, center=false);
+                }
+            }
         }
     }
 }
@@ -236,10 +240,10 @@ module condenser_cutout(lens_r, lens_assembly_z){
 
 function condenser_dovetail_params() = let(
     block_depth = 16,
-    height = 20,
+    height = 16,
     dt_params = dovetail_params(
         overall_width=illumination_dovetail_w(),
-        overall_height=height,  // do we want to keep this so tall?  It would probably be fine if we made it shorter.
+        overall_height=height,
         block_depth = block_depth,
         taper_block = true
     )
@@ -255,12 +259,13 @@ module condenser_body(base_r, lens_assembly_z, include_mounting){
             dovetail_clamp_m(dt_params);
         }
     }
+    cylinder(r=base_r+.2, h=lens_assembly_z+tiny());
     //this hull is the outer shape of the body of the condenser
     sequential_hull(){
-        translate_z(lens_assembly_z){
-            cylinder(r=base_r, h=tiny());
+        cylinder(r=base_r+.2, h=dt_height);
+        translate_y(base_r){
+            cylinder(r=base_r+.2, h=dt_height);
         }
-        cylinder(r=base_r, h=dt_height);
         if (include_mounting){
             translate_y(illumination_dovetail_y()){
                 linear_extrude(dt_height){
@@ -278,12 +283,14 @@ module condenser(led_r=4.5/2, lens_d=13, lens_t=1, lens_assembly_z= 30, include_
     base_r = lens_r+2;
 
     difference(){
-        condenser_body(base_r, lens_assembly_z, include_mounting);
+        union(){
+            condenser_body(base_r, lens_assembly_z+tiny(), include_mounting);
+            //add the lens gripper
+            translate_z(lens_assembly_z){
+                condenser_lens_gripper(lens_r, lens_t, base_r);
+            }
+        }
         condenser_cutout(lens_r, lens_assembly_z);
-     }
-     //finally add the lens gripper
-     translate_z(lens_assembly_z){
-        condenser_lens_gripper(lens_r, lens_t, base_r);
      }
 }
 
@@ -326,8 +333,11 @@ module condenser_lid(lens_d=13){
     }
 
     difference(){
-        offset_thick_section(h=h+2, offset=1.5, shift=true){
-            cropped_body(base_r,illumination_dovetail_y()-3);
+        minkowski(){
+            offset_thick_section(h=h, offset=-2, shift=true){
+                cropped_body(base_r,illumination_dovetail_y()-3);
+            }
+            sphere(r=3.5,$fn=16);
         }
 
         translate_z(h){
@@ -336,5 +346,10 @@ module condenser_lid(lens_d=13){
             }
         }
         illumination_board_cutout(h, board_bore_depth);
+        reflect_x(){
+            translate([base_r-2,base_r+1,h-2]){
+                no2_selftap_counterbore(flip_z=true);
+            }
+        }
     }
 }
