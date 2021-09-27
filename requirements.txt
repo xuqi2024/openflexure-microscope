@@ -1,3 +1,4 @@
+admesh==0.98.9
 ninja==1.9.0.post1
 pylint==2.6.0
 colorama==0.4.3
