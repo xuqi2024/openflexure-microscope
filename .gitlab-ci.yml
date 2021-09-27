@@ -1,6 +1,7 @@
 stages:
     - test
     - build
+    - analyse
     - build-docs
     - deploy
     - zenodo
@@ -94,6 +95,21 @@ build:
       - tags
       - merge_requests
       - web
+
+check_stls:
+    stage: analyse
+    image: python:3.7
+    script:
+      - pip install -r requirements.txt
+      - ./check_stls.py docs/models/
+    only:
+      - tags
+      - merge_requests
+      - web
+    artifacts:
+      when: always
+      reports:
+        junit: admesh_report.xml
 
 # render assemblies - uses xvfb as a virtual x-server
 render:
