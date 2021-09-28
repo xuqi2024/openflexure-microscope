@@ -99,6 +99,7 @@ build:
 check_stls:
     stage: analyse
     image: python:3.7
+    allow_failure: true
     variables:
       # prevents config waiting for user input, e.g. for tzdata
       DEBIAN_FRONTEND: noninteractive

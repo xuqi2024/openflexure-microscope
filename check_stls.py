@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
 
+"""
+Analyse STLs with Admesh and create a JUnit report. This script is run
+by the CI and the JUnit report is used by GitLab to show test reports in
+Merge Requests
+"""
+
 import os
 import sys
 from time import time
@@ -8,6 +14,10 @@ from admesh import Stl
 from colorama import Fore, Style
 
 def check_stls(model_dir):
+    """
+    Run admesh on all stls in input directory and create a junit report
+    of any mesh problems
+    """
     files = os.listdir(model_dir)
     files = [os.path.join(model_dir, fname) for fname in files]
     stl_files = [fname for fname in files if fname.endswith('.stl')]
@@ -21,6 +31,7 @@ def check_stls(model_dir):
         stl_stats = get_stl_stats(stl_file)
         test_time = time()-t_start
         total_time += test_time
+        #Add test time to the stats
         stl_stats['time'] = str(test_time)
         valid, testcase= check_stl_stats(stl_stats)
         if valid:
@@ -39,8 +50,13 @@ def check_stls(model_dir):
     tree = ET.ElementTree(testsuite)
     with open('admesh_report.xml','wb') as xml_file:
         tree.write(xml_file)
+    return n_failures
 
 def get_stl_stats(stl_file):
+    """
+    Run admesh on input stl filename. Return the dictionary
+    of admesh statistics
+    """
     print(f'\n\nOpening {stl_file}')
     stl = Stl(stl_file)
     stl.repair()
@@ -49,6 +65,10 @@ def get_stl_stats(stl_file):
     return stats
 
 def check_stl_stats(stl_stats):
+    """
+    Parse the admesh statictics and look for non-zero properties
+    that should be zero.
+    """
     #All properties that should be zero for a good mesh
     zero_properties = ['backwards_edges',
                        'degenerate_facets',
@@ -84,11 +104,17 @@ def check_stl_stats(stl_stats):
     return number_non_zero==0, testcase
 
 def print_red(message):
+    """
+    Print message to terminal in red
+    """
     print(Fore.RED
           +message
           +Style.RESET_ALL)
 
 def print_green(message):
+    """
+    Print message to terminal in green
+    """
     print(Fore.GREEN
           +message
           +Style.RESET_ALL)
@@ -96,4 +122,7 @@ def print_green(message):
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         raise RuntimeError('Expecting exactly one argument')
-    check_stls(sys.argv[1])
+    fails = check_stls(sys.argv[1])
+    if fails==0:
+        sys.exit(0)
+    sys.exit(1)
