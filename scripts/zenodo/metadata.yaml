@@ -26,3 +26,6 @@ creators:
     orcid: '0000-0003-2736-5467'
   - name: 'Bumke, Kaspar'
     affiliation: 'University of Bath'
+grants:
+  - id: "10.13039/501100000690::EP/R011443/1"
+  - id: "10.13039/501100000690::EP/R013969/1"
