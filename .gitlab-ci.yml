@@ -1,6 +1,7 @@
 stages:
     - test
     - build
+    - analyse
     - build-docs
     - deploy
     - zenodo
@@ -94,6 +95,30 @@ build:
       - tags
       - merge_requests
       - web
+
+check_stls:
+    stage: analyse
+    image: python:3.7
+    allow_failure: true
+    variables:
+      # prevents config waiting for user input, e.g. for tzdata
+      DEBIAN_FRONTEND: noninteractive
+      DEBCONF_NONINTERACTIVE_SEEN: "true"
+    before_script:
+      - apt-get update -qq
+      - apt-get -o DPkg::Options::=--force-confdef -y -qq install admesh
+    script:
+      - pip install -r requirements.txt
+      - pip install admesh==0.98.9
+      - ./check_stls.py docs/models/
+    only:
+      - tags
+      - merge_requests
+      - web
+    artifacts:
+      when: always
+      reports:
+        junit: admesh_report.xml
 
 # render assemblies - uses xvfb as a virtual x-server
 render:
