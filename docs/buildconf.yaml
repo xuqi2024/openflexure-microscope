@@ -1,4 +1,4 @@
-Authors: 
+Authors:
     - Richard Bowman
 Affiliation: The Openflexure Community
 Email: "contact@openflexure.org"
@@ -34,3 +34,4 @@ PageBOMTitle: "## For this section you will need:"
 #Fussy: False
 ForceOutput:
   - models/*.stl
+  - models/stl_options.json
