@@ -20,14 +20,14 @@ Now you have tested your [printer][RepRap-style printer]{qty:1,cat:tool} and [fi
 * Actuator assembly tools ([nut tool]{output,qty:1}, [band tool]{output,qty:1}, and [band tool cover]{output,qty:1}):  [actuator_assembly_tools.stl](models/actuator_assembly_tools.stl){previewpage}
 * [Lens tool]{output,qty:1}: [lens_tool.stl](models/lens_tool.stl){previewpage}
 * [Main body]{output,qty:1}: [main_body.stl](models/main_body.stl){previewpage} - The smart brim may require [custom print settings].
-* [Rectangular z-axis]{output,qty:1}: [Z-only_rectangular_version_9.stl](models/Z-only_rectangular_version_9.stl){previewpage} - The smart brim may require [custom print settings].
-* [z-spacer]{output,qty:1}: [upright_z_spacer_with_cutout.stl](models/upright_z_spacer_with_cutout.stl){previewpage}
+* [Rectangular z-axis]{output,qty:1}: [z_only_with_smart_brim.stl](models/z_only_with_smart_brim.stl.stl){previewpage} - The smart brim may require [custom print settings].
+* [z-spacer]{output,qty:1}: [1mm_z_spacer.stl](models/1mm_z_spacer.stl){previewpage} ([5mm_z_spacer.stl](models/5mm_z_spacer.stl){previewpage} and [10mm_z_spacer.stl](models/10mm_z_spacer.stl){previewpage} are also available for thicker samples)
 * 4 [feet]{output,qty:4}: [feet.stl](models/feet.stl){previewpage}
 * 4 [large gears]{output,qty:4}: [large_gears.stl](models/large_gears.stl){previewpage}
 * 3 [small gears]{output,qty:3}: [small_gears.stl](models/small_gears.stl){previewpage}
 * 3 [cable tidy caps]{output,qty:3}: [cable_tidies.stl](models/cable_tidies.stl){previewpage}
 * [Illumination dovetail]{output,qty:1}: [illumination_dovetail.stl](models/illumination_dovetail.stl){previewpage}
-* [Condenser and mount]{output,qty:1}: [condenser_and_mount_combined_upright_version_3.stl](models/condenser_and_mount_combined_upright_version_3.stl){previewpage}
+* [Condenser and mount]{output,qty:1}: [upright_condenser_and_mount.stl](models/upright_condenser_and_mount.stl){previewpage} - The condenser may require [custom print settings] as used for the smart brim.
 * [Illumination thumbscrew]{output,qty:1}: [illumination_thumbscrew.stl](models/illumination_thumbscrew.stl){previewpage}
 * [Sample clips]{output,qty:2}: [sample_clips.stl](models/sample_clips.stl){previewpage}
 * [Lens spacer]{output,qty:1}: [lens_spacer_picamera_2_pilens.stl](models/lens_spacer_picamera_2_pilens.stl){previewpage} - **This must be printed in [black][Black PLA filament]{Qty: 50g}!** ([?](why_optics_black.md "why?"))
