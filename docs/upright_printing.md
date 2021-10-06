@@ -20,7 +20,7 @@ Now you have tested your [printer][RepRap-style printer]{qty:1,cat:tool} and [fi
 * Actuator assembly tools ([nut tool]{output,qty:1}, [band tool]{output,qty:1}, and [band tool cover]{output,qty:1}):  [actuator_assembly_tools.stl](models/actuator_assembly_tools.stl){previewpage}
 * [Lens tool]{output,qty:1}: [lens_tool.stl](models/lens_tool.stl){previewpage}
 * [Main body]{output,qty:1}: [main_body.stl](models/main_body.stl){previewpage} - The smart brim may require [custom print settings].
-* [Rectangular z-axis]{output,qty:1}: [z_only_with_smart_brim.stl](models/z_only_with_smart_brim.stl.stl){previewpage} - The smart brim may require [custom print settings].
+* [Rectangular z-axis]{output,qty:1}: [z_only_with_smart_brim.stl](models/z_only_with_smart_brim.stl){previewpage} - The smart brim may require [custom print settings].
 * [z-spacer]{output,qty:1}: [1mm_z_spacer.stl](models/1mm_z_spacer.stl){previewpage} ([5mm_z_spacer.stl](models/5mm_z_spacer.stl){previewpage} and [10mm_z_spacer.stl](models/10mm_z_spacer.stl){previewpage} are also available for thicker samples)
 * 4 [feet]{output,qty:4}: [feet.stl](models/feet.stl){previewpage}
 * 4 [large gears]{output,qty:4}: [large_gears.stl](models/large_gears.stl){previewpage}
