@@ -26,14 +26,14 @@ Now you have tested your [printer][RepRap-style printer]{qty:1,cat:tool} and [fi
 * 4 [large gears]{output,qty:4}: [large_gears.stl](models/large_gears.stl){previewpage}
 * 3 [small gears]{output,qty:3}: [small_gears.stl](models/small_gears.stl){previewpage}
 * 3 [cable tidy caps]{output,qty:3}: [cable_tidies.stl](models/cable_tidies.stl){previewpage}
-* [Illumination dovetail]{output,qty:1}: [illumination_dovetail.stl](models/illumination_dovetail.stl){previewpage}
 * [Condenser and mount]{output,qty:1}: [upright_condenser_and_mount.stl](models/upright_condenser_and_mount.stl){previewpage} - The condenser may require [custom print settings] as used for the smart brim.
-* [Illumination thumbscrew]{output,qty:1}: [illumination_thumbscrew.stl](models/illumination_thumbscrew.stl){previewpage}
 * [Sample clips]{output,qty:2}: [sample_clips.stl](models/sample_clips.stl){previewpage}
 * [Lens spacer]{output,qty:1}: [lens_spacer_picamera_2_pilens.stl](models/lens_spacer_picamera_2_pilens.stl){previewpage} - **This must be printed in [black][Black PLA filament]{Qty: 50g}!** ([?](why_optics_black.md "why?"))
 * [pi camera platform]{output,qty:1}: [camera_platform_picamera_2_pilens.stl](models/camera_platform_picamera_2_pilens.stl){previewpage}
 * [Microscope stand]{output, qty:1}: [microscope_stand.stl](models/microscope_stand.stl){previewpage}
-* [Base to hold the motor driver]{output,qty:1}: [motor_driver_case_sangaboard.stl](models/motor_driver_case_sangaboard.stl){previewpage}
+* [Microscope stand insert for the Pi]{output,qty:1}: [pi_stand.stl](models/pi_stand.stl){previewpage}
+* [Nano converter plate]{output,qty:1}, to hold separate motor drivers instead of a Sangaboard: [nano_converter_plate.stl](models/nano_converter_plate.stl){previewpage}
+* [Nano gripper]{output,qty:1}: [nano_converter_plate_gripper.stl](models/nano_converter_plate_gripper.stl){previewpage}
 
 
 
