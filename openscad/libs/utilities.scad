@@ -795,24 +795,32 @@ module deformable_hole_trylinder(r1, r2, h=99, corner_roc=undef, delta_z=0.5, ce
 }
 
 
-module exterior_brim(r=4, h=0.2, brim_only=false){
+module exterior_brim(r=4, h=0.2, brim_only=false,smooth_r=undef){
     // Add a "brim" around the outside of an object *only*, preserving holes in the object
+    // brim width r and the smoothing smooth_r can be defined separately, but default to equal
+    
+    smooth_r = is_undef(smooth_r) ? r : smooth_r;
+        
     if (!brim_only){
         children();
     }
-
+    
     if(r > 0){
         linear_extrude(h){
             difference(){
                 offset(r){
-                    projection(cut=true){
-                        translate_z(-tiny()){
-                            children();
+                    offset(-smooth_r){
+                        offset(smooth_r){
+                            projection(cut=true){
+                                translate_z(-tiny()){
+                                children();
+                                }
+                            }
                         }
                     }
                 }
-                offset(-r+tiny()){
-                    offset(r){
+                offset(-smooth_r+tiny()){
+                    offset(smooth_r){
                         projection(cut=true){
                             translate_z(-tiny()){
                                 children();
