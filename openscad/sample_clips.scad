@@ -85,7 +85,7 @@ module sample_clip(clamp_point, t=2.5, w=6, radius_of_curvature=undef, slope=30)
 module sample_clips_stl(){
     params = default_params();
     smart_brim_r = key_lookup("smart_brim_r", params);
-    exterior_brim(r=smart_brim_r){
+    exterior_brim(r=smart_brim_r, smooth_r = 3){
         for(a=[0,180]){
             rotate([0,-90,a]){
                 translate([7/2,-10,-7+1]){
