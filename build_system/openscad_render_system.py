@@ -101,16 +101,16 @@ class RenderSystem():
                 check=True,
             )
         self._run_openscad()
-        #for outfile, input_files in self._imagemagick_sequences:
-        #    subprocess.run(
-        #        ['convert'] + input_files + ["+append", outfile],
-        #        check=True,
-        #    )
-        #for outfile, svg_file in self._inkscape_annotations:
-        #    subprocess.run(
-        #        ["inkscape", "--without-gui", f"--export-png={outfile}", svg_file],
-        #        check=True,
-        #    )
+        for outfile, input_files in self._imagemagick_sequences:
+            subprocess.run(
+                ['convert'] + input_files + ["+append", outfile],
+                check=True,
+            )
+        for outfile, svg_file in self._inkscape_annotations:
+            subprocess.run(
+                ["inkscape", "--without-gui", f"--export-png={outfile}", svg_file],
+                check=True,
+            )
 
     def _run_openscad(self):
         tmpdir = gettempdir()
@@ -143,16 +143,28 @@ class RenderSystem():
                         capture_output=True
                     )
                     std_err = ret.stderr.decode('UTF-8')
+                    #All images are now rendered
                     for render in renders:
                         render.rendered = True
                 except subprocess.CalledProcessError as error:
+                    #If there is an error not all images were rendered
                     std_err = error.stderr.decode('UTF-8')
                     if "X Error of failed request" in std_err:
+                        #Code to execute if OpenGL X error happens
                         num_rendred = 0
-                        for i, render in enumerate(renders):
-                            render.rendered = os.path.exists(out_file(hash_name, i))
-                            if render.rendered:
+                        #The failed image is output but is empty
+                        # We don't need to loop after the last image as we know one failed
+                        for i in range(n_renders-1):
+                            #Check if following image exists
+                            next_exists = os.path.exists(out_file(hash_name, i+1))
+                            # Each image rendered if the next image exists
+                            renders[i].rendered = next_exists
+                            if next_exists:
                                 num_rendred += 1
+                            elif i == 0:
+                                print(std_err)
+                                print("\n\n Docker OpenGL issue causes no images to render!\n\n")
+                                raise
                         print(f"\n\nPartial fail due to Docker OpenGL issue. Only {num_rendred} of {n_renders} generated\n\n")
                     else:
                         print(std_err)
