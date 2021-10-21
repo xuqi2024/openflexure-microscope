@@ -143,6 +143,8 @@ class RenderSystem():
                         capture_output=True
                     )
                     std_err = ret.stderr.decode('UTF-8')
+                    for render in renders:
+                        render.rendered = True
                 except subprocess.CalledProcessError as error:
                     std_err = error.stderr.decode('UTF-8')
                     if "X Error of failed request" in std_err:
