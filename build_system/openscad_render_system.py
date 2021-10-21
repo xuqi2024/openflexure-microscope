@@ -101,16 +101,23 @@ class RenderSystem():
                 check=True,
             )
         self._run_openscad()
-        for outfile, input_files in self._imagemagick_sequences:
-            subprocess.run(
-                ['convert'] + input_files + ["+append", outfile],
-                check=True,
-            )
-        for outfile, svg_file in self._inkscape_annotations:
-            subprocess.run(
-                ["inkscape", "--without-gui", f"--export-png={outfile}", svg_file],
-                check=True,
-            )
+        try:
+            for outfile, input_files in self._imagemagick_sequences:
+                subprocess.run(
+                    ['convert'] + input_files + ["+append", outfile],
+                    check=True,
+                    capture_output=True
+                )
+            for outfile, svg_file in self._inkscape_annotations:
+                subprocess.run(
+                    ["inkscape", "--without-gui", f"--export-png={outfile}", svg_file],
+                    check=True,
+                    capture_output=True
+                )
+        #TODO: remove this try except
+        except subprocess.CalledProcessError as error:
+            print(error.stderr.decode('UTF-8'))
+            print("Problem with pngs!!")
 
     def _run_openscad(self):
         tmpdir = gettempdir()
