@@ -40,6 +40,10 @@ class ScadRender():
         self.scad = scad
         self.imgsize = tuple(imgsize)
         self.camera = camera
+        self.rendered = False
+
+def out_file(hash_name, i):
+    return os.path.join(gettempdir(), f'frame{hash_name}-{i:05}.png')
 
 
 class RenderSystem():
@@ -117,8 +121,7 @@ class RenderSystem():
         sizes = {render.imgsize for render in self._renders}
         for size in sizes:
             renders = [render for render in self._renders if render.imgsize==size]
-            renders_needed = True
-            while renders_needed:
+            while len(renders) > 0:
                 n_renders = len(renders)
                 scad = _create_scad_for_renders(renders)
                 with open(tmpscad, 'w') as scadfile:
@@ -139,23 +142,20 @@ class RenderSystem():
                         check=True,
                         capture_output=True
                     )
-                    renders_needed = False
+                    std_err = ret.stderr.decode('UTF-8')
                 except subprocess.CalledProcessError as error:
                     std_err = error.stderr.decode('UTF-8')
                     if "X Error of failed request" in std_err:
-                        i=0
-                        while os.path.exists(os.path.join(gettempdir(), f'frame{hash_name}-{i:05}.png')):
-                            i+=1
-                        if i==0:
-                            print(std_err)
-                            raise
-                        renders = renders[0:i]
-                        print(f"\n\nPartial fail due to Docker OpenGL issue. Only {i} if {n_renders}\n\n")
+                        num_rendred = 0
+                        for i, render in enumerate(renders):
+                            render.rendered = os.path.exists(out_file(hash_name, i))
+                            if render.rendered:
+                                num_rendred += 1
+                        print(f"\n\nPartial fail due to Docker OpenGL issue. Only {num_rendred} of {n_renders} generated\n\n")
                     else:
                         print(std_err)
                         raise
 
-                std_err = ret.stderr.decode('UTF-8')
                 print(std_err)
                 warns = re.findall(r'^WARNING:.*?%', std_err, flags=re.MULTILINE)
 
@@ -164,13 +164,14 @@ class RenderSystem():
                         sys.exit(1)
                 png_files = [render.png_file for render in renders]
                 _copy_output_files(png_files, hash_name)
+                renders = [render for render in renders if not render.rendered]
 
 def _copy_output_files(png_files, hash_name):
     """
     Copy the output files from the temp directory to their desired location.
     """
     for i, png_file in enumerate(png_files):
-        frame = os.path.join(gettempdir(), f'frame{hash_name}-{i:05}.png')
+        frame = out_file(hash_name, i)
         if os.path.exists(frame):
             copydir = os.path.dirname(png_file)
             os.makedirs(copydir, exist_ok=True)
