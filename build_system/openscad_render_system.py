@@ -101,16 +101,16 @@ class RenderSystem():
                 check=True,
             )
         self._run_openscad()
-        for outfile, input_files in self._imagemagick_sequences:
-            subprocess.run(
-                ['convert'] + input_files + ["+append", outfile],
-                check=True,
-            )
-        for outfile, svg_file in self._inkscape_annotations:
-            subprocess.run(
-                ["inkscape", "--without-gui", f"--export-png={outfile}", svg_file],
-                check=True,
-            )
+        #for outfile, input_files in self._imagemagick_sequences:
+        #    subprocess.run(
+        #        ['convert'] + input_files + ["+append", outfile],
+        #        check=True,
+        #    )
+        #for outfile, svg_file in self._inkscape_annotations:
+        #    subprocess.run(
+        #        ["inkscape", "--without-gui", f"--export-png={outfile}", svg_file],
+        #        check=True,
+        #    )
 
     def _run_openscad(self):
         tmpdir = gettempdir()
