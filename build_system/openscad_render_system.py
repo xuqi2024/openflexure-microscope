@@ -8,6 +8,7 @@ import sys
 import shutil
 import re
 import os
+import uuid
 from dataclasses import dataclass
 from tempfile import gettempdir
 from .util import get_openscad_exe
@@ -110,55 +111,70 @@ class RenderSystem():
     def _run_openscad(self):
         tmpdir = gettempdir()
         tmpscad = os.path.join(tmpdir, 'scadfile.scad')
+        hash_name = str(uuid.uuid4())
         #note that openscad will append 00000, 00001, etc to the name just before the extension
-        output_template = os.path.join(tmpdir, 'frame.png')
+        output_template = os.path.join(tmpdir, f'frame{hash_name}-.png')
         sizes = {render.imgsize for render in self._renders}
         for size in sizes:
             renders = [render for render in self._renders if render.imgsize==size]
-            n_renders = len(renders)
-            scad = _create_scad_for_renders(renders)
-            with open(tmpscad, 'w') as scadfile:
-                scadfile.write(scad)
-            executable = get_openscad_exe()
+            renders_needed = True
+            while renders_needed:
+                n_renders = len(renders)
+                scad = _create_scad_for_renders(renders)
+                with open(tmpscad, 'w') as scadfile:
+                    scadfile.write(scad)
+                executable = get_openscad_exe()
 
-            imgsize_str = ",".join([str(i) for i in size])
-            imgsize_arg = f'--imgsize={imgsize_str}'
-            #note we cannot use hardwarnings as we change the camera angle which always throws
-            # a stupid warning see:
-            # https://github.com/openscad/openscad/issues/3646
-            # https://github.com/openscad/openscad/pull/3660/
-            scad_args = ['--animate', str(n_renders), imgsize_arg, '-o', output_template]
-            print(f"\nStarting OpenSCAD for images of size {imgsize_str}...\n\n")
-            try:
-                ret = subprocess.run(
-                    [executable, tmpscad] + scad_args,
-                    check=True,
-                    capture_output=True
-                )
-            except subprocess.CalledProcessError as error:
-                std_err = error.stderr.decode('UTF-8')
+                imgsize_str = ",".join([str(i) for i in size])
+                imgsize_arg = f'--imgsize={imgsize_str}'
+                #note we cannot use hardwarnings as we change the camera angle which always throws
+                # a stupid warning see:
+                # https://github.com/openscad/openscad/issues/3646
+                # https://github.com/openscad/openscad/pull/3660/
+                scad_args = ['--animate', str(n_renders), imgsize_arg, '-o', output_template]
+                print(f"\nStarting OpenSCAD for images of size {imgsize_str}...\n\n")
+                try:
+                    ret = subprocess.run(
+                        [executable, tmpscad] + scad_args,
+                        check=True,
+                        capture_output=True
+                    )
+                    renders_needed = False
+                except subprocess.CalledProcessError as error:
+                    std_err = error.stderr.decode('UTF-8')
+                    if "X Error of failed request" in std_err:
+                        i=0
+                        while os.path.exists(os.path.join(gettempdir(), f'frame{hash_name}-{i:05}.png')):
+                            i+=1
+                        if i==0:
+                            print(std_err)
+                            raise
+                        renders = renders[0:i]
+                        print(f"\n\nPartial fail due to Docker OpenGL issue. Only {i} if {n_renders}\n\n")
+                    else:
+                        print(std_err)
+                        raise
+
+                std_err = ret.stderr.decode('UTF-8')
                 print(std_err)
-                print(f"\n\nFailed OpenSCAD code:\n\n{scad}\n\n")
-                raise
-            std_err = ret.stderr.decode('UTF-8')
-            print(std_err)
-            warns = re.findall(r'^WARNING:.*?%', std_err, flags=re.MULTILINE)
+                warns = re.findall(r'^WARNING:.*?%', std_err, flags=re.MULTILINE)
 
-            if warns != []:
-                if warns[0] != r'WARNING: Viewall and autocenter disabled in favor of $vp*':
-                    sys.exit(1)
-            png_files = [render.png_file for render in renders]
-            _copy_output_files(png_files)
+                if warns != []:
+                    if warns[0] != r'WARNING: Viewall and autocenter disabled in favor of $vp*':
+                        sys.exit(1)
+                png_files = [render.png_file for render in renders]
+                _copy_output_files(png_files, hash_name)
 
-def _copy_output_files(png_files):
+def _copy_output_files(png_files, hash_name):
     """
     Copy the output files from the temp directory to their desired location.
     """
     for i, png_file in enumerate(png_files):
-        frame = os.path.join(gettempdir(), f'frame{i:05}.png')
-        copydir = os.path.dirname(png_file)
-        os.makedirs(copydir, exist_ok=True)
-        shutil.copy(frame, png_file)
+        frame = os.path.join(gettempdir(), f'frame{hash_name}-{i:05}.png')
+        if os.path.exists(frame):
+            copydir = os.path.dirname(png_file)
+            os.makedirs(copydir, exist_ok=True)
+            shutil.copy(frame, png_file)
 
 def _create_scad_for_renders(renders):
     n_frames = len(renders)
