@@ -114,7 +114,7 @@ class RenderSystem():
                     check=True,
                     capture_output=True
                 )
-        #TODO: remove this try except
+        # remove this try except
         except subprocess.CalledProcessError as error:
             print(error.stderr.decode('UTF-8'))
             print("Problem with pngs!!")
