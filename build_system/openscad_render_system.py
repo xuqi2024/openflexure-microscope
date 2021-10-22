@@ -101,23 +101,19 @@ class RenderSystem():
                 check=True,
             )
         self._run_openscad()
-        try:
-            for outfile, input_files in self._imagemagick_sequences:
-                subprocess.run(
-                    ['convert'] + input_files + ["+append", outfile],
-                    check=True,
-                    capture_output=True
-                )
-            for outfile, svg_file in self._inkscape_annotations:
-                subprocess.run(
-                    ["inkscape", "--without-gui", f"--export-png={outfile}", svg_file],
-                    check=True,
-                    capture_output=True
-                )
-        # remove this try except
-        except subprocess.CalledProcessError as error:
-            print(error.stderr.decode('UTF-8'))
-            print("Problem with pngs!!")
+        for outfile, input_files in self._imagemagick_sequences:
+            subprocess.run(
+                ['convert'] + input_files + ["+append", outfile],
+                check=True,
+                capture_output=True
+            )
+        for outfile, svg_file in self._inkscape_annotations:
+            subprocess.run(
+                ["inkscape", "--without-gui", f"--export-png={outfile}", svg_file],
+                check=True,
+                capture_output=True
+            )
+
 
     def _run_openscad(self):
         tmpdir = gettempdir()
@@ -169,9 +165,11 @@ class RenderSystem():
                 if warns != []:
                     if warns[0] != r'WARNING: Viewall and autocenter disabled in favor of $vp*':
                         sys.exit(1)
-                
+
                 rerender = _copy_renders(renders, hash_name)
                 renders = rerender
+                if len(renders)==n_renders:
+                    RuntimeError("No renders produced for this job. Renders failed!")
                 if len(renders)>0:
                     # Empty lines are not returned in gitlab CI.
                     # Using starts to make this line obvious
