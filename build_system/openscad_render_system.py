@@ -157,22 +157,8 @@ class RenderSystem():
                     #If there is an error not all images were rendered
                     std_err = error.stderr.decode('UTF-8')
                     if "X Error of failed request" in std_err:
-                        #Code to execute if OpenGL X error happens
-                        num_rendred = 0
-                        #The failed image is output but is empty
-                        # We don't need to loop after the last image as we know one failed
-                        for i in range(n_renders-1):
-                            #Check if following image exists
-                            next_exists = os.path.exists(out_file(hash_name, i+1))
-                            # Each image rendered if the next image exists
-                            renders[i].rendered = next_exists
-                            if next_exists:
-                                num_rendred += 1
-                            elif i == 0:
-                                print(std_err)
-                                print("\n\n Docker OpenGL issue causes no images to render!\n\n")
-                                raise
-                        print(f"\n\nPartial fail due to Docker OpenGL issue. Only {num_rendred} of {n_renders} generated\n\n")
+                        print("\n\nPartial fail due to Docker OpenGL issue. "
+                              "Missing renders will be reggenerated\n\n")
                     else:
                         print(std_err)
                         raise
@@ -183,20 +169,29 @@ class RenderSystem():
                 if warns != []:
                     if warns[0] != r'WARNING: Viewall and autocenter disabled in favor of $vp*':
                         sys.exit(1)
-                png_files = [render.png_file for render in renders]
-                _copy_output_files(png_files, hash_name)
-                renders = [render for render in renders if not render.rendered]
+                
+                rerender = _copy_renders(renders, hash_name)
+                renders = rerender
+                if len(renders)>0:
+                    # Empty lines are not returned in gitlab CI.
+                    # Using starts to make this line obvious
+                    print(f"\n*\n*\nRe-rendering {len(renders)} of {n_renders}\n*\n*\n")
 
-def _copy_output_files(png_files, hash_name):
+def _copy_renders(renders, hash_name):
     """
     Copy the output files from the temp directory to their desired location.
     """
-    for i, png_file in enumerate(png_files):
+    rerender = []
+    for i, render in enumerate(renders):
         frame = out_file(hash_name, i)
-        if os.path.exists(frame):
-            copydir = os.path.dirname(png_file)
+        if os.path.exists(frame) and os.path.getsize(frame) > 10:
+            copydir = os.path.dirname(render.png_file)
             os.makedirs(copydir, exist_ok=True)
-            shutil.copy(frame, png_file)
+            shutil.copy(frame, render.png_file)
+        else:
+            rerender.append(render)
+    return rerender
+
 
 def _create_scad_for_renders(renders):
     n_frames = len(renders)
