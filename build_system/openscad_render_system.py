@@ -118,13 +118,13 @@ class RenderSystem():
     def _run_openscad(self):
         tmpdir = gettempdir()
         tmpscad = os.path.join(tmpdir, 'scadfile.scad')
-        hash_name = str(uuid.uuid4())
         #note that openscad will append 00000, 00001, etc to the name just before the extension
-        output_template = os.path.join(tmpdir, f'frame{hash_name}-.png')
         sizes = {render.imgsize for render in self._renders}
         for size in sizes:
             renders = [render for render in self._renders if render.imgsize==size]
             while len(renders) > 0:
+                hash_name = str(uuid.uuid4())
+                output_template = os.path.join(tmpdir, f'frame{hash_name}-.png')
                 n_renders = len(renders)
                 scad = _create_scad_for_renders(renders)
                 with open(tmpscad, 'w') as scadfile:
