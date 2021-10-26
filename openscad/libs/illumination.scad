@@ -198,17 +198,19 @@ module condenser_lens_gripper(lens_r, lens_t, base_r){
 
 function illumination_mounting_hole_sep() = 10;
 
+function lid_mounting_hole_pos(base_r) = [base_r-2, base_r+1, 0];
+
 module condenser_cutout(lens_r, lens_assembly_z){
     // This is the cutout for the beam to pass through the condenser.
     // It contains a light trap and mouning for the diffuser
 
     apeture_tray_z=1;
-    apeture_tray_t=1;
+    apeture_tray_t=1.5;
     light_trap_start_z = apeture_tray_z+apeture_tray_t+tiny();
 
     lighttrap_h = lens_assembly_z+3*tiny()-light_trap_start_z;
     aperture_r = lens_r-condenser_aperture_difference();
-    light_trap_width=6;
+    light_trap_width=8;
     apeture_tray_width = light_trap_width-0.5;
 
     //Light trap to reduce stray reflectins
@@ -291,6 +293,11 @@ module condenser(led_r=4.5/2, lens_d=13, lens_t=1, lens_assembly_z= 30, include_
             }
         }
         condenser_cutout(lens_r, lens_assembly_z);
+        reflect_x(){
+            translate(lid_mounting_hole_pos(base_r) - [0, 0, 0.5]){
+                no2_selftap_hole(h=7);
+            }
+        }
      }
 }
 
@@ -300,7 +307,7 @@ module illumination_board_cutout(h, board_bore_depth){
             cylinder(h=h,d=16);
         }
         translate([-3, 0, h-board_bore_depth-4]){
-            cube([6, 23, h]);
+            cube([6, 22, h]);
         }
         translate([-2, 1, h-board_bore_depth-3.5]){
             cube([4, 99, h]);
@@ -334,7 +341,7 @@ module condenser_lid(lens_d=13){
 
     difference(){
         minkowski(){
-            offset_thick_section(h=h, offset=-2, shift=true){
+            offset_thick_section(h=h-1.5, offset=-2, shift=true){
                 cropped_body(base_r,illumination_dovetail_y()-3);
             }
             sphere(r=3.5,$fn=16);
@@ -347,7 +354,7 @@ module condenser_lid(lens_d=13){
         }
         illumination_board_cutout(h, board_bore_depth);
         reflect_x(){
-            translate([base_r-2,base_r+1,h-2]){
+            translate(lid_mounting_hole_pos(base_r) + [0, 0, h-2]){
                 no2_selftap_counterbore(flip_z=true);
             }
         }
