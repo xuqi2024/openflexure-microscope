@@ -48,7 +48,7 @@ function thread_points(inner,
     cylinder_radius = cylinder_radius(radius, thread_height),
     angle_step = angle_step(number_divisions),
     z_step = z_step(pitch, number_divisions),
-    // This is the angle that tech section overlaps by
+    // This is the angle that each section overlaps by
     angular_overlap = angle_step * overlap,
     angular_disp = 0.5 * (angle_step + angular_overlap),
     outer_width = inner ? thread_base_width : thread_top_width,
@@ -141,7 +141,7 @@ module inner_thread(radius=12.9,
                     thread_length=6.5,
                     pitch=0.635,
                     extra=-0.5,
-                    overlap=0.01,
+                    overlap=0,
                     number_divisions=60){
     // This is a highly specified thread module for inner threads.
     // See base_thread for parameter definitions
@@ -165,7 +165,7 @@ module outer_thread(radius=12.9,
                     thread_length=6.5,
                     pitch=0.635,
                     extra=-0.5,
-                    overlap=0.01,
+                    overlap=0,
                     number_divisions=60){
     // This is a highly specified thread module for outer threads.
     // See base_thread for parameter definitions
