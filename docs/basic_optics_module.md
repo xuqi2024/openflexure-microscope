@@ -65,5 +65,5 @@ Take the [lens spacer][Lens spacer](fromstep){qty:1, cat:printedpart} and confir
 
 ## Set the complete module aside {pagestep}
 
-Set the [compete optics module]{output, qty:1} aside in a safe place.
+Set the [complete optics module]{output, qty:1} aside in a safe place.
 

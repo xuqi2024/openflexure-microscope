@@ -7,7 +7,7 @@
 ## Mount the optics {pagestep}
 
 * Get the [2.5mm Allen key]{qty:1, cat:tool, note: "- Must be a ball-ended key"} ready
-* Take the [compete optics module](fromstep){qty:1, cat:subassembly} and pass it through the bottom of the [microscope][microscope with assembled actuators](fromstep){qty:1, cat:subassembly}.
+* Take the [complete optics module](fromstep){qty:1, cat:subassembly} and pass it through the bottom of the [microscope][microscope with assembled actuators](fromstep){qty:1, cat:subassembly}.
 * Insert exposed the mounting screw on the optics module through the keyhole on the z-actuator.
 * Insert the Allen key through the teardrop shaped hole on the front of the microscope. Until it engages with the mounting screw.
 * Slide optics module up the keyhole as high as it will go while still keeping the Allen key engaged with the screw. **Note: this is not the top of the keyhole**
