@@ -49,7 +49,7 @@ This is the trickiest part of the microscope build. In this step we will clip ba
 ![Actuator cutaway](renders/band_instruction.png)
 
 * Take the [foot][feet](fromstep){qty:3, note:" - Each actuator has its own labelled foot.", cat:printedpart} for the x actuator
-* Loop a [viton band][Viton O-ring (30mmx2mm)]{qty:3, note: '- "Viton band"', cat:mech} through the foot
+* Loop a [viton band][Viton O-ring (30mmx2mm)]{qty:3, note: '"Viton band"', cat:mech} through the foot
 * Push the [band tool](fromstep){qty:1, cat:printedtool} through the foot hook the band onto the tool on each side.
 * Push the [band tool cover](fromstep){qty:1, cat:printedtool} onto the bottom of the band tool
 * Align the foot under the microscope so that the letter faces outwards

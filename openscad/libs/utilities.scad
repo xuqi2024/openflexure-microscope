@@ -166,6 +166,28 @@ module xz_slice(y=0){
     }
 }
 
+
+// Module: m4_selftap_hole()
+// Usage: m4_selftap_hole(h=5)
+// Description:
+//   Use to create a hole for an m4 machine screw to self tap into screw using a `difference()`
+//   operation. This is a triangular cross-section hole.
+module m4_selftap_hole(h=10, center=false){
+    // r and flat calculated from the trylinder selftap function used for years.
+    // Moving to explicit tested number rather than arbitary calculations.
+    trylinder(r=1.3, flat=1.73, h=h, center=center);
+}
+
+// Module: no2_selftap_hole()
+// Usage: no2_selftap_hole(h=5)
+// Description:
+//   Use to create a hole for a No2 self-tap screw using a `difference()` operation.
+//   This is a triangular cross-section hole.
+module no2_selftap_hole(h=10, center=false){
+    //This value for r came from test prints. ranging r from 0.3 to 0.5.
+    trylinder(r=.3, flat=1.73, h=h, center=center);
+}
+
 module no2_selftap_counterbore(bore_h=999, hole_h=999){
     $fn = 14;
     generic_counterbore(bore_d=5.6, bore_h=bore_h, hole_d=2.5, hole_h=hole_h);
@@ -690,6 +712,10 @@ module trylinder_selftap(nominal_d=3, h=10, center=false){
     // Make a trylinder that you can self-tap a machine screw into.
     // The size is deliberately a bit big for small holes, so that
     // it compensates for splodgy printing
+    echo("Warning: `trylinder_selftap` is no longer recommended for use.");
+    echo("Use explicitlt defined holes such as `m4_selftap_hole` for screw sizes M4 and above.");
+    echo("Use explicit holes for self tap screws, such as `no2_selftap_hole`");
+    echo("For machine screws smaller than M4 use nut traps to avoid thread stripping.");
     r = max(nominal_d*0.8/2 + 0.2, nominal_d/2 - 0.2);
     dr = 0.5;
     flat = dr * 2 * sqrt(3);

@@ -205,10 +205,12 @@ module thumbwheel(){
 * A lobe for the thumbwheel with conical support
 */
 module thumbwheel_lobe(r=5, h=5)
-{
-    cylinder(r=r,h=h);
-    translate_z(-h){
-        cylinder(r1=.1,r2=r,h=h);
+{   
+    hull(){
+        cylinder(r=r,h=h);
+        translate_z(-h){
+            cylinder(r=tiny(),h=tiny());
+        }
     }
 }
 
@@ -252,7 +254,7 @@ module motor_clearance(h=15){
     reflect_x(){
         translate_x(motor_screw_separation()/2){
             rotate(180){
-                trylinder_selftap(4,h=20,center=true);
+                m4_selftap_hole(h=20,center=true);
             }
         }
     }

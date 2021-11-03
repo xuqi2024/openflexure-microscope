@@ -142,8 +142,10 @@ module lens_gripper(lens_r=10,h=6,lens_h=3.5,base_r=-1,t=0.65,solid=false, flare
 module camera_mount_top_slice(optics_config){
     // A thin slice of the top of the camera mount
     linear_extrude(tiny()){
-        projection(cut=true){
-            camera_mount(optics_config);
+        offset(-tiny()){
+            projection(cut=true){
+                camera_mount(optics_config);
+            }
         }
     }
 }
@@ -576,9 +578,9 @@ module camera_platform(params, optics_config, base_r){
                 }
             }
 
-            // add the camera mount
+            // add the camera mount posts
             translate_z(platform_h){
-                camera_bottom_mounting_posts(optics_config, r=2, h=4);
+                camera_bottom_mounting_posts(optics_config, cutouts=false);
             }
         }
 
@@ -586,7 +588,7 @@ module camera_platform(params, optics_config, base_r){
         translate_z(-4){
             objective_fitting_cutout(params, y_stop=true);
         }
-        // add the camera mount
+        // add the camera mount holes
         translate_z(platform_h){
             camera_bottom_mounting_posts(optics_config, outers=false, cutouts=true);
         }

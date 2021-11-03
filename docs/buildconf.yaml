@@ -1,4 +1,4 @@
-Authors: 
+Authors:
     - Richard Bowman
 Affiliation: The Openflexure Community
 Email: "contact@openflexure.org"
@@ -34,3 +34,14 @@ PageBOMTitle: "## For this section you will need:"
 #Fussy: False
 ForceOutput:
   - models/*.stl
+  - models/stl_options.json
+Navigation:
+  - Link: high_res_microscope.md
+    Title: High-resolution microscope
+  - Link: low_cost_microscope.md
+    Title: Low-cost microscope
+  - Link: nano_sangaboard.md
+    Title: Sangaboard-compatible motor controller
+  - Link: troubleshooting.md
+    Title: Troubleshooting
+

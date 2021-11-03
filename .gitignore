@@ -26,6 +26,7 @@ render.ninja
 docs/renders/
 rendering/annotations/*.png
 stl_options.json
+admesh_report.xml
 
 # Ignore IDE files
 .vscode/

@@ -15,77 +15,80 @@ use <librender/rendered_components.scad>
 
 FRAME = 4;
 
-if (FRAME <= 3){
-    assemble_om(FRAME);
-}
-else if (FRAME == 4){
-    rendered_optics_module(optics_module_pos(),
-                           cut=false,
-                           lens=true,
-                           camera=true,
-                           objective=false,
-                           nut=false,
-                           screw=false,
-                           explode="camera");
-}
-else if (FRAME == 5){
-    rendered_optics_module(optics_module_pos(),
-                           cut=false,
-                           lens=true,
-                           camera=true,
-                           objective=false,
-                           nut=false,
-                           screw=false);
-}
-else if (FRAME == 6){
-    rendered_optics_module(optics_module_pos(),
-                           cut=false,
-                           lens=true,
-                           camera=true,
-                           objective=true,
-                           nut=false,
-                           screw=false,
-                           explode="objective");
-}
-else if (FRAME == 7){
-    rendered_optics_module(optics_module_pos(),
-                           cut=false,
-                           lens=true,
-                           camera=true,
-                           objective=true,
-                           nut=false,
-                           screw=false);
-}
-else if (FRAME == 8){
-    rendered_optics_module(optics_module_pos(),
-                           cut=false,
-                           lens=true,
-                           camera=true,
-                           objective=true,
-                           nut=true,
-                           screw=false,
-                           explode="nut");
-}
-else if (FRAME == 9){
-    rendered_optics_module(optics_module_pos(),
-                           cut=false,
-                           lens=true,
-                           camera=true,
-                           objective=true,
-                           nut=true,
-                           screw=true,
-                           explode="screw");
-}
-else if (FRAME == 10){
-    rendered_optics_module(optics_module_pos(),
-                           cut=false,
-                           lens=true,
-                           camera=true,
-                           objective=true,
-                           nut=true,
-                           screw=true);
-}
+render_rms_assembly(FRAME);
 
+module render_rms_assembly(frame){
+    if (frame <= 3){
+        assemble_om(frame);
+    }
+    else if (frame == 4){
+        rendered_optics_module(optics_module_pos(),
+                               cut=false,
+                               lens=true,
+                               camera=true,
+                               objective=false,
+                               nut=false,
+                               screw=false,
+                               explode="camera");
+    }
+    else if (frame == 5){
+        rendered_optics_module(optics_module_pos(),
+                               cut=false,
+                               lens=true,
+                               camera=true,
+                               objective=false,
+                               nut=false,
+                               screw=false);
+    }
+    else if (frame == 6){
+        rendered_optics_module(optics_module_pos(),
+                               cut=false,
+                               lens=true,
+                               camera=true,
+                               objective=true,
+                               nut=false,
+                               screw=false,
+                               explode="objective");
+    }
+    else if (frame == 7){
+        rendered_optics_module(optics_module_pos(),
+                               cut=false,
+                               lens=true,
+                               camera=true,
+                               objective=true,
+                               nut=false,
+                               screw=false);
+    }
+    else if (frame == 8){
+        rendered_optics_module(optics_module_pos(),
+                               cut=false,
+                               lens=true,
+                               camera=true,
+                               objective=true,
+                               nut=true,
+                               screw=false,
+                               explode="nut");
+    }
+    else if (frame == 9){
+        rendered_optics_module(optics_module_pos(),
+                               cut=false,
+                               lens=true,
+                               camera=true,
+                               objective=true,
+                               nut=true,
+                               screw=true,
+                               explode="screw");
+    }
+    else if (frame == 10){
+        rendered_optics_module(optics_module_pos(),
+                               cut=false,
+                               lens=true,
+                               camera=true,
+                               objective=true,
+                               nut=true,
+                               screw=true);
+    }
+}
 
 module assemble_om(frame){
 

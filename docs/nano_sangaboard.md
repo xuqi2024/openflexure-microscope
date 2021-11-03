@@ -3,7 +3,7 @@
 
 [Sangaboard arduino sketch]: https://gitlab.com/bath_open_instrumentation_group/sangaboard/-/tree/master/arduino_code
 
-The official project uses the [Sangaboard motor controller](parts/eletronics/sangaboard.md), but this is currently difficult to get hold of. This guide tells you how to create your own motor controller that is compatible with the Sangaboard firmware. This will allow you to drive the [28BYJ-48] stepper motors used for the microscope.
+The official project uses the [Sangaboard motor controller](parts/electronics/sangaboard.md), but this is currently difficult to get hold of. This guide tells you how to create your own motor controller that is compatible with the Sangaboard firmware. This will allow you to drive the [28BYJ-48] stepper motors used for the microscope.
 
 [28BYJ-48]: parts/electronics.yml#28BYJ-48
 [28BYJ-48 driver board]: parts/electronics.yml#28BYJ-48-Driver
