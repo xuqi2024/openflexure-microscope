@@ -36,4 +36,4 @@ These are highlighted in red in the following images.
 
 * Repeat the steps used above to add three [M3 nuts][M3 nut]{qty:3, cat:mech} into the platform above the z-axis of the main body.
 
-The [prepared main body]{output, qty:1} is now ready for assembly.
+The [prepared main body]{output, qty:1} and [prepared rectangular z-axis]{output, qty:1} are now ready for assembly.

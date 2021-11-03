@@ -12,7 +12,8 @@
 *                                                                 *
 ******************************************************************/
 
-
+use <./libs/microscope_parameters.scad> 
+use <./libs/libdict.scad>
 use <./libs/utilities.scad>
 
 $fn=32; 
@@ -82,10 +83,14 @@ module sample_clip(clamp_point, t=2.5, w=6, radius_of_curvature=undef, slope=30)
 //sample_clip([0,19/2+3,12.4-1.5],slope=7.5); //mini culture dish
 
 module sample_clips_stl(){
-    for(a=[0,180]){
-        rotate([0,-90,a]){
-            translate([7/2,-10,-7+1]){
-                sample_clip([0,20,-1], w=7, radius_of_curvature=7);
+    params = default_params();
+    smart_brim_r = key_lookup("smart_brim_r", params);
+    exterior_brim(r=smart_brim_r, smooth_r = 3){
+        for(a=[0,180]){
+            rotate([0,-90,a]){
+                translate([7/2,-10,-7+1]){
+                    sample_clip([0,20,-1], w=7, radius_of_curvature=7);
+                }
             }
         }
     }

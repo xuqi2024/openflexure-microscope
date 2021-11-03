@@ -3,7 +3,15 @@ use <./libs/lib_microscope_stand.scad>
 use <../openscad/libs/utilities.scad>
 use <../openscad/libs/libdict.scad>
 
-nano_converter_plate();
+nano_converter_plate_stl();
+
+module nano_converter_plate_stl(){
+    params = default_params();
+    smart_brim_r = key_lookup("smart_brim_r", params);
+    exterior_brim(r=smart_brim_r, smooth_r = 9){
+        nano_converter_plate();
+    }
+}
 
 function nano_converter_plate_size() = let(
     inset = pi_stand_board_inset(),
