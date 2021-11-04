@@ -43,7 +43,7 @@ module spacer(params, upright_sample_thickness){
         translate([0,0,-illumination_dovetail_z(params)]){
             translate(right_illumination_screw_pos(params)){
                 rotate_z(90){
-                    boring_holes(boring_radius = 5);
+                    z_axis_boring_holes(boring_radius = 5);
                 }
             }
         }
@@ -55,7 +55,7 @@ module spacer(params, upright_sample_thickness){
         translate([0,0,-illumination_dovetail_z(params)]){
             translate(left_illumination_screw_pos(params)){
                 rotate_z(180){
-                    boring_holes(boring_radius = 5);
+                    z_axis_boring_holes(boring_radius = 5);
                 }
             }
         }
@@ -99,10 +99,10 @@ module spacer_top(params){
         translate(left_illumination_screw_pos(params)){
             cylinder(r=6,h=3);
         }
-        translate(right_back_corner_pos(params)){
+        translate(right_back_sq_illium_corner_pos(params)){
             cylinder(r=6,h=3);
         }
-        translate(left_back_corner_pos(params)){
+        translate(left_back_sq_illium_corner_pos(params)){
             cylinder(r=6,h=3);
         }
     }
@@ -130,12 +130,12 @@ module spacer_top_screw_holes(params){
         m3_nut_trap_with_shaft(0,0);
     }
     // Rotating the back nut traps to minimise "threading" 
-    translate(right_back_corner_pos(params)){
+    translate(right_back_sq_illium_corner_pos(params)){
         rotate([0,0,225]){
             m3_nut_trap_with_shaft(0,0);
         }
     }
-    translate(left_back_corner_pos(params)){
+    translate(left_back_sq_illium_corner_pos(params)){
         rotate([0,0,135]){
             m3_nut_trap_with_shaft(0,0);
         }
