@@ -1,25 +1,15 @@
-use <./libs/microscope_parameters.scad>
-use <./libs/illumination.scad>
-use <./libs/lib_optics.scad>
-use <./libs/libdict.scad>
-use <./libs/optics_configurations.scad>
-use <./reflection_illuminator.scad>
-use <./libs/utilities.scad>
-use <./libs/cameras/camera.scad>
-use <./libs/cameras/picamera_2.scad>
-use <./libs/z_axis.scad>
 
-upright_condenser_and_mount_stl(params = default_params() , optics_config = pilens_config() );
+use <./microscope_parameters.scad>
+use <./illumination.scad>
+use <./lib_optics.scad>
+use <./libdict.scad>
+use <./utilities.scad>
+use <./cameras/camera.scad>
+use <./cameras/picamera_2.scad>
+use <./z_axis.scad>
 
-// Test for led_boring_holes
-//translate([20,0,0]) led_boring_holes(boring_radius = 6);
 
-module upright_condenser_and_mount_stl(params,optics_config){
-    $fn = 32;
-    condenser_and_platform(params, optics_config);
-}
-
-module condenser_top_hull(){
+module upright_condenser_top_hull(){
     // Creates a base for the cylindrical consenser tube to stand on.
     cylinder(r =10+tiny(), h = 0.5);
 
@@ -35,7 +25,7 @@ module upright_objective_fitting_cutout(params, y_stop=true){
     }
 }
 
-module condenser_platform(params, optics_config, base_r){
+module upright_condenser_platform(params, optics_config, base_r){
 
     assert(key_lookup("optics_type", optics_config)=="spacer", "Use spacer optics configuration to create a camera_platform.");
 
@@ -58,7 +48,7 @@ module condenser_platform(params, optics_config, base_r){
                     hull(){
                         cylinder(r=base_r,h=tiny());
                         objective_fitting_base(params);
-                        condenser_top_hull();
+                        upright_condenser_top_hull();
                     }
                 }
             }
@@ -99,12 +89,13 @@ module led_boring_holes(boring_radius){
     } 
 }
 
-module condenser_and_platform(params, optics_config){
+module upright_condenser(params, optics_config){
+    $fn = 32;
     // Combines the isolated condenser unit with the platform to create a single structure.  
         platform_h = lens_spacer_z(params, optics_config) - 5;
     difference(){
         union(){
-            condenser_platform(params, optics_config, base_r=5);
+            upright_condenser_platform(params, optics_config, base_r=5);
             translate([0,0,platform_h]){
                 condenser(params, lens_d=13, lens_t=1, lens_assembly_z= 30, include_mounting = false);
             }

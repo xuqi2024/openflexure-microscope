@@ -1,6 +1,5 @@
 //Builds a 10mm z-spacer
 use <./libs/microscope_parameters.scad> 
-use <./upright_z_spacer.scad>
+use <./libs/upright_z_axis.scad>
 
-params = default_params();
-spacer_stl(params, 10);
+z_spacer(default_params(), 10);

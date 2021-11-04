@@ -277,12 +277,12 @@ def generate_small_parts(writer):
 
 def generate_upright_microscope_parts(writer):
     writer.openscad(
-        "z_only_with_smart_brim.stl",
-        "z_only.scad",
+        "seperate_z_actuator.stl",
+        "seperate_z_actuator.scad",
     )
     writer.openscad(
-        "upright_condenser_and_mount.stl",
-        "upright_condenser_and_mount.scad",
+        "upright_condenser.stl",
+        "upright_condenser.scad",
     )
     writer.openscad(
         "1mm_z_spacer.stl",

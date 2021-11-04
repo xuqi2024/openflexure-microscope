@@ -1,28 +1,78 @@
-use <./illumination_dovetail.scad>
-use <./libs/microscope_parameters.scad> 
-use <./libs/main_body_structure.scad>
-use <./libs/utilities.scad>
-use <./libs/libdict.scad>
-use <./libs/z_axis.scad>
-use <./libs/wall.scad>
-use <./libs/z_axis.scad>
-use <./libs/illumination.scad>
-use <./libs/compact_nut_seat.scad>
-use <./libs/main_body_transforms.scad>
-use <./libs/gears.scad>
-use <./z_only.scad>
+use <../illumination_dovetail.scad>
+use <./microscope_parameters.scad> 
+use <./main_body_structure.scad>
+use <./utilities.scad>
+use <./libdict.scad>
+use <./z_axis.scad>
+use <./wall.scad>
+use <./z_axis.scad>
+use <./illumination.scad>
+use <./compact_nut_seat.scad>
+use <./main_body_transforms.scad>
+use <./gears.scad>
 
-function spacer_height(params, upright_sample_thickness) = (key_lookup("sample_z", params) - illumination_dovetail_z(params)) *2 + upright_sample_thickness;
 
-module spacer_stl(params, upright_sample_thickness){
-    $fn=32;
-    spacer(params, upright_sample_thickness);
+module seperate_z_actuator(params, cable_guides = false, cable_housing = false, rectangular = false){
+    //This is the z-axis of the main body 
+    difference(){
+        union(){
+            add_hull_base(microscope_base_t()); 
+            // The wings have been removed from this design of the z-axis as they are not required 
+            if (cable_housing){
+                // The conditional statement allows cable guides to be included or omitted
+                if (rectangular){
+                    // Rectangular z-only module, used for the upside down version of the z-axis which sits ontop of the spacer
+                    z_axis_casing(params, condenser_mount=true, cable_housing = true, rectangular = true);
+                }
+                else{
+                    // Triangular z-only module
+                    z_axis_casing(params, condenser_mount=true, cable_housing = true, rectangular = false);
+                }
+            }
+            else{
+                if (rectangular){
+                    z_axis_casing(params, condenser_mount=true, cable_housing = false, rectangular = true);
+                }
+                else{
+                    z_axis_casing(params, condenser_mount=true, cable_housing = false, rectangular = false);
+                }
+            }
+        }
+        mounting_hole_lugs(params);
+        // This cuts the screw holes and/or nut traps (depending on whether it is for rectangular or triangular) into the z-axis
+        if (rectangular){
+            z_axis_casing_cutouts(params, rectangular = true);
+        }
+        else{
+            z_axis_casing_cutouts(params);
+        }
+        xy_actuator_cut_outs(params);
+        central_optics_cut_out(params);
+        z_axis_clearance(params);
+        z_motor_clearance(params);
+        if (cable_guides){ 
+            // Cable guide cutouts to allow the cables to be threaded through 
+            z_cable_housing_cutout(params, h=99, top=false);
+        }
+    }
+
+    // Adding the z actuator
+    difference(){
+        z_actuator_assembly(params);
+        // Removing the extruding cylinders from the actuator
+        translate([-50,0,-100]){
+            cube(size = 100);
+        }
+    }
 }
 
-module spacer(params, upright_sample_thickness){
+function z_spacer_height(params, upright_sample_thickness) = (key_lookup("sample_z", params) - illumination_dovetail_z(params)) *2 + upright_sample_thickness;
+
+module z_spacer(params, upright_sample_thickness){
+    $fn=32;
     difference(){
         // Spacer main body
-        spacer_body(params, upright_sample_thickness);
+        z_spacer_body(params, upright_sample_thickness);
         // Screw thread holes
         translate([0,0,-illumination_dovetail_z(params)]){
             translate(right_illumination_screw_pos(params)){
@@ -70,8 +120,8 @@ module spacer(params, upright_sample_thickness){
             }
         }
         // Inserting the nut traps at the top of the spacer
-        translate([0,0,spacer_height(params, upright_sample_thickness)-69]){
-            spacer_top_screw_holes(params);
+        translate([0,0,z_spacer_height(params, upright_sample_thickness)-69]){
+            z_spacer_top_screw_holes(params);
         }
         // Cut-out for motor
         translate([0,66,-tiny()]){
@@ -80,17 +130,17 @@ module spacer(params, upright_sample_thickness){
     }
 }
 
-module spacer_body(params, upright_sample_thickness){
+module z_spacer_body(params, upright_sample_thickness){
     hull(){
         // Making the height of the spacer 25mm
-        translate([0,0,spacer_height(params, upright_sample_thickness)-illumination_dovetail_z(params)]){
-            spacer_top(params);
+        translate([0,0,z_spacer_height(params, upright_sample_thickness)-illumination_dovetail_z(params)]){
+            z_spacer_top(params);
         }
-        spacer_base(params);
+        z_spacer_base(params);
     }
 }
 
-module spacer_top(params){
+module z_spacer_top(params){
     hull(){
         // Creating the rectangular top of the spacer
         translate(right_illumination_screw_pos(params)){
@@ -108,7 +158,7 @@ module spacer_top(params){
     }
 }
 
-module spacer_base(params){
+module z_spacer_base(params){
     translate([0,0,-62]){
         hull(){
             // Creating the triangular bottom of the spacer using the position of the corners as previously defined
@@ -121,7 +171,7 @@ module spacer_base(params){
     }
 }
 
-module spacer_top_screw_holes(params){
+module z_spacer_top_screw_holes(params){
     // Inserting the nut traps and screw holes into the spacer
     translate(right_illumination_screw_pos(params)){
         m3_nut_trap_with_shaft(0,0);

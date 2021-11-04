@@ -47,7 +47,7 @@ In this section we are assembling the sample illumination. This is for transmiss
 ## Push-fit the lens {pagestep}
 
 * Place the [Condenser lens](parts/optics.yml#CondenserLens){qty:1, cat:optical} on the [lens tool][Lens tool](fromstep){qty:1, cat:printedtool} flat side down
-* Take the [condenser and mount][Condenser and mount](fromstep){qty:1, cat:printedpart} and align the opening over the lens
+* Take the [upright condenser][Upright condenser](fromstep){qty:1, cat:printedpart} and align the opening over the lens
 * Push down until the lens clicks into place
 
 ![](images/upright/lens_tool_with_lens.jpg)
@@ -64,10 +64,10 @@ In this section we are assembling the sample illumination. This is for transmiss
 * Take an [M3x8 cap head screws](parts/mechanical.yml#CapScrew_M3x8mm_SS){qty:1, cat:mech} and screw it into the nut, only screw a couple of turns about **5mm of thread should still be visible at this stage** 
 
 
-## Mount the condenser and mount onto the main body {pagestep}
+## Mount the upright condenser onto the main body {pagestep}
 
-* Take the complete condenser and mount and pass is through the bottom of the main body until the top of the condenser is in line with the stage.
+* Take the complete upright condenser and pass is through the bottom of the main body until the top of the condenser is in line with the stage.
 * Insert the exposed mounting screw into the screw hole in the z-actuator of the main body.
 * Insert the [2.5mm Allen key]{qty:1, cat:tool} through the teardrop shaped hole on the front of the microscope. Until it engages with the mounting screw.
-* Slide the condenser and mount up the keyhole until the top of the condenser is 2-4mm below the top of the stage while keeping the Allen key engaged with the screw. 
+* Slide the upright condenser up the keyhole until the top of the condenser is 2-4mm below the top of the stage while keeping the Allen key engaged with the screw. 
 * Tighten the screw with the Allen key to lock the optics in place.
