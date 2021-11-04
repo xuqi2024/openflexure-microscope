@@ -33,14 +33,16 @@ function illumination_dt_params() = dovetail_params(
     height = 99
 );
 
+// Note: Front is the side towards the motors, Back is the side towards the stage
+
 function right_illumination_screw_pos(params) = [20, z_nut_y(params), illumination_dovetail_z(params)];
 function left_illumination_screw_pos(params) = [-20, z_nut_y(params), illumination_dovetail_z(params)];
 function illumination_back_corner_pos(params) = [0, (key_lookup("leg_r", params)+ leg_outer_w(params))/sqrt(2) + 4, illumination_dovetail_z(params)];
 // Defining the positions of the back corners of the rectangle for the top of the spacer
 // The triangular top of the spacer fits onto the triangular face of the z-axis in the main body. 
 // The rectangular top of the spacer is atached to the rectangular face of the rectangular z-axis, a rectangular face is used here for stability. 
-function right_back_sq_illium_corner_pos(params) = [20, (key_lookup("leg_r", params)+ leg_outer_w(params))/sqrt(2) + 4, illumination_dovetail_z(params)];
-function left_back_sq_illium_corner_pos(params) = [-20, (key_lookup("leg_r", params)+ leg_outer_w(params))/sqrt(2) + 4, illumination_dovetail_z(params)];
+function right_back_sq_illum_corner_pos(params) = [20, (key_lookup("leg_r", params)+ leg_outer_w(params))/sqrt(2) + 4, illumination_dovetail_z(params)];
+function left_back_sq_illum_corner_pos(params) = [-20, (key_lookup("leg_r", params)+ leg_outer_w(params))/sqrt(2) + 4, illumination_dovetail_z(params)];
 
 
 module each_front_illumination_screw(params){
@@ -53,16 +55,16 @@ module each_front_illumination_screw(params){
     }
 }
 
-module each_illumination_corner(params, retuangular=false){
+module each_illumination_corner(params, rectangular=false){
     // A transform to repeat objects at each corner of the illumination mount for a triangular top
     tri_corners = [right_illumination_screw_pos(params),
                    left_illumination_screw_pos(params),
                    illumination_back_corner_pos(params)];
     rect_corners = [right_illumination_screw_pos(params),
                     left_illumination_screw_pos(params),
-                    right_back_sq_illium_corner_pos(params),
-                    left_back_sq_illium_corner_pos(params)];
-    corners = regular ? rect_corners : tri_corners;
+                    right_back_sq_illum_corner_pos(params),
+                    left_back_sq_illum_corner_pos(params)];
+    corners = rectangular ? rect_corners : tri_corners;
     for(pos=corners){
         translate(pos){
             children();

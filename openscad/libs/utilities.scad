@@ -799,7 +799,7 @@ module exterior_brim(r=4, h=0.2, brim_only=false, smooth_r=undef){
     // Add a "brim" around the outside of an object *only*, preserving holes in the object
     // brim width r and the smoothing smooth_r can be defined separately, but default to equal
     
-    brim_r = is_undef(smooth_r) ? r : smooth_r;
+    _smooth_r = is_undef(smooth_r) ? r : smooth_r;
         
     if (!brim_only){
         children();
@@ -809,8 +809,8 @@ module exterior_brim(r=4, h=0.2, brim_only=false, smooth_r=undef){
         linear_extrude(h){
             difference(){
                 offset(r){
-                    offset(-brim_r){
-                        offset(brim_r){
+                    offset(-_smooth_r){
+                        offset(_smooth_r){
                             projection(cut=true){
                                 translate_z(-tiny()){
                                     children();
@@ -819,8 +819,8 @@ module exterior_brim(r=4, h=0.2, brim_only=false, smooth_r=undef){
                         }
                     }
                 }
-                offset(-brim_r+tiny()){
-                    offset(brim_r){
+                offset(-_smooth_r+tiny()){
+                    offset(_smooth_r){
                         projection(cut=true){
                             translate_z(-tiny()){
                                 children();

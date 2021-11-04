@@ -436,7 +436,7 @@ module z_axis_rect_top_counterbores(params){
                 }
             }
         }
-        translate(right_back_sq_illium_corner_pos(params) + z_offset){
+        translate(right_back_sq_illum_corner_pos(params) + z_offset){
             mirror([0,0,1]){
                 z_axis_mount_counterbore(counterbore_r=3.5);
             }
