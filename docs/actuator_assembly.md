@@ -18,7 +18,7 @@ There is one "actuator column" for each of the three axes of the OpenFlexure Mic
 ![Check nut seated flat](diagrams/NutSitFlat.png)
 
 * Insert a [brass nut][M3 brass nut]{qty: 3, cat:mech} into the x actuator through the hole in the front of the [main body][prepared main body](fromstep){qty:1, cat:subassembly}.
-* Look through the hole you should see the side of the nut. If it is tilted so you can see the top can tap the microscope until it sits flat.
+* Looking through the hole you should see the side of the nut. If it is tilted so you can see the top can tap the microscope until it sits flat.
 
 ## Attach the gear {pagestep}
 
@@ -28,7 +28,7 @@ There is one "actuator column" for each of the three axes of the OpenFlexure Mic
 * Take one of the [hex bolts][M3x25mm stainless steel hex bolt]{qty:3, cat:mech}
 * Push it through one of the [large gears](fromstep){qty:3, cat:printedpart} and two [washers][M3 stainless steel washers]{qty:6, cat:mech}
 * Push the screw through the hole at the top of the x actuator until it reaches the nut
-* Screw the bolt into the nut (If the nut turns hold it in place with the [nut tool](fromstep){qty:1, cat:printedtool})
+* Screw the bolt into the nut until the nut is completely lifted up. (If the nut turns hold it in place with the [nut tool](fromstep){qty:1, cat:printedtool})
 
 ## Oil the lead screw {pagestep}
 
@@ -39,10 +39,10 @@ There is one "actuator column" for each of the three axes of the OpenFlexure Mic
 
 ## Prepare the actuator {pagestep}
 
-* Look through the hole you inserted the nut
+* Look through the hole you inserted the nut into
 * You should be able to see the screw thread of the hex bolt
-* Rotate the gear until the screw is clearly visible through the hole
-* Push the [nut tool]{qty:1} into the hole so the internal part cannot move
+* Rotate the gear until the screw is clearly visible through this hole
+* Push the [nut tool]{qty:1} into the hole to hold the internal actuator in place
 
 ## Attaching the viton bands and foot {pagestep}
 This is the trickiest part of the microscope build. In this step we will clip bands onto hooks inside each actuator.
