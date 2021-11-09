@@ -27,6 +27,7 @@ Now you have tested your [printer][RepRap-style printer]{qty:1,cat:tool} and [fi
 * [Optics module]{output,qty:1}: [optics_picamera_2_rms_f50d13.stl](models/optics_picamera_2_rms_f50d13.stl){previewpage} - **This must be printed in [black][Black PLA filament]{Qty: 50g}!** ([?](why_optics_black.md "why?"))
 * [pi camera cover]{output,qty:1}: [picamera_2_cover.stl](models/picamera_2_cover.stl){previewpage}
 * [Microscope stand]{output, qty:1}: [microscope_stand.stl](models/microscope_stand.stl){previewpage}
+* [Pi stand]{output, qty:1}: [pi_stand.stl](models/pi_stand.stl){previewpage}
 * 3 [small gears]{output,qty:3}: [small_gears.stl](models/small_gears.stl){previewpage}
 
 
