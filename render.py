@@ -112,7 +112,7 @@ def register_band(rendersystem):
 def register_brim_and_ties(rendersystem):
     input_file = "rendering/brim_and_ties.scad"
     cameras = [
-        Camera(position=[5, 22, 28], angle=[50, 0, 135], distance=365),
+        Camera(position=[9.7, 33, 6], angle=[45.2, 0, 315.2], distance=361),
         Camera(position=[-4, 21, 29], angle=[206, 0, 177], distance=450),
     ]
     imgsize = [2400, 2400]
