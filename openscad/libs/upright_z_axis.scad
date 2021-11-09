@@ -66,13 +66,13 @@ module seperate_z_actuator(params, cable_guides = false, cable_housing = false, 
     }
 }
 
-function z_spacer_height(params, upright_sample_thickness) = (key_lookup("sample_z", params) - illumination_dovetail_z(params)) *2 + upright_sample_thickness;
+function upright_z_spacer_height(params, upright_sample_thickness) = (key_lookup("sample_z", params) - illumination_dovetail_z(params)) *2 + upright_sample_thickness;
 
-module z_spacer(params, upright_sample_thickness){
+module upright_z_spacer(params, upright_sample_thickness){
     $fn=32;
     difference(){
         // Spacer main body
-        z_spacer_body(params, upright_sample_thickness);
+        upright_z_spacer_body(params, upright_sample_thickness);
         // Screw thread holes
         translate([0,0,-illumination_dovetail_z(params)]){
             translate(right_illumination_screw_pos(params)){
@@ -120,8 +120,8 @@ module z_spacer(params, upright_sample_thickness){
             }
         }
         // Inserting the nut traps at the top of the spacer
-        translate([0,0,z_spacer_height(params, upright_sample_thickness)-69]){
-            z_spacer_top_screw_holes(params);
+        translate([0,0,upright_z_spacer_height(params, upright_sample_thickness)-69]){
+            upright_z_spacer_top_screw_holes(params);
         }
         // Cut-out for motor
         translate([0,66,-tiny()]){
@@ -130,17 +130,17 @@ module z_spacer(params, upright_sample_thickness){
     }
 }
 
-module z_spacer_body(params, upright_sample_thickness){
+module upright_z_spacer_body(params, upright_sample_thickness){
     hull(){
         // Making the height of the spacer 25mm
-        translate([0,0,z_spacer_height(params, upright_sample_thickness)-illumination_dovetail_z(params)]){
-            z_spacer_top(params);
+        translate([0,0,upright_z_spacer_height(params, upright_sample_thickness)-illumination_dovetail_z(params)]){
+            upright_z_spacer_top(params);
         }
-        z_spacer_base(params);
+        upright_z_spacer_base(params);
     }
 }
 
-module z_spacer_top(params){
+module upright_z_spacer_top(params){
     hull(){
         // Creating the rectangular top of the spacer
         translate(right_illumination_screw_pos(params)){
@@ -158,7 +158,7 @@ module z_spacer_top(params){
     }
 }
 
-module z_spacer_base(params){
+module upright_z_spacer_base(params){
     translate([0,0,-62]){
         hull(){
             // Creating the triangular bottom of the spacer using the position of the corners as previously defined
@@ -171,7 +171,7 @@ module z_spacer_base(params){
     }
 }
 
-module z_spacer_top_screw_holes(params){
+module upright_z_spacer_top_screw_holes(params){
     // Inserting the nut traps and screw holes into the spacer
     translate(right_illumination_screw_pos(params)){
         m3_nut_trap_with_shaft(0,0);

@@ -1,6 +1,6 @@
 # Assemble the actuators
 
-There is one "actuator column" for each of the three axes of the OpenFlexure Microscope stage. The x and y actuators allow you to move the sample in x and y. You can focus the microscope by moving in z via the separate rectangular z-axis which is inverted and placed on top of the z-spacer on top of the z-axis of the main body. 
+There is one "actuator column" for each of the three axes of the OpenFlexure Microscope stage. The x and y actuators allow you to move the sample in x and y. You can focus the microscope by moving in z via the separate rectangular z-axis which is inverted and placed on top of the z-actuator mount on top of the z-axis of the main body. 
 
 {{BOM}}
 

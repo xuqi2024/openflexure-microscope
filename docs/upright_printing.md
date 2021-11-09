@@ -21,7 +21,7 @@ Now you have tested your [printer][RepRap-style printer]{qty:1,cat:tool} and [fi
 * [Lens tool]{output,qty:1}: [lens_tool.stl](models/lens_tool.stl){previewpage}
 * [Main body]{output,qty:1}: [main_body.stl](models/main_body.stl){previewpage} - The smart brim may require [custom print settings].
 * [Rectangular z-axis]{output,qty:1}: [seperate_z_actuator.stl](models/seperate_z_actuator.stl){previewpage} - The smart brim may require [custom print settings].
-* [z-spacer]{output,qty:1}: [1mm_z_spacer.stl](models/1mm_z_spacer.stl){previewpage} ([5mm_z_spacer.stl](models/5mm_z_spacer.stl){previewpage} and [10mm_z_spacer.stl](models/10mm_z_spacer.stl){previewpage} are also available for thicker samples)
+* [Upright z-actuator mount]{output,qty:1}: [upright_z_actuator_mount.stl](models/upright_z_actuator_mount.stl){previewpage}
 * 4 [feet]{output,qty:4}: [feet.stl](models/feet.stl){previewpage}
 * 4 [large gears]{output,qty:4}: [large_gears.stl](models/large_gears.stl){previewpage}
 * 3 [small gears]{output,qty:3}: [small_gears.stl](models/small_gears.stl){previewpage}
@@ -35,7 +35,12 @@ Now you have tested your [printer][RepRap-style printer]{qty:1,cat:tool} and [fi
 * [Nano converter plate]{output,qty:1}, to hold separate motor drivers instead of a Sangaboard: [nano_converter_plate.stl](models/nano_converter_plate.stl){previewpage}
 * [Nano gripper]{output,qty:1}: [nano_converter_plate_gripper.stl](models/nano_converter_plate_gripper.stl){previewpage}
 
+### Optional accessories
 
+Taller upright z-actuator mounts are available for use with thicker samples:
+
+* [accessories/upright_z_actuator_mount_5mm_sample.stl](models/accessories/upright_z_actuator_mount_5mm_sample.stl){previewpage}
+* [accessories/upright_z_actuator_mount_10mm_sample.stl](models/accessories/upright_z_actuator_mount_10mm_sample.stl){previewpage} 
 
 ## Clean-up of printed parts {pagestep}
 

@@ -40,6 +40,8 @@ Navigation:
     Title: High-resolution microscope
   - Link: low_cost_microscope.md
     Title: Low-cost microscope
+  - Link: upright-microscope.md
+    Title: Upright microscope
   - Link: nano_sangaboard.md
     Title: Sangaboard-compatible motor controller
   - Link: troubleshooting.md
