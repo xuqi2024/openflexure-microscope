@@ -293,8 +293,8 @@ def generate_upright_microscope_parts(writer):
         "accessories/upright_z_actuator_mount_5mm_sample.scad",
     )
     writer.openscad(
-        "accessories/upright_z_actuator_mount_5mm_sample.stl",
-        "accessories/upright_z_actuator_mount_5mm_sample.scad",
+        "accessories/upright_z_actuator_mount_10mm_sample.stl",
+        "accessories/upright_z_actuator_mount_10mm_sample.scad",
     )
 
 
