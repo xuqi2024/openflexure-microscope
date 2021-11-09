@@ -126,3 +126,10 @@ RaspberryPi_PowerSupply:
     RS Components:
       Link: https://uk.rs-online.com/web/p/raspberry-pi-power-supplies/1873416/
       PartNo: 187-3416
+ArduinoNano:
+  Name: Arduino Nano
+  Description: The Arduino Nano 3.0 is a compact board featuring the ATmega328 microcontroller. It’s a complete, bread-board friendly development board which measures just 45 x 18 mm.
+  Suppliers:
+    RS Components:
+      Link: https://uk.rs-online.com/web/p/arduino/6961667/
+      PartNo: 696-1667

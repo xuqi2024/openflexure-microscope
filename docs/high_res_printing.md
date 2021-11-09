@@ -28,8 +28,6 @@ Now you have tested your [printer][RepRap-style printer]{qty:1,cat:tool} and [fi
 * [pi camera cover]{output,qty:1}: [picamera_2_cover.stl](models/picamera_2_cover.stl){previewpage}
 * [Microscope stand]{output, qty:1}: [microscope_stand.stl](models/microscope_stand.stl){previewpage}
 * 3 [small gears]{output,qty:3}: [small_gears.stl](models/small_gears.stl){previewpage}
-* [Base to hold the motor driver]{output,qty:1}: [motor_driver_case_sangaboard.stl](models/motor_driver_case_sangaboard.stl){previewpage}
-
 
 
 ## Clean-up of printed parts {pagestep}

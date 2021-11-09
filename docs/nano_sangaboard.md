@@ -7,6 +7,8 @@ The official project uses the [Sangaboard motor controller](parts/electronics/sa
 
 [28BYJ-48]: parts/electronics.yml#28BYJ-48
 [28BYJ-48 driver board]: parts/electronics.yml#28BYJ-48-Driver
+[Arduino Nano]: parts/electronics.yml#ArduinoNano
+[jumper cables]: parts/electronics.yml#JumperCable
 
 {{BOM}}
 
@@ -31,7 +33,7 @@ To power the boards you need a 5V voltage source. We create this from a USB powe
 * Cut one end off 7 [jumper cables]{qty: 7}. (Preferably 4 black and 3 red)
 * Solder 4 of these cables to the GND cable of the power supply
 * Solder the other 3 to the Vcc cable of the power supply
-* Protect the joints with [electrical tape]{qty: A little, cat: consumable, note:" - Heat shrink would be better"} or heat shrink.
+* Protect the joints with [electrical tape]{qty: A little, cat: consumable, note:"Heat shrink would be better"} or heat shrink.
 * Connect up the power (with the supply off) as shown in the diagram above.
 
 ## Load the firmware {pagestep}
