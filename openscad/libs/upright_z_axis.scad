@@ -20,32 +20,17 @@ module seperate_z_actuator(params, cable_guides = false, cable_housing = false, 
             // The wings have been removed from this design of the z-axis as they are not required 
             if (cable_housing){
                 // The conditional statement allows cable guides to be included or omitted
-                if (rectangular){
-                    // Rectangular z-only module, used for the upside down version of the z-axis which sits ontop of the spacer
-                    z_axis_casing(params, condenser_mount=true, cable_housing = true, rectangular = true);
-                }
-                else{
-                    // Triangular z-only module
-                    z_axis_casing(params, condenser_mount=true, cable_housing = true, rectangular = false);
-                }
+                z_axis_casing(params, condenser_mount=true, cable_housing=true, rectangular=rectangular);
+
             }
             else{
-                if (rectangular){
-                    z_axis_casing(params, condenser_mount=true, cable_housing = false, rectangular = true);
-                }
-                else{
-                    z_axis_casing(params, condenser_mount=true, cable_housing = false, rectangular = false);
-                }
+                z_axis_casing(params, condenser_mount=true, cable_housing = false, rectangular=rectangular;
+
             }
         }
         mounting_hole_lugs(params);
         // This cuts the screw holes and/or nut traps (depending on whether it is for rectangular or triangular) into the z-axis
-        if (rectangular){
-            z_axis_casing_cutouts(params, rectangular = true);
-        }
-        else{
-            z_axis_casing_cutouts(params);
-        }
+        z_axis_casing_cutouts(params, rectangular=rectangular);
         xy_actuator_cut_outs(params);
         central_optics_cut_out(params);
         z_axis_clearance(params);
