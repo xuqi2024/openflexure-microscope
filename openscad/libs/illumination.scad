@@ -33,11 +33,19 @@ function illumination_dt_params() = dovetail_params(
     height = 99
 );
 
+// Note: Front is the side towards the motors, Back is the side towards the stage
+
 function right_illumination_screw_pos(params) = [20, z_nut_y(params), illumination_dovetail_z(params)];
 function left_illumination_screw_pos(params) = [-20, z_nut_y(params), illumination_dovetail_z(params)];
 function illumination_back_corner_pos(params) = [0, (key_lookup("leg_r", params)+ leg_outer_w(params))/sqrt(2) + 4, illumination_dovetail_z(params)];
+// Defining the positions of the back corners of the rectangle for the top of the spacer
+// The triangular top of the spacer fits onto the triangular face of the z-axis in the main body. 
+// The rectangular top of the spacer is atached to the rectangular face of the rectangular z-axis, a rectangular face is used here for stability. 
+function right_back_sq_illum_corner_pos(params) = [20, (key_lookup("leg_r", params)+ leg_outer_w(params))/sqrt(2) + 4, illumination_dovetail_z(params)];
+function left_back_sq_illum_corner_pos(params) = [-20, (key_lookup("leg_r", params)+ leg_outer_w(params))/sqrt(2) + 4, illumination_dovetail_z(params)];
 
-module each_illumination_screw(params){
+
+module each_front_illumination_screw(params){
     // A transform to repeat objects at each screw hole
     screws = [right_illumination_screw_pos(params), left_illumination_screw_pos(params)];
     for(pos=screws){
@@ -47,9 +55,16 @@ module each_illumination_screw(params){
     }
 }
 
-module each_illumination_corner(params){
-    // A transform to repeat objects at each corner of the illumination mount
-    corners = [right_illumination_screw_pos(params), left_illumination_screw_pos(params), illumination_back_corner_pos(params)];
+module each_illumination_corner(params, rectangular=false){
+    // A transform to repeat objects at each corner of the illumination mount for a triangular top
+    tri_corners = [right_illumination_screw_pos(params),
+                   left_illumination_screw_pos(params),
+                   illumination_back_corner_pos(params)];
+    rect_corners = [right_illumination_screw_pos(params),
+                    left_illumination_screw_pos(params),
+                    right_back_sq_illum_corner_pos(params),
+                    left_back_sq_illum_corner_pos(params)];
+    corners = rectangular ? rect_corners : tri_corners;
     for(pos=corners){
         translate(pos){
             children();
@@ -96,7 +111,7 @@ module illumination_dovetail_structure(params, dt_z, dt_h){
 
         //trilobular structure with "corners" at the 2 screws and a back corner position
         hull(){
-            each_illumination_screw(params){
+            each_front_illumination_screw(params){
                 cyl_slot(r=4, h=3+tiny(), dy=3);
             }
             translate(illumination_back_corner_pos(params)){
@@ -127,7 +142,7 @@ module illumination_dovetail(params, h=50){
     difference(){
         illumination_dovetail_structure(params, dt_z, dt_h);
         // slots for the mounting screws (to allow adjustment of position)
-        each_illumination_screw(params){
+        each_front_illumination_screw(params){
             // wider than normal M3 clearance hole to ease adjustment of illumination
             m3_clear_loose = 3/2*1.33;
             cyl_slot(r=m3_clear_loose, h=999, dy=3, center=true);
@@ -215,7 +230,7 @@ module condenser_cutout(led_r, lens_r, lens_assembly_z, bottom_height=10){
     }
 }
 
-module tall_condenser(led_r, lens_d, lens_t, lens_assembly_z){
+module tall_condenser(led_r, lens_d, lens_t, lens_assembly_z, include_mounting=true){
     // Note that this is the shape before it is is rotated, and cut for printing.
     // This module is useful because the optical path is vertical
     // In this module the lens is at the top of the structure.
@@ -235,8 +250,10 @@ module tall_condenser(led_r, lens_d, lens_t, lens_assembly_z){
     );
 
     // the dovetail clip
-    translate_y(illumination_dovetail_y()){
-        dovetail_clamp_m(dt_params);
+    if (include_mounting){
+        translate_y(illumination_dovetail_y()){
+            dovetail_clamp_m(dt_params);
+        }
     }
 
     difference() {
@@ -248,9 +265,11 @@ module tall_condenser(led_r, lens_d, lens_t, lens_assembly_z){
             translate_z(-bottom_height){
                 cylinder(r=base_r, h=dt_height + bottom_height);
             }
-            translate_y(illumination_dovetail_y()){
-                linear_extrude(dt_height){
-                    back_of_block_2d(dt_params);
+            if (include_mounting){
+                translate_y(illumination_dovetail_y()){
+                    linear_extrude(dt_height){
+                        back_of_block_2d(dt_params);
+                    }
                 }
             }
         }
@@ -264,12 +283,12 @@ module tall_condenser(led_r, lens_d, lens_t, lens_assembly_z){
 }
 
 //TODO the lens_assembly_z should be adjusted to a focal length parameter
-module condenser(params, led_r=4.5/2, lens_d=13, lens_t=1, lens_assembly_z= 30){
+module condenser(params, led_r=4.5/2, lens_d=13, lens_t=1, lens_assembly_z= 30, include_mounting=true){
     //This is the condenser that is printed.
     condenser_angle = key_lookup("condenser_angle", params);
     difference(){
         rotate_x(-condenser_angle){
-            tall_condenser(led_r, lens_d, lens_t, lens_assembly_z);
+            tall_condenser(led_r, lens_d, lens_t, lens_assembly_z, include_mounting=include_mounting);
         }
         mirror([0,0,1]){
             cylinder(r=999,h=999,$fn=4);

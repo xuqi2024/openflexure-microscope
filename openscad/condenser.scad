@@ -1,4 +1,5 @@
 use <./libs/microscope_parameters.scad>
+use <./libs/utilities.scad>
 use <./libs/illumination.scad>
 
 condenser_stl();
