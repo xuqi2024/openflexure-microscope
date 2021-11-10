@@ -2,7 +2,6 @@
 
 use <libs/microscope_parameters.scad>
 use <libs/main_body_transforms.scad>
-use <libs/libdict.scad>
 use <libs/utilities.scad>
 use <libs/wall.scad>
 use <libs/z_axis.scad>
@@ -124,19 +123,15 @@ module front_cable_tidy(params, h=7){
 }
 
 module cable_tidies(params){
-    smart_brim_r = key_lookup("smart_brim_r", params);
-    exterior_brim(r=smart_brim_r, smooth_r = 8){
-        z_cable_tidy_frame_undo(params, z_extra=motor_bracket_h()){
-            translate([0,40,-18]){
-                front_cable_tidy(params);
-            }
+
+    z_cable_tidy_frame_undo(params, z_extra=motor_bracket_h()){
+        translate([0,40,-18]){
+            front_cable_tidy(params);
         }
     }
     reflect_x(){
         translate([20,-20,0]){
-            exterior_brim(r=smart_brim_r, smooth_r = 8){
-                side_cable_tidy(params);
-            }
+            side_cable_tidy(params);
         }
     }
 }
