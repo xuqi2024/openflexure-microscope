@@ -14,19 +14,12 @@ use <./gears.scad>
 
 module seperate_z_actuator(params, cable_guides = false, cable_housing = false, rectangular = false){
     //This is the z-axis of the main body 
+    // The cable_housing variable allows cable guides to be included or omitted
     difference(){
         union(){
             add_hull_base(microscope_base_t()); 
             // The wings have been removed from this design of the z-axis as they are not required 
-            if (cable_housing){
-                // The conditional statement allows cable guides to be included or omitted
-                z_axis_casing(params, condenser_mount=true, cable_housing=true, rectangular=rectangular);
-
-            }
-            else{
-                z_axis_casing(params, condenser_mount=true, cable_housing = false, rectangular=rectangular;
-
-            }
+            z_axis_casing(params, condenser_mount=true, cable_housing=cable_housing, rectangular=rectangular);
         }
         mounting_hole_lugs(params);
         // This cuts the screw holes and/or nut traps (depending on whether it is for rectangular or triangular) into the z-axis
