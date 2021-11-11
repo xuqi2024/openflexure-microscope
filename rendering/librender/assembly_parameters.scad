@@ -21,8 +21,10 @@ function tr_along_z_act(dist) = let(
 //convenience function as the actuator height is used a lot
 function actuator_height() = key_lookup("actuator_h", PARAMS);
 
+function xy_nut_height() = actuator_height()-4;
+
 function x_nut_placement() =  let(
-    pos = x_actuator_pos(PARAMS) + [0, 0, actuator_height()-4],
+    pos = x_actuator_pos(PARAMS) + [0, 0, xy_nut_height()],
     rot = [0, 0, 45]
 ) create_placement_dict(pos, rot);
 
@@ -32,7 +34,7 @@ function x_nut_placement_exp() =  let(
 ) create_placement_dict(pos, rot);
 
 function y_nut_placement() =  let(
-    pos = y_actuator_pos(PARAMS) + [0, 0, actuator_height()-4],
+    pos = y_actuator_pos(PARAMS) + [0, 0, xy_nut_height()],
     rot = [0, 0, -45]
 ) create_placement_dict(pos, rot);
 
@@ -42,8 +44,10 @@ function z_nut_placement() =  let(
     rot2 = z_actuator_rot()
 ) create_placement_dict(pos, rot2, rot1);
 
-function x_lead_assembly_pos() = x_actuator_pos(PARAMS) + [0, 0, actuator_height()+7];
-function y_lead_assembly_pos() = y_actuator_pos(PARAMS) + [0, 0, actuator_height()+7];
+function xy_lead_assembly_height() = actuator_height()+7;
+
+function x_lead_assembly_pos() = x_actuator_pos(PARAMS) + [0, 0, xy_lead_assembly_height()];
+function y_lead_assembly_pos() = y_actuator_pos(PARAMS) + [0, 0, xy_lead_assembly_height()];
 function z_lead_assembly_pos() = z_actuator_pos(PARAMS) + tr_along_z_act(actuator_height()+5);
 
 function x_lead_assembly_placement() = create_placement_dict(x_lead_assembly_pos());
