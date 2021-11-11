@@ -2,6 +2,7 @@ use <librender/hardware.scad>
 use <librender/render_utils.scad>
 use <librender/assembly_parameters.scad>
 use <librender/render_settings.scad>
+use <librender/rendered_main_body.scad>
 use <../openscad/libs/main_body_structure.scad>
 use <../openscad/libs/utilities.scad>
 
@@ -13,25 +14,25 @@ render_prepare_main_body(FRAME);
 module render_prepare_main_body(frame){
     params = render_params();
     if (frame==1){
-        render_body(params);
+        render_body();
         stage_nut(params, exploded=true);
     }else if (frame==2){
-        render_body(params);
+        render_body();
         stage_nut(params, low=true);
         stage_nut_temp_screw(params, exploded=true);
     }else if (frame==3){
-        render_body(params);
+        render_body();
         stage_nut(params);
         stage_nut_temp_screw(params, turn=true);
     }else if (frame==4){
-        render_body(params);
+        render_body();
         stage_nut(params);
         stage_nut(params, nut_num=1, exploded=true);
         stage_nut(params, nut_num=2, exploded=true);
         stage_nut(params, nut_num=3, exploded=true);
     }
     else if (frame==5){
-        render_body(params);
+        render_body();
         stage_nut(params);
         stage_nut(params, nut_num=1);
         stage_nut_temp_screw(params, nut_num=1, turn=true);
@@ -69,7 +70,7 @@ module main_body_stage_prepared(params, translucent_body=false){
     stage_nut(params, nut_num=1);
     stage_nut(params, nut_num=2);
     stage_nut(params, nut_num=3);
-    render_body(params, translucent_body=translucent_body);
+    render_body(translucent_body=translucent_body);
 }
 
 module main_body_prepared(translucent_body=false){
@@ -79,11 +80,9 @@ module main_body_prepared(translucent_body=false){
     main_body_stage_prepared(params, translucent_body=translucent_body);
 }
 
-module render_body(params, translucent_body=false){
+module render_body(translucent_body=false){
     alpha = translucent_body ? 0.2 : 1.0;
-    coloured_render(body_colour(), alpha){
-        main_body(params);
-    }
+    rendered_main_body(body_colour(), alpha);
 }
 
 module stage_nut_temp_screw(params, nut_num=0, turn=false, exploded=false){

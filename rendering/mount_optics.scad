@@ -9,7 +9,7 @@ use <rms_optics_assembly.scad>
 use <actuator_assembly.scad>
 
 
-FRAME = 8;
+FRAME = 3;
 
 render_mount_optics(FRAME);
 

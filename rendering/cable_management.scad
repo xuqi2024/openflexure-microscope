@@ -9,7 +9,7 @@ use <../openscad/libs/main_body_transforms.scad>
 use <../openscad/libs/z_axis.scad>
 use <../openscad/libs/main_body_structure.scad>
 use <../openscad/cable_tidies.scad>
-
+use <librender/rendered_main_body.scad>
 use <librender/assembly_parameters.scad>
 use <librender/electronics.scad>
 use <librender/render_utils.scad>
@@ -19,7 +19,7 @@ render_cable_management();
 module render_cable_management(){
     params = render_params();
     coloured_render("WhiteSmoke"){
-        main_body(params);
+        rendered_main_body();
     }
 
     y_motor_pos = create_placement_dict([0,20,y_motor_z_pos(params)],[0, 0, 180]);
