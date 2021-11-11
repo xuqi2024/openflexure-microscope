@@ -78,7 +78,9 @@ module render_band_insertion(frame_dict){
         lead_screw_assembly();
     }
     translate_z(xy_nut_height()){
-        m3_nut(brass=true, center=true);
+        rotate_z(30){
+            m3_nut(brass=true, center=true);
+        }
     }
 
     color(tools_colour()){

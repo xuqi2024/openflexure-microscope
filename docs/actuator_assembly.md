@@ -39,6 +39,8 @@ There is one "actuator column" for each of the three axes of the OpenFlexure Mic
 
 ## Prepare the actuator {pagestep}
 
+![Check actuator position](diagrams/ActuatorPosition.png)
+
 * Look through the hole you inserted the nut into
 * You should be able to see the screw thread of the hex bolt
 * Rotate the gear until the screw is clearly visible through this hole
