@@ -59,15 +59,22 @@ function dovetail_params(
     dovetail_default_params()
 );
 
+function dovetail_back_width(p) = let(
+    w = key_lookup("overall_width", p),
+    depth = key_lookup("block_depth", p),
+    angle = key_lookup("angle", p),
+    taper_block = key_lookup("taper_block", p),
+    tapered_width = w - 2*tan(90-angle)*depth
+) taper_block ? tapered_width : w;
+
+
 module block_sharp(p){
     // the block to which we attach the male dovetail
     // or from which we cut the female one
 
     w = key_lookup("overall_width", p);
     depth = key_lookup("block_depth", p);
-    angle = key_lookup("angle", p);
-    back_w = key_lookup("taper_block", p) ? w - 2*tan(90-angle)*depth : w;
-
+    back_w = dovetail_back_width(p);
     polygon([
         [     -w/2,      0],
         [      w/2,      0],
@@ -80,14 +87,15 @@ module back_of_block_2d(p){
     // or from which we cut the female one
 
     depth = key_lookup("block_depth", p);
-    w = key_lookup("overall_width", p);
     angle = key_lookup("angle", p);
-    back_w = key_lookup("taper_block", p) ? w - 2*tan(90-angle)*depth : w;
+    back_w = dovetail_back_width(p);
     fillet_r = key_lookup("fillet_r", p);
 
     hull(){
         reflect_x(){
-            translate([back_w/2 - fillet_r*tan(angle/2), -depth + fillet_r]){
+            x_tr = back_w/2 - fillet_r*tan(angle/2);
+            y_tr = -depth + fillet_r;
+            translate([x_tr, y_tr]){
                 circle(r=fillet_r);
             }
         }
@@ -282,7 +290,9 @@ module clamp_cutout_base_2d(p){
         hull(){
             translate(female_point(p)){
                 circle(relief_r);
-                translate([-key_lookup("clamp_t", p)/sin(key_lookup("angle", p)), 0]){
+                clamp_t = key_lookup("clamp_t", p);
+                angle = key_lookup("angle", p);
+                translate([-clamp_t/sin(angle), 0]){
                     circle(relief_r);
                 }
             }

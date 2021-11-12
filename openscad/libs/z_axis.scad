@@ -151,6 +151,7 @@ module objective_fitting_wedge(params, h=undef, nose_shift=0.2, center=false){
                     cube([nose_width+2*nose_shift, tiny(), height]);
                 }
                 reflect_x(){
+                    // TODO: understand these numbers and explain
                     translate([-nose_width/2-5+sqrt(2), 5+sqrt(2), 0]){
                         cylinder(r=2, h=height, $fn=16, center=center);
                     }

@@ -132,6 +132,19 @@ module reflect_z(){
     }
 }
 
+
+function vector_mirror_x(vec) = _vector_mirror_axis(vec, 0);
+function vector_mirror_y(vec) = _vector_mirror_axis(vec, 1);
+function vector_mirror_z(vec) = _vector_mirror_axis(vec, 2);
+
+function _vector_mirror_axis(vec, axis_index) = [
+    for (i = [0:len(vec)-1])
+        if (i==axis_index)
+            -vec[i]
+        else
+            vec[i]
+];
+
 // Module: repeat()
 // Usage: repeat(delta, N, center=false)
 // Arguments:
