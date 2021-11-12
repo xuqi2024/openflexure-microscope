@@ -18,6 +18,19 @@ function tr_along_z_act(dist) = let(
 ) [0, -dist*sin(ang), dist*cos(ang)];
 
 
+function stage_nut_placement(params) =  let(
+    leg_r = key_lookup("leg_r", params),
+    pos = [0, leg_r-stage_hole_inset(), leg_height(params)+4.5],
+    rot = [0, 0, 30]
+) create_placement_dict(pos, rot);
+
+function stage_nut_placement_low(params) =  translate_pos(stage_nut_placement(params), [0,0,-2.5]);
+function stage_nut_placement_exp(params) =   translate_pos(stage_nut_placement(params), [0,30,-2.5]);
+
+function stage_nut_temp_screw_pos(params) =   translate_pos(stage_nut_placement(params), [0,0,5]);
+function stage_nut_temp_screw_pos_exp(params) =   translate_pos(stage_nut_placement(params), [0,0,25]);
+
+
 //convenience function as the actuator height is used a lot
 function actuator_height() = key_lookup("actuator_h", PARAMS);
 

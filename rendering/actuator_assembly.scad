@@ -2,15 +2,13 @@
 use <../openscad/libs/gears.scad>
 use <../openscad/libs/utilities.scad>
 use <../openscad/libs/lib_actuator_assembly_tools.scad>
-use <../openscad/libs/main_body_structure.scad>
 use <../openscad/feet.scad>
 use <librender/hardware.scad>
 use <librender/tools.scad>
 use <librender/render_utils.scad>
 use <librender/assembly_parameters.scad>
 use <librender/render_settings.scad>
-use <../openscad/libs/libdict.scad>
-
+use <prepare_main_body.scad>
 
 
 FRAME=6;
@@ -51,15 +49,6 @@ module render_foot(foot, lie_flat=false){
             else{
                 middle_foot(render_params(), lie_flat=lie_flat, letter="Z");
             }
-        }
-    }
-}
-
-module render_body(){
-    params = render_params();
-    color(body_colour()){
-        render(6){
-            main_body(params);
         }
     }
 }
@@ -184,7 +173,7 @@ module z_actuator_assembly(){
 }
 
 module body_with_x_nut(exploded=false){
-    render_body();
+    main_body_stage_prepared();
     x_nut(exploded=exploded);
 }
 
@@ -197,7 +186,7 @@ module body_with_x_gear(exploded=false, lifted=false){
 }
 
 module body_with_assembled_actuators(x_only=false){
-    render_body();
+    main_body_stage_prepared();
     x_actuator_assembly();
     if (!x_only){
         y_actuator_assembly();
