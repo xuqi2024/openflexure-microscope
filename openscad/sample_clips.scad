@@ -12,13 +12,12 @@
 *                                                                 *
 ******************************************************************/
 
-use <./libs/microscope_parameters.scad>
 use <./libs/utilities.scad>
 
-$fn=32; 
+$fn=32;
 
 module sample_clip(clamp_point, t=2.5, w=6, radius_of_curvature=undef, slope=30){
-    
+
     default_roc = clamp_point.z/2 + clamp_point.y*sin(slope) - t/2;
     roc = if_undefined_set_default(radius_of_curvature, default_roc);
 

@@ -20,8 +20,6 @@ use <../libs/microscope_parameters.scad>
 use <../libs/utilities.scad>
 use <../libs/libdict.scad>
 use <../libs/compact_nut_seat.scad>
-use <../libs/logo.scad>
-
 
 actuator_drilling_jig();
 

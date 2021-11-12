@@ -24,7 +24,6 @@ z_axis_struts() makes the two connections between the objective_mount()
 
 use <./utilities.scad>
 use <./compact_nut_seat.scad>
-use <./main_body_transforms.scad>
 use <./wall.scad>
 use <./gears.scad>
 use <./illumination.scad>
@@ -509,7 +508,7 @@ module z_actuator_housing(params, include_motor_lugs=undef){
     // This houses the actuator column and provides screw seat/motor lugs
     h = key_lookup("actuator_h", params);
     inc_motor_lugs = if_undefined_set_default(include_motor_lugs,
-                                              key_lookup("include_motor_lugs", params)); 
+                                              key_lookup("include_motor_lugs", params));
     translate_y(z_nut_y(params)){
         screw_seat(params,
                    h,

@@ -10,7 +10,6 @@
 ******************************************************************/
 
 use <./utilities.scad>
-use <./compact_nut_seat.scad>
 use <libdict.scad>
 use <./microscope_parameters.scad>
 

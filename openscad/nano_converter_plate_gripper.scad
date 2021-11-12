@@ -43,7 +43,7 @@ module nano_converter_plate_gripper(){
                     cyl_rot(d=cyl_d, h=bridge_t);
                 }
                 translate_z(bridge_h){
-                    cyl_rot(d=cyl_d, h=bridge_t);   
+                    cyl_rot(d=cyl_d, h=bridge_t);
                 }
             }
         }

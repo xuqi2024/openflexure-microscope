@@ -71,7 +71,7 @@ function leg_height(params) = let(
 /**
 * The distance holes on the XY stage are inset from leg_r (the radius on which the legs sit)
 */
-function stage_hole_inset() = flex_dims().y+4; 
+function stage_hole_inset() = flex_dims().y+4;
 
 /**
 * Width of the middle part of each leg
@@ -171,7 +171,7 @@ function actuating_nut_r(params) = let(
 /**
 * distance moved by XY axis actuators
 */
-function xy_actuator_travel(params) = actuating_nut_r(params)*0.15; 
+function xy_actuator_travel(params) = actuating_nut_r(params)*0.15;
 
 
 ////// Z axis parameters. Many are defined here to avoid cyclic imports //////
@@ -180,7 +180,7 @@ function xy_actuator_travel(params) = actuating_nut_r(params)*0.15;
 /**
 * Length of struts supporting Z carriage.
 */
-function z_strut_l() = 18; 
+function z_strut_l() = 18;
 
 /**
 * y position of the optics mounting wedge
@@ -336,13 +336,13 @@ function actuator_wall_h() = 15;
 /**
 * Thickness of the walls on the main body
 * The wall where the reflection illumination cut-out is has double thickness
-*/ 
+*/
 function microscope_wall_t() = 2;
 
 /**
 * Height of walls inside xy_stage
 */
-function inner_wall_h(params) = upper_z_flex_z(params) - 10; 
+function inner_wall_h(params) = upper_z_flex_z(params) - 10;
 
 /**
 * Height of the cutout in the main body wall for the reflection optics

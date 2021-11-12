@@ -4,8 +4,6 @@ use <./illumination.scad>
 use <./lib_optics.scad>
 use <./libdict.scad>
 use <./utilities.scad>
-use <./cameras/camera.scad>
-use <./cameras/picamera_2.scad>
 use <./z_axis.scad>
 
 
@@ -84,9 +82,7 @@ module led_boring_holes(boring_radius){
                 hole_from_bottom(r=led_diameter/2, h=2, base_w=999, delta_z=0.4, layers=2, big_bottom=true);
             }
         }
-          
-        
-    } 
+    }
 }
 
 module upright_condenser(params, optics_config){
