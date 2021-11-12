@@ -2,7 +2,7 @@
 The OpenFlexure Microscope is a 3D printable microscope, with a very precise mechanical translation stage. The microscope is highly customisable. Find about more about the microscope on the [OpenFlexure website](https://openflexure.org/projects/microscope)
 
 
-These instructions will take you through how to assemble various configurations. The also describe how to make a [Sangaboard Compatible motor controller](motor_controllers.html) if you can't get hold of an official one.
+These instructions will take you through how to assemble various configurations. The also describe how to make a [Sangaboard Compatible motor controller](nano_sangaboard.md if you can't get hold of an official one.
 
 ## Microscope Configurations:
 
@@ -12,4 +12,7 @@ This configuration of the microscope uses a traditional microscope objective for
 
 ### [Motorised microscope with low-cost optics](low_cost_microscope.md)
 This configuration of the microscope uses the original lens from a Raspberry Pi camera module.
+
+### [Upright microscope](upright-microscope.md)
+
 

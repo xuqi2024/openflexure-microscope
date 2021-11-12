@@ -205,10 +205,12 @@ module thumbwheel(){
 * A lobe for the thumbwheel with conical support
 */
 module thumbwheel_lobe(r=5, h=5)
-{
-    cylinder(r=r,h=h);
-    translate_z(-h){
-        cylinder(r1=.1,r2=r,h=h);
+{   
+    hull(){
+        cylinder(r=r,h=h);
+        translate_z(-h){
+            cylinder(r=tiny(),h=tiny());
+        }
     }
 }
 

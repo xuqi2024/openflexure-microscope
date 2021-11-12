@@ -275,6 +275,29 @@ def generate_small_parts(writer):
     writer.openscad("leg_test.stl", "test_pieces/leg_test.scad", select_stl_if="always")
     writer.openscad("led_array_holder.stl", "led_array_holder.scad")
 
+def generate_upright_microscope_parts(writer):
+    writer.openscad(
+        "seperate_z_actuator.stl",
+        "seperate_z_actuator.scad",
+    )
+    writer.openscad(
+        "upright_condenser.stl",
+        "upright_condenser.scad",
+    )
+    writer.openscad(
+        "upright_z_actuator_mount.stl",
+        "upright_z_actuator_mount.scad",
+    )
+    writer.openscad(
+        "accessories/upright_z_actuator_mount_5mm_sample.stl",
+        "accessories/upright_z_actuator_mount_5mm_sample.scad",
+    )
+    writer.openscad(
+        "accessories/upright_z_actuator_mount_10mm_sample.stl",
+        "accessories/upright_z_actuator_mount_10mm_sample.scad",
+    )
+
+
 def add_extra_stls_to_writer(writer):
     """
     Instruct ninja to also copy external STL files into the output directory
@@ -309,6 +332,7 @@ def write_ninja_file(extra_files, generate_json):
         generate_bases(mbw)
         generate_gears_and_thumbwheels(mbw)
         generate_small_parts(mbw)
+        generate_upright_microscope_parts(mbw)
         # Include extra STL files
         if args.include_extra_files:
             add_extra_stls_to_writer(mbw)

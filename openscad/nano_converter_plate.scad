@@ -1,7 +1,7 @@
 use <./libs/microscope_parameters.scad>
 use <./libs/lib_microscope_stand.scad>
+use <./libs/libdict.scad>
 use <../openscad/libs/utilities.scad>
-use <../openscad/libs/libdict.scad>
 
 nano_converter_plate_stl();
 

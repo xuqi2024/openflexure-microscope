@@ -1,7 +1,6 @@
 # Assemble the actuators
 
-There is one "actuator column" for each of the three axes of the OpenFlexure Microscope stage. These allow you to move the sample in X and Y, or focus the microscope by moving in Z. 
-
+There is one "actuator column" for each of the three axes of the OpenFlexure Microscope stage. The x and y actuators allow you to move the sample in x and y. You can focus the microscope by moving in z via the separate rectangular z-axis which is inverted and placed on top of the z-actuator mount on top of the z-axis of the main body. 
 
 {{BOM}}
 
@@ -16,7 +15,7 @@ There is one "actuator column" for each of the three axes of the OpenFlexure Mic
 
 ![Inset the nut the actuator column](renders/actuator_assembly_nut.png)
 
-* Insert a [brass nut][M3 brass nut]{qty: 3, cat:mech} into the x actuator through the hole in the front of the [main body][prepared main body](fromstep){qty:1, cat:subassembly}.
+* Insert a [brass nut][M3 brass nut]{qty: 4, cat:mech} into the x-actuator through the hole in the front of the [main body][prepared main body](fromstep){qty:1, cat:subassembly}.
 * Look through the hole you should see the side of the nut. If it is tilted you can tap the microscope until it sits flat.
 
 ## Attach the gear {pagestep}
@@ -24,15 +23,15 @@ There is one "actuator column" for each of the three axes of the OpenFlexure Mic
 ![Gear attachment exploded](renders/actuator_assembly_gear.png)
 ![Gear attachment exploded](renders/actuator_assembly_gear2.png)
 
-* Take one of the [hex bolts][M3x25mm stainless steel hex bolt]{qty:3, cat:mech}
-* Push it through one of the [large gears](fromstep){qty:3, cat:printedpart} and two [washers][M3 stainless steel washers]{qty:6, cat:mech}
-* Push the screw through the hole at the top of the x actuator until it reaches the nut
+* Take one of the [hex bolts][M3x25mm stainless steel hex bolt]{qty:4, cat:mech}
+* Push it through one of the [large gears](fromstep){qty:4, cat:printedpart} and two [washers][M3 stainless steel washers]{qty:8, cat:mech}
+* Push the screw through the hole at the top of the x-actuator until it reaches the nut
 * Screw the bolt into the nut (If the nut turns hold it in place with the [nut tool](fromstep){qty:1, cat:printedtool})
 
 ## Oil the lead screw {pagestep}
 
 * Lift the gear so you can see about 5mm of screw thread underneath
-* Add one drop of [light oil]{qty:3 drops, cat:consumable, Note: " - Don't skip this or you will damage the screws"} onto the screw thread
+* Add one drop of [light oil]{qty:4 drops, cat:consumable, Note: " - Don't skip this or you will damage the screws"} onto the screw thread
 
 ![oil lead screw](renders/actuator_assembly_oil.png)
 
@@ -48,8 +47,8 @@ This is the trickiest part of the microscope build. In this step we will clip ba
 
 ![Actuator cutaway](renders/band_instruction.png)
 
-* Take the [foot][feet](fromstep){qty:3, note:" - Each actuator has its own labelled foot.", cat:printedpart} for the x actuator
-* Loop a [viton band][Viton O-ring (30mmx2mm)]{qty:3, note: '"Viton band"', cat:mech} through the foot
+* Take the [foot][feet](fromstep){qty:4, note:"  Each actuator has its own labelled foot. We require 1 x foot, 1 y foot, and 2 z feet.", cat:printedpart} for the x-actuator
+* Loop a [viton band][Viton O-ring (30mmx2mm)]{qty:4, note: '- "Viton band"', cat:mech} through the foot
 * Push the [band tool](fromstep){qty:1, cat:printedtool} through the foot hook the band onto the tool on each side.
 * Push the [band tool cover](fromstep){qty:1, cat:printedtool} onto the bottom of the band tool
 * Align the foot under the microscope so that the letter faces outwards
@@ -68,8 +67,9 @@ If you had problems with this step see [troubleshooting actuator assembly].
 * The front of the foot should align with the front of the actuator
 
 
-## Repeat this process for Y and Z {pagestep}
+## Repeat this process for y and z {pagestep}
 
-Follow the same procedure for the Y and Z axes. Once complete the [microscope with assembled actuators]{output, qty:1} should look like this:
+Follow the same procedure for the y and z axis in the main body and the [Rectangular z-axis][prepared rectangular z-axis](fromstep){qty:1, cat:subassembly}. Once complete the actuators should look like the following image of the [complete rectangular z-axis]{output, qty:1}:
 
-![Actuators assembled](renders/actuators_assembled.png)
+![](images/upright/z-axis_with_foot.jpg)
+![](images/upright/z-axis_with_foot_underneath.jpg)

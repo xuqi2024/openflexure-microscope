@@ -37,7 +37,7 @@ module cut_actuator_housing(params, cut=true){
     }
 }
 
-module render_frame(frame_dict){
+module render_band_insertion(frame_dict){
     params = default_params();
 
     foot_tr = key_lookup("foot_tr", frame_dict);
@@ -79,7 +79,7 @@ module render_frame(frame_dict){
     }
 }
 
-function frame_parameters(frame_number) = let(
+function band_insertion_frame_parameters(frame_number) = let(
     frame1 = [["foot_tr", [0,0,-40]],
               ["band_tr", [0,0,-40]],
               ["tool_tr", [0,0,-37]],
@@ -124,4 +124,4 @@ function frame_parameters(frame_number) = let(
 ) frames[frame_number-1];
 
 FRAME = 2;
-render_frame(frame_parameters(FRAME));
+render_band_insertion(band_insertion_frame_parameters(FRAME));

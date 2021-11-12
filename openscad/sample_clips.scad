@@ -12,8 +12,7 @@
 *                                                                 *
 ******************************************************************/
 
-use <./libs/microscope_parameters.scad> 
-use <./libs/libdict.scad>
+use <./libs/microscope_parameters.scad>
 use <./libs/utilities.scad>
 
 $fn=32; 
