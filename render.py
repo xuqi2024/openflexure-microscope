@@ -131,6 +131,9 @@ def register_prepare_main_body(rendersystem):
         Camera(position=[-8, 7, 63], angle=[50, 0, 234], distance=263),
         Camera(position=[-8, 7, 63], angle=[50, 0, 234], distance=263),
         Camera(position=[-8, 7, 63], angle=[50, 0, 234], distance=263),
+        Camera(position=[-2, 57, 64], angle=[76, 0, 176.5], distance=179),
+        Camera(position=[-2, 57, 64], angle=[76, 0, 176.5], distance=179),
+        Camera(position=[-2, 57, 64], angle=[76, 0, 176.5], distance=179),
     ]
     imgsize = [2400, 2000]
     for i, camera in enumerate(cameras):

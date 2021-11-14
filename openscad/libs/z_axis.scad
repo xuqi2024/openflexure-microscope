@@ -457,7 +457,7 @@ module z_axis_tri_top_counterbores(params){
         }
         reflect_x(){
             translate(right_illumination_screw_pos(params)){
-                rotate_z(-20){
+                rotate_z(right_illumination_screw_rotation()){
                     translate_z(z_offset){
                         m3_nut_trap_with_shaft(0,0);
                     }

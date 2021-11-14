@@ -24,12 +24,29 @@ function stage_nut_placement(params) =  let(
     rot = [0, 0, 30]
 ) create_placement_dict(pos, rot);
 
-function stage_nut_placement_low(params) =  translate_pos(stage_nut_placement(params), [0,0,-2.5]);
-function stage_nut_placement_exp(params) =   translate_pos(stage_nut_placement(params), [0,30,-2.5]);
+function stage_nut_placement_low(params) = translate_pos(stage_nut_placement(params), [0,0,-2.5]);
+function stage_nut_placement_exp(params) = translate_pos(stage_nut_placement(params), [0,30,-2.5]);
 
-function stage_nut_temp_screw_pos(params) =   translate_pos(stage_nut_placement(params), [0,0,5]);
-function stage_nut_temp_screw_pos_exp(params) =   translate_pos(stage_nut_placement(params), [0,0,25]);
+function stage_nut_temp_screw_pos(params) = translate_pos(stage_nut_placement(params), [0,0,5]);
+function stage_nut_temp_screw_pos_exp(params) = translate_pos(stage_nut_placement(params), [0,0,25]);
 
+function illum_platform_nut_placement(params, right=true) = let(
+    r_pos = right_illumination_screw_pos(params) - [0,0,4.75],
+    r_rot = right_illumination_screw_rotation()+30,
+    l_pos = left_illumination_screw_pos(params) - [0,0,4.75],
+    l_rot = left_illumination_screw_rotation()+30,
+    pos = right ? r_pos : l_pos,
+    rot = right ? r_rot : l_rot
+) create_placement_dict(pos, rot);
+
+function illum_platform_nut_placement_low(params, right=true) = translate_pos(illum_platform_nut_placement(params, right), [0,0,-2.5]);
+function illum_platform_nut_placement_exp(params, right=true) = let(
+    angle = right ? right_illumination_screw_rotation() : left_illumination_screw_rotation(),
+    vector = [-30*sin(angle), 30*cos(angle), -2.5]
+) translate_pos(illum_platform_nut_placement(params, right), vector);
+
+function illum_platform_nut_temp_screw_pos(params, right=true) = translate_pos(illum_platform_nut_placement(params, right), [0,0,5]);
+function illum_platform_nut_temp_screw_pos_exp(params, right=true) = translate_pos(illum_platform_nut_placement(params, right), [0,0,25]);
 
 //convenience function as the actuator height is used a lot
 function actuator_height() = key_lookup("actuator_h", PARAMS);

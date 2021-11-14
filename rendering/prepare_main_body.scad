@@ -6,7 +6,7 @@ use <../openscad/libs/main_body_structure.scad>
 use <../openscad/libs/utilities.scad>
 
 
-FRAME=2;
+FRAME=9;
 
 render_prepare_main_body(FRAME);
 
@@ -41,17 +41,40 @@ module render_prepare_main_body(frame){
         stage_nut_temp_screw(params, nut_num=3, turn=true);
     }
     else if (frame==6){
-        main_body_stage_prepared();
+        main_body_stage_prepared(params);
+    }
+    else if (frame==7){
+        main_body_stage_prepared(params);
+        illum_platform_nut(params, right=true, exploded=true);
+        illum_platform_nut(params, right=false, exploded=true);
+    }
+    else if (frame==8){
+        main_body_stage_prepared(params);
+        illum_platform_nut(params, right=true, low=true);
+        illum_platform_nut_temp_screw(params, right=true, exploded=true);
+        illum_platform_nut(params, right=false, low=true);
+        illum_platform_nut_temp_screw(params, right=false, exploded=true);
+    }
+    else if (frame==9){
+        main_body_stage_prepared(params);
+        illum_platform_nut(params, right=true);
+        illum_platform_nut_temp_screw(params, right=true, turn=true);
+        illum_platform_nut(params, right=false);
+        illum_platform_nut_temp_screw(params, right=false, turn=true);
     }
 }
 
-module main_body_stage_prepared(){
-    params = render_params();
+module main_body_stage_prepared(params){
     render_body(params);
     stage_nut(params);
     stage_nut(params, nut_num=1);
     stage_nut(params, nut_num=2);
     stage_nut(params, nut_num=3);
+}
+
+module main_body_prepared(){
+    params = render_params();
+    main_body_stage_prepared(params);
 }
 
 module render_body(params){
@@ -86,6 +109,33 @@ module stage_nut(params, nut_num=0, low=false, exploded=false){
         }
         place_part(nut_pos){
             m3_nut(center=true);
+        }
+    }
+}
+
+module illum_platform_nut(params, right=true, low=false, exploded=false){
+    nut_pos = exploded ? illum_platform_nut_placement_exp(params, right) :
+        low ? illum_platform_nut_placement_low(params, right) : illum_platform_nut_placement(params, right);
+    if (exploded){
+        construction_line(illum_platform_nut_placement_low(params, right), illum_platform_nut_placement_exp(params, right));
+    }
+    place_part(nut_pos){
+        m3_nut(center=true);
+    }
+}
+
+
+module illum_platform_nut_temp_screw(params, right=true, turn=false, exploded=false){
+    nut_pos = exploded ? illum_platform_nut_temp_screw_pos_exp(params, right) : illum_platform_nut_temp_screw_pos(params, right);
+    if (exploded){
+        construction_line(illum_platform_nut_temp_screw_pos(params, right), illum_platform_nut_temp_screw_pos_exp(params, right));
+    }
+    place_part(nut_pos){
+        m3_cap_x10();
+        if (turn){
+            translate_z(4){
+                turn_clockwise(5);
+            }
         }
     }
 }
