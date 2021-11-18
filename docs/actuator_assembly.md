@@ -22,11 +22,13 @@ There is one "actuator column" for each of the three axes of the OpenFlexure Mic
 
 ## Attach the gear {pagestep}
 
+![Washer direction](diagrams/washer-direction.png)
 ![Gear attachment exploded](renders/actuator_assembly_gear.png)
-![Gear attachment exploded](renders/actuator_assembly_gear2.png)
+![Gear attachment](renders/actuator_assembly_gear2.png)
 
+* Line up two [washers][M3 stainless steel washers]{qty:6, cat:mech} so that the slightly curved sides are facing each other.
 * Take one of the [hex bolts][M3x25mm stainless steel hex bolt]{qty:3, cat:mech}
-* Push it through one of the [large gears](fromstep){qty:3, cat:printedpart} and two [washers][M3 stainless steel washers]{qty:6, cat:mech}
+* Push it through one of the [large gears](fromstep){qty:3, cat:printedpart} and then the two washers.
 * Push the screw through the hole at the top of the x actuator until it reaches the nut
 * Screw the bolt into the nut until the nut is completely lifted up. (If the nut turns hold it in place with the [nut tool](fromstep){qty:1, cat:printedtool})
 
