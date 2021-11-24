@@ -184,13 +184,16 @@ def run_openscad_animation(filename, renders, size):
     except subprocess.CalledProcessError as error:
         #If there is an error not all images were rendered
         std_err = error.stderr.decode('UTF-8')
-        if "X Error of failed request" in std_err:
+        if "ERROR: " in std_err:
+            print(std_err)
+            raise
+        elif "X Error of failed request" in std_err:
             print(std_err)
             print("\n\nPartial fail due to Docker OpenGL issue. "
                     "Missing renders will be regenerated\n\n")
         else:
             print(std_err)
-            raise
+            RuntimeError("OpenSCAD failed for unknown reason")
 
     check_openscad_warnings(std_err)
     return copy_renders(renders, hash_name)
