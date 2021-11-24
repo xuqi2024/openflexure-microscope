@@ -173,7 +173,7 @@ module z_actuator_assembly(){
 }
 
 module body_with_x_nut(exploded=false){
-    main_body_stage_prepared();
+    main_body_prepared();
     x_nut(exploded=exploded);
 }
 
@@ -186,7 +186,7 @@ module body_with_x_gear(exploded=false, lifted=false){
 }
 
 module body_with_assembled_actuators(x_only=false){
-    main_body_stage_prepared();
+    main_body_prepared();
     x_actuator_assembly();
     if (!x_only){
         y_actuator_assembly();
