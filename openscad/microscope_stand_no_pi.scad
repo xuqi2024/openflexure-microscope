@@ -6,7 +6,8 @@ use <./libs/microscope_parameters.scad>
 
 module microscope_stand_no_pi_stl(){
     params = default_params();
-    microscope_stand_no_pi(params, 8);
+    stand_params = default_stand_params(no_pi=true);
+    microscope_stand(params, stand_params);
 }
 
 microscope_stand_no_pi_stl();

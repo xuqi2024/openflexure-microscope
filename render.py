@@ -142,6 +142,23 @@ def register_prepare_main_body(rendersystem):
         render = ScadRender(output_file, input_file, scad, imgsize, camera)
         rendersystem.register_scad_render(render)
 
+def register_prepare_stand(rendersystem):
+    input_file = "rendering/prepare_stand.scad"
+    cameras = [
+        Camera(position=[-9, 20, 37.5], angle=[34, 0, 235], distance=450),
+        Camera(position=[-9, 20, 37.5], angle=[34, 0, 235], distance=450),
+        Camera(position=[-9, 20, 37.5], angle=[34, 0, 235], distance=450),
+        Camera(position=[-9, 20, 37.5], angle=[34, 0, 235], distance=450),
+        Camera(position=[-9, 20, 37.5], angle=[34, 0, 235], distance=450),
+        Camera(position=[-9, 20, 37.5], angle=[34, 0, 235], distance=450),
+    ]
+    imgsize = [2400, 2000]
+    for i, camera in enumerate(cameras):
+        output_file = f"docs/renders/prepare_stand{i+1}.png"
+        scad = f"render_prepare_stand({i+1});"
+        render = ScadRender(output_file, input_file, scad, imgsize, camera)
+        rendersystem.register_scad_render(render)
+
 def register_actuator_assembly(rendersystem):
     input_file = "rendering/actuator_assembly.scad"
     cameras = [
@@ -205,6 +222,7 @@ def main():
     register_band(rendersystem)
     register_brim_and_ties(rendersystem)
     register_prepare_main_body(rendersystem)
+    register_prepare_stand(rendersystem)
     register_actuator_assembly(rendersystem)
     register_picam(rendersystem)
     register_cable_management(rendersystem)

@@ -45,7 +45,6 @@ function default_params() = [["leg_r", 30],     // radius on which the innermost
                              ["actuator_h", 25], //height of the actuator columns
                              ["include_motor_lugs", true], //sets whether the motor lugs are included
                              ["foot_height", 15], //the height of the feet
-                             ["pi_stand_h", 47] //The height of the tray the pi sits in. This sets the microscope stand height
                             ];
 
 ////// 3D printing specific paramenters //////

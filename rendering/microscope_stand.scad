@@ -4,21 +4,23 @@ use <../openscad/libs/microscope_parameters.scad>
 use <../openscad/libs/lib_microscope_stand.scad>
 use <../openscad/nano_converter_plate.scad>
 use <./librender/electronics.scad>
+use <./librender/assembly_parameters.scad>
 use <./librender/render_utils.scad>
+use <./librender/render_settings.scad>
 use <./librender/hardware.scad>
 
 microscope_stand_rendered();
 
 
 module microscope_stand_rendered(use_nano=false){
-    params = default_params();
-    pi_stand_h = 42;
-    coloured_render("#505050"){
-        microscope_stand(params, pi_stand_h);
+    params = render_params();
+    stand_params = default_stand_params();
+    coloured_render(stand_colour()){
+        microscope_stand(params, stand_params);
     }
-    coloured_render("Dodgerblue"){
+    coloured_render(extras_colour()){
         pi_stand_frame_xy(params){
-            pi_stand(pi_stand_h);
+            pi_stand(stand_params);
         }
     }
     pi_stand_frame_xy(params){
@@ -31,7 +33,7 @@ module microscope_stand_rendered(use_nano=false){
 
         translate(sanga_pos){
             if (use_nano){
-                coloured_render("Dodgerblue"){
+                coloured_render(extras_colour()){
                     nano_converter_plate();
                 }
             }

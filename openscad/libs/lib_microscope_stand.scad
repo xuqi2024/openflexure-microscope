@@ -16,9 +16,17 @@ function stand_base_thickness() = 2;
 function stand_inner_offset_r() = 1.5;
 function stand_outer_offset_r() = stand_inner_offset_r() + stand_wall_thickness();
 function microscope_depth() = 3;
-function microscope_stand_height(vert_h) = vert_h + 31;
+function microscope_stand_height(stand_params) = microscope_stand_vert_height(stand_params) + 31;
+function microscope_stand_vert_height(stand_params) = let(
+    inc_drawer = key_lookup("include_pi_tray_hole", stand_params),
+    drawer_h = inc_drawer ? key_lookup("pi_stand_h", stand_params) : 8,
+    extra_h = key_lookup("extra_height", stand_params)
+) drawer_h + extra_h;
 
-    
+function default_stand_params(tall=false, no_pi=false) = [["pi_stand_h", 47], //The height of the tray the pi sits in.
+                                                          ["include_pi_tray_hole", !no_pi], //Whether the stand has a hole for the raspberry pi tray
+                                                          ["extra_height", tall ? 17 : 0], //extra height above the raspberry pi_tray
+                                                         ];
 
 module foot_footprint(tilt=0){
     // the footprint of one foot/actuator column
@@ -130,10 +138,14 @@ module thick_bottom_section(params, h, offset_r, center=false){
     }
 }
 
-module stand_lugs(params, h, vert_h){
+function microscope_stand_lug_height() = 20;
+function microscope_stand_lug_z(stand_params) = microscope_stand_height(stand_params)-microscope_stand_lug_height()-microscope_depth();
+
+module stand_lugs(params, stand_params){
+
     lug_body_h = 9;
-    lug_h = 20;
-    lug_z = h-lug_h-microscope_depth();
+    lug_h = microscope_stand_lug_height();
+    lug_z = microscope_stand_lug_z(stand_params);
 
     hole_pos = base_mounting_holes(params);
     for (n = [0:len(hole_pos)-1]){
@@ -149,7 +161,7 @@ module stand_lugs(params, h, vert_h){
                             }
                         }
                         translate_z(-lug_z){
-                            microscope_stand_shell(params, h, vert_h);
+                            microscope_stand_shell(params, stand_params);
                         }
                     }
 
@@ -170,7 +182,9 @@ module footprint(params){
 }
 
 //The outer shell of the microscope stand
-module microscope_stand_shell(params, h, vert_h){
+module microscope_stand_shell(params, stand_params){
+    h = microscope_stand_height(stand_params);
+    vert_h = microscope_stand_vert_height(stand_params);
 
     assert(h-vert_h-10>15, "Stand is too short to print. Either increase height or reduce height of the pi stand");
 
@@ -236,31 +250,35 @@ module microscope_stand_base_section(params, ex_rad=3){
     }
 }
 
-module microscope_stand_no_pi(params, vert_h, reflection_extra_depth=0){
-    h = microscope_stand_height(vert_h);
-    stand_lugs(params, h, vert_h);
+module base_microscope_stand(params, stand_params){
+    stand_lugs(params, stand_params);
     difference(){
-        microscope_stand_shell(params, h, vert_h);
-        translate_z(h-microscope_depth()){
-            reflection_illuminator_cutout(reflection_extra_depth);
+        microscope_stand_shell(params, stand_params);
+        reflection_cutout_h = microscope_stand_height(stand_params) - microscope_depth();
+        translate_z(reflection_cutout_h){
+            extra_depth = key_lookup("extra_height", stand_params);
+            reflection_illuminator_cutout(extra_depth);
         }
     }
 }
 
-module microscope_stand(params, tall_bucket_base=false){
-    pi_stand_h = key_lookup("pi_stand_h", params);
-    extra_h = tall_bucket_base ? 17 : 0;
-    vert_h = pi_stand_h + extra_h;
-    difference(){
-        microscope_stand_no_pi(params, vert_h, extra_h);
-        pi_drawer_cutout(params);
+module microscope_stand(params, stand_params){
+    inc_drawer = key_lookup("include_pi_tray_hole", stand_params);
+    if (inc_drawer){
+        difference(){
+            base_microscope_stand(params, stand_params);
+            pi_drawer_cutout(params, stand_params);
 
+        }
+        pi_drawer_runner_and_mount(params);
     }
-    pi_drawer_runner_and_mount(params);
+    else{
+        base_microscope_stand(params, stand_params);
+    }
 }
 
-module pi_drawer_cutout(params){
-    pi_stand_h = key_lookup("pi_stand_h", params);
+module pi_drawer_cutout(params, stand_params){
+    pi_stand_h = key_lookup("pi_stand_h", stand_params);
     pi_base_size = pi_stand_base_size();
     extra_space = [1, 1, 1.5];
     tr_for_extra_space = [-extra_space.x/2, -extra_space.y/2, 0];
@@ -376,8 +394,8 @@ function pi_stand_block_hole_pos() = let(
 
 function pi_stand_standoff_h() = 5.5;
 
-module pi_stand(params){
-    pi_stand_h = key_lookup("pi_stand_h", params);
+module pi_stand(stand_params){
+    pi_stand_h = key_lookup("pi_stand_h", stand_params);
     pi_stand_base();
     pi_stand_walls(pi_stand_h);
 }

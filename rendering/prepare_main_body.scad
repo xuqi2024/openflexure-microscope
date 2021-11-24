@@ -75,6 +75,8 @@ module main_body_stage_prepared(params){
 module main_body_prepared(){
     params = render_params();
     main_body_stage_prepared(params);
+    illum_platform_nut(params, right=false);
+    illum_platform_nut(params, right=true);
 }
 
 module render_body(params){

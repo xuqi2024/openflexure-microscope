@@ -3,6 +3,8 @@ use <../../openscad/libs/libdict.scad>
 use <../../openscad/lens_tool.scad>
 use <../../openscad/libs/z_axis.scad>
 use <../../openscad/libs/illumination.scad>
+use <../../openscad/libs/main_body_structure.scad>
+use <../../openscad/libs/lib_microscope_stand.scad>
 use <render_utils.scad>
 
 function render_params() =  let(
@@ -47,6 +49,23 @@ function illum_platform_nut_placement_exp(params, right=true) = let(
 
 function illum_platform_nut_temp_screw_pos(params, right=true) = translate_pos(illum_platform_nut_placement(params, right), [0,0,5]);
 function illum_platform_nut_temp_screw_pos_exp(params, right=true) = translate_pos(illum_platform_nut_placement(params, right), [0,0,25]);
+
+
+function stand_nut_placement(params, stand_params, nut_num) =  let(
+    xy_pos = base_mounting_holes(params)[nut_num],
+    z_pos = microscope_stand_lug_z(stand_params) + microscope_stand_lug_height()-4.5,
+    pos = xy_pos + [0,0,1]*z_pos,
+    rot = [0, 0, 30 + lug_angles()[nut_num]]
+) create_placement_dict(pos, rot);
+
+function stand_nut_placement_low(params, stand_params, nut_num) = translate_pos(stand_nut_placement(params, stand_params, nut_num), [0,0,-2.5]);
+function stand_nut_placement_exp(params, stand_params, nut_num) = let(
+    angle = lug_angles()[nut_num],
+    explode_distance = [30*sin(angle), -30*cos(angle), -2.5]
+)translate_pos(stand_nut_placement(params, stand_params, nut_num), explode_distance);
+
+function stand_nut_temp_screw_pos(params, stand_params, nut_num) = translate_pos(stand_nut_placement(params, stand_params, nut_num), [0,0,4.5]);
+function stand_nut_temp_screw_pos_exp(params, stand_params, nut_num) = translate_pos(stand_nut_placement(params, stand_params, nut_num), [0,0,25]);
 
 //convenience function as the actuator height is used a lot
 function actuator_height() = key_lookup("actuator_h", PARAMS);
