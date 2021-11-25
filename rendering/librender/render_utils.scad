@@ -87,7 +87,7 @@ module place_part(position){
 }
 
 module coloured_render(colour="Red", alpha=1.0, convexity=6){
-    color(colour){
+    color(colour, alpha){
         render(convexity){
             children();
         }

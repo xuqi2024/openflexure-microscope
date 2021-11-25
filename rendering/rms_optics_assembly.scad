@@ -86,7 +86,8 @@ module render_rms_assembly(frame){
                                camera=true,
                                objective=true,
                                nut=true,
-                               screw=true);
+                               screw=true,
+                               screw_tight=false);
     }
 }
 
@@ -142,7 +143,8 @@ module rendered_optics_module(pos,
                               objective=true,
                               nut=true,
                               screw=true,
-                              explode=undef){
+                              explode=undef,
+                              screw_tight=true){
     cut_dir = cut ? "+x" : "none";
     place_part(pos){
         cutaway(cut_dir, optics_module_colour()){
@@ -166,13 +168,15 @@ module rendered_optics_module(pos,
         if (screw){
             exploded = (explode == "screw") ? true : false;
             screw_pos_ex = translate_pos(optics_module_screw_pos(), [0, 12, 0]);
-            screw_pos = exploded ? screw_pos_ex : optics_module_screw_pos();
+            screw_pos_assembled = translate_pos(optics_module_screw_pos(), [0, 4, 0]);
+            screw_pos = exploded ? screw_pos_ex :
+                screw_tight ? optics_module_screw_pos() : screw_pos_assembled;
             place_part(screw_pos){
                 m3_cap_x8();
             }
             if (exploded){
                 translate_y(-8){
-                    construction_line(screw_pos_ex, optics_module_screw_pos());
+                    construction_line(screw_pos_ex, screw_pos_assembled);
                 }
             }
         }

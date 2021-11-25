@@ -64,23 +64,24 @@ module render_prepare_main_body(frame){
     }
 }
 
-module main_body_stage_prepared(params){
-    render_body(params);
+module main_body_stage_prepared(params, translucent_body=false){
     stage_nut(params);
     stage_nut(params, nut_num=1);
     stage_nut(params, nut_num=2);
     stage_nut(params, nut_num=3);
+    render_body(params, translucent_body=translucent_body);
 }
 
-module main_body_prepared(){
+module main_body_prepared(translucent_body=false){
     params = render_params();
-    main_body_stage_prepared(params);
     illum_platform_nut(params, right=false);
     illum_platform_nut(params, right=true);
+    main_body_stage_prepared(params, translucent_body=translucent_body);
 }
 
-module render_body(params){
-    coloured_render(body_colour()){
+module render_body(params, translucent_body=false){
+    alpha = translucent_body ? 0.2 : 1.0;
+    coloured_render(body_colour(), alpha){
         main_body(params);
     }
 }

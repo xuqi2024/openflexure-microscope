@@ -185,13 +185,13 @@ module body_with_x_gear(exploded=false, lifted=false){
     }
 }
 
-module body_with_assembled_actuators(x_only=false){
-    main_body_prepared();
+module body_with_assembled_actuators(x_only=false, translucent_body=false){
     x_actuator_assembly();
     if (!x_only){
         y_actuator_assembly();
         z_actuator_assembly();
     }
+    main_body_prepared(translucent_body=translucent_body);
 }
 
 module lead_screw_assembly(exploded=false, construction_offset=[0, 0, 0]){

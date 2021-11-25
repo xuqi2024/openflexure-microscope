@@ -128,8 +128,8 @@ function picamera_cover_pos(ex_dist=0) =  let(
 ) create_placement_dict(tr, rotation);
 
 function optics_module_nut_pos() = create_placement_dict(optics_module_mount_pos() - [0, 3.25, 1], [90, 0, 0], [0, 0, 30]);
-function optics_module_screw_pos() = create_placement_dict(optics_module_mount_pos() - [0, -4, 1], [-90, 0, 0], [0, 0, 30]);
-
+function optics_module_screw_pos() = create_placement_dict(optics_module_mount_pos() - [0, 0, 1], [-90, 0, 0], [0, 0, 30]);
+function optics_module_allen_key_pos() = create_placement_dict(optics_module_mount_pos() + [0, 2, -1], [0, 0, 25]);
 function condenser_z() = illumination_dovetail_z(PARAMS) + 65;
 function condenser_angle() = key_lookup("condenser_angle", PARAMS);
 function condenser_pos() = create_placement_dict([0, 0, condenser_z()],

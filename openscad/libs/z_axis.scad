@@ -531,7 +531,7 @@ module z_actuator_cutout(params){
 }
 
 
-module z_actuator_assembly(params){
+module complete_z_actuator(params){
     // This is the z-actuator, objective mount and the z-flexures.
     // The flexure that join the body are not attached to anything on the body-side.
 
