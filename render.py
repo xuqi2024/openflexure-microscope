@@ -201,6 +201,25 @@ def register_picam(rendersystem):
         render = ScadRender(output_file, input_file, scad, imgsize, camera)
         rendersystem.register_scad_render(render)
 
+def register_mount_optics(rendersystem):
+    input_file = "rendering/mount_optics.scad"
+    cameras = [
+        Camera(position=[7.75, 37, -3], angle=[135.5, 0, 32.5], distance=495),
+        Camera(position=[7.75, 37, -3], angle=[135.5, 0, 32.5], distance=495),
+        Camera(position=[7.75, 37, -3], angle=[135.5, 0, 32.5], distance=495),
+        Camera(position=[7.75, 37, -3], angle=[135.5, 0, 32.5], distance=495),
+        Camera(position=[-18.5, 42.75, 23.75], angle=[57, 0, 143], distance=495),
+        Camera(position=[-18.5, 42.75, 23.75], angle=[57, 0, 143], distance=495),
+        Camera(position=[-18.5, 42.75, 23.75], angle=[57, 0, 143], distance=495),
+        Camera(position=[-18.5, 42.75, 23.75], angle=[57, 0, 143], distance=495),
+    ]
+    imgsize = [2400, 2000]
+    for i, camera in enumerate(cameras):
+        frame = i + 1
+        output_file = f"docs/renders/mount_optics{frame}.png"
+        scad = f"render_mount_optics({frame});"
+        render = ScadRender(output_file, input_file, scad, imgsize, camera)
+        rendersystem.register_scad_render(render)
 
 def register_cable_management(rendersystem):
     input_file = "rendering/cable_management.scad"
@@ -225,6 +244,7 @@ def main():
     register_prepare_stand(rendersystem)
     register_actuator_assembly(rendersystem)
     register_picam(rendersystem)
+    register_mount_optics(rendersystem)
     register_cable_management(rendersystem)
 
     rendersystem.render()

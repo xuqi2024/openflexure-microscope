@@ -3,7 +3,7 @@ use <render_utils.scad>
 
 allen_key_2_5();
 
-module allen_key_2_5(angle=0){
+module allen_key_2_5(angle=0, clockwise_arrow=false, anticlockwise_arrow=false){
     //Divide distance accross hexagon by 0.866 to get diameter
     // to produce the hexagon with $fn=6
     diameter = 2.5/0.866;
@@ -30,6 +30,20 @@ module allen_key_2_5(angle=0){
                 translate([3.5, -107, 0]){
                     allen_ball(diameter);
                 }
+            }
+        }
+    }
+    if (clockwise_arrow){
+        translate_y(112){
+            rotate_x(-90){
+                turn_clockwise(20, 5);
+            }
+        }
+    }
+    if (anticlockwise_arrow){
+        translate_y(112){
+            rotate_x(-90){
+                turn_anticlockwise(20, 5);
             }
         }
     }
