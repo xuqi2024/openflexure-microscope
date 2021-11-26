@@ -8,6 +8,7 @@ use <./librender/assembly_parameters.scad>
 use <./librender/render_utils.scad>
 use <./librender/render_settings.scad>
 use <./librender/hardware.scad>
+use <mount_microscope.scad>
 
 microscope_stand_rendered();
 
@@ -15,9 +16,6 @@ microscope_stand_rendered();
 module microscope_stand_rendered(use_nano=false){
     params = render_params();
     stand_params = default_stand_params();
-    coloured_render(stand_colour()){
-        microscope_stand(params, stand_params);
-    }
     coloured_render(extras_colour()){
         pi_stand_frame_xy(params){
             pi_stand(stand_params);
@@ -88,4 +86,5 @@ module microscope_stand_rendered(use_nano=false){
             }
         }
     }
+    mounted_microscope();
 }

@@ -143,3 +143,11 @@ function condenser_pos_on_tool() = create_placement_dict([0, 0, 56],
                                                          [180+condenser_angle(), 0, 0]);
 
 function condenser_lens_tool_pos() = create_placement_dict([0, 0, lens_tool_height()+0.01]);
+
+function microscope_on_stand_pos(stand_params, exploded=false) = let(
+    exp_height = exploded ? 10 : 0,
+    z_position = microscope_stand_lug_z(stand_params) + microscope_stand_lug_height()
+) create_placement_dict([0, 0, z_position+exp_height]);
+
+function stand_lug_pos(params, stand_params, screw_num) = translate_pos(stand_nut_placement(params, stand_params, screw_num), [0, 0, 8]);
+function stand_lug_pos_exp(params, stand_params, screw_num) = translate_pos(stand_nut_placement(params, stand_params, screw_num), [0, 0, 35]);

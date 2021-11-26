@@ -221,6 +221,20 @@ def register_mount_optics(rendersystem):
         render = ScadRender(output_file, input_file, scad, imgsize, camera)
         rendersystem.register_scad_render(render)
 
+def register_mount_microscope(rendersystem):
+    input_file = "rendering/mount_microscope.scad"
+    cameras = [
+        Camera(position=[24, 43.5, 84], angle=[65.5, 0, 103], distance=550),
+        Camera(position=[24, 43.5, 84], angle=[65.5, 0, 103], distance=550),
+    ]
+    imgsize = [2400, 2000]
+    for i, camera in enumerate(cameras):
+        frame = i + 1
+        output_file = f"docs/renders/mount_microscope{frame}.png"
+        scad = f"render_mount_microscope({frame});"
+        render = ScadRender(output_file, input_file, scad, imgsize, camera)
+        rendersystem.register_scad_render(render)
+
 def register_cable_management(rendersystem):
     input_file = "rendering/cable_management.scad"
     camera = Camera(position=[8, -8, 8], angle=[69, 0, 190], distance=440)
@@ -245,6 +259,7 @@ def main():
     register_actuator_assembly(rendersystem)
     register_picam(rendersystem)
     register_mount_optics(rendersystem)
+    register_mount_microscope(rendersystem)
     register_cable_management(rendersystem)
 
     rendersystem.render()
