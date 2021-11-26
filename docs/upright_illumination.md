@@ -7,6 +7,7 @@ In this section we are assembling the sample illumination. This is for transmiss
 [M3 nut]: parts/mechanical.yml#Nut_M3_SS
 [M3x25mm stainless steel hex bolt]: parts/mechanical.yml#HexBolt_M3x25mm_SS
 [M3 stainless steel washers]: parts/mechanical.yml#Washer_M3_SS
+[2.5mm Ball-end Allen key]: parts/tools/2.5mmBallEndAllenKey.md
 
 [150 Ohm Resistor]: parts/electronics.yml#Resistor_150R
 [Warm white 5mm LED]: parts/electronics.yml#LED_WarmWhite
@@ -68,6 +69,6 @@ In this section we are assembling the sample illumination. This is for transmiss
 
 * Take the complete upright condenser and pass is through the bottom of the main body until the top of the condenser is in line with the stage.
 * Insert the exposed mounting screw into the screw hole in the z-actuator of the main body.
-* Insert the [2.5mm Allen key]{qty:1, cat:tool} through the teardrop shaped hole on the front of the microscope. Until it engages with the mounting screw.
+* Insert the [2.5mm Ball-end Allen key]{qty:1, cat:tool} through the teardrop shaped hole on the front of the microscope. Until it engages with the mounting screw.
 * Slide the upright condenser up the keyhole until the top of the condenser is 2-4mm below the top of the stage while keeping the Allen key engaged with the screw. 
 * Tighten the screw with the Allen key to lock the optics in place.

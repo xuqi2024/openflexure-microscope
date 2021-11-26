@@ -7,6 +7,7 @@ In this section we are assembling the sample illumination. This is for transmiss
 [M3 nut]: parts/mechanical.yml#Nut_M3_SS
 [M3x25mm stainless steel hex bolt]: parts/mechanical.yml#HexBolt_M3x25mm_SS
 [M3 stainless steel washers]: parts/mechanical.yml#Washer_M3_SS
+[2.5mm Ball-end Allen key]: parts/tools/2.5mmBallEndAllenKey.md
 
 [150 Ohm Resistor]: parts/electronics.yml#Resistor_150R
 [Warm white 5mm LED]: parts/electronics.yml#LED_WarmWhite
@@ -50,7 +51,7 @@ In this section we are assembling the sample illumination. This is for transmiss
 ## Mount the dovetail {pagestep}
 
 * Place the [illumination dovetail][Illumination dovetail](fromstep){qty:1, cat:printedpart} onto the stage above the z-actuator of the main body.
-* Secure in place with two [M3x8 cap head screws](parts/mechanical.yml#CapScrew_M3x8mm_SS){qty:2, cat:mech} and 2 [M3 Washers][M3 stainless steel washers]{qty:2, cat:mech} (using [2.5mm Allen key]{qty:1, cat:tool})
+* Secure in place with two [M3x8 cap head screws](parts/mechanical.yml#CapScrew_M3x8mm_SS){qty:2, cat:mech} and 2 [M3 Washers][M3 stainless steel washers]{qty:2, cat:mech} (using [2.5mm Ball-end Allen key]{qty:1, cat:tool})
 
 
 ## Push-fit the lens {pagestep}

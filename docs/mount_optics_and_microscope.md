@@ -3,6 +3,7 @@
 
 {{BOM}}
 
+[2.5mm Ball-end Allen key]: parts/tools/2.5mmBallEndAllenKey.md
 
 ## Mount the optics {pagestep}
 
@@ -11,7 +12,7 @@
 ![](renders/mount_optics3.png)
 ![](renders/mount_optics4.png)
 
-* Get the [2.5mm Allen key]{qty:1, cat:tool, note: "- Must be a ball-ended key"} ready
+* Get the [2.5mm Ball-end Allen key]{qty:1, cat:tool} ready
 * Take the [complete optics module](fromstep){qty:1, cat:subassembly} and pass it through the bottom of the [microscope][microscope with assembled actuators](fromstep){qty:1, cat:subassembly}.
 * Insert exposed the mounting screw on the optics module through the keyhole on the z-actuator.
 
@@ -29,4 +30,4 @@
 
 * Place the microscope onto the [microscope stand][prepared microscope stand](fromstep){qty:1, cat:subassembly}.
 * The lugs on the microscope should sit on the lugs of the stand.
-* Use four [M3x8 cap head screws](parts/mechanical.yml#CapScrew_M3x8mm_SS){qty: 4, cat:mech} to fix the microscope in place using the same [Allen key][2.5mm Allen key]
+* Use four [M3x8 cap head screws](parts/mechanical.yml#CapScrew_M3x8mm_SS){qty: 4, cat:mech} to fix the microscope in place using the same [Allen key][2.5mm Ball-end Allen key]

@@ -5,6 +5,7 @@
 
 [M4x6mm button head screws]: parts/mechanical.yml#ButtonScrew_M4x6mm_SS
 [28BYJ-48 micro geared stepper motors]: parts/electronics.yml#28BYJ-48
+[2.5mm Ball-end Allen key]: parts/tools/2.5mmBallEndAllenKey.md
 
 ## Attach the small gears {pagestep}
 
@@ -19,7 +20,7 @@
 
 Note that each motor has a cable tidy cap that is different. Which cap to use should be apparent from the shape. Motors should be added to the x and y actuators of the main body and the rectangular z-axis. No motor is required on the z-actuator of the main body for an upright microscope.”
 
-* Get a [2.5mm Allen key]{qty:1, cat:tool} ready
+* Get a [2.5mm Ball-end Allen key]{qty:1, cat:tool} ready
 * Feed the cable from the motor through the rectangular wall in the outer wall by the x-actuator.
 * Place the motor on the motor lugs with the small gear towards the outside of the microscope
 * Check that the small gear and the large gear are meshed correctly
