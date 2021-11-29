@@ -9,6 +9,8 @@ There is one "actuator column" for each of the three axes of the OpenFlexure Mic
 [M3 stainless steel washers]: parts/mechanical.yml#Washer_M3_SS
 [Viton O-ring (30mmx2mm)]: parts/mechanical.yml#O-Ring_30x2_Viton
 
+[light oil]: parts/consumables/light_oil
+
 ![Parts required for actuator assembly](renders/actuator_assembly_parts.png)
 
 ## Insert the nut {pagestep}
