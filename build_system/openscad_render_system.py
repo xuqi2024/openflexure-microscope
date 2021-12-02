@@ -152,7 +152,7 @@ class RenderSystem():
                 rerender = run_openscad_animation(tmpscad, renders, size)
 
                 if len(rerender)==len(renders):
-                    RuntimeError("No renders produced for this job. Renders failed!")
+                    raise RuntimeError("No renders produced for this job. Renders failed!")
                 if len(rerender)>0:
                     # Empty lines are not returned in gitlab CI.
                     # Using starts to make this line obvious
@@ -192,7 +192,7 @@ def run_openscad_animation(filename, renders, size):
             print("\n*\n*\nPartial fail due to Docker OpenGL issue. "
                     "Missing renders will be regenerated\n*\n*\n")
         else:
-            RuntimeError("OpenSCAD failed for unknown reason")
+            raise RuntimeError("OpenSCAD failed for unknown reason")
 
     check_openscad_warnings(std_err)
     return copy_renders(renders, hash_name)
@@ -207,10 +207,9 @@ def check_openscad_warnings(std_err):
     # https://github.com/openscad/openscad/pull/3660/
     """
     warns = re.findall(r'^WARNING:.*?$', std_err, flags=re.MULTILINE)
-
     for warn in warns:
         if warn != r'WARNING: Viewall and autocenter disabled in favor of $vp*':
-            RuntimeError("Error. OpenSCAD code generates unexpected warnings")
+            raise RuntimeError("Error. OpenSCAD code generates unexpected warnings")
 
 def copy_renders(renders, hash_name):
     """
