@@ -206,7 +206,7 @@ def check_openscad_warnings(std_err):
     # https://github.com/openscad/openscad/issues/3646
     # https://github.com/openscad/openscad/pull/3660/
     """
-    warns = re.findall(r'^WARNING:.*?%', std_err, flags=re.MULTILINE)
+    warns = re.findall(r'^WARNING:.*?$', std_err, flags=re.MULTILINE)
 
     for warn in warns:
         if warn != r'WARNING: Viewall and autocenter disabled in favor of $vp*':
