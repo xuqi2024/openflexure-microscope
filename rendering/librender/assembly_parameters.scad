@@ -135,6 +135,7 @@ function condenser_angle() = key_lookup("condenser_angle", PARAMS);
 function condenser_pos() = create_placement_dict([0, 0, condenser_z()],
                                                  [0, 0, 180],
                                                  [180+condenser_angle(), 0, 0]);
+function condenser_pos_exp() = translate_pos(condenser_pos(), [0, 0, 30]);
 function condenser_pos_above_tool() = create_placement_dict([0, 0, 90],
                                                             [0, 0, -90],
                                                             [180+condenser_angle(), 0, 0]);
@@ -143,6 +144,13 @@ function condenser_pos_on_tool() = create_placement_dict([0, 0, 56],
                                                          [180+condenser_angle(), 0, 0]);
 
 function condenser_lens_tool_pos() = create_placement_dict([0, 0, lens_tool_height()+0.01]);
+function condenser_lens_pos_relative() = create_placement_dict([0, 0, 36.5], [180, 0, 0]);
+
+function condenser_clamp_axis_pos(depth) = let(
+    tr = [0, 37.9, 10],
+    r1 = [0,0,60],
+    init_tr = [0, -depth, 0]
+) create_placement_dict(tr, r1, init_translation=init_tr);
 
 function microscope_on_stand_pos(stand_params, exploded=false) = let(
     exp_height = exploded ? 10 : 0,
@@ -151,3 +159,9 @@ function microscope_on_stand_pos(stand_params, exploded=false) = let(
 
 function stand_lug_pos(params, stand_params, screw_num) = translate_pos(stand_nut_placement(params, stand_params, screw_num), [0, 0, 8]);
 function stand_lug_pos_exp(params, stand_params, screw_num) = translate_pos(stand_nut_placement(params, stand_params, screw_num), [0, 0, 35]);
+
+function illum_dovetail_screw_pos(params, right=true) = translate_pos(illum_platform_nut_placement(params, right), [0, 0, 8.1]);
+function illum_dovetail_screw_pos_exp(params, right=true) = translate_pos(illum_platform_nut_placement(params, right), [0,0,40]);
+
+function illum_dovetail_washer_pos(params, right=true) = translate_pos(illum_platform_nut_placement(params, right), [0, 0, 7.7]);
+function illum_dovetail_washer_pos_exp(params, right=true) = translate_pos(illum_platform_nut_placement(params, right), [0,0,25]);

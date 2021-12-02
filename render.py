@@ -68,8 +68,8 @@ def register_rms_optics_assembly(rendersystem):
         "rendering/annotations/annotate_optics_assembly_tube_lens.svg"
     )
 
-def register_optics_assembly_condenser_lens(rendersystem):
-    input_file = "rendering/optics_assembly.scad"
+def register_condenser_assembly(rendersystem):
+    input_file = "rendering/condenser_assembly.scad"
     camera = Camera(position=[29, 0, 59], angle=[69, 0, 90], distance=290)
     imgsize = [1000, 2000]
 
@@ -82,6 +82,14 @@ def register_optics_assembly_condenser_lens(rendersystem):
         "docs/renders/optics_assembly_condenser_lens.png",
         "rendering/annotations/annotate_optics_assembly_condenser_lens.svg"
     )
+
+    camera = Camera(position=[10, 34, 36], angle=[62, 0, 138], distance=155)
+    imgsize = [2400, 2000]
+    for frame in [4, 5, 6]:
+        scad = f"assemble_condenser({frame});"
+        output_file = f"docs/renders/assemble_condenser_thumbscrew{frame}.png"
+        render = ScadRender(output_file, input_file, scad, imgsize, camera)
+        rendersystem.register_scad_render(render)
 
 
 def register_optics_assembled(rendersystem):
@@ -235,6 +243,23 @@ def register_mount_microscope(rendersystem):
         render = ScadRender(output_file, input_file, scad, imgsize, camera)
         rendersystem.register_scad_render(render)
 
+def register_mount_illumination(rendersystem):
+    input_file = "rendering/mount_illumination.scad"
+    cameras = [
+        Camera(position=[-6, 49, 178], angle=[68, 0, 133], distance=360),
+        Camera(position=[-6, 49, 178], angle=[68, 0, 133], distance=360),
+        Camera(position=[-6, 49, 178], angle=[82, 0, 308], distance=360),
+        Camera(position=[-6, 49, 178], angle=[82, 0, 308], distance=360),
+        Camera(position=[-6, 49, 178], angle=[82, 0, 308], distance=360)
+    ]
+    imgsize = [2400, 2000]
+    for i, camera in enumerate(cameras):
+        frame = i + 1
+        output_file = f"docs/renders/mount_illumination{frame}.png"
+        scad = f"mount_illumination({frame});"
+        render = ScadRender(output_file, input_file, scad, imgsize, camera)
+        rendersystem.register_scad_render(render)
+
 def register_cable_management(rendersystem):
     input_file = "rendering/cable_management.scad"
     camera = Camera(position=[8, -8, 8], angle=[69, 0, 190], distance=440)
@@ -250,7 +275,7 @@ def main():
 
     #Register all openscad renders (and associated post processing)
     register_rms_optics_assembly(rendersystem)
-    register_optics_assembly_condenser_lens(rendersystem)
+    register_condenser_assembly(rendersystem)
     register_optics_assembled(rendersystem)
     register_band(rendersystem)
     register_brim_and_ties(rendersystem)
@@ -260,6 +285,7 @@ def main():
     register_picam(rendersystem)
     register_mount_optics(rendersystem)
     register_mount_microscope(rendersystem)
+    register_mount_illumination(rendersystem)
     register_cable_management(rendersystem)
 
     rendersystem.render()
