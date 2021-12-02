@@ -184,14 +184,14 @@ def run_openscad_animation(filename, renders, size):
     except subprocess.CalledProcessError as error:
         #If there is an error not all images were rendered
         std_err = error.stderr.decode('UTF-8')
+        print("*\n*\nSTDERR for failed run:\n")
         print(std_err)
+        print("*\n*\nSTDERR end\n")
         check_openscad_warnings(std_err)
         if "X Error of failed request" in std_err:
-            print(std_err)
-            print("\n\nPartial fail due to Docker OpenGL issue. "
-                    "Missing renders will be regenerated\n\n")
+            print("\n*\n*\nPartial fail due to Docker OpenGL issue. "
+                    "Missing renders will be regenerated\n*\n*\n")
         else:
-            print(std_err)
             RuntimeError("OpenSCAD failed for unknown reason")
 
     check_openscad_warnings(std_err)
@@ -208,8 +208,8 @@ def check_openscad_warnings(std_err):
     """
     warns = re.findall(r'^WARNING:.*?%', std_err, flags=re.MULTILINE)
 
-    if warns != []:
-        if warns[0] != r'WARNING: Viewall and autocenter disabled in favor of $vp*':
+    for warn in warns:
+        if warn != r'WARNING: Viewall and autocenter disabled in favor of $vp*':
             RuntimeError("Error. OpenSCAD code generates unexpected warnings")
 
 def copy_renders(renders, hash_name):
