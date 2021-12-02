@@ -1,6 +1,6 @@
 use <librender/assembly_parameters.scad>
 use <rms_optics_assembly.scad>
-use <illumination_assembly.scad>
+use <condenser_assembly.scad>
 
 
 cutaway_optics();

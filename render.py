@@ -272,7 +272,7 @@ def register_cable_management(rendersystem):
 def main():
     rendersystem = RenderSystem()
     rendersystem.register_zip_assets('rendering/librender/hardware.zip')
-
+    rendersystem.register_render_stl('rendering/librender/rendered_main_body.scad')
     #Register all openscad renders (and associated post processing)
     register_rms_optics_assembly(rendersystem)
     register_condenser_assembly(rendersystem)

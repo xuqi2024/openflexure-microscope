@@ -1,5 +1,6 @@
 
 use <../openscad/libs/lib_microscope_stand.scad>
+use <../openscad/libs/utilities.scad>
 use <./librender/render_utils.scad>
 use <./librender/render_settings.scad>
 use <./librender/assembly_parameters.scad>
@@ -26,7 +27,7 @@ module mounted_microscope(exploded=false){
     stand_params = default_stand_params();
     stand_prepared(params, stand_params);
     for (i = [0, 1, 2, 3]){
-        stand_lug_screw(params, stand_params, exploded=exploded, i);
+        stand_lug_screw(params, stand_params, i, exploded=exploded);
     }
     mounted_microscope_frame(exploded=exploded){
         body_with_optics();
