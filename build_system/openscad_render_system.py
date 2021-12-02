@@ -192,7 +192,7 @@ def run_openscad_animation(filename, renders, size):
             print("\n*\n*\nPartial fail due to Docker OpenGL issue. "
                     "Missing renders will be regenerated\n*\n*\n")
         else:
-            raise RuntimeError("OpenSCAD failed for unknown reason")
+            raise RuntimeError("OpenSCAD failed for unknown reason") from error
 
     check_openscad_warnings(std_err)
     return copy_renders(renders, hash_name)
