@@ -165,3 +165,6 @@ function illum_dovetail_screw_pos_exp(params, right=true) = translate_pos(illum_
 
 function illum_dovetail_washer_pos(params, right=true) = translate_pos(illum_platform_nut_placement(params, right), [0, 0, 7.7]);
 function illum_dovetail_washer_pos_exp(params, right=true) = translate_pos(illum_platform_nut_placement(params, right), [0,0,25]);
+
+function small_gear_pos() = create_placement_dict([0, 0, -2], [180, 0, 0], [0, 0, 15]);
+function small_gear_pos_exp() = translate_pos(small_gear_pos(), [0, 0, -20]);

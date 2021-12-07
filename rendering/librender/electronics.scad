@@ -1019,6 +1019,7 @@ function calc_bundled_wire_points(n_wires, wire_num, points) = let(
 
 
 module motor28BYJ48(motor_pos, connector_pos, wire_points=[]){
+    $fn=32;
     m_pos = is_undef(motor_pos) ? create_placement_dict([0, 0, 0]) : motor_pos;
     c_pos = is_undef(connector_pos) ? create_placement_dict([0, 280, 0], [90, 0, 0]) : connector_pos;
     place_part(m_pos){

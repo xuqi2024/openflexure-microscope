@@ -11,8 +11,8 @@ use <../openscad/libs/main_body_structure.scad>
 use <../openscad/cable_tidies.scad>
 use <librender/rendered_main_body.scad>
 use <librender/assembly_parameters.scad>
-use <librender/electronics.scad>
 use <librender/render_utils.scad>
+use <motor_assembly.scad>
 
 render_cable_management();
 
@@ -41,7 +41,7 @@ module render_cable_management(){
 
 
         y_actuator_frame(params){
-            motor28BYJ48(y_motor_pos, y_connector_pos, y_cable_verticies);
+            motor_with_gear(y_motor_pos, y_connector_pos, y_cable_verticies);
         }
 
         coloured_render("DodgerBlue"){
@@ -60,7 +60,7 @@ module render_cable_management(){
     }
 
     z_cable_tidy_frame(params){
-        motor28BYJ48(z_motor_pos, z_connector_pos, z_cable_verticies);
+        motor_with_gear(z_motor_pos, z_connector_pos, z_cable_verticies);
     }
 
 }
