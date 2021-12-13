@@ -44,12 +44,16 @@ module mount_illumination(frame){
         mounted_microscope();
     }
     else if (frame == 5){
-        mounted_microscope_frame(){
-            rendered_illumination_dovetail_assembly();
-            rendered_condenser_assembly(include_led=false);
-        }
-        mounted_microscope();
+        mounted_microscope_with_illumination();
     }
+}
+
+module mounted_microscope_with_illumination(){
+    mounted_microscope_frame(){
+        rendered_illumination_dovetail_assembly();
+        rendered_condenser_assembly(include_led=false);
+    }
+    mounted_microscope();
 }
 
 module rendered_illumination_dovetail_assembly(exploded=false){

@@ -5,6 +5,7 @@ use <../../openscad/libs/z_axis.scad>
 use <../../openscad/libs/illumination.scad>
 use <../../openscad/libs/main_body_structure.scad>
 use <../../openscad/libs/lib_microscope_stand.scad>
+use <../../openscad/libs/wall.scad>
 use <render_utils.scad>
 
 function render_params() =  let(
@@ -168,3 +169,14 @@ function illum_dovetail_washer_pos_exp(params, right=true) = translate_pos(illum
 
 function small_gear_pos() = create_placement_dict([0, 0, -2], [180, 0, 0], [0, 0, 15]);
 function small_gear_pos_exp() = translate_pos(small_gear_pos(), [0, 0, -20]);
+
+
+function y_motor_pos(params) = create_placement_dict([0, 20, y_motor_z_pos(params)], [0, 0, 180]);
+function y_connector_pos(params) = create_placement_dict([-22, -13, -43], [0, 0, y_wall_angle(params)-45]);
+function y_cable_verticies() = [[0, -10, 45], [-22, -13, 45]];
+
+function z_motor_pos() = create_placement_dict([0, 20, 0], [0, 0, 180]);
+function z_connector_pos() = create_placement_dict([-27, 3, -86], [0, 0, -15]);
+function z_cable_verticies() = [[0, -10, 3], [-27, 0, 3]];
+
+function motor_screw_pos() = [0.5*motor_screw_separation(), 12, 2.5];

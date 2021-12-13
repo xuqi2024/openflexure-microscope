@@ -6,7 +6,6 @@ use <./main_body_transforms.scad>
 use <./main_body_structure.scad>
 use <./wall.scad>
 use <./z_axis.scad>
-use <../feet.scad>
 use <./libdict.scad>
 
 

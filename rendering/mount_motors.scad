@@ -16,10 +16,10 @@ use <mount_illumination.scad>
 use <mount_microscope.scad>
 use <motor_assembly.scad>
 
-FRAME=2;
-render_cable_management(FRAME);
+FRAME=3;
+render_mount_motors(FRAME);
 
-module render_cable_management(frame){
+module render_mount_motors(frame){
     if (frame == 1){
         assembled_microscope_without_electronics(xy_motor=true, z_motor=false, explode="xy");
     }

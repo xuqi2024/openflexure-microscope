@@ -8,7 +8,7 @@ use <./librender/assembly_parameters.scad>
 use <./librender/render_utils.scad>
 use <./librender/render_settings.scad>
 use <./librender/hardware.scad>
-use <mount_microscope.scad>
+use <mount_motors.scad>
 
 microscope_stand_rendered();
 
@@ -86,5 +86,5 @@ module microscope_stand_rendered(use_nano=false){
             }
         }
     }
-    mounted_microscope();
+    assembled_microscope_without_electronics();
 }

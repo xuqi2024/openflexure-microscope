@@ -1,6 +1,10 @@
 # Don't take stl files
 *.stl
 
+# Or gLTF files
+*.gltf
+*.glb
+
 # Ignore gcode files
 *.g
 *.gcode

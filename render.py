@@ -269,14 +269,15 @@ def register_motor_assembly(rendersystem):
         render = ScadRender(output_file, input_file, scad, imgsize, camera)
         rendersystem.register_scad_render(render)
 
-def register_cable_management(rendersystem):
-    input_file = "rendering/cable_management.scad"
-    camera = Camera(position=[8, -8, 8], angle=[69, 0, 190], distance=440)
+def register_mount_motors(rendersystem):
+    input_file = "rendering/mount_motors.scad"
+    camera = Camera(position=[13.5, 48, 98], angle=[53, 0, 115], distance=360)
     imgsize = [2400, 2000]
-    output_file = "docs/renders/cable_management.png"
-    scad = "render_cable_management();"
-    render = ScadRender(output_file, input_file, scad, imgsize, camera)
-    rendersystem.register_scad_render(render)
+    for i in [1, 2, 3]:
+        output_file = f"docs/renders/mount_motors{i}.png"
+        scad = f"render_mount_motors({i});"
+        render = ScadRender(output_file, input_file, scad, imgsize, camera)
+        rendersystem.register_scad_render(render)
 
 def main():
     rendersystem = RenderSystem()
@@ -296,7 +297,7 @@ def main():
     register_mount_microscope(rendersystem)
     register_mount_illumination(rendersystem)
     register_motor_assembly(rendersystem)
-    register_cable_management(rendersystem)
+    register_mount_motors(rendersystem)
 
     rendersystem.render()
 
