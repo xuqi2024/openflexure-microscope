@@ -19,13 +19,13 @@ module motor_assembly(frame){
 }
 
 
-module motor_with_gear(motor_pos=[0, 0, 0], connector_pos=undef, wire_points=[], exploded=false){
+module motor_with_gear(motor_pos=[0, 0, 0], connector_pos=undef, wire_points=[], exploded=false, mirror_connector=false){
 
     gear_pos = exploded ? small_gear_pos_exp() : small_gear_pos();
     if (exploded){
         construction_line(small_gear_pos_exp(), small_gear_pos());
     }
-    motor28BYJ48(motor_pos, connector_pos, wire_points);
+    motor28BYJ48(motor_pos, connector_pos, wire_points, mirror_connector=mirror_connector);
     place_part(motor_pos){
         place_part(gear_pos){
             coloured_render(extras_colour()){

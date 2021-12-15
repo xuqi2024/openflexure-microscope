@@ -216,11 +216,11 @@ module microscope_stand_shell(params, stand_params){
 }
 
 
-module pi_stand_frame_xy(params, for_base_section=false){
+module pi_stand_frame_xy(params, for_base_section=false, slide_dist=0){
     initial_pos = for_base_section ? [0,0,0] : [5,0,2];
     translate([34, -38, 0]){
         rotate(-y_wall_angle(params)){
-            translate(initial_pos){
+            translate(initial_pos + slide_dist*[1, 0, 0]){
                 children();
             }
         }

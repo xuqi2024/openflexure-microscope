@@ -170,13 +170,37 @@ function illum_dovetail_washer_pos_exp(params, right=true) = translate_pos(illum
 function small_gear_pos() = create_placement_dict([0, 0, -2], [180, 0, 0], [0, 0, 15]);
 function small_gear_pos_exp() = translate_pos(small_gear_pos(), [0, 0, -20]);
 
+function motor_screw_pos() = [0.5*motor_screw_separation(), 12, 2.5];
 
 function y_motor_pos(params) = create_placement_dict([0, 20, y_motor_z_pos(params)], [0, 0, 180]);
 function y_connector_pos(params) = create_placement_dict([-22, -13, -43], [0, 0, y_wall_angle(params)-45]);
-function y_cable_verticies() = [[0, -10, 45], [-22, -13, 45]];
+function y_cable_verticies(out) = let(
+    final_z = out ? -35 : -5
+ ) [[0, -10, 45], [-22, -13, 45], [-22, -13, final_z]];
 
 function z_motor_pos() = create_placement_dict([0, 20, 0], [0, 0, 180]);
 function z_connector_pos() = create_placement_dict([-27, 3, -86], [0, 0, -15]);
-function z_cable_verticies() = [[0, -10, 3], [-27, 0, 3]];
+function z_cable_verticies(out) = let(
+    final_z = out ? -80 : -50
+ ) [[0, -10, 3], [-27, 0, 3], [-27, 3, final_z]];
 
-function motor_screw_pos() = [0.5*motor_screw_separation(), 12, 2.5];
+function x_connector_pos_board(params) = create_placement_dict([2, -17, -53], y_wall_angle(params)-45);
+function y_connector_pos_board(params) = create_placement_dict([49.5, -71, -53], -y_wall_angle(params)+135);
+function z_connector_pos_board(params) = create_placement_dict([-47, 7.5, -102.5], [z_actuator_tilt(params),0,0], [0, 0, -y_wall_angle(params)]);
+
+function x_connector_pos_board_out(params, slide_dist) = let(
+    a = -y_wall_angle(params)+45,
+    tr = slide_dist*[-cos(a), sin(a),0]
+) translate_pos(x_connector_pos_board(params), tr);
+
+function y_connector_pos_board_out(params, slide_dist) = let(
+    a = y_wall_angle(params)-135,
+    tr = slide_dist*[-cos(a), sin(a),0]
+) translate_pos(y_connector_pos_board(params), tr);
+
+function z_connector_pos_board_out(params, slide_dist) = let(
+    a = y_wall_angle(params),
+    az = z_actuator_tilt(params),
+    tr = slide_dist*[-cos(a), sin(a)*cos(az), -sin(az)],
+    fiddle = [0, 0, -4.5]
+) translate_pos(z_connector_pos_board(params), tr+fiddle);

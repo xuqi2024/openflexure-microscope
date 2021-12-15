@@ -32,33 +32,50 @@ module render_mount_motors(frame){
 }
 
 
-module assembled_microscope_without_electronics(xy_motor=true, z_motor=true, explode=undef){
+module assembled_microscope_without_electronics(xy_motor=true,
+                                                z_motor=true,
+                                                explode=undef,
+                                                connector_positions=[undef, undef, undef],
+                                                cable_positions=[undef, undef, undef]){
     params = render_params();
 
     mounted_microscope_frame(){
         if (xy_motor){
             exploded = explode == "xy";
             mirror([1, 0, 0]){
-                y_motor_and_cap(params, exploded=exploded);
+                y_motor_and_cap(params,
+                                exploded=exploded,
+                                connector_pos=connector_positions.x,
+                                cable_pos=cable_positions.x,
+                                mirror_connector=true);
             }
-            y_motor_and_cap(params, exploded=exploded);
+            y_motor_and_cap(params,
+                            exploded=exploded,
+                            connector_pos=connector_positions.y,
+                            cable_pos=cable_positions.y);
         }
 
         if (z_motor){
             exploded = explode == "z";
-            z_motor_and_cap(params, exploded=exploded);
+            z_motor_and_cap(params,
+                            exploded=exploded,
+                            connector_pos=connector_positions.z,
+                            cable_pos=cable_positions.z);
         }
     }
     mounted_microscope_with_illumination();
 }
 
-module y_motor_and_cap(params, exploded=false){
+module y_motor_and_cap(params, exploded=false, connector_pos=undef, cable_pos=undef, mirror_connector=false){
+    y_connector_pos = is_undef(connector_pos) ? y_connector_pos(params) : connector_pos;
+    y_cable_pos = is_undef(cable_pos) ? y_cable_verticies() : cable_pos;
     explode_unit = exploded ? 10 : 0;
     y_actuator_frame(params){
         translate_z(explode_unit){
             motor_with_gear(y_motor_pos(params),
-                            y_connector_pos(params),
-                            y_cable_verticies());
+                            y_connector_pos,
+                            y_cable_pos,
+                            mirror_connector=mirror_connector);
         }
 
         translate_z(y_motor_z_pos(params) + 3*explode_unit){
@@ -81,8 +98,9 @@ module y_motor_and_cap(params, exploded=false){
     
 }
 
-module z_motor_and_cap(params, exploded=false){
-
+module z_motor_and_cap(params, exploded=false, connector_pos=undef, cable_pos=undef){
+    z_connector_pos = is_undef(connector_pos) ? z_connector_pos() : connector_pos;
+    z_cable_pos = is_undef(cable_pos) ? z_cable_verticies() : cable_pos;
     explode_unit = exploded ? 10 : 0;
 
     coloured_render("DodgerBlue"){
@@ -100,7 +118,7 @@ module z_motor_and_cap(params, exploded=false){
     
     z_cable_tidy_frame(params){
         translate_z(explode_unit){
-            motor_with_gear(z_motor_pos(), z_connector_pos(), z_cable_verticies());
+            motor_with_gear(z_motor_pos(), z_connector_pos, z_cable_pos);
         }
         translate_z(3*explode_unit){
             reflect_x(){

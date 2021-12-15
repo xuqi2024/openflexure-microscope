@@ -15,13 +15,52 @@ microscope_stand_rendered();
 
 module microscope_stand_rendered(use_nano=false){
     params = render_params();
+    
+    slide = true;
+    slide_dist = slide ? 90 : 0;
+    rendered_pi_stand(params, use_nano=use_nano, slide_dist=slide_dist);
+
+    pi_stand_frame_xy(params){
+        translate(pi_stand_front_nut_trap_pos()){
+            rotate_y(90){
+                m3_nut();
+            }
+        }
+        translate(pi_stand_side_screw_pos()){
+            rotate_x(90){
+                m3_cap_x8();
+            }
+        }
+        
+        translate(pi_stand_front_screw_pos()){
+            rotate_y(90){
+                m3_cap_x8();
+            }
+        }
+    }
+    connector_positions = [x_connector_pos_board(params),
+                           y_connector_pos_board(params),
+                           z_connector_pos_board(params)];
+    connector_positions_out = [x_connector_pos_board_out(params, slide_dist),
+                               y_connector_pos_board_out(params, slide_dist),
+                               z_connector_pos_board_out(params, slide_dist)];
+    con_pos = slide ? connector_positions_out : connector_positions;
+
+    cable_positions = [y_cable_verticies(slide), y_cable_verticies(slide), z_cable_verticies(slide)];
+
+    assembled_microscope_without_electronics(connector_positions=con_pos, cable_positions=cable_positions);
+}
+
+
+
+module rendered_pi_stand(params, use_nano=false, slide_dist=0){
     stand_params = default_stand_params();
     coloured_render(extras_colour()){
-        pi_stand_frame_xy(params){
+        pi_stand_frame_xy(params, slide_dist=slide_dist){
             pi_stand(stand_params);
         }
     }
-    pi_stand_frame_xy(params){
+    pi_stand_frame_xy(params, slide_dist=slide_dist){
         inset = pi_stand_board_inset();
         pi_pos = inset + [0, 0, pi_stand_standoff_h()] ;
         sanga_pos = inset + [0, 0, sanga_stand_height()];
@@ -70,21 +109,6 @@ module microscope_stand_rendered(use_nano=false){
                 }
             }
         }
-        translate(pi_stand_side_screw_pos()){
-            rotate_x(90){
-                m3_cap_x8();
-            }
-        }
-        translate(pi_stand_front_nut_trap_pos()){
-            rotate_y(90){
-                m3_nut();
-            }
-        }
-        translate(pi_stand_front_screw_pos()){
-            rotate_y(90){
-                m3_cap_x8();
-            }
-        }
+        
     }
-    assembled_microscope_without_electronics();
 }

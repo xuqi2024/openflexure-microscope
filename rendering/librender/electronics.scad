@@ -1018,7 +1018,7 @@ function calc_bundled_wire_points(n_wires, wire_num, points) = let(
 ];
 
 
-module motor28BYJ48(motor_pos, connector_pos, wire_points=[]){
+module motor28BYJ48(motor_pos, connector_pos, wire_points=[], mirror_connector=false){
     $fn=32;
     m_pos = is_undef(motor_pos) ? create_placement_dict([0, 0, 0]) : motor_pos;
     c_pos = is_undef(connector_pos) ? create_placement_dict([0, 280, 0], [90, 0, 0]) : connector_pos;
@@ -1026,7 +1026,14 @@ module motor28BYJ48(motor_pos, connector_pos, wire_points=[]){
         motor28BYJ48_wo_wire();
     }
     place_part(c_pos){
-        motor_jst_connector();
+        if (mirror_connector){
+            mirror([0, 1, 0]){
+                motor_jst_connector();
+            }
+        }
+        else {
+            motor_jst_connector();
+        }
     }
 
     coloured_render("Orange"){
