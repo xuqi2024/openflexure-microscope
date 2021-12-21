@@ -128,6 +128,18 @@ function picamera_cover_pos(ex_dist=0) =  let(
     rotation = [0, 0, -90]
 ) create_placement_dict(tr, rotation);
 
+function default_ribbon_pos() = [create_placement_dict([17, -17, -18.75], [0, 0, 135], [0, 180, 0]),
+                                 create_placement_dict([21, -21, -17], [0, 0, 135], [0, 180, 0]),
+                                 create_placement_dict([22, -22, -15], [0, 0, 135], [0, 180, 0]),
+                                 create_placement_dict([50, -50, 100], [0, 0, 135], [0, 180, 0])];
+
+function curled_ribbon_pos() = [create_placement_dict([17, -17, -18.75], [0, 0, 135], [0, 180, 0]),
+                                 create_placement_dict([21, -21, -20], [0, 0, 135], [0, 180, 0]),
+                                 create_placement_dict([22, -22, -22], [0, 0, 135], [0, 180, 0]),
+                                 create_placement_dict([19, -19, -50], [0, 0, 135]),
+                                 create_placement_dict([17, -17, -52], [0, 0, 135]),
+                                 create_placement_dict([-10, 10, -53], [0, 0, 135])];
+
 function optics_module_nut_pos() = create_placement_dict(optics_module_mount_pos() - [0, 3.25, 1], [90, 0, 0], [0, 0, 30]);
 function optics_module_screw_pos() = create_placement_dict(optics_module_mount_pos() - [0, 0, 1], [-90, 0, 0], [0, 0, 30]);
 function optics_module_allen_key_pos() = create_placement_dict(optics_module_mount_pos() + [0, 2, -1], [0, 0, 25]);

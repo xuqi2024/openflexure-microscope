@@ -9,7 +9,7 @@ use <rms_optics_assembly.scad>
 use <actuator_assembly.scad>
 
 
-FRAME = 3;
+FRAME = 8;
 
 render_mount_optics(FRAME);
 
@@ -18,24 +18,24 @@ module render_mount_optics(frame){
         om_pos = translate_pos(optics_module_pos(), [0, -10, -100]);
         line_end = translate_pos(optics_module_pos(), [0, -10, 50]);
         construction_line(om_pos, line_end,.2);
-        rendered_optics_module(om_pos, screw_tight=false);
+        rendered_optics_module(om_pos, screw_tight=false, cable_positions=curled_ribbon_pos());
         body_with_assembled_actuators();
     }
     else if (frame==2){
         om_pos = translate_pos(optics_module_pos(), [0, -10, -6.5]);
-        rendered_optics_module(om_pos, screw_tight=false);
+        rendered_optics_module(om_pos, screw_tight=false, cable_positions=curled_ribbon_pos());
         body_with_assembled_actuators();
     }
     else if (frame==3){
         om_pos = translate_pos(optics_module_pos(), [0, -10, -6.5]);
         rendered_z_mount();
-        rendered_optics_module(om_pos, screw_tight=false);
+        rendered_optics_module(om_pos, screw_tight=false, cable_positions=curled_ribbon_pos());
         body_with_assembled_actuators(translucent_body=true);
     }
     else if (frame==4){
         om_pos = translate_pos(optics_module_pos(), [0, -4, -6.5]);
         rendered_z_mount();
-        rendered_optics_module(om_pos, screw_tight=false);
+        rendered_optics_module(om_pos, screw_tight=false, cable_positions=curled_ribbon_pos());
         body_with_assembled_actuators(translucent_body=true);
     }
     else if (frame==5){
@@ -45,7 +45,7 @@ module render_mount_optics(frame){
             allen_key_2_5(30);
         }
         rendered_z_mount();
-        rendered_optics_module(om_pos, screw_tight=false);
+        rendered_optics_module(om_pos, screw_tight=false, cable_positions=curled_ribbon_pos());
         body_with_assembled_actuators(translucent_body=true);
     }
     else if (frame==6){
@@ -54,7 +54,7 @@ module render_mount_optics(frame){
             allen_key_2_5(30);
         }
         rendered_z_mount();
-        rendered_optics_module(om_pos, screw_tight=false);
+        rendered_optics_module(om_pos, screw_tight=false, cable_positions=curled_ribbon_pos());
         body_with_assembled_actuators(translucent_body=true);
     }
     else if (frame==7){
@@ -62,7 +62,7 @@ module render_mount_optics(frame){
             allen_key_2_5(-30, clockwise_arrow=true);
         }
         rendered_z_mount();
-        rendered_optics_module(optics_module_pos(), screw_tight=true);
+        rendered_optics_module(optics_module_pos(), screw_tight=true, cable_positions=curled_ribbon_pos());
         body_with_assembled_actuators(translucent_body=true);
     }
     else if (frame==8){
@@ -71,7 +71,7 @@ module render_mount_optics(frame){
 }
 
 module body_with_optics(translucent_body=false){
-    rendered_optics_module(optics_module_pos(), screw_tight=true);
+    rendered_optics_module(optics_module_pos(), screw_tight=true, cable_positions=curled_ribbon_pos());
     body_with_assembled_actuators(translucent_body=translucent_body);
 }
 

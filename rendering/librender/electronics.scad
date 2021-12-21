@@ -228,12 +228,12 @@ module rpi_4b_board(){
 
 
 
-module picamera2(lens=true){
+module picamera2(lens=true, connector_open=false){
     $fn = 20;
     picamera2_board();
 
     picamera2_front();
-    picamera2_back();
+    picamera2_back(connector_open);
 
     if (lens){
         translate_z(3){
@@ -298,11 +298,11 @@ module picamera2_front(){
     }
 }
 
-module picamera2_back(){
+module picamera2_back(connector_open=false){
     translate_z(-1){
         mirror([0,0,1]){
             translate_x(-8){
-                csi_port();
+                csi_port(open=connector_open);
             }
 
             //chips appox for visual similarity
@@ -334,14 +334,24 @@ module chip(x, y, w, h, t, colour="#404040"){
     }
 }
 
-module csi_port(vertical=false){
+module csi_port(open=false, vertical=false){
     rotation = vertical ? 90 : 0;
     z_tr = vertical ? 4 : 0;
     translate_z(z_tr){
         rotate_y(rotation){
             color("DimGray"){
-                translate([-1, -21/2, 0]){
-                    cube([1, 21, 2.5]);
+                translate_x(open ? -1.5 : 0){
+                    difference(){
+                        union(){
+                            translate([-1, -21/2, 0]){
+                                cube([1, 21, 2.5]);
+                            }
+                            translate([-.5, -19.1/2, .5]){
+                                cube([5, 19.1, 1.5]);
+                            }
+                        }
+                        cube([20, 16.6, 2], center=true);
+                    }
                 }
             }
             color("Tan"){
@@ -753,6 +763,41 @@ module picamera2_tool(){
     }
 }
 
+module picamera_cable(positions){
+    coloured_render("WhiteSmoke"){
+        ribbon_cable(16, positions);
+    }
+    place_part(positions[0]){
+        picamera_cable_connector();
+    }
+    place_part(positions[len(positions)-1]){
+        rotate_y(180){
+            picamera_cable_connector();
+        }
+    }
+}
+
+module picamera_cable_connector(){
+    
+    coloured_render("WhiteSmoke"){
+        translate_x(-5){
+            cube([10, 16, 0.5], center=true);
+        }
+    }
+    coloured_render("DodgerBlue"){
+        translate([-5, 0, 0.25]){
+            cube([10, 16, 0.1], center=true);
+        }
+    }
+    coloured_render("Silver"){
+        for (i = [-7 : 7]){
+            translate([-7.5, i, -0.25]){
+                cube([5, 0.7, 0.1], center=true);
+            }
+        }
+    }
+}
+
 module motor28BYJ48_body(){
     holes = [[17.5, 0, 0], [-17.5, 0, 0]];
     translate_y(8){
@@ -1085,6 +1130,20 @@ module wire(d=1, points=[[0, 0, 0], [10,0,0]]){
             }
             translate(points[i+1]){
                 sphere(d=d);
+            }
+        }
+    }
+}
+
+module ribbon_cable(width, positions){
+    
+    for (i = [0:len(positions)-2]){
+        hull(){
+            place_part(positions[i]){
+                cube([0.5, width, 0.5], center=true);
+            }
+            place_part(positions[i+1]){
+                cube([0.5, width, 0.5], center=true);
             }
         }
     }

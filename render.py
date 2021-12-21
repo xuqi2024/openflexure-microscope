@@ -47,6 +47,14 @@ def register_rms_optics_assembly(rendersystem):
         screw_png_files.append(output_files[-1])
         scad_lines.append(f"render_rms_assembly({frame+7});")
 
+    camera_png_files = []
+    for frame in [1, 2, 3]:
+        cameras.append(Camera(position=[7, -14, -21], angle=[247, 0, 211], distance=250))
+        imgsizes.append([1200, 2000])
+        output_files.append(f"docs/renders/optics_assembly_ribbon{frame}.png")
+        camera_png_files.append(output_files[-1])
+        scad_lines.append(f"render_rms_assembly({frame+3});")
+
     for i, output_file in enumerate(output_files):
         render = ScadRender(output_file, input_file, scad_lines[i], imgsizes[i], cameras[i])
         rendersystem.register_scad_render(render)
