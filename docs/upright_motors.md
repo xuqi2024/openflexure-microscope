@@ -31,5 +31,3 @@ Note that each motor has a cable tidy cap that is different. Which cap to use sh
 * Attach a motor to the z-actuator of the rectangular z-axis with two [M4x6mm button head screws]{qty:2, cat:mech} **NOTE: there is no cable tidy cap for the rectangular z-axis**
 * Repeat for y and z actuators. For the z-actuator use the rectangular slot to the left of the actuator.
 
-
-![](renders/cable_management.png)

@@ -82,6 +82,8 @@ Take the [optics module][Optics module](fromstep){qty:1, cat:printedpart} and co
 * Insert the ribbon cable with the contacts towards the board
 * Close the catch on the connector
 
+![Attach ribbon cable](renders/optics_assembly_ribbon.png)
+
 ## Set the complete module aside {pagestep}
 
 Set the [complete optics module]{output, qty:1} aside in a safe place.

@@ -47,13 +47,13 @@ def register_rms_optics_assembly(rendersystem):
         screw_png_files.append(output_files[-1])
         scad_lines.append(f"render_rms_assembly({frame+7});")
 
-    camera_png_files = []
+    ribbon_png_files = []
     for frame in [1, 2, 3]:
-        cameras.append(Camera(position=[7, -14, -21], angle=[247, 0, 211], distance=250))
+        cameras.append(Camera(position=[12.5, -1, 15], angle=[230, 0, 24], distance=325))
         imgsizes.append([1200, 2000])
         output_files.append(f"docs/renders/optics_assembly_ribbon{frame}.png")
-        camera_png_files.append(output_files[-1])
-        scad_lines.append(f"render_rms_assembly({frame+3});")
+        ribbon_png_files.append(output_files[-1])
+        scad_lines.append(f"render_rms_assembly({frame+10});")
 
     for i, output_file in enumerate(output_files):
         render = ScadRender(output_file, input_file, scad_lines[i], imgsizes[i], cameras[i])
@@ -70,6 +70,10 @@ def register_rms_optics_assembly(rendersystem):
     rendersystem.register_imagemagick_sequence(
         "docs/renders/optics_assembly_screw.png",
         screw_png_files
+    )
+    rendersystem.register_imagemagick_sequence(
+        "docs/renders/optics_assembly_ribbon.png",
+        ribbon_png_files
     )
     rendersystem.register_inkscape_annotation(
         "docs/renders/optics_assembly_tube_lens.png",

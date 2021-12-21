@@ -23,6 +23,10 @@
 
 ## Attach the motors {pagestep}
 
+![](renders/mount_motors1.png)
+![](renders/mount_motors2.png)
+![](renders/mount_motors3.png)
+
 Note that each motor has a cable tidy cap that is different. Which cap to use should be apparent from the shape.
 
 * Get a [2.5mm Ball-end Allen key]{qty:1, cat:tool} ready
@@ -33,8 +37,5 @@ Note that each motor has a cable tidy cap that is different. Which cap to use sh
 * Check that the motor cable is running through the cable tidy rather than pinched underneath.
 * Fasten the motor and cable tidy caps to the motor lugs with two [M4x6mm button head screws]{qty:6, cat:mech}
 * Repeat for y and z actuators. For the z-actuator use the rectangular slot to the left of the actuator.
-
-
-![](renders/cable_management.png)
 
 

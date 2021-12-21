@@ -154,7 +154,8 @@ module assemble_om(frame){
                            camera=false,
                            objective=false,
                            nut=false,
-                           screw=false);
+                           screw=false,
+                           ribbon_cable=false);
     place_part(tube_lens_tool_pos()){
         tube_lens();
     }
