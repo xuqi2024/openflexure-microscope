@@ -12,7 +12,7 @@ If you have bought the plastic parts you can skip this step!
 
 ## Printing {pagestep}
 
-Now you have tested your [printer][RepRap-style printer]{qty:1,cat:tool} and [filament][PLA filament]{Qty: 200g, note:"Of any colour you want. Two contrasting colours may look best."}. you can print the following parts:
+Now you have tested your [printer][RepRap-style printer]{qty:1,cat:tool} and [filament][PLA filament]{Qty: 200g, note:"Of any colour you want. Two contrasting colours may look best."} you can print the following parts:
 
 * Actuator assembly tools ([nut tool]{output,qty:1}, [band tool]{output,qty:1}, and [band tool cover]{output,qty:1}):  [actuator_assembly_tools.stl](models/actuator_assembly_tools.stl){previewpage}
 * [Lens tool]{output,qty:1}: [lens_tool.stl](models/lens_tool.stl){previewpage}
