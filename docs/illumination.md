@@ -55,7 +55,7 @@ In this section we are assembling the sample illumination. This is for transmiss
 
 
 * Place the [illumination dovetail][Illumination dovetail](fromstep){qty:1, cat:printedpart} onto the stage above the z-actuator of the main body.
-* Secure in place with two [M3x8 cap head screws](parts/mechanical.yml#CapScrew_M3x8mm_SS){qty:2, cat:mech} and 2 [M3 Washers][M3 stainless steel washers]{qty:2, cat:mech} (using [2.5mm Ball-end Allen key]{qty:1, cat:tool})
+* Secure in place with two [M3x10 cap head screws](parts/mechanical.yml#CapScrew_M3x10mm_SS){qty:2, cat:mech} and 2 [M3 Washers][M3 stainless steel washers]{qty:2, cat:mech} (using [2.5mm Ball-end Allen key]{qty:1, cat:tool})
 
 
 ## Push-fit the lens {pagestep}

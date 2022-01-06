@@ -55,7 +55,7 @@ Take the [lens spacer][Lens spacer](fromstep){qty:1, cat:printedpart} and confir
 ## Attach the mounting screw {pagestep}
 
 * Take an [M3 nut]{qty:1, cat:mech} and push it into the nut trap from the top
-* Take an [M3x8 cap head screws](parts/mechanical.yml#CapScrew_M3x8mm_SS){qty: 1, cat:mech} and screw it into the nut.
+* Take an [M3x10 cap head screws](parts/mechanical.yml#CapScrew_M3x10mm_SS){qty: 1, cat:mech} and screw it into the nut.
 * Only screw it in a couple of turns. About 5 mm of thread should still be visible
 
 
