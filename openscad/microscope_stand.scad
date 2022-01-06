@@ -13,5 +13,6 @@ microscope_stand_stl(TALL_BUCKET_BASE);
 
 module microscope_stand_stl(tall_bucket_base){
     params = default_params();
-    microscope_stand(params, tall_bucket_base);
+    stand_params = default_stand_params(tall=tall_bucket_base);
+    microscope_stand(params, stand_params);
 }

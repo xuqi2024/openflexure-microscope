@@ -31,7 +31,7 @@ Now you have tested your [printer][RepRap-style printer]{qty:1,cat:tool} and [fi
 * [Lens spacer]{output,qty:1}: [lens_spacer_picamera_2_pilens.stl](models/lens_spacer_picamera_2_pilens.stl){previewpage} - **This must be printed in [black][Black PLA filament]{Qty: 50g}!** ([?](why_optics_black.md "why?"))
 * [pi camera platform]{output,qty:1}: [camera_platform_picamera_2_pilens.stl](models/camera_platform_picamera_2_pilens.stl){previewpage}
 * [Microscope stand]{output, qty:1}: [microscope_stand.stl](models/microscope_stand.stl){previewpage}
-* [Microscope stand insert for the Pi]{output,qty:1}: [pi_stand.stl](models/pi_stand.stl){previewpage}
+* [Pi stand]{output, qty:1}: [pi_stand.stl](models/pi_stand.stl){previewpage}
 * [Nano converter plate]{output,qty:1}, to hold separate motor drivers instead of a Sangaboard: [nano_converter_plate.stl](models/nano_converter_plate.stl){previewpage}
 * [Nano gripper]{output,qty:1}: [nano_converter_plate_gripper.stl](models/nano_converter_plate_gripper.stl){previewpage}
 

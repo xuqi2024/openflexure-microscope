@@ -44,6 +44,8 @@ function illumination_back_corner_pos(params) = [0, (key_lookup("leg_r", params)
 function right_back_sq_illum_corner_pos(params) = [20, (key_lookup("leg_r", params)+ leg_outer_w(params))/sqrt(2) + 4, illumination_dovetail_z(params)];
 function left_back_sq_illum_corner_pos(params) = [-20, (key_lookup("leg_r", params)+ leg_outer_w(params))/sqrt(2) + 4, illumination_dovetail_z(params)];
 
+function right_illumination_screw_rotation() = -20;
+function left_illumination_screw_rotation() = -right_illumination_screw_rotation();
 
 module each_front_illumination_screw(params){
     // A transform to repeat objects at each screw hole

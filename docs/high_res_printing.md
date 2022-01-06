@@ -12,7 +12,7 @@ If you have bought the plastic parts you can skip this step!
 
 ## Printing {pagestep}
 
-Now you have tested your [printer][RepRap-style printer]{qty:1,cat:tool} and [filament][PLA filament]{Qty: 200g, note:"Of any colour you want. Two contrasting colours may look best."}. you can print the following parts:
+Now you have tested your [printer][RepRap-style printer]{qty:1,cat:tool} and [filament][PLA filament]{Qty: 200g, note:"Of any colour you want. Two contrasting colours may look best."} you can print the following parts:
 
 * Actuator assembly tools ([nut tool]{output,qty:1}, [band tool]{output,qty:1}, and [band tool cover]{output,qty:1}):  [actuator_assembly_tools.stl](models/actuator_assembly_tools.stl){previewpage}
 * [Lens tool]{output,qty:1}: [lens_tool.stl](models/lens_tool.stl){previewpage}
@@ -27,9 +27,8 @@ Now you have tested your [printer][RepRap-style printer]{qty:1,cat:tool} and [fi
 * [Optics module]{output,qty:1}: [optics_picamera_2_rms_f50d13.stl](models/optics_picamera_2_rms_f50d13.stl){previewpage} - **This must be printed in [black][Black PLA filament]{Qty: 50g}!** ([?](why_optics_black.md "why?"))
 * [pi camera cover]{output,qty:1}: [picamera_2_cover.stl](models/picamera_2_cover.stl){previewpage}
 * [Microscope stand]{output, qty:1}: [microscope_stand.stl](models/microscope_stand.stl){previewpage}
+* [Pi stand]{output, qty:1}: [pi_stand.stl](models/pi_stand.stl){previewpage}
 * 3 [small gears]{output,qty:3}: [small_gears.stl](models/small_gears.stl){previewpage}
-* [Base to hold the motor driver]{output,qty:1}: [motor_driver_case_sangaboard.stl](models/motor_driver_case_sangaboard.stl){previewpage}
-
 
 
 ## Clean-up of printed parts {pagestep}

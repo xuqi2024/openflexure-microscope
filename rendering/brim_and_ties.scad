@@ -5,6 +5,8 @@ use <../openscad/libs/libdict.scad>
 use <librender/assembly_parameters.scad>
 use <../openscad/libs/microscope_parameters.scad>
 use <librender/render_settings.scad>
+use <librender/rendered_main_body.scad>
+
 
 render_brim_and_ties();
 
@@ -30,7 +32,7 @@ module render_brim_and_ties(){
     }
     color(body_colour()){
         render(6){
-            main_body(render_params());
+            rendered_main_body();
         }
     }
 }

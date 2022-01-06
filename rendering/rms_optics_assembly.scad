@@ -13,7 +13,7 @@ use <librender/electronics.scad>
 use <librender/hardware.scad>
 use <librender/rendered_components.scad>
 
-FRAME = 4;
+FRAME = 13;
 
 render_rms_assembly(FRAME);
 
@@ -29,6 +29,8 @@ module render_rms_assembly(frame){
                                objective=false,
                                nut=false,
                                screw=false,
+                               ribbon_cable=false,
+                               connector_open=true,
                                explode="camera");
     }
     else if (frame == 5){
@@ -38,7 +40,9 @@ module render_rms_assembly(frame){
                                camera=true,
                                objective=false,
                                nut=false,
-                               screw=false);
+                               screw=false,
+                               ribbon_cable=false,
+                               connector_open=true);
     }
     else if (frame == 6){
         rendered_optics_module(optics_module_pos(),
@@ -48,6 +52,8 @@ module render_rms_assembly(frame){
                                objective=true,
                                nut=false,
                                screw=false,
+                               ribbon_cable=false,
+                               connector_open=true,
                                explode="objective");
     }
     else if (frame == 7){
@@ -57,7 +63,9 @@ module render_rms_assembly(frame){
                                camera=true,
                                objective=true,
                                nut=false,
-                               screw=false);
+                               screw=false,
+                               ribbon_cable=false,
+                               connector_open=true);
     }
     else if (frame == 8){
         rendered_optics_module(optics_module_pos(),
@@ -67,6 +75,8 @@ module render_rms_assembly(frame){
                                objective=true,
                                nut=true,
                                screw=false,
+                               ribbon_cable=false,
+                               connector_open=true,
                                explode="nut");
     }
     else if (frame == 9){
@@ -77,6 +87,8 @@ module render_rms_assembly(frame){
                                objective=true,
                                nut=true,
                                screw=true,
+                               ribbon_cable=false,
+                               connector_open=true,
                                explode="screw");
     }
     else if (frame == 10){
@@ -86,7 +98,47 @@ module render_rms_assembly(frame){
                                camera=true,
                                objective=true,
                                nut=true,
-                               screw=true);
+                               screw=true,
+                               ribbon_cable=false,
+                               screw_tight=false,
+                               connector_open=true);
+    }
+    else if (frame == 11){
+        rendered_optics_module(optics_module_pos(),
+                               cut=false,
+                               lens=true,
+                               camera=true,
+                               objective=true,
+                               nut=true,
+                               screw=true,
+                               ribbon_cable=true,
+                               screw_tight=false,
+                               connector_open=true,
+                               explode="ribbon_cable");
+    }
+    else if (frame == 12){
+        rendered_optics_module(optics_module_pos(),
+                               cut=false,
+                               lens=true,
+                               camera=true,
+                               objective=true,
+                               nut=true,
+                               screw=true,
+                               ribbon_cable=true,
+                               screw_tight=false,
+                               connector_open=true);
+    }
+    else if (frame == 13){
+        rendered_optics_module(optics_module_pos(),
+                               cut=false,
+                               lens=true,
+                               camera=true,
+                               objective=true,
+                               nut=true,
+                               screw=true,
+                               ribbon_cable=true,
+                               screw_tight=false,
+                               connector_open=false);
     }
 }
 
@@ -102,13 +154,14 @@ module assemble_om(frame){
                            camera=false,
                            objective=false,
                            nut=false,
-                           screw=false);
+                           screw=false,
+                           ribbon_cable=false);
     place_part(tube_lens_tool_pos()){
         tube_lens();
     }
 }
 
-module camera_and_screws(camera_pos, explode=false){
+module camera_and_screws(camera_pos, explode=false, connector_open=false){
     ex_dist = 13;
     screw_z = picamera2_size().z + 2 + (explode ? 2*ex_dist : 0);
     holes = [for (i = [2, 3]) picamera2_holes()[i]];
@@ -118,7 +171,7 @@ module camera_and_screws(camera_pos, explode=false){
     cover_pos = explode ? picamera_cover_pos(ex_dist=ex_dist) : picamera_cover_pos();
 
     place_part(render_pos){
-        picamera2(lens = false);
+        picamera2(lens=false, connector_open=connector_open);
         place_part(cover_pos){
             rendered_picamera_2_cover();
         }
@@ -142,7 +195,14 @@ module rendered_optics_module(pos,
                               objective=true,
                               nut=true,
                               screw=true,
-                              explode=undef){
+                              ribbon_cable=true,
+                              explode=undef,
+                              screw_tight=true,
+                              connector_open=false,
+                              cable_positions=undef){
+    
+    ribbon_pos = is_undef(cable_positions) ? default_ribbon_pos() : cable_positions;
+
     cut_dir = cut ? "+x" : "none";
     place_part(pos){
         cutaway(cut_dir, optics_module_colour()){
@@ -166,20 +226,35 @@ module rendered_optics_module(pos,
         if (screw){
             exploded = (explode == "screw") ? true : false;
             screw_pos_ex = translate_pos(optics_module_screw_pos(), [0, 12, 0]);
-            screw_pos = exploded ? screw_pos_ex : optics_module_screw_pos();
+            screw_pos_assembled = translate_pos(optics_module_screw_pos(), [0, 4, 0]);
+            screw_pos = exploded ? screw_pos_ex :
+                screw_tight ? optics_module_screw_pos() : screw_pos_assembled;
             place_part(screw_pos){
                 m3_cap_x8();
             }
             if (exploded){
                 translate_y(-8){
-                    construction_line(screw_pos_ex, optics_module_screw_pos());
+                    construction_line(screw_pos_ex, screw_pos_assembled);
                 }
             }
         }
+        camera_pos = create_placement_dict([0, 0, -17.5], [0, 0, 135]);
         if (camera){
             exploded = (explode == "camera") ? true : false;
-            camera_pos = create_placement_dict([0, 0, -17.5], [0, 0, 135]);
-            camera_and_screws(camera_pos, exploded);
+            camera_and_screws(camera_pos, exploded, connector_open=connector_open);
+        }
+        if (ribbon_cable){
+            ribbon_start = create_placement_dict([0, 0, -18.75], [0, 0, 135], [0, 180, 0], init_translation=[15, 0, 0]);
+            positions = concat([ribbon_start], ribbon_pos);
+            exploded = (explode == "ribbon_cable") ? true : false;
+            ribbon_tr = exploded ? [15, -15, 0] : [0, 0, 0];
+            translate(ribbon_tr){
+                picamera_cable(positions);
+            }
+            if (exploded){
+                construction_line(translate_pos(ribbon_start, -ribbon_tr),
+                                  translate_pos(ribbon_start, ribbon_tr));
+            }
         }
         if (objective){
             exploded = (explode == "objective") ? true : false;

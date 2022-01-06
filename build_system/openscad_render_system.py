@@ -73,6 +73,7 @@ class RenderSystem():
     """
     def __init__(self):
         self._zip_assets = []
+        self._required_stls = []
         self._renders = []
         self._imagemagick_sequences = []
         self._inkscape_annotations = []
@@ -82,6 +83,12 @@ class RenderSystem():
         Register a zip file that will be unpacked when RenderSystem.render() is run
         """
         self._zip_assets.append(zip_file)
+
+    def register_render_stl(self, scad_filename):
+        """
+        Register an stl to be created before when RenderSystem.render() is run
+        """
+        self._required_stls.append(scad_filename)
 
     def register_scad_render(self, render):
         """
@@ -119,6 +126,8 @@ class RenderSystem():
                 ["unzip", "-o", "-d", os.path.dirname(zipfile), zipfile],
                 check=True,
             )
+        for scad_filename in self._required_stls:
+            create_render_stl(scad_filename)
         self._run_openscad()
         for outfile, input_files in self._imagemagick_sequences:
             subprocess.run(
@@ -152,7 +161,7 @@ class RenderSystem():
                 rerender = run_openscad_animation(tmpscad, renders, size)
 
                 if len(rerender)==len(renders):
-                    RuntimeError("No renders produced for this job. Renders failed!")
+                    raise RuntimeError("No renders produced for this job. Renders failed!")
                 if len(rerender)>0:
                     # Empty lines are not returned in gitlab CI.
                     # Using starts to make this line obvious
@@ -184,16 +193,27 @@ def run_openscad_animation(filename, renders, size):
     except subprocess.CalledProcessError as error:
         #If there is an error not all images were rendered
         std_err = error.stderr.decode('UTF-8')
+        print("*\n*\nSTDERR for failed run:\n")
+        print(std_err)
+        print("*\n*\nSTDERR end\n")
+        check_openscad_warnings(std_err)
         if "X Error of failed request" in std_err:
-            print(std_err)
-            print("\n\nPartial fail due to Docker OpenGL issue. "
-                    "Missing renders will be regenerated\n\n")
+            print("\n*\n*\nPartial fail due to Docker OpenGL issue. "
+                    "Missing renders will be regenerated\n*\n*\n")
         else:
-            print(std_err)
-            raise
+            raise RuntimeError("OpenSCAD failed for unknown reason") from error
 
     check_openscad_warnings(std_err)
     return copy_renders(renders, hash_name)
+
+def create_render_stl(filename):
+    """
+    Create STLs needed for the rendering from a list of filenames
+    """
+    executable = get_openscad_exe()
+    stl_name = filename[:-3]+'tl'
+    scad_args = ['--hardwarnings', filename, '-o', stl_name]
+    subprocess.run([executable] + scad_args, check=True)
 
 def check_openscad_warnings(std_err):
     """
@@ -204,11 +224,10 @@ def check_openscad_warnings(std_err):
     # https://github.com/openscad/openscad/issues/3646
     # https://github.com/openscad/openscad/pull/3660/
     """
-    warns = re.findall(r'^WARNING:.*?%', std_err, flags=re.MULTILINE)
-
-    if warns != []:
-        if warns[0] != r'WARNING: Viewall and autocenter disabled in favor of $vp*':
-            RuntimeError("Error. OpenSCAD code generates unexpected warnings")
+    warns = re.findall(r'^WARNING:.*?$', std_err, flags=re.MULTILINE)
+    for warn in warns:
+        if warn != r'WARNING: Viewall and autocenter disabled in favor of $vp*':
+            raise RuntimeError("Error. OpenSCAD code generates unexpected warnings")
 
 def copy_renders(renders, hash_name):
     """

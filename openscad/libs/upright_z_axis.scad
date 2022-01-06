@@ -36,7 +36,7 @@ module seperate_z_actuator(params, cable_guides = false, cable_housing = false, 
 
     // Adding the z actuator
     difference(){
-        z_actuator_assembly(params);
+        complete_z_actuator(params);
         // Removing the extruding cylinders from the actuator
         translate([-50,0,-100]){
             cube(size = 100);

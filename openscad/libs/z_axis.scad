@@ -457,7 +457,7 @@ module z_axis_tri_top_counterbores(params){
         }
         reflect_x(){
             translate(right_illumination_screw_pos(params)){
-                rotate_z(-20){
+                rotate_z(right_illumination_screw_rotation()){
                     translate_z(z_offset){
                         m3_nut_trap_with_shaft(0,0);
                     }
@@ -531,7 +531,7 @@ module z_actuator_cutout(params){
 }
 
 
-module z_actuator_assembly(params){
+module complete_z_actuator(params){
     // This is the z-actuator, objective mount and the z-flexures.
     // The flexure that join the body are not attached to anything on the body-side.
 

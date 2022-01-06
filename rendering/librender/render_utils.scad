@@ -6,31 +6,26 @@ module construction_line(p1, p2, width=0.1, line_color="Black"){
     //draws a construction line between two points. Inputs can be x,y,z list or placement dictionary
 
     //If placment dictionaries are used then recall using vector
-    if (valid_dict(p1)){
-        construction_line(key_lookup("translation", p1), p2, width=width, line_color=line_color);
-    }else{
-        if (valid_dict(p2)){
-            construction_line(p1, key_lookup("translation", p2), width=width, line_color=line_color);
-        }else{
-            color(line_color){
-                hull(){
-                    translate(p1){
-                        cube([width, width, width], center=true);
-                    }
-                    translate(p2){
-                        cube([width, width, width], center=true);
-                    }
-                }
+    p1_dict = valid_dict(p1) ? p1 : create_placement_dict(p1);
+    p2_dict = valid_dict(p2) ? p2 : create_placement_dict(p2);
+    
+    color(line_color){
+        hull(){
+            place_part(p1){
+                cube([width, width, width], center=true);
+            }
+            place_part(p2){
+                cube([width, width, width], center=true);
             }
         }
     }
 }
 
-module turn_anticlockwise(rad = 5, head = 2.5){
+module turn_anticlockwise(rad = 5, head = 2.5, line_w=0.1){
     color("black"){
         rotate_extrude(angle=270, $fn=80){
             translate_x(rad){
-                circle(r = 0.1);
+                circle(r = line_w);
             }
         }
         translate_y(-rad){
@@ -41,9 +36,9 @@ module turn_anticlockwise(rad = 5, head = 2.5){
     }
 }
 
-module turn_clockwise(rad = 5, head = 2.5){
+module turn_clockwise(rad = 5, head = 2.5, line_w=0.1){
     mirror([0, 1, 0]){
-        turn_anticlockwise(rad, head);
+        turn_anticlockwise(rad, head, line_w);
     }
 }
 
@@ -51,10 +46,12 @@ module turn_clockwise(rad = 5, head = 2.5){
 function create_placement_dict(translation=[0,0,0],
                                rotation3=[0,0,0],
                                rotation2=[0,0,0],
-                               rotation1=[0,0,0]) = [["translation",translation],
-                                                     ["rotation3",rotation3],
-                                                     ["rotation2",rotation2],
-                                                     ["rotation1",rotation1]];
+                               rotation1=[0,0,0],
+                               init_translation=[0,0,0]) = [["translation", translation],
+                                                            ["rotation3", rotation3],
+                                                            ["rotation2", rotation2],
+                                                            ["rotation1", rotation1],
+                                                            ["init_translation", init_translation]];
 
 function translate_pos(placement_dict, translation) = let(
     tr = key_lookup("translation", placement_dict) + translation
@@ -69,11 +66,14 @@ module place_part(position){
         r1 = key_lookup("rotation1", position);
         r2 = key_lookup("rotation2", position);
         r3 = key_lookup("rotation3", position);
+        init_tr = key_lookup("init_translation", position);
         translate(tr){
             rotate(r3){
                 rotate(r2){
                     rotate(r1){
-                        children();
+                        translate(init_tr){
+                            children();
+                        }
                     }
                 }
             }
@@ -86,8 +86,8 @@ module place_part(position){
     }
 }
 
-module coloured_render(colour="Red", convexity=6){
-    color(colour){
+module coloured_render(colour="Red", alpha=1.0, convexity=6){
+    color(colour, alpha){
         render(convexity){
             children();
         }
