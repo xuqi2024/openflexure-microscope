@@ -151,6 +151,7 @@ module dovetail_plug(corner_x, r, dt, zx_profile=[[0,0],[10,0],[12,-1]]){
         // Note the loop reflects the two cylinders here
         loop_over_zx_profile(zx_profile, corner_x){
             translate([sqrt(3)*r,r,0]){
+                //TODO: find out logic for "dt*sqrt(2) - (1+sqrt(3))*r"
                 repeat([dt*sqrt(2) - (1+sqrt(3))*r,0,0],2){
                     cylinder(r=r,h=tiny());
                 }

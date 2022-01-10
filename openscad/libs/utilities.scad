@@ -132,6 +132,19 @@ module reflect_z(){
     }
 }
 
+
+function vector_mirror_x(vec) = _vector_mirror_axis(vec, 0);
+function vector_mirror_y(vec) = _vector_mirror_axis(vec, 1);
+function vector_mirror_z(vec) = _vector_mirror_axis(vec, 2);
+
+function _vector_mirror_axis(vec, axis_index) = [
+    for (i = [0:len(vec)-1])
+        if (i==axis_index)
+            -vec[i]
+        else
+            vec[i]
+];
+
 // Module: repeat()
 // Usage: repeat(delta, N, center=false)
 // Arguments:
@@ -273,7 +286,7 @@ module nut_y(d,h=undef,center=false,fudge=1.15,extra_height=0.7,shaft_length=0){
         rotate([-90, 0, 0]){
             cylinder(h=height,center=center,r=r,$fn=6);
         }
-        
+
         if(shaft_length > 0){
             sl = shaft_length>0 ? shaft_length : 999;
             translate_y(height/2){
@@ -307,7 +320,6 @@ module nut_y(d,h=undef,center=false,fudge=1.15,extra_height=0.7,shaft_length=0){
 // Examples:
 //   cyl_slot(r=2, h=10, dy=20);
 module cyl_slot(r=1, h=1, dy=2, center=false){
-    
 
     hull(){
         repeat([0, dy, 0], 2, center=true){
@@ -783,7 +795,7 @@ module deformable_hole_trylinder(r1, r2, h=99, corner_roc=undef, delta_z=0.5, ce
     n = floor(h/(2*delta_z)); //number of layers in the structure
     flat_l = 2*sqrt(r2*r2 - r1*r1);
     default_corner_radius = r1 - flat_l/(2*sqrt(3));
-    corner_radius = if_undefined_set_default(corner_roc, default_corner_radius); 
+    corner_radius = if_undefined_set_default(corner_roc, default_corner_radius);
     repeat([0,0,2*delta_z], n, center=center){
         union(){
             cylinder(r=r2, h=delta_z+tiny());
@@ -798,13 +810,13 @@ module deformable_hole_trylinder(r1, r2, h=99, corner_roc=undef, delta_z=0.5, ce
 module exterior_brim(r=4, h=0.2, brim_only=false, smooth_r=undef){
     // Add a "brim" around the outside of an object *only*, preserving holes in the object
     // brim width r and the smoothing smooth_r can be defined separately, but default to equal
-    
+
     _smooth_r = is_undef(smooth_r) ? r : smooth_r;
-        
+
     if (!brim_only){
         children();
     }
-    
+
     if(r > 0){
         linear_extrude(h){
             difference(){

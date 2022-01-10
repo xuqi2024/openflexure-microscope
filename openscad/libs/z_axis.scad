@@ -24,7 +24,6 @@ z_axis_struts() makes the two connections between the objective_mount()
 
 use <./utilities.scad>
 use <./compact_nut_seat.scad>
-use <./main_body_transforms.scad>
 use <./wall.scad>
 use <./gears.scad>
 use <./illumination.scad>
@@ -152,6 +151,7 @@ module objective_fitting_wedge(params, h=undef, nose_shift=0.2, center=false){
                     cube([nose_width+2*nose_shift, tiny(), height]);
                 }
                 reflect_x(){
+                    // TODO: understand these numbers and explain
                     translate([-nose_width/2-5+sqrt(2), 5+sqrt(2), 0]){
                         cylinder(r=2, h=height, $fn=16, center=center);
                     }
@@ -509,7 +509,7 @@ module z_actuator_housing(params, include_motor_lugs=undef){
     // This houses the actuator column and provides screw seat/motor lugs
     h = key_lookup("actuator_h", params);
     inc_motor_lugs = if_undefined_set_default(include_motor_lugs,
-                                              key_lookup("include_motor_lugs", params)); 
+                                              key_lookup("include_motor_lugs", params));
     translate_y(z_nut_y(params)){
         screw_seat(params,
                    h,

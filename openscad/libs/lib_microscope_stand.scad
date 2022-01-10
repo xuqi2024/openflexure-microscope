@@ -453,7 +453,7 @@ module pi_stand_walls(h, block_usbc=true){
 
     base_size = pi_stand_base_size();
     wall_t = pi_stand_wall_t();
-    
+
     difference(){
         union(){
             cube([base_size.x, wall_t, h]);
@@ -484,7 +484,7 @@ module pi_stand_walls(h, block_usbc=true){
         translate(pi_stand_block_hole_pos()){
             no2_selftap_hole(h=99);
         }
-        
+
     }
     if (block_usbc){
         usb_c_blocker();
@@ -509,7 +509,7 @@ module sanga_connector_holes(){
 
 module sanga_lugs(){
     side_holes = [pi_hole_pos(true)[0], pi_hole_pos(true)[1]];
-    
+
     translate_z(sanga_stand_height()-5){
         difference(){
             union(){
@@ -554,7 +554,6 @@ module pi_stand_nut_trap(){
             }
         }
     }
-        
 }
 
 module pi_connector_holes(){

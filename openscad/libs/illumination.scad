@@ -34,15 +34,15 @@ function illumination_dt_params() = dovetail_params(
 );
 
 // Note: Front is the side towards the motors, Back is the side towards the stage
-
+function illumination_back_corner_y(params) = (key_lookup("leg_r", params)+ leg_outer_w(params))/sqrt(2) + 4;
 function right_illumination_screw_pos(params) = [20, z_nut_y(params), illumination_dovetail_z(params)];
-function left_illumination_screw_pos(params) = [-20, z_nut_y(params), illumination_dovetail_z(params)];
-function illumination_back_corner_pos(params) = [0, (key_lookup("leg_r", params)+ leg_outer_w(params))/sqrt(2) + 4, illumination_dovetail_z(params)];
+function left_illumination_screw_pos(params) = vector_mirror_x(right_illumination_screw_pos(params));
+function illumination_back_corner_pos(params) = [0, illumination_back_corner_y(params), illumination_dovetail_z(params)];
 // Defining the positions of the back corners of the rectangle for the top of the spacer
 // The triangular top of the spacer fits onto the triangular face of the z-axis in the main body. 
 // The rectangular top of the spacer is atached to the rectangular face of the rectangular z-axis, a rectangular face is used here for stability. 
-function right_back_sq_illum_corner_pos(params) = [20, (key_lookup("leg_r", params)+ leg_outer_w(params))/sqrt(2) + 4, illumination_dovetail_z(params)];
-function left_back_sq_illum_corner_pos(params) = [-20, (key_lookup("leg_r", params)+ leg_outer_w(params))/sqrt(2) + 4, illumination_dovetail_z(params)];
+function right_back_sq_illum_corner_pos(params) = [20, illumination_back_corner_y(params), illumination_dovetail_z(params)];
+function left_back_sq_illum_corner_pos(params) = vector_mirror_x(right_back_sq_illum_corner_pos(params));
 
 function right_illumination_screw_rotation() = -20;
 function left_illumination_screw_rotation() = -right_illumination_screw_rotation();

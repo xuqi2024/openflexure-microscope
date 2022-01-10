@@ -412,7 +412,7 @@ module screw_seat(params, h, travel, tilt=0, extra_entry_h=7, include_motor_lugs
     // support the screw (see screw_seat_shell)
 
     create_motor_lugs = if_undefined_set_default(include_motor_lugs,
-                                                 key_lookup("include_motor_lugs", params));    
+                                                 key_lookup("include_motor_lugs", params));
 
     entry_h = extra_entry_h + travel; //ensure the actuator can move
     nut_slot_z = h-actuator_nut_size()-1.5-actuator_nut_slot_size().z;

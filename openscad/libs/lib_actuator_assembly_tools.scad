@@ -1,7 +1,6 @@
 
 
 use <./utilities.scad>
-use <./microscope_parameters.scad>
 use <./libdict.scad>
 use <./compact_nut_seat.scad>
 
@@ -49,7 +48,7 @@ module sloped_back_of_handle(w, h){
 
 module nut_tool_handle(length){
     //width of the handle
-    w = actuator_nut_size()*1.1+4; 
+    w = actuator_nut_size()*1.1+4;
 
     difference(){
         sequential_hull(){
@@ -70,7 +69,7 @@ module nut_tool_handle(length){
 module nut_tool_end(){
     // width and height of tool tip (needs to fit through the slot of size
     // actuator_nut_slot_size())
-    w = actuator_nut_slot_size().x-0.6; 
+    w = actuator_nut_slot_size().x-0.6;
     h = actuator_nut_slot_size().z-0.7;
     l = 5+actuator_housing_xy_size().y/2+3;
 
@@ -205,7 +204,7 @@ module band_tool_end_cut_out(params, h){
                 translate(blade_anchor_pos() + [-2.25,3,h]){
                     sphere(r=band_tool_blade_w());
                 }
-                
+
                 translate(blade_anchor_pos() + sloped_wall_pos){
                     cube([band_tool_blade_w()/2,999,999]);
                 }
@@ -232,7 +231,7 @@ module band_tool_arm_with_end(params, h){
 */
 module band_tool_centre_block(roc, flex_t, middle_w){
     //thicker middle part to support the two ends
-    
+
     bottom_size = [actuator_nut_slot_size().x, middle_w, tiny()];
     top_size = [actuator_nut_slot_size().x, middle_w+2*(roc-0.5), tiny()];
 

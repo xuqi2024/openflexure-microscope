@@ -121,7 +121,7 @@ module large_gear(){
 /**
 * The cut-out in the small gear for the motor shaft
 */
-module motor_shaft_cut_out(h){    
+module motor_shaft_cut_out(h){
     flat_h=h-3.5;
     shaft_r=5/2*1.1;
     intersection(){
@@ -205,7 +205,7 @@ module thumbwheel(){
 * A lobe for the thumbwheel with conical support
 */
 module thumbwheel_lobe(r=5, h=5)
-{   
+{
     hull(){
         cylinder(r=r,h=h);
         translate_z(-h){
@@ -238,7 +238,7 @@ module illumination_thumbscrew(){
 * Approximate cut-out for a 28BYJ-48 stepper motor body
 * Note this does not include clearance for the cable or motor shaft
 * The centre of the body is at the origin, NOT the shaft.
-*/ 
+*/
 module motor_clearance(h=15){
 
     linear_extrude(height=h){
@@ -267,7 +267,7 @@ module motor_clearance(h=15){
 * flat surface for the large gear, in motor_lugs in compact_nut_seat.scad.
 */
 module motor_and_gear_clearance(gear_h=10, h=999){
-    
+
     linear_extrude(h){
         offset(1.5){
             hull(){

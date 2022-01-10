@@ -21,7 +21,7 @@ function bottom_position(optics_config) = let(
 ) camera_mount_top_z - camera_mount_height(optics_config);
 
 //bottom of the beamsplitter filter cube (0 except for the RMS f=50mm modules where it's -8 or -20)
-function fl_cube_bottom(optics_config) = bottom_position(optics_config) + camera_sensor_height(optics_config) + 6; 
+function fl_cube_bottom(optics_config) = bottom_position(optics_config) + camera_sensor_height(optics_config) + 6;
 function fl_cube_top(optics_config) = fl_cube_bottom(optics_config) + fl_cube_w() + 2.7; //top of beamsplitter cube
 
 function fl_cube_w() = 16; //width of the fluorescence filter cube
@@ -177,7 +177,7 @@ module camera_mount_body(
     camera_rotation = key_lookup("camera_rotation", optics_config);
     bs_rotation = key_lookup("beamsplitter_rotation", optics_config);
     // The angle of the camera mount (the ribbon cables exits at 135 defgees from mount for '0' &  180 degrees from mount for '-45')
-    camera_mount_rotation = camera_rotation; 
+    camera_mount_rotation = camera_rotation;
     // The angle of the block to hold the fl cube (0 for the fl cube exiting at 180 degree from the mount and -60 for the fl cube exiting at 120 from the mount)
     fl_cube_rotation = bs_rotation;
 
@@ -491,7 +491,7 @@ module lens_spacer(params, optics_config){
     // Mount a lens some distance from the camera
 
     assert(key_lookup("optics_type", optics_config)=="spacer", "Use spacer optics configuration to create a lens spacer.");
-    
+
     //unpack lens spacer parameters
     lens_r = key_lookup("lens_r", optics_config);
     lens_h = key_lookup("lens_h", optics_config);

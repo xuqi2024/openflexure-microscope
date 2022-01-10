@@ -1,6 +1,5 @@
 use <./libs/microscope_parameters.scad>
 use <./libs/utilities.scad>
-use <./libs/libdict.scad>
 use <./libs/lib_actuator_assembly_tools.scad>
 
 

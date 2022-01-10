@@ -1,7 +1,6 @@
 use <./libs/illumination.scad>
 use <./libs/utilities.scad>
 use <./libs/locking_dovetail.scad>
-use <./libs/microscope_parameters.scad>
 
 module led_array_holder(){
     // adafruit 3444 LED array

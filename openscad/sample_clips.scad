@@ -12,21 +12,22 @@
 *                                                                 *
 ******************************************************************/
 
-use <./libs/microscope_parameters.scad>
 use <./libs/utilities.scad>
 
-$fn=32; 
+$fn=32;
 
 module sample_clip(clamp_point, t=2.5, w=6, radius_of_curvature=undef, slope=30){
-    
+
     default_roc = clamp_point.z/2 + clamp_point.y*sin(slope) - t/2;
     roc = if_undefined_set_default(radius_of_curvature, default_roc);
 
+    //z distance from the contact point to the centre of the curved part
+    z_dist = clamp_point.z - roc - t/2;
     //a is the distance from the contact-point cylinder to the
     //centre of the curved part
-    a = sqrt(pow(clamp_point.y, 2) + pow(clamp_point.z - roc - t/2, 2));
+    a = sqrt(clamp_point.y^2 + z_dist^2);
     //angle through which we must rotate the join between
-    angle = acos( (roc + t/2) / a ) + atan((clamp_point.z - roc - t/2)/clamp_point.y);
+    angle = acos((roc + t/2) / a) + atan(z_dist/clamp_point.y);
 
 
     difference(){
