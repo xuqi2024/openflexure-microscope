@@ -4,7 +4,7 @@ LEDs are designed to be driven at constant current.  Simply connecting an LED to
 
 ## Calculating the right resistance
 
-To calculate the right resistor value, we simply use Ohm's law, V=IR.  In this case, the voltage V is 5v minus the operating voltage of your LED, typically 3.2v for a white LED, giving us 1.8v.  The operating current of the LED I then sets the required resistance: R=V/I.  For 30mA current, we therefore need R=1.8/0.03=60 ohms.  We specify 150 ohms to drive the LED below its maximum current rating - we don't need the extra brightness, and it saves on power and heat.
+To calculate the right resistor value, we simply use Ohm's law, $`V=IR`$.  In this case, the voltage $`V`$ is 5v minus the operating voltage of your LED, typically 3.2v for a white LED, giving us 1.8v.  The operating current of the LED I then sets the required resistance: $`R=V/I`$.  For 30mA current, we therefore need $`R=1.8/0.03=60`$ Ohms.  We specify 150 Ohms to drive the LED below its maximum current rating - we don't need the extra brightness, and it saves on power and heat.
 
 ## Flicker and better drive electronics
 
