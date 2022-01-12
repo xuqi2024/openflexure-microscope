@@ -101,6 +101,9 @@ module side_cable_tidy(params, h=7){
     }
 }
 
+// Module: front_cable_tidy(params, h=7)
+// Description: 
+//   The cable tidy at the front of the microscope (i.e. for the Z motor)
 module front_cable_tidy(params, h=7){
     cutout_h = z_motor_z_pos(params) + motor_bracket_h() + h - 2;
     difference(){
