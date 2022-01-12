@@ -549,7 +549,15 @@ module complete_z_actuator(params){
 
 
 
-
+// Module: z_housing_frame(params, y_actuator=false)
+// Description: 
+//   Transform into the frame of the Z cable housing.
+//   The origin will be in the z=0 plane, either to the
+//   left or the right of the bottom of the Z actuator 
+//   column.  It will be tilted to match the Z actuator,
+//   but rotated 15 degrees around z in the same direction
+//   as it is translated - if y_actuator is false (default)
+//   we will be on the +y side of the Z actuator.
 module z_housing_frame(params, y_actuator=false){
     tilt = z_actuator_tilt(params);
     x_tr = y_actuator ? -23 : 23;
@@ -563,6 +571,13 @@ module z_housing_frame(params, y_actuator=false){
     }
 }
 
+// Module: z_cable_tidy_frame(params, z_extra=0)
+// Description: 
+//   Transform children into the frame of the Z cable tidy.
+//   This puts the origin at the centre of the Z motor shaft
+//   in the plane of the front face of the motor.  It's also
+//   rotated 180 degrees about Z such that the y axis points
+//   approximately in the opposite direction to y.
 module z_cable_tidy_frame(params, z_extra=0){
     tilt = z_actuator_tilt(params);
     z_tr = z_motor_z_pos(params) + z_extra;
@@ -591,7 +606,11 @@ module z_cable_tidy_frame_undo(params, z_extra=0){
     }
 }
 
-
+// Module: z_cable_housing(params)
+// Description: 
+//   A solid block that is the right size to contain the cable channels
+//   either side of the Z axis.  Its bottom is the z=0 plane, and its top
+//   is parallel to the face of the Z motor.
 module z_cable_housing(params){
     difference(){
         hull(){
@@ -609,6 +628,10 @@ module z_cable_housing(params){
     }
 }
 
+// Module: z_cable_housing_top(params, h)
+// Description: 
+//   A block of height h that has the same shape as the top of the z
+//   cable housing.
 module z_cable_housing_top(params, h){
     // Must untilt and trasnlate before cutting. Then undo transforms
     z_cable_tidy_frame(params, z_extra=motor_bracket_h()){
@@ -623,7 +646,11 @@ module z_cable_housing_top(params, h){
 }
 
 
-
+// Module: z_cable_housing_x(params)
+// Description: 
+//   A solid block big enough to contain the motor cable from the Z axis.
+//   Note that the z cable housing includes one of these on each side of
+//   the Z axis.
 module z_cable_housing_x(params){
     h=z_motor_z_pos(params)+motor_bracket_h();
     housing = [motor_connector_size().y+5, motor_connector_size().x+5, h*3];
@@ -650,17 +677,29 @@ module z_cable_housing_x(params){
     }
 }
 
+// Module: z_cable_housing_cutout(params, h=99, top=false)
+// Description: 
+//   A block that can be subtracted from the z_cable_housing
+//   to make the channel for the cable.  NB this module renders one
+//   on either side of the Z axis, though the one next to the
+//   Y actuator is smaller as it's for the illumination cable.
+//   
+//   If top is true, we shift the cutout slightly in X.
+//   For now, we the illumination cable is also extended in -y
+//   to cut the side of the cable tidy and allow access to the channel.
+//   This will eventually be replaced with something more neatly enclosed.
 module z_cable_housing_cutout(params, h=99, top=false){
     cutout_size = [motor_connector_size().y+2, motor_connector_size().x+2, 2*h];
     inset = top ? [2,0,0] : [0,0,0];
+    illumination_extra = top ? [0,20,0] : [0,0,0];
     z_housing_frame(params, y_actuator=false){
         translate(-inset){
             cube(cutout_size, center=true);
         }
     }
     z_housing_frame(params, y_actuator=true){
-        translate([-4,0,0]+inset){
-            cube(cutout_size-[8,0,0], center=true);
+        translate([-4,0,0]+inset-illumination_extra/2){
+            cube(cutout_size-[8,0,0]+illumination_extra, center=true);
         }
     }
 }
