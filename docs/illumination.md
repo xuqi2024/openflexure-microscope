@@ -26,7 +26,7 @@ In this section we are assembling the sample illumination. This is for transmiss
 * Take the [LED][Warm white 5mm LED]{qty:1, cat:electronic}
 * Cut the longest leg down to about 5mm long using [precision wire cutters](parts/tools/precision-wire-cutters.md){qty:1, cat:tool}
 * Tin this leg with [solder]{qty: a little, cat:consumable}
-* Take a [150 Ohm Resistor]{qty:1, note:"- The exact value will depend on the current rating of your LED.", cat:electronic} and cut each leg down to about 5mm long
+* Take a [150 Ohm Resistor]{qty:1, note:"- The exact value will depend on the current rating of your LED.", cat:electronic} and cut each leg down to about 5mm long. ([why?](why_led_resistor.md))
 * Tin both legs with solder
 * Solder one side of the resistor to the cut leg of the LED.
 * Cut the other leg of the LED to be the same height as the end of the resistor.

@@ -27,7 +27,7 @@ CustomCategories:
         DisplayName: Electronic Components
     Mech:
         Reuse: false
-        DisplayName: Mechancial Components
+        DisplayName: Mechanical Components
 DefaultCategory: Part
 PageBOMTitle: "## For this section you will need:"
 #uncomment line below to disable fussy warnings

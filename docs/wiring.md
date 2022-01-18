@@ -28,7 +28,12 @@
 * Secure the Sangaboard in place with two [self tapping screws][No 2 6.5mm self tapping screws]{qty:2}
 * Push the motor cables into their labelled connectors. Make sure the motor from the correct axis on the microscope goes to the correct port.
 
-**TODO** - connecting up the LED to the Sangaboard v0.4
+## Connect the LED to the Sangaboard {pagestep}
+
+* Insert the 2-pin male connector into the 4x2 way female header on the [Sangaboard].
+* If you are not using a Sangaboard v4, you can also [connect the LED to the Raspberry Pi](workaround_raspberry_pi_gpio_led.md)
+
+![Connect the LED to the Sangaboard](diagrams/illumination_to_sangaboard_wiring.png)
 
 ## Mount the electronics drawer {pagestep}
 
