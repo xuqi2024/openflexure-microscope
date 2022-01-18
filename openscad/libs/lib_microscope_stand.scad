@@ -22,10 +22,16 @@ function microscope_stand_vert_height(stand_params) = let(
     extra_h = key_lookup("extra_height", stand_params)
 ) drawer_h + extra_h;
 
-function default_stand_params(tall=false, no_pi=false) = [["pi_stand_h", 47], //The height of the tray the pi sits in.
-                                                          ["include_pi_tray_hole", !no_pi], //Whether the stand has a hole for the raspberry pi tray
-                                                          ["extra_height", tall ? 17 : 0], //extra height above the raspberry pi_tray
-                                                         ];
+function default_stand_params(tall=false, no_pi=false, pi_version=4, sanga_version="v0.4") =
+    assert(pi_version==3 || pi_version==4, "pi_version must be 3 or 4")
+    assert(sanga_version=="v0.3" || sanga_version=="v0.4", "pi_version must be \"v0.3\" or \"v0.4\"")
+    [["pi_stand_h", 47], //The height of the tray the pi sits in.
+     ["include_pi_tray_hole", !no_pi], //Whether the stand has a hole for the raspberry pi tray
+     ["extra_height", tall ? 17 : 0], //extra height above the raspberry pi_tray
+     ["block_usbc", true],
+     ["sanga_version", sanga_version],
+     ["pi_version", pi_version],
+    ];
 
 module foot_footprint(tilt=0){
     // the footprint of one foot/actuator column
@@ -357,10 +363,12 @@ function pi_stand_front_pos() = let(
     x_tr = pi_stand_base_size().x - pi_stand_wall_t()
 ) [x_tr, 0, 0];
 
-function sanga_stand_height() = pi_stand_standoff_h() + 12.5;
+function sanga_stand_height(sanga_version) = let(
+    extra_h = (sanga_version=="v0.4") ? 12.5 : 27
+) pi_stand_standoff_h() + extra_h;
 
 function pi_stand_mount_block_size() = let(
-    height = sanga_stand_height(),
+    height = sanga_stand_height("v0.4"),
     width = pi_stand_front_width()-pi_stand_base_size().y
 ) [10, width, height];
 
@@ -394,9 +402,8 @@ function pi_stand_block_hole_pos() = let(
 function pi_stand_standoff_h() = 5.5;
 
 module pi_stand(stand_params){
-    pi_stand_h = key_lookup("pi_stand_h", stand_params);
     pi_stand_base();
-    pi_stand_walls(pi_stand_h);
+    pi_stand_walls(stand_params);
 }
 
 function pi_hole_pos(inset_for_stand=false) = let(
@@ -449,26 +456,29 @@ module pi_stand_base(){
 }
 
 
-module pi_stand_walls(h, block_usbc=true){
-
+module pi_stand_walls(stand_params){
+    pi_stand_h = key_lookup("pi_stand_h", stand_params);
+    block_usbc = key_lookup("block_usbc", stand_params);
+    pi_version = key_lookup("pi_version", stand_params);
+    sanga_version = key_lookup("sanga_version", stand_params);
     base_size = pi_stand_base_size();
     wall_t = pi_stand_wall_t();
 
     difference(){
         union(){
-            cube([base_size.x, wall_t, h]);
+            cube([base_size.x, wall_t, pi_stand_h]);
             translate(pi_stand_front_pos()){
-                cube([wall_t, pi_stand_front_width(), h]);
+                cube([wall_t, pi_stand_front_width(), pi_stand_h]);
             }
             translate(pi_stand_mount_block_pos()){
                 cube(pi_stand_mount_block_size());
             }
             pi_stand_nut_trap();
-            sanga_lugs();
+            sanga_lugs(sanga_version);
         }
 
-        pi_connector_holes();
-        sanga_connector_holes();
+        pi_connector_holes(pi_version);
+        sanga_connector_holes(sanga_version);
 
         translate(pi_stand_front_screw_pos()){
             rotate_y(90){
@@ -486,18 +496,36 @@ module pi_stand_walls(h, block_usbc=true){
         }
 
     }
-    if (block_usbc){
+    if (pi_version==4 && block_usbc){
         usb_c_blocker();
     }
 }
 
-function sanga_connector_x() = 11.2;
+function sanga_connector_x(sanga_version) = (sanga_version=="v0.4") ? 11.2 : 23.7;
 
-module sanga_connector_holes(){
+
+function sanga_v0_3_board_dims() = [65, 55, 1.5];
+
+function sanga_v0_3_holes() = let(
+    sb_x = sanga_v0_3_board_dims().x,
+    sb_y = sanga_v0_3_board_dims().y,
+    offset_x = pi_board_dims().x-sb_x,
+    inset = pi_stand_board_inset() + [offset_x, 0, 0]
+) [[4, 4, 0] + inset,
+   [sb_x-4, 4, 0] + inset,
+   [sb_x-4, sb_y-4, 0] + inset,
+   [4, sb_y-4, 0] + inset
+  ];
+
+module sanga_connector_holes(sanga_version){
+    v0_3_offset_x = pi_board_dims().x-sanga_v0_3_board_dims().x;
+    board_inset = (sanga_version=="v0.4") ?
+        pi_stand_board_inset() :
+        pi_stand_board_inset() + [v0_3_offset_x, 0, 0];
+
     wall_t = pi_stand_wall_t();
-    board_inset = pi_stand_board_inset();
-    connector_z = sanga_stand_height()+tiny()+3;
-    connector_x = sanga_connector_x() + board_inset.x;
+    connector_z = sanga_stand_height(sanga_version)+tiny()+3;
+    connector_x = sanga_connector_x(sanga_version) + board_inset.x;
     sanga_connector_pos = [connector_x, 0, connector_z];
     translate(sanga_connector_pos){
         translate_y((wall_t-10)/2){
@@ -505,26 +533,54 @@ module sanga_connector_holes(){
             cube([10, 200, 4.5], center=true);
         }
     }
+    if (sanga_version=="v0.3"){
+        x_dim = 2*pi_stand_base_size().x+1;
+        translate([0, board_inset.y, sanga_stand_height(sanga_version)]){
+            translate([0, 32.5+16/2, 2+8/2]){
+                cube([x_dim, 16, 8], center=true);
+            }
+            translate([0, 17+10/2, 2+4.5/2]){
+                cube([x_dim, 10, 4.5], center=true);
+            }
+        }
+    }
 }
 
-module sanga_lugs(){
-    side_holes = [pi_hole_pos(true)[0], pi_hole_pos(true)[1]];
-
-    translate_z(sanga_stand_height()-5){
+module no2_selftap_lug(hole_pos, wall_pos, wall_angle){
+    translate_z(-5){
         difference(){
-            union(){
-                for (hole = side_holes){
-                    hull(){
-                        translate(hole){
-                            cylinder(d=5.5, h=5, $fn=12);
-                        }
-                        translate([hole.x, .1, 0]){
-                            cube([5.5, 0.1, 10], center=true);
-                        }
+            hull(){
+                translate(hole_pos){
+                    cylinder(d=5.5, h=5, $fn=12);
+                }
+                translate([wall_pos.x, wall_pos.y, hole_pos.z]){
+                    rotate_z(wall_angle){
+                        cube([5.5, 0.1, 10], center=true);
                     }
                 }
             }
-            pi_tap_holes(inside=false);
+            translate(hole_pos){
+                no2_selftap_hole(h=99, center=true);
+            }
+        }
+    }
+}
+
+module sanga_lugs(sanga_version){
+
+    side_lugs = (sanga_version=="v0.4") ?
+        [pi_hole_pos(true)[0], pi_hole_pos(true)[1]] :
+        [sanga_v0_3_holes()[0], sanga_v0_3_holes()[1]];
+    front_lugs = (sanga_version=="v0.4") ?
+        [] :
+        [sanga_v0_3_holes()[2]];
+    translate_z(sanga_stand_height(sanga_version)){
+        for (hole_pos = side_lugs){
+            no2_selftap_lug(hole_pos, [hole_pos.x, 0.1, 0], 0);
+        }
+        for (hole_pos = front_lugs){
+            front_x = pi_stand_base_size().x-0.1;
+            no2_selftap_lug(hole_pos, [front_x, hole_pos.y, 0], 90);
         }
     }
 }
@@ -556,45 +612,77 @@ module pi_stand_nut_trap(){
     }
 }
 
-module pi_connector_holes(){
+module pi_connector_holes(pi_version){
     board_inset = pi_stand_board_inset();
     standoff_h = pi_stand_standoff_h();
+
     translate(board_inset + [0, 0, standoff_h+1]){
         translate_x(pi_stand_base_size().x-10){
-            translate_y(45.75-17/2){
-                cube([200, 17, 14.5]);
-            }
-            translate_y(27-15.5/2){
-                cube([200, 15.5, 17]);
-            }
-            translate_y(9-15.5/2){
-                cube([200, 15.5, 17]);
-            }
+            pi_front_connectors(pi_version);
         }
 
         translate_y(-board_inset.y-tiny()){
-            pi_side_connectors();
+            pi_side_connectors(pi_version);
         }
         hull(){
             translate_y(-(board_inset.y-1.5)){
-                pi_side_connectors();
+                pi_side_connectors(pi_version);
             }
         }
     }
 }
 
-module pi_side_connectors(){
+module pi_front_connectors(pi_version){
 
-    translate_x(11.2-10/2){
-        cube([10, 200, 4.5]);
+    if (pi_version==4){
+        translate_y(45.75-17/2){
+            cube([200, 17, 14.5]);
+        }
+        translate_y(27-15.5/2){
+            cube([200, 15.5, 17]);
+        }
+        translate_y(9-15.5/2){
+            cube([200, 15.5, 17]);
+        }
     }
-    translate_x(26-8/2){
-        cube([8, 200, 4.5]);
+    else{
+        translate_y(10.25-17/2){
+            cube([200, 17, 14.5]);
+        }
+        translate_y(29-15.5/2){
+            cube([200, 15.5, 17]);
+        }
+        translate_y(47-15.5/2){
+            cube([200, 15.5, 17]);
+        }
     }
-    translate_x(39.5-8/2){
-        cube([8, 200, 4.5]);
+}
+
+module pi_side_connectors(pi_version){
+    if (pi_version==4){
+        translate_x(11.2-10/2){
+            cube([10, 200, 4.5]);
+        }
+        translate_x(26-8/2){
+            cube([8, 200, 4.5]);
+        }
+        translate_x(39.5-8/2){
+            cube([8, 200, 4.5]);
+        }
     }
-    translate_x(54-7/2){
+    else{
+        translate_x(10.6-9/2){
+            cube([9, 200, 4.5]);
+        }
+        translate_x(32-17/2){
+            cube([17, 200, 7]);
+        }
+
+    }
+
+    headphone_x = (pi_version==4) ? 54 : 53.5;
+
+    translate_x(headphone_x-7/2){
         translate([3.5, 0, 3.5]){
             rotate_x(-90){
                 cylinder(d1=7, d2=8, h=5);
