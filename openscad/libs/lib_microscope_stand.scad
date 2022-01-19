@@ -524,7 +524,8 @@ module sanga_connector_holes(sanga_version){
         pi_stand_board_inset() + [v0_3_offset_x, 0, 0];
 
     wall_t = pi_stand_wall_t();
-    connector_z = sanga_stand_height(sanga_version)+tiny()+3;
+    connector_extra_z = (sanga_version=="v0.4") ? 3 : 3.75;
+    connector_z = sanga_stand_height(sanga_version) + tiny() + connector_extra_z;
     connector_x = sanga_connector_x(sanga_version) + board_inset.x;
     sanga_connector_pos = [connector_x, 0, connector_z];
     translate(sanga_connector_pos){
@@ -536,11 +537,11 @@ module sanga_connector_holes(sanga_version){
     if (sanga_version=="v0.3"){
         x_dim = 2*pi_stand_base_size().x+1;
         translate([0, board_inset.y, sanga_stand_height(sanga_version)]){
-            translate([0, 32.5+16/2, 2+8/2]){
-                cube([x_dim, 16, 8], center=true);
+            translate([0, 32.5, 2+8/2]){
+                cube([x_dim, 15, 8], center=true);
             }
-            translate([0, 17+10/2, 2+4.5/2]){
-                cube([x_dim, 10, 4.5], center=true);
+            translate([0, 18, 2+4.5/2]){
+                cube([x_dim, 9, 4.5], center=true);
             }
         }
     }
