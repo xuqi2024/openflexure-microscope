@@ -35,6 +35,8 @@ Now you have tested your [printer][RepRap-style printer]{qty:1,cat:tool} and [fi
 * [Nano converter plate]{output,qty:1}, to hold separate motor drivers instead of a Sangaboard: [nano_converter_plate.stl](models/nano_converter_plate.stl){previewpage}
 * [Nano gripper]{output,qty:1}: [nano_converter_plate_gripper.stl](models/nano_converter_plate_gripper.stl){previewpage}
 
+You can [download all of the STLs as a single zipfile](upright-stls.zip){zip, pattern:"*.stl"}
+
 ### Optional accessories
 
 Taller upright z-actuator mounts are available for use with thicker samples:
