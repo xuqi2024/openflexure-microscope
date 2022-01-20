@@ -1,7 +1,6 @@
 # Upright microscope
 
-
-**TODO: Add blurb about microscope**
+This configuration of the microscope has the objective above the sample rather than below. It is newer and less well tested than other versions of the microscope. If you have problems building it, please let us know on GitLab or on our forum. If you use this microscope for research please consider citing [our paper in Optics Express](https://doi.org/10.1364/BOE.385729).
 
 Before you start building the microscope you will need to source all the components listed our [bill of materials]{bom}.
 

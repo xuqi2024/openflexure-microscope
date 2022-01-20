@@ -37,13 +37,13 @@ ForceOutput:
   - models/stl_options.json
 Navigation:
   - Link: high_res_microscope.md
-    Title: High-resolution microscope
+    Title: Build the high-resolution microscope
   - Link: low_cost_microscope.md
-    Title: Low-cost microscope
+    Title: Build the low-cost microscope
   - Link: upright-microscope.md
-    Title: Upright microscope
-  - Link: nano_sangaboard.md
-    Title: Sangaboard-compatible motor controller
+    Title: Build the upright microscope
+  - Link: customisation.md
+    Title: Customisations and alternatives
   - Link: troubleshooting.md
     Title: Troubleshooting
 

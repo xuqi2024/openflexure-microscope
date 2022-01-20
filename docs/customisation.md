@@ -1,0 +1,56 @@
+# Customisations and alternatives
+
+For each version of the microscope we have specified a specific bill of materials to make the microscope simple to build for non-microscopists. One of the key advantage of the OpenFlexure Microscope is that is can be customised for different applications and modified if certain parts are not available.
+
+Here are some of the most common customisations. This page may not be as detailed as the core instructions, please consider helping us improve it.
+
+## Electronics
+
+#### No access to the Sangaboard
+
+Our custom motor board, the Sangaboard can be hard to get hold of. We are working on this. A workaround is to build a [Sangaboard-compatible motor controller](nano_sangaboard.md) using an Arudino nano, and the driver boards that come with each stepper motor.
+
+This uses the standard "pi_stand" stl for the electronics drawer by you will need to print the [nano_converter_plate.stl](models/nano_converter_plate.stl){previewpage} and [nano_converter_plate_gripper.stl](models/nano_converter_plate_gripper.stl){previewpage}.
+
+
+#### Using a Raspberry Pi version 3, or a Sangaboard v0.3
+
+If you don't have access to a Raspberry Pi version 4 or a Sangaboard v0.4, but have an older boards. You can use one of these modified electronics drawers:
+
+* [pi_stand-pi3_sangav0.3.stl](models/pi_stand-pi3_sangav0.3.stl){previewpage}
+* [pi_stand-pi3_sangav0.4.stl](models/pi_stand-pi3_sangav0.4.stl){previewpage}
+* [pi_stand-pi4_sangav0.3.stl](models/pi_stand-pi4_sangav0.3.stl){previewpage}
+
+## Optics
+
+#### Using the microscope for epi-florescence or epi-illumination
+
+You will need to print a version of the optics module with "beamsplitter" in the name (all optics modules listed below). 
+
+You will also need to print:
+
+* [fl_cube.stl](models/fl_cube.stl){previewpage}
+* [reflection_illuminator.stl](models/reflection_illuminator.stl){previewpage}
+
+These instruction need completing. For now please consult the [OpenFlexure Delta Stage Instructions](https://build.openflexure.org/openflexure-delta-stage/v1.2.0/pages/reflection_illumination.html)
+
+#### Using an infinity corrected objective
+
+The standard optics module is designed for a finite conjugate objective. If you wish to use an infinite conjugate objective print a version of the optics module with "infinity" in the name.
+
+#### Using a different camera
+
+For the low cost microscope (without an objective), we currently only support the Raspberry Pi camera. The 3D printed parts work with both v1 and v2, but **only v2 is supported by the stanard software.**
+
+For the RMS objective optics we also generate optics modules for an M12 camera. The **M12 camera is not supported in the standard software**. Our OpenSCAD can also generate optics modules for other cameras, however these have not been tested or used for a long time and might not function as expected.
+
+The following optics modules are available:
+
+* [optics_m12_rms_f50d13_beamsplitter.stl](models/optics_m12_rms_f50d13_beamsplitter.stl){previewpage}
+* [optics_m12_rms_f50d13.stl](models/optics_m12_rms_f50d13.stl){previewpage}
+* [optics_m12_rms_infinity_f50d13_beamsplitter.stl](models/optics_m12_rms_infinity_f50d13_beamsplitter.stl){previewpage}
+* [optics_m12_rms_infinity_f50d13.stl](models/optics_m12_rms_infinity_f50d13.stl){previewpage}
+* [optics_picamera_2_rms_f50d13_beamsplitter.stl](models/optics_picamera_2_rms_f50d13_beamsplitter.stl){previewpage}
+* [optics_picamera_2_rms_f50d13.stl](models/optics_picamera_2_rms_f50d13.stl){previewpage}
+* [optics_picamera_2_rms_infinity_f50d13_beamsplitter.stl](models/optics_picamera_2_rms_infinity_f50d13_beamsplitter.stl){previewpage}
+* [optics_picamera_2_rms_infinity_f50d13.stl](models/optics_picamera_2_rms_infinity_f50d13.stl){previewpage}
