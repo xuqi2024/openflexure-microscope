@@ -30,7 +30,7 @@ Now you have tested your [printer][RepRap-style printer]{qty:1,cat:tool} and [fi
 * [Pi stand]{output, qty:1}: [pi_stand.stl](models/pi_stand.stl){previewpage}
 * 3 [small gears]{output,qty:3}: [small_gears.stl](models/small_gears.stl){previewpage}
 
-
+You can [download all of the STLs as a single zipfile](low-cost-stls.zip){zip, pattern:"*.stl"}
 
 ## Clean-up of printed parts {pagestep}
 
