@@ -363,7 +363,7 @@ function pi_stand_front_pos() = let(
     x_tr = pi_stand_base_size().x - pi_stand_wall_t()
 ) [x_tr, 0, 0];
 
-function sanga_stand_height(sanga_version) = let(
+function sanga_stand_height(sanga_version="v0.4") = let(
     extra_h = (sanga_version=="v0.4") ? 12.5 : 27
 ) pi_stand_standoff_h() + extra_h;
 
