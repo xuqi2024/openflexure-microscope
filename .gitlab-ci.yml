@@ -236,4 +236,3 @@ zenodo:
       - zenodo-link.html
   only:
     - tags
-    - web
