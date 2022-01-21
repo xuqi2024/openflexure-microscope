@@ -199,12 +199,50 @@ def _get_advanced_options():
     the STL selector.
     """
 
-    nano_sangaboard_doc = {
-        "key": "use_nano_sangaboard",
-        "default": False,
+    sanga_v0_4_doc = {
+        "key": "sanga_v0_4",
+        "title": "Sangaboard v0.4",
+        "description": "Use the Sangaboard v0.4 motor controller",
+    }
+
+    sanga_v0_3_doc = {
+        "key": "sanga_v0_3",
+        "title": "Sangaboard v0.3",
+        "description": "Use the Sangaboard v0.3 motor controller",
+    }
+
+    nano_sanga_doc = {
+        "key": "nano_sanga",
+        "title": "Nano sangaboard",
+        "description": "A sangaboard compatible circuit using an Arduino Nano",
+    }
+
+    sangaboard_doc = {
+        "key": "sanga_version",
+        "default": "sanga_v0_4",
+        "options": [sanga_v0_4_doc, sanga_v0_3_doc, nano_sanga_doc],
         "advanced": True,
-        "description": ("Mount for Sangaboard compatible Arduino Nano circuit. Use if Sangaboard "
-                        "v0.4 is unavailable."),
+        "description": ("Change which motor controller you are using"),
+    }
+
+    pi4_doc = {
+        "key": "pi4",
+        "title": "Raspberry Pi 4",
+        "description": "Use the Raspberry Pi 4",
+    }
+
+    pi3_doc = {
+        "key": "pi3",
+        "title": "Raspberry Pi 3",
+        "description": "Use the Raspberry Pi 3",
+    }
+
+    pi_doc = {
+        "key": "pi_version",
+        "default": "pi4",
+        "options": [pi4_doc, pi3_doc],
+        "advanced": True,
+        "description": ("Change which version of the Raspberry Pi to use"),
     }
 
     slider_riser_doc = {
@@ -249,7 +287,8 @@ def _get_advanced_options():
     }
 
     return [
-        nano_sangaboard_doc,
+        sangaboard_doc,
+        pi_doc,
         slider_riser_doc,
         reflection_illumination_doc,
         actuator_drilling_jig_doc,

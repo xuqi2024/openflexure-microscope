@@ -145,17 +145,34 @@ def generate_stand_with_pi(writer):
             output, "microscope_stand.scad", parameters, select_stl_if=select_stl_if
         )
     # Also generate the tray for the pi itself
-    writer.openscad(
-        "pi_stand.stl",
-        "pi_stand.scad",
-        select_stl_if={"base_type": {"rpi_base", "rpi_base_tall"}}
-    )
+    for pi in [3,4]:
+        for sanga in ["v0.3", "v0.4"]:
+            if (pi==4) and (sanga=="v0.4"):
+                output = "pi_stand.stl"
+            else:
+                output = f"pi_stand-pi{pi}_sanga{sanga}.stl"
+
+            if sanga == "v0.4":
+                sanga_option = {"sanga_v0_4", "nano_sanga"}
+            else:
+                sanga_option = "sanga_v0_3"
+
+            select_stl_if={"base_type": {"rpi_base", "rpi_base_tall"},
+                           "sanga_version": sanga_option,
+                           "pi_version": f"pi{pi}"}
+            parameters = {"PI_VERSION": pi,
+                          "SANGA_VERSION": sanga}
+            writer.openscad(
+                output,
+                "pi_stand.scad",
+                parameters,
+                select_stl_if=select_stl_if
+            )
 
 def nano_converter(writer):
     """Motor driver electronics case"""
-    
 
-    select_stl_if = {"use_nano_sangaboard": True,
+    select_stl_if = {"sanga_version": "nano_sanga",
                      "motorised": True}
 
     writer.openscad(
