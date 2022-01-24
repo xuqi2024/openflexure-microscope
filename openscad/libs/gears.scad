@@ -121,39 +121,34 @@ module large_gear(){
 /**
 * The cut-out in the small gear for the motor shaft
 */
-module motor_shaft_cut_out(h){
-    flat_h=h-3.5;
-    shaft_r=5/2*1.1;
+module motor_shaft_cut_out(h, flat_shaft_w){
+    shaft_d=5.2;
     intersection(){
-        cylinder(r=shaft_r, h=999, center=true);
-        sequential_hull(){
-            translate_z(-tiny()){
-                cube([999,3,tiny()]*1.1,center=true);
-            }
-            translate_z(flat_h){
-                cube([999,3,tiny()]*1.1,center=true);
-            }
-            translate_z(flat_h+2){
-                cube([999,7,tiny()]*1.1,center=true);
-            }
-            translate_z(999){
-                cube([999,7,tiny()]*1.1,center=true);
+        //5.4mm diameter, slightly loose for 5mm shaft.
+        cylinder(d=shaft_d, h=99, center=true);
+        cube([99,flat_shaft_w,99], center=true);
+    }
+    cylinder(d=shaft_d, h=3, center=true);
+    reflect_y(){
+        //Adding 1.25 makes the wall very close to 0.4 mm
+        // Should print as a single filament with a 0.4mm nozzle
+        y_tr = flat_shaft_w/2+1.25;
+        translate_y(y_tr){
+            no2_selftap_hole(h=99, center=true);
+            //counterbore
+            translate_z(h-1.5){
+                cylinder(d=4.5, h=h);
             }
         }
     }
-    //chamfer the top/bottom for better fit
-    translate_z(h){
-        cylinder(r1=shaft_r,r2=shaft_r+2,h=2,center=true);
-    }
-    cylinder(r2=shaft_r,r1=shaft_r+2,h=2,center=true);
 }
 
 /**
 * Small gears that attach onto the 28BYJ-48 stepper motor shaft for motorised actuation
 */
-module small_gear(){
+module small_gear(flat_shaft_w=3.15){
     $fn=small_gear_fn();
-    h=8;
+    h=9.5;
     difference(){
         union(){
             gear(number_of_teeth=n_teeth_small_gear(),
@@ -167,7 +162,7 @@ module small_gear(){
             //Flange on the bottom of the gear improve adhesion during printing
             cylinder(r=small_gear_flange_radius(),h=0.5);
         }
-        motor_shaft_cut_out(h);
+        motor_shaft_cut_out(h, flat_shaft_w=flat_shaft_w);
     }
 }
 
