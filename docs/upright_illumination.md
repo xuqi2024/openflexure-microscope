@@ -9,42 +9,6 @@ In this section we are assembling the sample illumination. This is for transmiss
 [M3 stainless steel washers]: parts/mechanical.yml#Washer_M3_SS
 [2.5mm Ball-end Allen key]: parts/tools/2.5mmBallEndAllenKey.md
 
-[150 Ohm Resistor]: parts/electronics.yml#Resistor_150R
-[Warm white 5mm LED]: parts/electronics.yml#LED_WarmWhite
-[2 pin Du Pont connector female housing]: parts/electronics.yml#DuPont_Housing_1x2
-[Red pre-crimped Female-Female jumper cable (30 cm)]: parts/electronics.yml#JumperCable_FF_300mm_Red
-[Black pre-crimped Female-Female jumper cable (30 cm)]: parts/electronics.yml#JumperCable_FF_300mm_Black
-[Black heatshrink - 4.8mm ID]: parts/electronics.yml#Heatshrink_4.8mm_Black
-[Red heatshrink - 2.4mm ID]: parts/electronics.yml#Heatshrink_2.4mm_Red
-
-## Solder the LED {pagestep}
-
-
-*If you have purchased a kit you may already have an assembled soldered LED cable*
-
-* Tun on your [soldering iron]{cat:tool, qty:1} so it can heat up
-* Take the [LED][Warm white 5mm LED]{qty:1, cat:electronic}
-* Cut the longest leg down to about 5mm long using [precision wire cutters](parts/tools/precision-wire-cutters.md){qty:1, cat:tool}
-* Tin this leg with [solder]{qty: A little, cat:consumable}
-* Take a [150 Ohm Resistor]{qty:1, note:"- The exact value will depend on the current rating of your LED.", cat:electronic} and cut each leg down to about 5mm long
-* Tin both legs with solder
-* Solder one side of the resistor to the cut leg of the LED.
-* Cut the other leg of the LED to be the same height as the end of the resistor.
-* Tin the end of this leg
-* Take the [red][Red pre-crimped Female-Female jumper cable (30 cm)]{qty:1, cat:electronic} and [black][Black pre-crimped Female-Female jumper cable (30 cm)]{qty:1, cat:electronic} precrimped jumper cables and cut off one end with [wire strippers]{qty:1, cat:tool}
-* Strip about 5mm of cable on each, and tin the cable with [wire strippers]{qty:1, cat:tool}
-* Solder the red wire to the leg with the resistor
-* Solder the black wire to the other leg
-* Take the [red heatshrink][Red heatshrink - 2.4mm ID]{qty:35mm, cat:electronic} and slide it over the red cable up to the LED.
-* Use a [heatgun]{qty:1, cat:tool, note: "If you don't have a heatgun the soldering iron can be used"} to shrink the heatshrink
-* Take the [black heatshrink][Black heatshrink - 4.8mm ID]{qty:40mm, cat:electronic} and slide it over both cables up to the LED.
-* Use a [heatgun]{qty:1} to shrink the heatshrink
-
-## Add the connector {pagestep}
-
-* Take the [DuPont housing][2 pin Du Pont connector female housing]{qty:1, cat:electronic}
-* Push both connectors from the LED cable into the connector
-
 ## Push-fit the lens {pagestep}
 
 * Place the [Condenser lens](parts/optics.yml#CondenserLens){qty:1, cat:optical} on the [lens tool][Lens tool](fromstep){qty:1, cat:printedtool} flat side down
@@ -57,7 +21,7 @@ In this section we are assembling the sample illumination. This is for transmiss
 
 ## Push-fit the LED {pagestep}
 
-* Push the LED as far as possible up the hole in the side of mount of the condenser, it should fit securely
+* Push the [LED][LED assembly](fromstep){qty:1, cat:subassembly} as far as possible up the hole in the side of mount of the condenser, it should fit securely
 
 ## Add the condenser mounting screw {pagestep}
 

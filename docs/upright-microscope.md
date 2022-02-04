@@ -12,6 +12,7 @@ The assembly is broken up into several steps:
 
 1. [.](test_your_printer.md){step}
 1. [.](printing.md){step, var_type: upright}
+1. [.](solder_led.md){step}
 1. [.](prepare_main_body.md){step}
 1. [.](prepare_upright_z-axis.md){step}
 1. [.](prepare_stand.md){step}
