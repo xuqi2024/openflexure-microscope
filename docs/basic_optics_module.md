@@ -14,7 +14,7 @@ The imaging optics for this version of the microscope consist of an the Raspberr
 
 Take the [lens spacer][Lens spacer](fromstep){qty:1, cat:printedpart} and confirm that:
 
-* It has been printed in black ([why?](why_optics_black.md))
+* It has been printed in black [i](why_optics_black.md)
 * It is dust free (You can blow air through to clean it)
 * The central shaft is not obstructed by strings of plastic.
 

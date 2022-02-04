@@ -3,23 +3,20 @@
 {{BOM}}
 
 [utility knife]: parts/tools/utility-knife.md
-[precision wire cutters]: parts/tools/precision-wire-cutters.md
+[precision wire cutters]: parts/tools/precision-wire-cutters.md "{cat:tool, note:'Can use a utility knife if these are unavailable.'}"
 [M3 nut]: parts/mechanical.yml#Nut_M3_SS
 [2.5mm Ball-end Allen key]: parts/tools/2.5mmBallEndAllenKey.md
 
 ## Removing brim and supports {pagestep}
 
-The [main body][Main body](fromstep){cat: PrintedPart, qty:1} has some custom supports and a custom brim to remove.
-
-* Outer smart brim - Remove with [utility knife]{qty:1,cat:tool}
-* Inner smart brim - Remove with [utility knife]{qty:1}
-* Ties inside actuator column (6 total) - Remove with [precision wire cutters]{qty:1,cat:tool,note:"Can use a utility knife if these are unavailable."}
-* Ties for rear legs (4 total) - Remove with [precision wire cutters]{qty:1}
-
-These are highlighted in red in the following images.
+The [main body][Main body](fromstep){cat: PrintedPart, qty:1} has some custom supports and a custom brim to remove. These are highlighted in red in the following images.
 
 ![](renders/brim_and_ties1.png)
 ![](renders/brim_and_ties2.png)
+
+* Remove the brim with [utility knife]{qty:1,cat:tool}
+* Cut the ties inside actuator column (6 total) with the [precision wire cutters]{qty:1}
+* Cut the ties for the rear legs (4 total) with the [precision wire cutters]{qty:1}
 
 ## Embed mounting nuts in the stage {pagestep}
 
@@ -44,6 +41,6 @@ These are highlighted in red in the following images.
 ![](renders/prepare_main_body8.png)
 ![](renders/prepare_main_body9.png)
 
-* Repeat the steps used above to add two [M3 nuts][M3 nut]{qty:2, cat:mech} into the platform above the z-axis
+* Repeat the steps used above to add {{var_illum_nuts_words, default:two}} [M3 nuts][M3 nut]{qty:{{var_illum_nuts, default:2}}, cat:mech} into the platform above the z-axis
 
 The [prepared main body]{output, qty:1} is now ready for assembly.

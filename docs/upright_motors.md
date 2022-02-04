@@ -18,7 +18,7 @@
 
 ## Attach the motors {pagestep}
 
-Note that each motor has a cable tidy cap that is different. Which cap to use should be apparent from the shape. Motors should be added to the x and y actuators of the main body and the rectangular z-axis. No motor is required on the z-actuator of the main body for an upright microscope.”
+Note that each motor has a cable tidy cap that is different. Which cap to use should be apparent from the shape. Motors should be added to the x and y actuators of the main body and the seperate z-actuator. No motor is required on the z-actuator of the main body for an upright microscope.”
 
 * Get a [2.5mm Ball-end Allen key]{qty:1, cat:tool} ready
 * Feed the cable from the motor through the rectangular wall in the outer wall by the x-actuator.
@@ -28,6 +28,6 @@ Note that each motor has a cable tidy cap that is different. Which cap to use sh
 * Check that the motor cable is running through the cable tidy rather than pinched underneath.
 * Fasten the motor and cable tidy caps to the motor lugs of the x and y actuators of the main body with two [M4x6mm button head screws]{qty:4, cat:mech}
 * Attach a cable tidy cap to the motor lugs of the z-actuator of the main body with two [M4x6mm button head screws]{qty:2, cat:mech} **NOTE: there is no motor attached to the z-actuator of the main body**
-* Attach a motor to the z-actuator of the rectangular z-axis with two [M4x6mm button head screws]{qty:2, cat:mech} **NOTE: there is no cable tidy cap for the rectangular z-axis**
+* Attach a motor to the z-actuator of the seperate z-actuator with two [M4x6mm button head screws]{qty:2, cat:mech} **NOTE: there is no cable tidy cap for the seperate z-actuator**
 * Repeat for y and z actuators. For the z-actuator use the rectangular slot to the left of the actuator.
 

@@ -8,7 +8,7 @@ Before you start building the microscope you will need to source all the compone
 The assembly is broken up into several steps:
 
 1. [.](test_your_printer.md){step}
-1. [.](low_cost_printing.md){step}
+1. [.](printing.md){step, var_type: low_cost}
 1. [.](prepare_main_body.md){step}
 1. [.](prepare_stand.md){step}
 1. [.](actuator_assembly.md){step}

@@ -17,7 +17,7 @@ The imaging optics for this version of the microscope consist of an RMS objectiv
 
 Take the [optics module][Optics module](fromstep){qty:1, cat:printedpart} and confirm that:
 
-* It has been printed in black ([why?](why_optics_black.md))
+* It has been printed in black [i](why_optics_black.md)
 * It is dust free (You can blow air through to clean it)
 * The central shaft is not obstructed by strings of plastic.
 
