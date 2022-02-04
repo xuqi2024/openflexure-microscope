@@ -13,7 +13,7 @@
 * Use four [M3x10 cap head screws](parts/mechanical.yml#CapScrew_M3x10mm_SS){qty: 4, cat:mech} to fix the microscope in place using the same [Allen key][2.5mm Ball-end Allen key]
 
 ## Mount the optics {pagestep}
-* Take the [compete optics module](fromstep){qty:1, cat:subassembly} and [complete seperate z-actuator](fromstep){qty:1, cat:subassembly} holding each upside down, side by side.
+* Take the [complete optics module](fromstep){qty:1, cat:subassembly} and [complete seperate z-actuator](fromstep){qty:1, cat:subassembly} holding each upside down, side by side.
 * Insert the exposed mounting screw on the optics module through the keyhole on the seperate z-actuator.
 * Insert the [2.5mm Ball-end Allen key]{qty:1, cat:tool, note: " Must be a ball-ended key"}  through the teardrop shaped hole on the back of the seperate z-actuator, until it engages with the mounting screw.
 * Slide optics module up the keyhole until it is **2-3mm** below the flat section of the bottom of the z-axis while keeping the Allen key engaged with the screw. 

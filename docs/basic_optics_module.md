@@ -7,8 +7,8 @@ The imaging optics for this version of the microscope consist of an the Raspberr
 [M3 nut]: parts/mechanical.yml#Nut_M3_SS
 [No 2 6.5mm self tapping screws]: parts/mechanical.yml#SelfTap_PoziPan_No2x6.5_SS
 
-[Raspberry Pi Camera Module v2]: parts/electronics.yml#PiCamera_2
-[Raspberry Pi ribbon cable 30cm]: parts/electronics.yml#PiCamera_RibbonCable_300mm
+[Raspberry Pi Camera Module v2]: parts/electronics.yml#PiCamera_2 "{cat:electronic}"
+[{{var_ribbon_len, default:200mm}} Pi Camera ribbon cable]: parts/electronics.yml#PiCamera_RibbonCable_{{var_ribbon_len, default:200mm}} "{cat:electronic, note: 'This is longer than the standard ribbon cable the Pi Camera is sold with!'}"
 
 ## Visually inspect the lens spacer {pagestep}
 
@@ -25,7 +25,7 @@ Take the [lens spacer][Lens spacer](fromstep){qty:1, cat:printedpart} and confir
 **WARNING!** The camera board is static sensitive.
 
 * Before touching the Pi Camera touch a metal earthed object. If you own one, consider wearing and anti-static strap.
-* Take the [Pi Camera][Raspberry Pi Camera Module v2]{Qty:1, cat:electronic} out of the package. Make sure to **hold it only by the sides of the board**.
+* Take the [Pi Camera][Raspberry Pi Camera Module v2]{Qty:1} out of the package. Make sure to **hold it only by the sides of the board**.
 * Take the protective film off the lens.
 * Take the [Pi Camera lens tool]{qty: 1, cat:tool, note: "This should come with the pi camera"} and place it over the lens
 * Slowly unscrew the lens (About 4 full turns of the tool)
@@ -58,7 +58,7 @@ Take the [lens spacer][Lens spacer](fromstep){qty:1, cat:printedpart} and confir
 
 ## Connect ribbon cable {pagestep}
 
-* Take the [Raspberry Pi ribbon cable]{qty:1, cat:electronic}
+* Take the [{{var_ribbon_len, default:200mm}} Pi Camera ribbon cable]{qty:1, cat:electronic}
 * Pull the catch forward on the exposed Pi Camera connector
 * Insert the ribbon cable with the contacts towards the board
 * Close the catch on the connector
