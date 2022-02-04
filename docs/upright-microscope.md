@@ -20,7 +20,7 @@ The assembly is broken up into several steps:
 1. [.](basic_optics_module.md){step, var_ribbon_len: 300mm}
 1. [.](upright_illumination.md){step}
 1. [.](upright_mount_optics_and_microscope.md){step}
-1. [.](upright_motors.md){step}
+1. [.](motors.md){step, var_type: upright}
 1. [.](attach_clips.md){step}
 1. [.](wiring.md){step}
 

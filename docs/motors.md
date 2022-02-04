@@ -21,11 +21,10 @@
 * Push the gear onto the motor with the flanged side downwards (motor side).
 * Repeat for the other two motors
 
-## Attach the motors {pagestep}
+## Attach the x and y motors {pagestep}
 
 ![](renders/mount_motors1.png)
-![](renders/mount_motors2.png)
-![](renders/mount_motors3.png)
+
 
 Note that each motor has a cable tidy cap that is different. Which cap to use should be apparent from the shape.
 
@@ -36,6 +35,8 @@ Note that each motor has a cable tidy cap that is different. Which cap to use sh
 * Take the x [cable tidy cap][cable tidy caps](fromstep){qty:3, cat:printedpart, note: "- Each cap is a different shape"} and place it over the motor
 * Check that the motor cable is running through the cable tidy rather than pinched underneath.
 * Fasten the motor and cable tidy caps to the motor lugs with two [M4x6mm button head screws]{qty:6, cat:mech}
-* Repeat for y and z actuators. For the z-actuator use the rectangular slot to the left of the actuator.
+* Repeat for y-actuator
 
+{{include: z_motor.md, if: var_type is not upright}}
+{{include: upright_z_motor.md, if: var_type is upright}}
 

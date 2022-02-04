@@ -6,11 +6,7 @@
 [M3 nut]: parts/mechanical.yml#Nut_M3_SS
 [2.5mm Ball-end Allen key]: parts/tools/2.5mmBallEndAllenKey.md
 
-## Mount the microscope {pagestep}
-
-* Place the microscope onto the [microscope stand][prepared microscope stand](fromstep){qty:1, cat:subassembly}.
-* The lugs on the microscope should sit on the lugs of the stand.
-* Use four [M3x10 cap head screws](parts/mechanical.yml#CapScrew_M3x10mm_SS){qty: 4, cat:mech} to fix the microscope in place using the same [Allen key][2.5mm Ball-end Allen key]
+{{include: mount_microscope.md}}
 
 ## Mount the optics {pagestep}
 * Take the [complete optics module](fromstep){qty:1, cat:subassembly} and [complete seperate z-actuator](fromstep){qty:1, cat:subassembly} holding each upside down, side by side.
