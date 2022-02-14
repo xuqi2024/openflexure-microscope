@@ -22,7 +22,9 @@ Take the [lens spacer][Lens spacer](fromstep){qty:1, cat:printedpart} and confir
 
 ## Remove Pi Camera Lens {pagestep}
 
-**WARNING!** The camera board is static sensitive.
+>! **Caution!**
+>!
+>! The camera board is static sensitive.
 
 * Before touching the Pi Camera touch a metal earthed object. If you own one, consider wearing and anti-static strap.
 * Take the [Pi Camera][Raspberry Pi Camera Module v2]{Qty:1} out of the package. Make sure to **hold it only by the sides of the board**.
