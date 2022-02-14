@@ -15,6 +15,6 @@ lens_spacer_stl();
 
 module lens_spacer_stl(){
     params = default_params();
-    opitcs_config = pilens_config();
-    lens_spacer(params, opitcs_config);
+    optics_config = pilens_config();
+    lens_spacer(params, optics_config);
 }

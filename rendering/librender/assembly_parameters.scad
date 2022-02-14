@@ -5,6 +5,7 @@ use <../../openscad/libs/z_axis.scad>
 use <../../openscad/libs/illumination.scad>
 use <../../openscad/libs/main_body_structure.scad>
 use <../../openscad/libs/lib_microscope_stand.scad>
+use <../../openscad/libs/lib_optics.scad>
 use <../../openscad/libs/wall.scad>
 use <render_utils.scad>
 
@@ -128,21 +129,43 @@ function picamera_cover_pos(ex_dist=0) =  let(
     rotation = [0, 0, -90]
 ) create_placement_dict(tr, rotation);
 
-function default_ribbon_pos() = [create_placement_dict([17, -17, -18.75], [0, 0, 135], [0, 180, 0]),
-                                 create_placement_dict([21, -21, -17], [0, 0, 135], [0, 180, 0]),
-                                 create_placement_dict([22, -22, -15], [0, 0, 135], [0, 180, 0]),
-                                 create_placement_dict([50, -50, 100], [0, 0, 135], [0, 180, 0])];
+function default_ribbon_pos(low_cost=false, params=undef, optics_config=undef) = let(
+    z_start = low_cost ? lens_spacer_z(params, optics_config) +18.75 : 0
+) [create_placement_dict([17, -17, -18.75+z_start], [0, 0, 135], [0, 180, 0]),
+   create_placement_dict([21, -21, -17+z_start], [0, 0, 135], [0, 180, 0]),
+   create_placement_dict([22, -22, -15+z_start], [0, 0, 135], [0, 180, 0]),
+   create_placement_dict([50, -50, 100+z_start], [0, 0, 135], [0, 180, 0])];
 
-function curled_ribbon_pos() = [create_placement_dict([17, -17, -18.75], [0, 0, 135], [0, 180, 0]),
-                                 create_placement_dict([21, -21, -20], [0, 0, 135], [0, 180, 0]),
-                                 create_placement_dict([22, -22, -22], [0, 0, 135], [0, 180, 0]),
-                                 create_placement_dict([19, -19, -50], [0, 0, 135]),
-                                 create_placement_dict([17, -17, -52], [0, 0, 135]),
-                                 create_placement_dict([-10, 10, -53], [0, 0, 135])];
+function curled_ribbon_pos(low_cost=false, params=undef, optics_config=undef) = let(
+    z_start = low_cost ? lens_spacer_z(params, optics_config) +18.75 : 0
+) [create_placement_dict([17, -17, -18.75], [0, 0, 135], [0, 180, 0]),
+   create_placement_dict([21, -21, -20], [0, 0, 135], [0, 180, 0]),
+   create_placement_dict([22, -22, -22], [0, 0, 135], [0, 180, 0]),
+   create_placement_dict([19, -19, -50], [0, 0, 135]),
+   create_placement_dict([17, -17, -52], [0, 0, 135]),
+   create_placement_dict([-10, 10, -53], [0, 0, 135])];
 
 function optics_module_nut_pos() = create_placement_dict(optics_module_mount_pos() - [0, 3.25, 1], [90, 0, 0], [0, 0, 30]);
 function optics_module_screw_pos() = create_placement_dict(optics_module_mount_pos() - [0, 0, 1], [-90, 0, 0], [0, 0, 30]);
 function optics_module_allen_key_pos() = create_placement_dict(optics_module_mount_pos() + [0, 2, -1], [0, 0, 25]);
+
+function pi_lens_z_pos(params, optics_config) = let(
+    lens_spacer_z = lens_spacer_z(params, optics_config),
+    lens_spacing = key_lookup("lens_spacing", optics_config)
+) lens_spacer_z + lens_spacing + 5;
+function lens_spacer_pos() = create_placement_dict([0, 0, 0]);
+function lens_spacer_pos_above_tool(params, optics_config) = let(
+    z_tr = pi_lens_z_pos(params, optics_config)+30
+) create_placement_dict([0, 0, z_tr], [0, 180, 0], [0, 0, 180]);
+function lens_spacer_pos_on_tool(params, optics_config) = let(
+    z_tr = pi_lens_z_pos(params, optics_config)
+) create_placement_dict([0, 0, z_tr], [0, 180, 0], [0, 0, 180]);
+
+function camera_platform_nut_pos() = create_placement_dict(optics_module_mount_pos() - [0, 3.25, 4], [90, 0, 0], [0, 0, 30]);
+function camera_platform_screw_pos() = create_placement_dict(optics_module_mount_pos() - [0, 0, 4], [-90, 0, 0], [0, 0, 30]);
+function camera_platform_allen_key_pos() = create_placement_dict(optics_module_mount_pos() + [0, 2, -1], [0, 0, 25]);
+
+
 function condenser_z() = illumination_dovetail_z(PARAMS) + 65;
 function condenser_angle() = key_lookup("condenser_angle", PARAMS);
 function condenser_pos() = create_placement_dict([0, 0, condenser_z()],
