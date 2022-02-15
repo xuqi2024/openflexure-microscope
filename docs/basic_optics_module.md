@@ -40,9 +40,11 @@ Take the [lens spacer][Lens spacer](fromstep){qty:1, cat:printedpart} and confir
 
 ## Push-fit the lens
 
-* Work out which side of the lens used to be facing the camera sensor (This is the side with more lens visible)
-* Place the lens over on the top of the lens spacer, with the side that was next to the camera sensor on top
-* Push the lens into the lens spacer with pressure on the very edge of the lens.
+* Work out which side of the pi camera lens used to be facing the camera sensor (This is the side with more lens visible).
+* Place the pi camera lens on a clean surface with the side that was next to the camera sensor on the bottom.
+* Push the lens spacer down onto the lens until it clicks into place.
+
+![](renders/low_cost_optics_assembly_pi_lens.png)
 
 ## Attach the Pi Camera {pagestep}
 
@@ -51,12 +53,15 @@ Take the [lens spacer][Lens spacer](fromstep){qty:1, cat:printedpart} and confir
 * Use four [No 2 6.5mm self tapping screws]{qty:4, cat:mech} to secure the three parts together using a [#1 pozidrive screwdriver]{qty:1, cat:tool}
 * Take care to not over torque the screws.
 
+![](renders/low_cost_optics_assembly_camera.png)
+
 ## Attach the mounting screw {pagestep}
 
 * Take an [M3 nut]{qty:1, cat:mech} and push it into the nut trap from the top
 * Take an [M3x10 cap head screws](parts/mechanical.yml#CapScrew_M3x10mm_SS){qty: 1, cat:mech} and screw it into the nut.
 * Only screw it in a couple of turns. About 5 mm of thread should still be visible
 
+![](renders/low_cost_optics_assembly_screw.png)
 
 ## Connect ribbon cable {pagestep}
 
@@ -65,7 +70,8 @@ Take the [lens spacer][Lens spacer](fromstep){qty:1, cat:printedpart} and confir
 * Insert the ribbon cable with the contacts towards the board
 * Close the catch on the connector
 
-## Set the complete module aside {pagestep}
+
+![](renders/low_cost_optics_assembly_ribbon.png)
 
 Set the [complete optics module]{output, qty:1} aside in a safe place.
 

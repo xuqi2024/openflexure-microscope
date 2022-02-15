@@ -222,7 +222,7 @@ module rendered_low_cost_optics(pos,
             camera_platform_and_screws(lens_spacer_z, exploded, connector_open=connector_open);
         }
         if (ribbon_cable){
-            ribbon_start = create_placement_dict([0, 0, lens_spacer_z], [0, 0, 135], [0, 180, 0], init_translation=[15, 0, 0]);
+            ribbon_start = create_placement_dict([0, 0, lens_spacer_z-1.25], [0, 0, 135], [0, 180, 0], init_translation=[15, 0, 0]);
             positions = concat([ribbon_start], ribbon_pos);
             exploded = (explode == "ribbon_cable") ? true : false;
             ribbon_tr = exploded ? [15, -15, 0] : [0, 0, 0];

@@ -80,6 +80,64 @@ def register_rms_optics_assembly(rendersystem):
         "rendering/annotations/annotate_optics_assembly_tube_lens.svg"
     )
 
+def register_low_cost_optics_assembly(rendersystem):
+    input_file = "rendering/low_cost_optics_assembly.scad"
+    cameras = []
+    imgsizes = []
+    scad_lines = []
+    output_files = []
+
+    for frame in [1, 2, 3]:
+        cameras.append(Camera(position=[29, 0, 59], angle=[69, 0, 90], distance=290))
+        imgsizes.append([1000, 2000])
+        output_files.append(f"rendering/annotations/low_cost_optics_assembly_tube_lens{frame}.png")
+        scad_lines.append(f"render_low_cost_assembly({frame});")
+
+    camera_png_files = []
+    for frame in [1, 2]:
+        cameras.append(Camera(position=[-5, 7, 25], angle=[71, 0, 98], distance=292))
+        imgsizes.append([1200, 2000])
+        output_files.append(f"docs/renders/low_cost_optics_assembly_camera{frame}.png")
+        camera_png_files.append(output_files[-1])
+        scad_lines.append(f"render_low_cost_assembly({frame+3});")
+
+    screw_png_files = []
+    for frame in [1, 2, 3]:
+        cameras.append(Camera(position=[-11, 19, 33], angle=[71, 0, 106], distance=192))
+        imgsizes.append([1000, 2000])
+        output_files.append(f"docs/renders/low_cost_optics_assembly_screw{frame}.png")
+        screw_png_files.append(output_files[-1])
+        scad_lines.append(f"render_low_cost_assembly({frame+5});")
+
+    ribbon_png_files = []
+    for frame in [1, 2, 3]:
+        cameras.append(Camera(position=[-7, -7, 40.5], angle=[54, 0, 90], distance=237))
+        imgsizes.append([1200, 2000])
+        output_files.append(f"docs/renders/low_cost_optics_assembly_ribbon{frame}.png")
+        ribbon_png_files.append(output_files[-1])
+        scad_lines.append(f"render_low_cost_assembly({frame+8});")
+
+    for i, output_file in enumerate(output_files):
+        render = ScadRender(output_file, input_file, scad_lines[i], imgsizes[i], cameras[i])
+        rendersystem.register_scad_render(render)
+
+    rendersystem.register_imagemagick_sequence(
+        "docs/renders/low_cost_optics_assembly_camera.png",
+        camera_png_files
+    )
+    rendersystem.register_imagemagick_sequence(
+        "docs/renders/low_cost_optics_assembly_screw.png",
+        screw_png_files
+    )
+    rendersystem.register_imagemagick_sequence(
+        "docs/renders/low_cost_optics_assembly_ribbon.png",
+        ribbon_png_files
+    )
+    rendersystem.register_inkscape_annotation(
+        "docs/renders/low_cost_optics_assembly_pi_lens.png",
+        "rendering/annotations/annotate_optics_assembly_pi_lens.svg"
+    )
+
 def register_condenser_assembly(rendersystem):
     input_file = "rendering/condenser_assembly.scad"
     camera = Camera(position=[29, 0, 59], angle=[69, 0, 90], distance=290)
@@ -297,6 +355,7 @@ def main():
     rendersystem.register_render_stl('rendering/librender/rendered_main_body.scad')
     #Register all openscad renders (and associated post processing)
     register_rms_optics_assembly(rendersystem)
+    register_low_cost_optics_assembly(rendersystem)
     register_condenser_assembly(rendersystem)
     register_optics_assembled(rendersystem)
     register_band(rendersystem)
