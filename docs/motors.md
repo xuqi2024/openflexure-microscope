@@ -23,7 +23,7 @@
 
 ## Attach the x and y motors {pagestep}
 
-![](renders/mount_motors1.png)
+![](renders/mount_motors_{{var_optics, default:rms}}1.png)
 
 
 Note that each motor has a cable tidy cap that is different. Which cap to use should be apparent from the shape.

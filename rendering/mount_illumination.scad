@@ -8,21 +8,22 @@ use <mount_microscope.scad>
 use <condenser_assembly.scad>
 
 FRAME = 5;
-mount_illumination(FRAME);
+LOW_COST = false;
+mount_illumination(FRAME, LOW_COST);
 
-module mount_illumination(frame){
+module mount_illumination(frame, low_cost=false){
     
     if (frame == 1){
         mounted_microscope_frame(){
             rendered_illumination_dovetail_assembly(exploded=true);
         }
-        mounted_microscope();
+        mounted_microscope(low_cost=low_cost);
     }
     else if (frame == 2){
         mounted_microscope_frame(){
             rendered_illumination_dovetail_assembly();
         }
-        mounted_microscope();
+        mounted_microscope(low_cost=low_cost);
     }
     else if (frame == 3){
         mounted_microscope_frame(){
@@ -33,7 +34,7 @@ module mount_illumination(frame){
         line_pos1 = translate_pos(condenser_pos_exp(), line_offset);
         line_pos2 = translate_pos(condenser_pos(), line_offset);
         construction_line(line_pos1, line_pos2, .4);
-        mounted_microscope();
+        mounted_microscope(low_cost=low_cost);
     }
     else if (frame == 4){
         mounted_microscope_frame(){
@@ -41,19 +42,19 @@ module mount_illumination(frame){
             rendered_condenser_assembly(include_led=false,
                                         tighten_arrow=true);
         }
-        mounted_microscope();
+        mounted_microscope(low_cost=low_cost);
     }
     else if (frame == 5){
-        mounted_microscope_with_illumination();
+        mounted_microscope_with_illumination(low_cost=low_cost);
     }
 }
 
-module mounted_microscope_with_illumination(){
+module mounted_microscope_with_illumination(low_cost=false){
     mounted_microscope_frame(){
         rendered_illumination_dovetail_assembly();
         rendered_condenser_assembly(include_led=false);
     }
-    mounted_microscope();
+    mounted_microscope(low_cost=low_cost);
 }
 
 module rendered_illumination_dovetail_assembly(exploded=false){

@@ -17,22 +17,27 @@ use <mount_microscope.scad>
 use <motor_assembly.scad>
 
 FRAME=3;
-render_mount_motors(FRAME);
+LOW_COST = false;
+render_mount_motors(FRAME, LOW_COST);
 
-module render_mount_motors(frame){
+module render_mount_motors(frame, low_cost=false){
     if (frame == 1){
-        assembled_microscope_without_electronics(xy_motor=true, z_motor=false, explode="xy");
+        assembled_microscope_without_electronics(low_cost=low_cost,
+                                                 xy_motor=true,
+                                                 z_motor=false,
+                                                 explode="xy");
     }
     else if(frame == 2){
-        assembled_microscope_without_electronics(explode="z");
+        assembled_microscope_without_electronics(low_cost=low_cost, explode="z");
     }
     else if(frame == 3){
-        assembled_microscope_without_electronics();
+        assembled_microscope_without_electronics(low_cost=low_cost);
     }
 }
 
 
-module assembled_microscope_without_electronics(xy_motor=true,
+module assembled_microscope_without_electronics(low_cost=false,
+                                                xy_motor=true,
                                                 z_motor=true,
                                                 explode=undef,
                                                 connector_positions=[undef, undef, undef],
@@ -63,7 +68,7 @@ module assembled_microscope_without_electronics(xy_motor=true,
                             cable_pos=cable_positions.z);
         }
     }
-    mounted_microscope_with_illumination();
+    mounted_microscope_with_illumination(low_cost=low_cost);
 }
 
 module y_motor_and_cap(params, exploded=false, connector_pos=undef, cable_pos=undef, mirror_connector=false){

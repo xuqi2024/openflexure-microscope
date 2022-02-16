@@ -10,10 +10,10 @@ use <./librender/render_settings.scad>
 use <./librender/hardware.scad>
 use <mount_motors.scad>
 
-microscope_stand_rendered();
+LOW_COST = false;
+microscope_stand_rendered(low_cost=LOW_COST);
 
-
-module microscope_stand_rendered(use_nano=false){
+module microscope_stand_rendered(low_cost=false, use_nano=false){
     params = render_params();
     
     slide = true;
@@ -48,7 +48,9 @@ module microscope_stand_rendered(use_nano=false){
 
     cable_positions = [y_cable_verticies(slide), y_cable_verticies(slide), z_cable_verticies(slide)];
 
-    assembled_microscope_without_electronics(connector_positions=con_pos, cable_positions=cable_positions);
+    assembled_microscope_without_electronics(low_cost=low_cost,
+                                             connector_positions=con_pos,
+                                             cable_positions=cable_positions);
 }
 
 

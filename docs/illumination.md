@@ -11,8 +11,8 @@ In this section we are assembling the sample illumination. This is for transmiss
 
 ## Mount the dovetail {pagestep}
 
-![](renders/mount_illumination1.png)
-![](renders/mount_illumination2.png)
+![](renders/mount_illumination_{{var_optics, default:rms}}1.png)
+![](renders/mount_illumination_{{var_optics, default:rms}}2.png)
 
 
 * Place the [illumination dovetail][Illumination dovetail](fromstep){qty:1, cat:printedpart} onto the stage above the z-actuator of the main body.
@@ -44,9 +44,9 @@ In this section we are assembling the sample illumination. This is for transmiss
 
 ## Mount the condenser arm {pagestep}
 
-![](renders/mount_illumination3.png)
-![](renders/mount_illumination4.png)
-![](renders/mount_illumination5.png)
+![](renders/mount_illumination_{{var_optics, default:rms}}3.png)
+![](renders/mount_illumination_{{var_optics, default:rms}}4.png)
+![](renders/mount_illumination_{{var_optics, default:rms}}5.png)
 
 * Slide the condenser arm into the illumination dovetail until it is approximately flush with the top
 * Tighten the thumbscrew by hand to lock the arm in place.
