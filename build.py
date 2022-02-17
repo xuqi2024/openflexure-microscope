@@ -302,6 +302,14 @@ def generate_upright_microscope_parts(writer):
         "upright_condenser.scad",
     )
     writer.openscad(
+        "upright_large_gears.stl",
+        "upright_large_gears.scad",
+    )
+    writer.openscad(
+        "upright_feet.stl",
+        "upright_feet.scad",
+    )
+    writer.openscad(
         "upright_z_actuator_mount.stl",
         "upright_z_actuator_mount.scad",
     )

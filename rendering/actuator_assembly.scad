@@ -2,7 +2,7 @@
 use <../openscad/libs/gears.scad>
 use <../openscad/libs/utilities.scad>
 use <../openscad/libs/lib_actuator_assembly_tools.scad>
-use <../openscad/feet.scad>
+use <../openscad/libs/libfeet.scad>
 use <librender/hardware.scad>
 use <librender/tools.scad>
 use <librender/render_utils.scad>

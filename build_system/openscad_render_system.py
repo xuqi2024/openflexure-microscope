@@ -136,12 +136,16 @@ class RenderSystem():
                 capture_output=True
             )
         for outfile, svg_file in self._inkscape_annotations:
-            subprocess.run(
-                ["inkscape", "--without-gui", f"--export-png={outfile}", svg_file],
-                check=True,
-                capture_output=True
-            )
-
+            #Note that inkscape does not return sensible error codes. Delete file and check if
+            # new file is created
+            if os.path.exists(outfile):
+                os.remove(outfile)
+            command = ["inkscape", "--without-gui", f"--export-png={outfile}", svg_file]
+            ret = subprocess.run(command, check=True, capture_output=True)
+            if not os.path.exists(outfile):
+                std_err = ret.stderr.decode('UTF-8')
+                print(std_err)
+                raise RuntimeError('Inkscape did not create expected png')
 
     def _run_openscad(self):
         """

@@ -10,7 +10,7 @@ use <../openscad/libs/compact_nut_seat.scad>
 use <../openscad/libs/utilities.scad>
 use <../openscad/libs/lib_actuator_assembly_tools.scad>
 use <../openscad/libs/microscope_parameters.scad>
-use <../openscad/feet.scad>
+use <../openscad/libs/libfeet.scad>
 use <../openscad/libs/gears.scad>
 use <../openscad/libs/main_body_structure.scad>
 use <../openscad/libs/libdict.scad>

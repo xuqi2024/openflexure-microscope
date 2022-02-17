@@ -24,5 +24,5 @@
 
 Repeat the above process for the other three mounting lugs
 
-The [prepared microscope stand]{output, qty:1} is now ready for assembly.
+[prepared microscope stand]{output, qty:1, hidden}
 
