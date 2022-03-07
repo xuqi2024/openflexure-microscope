@@ -72,7 +72,5 @@ making-instructions:
 software:
   - path: https://gitlab.com/openflexure/openflexure-microscope-server
     title: openflexure-microscope-server
-  - path: https://gitlab.com/openflexure/openflexure-microscope-jsclient
-    title: openflexure-ev 
 
-image: https://openflexure.org/assets/MicroscopeAnnotated.png
+image: https://openflexure.org/assets/ofm-photos/ofm_6.1.5_wide.jpg
