@@ -327,14 +327,16 @@ def add_extra_stls_to_writer(writer):
     """
     Instruct ninja to also copy external STL files into the output directory
     """
-
+    mounts_dir = 'dashcam_and_webcam_mounts'
     for camera in ["6ledcam", "dashcam"]:
 
         select_mount_top = {"camera": camera, "objective_type": "cam_lens"}
-        writer.copy_stl(f"{camera}_mount_top.stl", select_stl_if=select_mount_top)
+        stl_file = os.path.join(mounts_dir, f"{camera}_mount_top.stl")
+        writer.copy_stl(stl_file, select_stl_if=select_mount_top)
 
     select_mount_bottom = {"camera": {"dashcam", "6ledcam"}, "objective_type": "cam_lens"}
-    writer.copy_stl("dashcam_and_6ledcam_mount_bottom.stl", select_stl_if=select_mount_bottom)
+    stl_file = os.path.join(mounts_dir, "dashcam_and_6ledcam_mount_bottom.stl")
+    writer.copy_stl(stl_file, select_stl_if=select_mount_bottom)
 
 
 def write_ninja_file(extra_files, generate_json):
