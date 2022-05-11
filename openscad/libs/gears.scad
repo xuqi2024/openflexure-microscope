@@ -117,11 +117,19 @@ module large_gear(){
     }
 }
 
+function small_gear_height() = 9.5;
+function small_gear_screw_hole(flat_shaft_w=3.15) = let(
+    //Adding 1.25 makes the wall very close to 0.4 mm
+    // Should print as a single filament with a 0.4mm nozzle
+    y=flat_shaft_w/2+1.25,
+    z=small_gear_height()-1.5
+) [0, y, z];
+
 
 /**
 * The cut-out in the small gear for the motor shaft
 */
-module motor_shaft_cut_out(h, flat_shaft_w){
+module motor_shaft_cut_out(flat_shaft_w){
     shaft_d=5.2;
     intersection(){
         //5.4mm diameter, slightly loose for 5mm shaft.
@@ -130,14 +138,12 @@ module motor_shaft_cut_out(h, flat_shaft_w){
     }
     cylinder(d=shaft_d, h=3, center=true);
     reflect_y(){
-        //Adding 1.25 makes the wall very close to 0.4 mm
-        // Should print as a single filament with a 0.4mm nozzle
-        y_tr = flat_shaft_w/2+1.25;
-        translate_y(y_tr){
+        screw_pos = small_gear_screw_hole(flat_shaft_w);
+        translate_y(screw_pos.y){
             no2_selftap_hole(h=99, center=true);
             //counterbore
-            translate_z(h-1.5){
-                cylinder(d=4.5, h=h);
+            translate_z(screw_pos.z){
+                cylinder(d=4.5, h=99);
             }
         }
     }
@@ -148,7 +154,7 @@ module motor_shaft_cut_out(h, flat_shaft_w){
 */
 module small_gear(flat_shaft_w=3.15){
     $fn=small_gear_fn();
-    h=9.5;
+    h=small_gear_height();
     difference(){
         union(){
             gear(number_of_teeth=n_teeth_small_gear(),
@@ -162,7 +168,7 @@ module small_gear(flat_shaft_w=3.15){
             //Flange on the bottom of the gear improve adhesion during printing
             cylinder(r=small_gear_flange_radius(),h=0.5);
         }
-        motor_shaft_cut_out(h, flat_shaft_w=flat_shaft_w);
+        motor_shaft_cut_out(flat_shaft_w=flat_shaft_w);
     }
 }
 

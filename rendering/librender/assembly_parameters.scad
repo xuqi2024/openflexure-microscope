@@ -7,6 +7,7 @@ use <../../openscad/libs/main_body_structure.scad>
 use <../../openscad/libs/lib_microscope_stand.scad>
 use <../../openscad/libs/lib_optics.scad>
 use <../../openscad/libs/wall.scad>
+use <../../openscad/libs/gears.scad>
 use <render_utils.scad>
 
 function render_params() =  let(
@@ -206,6 +207,9 @@ function illum_dovetail_washer_pos_exp(params, right=true) = translate_pos(illum
 
 function small_gear_pos() = create_placement_dict([0, 0, -2], [180, 0, 0], [0, 0, 15]);
 function small_gear_pos_exp() = translate_pos(small_gear_pos(), [0, 0, -20]);
+
+function small_gear_screw_pos() = create_placement_dict(small_gear_screw_hole());
+function small_gear_screw_pos_exp() = translate_pos(small_gear_screw_pos(), [0, 0, 20]);
 
 function motor_screw_pos() = [0.5*motor_screw_separation(), 12, 2.5];
 

@@ -4,6 +4,7 @@ use <librender/electronics.scad>
 use <librender/render_utils.scad>
 use <librender/render_settings.scad>
 use <librender/assembly_parameters.scad>
+use <./librender/hardware.scad>
 
 
 FRAME=1;
@@ -31,6 +32,18 @@ module motor_with_gear(motor_pos=[0, 0, 0], connector_pos=undef, wire_points=[],
             coloured_render(extras_colour()){
                 small_gear();
             }
+            screw_pos =  exploded ?
+                small_gear_screw_pos_exp() :
+                small_gear_screw_pos();
+            reflect_y(){
+                if (exploded){
+                    construction_line(small_gear_screw_pos_exp(), small_gear_screw_pos());
+                }
+                place_part(screw_pos){
+                    no2_x6_5_selftap();
+                }
+            }
+            
         }
     }
 }
