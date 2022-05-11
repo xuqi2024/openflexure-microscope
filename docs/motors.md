@@ -6,6 +6,7 @@
 [M4x6mm button head screws]: parts/mechanical.yml#ButtonScrew_M4x6mm_SS
 [28BYJ-48 micro geared stepper motors]: parts/electronics.yml#28BYJ-48
 [2.5mm Ball-end Allen key]: parts/tools/2.5mmBallEndAllenKey.md
+[No 2 6.5mm self tapping screws]: parts/mechanical.yml#SelfTap_PoziPan_No2x6.5_SS
 
 ## Attach the small gears {pagestep}
 
@@ -16,9 +17,9 @@
 
 * Take a [stepper motor][28BYJ-48 micro geared stepper motors]{qty:3, cat:electronic} and a [small gear][small gears](fromstep){qty:3, cat:printedpart}
 * Place the motor on the work surface with the shaft pointing up
-* Apply a small drop of [threadlock adhesive]{qty: 6 drops, cat:consumable} to each side of the motor shaft near the top
 * Align the flat sides of the motor shaft with the flat sides of the hole in the gear.
 * Push the gear onto the motor with the flanged side downwards (motor side).
+* Take two [self tapping screws][No 2 6.5mm self tapping screws]{qty: 6, cat:mech} and drive them fully into the holes on either side of the shaft. [#1 pozidrive screwdriver]{qty:1, cat:tool}
 * Repeat for the other two motors
 
 ## Attach the x and y motors {pagestep}
