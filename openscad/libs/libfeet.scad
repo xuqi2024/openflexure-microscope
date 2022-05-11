@@ -22,7 +22,6 @@ use <./utilities.scad>
 use <./libdict.scad>
 use <./compact_nut_seat.scad>
 
-$fn=16;
 module foot_ground_plane(tilt=0, top=0, bottom=-999){
     //This represents where the ground would be, given that the
     //foot is usually printed tilted, pivoting around it's +y edge
@@ -159,7 +158,7 @@ module foot_section(foot_angle=0,    //the angle the actuator column makes with 
 }
 
 module foot_letter(letter="", actuator_tilt=0, h=10, base_cleareance=2){
-    //To add a letrer to the side of the foot.
+    //To add a letter to the side of the foot.
     //For letters that got below the line, base clearance may need increasing
 
     //Calculate the y and z position in the tilted frame
@@ -192,6 +191,7 @@ module foot(params,
             actuator_tilt=0,// the angle of the top of the foot
             lie_flat=true,
             letter=""){
+    $fn=32;
     // The feet sit at the bottoms of the actuator columns.  Their main
     // function is to anchor the Viton bands and provide downward force.
 
