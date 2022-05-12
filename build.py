@@ -86,7 +86,7 @@ def write_ninja_file(build_dir):
         writer.openscad("led_array_holder.stl", "led_array_holder.scad")
 
         # Upright microscope components
-        writer.openscad("seperate_z_actuator.stl", "seperate_z_actuator.scad")
+        writer.openscad("separate_z_actuator.stl", "separate_z_actuator.scad")
         writer.openscad("upright_condenser.stl", "upright_condenser.scad")
         writer.openscad("upright_large_gears.stl", "upright_large_gears.scad")
         writer.openscad("upright_feet.stl", "upright_feet.scad")
