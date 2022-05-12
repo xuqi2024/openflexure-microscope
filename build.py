@@ -17,6 +17,8 @@ from ninja import BIN_DIR
 from build_system.microscope_build_writer import MicroscopeBuildWriter
 from build_system.util import version_string
 
+BUILD_DIR = "docs/models"
+
 #Some constants used in generating lists of parts
 
 CAMERAS = ["picamera_2", "m12"]
@@ -151,7 +153,7 @@ def copy_extra_stls(build_dir, extras_dir):
     """
     Copy extra STLs to output directory
     """
-    
+
     for root, dirs, files in os.walk(extras_dir):
         hidden_dirs = [subdir for subdir in dirs if subdir.startswith('.')]
         for hidden_dir in hidden_dirs:
@@ -184,10 +186,9 @@ if __name__ == "__main__":
     # we get the flags above and will pass the rest to ninja
     args, ninja_args = parser.parse_known_args()
 
-    build_dir = "docs/models"
-    write_ninja_file(build_dir)
+    write_ninja_file(BUILD_DIR)
     # Include extra STL files
     if args.include_extra_files:
-        copy_extra_stls(build_dir, extras_dir = 'openflexure-microscope-extra')
+        copy_extra_stls(BUILD_DIR, extras_dir = 'openflexure-microscope-extra')
     # Run the "ninja.build" file we just created, to generate STLs
     subprocess.run([os.path.join(BIN_DIR, "ninja")] + ninja_args, check=True)
