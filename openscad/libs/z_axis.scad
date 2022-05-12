@@ -26,67 +26,89 @@ use <./utilities.scad>
 use <./compact_nut_seat.scad>
 use <./wall.scad>
 use <./gears.scad>
+use <./fitting_wedge.scad>
 use <./illumination.scad>
 use <./microscope_parameters.scad>
 use <./libdict.scad>
 
-module each_om_contact_plane(){
-    // This transform puts y=0 in the plane of contact between the
-    // optics module and the mount for it, with the origin at the
-    // nominal corner of the wedge.
-    reflect_x(){
-        translate([-objective_mount_nose_w()/2,objective_mount_y(),0]){
-            rotate(135){
-                children();
+
+module objective_mount_internal_wedge_2d(){
+    // The fitting wedge with a negative nose shift for clearance.
+
+    projection(){
+        objective_fitting_wedge(h=tiny(), nose_shift=-0.25);
+    }
+}
+
+module objective_mount_body(params, h){
+
+    // overlap set the contact between the mount and the wedge on
+    // the optics module.
+    overlap = 4;
+    //overall width
+    w = objective_mount_nose_w() + 2*overlap + 4;
+
+    fillet_r = 1;
+    mount_front = objective_mount_y() - overlap*cos(45) - fillet_r;
+    mount_size = [w, objective_mount_back_y()-mount_front+5];
+
+    linear_extrude(h){
+        // Fillet outer corners
+        convex_fillet(1){
+            difference(){
+                // Outer cross section is a square intersected with
+                // the cutout in the centre of the microscope with
+                // 1.2mm clearance
+                intersection(){
+                    translate([-w/2, mount_front, 0]){
+                        square(mount_size);
+                    }
+                    offset(-1.2){
+                        central_optics_cut_out_projection(params);
+                    }
+                }
+                //subtracte grove for wedge
+                objective_mount_internal_wedge_2d();
+            }
+        }
+    }
+}
+
+module objective_mount_chamfer(){
+    hull(){
+        translate_z(-tiny()){
+            linear_extrude(tiny()){
+                offset(1){
+                    objective_mount_internal_wedge_2d();
+                }
+            }
+        }
+        translate_z(1){
+            linear_extrude(tiny()){
+                objective_mount_internal_wedge_2d();
             }
         }
     }
 }
 
 module objective_mount(params){
+    $fn=16;
     // The fitting to which the optics module is attached
     h = upper_z_flex_z(params) + 4*sqrt(2);
-    overlap = 4; // we have this much contact between
-                 // the mount and the wedge on the optics module.
-    roc=1.5; // radius of curvature of the arms
-    w = objective_mount_nose_w() + 2*overlap + 4; //overall width
 
     difference(){
-        hull(){
-            // the back of the mount
-            translate([-w/2,objective_mount_back_y()+5,0]){
-                cube([w,tiny(),h]);
-            }
-            // the front of the mount (this makes contact with the optics module)
-            each_om_contact_plane(){
-                translate_y(overlap-tiny()){
-                    cube([2*roc,tiny(),h]);
-                }
-            }
-        }
+        objective_mount_body(params, h);
 
-        // bolt slot to mount objective
-        hull(){
-            translate_z(lower_z_flex_z()+8){
-                rotate_x(-90){
-                    cylinder(d=3.5, h=999);
-                }
-            }
-            translate_z(upper_z_flex_z(params)-5){
-                rotate_x(-90){
-                    cylinder(d=3.5, h=999);
-                }
-            }
-        }
-        // make the bolt slot keyhole-shaped to allow the screw to be easily inserted
-        translate_z(lower_z_flex_z()+6){
+        objective_mount_chamfer();
+
+        // Keyhole
+        slot_bottom = lower_z_flex_z() + 6;
+        slot_length = upper_z_flex_z(params) - 5 - slot_bottom;
+        translate_z(slot_bottom){
             rotate_x(-90){
-                cylinder(d=6.5, h=999);
+                keyhole(h=99, r_hole=6.5/2, r_slot=3.5/2, l_slot=-slot_length);
             }
         }
-
-
-        objective_fitting_wedge(params, h=999,nose_shift=-0.25,center=true);
 
         // cut-outs for flexures to attach
         hull(){
@@ -97,20 +119,6 @@ module objective_mount(params){
             }
         }
 
-        // cut out the back so it fits in the available space
-        reflect_x(){
-            translate([-back_lug_x_pos(params),0,-99]){
-                rotate(45){
-                    cube(999);
-                }
-            }
-        }
-    }
-    // Nice rounded fronts either side
-    each_om_contact_plane(){
-        translate([roc,overlap,0]){
-            cylinder(r=roc,h=h);
-        }
     }
 }
 
@@ -129,37 +137,15 @@ module objective_mount_screw(params){
     }
 }
 
-module objective_fitting_wedge(params, h=undef, nose_shift=0.2, center=false){
-    // A trapezoidal wedge that clamps onto the objective mount.
-    // NB you must subtract the objective_fitting_cutout from this to allow
-    // the screw and nut to be attached.
-    // NB nose_shift moves the tip of the wedge in the -y direction (i.e. increases
-    // the gap at the tip, if we are making the optics module).  If subtracting this
-    // to make a mount for the optics module, use nose_shift < 0
+module objective_fitting_wedge(h, nose_shift=0.2, center=false){
+    // Create the fitting wedge for the optics module.
+    // This is is justthe body without the nut trap.
 
-    height = is_undef(h) ? upper_z_flex_z(params)+4 : h;
     //width of the pointy end
     nose_width = objective_mount_nose_w();
-    nose_x = -nose_width/2-nose_shift;
-    nose_y = nose_shift;
-    nose_z = center ? -height/2 : 0;
-    nose_position = [nose_x, nose_y, nose_z];
     translate_y(objective_mount_y()){
-        mirror([0,1,0]){
-            hull(){
-                translate(nose_position){
-                    cube([nose_width+2*nose_shift, tiny(), height]);
-                }
-                reflect_x(){
-                    // TODO: understand these numbers and explain
-                    translate([-nose_width/2-5+sqrt(2), 5+sqrt(2), 0]){
-                        cylinder(r=2, h=height, $fn=16, center=center);
-                    }
-                }
-            }
-        }
+        fitting_wedge(h, nose_width, nose_shift, center=center);
     }
-
 }
 
 module ofc_nut(shaft=false, max_screw=12){

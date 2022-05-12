@@ -149,14 +149,6 @@ module camera_mount_top_slice(optics_config){
         }
     }
 }
-module objective_fitting_base(params){
-    // A thin slice of the mounting wedge that bolts to the microscope body
-    linear_extrude(tiny()){
-        projection(){
-            objective_fitting_wedge(params);
-        }
-    }
-}
 
 module camera_mount_body(
     params,  //microscope parameter dictionary
@@ -176,7 +168,7 @@ module camera_mount_body(
     // Just add a lens mount on top for a complete optics module!
     camera_rotation = key_lookup("camera_rotation", optics_config);
     bs_rotation = key_lookup("beamsplitter_rotation", optics_config);
-    // The angle of the camera mount (the ribbon cables exits at 135 defgees from mount for '0' &  180 degrees from mount for '-45')
+    // The angle of the camera mount (the ribbon cables exits at 135 degrees from mount for '0' &  180 degrees from mount for '-45')
     camera_mount_rotation = camera_rotation;
     // The angle of the block to hold the fl cube (0 for the fl cube exiting at 180 degree from the mount and -60 for the fl cube exiting at 120 from the mount)
     fl_cube_rotation = bs_rotation;
@@ -245,21 +237,21 @@ module camera_mount_body(
                             }
                             //the bottom of the dovetail
                             translate_z(dt_bottom()){
-                                objective_fitting_base(params);
+                                objective_fitting_wedge(h=tiny());
                             }
                         }
                         //the bottom of the dovetail
                         translate_z(dt_bottom()){
-                            objective_fitting_base(params);
+                            objective_fitting_wedge(h=tiny());
                         }
                         hull(){
                             //the bottom of the dovetail
                             translate_z(dt_bottom()){
-                                objective_fitting_base(params);
+                                objective_fitting_wedge(h=tiny());
                             }
                             //the top of the dovetail
                             translate_z(dt_top){
-                                objective_fitting_base(params);
+                                objective_fitting_wedge(h=tiny());
                             }
                         }
                         hull(){
@@ -567,12 +559,12 @@ module camera_platform(params, optics_config, base_r){
             sequential_hull(){
                 hull(){
                     cylinder(r=base_r,h=tiny());
-                    objective_fitting_base(params);
+                    objective_fitting_wedge(h=tiny());
                 }
                 translate_z(platform_h){
                     hull(){
                         cylinder(r=base_r,h=tiny());
-                        objective_fitting_base(params);
+                        objective_fitting_wedge(h=tiny());
                         camera_bottom_mounting_posts(optics_config, h=tiny());
                     }
                 }

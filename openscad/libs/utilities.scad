@@ -328,6 +328,28 @@ module cyl_slot(r=1, h=1, dy=2, center=false){
     }
 }
 
+keyhole(10, 6, 3, 25, center=false);
+// Module: keyhole()
+// Usage: keyhole(h, r_hole, r_slot, l_slot, center=false)
+// Arguments:
+//   h = height of the keyhole shape
+//   r_hole = radius of the larger hole.
+//   r_slot = radius of the slot.
+//   l_slot = length of the slot (y-dir), from centre of hole to centre of circle at top of slot.
+//   ---
+//   center = The default, `false`, Whether the shape is centred in z.
+// Description:
+//   Create a keyhole shaped prism. Main lobe centred at (x,y) = (0,0). Slot
+//   in the y-direction.
+// Examples:
+//   keyhole(10, 2.5, 1.6, 5, center=false);
+module keyhole(h, r_hole, r_slot, l_slot, center=false){
+    translate_y(l_slot/2){
+        cyl_slot(r=r_slot, h=h, dy=l_slot, center=center);
+    }
+    cylinder(r=r_hole, h=h, center=center);
+}
+
 // Module: unrotate()
 // Usage: unrotate(rotation)
 // Description: 
@@ -468,6 +490,21 @@ module sequential_hull(){
     }
 }
 
+module convex_fillet(r){
+    offset(r){
+        offset(-r){
+            children();
+        }
+    }
+}
+
+module concave_fillet(r){
+    offset(-r){
+        offset(r){
+            children();
+        }
+    }
+}
 
 //TODO: Give this a better name
 module cylinder_with_45deg_top(h,r,center=false,extra_height=0.7){

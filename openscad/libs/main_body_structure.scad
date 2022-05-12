@@ -427,17 +427,10 @@ module xy_positioning_system(params){
     }
 }
 
-module central_optics_cut_out(params) {
-    // Central cut-out for optics
-    sequential_hull(){
-        h=microscope_base_t()*3;
-        translate_y(back_lug_x_pos(params)+1.5-14/2){
-            cube([14,2*tiny(),h],center=true);
-        }
-        cube([2*(back_lug_x_pos(params)-flex_dims().x),1,h],center=true);
-        translate_y(8-(back_lug_x_pos(params)-flex_dims().x-tiny())){
-            cube([16,2*tiny(),h],center=true);
-        }
+module central_optics_cut_out(params, h=10, center=true, offset_r=0) {
+    // Central cut-out for optics of main body
+    linear_extrude(h, center=center){
+        central_optics_cut_out_projection(params);
     }
 }
 
