@@ -123,6 +123,9 @@ def generate_platform_optics_modules(writer):
     """
     Add both the lens spacers and the camera platforms to the ninja build
     """
+    # Note! As there is only one platform optics module option
+    # There are no input parameters to OpenSCAD This will need to
+    # be fixed as other options are added.
     for camera, optics in PLATFORM_OPTICS_MODULE_OPTIONS:
         writer.openscad(f"camera_platform_{camera}_{optics}.stl", "camera_platform.scad")
         writer.openscad(f"lens_spacer_{camera}_{optics}.stl", "lens_spacer.scad")
