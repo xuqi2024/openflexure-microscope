@@ -103,7 +103,7 @@ module objective_mount(params){
 
         // Keyhole
         slot_bottom = lower_z_flex_z() + 6;
-        slot_length = upper_z_flex_z(params) - 5 - slot_bottom;
+        slot_length = objective_mount_screw_pos(params).z - slot_bottom;
         translate_z(slot_bottom){
             rotate_x(-90){
                 keyhole(h=99, r_hole=6.5/2, r_slot=3.5/2, l_slot=-slot_length);
