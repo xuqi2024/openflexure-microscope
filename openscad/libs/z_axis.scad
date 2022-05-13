@@ -123,19 +123,7 @@ module objective_mount(params){
 }
 
 
-//TODO find out what these are and whther they are still needed!
 function objective_mount_screw_pos(params) = [0, objective_mount_back_y(), (upper_z_flex_z(params) + lower_z_flex_z())/2];
-
-module objective_mount_screw(params){
-    translate(objective_mount_screw_pos(params)){
-        rotate_x(-90){
-            cylinder(r=3, h=2.5);
-            mirror([0,0,1]){
-                cylinder(d=3, h=12);
-            }
-        }
-    }
-}
 
 module objective_fitting_wedge(h, nose_shift=0.2, center=false){
     // Create the fitting wedge for the optics module.
@@ -148,36 +136,16 @@ module objective_fitting_wedge(h, nose_shift=0.2, center=false){
     }
 }
 
-module ofc_nut(shaft=false, max_screw=12){
-    // For convenience, this is the nut that we use to hold the optics module on.
-    // it is used from objective_fitting_cutout only.
-    shaft_length = shaft ? max_screw-4 : 0;
-    nut_y(3, h=2.5, extra_height=0, shaft_length=shaft_length);
-}
 
-module objective_fitting_cutout(params, max_screw=12, y_stop=false, nose_shift=0.2){
+module objective_fitting_cutout(params, y_stop=false, nose_shift=0.2, max_screw=12){
     // Subtract this from the optics module, to cut out a hole for the nut
     // that anchors it to the objective mount.
-    // TODO: also relieve the faces of the mount in case there are protrusions
-    oms = objective_mount_screw_pos(params);
-    translate([oms.x, objective_mount_y() - 1.2 - 2.5, oms.z]){
-        ofc_nut(shaft=true, max_screw=max_screw);
-        sequential_hull(){
-            ofc_nut();
-            translate_z(7){
-                ofc_nut();
-            }
-            translate([0,10,7]){
-                repeat([0,0,10],2){
-                    ofc_nut();
-                }
-            }
-        }
-    }
-    if(y_stop){
-        translate([-10,objective_mount_y()-nose_shift,-99]){
-            cube([20,999,999]);
-        }
+    // y_stop if set true will also cut flush the faces of the mount in case something is
+    // protruding.
+    z_pos = objective_mount_screw_pos(params).z;
+
+    translate_y(objective_mount_y()){
+        fitting_wedge_cutout(z_pos, y_stop=y_stop, nose_shift=nose_shift, max_screw=max_screw);
     }
 }
 
