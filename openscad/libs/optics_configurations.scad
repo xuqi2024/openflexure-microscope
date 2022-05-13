@@ -2,6 +2,15 @@ use <./libdict.scad>
 use <./lib_optics.scad>
 
 
+// Notes on parameters:
+//
+// camera_rotation:  The angle of the camera mount (the ribbon cables exits at 135 degrees from
+//                   mount for '0' & 180 degrees from mount for '-45')
+//
+// beamsplitter_rotation: The angle of the block to hold the fl cube (0 for the fl cube exiting
+//                        at 180 degree from the mount and -60 for the fl cube exiting at 120
+//                        from the mount)
+
 function rms_f50d13_config(camera_type = "picamera_2", beamsplitter=false) = let(
     config_dict = [["optics_type", "RMS"],
                    ["camera_type", camera_type],
