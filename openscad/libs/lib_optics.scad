@@ -408,7 +408,7 @@ module optics_module_rms(params, optics_config, include_wedge=true){
             // make sure the camera mount makes contact with the lens gripper, but
             // doesn't foul the inside of it
             translate_z(lens_assembly_z){
-                lens_gripper(lens_r=rms_r-tiny(), lens_h=lens_assembly_h-2.5,h=lens_assembly_h, base_r=lens_assembly_base_r-tiny(), solid=true); //same as the big gripper below
+                cylinder(r=lens_assembly_base_r-tiny(), h=99);
             }
 
         }
