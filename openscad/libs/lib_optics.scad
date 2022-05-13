@@ -8,10 +8,10 @@ use <./libdict.scad>
 // camera module depending on the optics configuration
 use <./cameras/camera.scad>
 
-//TODO: stop saying dovetail here as there is no dovetail!
+
 //TODO: split up huge modules
 
-function dt_bottom() = -2; //bottom of dovetail (<0 to allow some play)
+function optics_wedge_bottom() = -2; //bottom of dovetail (<0 to allow some play)
 
 /**
 * The nominal distance from PCB to microscope bottom
@@ -155,16 +155,16 @@ module camera_mount_body(
     optics_config, //dictionary of optics configuration
     body_r, //radius of mount body
     body_top, //height of the top of the body
-    dt_top, //height of the top of the dovetail
+    wedge_top, //height of the top of the fitting_wedge
     extra_rz = [], //extra [r,z] values to extend the mount
     bottom_r=8, //radius of the bottom of the mount
-    dovetail=true //set this to false to remove the attachment point
+    include_wedge=true //set this to false to remove the attachment point
 ){
 
     beamsplitter = key_lookup("beamsplitter", optics_config);
     camera_mount_top_z = key_lookup("camera_mount_top_z", optics_config);
 
-    // Make a camera mount, with a cylindrical body and a dovetail.
+    // Make a camera mount, with a cylindrical body and a wedge for mounting.
     // Just add a lens mount on top for a complete optics module!
     camera_rotation = key_lookup("camera_rotation", optics_config);
     bs_rotation = key_lookup("beamsplitter_rotation", optics_config);
@@ -177,7 +177,7 @@ module camera_mount_body(
     union(){
         //The tube + the camera mount
         difference(){
-            // Make the main tube, then add the dovetail and beamsplitter (if needed)
+            // Make the main tube, then add the fitting wedge and beamsplitter (if needed)
             union(){
                 //hull together the base and the tube
                 sequential_hull(){
@@ -188,7 +188,7 @@ module camera_mount_body(
                         }
                     }
                     //the bottom of the tube
-                    translate_z(dt_bottom()){
+                    translate_z(optics_wedge_bottom()){
                         cylinder(r=bottom_r,h=tiny());
                     }
                     //the top of the tube
@@ -220,8 +220,8 @@ module camera_mount_body(
                     }
                 }
 
-                if(dovetail){
-                    //Make the dovetail by sequentially hulling from bottom, through tube to dovetail
+                if(include_wedge){
+                    //Make the fitting by sequentially hulling from bottom, through tube to wedge
                     sequential_hull(){
                         // all the things at the bottom
                         hull(){
@@ -232,31 +232,31 @@ module camera_mount_body(
                                 }
                             }
                             //the bottom of the tube
-                            translate_z(dt_bottom()){
+                            translate_z(optics_wedge_bottom()){
                                 cylinder(r=bottom_r,h=tiny());
                             }
-                            //the bottom of the dovetail
-                            translate_z(dt_bottom()){
+                            //the bottom of the wedge
+                            translate_z(optics_wedge_bottom()){
                                 objective_fitting_wedge(h=tiny());
                             }
                         }
-                        //the bottom of the dovetail
-                        translate_z(dt_bottom()){
+                        //the bottom of the wedge
+                        translate_z(optics_wedge_bottom()){
                             objective_fitting_wedge(h=tiny());
                         }
                         hull(){
-                            //the bottom of the dovetail
-                            translate_z(dt_bottom()){
+                            //the bottom of the wedge
+                            translate_z(optics_wedge_bottom()){
                                 objective_fitting_wedge(h=tiny());
                             }
-                            //the top of the dovetail
-                            translate_z(dt_top){
+                            //the top of the wedge
+                            translate_z(wedge_top){
                                 objective_fitting_wedge(h=tiny());
                             }
                         }
                         hull(){
                             //the bottom of the tube
-                            translate_z(dt_bottom()){
+                            translate_z(optics_wedge_bottom()){
                                 cylinder(r=bottom_r,h=tiny());
                             }
                             //the top of the tube
@@ -285,7 +285,7 @@ module camera_mount_body(
                         }
                         //TODO: the section bellow is a repeat of above
                         //the bottom of the tube
-                        translate_z(dt_bottom()){
+                        translate_z(optics_wedge_bottom()){
                             cylinder(r=bottom_r,h=tiny());
                         }
                         //the top of the tube
@@ -329,7 +329,7 @@ module camera_mount_body(
 /**
 * This optics module takes an RMS objective and a tube length correction lens
 */
-module optics_module_rms(params, optics_config, dovetail=true){
+module optics_module_rms(params, optics_config, include_wedge=true){
 
     sample_z = key_lookup("sample_z", params);
     assert(key_lookup("optics_type", optics_config)=="RMS", "Use an RMS optics configuration to create a RMS optics module.");
@@ -356,7 +356,7 @@ module optics_module_rms(params, optics_config, dovetail=true){
     tube_lens_aperture = tube_lens_r - 1.5; // clear aperture of the tube lens
     pedestal_h = 2; // height of tube lens above bottom of lens assembly (to allow for flex)
 
-    dovetail_top = min(27, sample_z-objective_parfocal_distance-0.5); //height of the top of the dovetail, i.e. the position of the objective's "shoulder"
+    wedge_top = min(27, sample_z-objective_parfocal_distance-0.5); //height of the top of the wedge, i.e. the position of the objective's "shoulder"
 
     ///////////////// Lens position calculation //////////////////////////
     // calculate the position of the tube lens based on a thin-lens
@@ -389,9 +389,15 @@ module optics_module_rms(params, optics_config, dovetail=true){
 
     union(){
         // The bottom part is just a camera mount with a flat top
-        difference(){
-            // camera mount with a body that's shorter than the dovetail
-            camera_mount_body(params, optics_config, body_r=lens_assembly_base_r, bottom_r=10.5, body_top=lens_assembly_z, dt_top=dovetail_top, dovetail=dovetail);
+        !difference(){
+            // camera mount with a body that's shorter than the fitting wedge
+            camera_mount_body(params,
+                              optics_config,
+                              body_r=lens_assembly_base_r,
+                              bottom_r=10.5,
+                              body_top=lens_assembly_z,
+                              wedge_top=wedge_top,
+                              include_wedge=include_wedge);
             // camera cut-out and hole for the beam
             if(beamsplitter){
                 optical_path_fl(optics_config, tube_lens_aperture, lens_assembly_z);
@@ -552,7 +558,7 @@ module camera_platform(params, optics_config, base_r){
     assert(platform_h > upper_z_flex_z(params), "Platform height too low for z-axis mounting");
 
 
-    // Make a camera platform with a dovetail on the side and a platform on the top
+    // Make a camera platform with a fitting wedge on the side and a platform on the top
     difference(){
         union(){
             // This is the main body of the mount
