@@ -241,16 +241,25 @@ module z_axis_clearance(params){
 module objective_mounting_screw_access(params){
     // access hole for the objective mounting screw
 
-    translate([0,objective_mount_back_y(), upper_z_flex_z(params)/2]){
+    hole_angle = [-93,0,22];
+
+    // The access hole needs to point to the opening in the cap screw
+    // This is +3mm in y from the position of the screw.
+    translate(objective_mount_screw_pos(params) + [0, 3, 0]){
         hull(){
-            rotate([-90,0,22]){
-                cylinder(h=999, d=7, $fn=16);
+            rotate(hole_angle){
+                cylinder(h=999, d=4, $fn=16);
             }
-            translate([-1,0,4]){
-                rotate_x(-90){
-                    cylinder(h=tiny(), d=4, $fn=16);
+            translate([-.5, 0, -3]){
+                rotate(hole_angle){
+                    cylinder(h=999, d=5, $fn=16);
                 }
             }
+            //translate([-1,0,4]){
+            //    rotate_x(-90){
+            //        cylinder(h=tiny(), d=4, $fn=16);
+            //    }
+            //}
         }
     }
 }
