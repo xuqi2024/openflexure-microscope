@@ -238,10 +238,12 @@ module z_axis_clearance(params){
     }
 }
 
+function objective_mounting_screw_access_angle() = [-93,0,22];
+
 module objective_mounting_screw_access(params){
     // access hole for the objective mounting screw
 
-    hole_angle = [-93,0,22];
+    hole_angle = objective_mounting_screw_access_angle();
 
     // The access hole needs to point to the opening in the cap screw
     // This is +3mm in y from the position of the screw.
