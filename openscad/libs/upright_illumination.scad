@@ -40,12 +40,12 @@ module upright_condenser_platform(params, optics_config, base_r){
             sequential_hull(){
                 hull(){
                     cylinder(r=base_r,h=tiny());
-                    objective_fitting_base(params);
+                    objective_fitting_wedge(h=tiny());
                 }
                 translate_z(platform_h){
                     hull(){
                         cylinder(r=base_r,h=tiny());
-                        objective_fitting_base(params);
+                        objective_fitting_wedge(h=tiny());
                         upright_condenser_top_hull();
                     }
                 }

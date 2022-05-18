@@ -436,26 +436,23 @@ module clamp_support(p){
     }
 }
 
-module convex_fillet(p){
+module dovetail_convex_fillet(p){
     // smooth the convex corners
     $fn=12;
 
-    offset(key_lookup("fillet_r", p)){
-        offset(-key_lookup("fillet_r", p)){
-            children();
-        }
+    convex_fillet(key_lookup("fillet_r", p)){
+        children();
     }
 }
-module concave_fillet(p){
+
+module dovetail_concave_fillet(p){
     // smooth the concave corners
     $fn=12;
-
-    offset(-key_lookup("fillet_r", p)){
-        offset(key_lookup("fillet_r", p)){
-            children();
-        }
+    concave_fillet(key_lookup("fillet_r", p)){
+        children();
     }
 }
+
 
 module dovetail_section_m(p, relief=true){
     convex_fillet(p){

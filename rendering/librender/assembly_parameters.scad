@@ -150,7 +150,11 @@ function curled_ribbon_pos(low_cost=false, params=undef, optics_config=undef) = 
 
 function optics_module_nut_pos() = create_placement_dict(optics_module_mount_pos() - [0, 3.25, 1], [90, 0, 0], [0, 0, 30]);
 function optics_module_screw_pos() = create_placement_dict(optics_module_mount_pos() - [0, 0, 1], [-90, 0, 0], [0, 0, 30]);
-function optics_module_allen_key_pos() = create_placement_dict(optics_module_mount_pos() + [0, 2, -1], [0, 0, 25]);
+
+function optics_module_allen_key_pos() = let(
+    key_angle = objective_mounting_screw_access_angle() + [90, 0, 0],
+    key_pos = optics_module_mount_pos() + [0, 2, -1]
+) create_placement_dict(key_pos, key_angle);
 
 function pi_lens_z_pos(params, optics_config) = let(
     lens_spacer_z = lens_spacer_z(params, optics_config),
