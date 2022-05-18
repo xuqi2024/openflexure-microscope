@@ -22,7 +22,7 @@
 ![](renders/mount_optics_{{var_optics, default:rms}}8.png)
 
 * Insert the Allen key through the teardrop shaped hole on the front of the microscope. Until it engages with the mounting screw.
-* Slide optics module up the keyhole as high as it will go while still keeping the Allen key engaged with the screw. **Note: this is not the top of the keyhole**
-* Tighten the screw with the Allen key to lock the optics in place
+* Slide optics module up the keyhole as high as it will go.
+* Tighten the screw with the Allen key to lock the optics in place.
 
 {{include: mount_microscope.md}}
