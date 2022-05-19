@@ -20,14 +20,3 @@ TubeLens:
     ThorLabs:
       Link: https://www.thorlabs.com/thorproduct.cfm?partnumber=AC127-050-A
       PartNo: AC127-050-A
-
-Objective:
-  Name: Microscope Objective
-  Description: Finite conjugate, plan corrected, Microscope objective, with 45mm parfocal length. The magnification depends on what you want to look at. We recommend 40x, as with lower magnification the microscope stage may be very slow.
-  Specs:
-    Parfocal Length: 45 mm
-    Type (conjugate): Finite Conjugate
-    Tube length: 160 mm (Designed for DIN standard microscope with 160 mm mechanical tube length)
-    Correction: Plan
-    Magnification: 4x-100x (40x recommended)
-    Thread type: RMS
