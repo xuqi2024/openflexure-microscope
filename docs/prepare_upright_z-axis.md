@@ -1,4 +1,4 @@
-# Prepare the seperate z-actuator
+# Prepare the separate z-actuator
 
 {{BOM}}
 
@@ -7,11 +7,11 @@
 
 ## Removing brim and supports {pagestep}
 
-The [seperate z-actuator](fromstep){cat: PrintedPart, qty:1} has some custom supports and a custom brim to remove. These are highlighted in red in the following images.
+The [separate z-actuator](fromstep){cat: PrintedPart, qty:1} has some custom supports and a custom brim to remove. These are highlighted in red in the following images.
 
 ![](images/upright/rectangular_z_axis_with_smart_brim.jpg)
 ![](images/upright/preparing_rectangular_z_axis.jpg)
 
 * Cut the ties inside actuator column (2 total) with the [precision wire cutters]{qty:1}
 
-[prepared seperate z-actuator]{output, qty:1, hidden}
+[prepared separate z-actuator]{output, qty:1, hidden}

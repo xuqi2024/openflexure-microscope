@@ -379,7 +379,7 @@ module z_axis_casing(params, condenser_mount=false, cable_housing = true, rectan
     }
 }
 
-// Boring holes for the screws in the spacer and seperate z-actuator
+// Boring holes for the screws in the spacer and separate z-actuator
 module z_axis_boring_holes(boring_radius){
     hull(){
         translate([8,-8,20]){

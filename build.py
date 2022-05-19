@@ -294,8 +294,8 @@ def generate_small_parts(writer):
 
 def generate_upright_microscope_parts(writer):
     writer.openscad(
-        "seperate_z_actuator.stl",
-        "seperate_z_actuator.scad",
+        "separate_z_actuator.stl",
+        "separate_z_actuator.scad",
     )
     writer.openscad(
         "upright_condenser.stl",

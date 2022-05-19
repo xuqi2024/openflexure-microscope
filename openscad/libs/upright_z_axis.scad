@@ -9,7 +9,7 @@ use <./illumination.scad>
 use <./compact_nut_seat.scad>
 
 
-module seperate_z_actuator(params, cable_guides = false, cable_housing = false, rectangular = false){
+module separate_z_actuator(params, cable_guides = false, cable_housing = false, rectangular = false){
     //This is the z-axis of the main body 
     // The cable_housing variable allows cable guides to be included or omitted
     difference(){

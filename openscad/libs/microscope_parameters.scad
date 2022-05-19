@@ -30,7 +30,7 @@ use <./libdict.scad>
 * Sets the basic geometry of the default microscope
 * Stages can be built with modified parameters but with **no guarantee** that any other
 * set of parameters will work.
-* These parameters define the default size for the structural elements of the micoroscope, optics parameters are set seperately.
+* These parameters define the default size for the structural elements of the micoroscope, optics parameters are set separately.
 */
 function default_params() = [["leg_r", 30],     // radius on which the innermost part of legs sit. (This sets the stage size)
                              ["sample_z", 75 ], // z position of sample

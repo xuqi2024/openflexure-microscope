@@ -1,4 +1,4 @@
-* [Seperate z-actuator]{output,qty:1}: [seperate_z_actuator.stl](models/seperate_z_actuator.stl){previewpage} - The smart brim may require [custom print settings].
+* [Separate z-actuator]{output,qty:1}: [separate_z_actuator.stl](models/separate_z_actuator.stl){previewpage} - The smart brim may require [custom print settings].
 * [Upright z-actuator mount]{output,qty:1}: [upright_z_actuator_mount.stl](models/upright_z_actuator_mount.stl){previewpage}
 * 4 [feet]{output,qty:4}: [upright_feet.stl](models/upright_feet.stl){previewpage}
 * 4 [large gears]{output,qty:4}: [upright_large_gears.stl](models/upright_large_gears.stl){previewpage}

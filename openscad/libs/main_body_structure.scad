@@ -55,7 +55,7 @@ module leg_flexures(params, brace){
                     }
                 }
             }
-            //Repeat two flexures may be seperate depending on brace.
+            //Repeat two flexures may be separate depending on brace.
             repeat([0,brace_pos,0],2){
                 translate_x(-flex_size.x/2){
                     cube(flex_size);

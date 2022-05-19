@@ -238,7 +238,7 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
                 actuator_hooks(h, top);
             }
             // join the column to the casing, for strength during printing
-            // This module does the tilt itself so it can be rendered seperately
+            // This module does the tilt itself so it can be rendered separately
             // for instructions
             if(join_to_casing){
                 actuator_ties(tilt, lever_tip);
