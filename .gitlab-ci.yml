@@ -90,6 +90,7 @@ build:
       paths:
         - docs/models/**/*.stl
         - docs/models/*.json
+        - docs/all-stls.zip
 
     only:
       - tags
