@@ -4,7 +4,7 @@ For each version of the microscope we have specified a specific bill of material
 
 Here are some of the most common customisations. This page may not be as detailed as the core instructions, please consider helping us improve it.
 
->i You can [download every STL from here](models/all-stls.zip).
+>i You can [download every STL from here](all-stls.zip).
 
 ## Electronics
 
