@@ -40,9 +40,6 @@ We recommend the following printer settings:
 >!The microscope has been designed to print without supports. Supports will damage the mechanism.
 ---
 
->i The microscope body has a custom brim included in the STL. This may require [custom print settings].
-
-[custom print settings]: smart_brim.md
 
 ## Testing your printer {pagestep}
 

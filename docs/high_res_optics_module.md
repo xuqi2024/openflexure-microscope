@@ -1,6 +1,6 @@
 # Assemble the high-resolution optics module
 
-The imaging optics for this version of the microscope consist of an RMS objective, a tube lens and the Raspberry pi camera arranged as shown below (with the illumination optics)
+The imaging optics for this version of the microscope consist of an RMS objective, a tube lens[i](info_pages/imaging_optics_explanation.md) and the Raspberry pi camera arranged as shown below (with the illumination optics)
 
 ![Optics cutaway](renders/optics_assembled.png)
 
@@ -17,7 +17,7 @@ The imaging optics for this version of the microscope consist of an RMS objectiv
 
 Take the [optics module][Optics module](fromstep){qty:1, cat:printedpart} and confirm that:
 
-* It has been printed in black [i](why_optics_black.md)
+* It has been printed in black [i](info_pages/why_optics_black.md)
 * It is dust free (You can blow air through to clean it)
 * The central shaft is not obstructed by strings of plastic.
 
@@ -62,9 +62,9 @@ Take the [optics module][Optics module](fromstep){qty:1, cat:printedpart} and co
 
 ## Attach the objective {pagestep}
 
-* Take your [microscope objective](parts/optics.yml#Objective){qty:1, note:"- This page provides more information on choosing an objective.", cat:optical} and the partially assembled optics module
+* Take your [microscope objective](parts/optics/microscope-objective.md){qty:1, note:"This page provides more information on choosing an objective.", cat:optical} and the partially assembled optics module
 * Place objective on top of optics module
-* **Check that the optics module is not tilted!**
+* **Check that the objective is not tilted!**
 * Carefully and slowly screw the objective into the optics module, taking care to ensure it does not tilt.
 
 ![Attach the objective](renders/optics_assembly_objective.png)

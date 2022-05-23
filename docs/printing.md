@@ -11,6 +11,8 @@
 
 ## Printing {pagestep}
 
+>i The microscope body has a custom brim included in the STL. This may require [custom print settings].
+
 Now you have tested your [printer][RepRap-style printer]{qty:1,cat:tool} and [filament][PLA filament]{Qty: 200g, note:"Of any colour you want. Two contrasting colours may look best."} you can print the following parts:
 
 * Actuator assembly tools ([nut tool]{output,qty:1}, [band tool]{output,qty:1}, and [band tool cover]{output,qty:1}):  [actuator_assembly_tools.stl](models/actuator_assembly_tools.stl){previewpage}
@@ -28,6 +30,17 @@ Now you have tested your [printer][RepRap-style printer]{qty:1,cat:tool} and [fi
 
 >!! **Be careful when removing brim**
 >!!
->!! To avoid injury first peel off the bulk of the brim by hand. Remove the remaining brim with a peeling action.
+>!! To avoid injury first remove the bulk of the brim without a knife. Remove the remaining brim with a peeling action as described below.
 
-Carefully remove the printing brim from all parts (except the main body) with a [utility knife]{qty: 1, cat: tool}.
+Carefully remove the printing brim from all parts (except the main body).
+
+To remove brim:
+
+1. Use [precision wire cutters](parts/tools/precision-wire-cutters.md){qty:1, cat:tool} to remove most of the brim from the part.
+2. Clean up remaining brim with a [utility knife]{qty: 1, cat: tool, note: "Not a scalpel!"}:
+    * Hold the knife in your dominant hand with 4 fingers curled around the handle, leaving thumb free.
+    * Hold the part in your other hand, as far away from the surface to be cut as possible.
+    * Support the part with the thumb of your dominant hand.
+    * Place blade on surface to be cut, and carefully close your dominant hand moving the blade, under control, towards your thumb.
+
+![](diagrams/BrimRemoval.png)

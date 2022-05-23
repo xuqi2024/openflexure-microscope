@@ -14,7 +14,7 @@ The [main body][Main body](fromstep){cat: PrintedPart, qty:1} has some custom su
 ![](renders/brim_and_ties1.png)
 ![](renders/brim_and_ties2.png)
 
-* Remove the brim with [utility knife]{qty:1,cat:tool}
+* Remove the brim with [utility knife]{qty:1,cat:tool} and [precision wire cutters]{qty:1}.
 * Cut the ties inside actuator column (6 total) with the [precision wire cutters]{qty:1}
 * Cut the ties for the rear legs (4 total) with the [precision wire cutters]{qty:1}
 

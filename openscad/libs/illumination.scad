@@ -40,7 +40,7 @@ function left_illumination_screw_pos(params) = vector_mirror_x(right_illuminatio
 function illumination_back_corner_pos(params) = [0, illumination_back_corner_y(params), illumination_dovetail_z(params)];
 // Defining the positions of the back corners of the rectangle for the top of the spacer
 // The triangular top of the spacer fits onto the triangular face of the z-axis in the main body. 
-// The rectangular top of the spacer is atached to the rectangular face of the seperate z-actuator, a rectangular face is used here for stability.
+// The rectangular top of the spacer is atached to the rectangular face of the separate z-actuator, a rectangular face is used here for stability.
 function right_back_sq_illum_corner_pos(params) = [20, illumination_back_corner_y(params), illumination_dovetail_z(params)];
 function left_back_sq_illum_corner_pos(params) = vector_mirror_x(right_back_sq_illum_corner_pos(params));
 

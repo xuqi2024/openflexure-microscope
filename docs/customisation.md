@@ -4,6 +4,8 @@ For each version of the microscope we have specified a specific bill of material
 
 Here are some of the most common customisations. This page may not be as detailed as the core instructions, please consider helping us improve it.
 
+>i You can [download every STL from here](all-stls.zip).
+
 ## Electronics
 
 #### No access to the Sangaboard
@@ -38,9 +40,11 @@ These instruction need completing. For now please consult the [OpenFlexure Delta
 
 The standard optics module is designed for a finite conjugate objective. If you wish to use an infinite conjugate objective print a version of the optics module with "infinity" in the name.
 
+>i If you are using an infinity corrected objective you will need the tall stand (see below).
+
 #### Using a different camera
 
-For the low cost microscope (without an objective), we currently only support the Raspberry Pi camera. The 3D printed parts work with both v1 and v2, but **only v2 is supported by the stanard software.**
+For the low cost microscope (without an objective), we currently only support the Raspberry Pi camera. The 3D printed parts work with both v1 and v2, but **only v2 is supported by the standard software.**
 
 For the RMS objective optics we also generate optics modules for an M12 camera. The **M12 camera is not supported in the standard software**. Our OpenSCAD can also generate optics modules for other cameras, however these have not been tested or used for a long time and might not function as expected.
 
@@ -54,3 +58,13 @@ The following optics modules are available:
 * [optics_picamera_2_rms_f50d13.stl](models/optics_picamera_2_rms_f50d13.stl){previewpage}
 * [optics_picamera_2_rms_infinity_f50d13_beamsplitter.stl](models/optics_picamera_2_rms_infinity_f50d13_beamsplitter.stl){previewpage}
 * [optics_picamera_2_rms_infinity_f50d13.stl](models/optics_picamera_2_rms_infinity_f50d13.stl){previewpage}
+
+## Stands
+
+If using tall optics such as an infinity corrected objective you need a taller version of the stand:
+
+[microscope_stand_tall.stl](models/microscope_stand_tall.stl){previewpage}
+
+In addition to the standard stand and the tall stand, there is a smaller stand which only holds the microscope, there is no space for the Raspberry Pi:
+
+[microscope_stand_no_pi.stl](models/microscope_stand_no_pi.stl){previewpage}

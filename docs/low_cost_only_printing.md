@@ -3,7 +3,7 @@
 * [Illumination thumbscrew]{output,qty:1}: [illumination_thumbscrew.stl](models/illumination_thumbscrew.stl){previewpage}
 * 3 [large gears]{output,qty:3}: [large_gears.stl](models/large_gears.stl){previewpage}
 * 3 [feet]{output,qty:3}: [feet.stl](models/feet.stl){previewpage}
-* [Lens spacer]{output,qty:1}: [lens_spacer_picamera_2_pilens.stl](models/lens_spacer_picamera_2_pilens.stl){previewpage} - **This must be printed in [black][Black PLA filament]{Qty: 50g}!** [i](why_optics_black.md)
+* [Lens spacer]{output,qty:1}: [lens_spacer_picamera_2_pilens.stl](models/lens_spacer_picamera_2_pilens.stl){previewpage} - **This must be printed in [black][Black PLA filament]{Qty: 50g}!** [i](info_pages/why_optics_black.md)
 * [pi camera platform]{output,qty:1}: [camera_platform_picamera_2_pilens.stl](models/camera_platform_picamera_2_pilens.stl){previewpage}
 
 You can [download all of the STLs as a single zipfile](low-cost-stls.zip){zip, pattern:"*.stl"}

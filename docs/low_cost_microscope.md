@@ -1,6 +1,6 @@
 # Low-cost microscope
 
-This is a lower cost version of the OpenFlexure Microscope. It supports uses the lens from the Raspberry Pi Camera to produce a microscope with a similar field of view to a 20x objectives. It is motorised, but you can also build it as a manual microscope. 
+This is a lower cost version of the OpenFlexure Microscope. It supports uses the lens from the Raspberry Pi Camera to produce a microscope with field of view about 750μm, similar to using a 20x objective. It is motorised, but you can also build it as a manual microscope.
 
 If you use this microscope for research please consider citing [our paper in Optics Express](https://doi.org/10.1364/BOE.385729).
 
