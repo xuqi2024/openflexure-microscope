@@ -4,129 +4,37 @@ use <./z_axis.scad>
 use <./microscope_parameters.scad>
 use <./threads.scad>
 use <./libdict.scad>
+use <./lib_fl_cube.scad>
+use <./rms_calculations.scad>
 // camera.scad has generic camera modules forward the correct
 // camera module depending on the optics configuration
 use <./cameras/camera.scad>
 
-
-//TODO: split up huge modules
+$fn=24;
 
 function optics_wedge_bottom() = -2; //bottom of dovetail (<0 to allow some play)
 
-/**
-* The nominal distance from PCB to microscope bottom
-*/
-function bottom_position(optics_config) = let(
-    camera_mount_top_z = key_lookup("camera_mount_top_z", optics_config)
-) camera_mount_top_z - camera_mount_height(optics_config);
+//This is used for both the lens spacer and the tube lens gripper
+function lens_aperture(lens_r) = lens_r - 1.5;
 
-//bottom of the beamsplitter filter cube (0 except for the RMS f=50mm modules where it's -8 or -20)
-function fl_cube_bottom(optics_config) = bottom_position(optics_config) + camera_sensor_height(optics_config) + 6;
-function fl_cube_top(optics_config) = fl_cube_bottom(optics_config) + fl_cube_w() + 2.7; //top of beamsplitter cube
-
-function fl_cube_w() = 16; //width of the fluorescence filter cube
-function fl_cube_roc() = 0.6;
-
-$fn=24;
-
-
-function fl_cube_width() = fl_cube_w();
-
-module fl_cube_cutout(optics_config, taper=true){
-    fl_cube_cutout_w = fl_cube_w()+1; //make the cutout a little bigger than the fl_cube
-    // A cut-out that enables a filter cube to be inserted.
-    union(){
-        sequential_hull(){
-            translate([-fl_cube_cutout_w/2,-fl_cube_w()/2,fl_cube_bottom(optics_config)]){
-                cube([fl_cube_cutout_w,999,fl_cube_cutout_w]);
-            }
-            translate([-fl_cube_cutout_w/2+2,-fl_cube_w()/2,fl_cube_bottom(optics_config)]){
-                cube([fl_cube_cutout_w-4,999,fl_cube_cutout_w+2]); //sloping sides
-            }
-            translate([-fl_cube_cutout_w/2+2,-fl_cube_w()/2+2,fl_cube_bottom(optics_config)]){
-                cube([fl_cube_cutout_w-4,fl_cube_w()-4,fl_cube_cutout_w+2]);
-            }
-            if(taper){
-                //taper gradually to the diameter of the beam
-                translate([-tiny(),-tiny(),fl_cube_bottom(optics_config)]){
-                    cube([2*tiny(),2*tiny(),fl_cube_cutout_w*1.5]);
-                }
-            }
-        }
-        //a space at the back to allow the grippers for the dichroics to extend back a bit further.
-        hull(){
-            translate([-fl_cube_w()/2+2,-fl_cube_w()/2-1,fl_cube_bottom(optics_config)]){
-                cube([fl_cube_w()-4,999,fl_cube_w()]);
-            }
-            translate([-fl_cube_w()/2+4,-fl_cube_w()/2,fl_cube_bottom(optics_config)]){
-                cube([fl_cube_w()-8,999,fl_cube_w()+2]);
-            }
-        }
-
-    }
-}
-module fl_cube_casing(optics_config){
-    // A solid object, big enough to contain the beamsplitter cube cutout.
-    minkowski(){
-        difference(){
-            fl_cube_cutout(optics_config);
-            translate([-999, fl_cube_w()/2, -999]){
-                cube(999*2);
-            }
-        }
-        cylinder(r=1.6, h=0.5);
-    }
-}
-
-module fl_screw_holes(optics_config, d, h){
-    reflect_x(){
-        union(){
-            translate([fl_cube_w()/2+3,0,fl_cube_bottom(optics_config)+fl_cube_w()]){
-                rotate_x(90){
-                    trylinder_selftap(d, h);
-                }
-            }
-        }
-    }
-}
-
-module optical_path(optics_config, lens_aperture_r, lens_z){
+module optical_path(optics_config, lens_z, camera_mount_top_z){
     // The cut-out part of a camera mount, consisting of
     // a feathered cylindrical beam path.  Camera mount is now cut out
     // of the camera mount body already.
-    camera_mount_top_z = key_lookup("camera_mount_top_z", optics_config);
+
+    rms = key_lookup("optics_type", optics_config) == "RMS";
+    lens_r = rms ?
+        key_lookup("tube_lens_r", optics_config):
+        key_lookup("lens_r", optics_config);
+    aperture_r = lens_aperture(lens_r);
     union(){
         translate_z(camera_mount_top_z-tiny()){
             //beam path
-            lighttrap_cylinder(r1=5, r2=lens_aperture_r, h=lens_z-camera_mount_top_z+2*tiny());
+            lighttrap_cylinder(r1=5, r2=aperture_r, h=lens_z-camera_mount_top_z+2*tiny());
         }
         translate_z(lens_z){
             //lens
-            cylinder(r=lens_aperture_r,h=2*tiny());
-        }
-    }
-}
-module optical_path_fl(optics_config, lens_aperture_r, lens_z){
-    // The cut-out part of a camera mount, with a space to slot in a filter cube.
-    camera_mount_top_z = key_lookup("camera_mount_top_z", optics_config);
-    bs_rotation = key_lookup("beamsplitter_rotation", optics_config);
-    rotation = 180 + bs_rotation; // The angle that the fl module exits from (0* is the dovetail)
-    rotate(rotation){
-        union(){
-            translate_z(camera_mount_top_z-tiny()){
-                //beam path to bottom of cube
-                lighttrap_sqylinder(r1=5, f1=0, r2=0, f2=fl_cube_w()-4, h=fl_cube_bottom(optics_config)-camera_mount_top_z+2*tiny());
-            }
-            //filter cube
-            fl_cube_cutout(optics_config);
-            translate_z(fl_cube_top(optics_config)-tiny()){
-                //beam path
-                lighttrap_sqylinder(r1=1.5, f1=fl_cube_w()-4-3, r2=lens_aperture_r, f2=0, h=lens_z-fl_cube_top(optics_config)+4*tiny());
-            }
-            translate_z(lens_z){
-                //lens
-                cylinder(r=lens_aperture_r,h=2*tiny());
-            }
+            cylinder(r=aperture_r,h=2*tiny());
         }
     }
 }
@@ -150,12 +58,12 @@ module camera_mount_top_slice(optics_config){
     }
 }
 
-module optics_module_body_outer(optics_config, body_r, body_top, wedge_top, bottom_r, include_wedge){
+module optics_module_body_outer(params, optics_config, body_r, body_top, wedge_top, bottom_r, include_wedge){
     // The outer shape of the optics module body. Including the camera mount.
 
     beamsplitter = key_lookup("beamsplitter", optics_config);
-    camera_mount_top_z = key_lookup("camera_mount_top_z", optics_config);
     camera_rotation = key_lookup("camera_rotation", optics_config);
+    camera_mount_top_z = rms_camera_mount_top_z(params, optics_config);
 
     union(){
 
@@ -200,13 +108,13 @@ module optics_module_body_outer(optics_config, body_r, body_top, wedge_top, bott
 
         if(beamsplitter){
             // join together the top of the camera, the beamsplitter and the tube
-            extra_optics_body_for_beamsplitter(optics_config, body_r, body_top, bottom_r);
+            extra_optics_body_for_beamsplitter(params, optics_config, body_r, body_top, bottom_r);
         }
     }
 }
 
-module extra_optics_body_for_beamsplitter(optics_config, body_r, body_top, bottom_r){
-    camera_mount_top_z = key_lookup("camera_mount_top_z", optics_config);
+module extra_optics_body_for_beamsplitter(params, optics_config, body_r, body_top, bottom_r){
+    camera_mount_top_z = rms_camera_mount_top_z(params, optics_config);
     camera_rotation = key_lookup("camera_rotation", optics_config);
     bs_rotation = key_lookup("beamsplitter_rotation", optics_config);
     hull(){
@@ -219,9 +127,9 @@ module extra_optics_body_for_beamsplitter(optics_config, body_r, body_top, botto
         rotate(bs_rotation){
             hull(){
                 //the box to fit the fl cube in
-                fl_cube_casing(optics_config);
+                fl_cube_casing(params, optics_config);
                 //the mounts for the fl cube screw holes
-                fl_screw_holes(optics_config, d = 4, h =8);
+                fl_screw_holes(params, optics_config, d = 4, h =8);
             }
         }
         //TODO: the section bellow is a repeat of above
@@ -236,15 +144,15 @@ module extra_optics_body_for_beamsplitter(optics_config, body_r, body_top, botto
     }
 }
 
-module optics_module_beamsplitter_cutout(optics_config){
+module optics_module_beamsplitter_cutout(params, optics_config){
     bs_rotation = key_lookup("beamsplitter_rotation", optics_config);
 
     cube_dim = [1, 1, 1] * fl_cube_w();
-    cube_centre_z = fl_cube_bottom(optics_config)+fl_cube_w()/2;
+    cube_centre_z = fl_cube_bottom(params, optics_config)+fl_cube_w()/2;
 
     rotate(bs_rotation){
         translate_y(-2.5){
-            fl_screw_holes(optics_config, d = 2.5, h = 6);
+            fl_screw_holes(params, optics_config, d = 2.5, h = 6);
         }
         hull(){
             translate([0, -fl_cube_w(), cube_centre_z+3.5]){
@@ -270,14 +178,14 @@ module optics_module_body(
     // Just add a lens mount on top for a complete optics module!
 
     beamsplitter = key_lookup("beamsplitter", optics_config);
-    camera_mount_top_z = key_lookup("camera_mount_top_z", optics_config);
+    camera_mount_top_z = rms_camera_mount_top_z(params, optics_config);
     camera_rotation = key_lookup("camera_rotation", optics_config);
     bs_rotation = key_lookup("beamsplitter_rotation", optics_config);
 
 
     //The tube + the camera mount
     difference(){
-        optics_module_body_outer(optics_config, body_r, body_top, wedge_top, bottom_r, include_wedge);
+        optics_module_body_outer(params, optics_config, body_r, body_top, wedge_top, bottom_r, include_wedge);
 
         // Mount for the nut that holds it on
         if (include_wedge){
@@ -287,138 +195,99 @@ module optics_module_body(
         }
         // screw holes  and faceplate for fl module
         if(beamsplitter){
-            optics_module_beamsplitter_cutout(optics_config);
+            optics_module_beamsplitter_cutout(params, optics_config);
         }
     }
 
 }
 
+function rms_radius() = 25.4*0.8/2;
+
+/**
+* This is the mount for the objective and tube lens. This is the top part of the
+rms optics module.
+*/
+module rms_optics_mount(optics_config, h, base_r, pedestal_h){
+
+    gripper_t = key_lookup("gripper_t", optics_config);
+    tube_lens_r = key_lookup("tube_lens_r", optics_config);
+    aperture_r = lens_aperture(tube_lens_r);
+    
+    // reduce thread radius by 0.25mm this creates a tight fit when threadding into plastic
+    radius=rms_radius()-0.25;
+    pitch=0.7056;
+    //Major raidus of thread. The 0.44 is determined empirically for the given pitch
+    major_radius = radius+0.44;
+    difference(){
+        cylinder(r1=base_r, r2=major_radius+1.2, h=h);
+        translate_z(-1){
+            cylinder(r=major_radius, h=h+2, $fn=60);
+        }
+    }
+    translate_z(h-5){
+        inner_thread(radius=radius,pitch=pitch,thread_base_width = 0.60,thread_length=5);
+    }
+
+    // gripper for the tube lens
+    lens_gripper(lens_r=tube_lens_r, lens_h=pedestal_h+1, h=pedestal_h+1+2.5, t=gripper_t);
+    // pedestal to raise the tube lens up within the gripper
+    tube(ri=aperture_r, ro=aperture_r+1, h=2);
+
+
+
+}
 
 /**
 * This optics module takes an RMS objective and a tube length correction lens
 */
 module optics_module_rms(params, optics_config, include_wedge=true){
-
-    sample_z = key_lookup("sample_z", params);
-    assert(key_lookup("optics_type", optics_config)=="RMS", "Use an RMS optics configuration to create a RMS optics module.");
-    assert(sample_z > 60, "RMS objectives won't fit in small microscope frames!");
-
-
-    // The optics configuration specifices  parameters that are unpacked are below
-
-    //Radius of the tube lens
-    tube_lens_r = key_lookup("tube_lens_r", optics_config);
-    //Front focal distance (from flat side to focus) - measure this, or take it from the lens spec. sheet
-    tube_lens_ffd = key_lookup("tube_lens_ffd", optics_config);
-    //The nominal focal length of the tube lens.
-    tube_lens_f = key_lookup("tube_lens_f", optics_config);
-    //The distance behind the objective's "shoulder" where the image is formed.  This should be infinity (safe to use 99999) for infinity-corrected lenses, or 150 for 160mm tube length objectives (the image is formed ~10mm from the end of the tube).
-    tube_length = key_lookup("tube_length", optics_config);
-    //The distance from the shoulder of the objective to the sample focus position
-    objective_parfocal_distance = key_lookup("objective_parfocal_distance", optics_config);
-    // Whether the
+    assert(key_lookup("optics_type", optics_config)=="RMS",
+    "Cannot create an RMS optics module for a non-RMS configuration.");
+    
     beamsplitter = key_lookup("beamsplitter", optics_config);
 
-    //radius of RMS thread, to be gripped by the mount
-    rms_r = 20/2;
-    tube_lens_aperture = tube_lens_r - 1.5; // clear aperture of the tube lens
-    pedestal_h = 2; // height of tube lens above bottom of lens assembly (to allow for flex)
+    // height of pedestal for tube lens to sit on (to allow for flex)
+    pedestal_h = 2;
+    //height of the top of the wedge
+    wedge_top = 27;
 
-    wedge_top = min(27, sample_z-objective_parfocal_distance-0.5); //height of the top of the wedge, i.e. the position of the objective's "shoulder"
+    // Calculate the position and size of the mout that holds the lens and
+    rms_optics_mount_z = tube_lens_face_z(params, optics_config) - pedestal_h;
+    rms_optics_mount_base_r = rms_radius()+1;
+    rms_optics_mount_h = objective_shoulder_z(params, optics_config)-rms_optics_mount_z;
 
-    ///////////////// Lens position calculation //////////////////////////
-    // calculate the position of the tube lens based on a thin-lens
-    // approximation: the light is focussing from the objective shoulder
-    // to a point 160mm away, but we want to refocus it so it's
-    // closer (i.e. focusses at the bottom of the mount).  If we let:
-    // dos = distance from objective to sensor
-    // dts = distance from tube lens to sensor
-    // ft = focal length of tube lens
-    // fo = tube length of objective lens
-    // then 1/dts = 1/ft + 1/(fo-dos+dts)
-    // the solution to this, if b=fo-dos and a=ft, is:
-    // dts = 1/2 * (sqrt(b) * sqrt(4*a+b) - b)
-    a = tube_lens_f;
-    dos = sample_z - objective_parfocal_distance - bottom_position(optics_config) - camera_sensor_height(optics_config); //distance from the sensor to the objective shoulder
-    echo("Objective to sensor:",dos);
-    b = tube_length - dos;
-    dts = 1/2 * (sqrt(b) * sqrt(4*a+b) - b);
-    echo("Distance from tube lens principal plane to sensor:",dts);
-    // that's the distance to the nominal "principal plane", in reality
-    // we measure the front focal distance, and shift accordingly:
-    tube_lens_z = bottom_position(optics_config) + camera_sensor_height(optics_config) + dts - (tube_lens_f - tube_lens_ffd);
-
-    // having calculated where the lens should go, now make the mount:
-    lens_assembly_z = tube_lens_z - pedestal_h; //height of lens assembly
-    lens_assembly_base_r = rms_r+1; //outer size of the lens grippers
-
-    //the objective sits parfocal_distance below the sample
-    lens_assembly_h = sample_z-lens_assembly_z-objective_parfocal_distance;
-
+    camera_mount_top_z = rms_camera_mount_top_z(params, optics_config);
     union(){
         // The bottom part is just a camera mount with a flat top
         difference(){
             // camera mount with a body that's shorter than the fitting wedge
             optics_module_body(params,
                                optics_config,
-                               body_r=lens_assembly_base_r,
+                               body_r=rms_optics_mount_base_r,
                                bottom_r=10.5,
-                               body_top=lens_assembly_z,
+                               body_top=rms_optics_mount_z,
                                wedge_top=wedge_top,
                                include_wedge=include_wedge);
             // camera cut-out and hole for the beam
             if(beamsplitter){
-                optical_path_fl(optics_config, tube_lens_aperture, lens_assembly_z);
+                optical_path_fl(params, optics_config, rms_optics_mount_z, camera_mount_top_z);
             }
             else{
-                optical_path(optics_config, tube_lens_aperture, lens_assembly_z);
+                optical_path(optics_config, rms_optics_mount_z, camera_mount_top_z);
             }
-            // make sure the camera mount makes contact with the lens gripper, but
-            // doesn't foul the inside of it
-            translate_z(lens_assembly_z){
-                cylinder(r=lens_assembly_base_r-tiny(), h=99);
+            // cut a hole in the main body the correct size for the optics mount
+            translate_z(rms_optics_mount_z){
+                cylinder(r=rms_optics_mount_base_r-tiny(), h=99);
             }
-
         }
-        // A threaded hole for the objective with a lens gripper for the tube lens
-        translate_z(lens_assembly_z){
-            // threaded cylinder for the objective
-            radius=25.4*0.8/2-0.25; //Originally this was 9.75, is that a fudge factor, or allowance for the thread?;
-            pitch=0.7056;
-            difference(){
-                hull(){
-                    cylinder(r=lens_assembly_base_r,h=tiny(),$fn=50);
-                    translate_z(lens_assembly_h-5){
-                        cylinder(r=radius+1.2+0.44, h=5);
-                    }
-                }
-                sequential_hull(){
-                    cylinder(r=lens_assembly_base_r-1, h=2*tiny(),center=true,$fn=50);
-                    translate_z(lens_assembly_h-5){
-                        cylinder(r=radius+0.44,h=tiny(),$fn=100);
-                    }
-                    translate_z(999){
-                        cylinder(r=radius+0.44,h=tiny(),$fn=100);
-                    }
-                }
-            }
-            translate_z(lens_assembly_h-5){
-                inner_thread(radius=radius,pitch=pitch,thread_base_width = 0.60,thread_length=5);
-            }
-
-            gripper_t = key_lookup("gripper_t", optics_config);
-            // gripper for the tube lens
-            lens_gripper(lens_r=tube_lens_r, lens_h=pedestal_h+1,h=pedestal_h+1+2.5, t=gripper_t);
-            // pedestal to raise the tube lens up within the gripper
-            difference(){
-                cylinder(r=tube_lens_aperture + 1.0,h=2);
-                cylinder(r=tube_lens_aperture,h=999,center=true);
-            }
+        translate_z(rms_optics_mount_z){
+            rms_optics_mount(optics_config,
+                             h=rms_optics_mount_h,
+                             base_r=rms_optics_mount_base_r,
+                             pedestal_h=pedestal_h);
         }
     }
 }
-
-function lens_aperture(lens_r) = lens_r - 1.5;
 
 module lens_spacer_gripper(lens_r, lens_h, pedestal_h, lens_assembly_base_r, lens_assembly_z){
 
@@ -434,10 +303,8 @@ module lens_spacer_gripper(lens_r, lens_h, pedestal_h, lens_assembly_base_r, len
                           flare=0.4,
                           squeeze=lens_r*0.15);
         // pedestal to raise the tube lens up within the gripper
-        difference(){
-            cylinder(r=lens_aperture(lens_r) + 1.0,h=pedestal_h);
-            cylinder(r=lens_aperture(lens_r),h=999,center=true);
-        }
+        aperture_r = lens_aperture(lens_r);
+        tube(ri=aperture_r, ro=aperture_r+1, h=2);
     }
 }
 
@@ -500,7 +367,7 @@ module lens_spacer(params, optics_config){
             }
             union(){
                 // cut out the optical path
-                optical_path(optics_config, lens_aperture(lens_r), lens_assembly_z);
+                optical_path(optics_config, lens_assembly_z, camera_mount_top_z=0);
                 //cut out counterbores
                 translate_z(camera_mount_height){
                     camera_mount_counterbore(optics_config);
