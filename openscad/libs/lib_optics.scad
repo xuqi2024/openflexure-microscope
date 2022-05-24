@@ -223,12 +223,12 @@ module rms_mount_cutout(mount_h){
 * This is the mount for the objective and tube lens. This is the screw thread and
 * lens gripper
 */
-module rms_optics_mount(optics_config, h, base_r, pedestal_h){
+module rms_optics_mount(optics_config, h, pedestal_h){
 
     gripper_t = key_lookup("gripper_t", optics_config);
     tube_lens_r = key_lookup("tube_lens_r", optics_config);
     aperture_r = lens_aperture(tube_lens_r);
-    
+
     radius=rms_radius(tight=true);
     pitch=0.7056;
 
@@ -249,7 +249,7 @@ module rms_optics_mount(optics_config, h, base_r, pedestal_h){
 module optics_module_rms(params, optics_config, include_wedge=true){
     assert(key_lookup("optics_type", optics_config)=="RMS",
     "Cannot create an RMS optics module for a non-RMS configuration.");
-    
+
     beamsplitter = key_lookup("beamsplitter", optics_config);
 
     // height of pedestal for tube lens to sit on (to allow for flex)
@@ -291,7 +291,6 @@ module optics_module_rms(params, optics_config, include_wedge=true){
             translate_z(rms_optics_mount_z){
                 rms_optics_mount(optics_config,
                                  h=rms_optics_mount_h,
-                                 base_r=rms_optics_mount_base_r,
                                  pedestal_h=pedestal_h);
             }
         }
