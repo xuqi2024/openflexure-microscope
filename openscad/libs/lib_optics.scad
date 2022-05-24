@@ -178,10 +178,6 @@ module optics_module_body(
     // Just add a lens mount on top for a complete optics module!
 
     beamsplitter = key_lookup("beamsplitter", optics_config);
-    camera_mount_top_z = rms_camera_mount_top_z(params, optics_config);
-    camera_rotation = key_lookup("camera_rotation", optics_config);
-    bs_rotation = key_lookup("beamsplitter_rotation", optics_config);
-
 
     //The tube + the camera mount
     difference(){

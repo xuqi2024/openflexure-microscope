@@ -1,6 +1,4 @@
 use <./libdict.scad>
-use <./lib_optics.scad>
-
 
 // Notes on parameters:
 //
