@@ -58,7 +58,7 @@ module camera_mount_top_slice(optics_config){
     }
 }
 
-module optics_module_body_outer(params, optics_config, body_r, body_top, wedge_top, bottom_r, include_wedge){
+module optics_module_body_outer(params, optics_config, body_r, body_top, rms_mount_h, wedge_top, bottom_r, include_wedge){
     // The outer shape of the optics module body. Including the camera mount.
 
     beamsplitter = key_lookup("beamsplitter", optics_config);
@@ -97,6 +97,9 @@ module optics_module_body_outer(params, optics_config, body_r, body_top, wedge_t
                 }
                 cylinder(r1=bottom_r, r2=body_r ,h=cyl_height);
             }
+        }
+        translate_z(body_top){
+            cylinder(r=body_r, h=rms_mount_h);
         }
 
         // The actual camera mount
@@ -169,8 +172,9 @@ module optics_module_body(
     params,  //microscope parameter dictionary
     optics_config, //dictionary of optics configuration
     body_r, //radius of mount body
-    body_top, //height of the top of the body
-    wedge_top, //height of the top of the fitting_wedge
+    body_top, //z_poistion of the top of the body
+    rms_mount_h, // height of the rms mount
+    wedge_top, //z position of the top of the fitting_wedge
     bottom_r=8, //radius of the bottom of the mount
     include_wedge=true //set this to false to remove the attachment point
 ){
@@ -181,8 +185,7 @@ module optics_module_body(
 
     //The tube + the camera mount
     difference(){
-        optics_module_body_outer(params, optics_config, body_r, body_top, wedge_top, bottom_r, include_wedge);
-
+        optics_module_body_outer(params, optics_config, body_r, body_top, rms_mount_h, wedge_top, bottom_r, include_wedge);
         // Mount for the nut that holds it on
         if (include_wedge){
             translate_z(-1){
@@ -197,11 +200,28 @@ module optics_module_body(
 
 }
 
-function rms_radius() = 25.4*0.8/2;
+// reduce thread radius by 0.25mm this creates a tight fit when threadding into plastic
+function rms_radius(tight=false) = let(
+    nominal_r = 25.4*0.8/2,
+    adjustment = tight ? -0.25 : 0
+) nominal_r+adjustment;
+
+//Major raidus of thread. The 0.44 is determined empirically for the given pitch
+function rms_major_radius(tight=false) = rms_radius(tight=tight) + 0.44;
+
+
+module rms_mount_cutout(mount_h){
+    translate_z(mount_h-6){
+        cylinder(r=rms_major_radius(tight=true), h=7, $fn=60);
+    }
+    translate_z(-1){
+        cylinder(r=rms_major_radius(tight=true)-1.5, h=mount_h, $fn=60);
+    }
+}
 
 /**
-* This is the mount for the objective and tube lens. This is the top part of the
-rms optics module.
+* This is the mount for the objective and tube lens. This is the screw thread and
+* lens gripper
 */
 module rms_optics_mount(optics_config, h, base_r, pedestal_h){
 
@@ -209,17 +229,9 @@ module rms_optics_mount(optics_config, h, base_r, pedestal_h){
     tube_lens_r = key_lookup("tube_lens_r", optics_config);
     aperture_r = lens_aperture(tube_lens_r);
     
-    // reduce thread radius by 0.25mm this creates a tight fit when threadding into plastic
-    radius=rms_radius()-0.25;
+    radius=rms_radius(tight=true);
     pitch=0.7056;
-    //Major raidus of thread. The 0.44 is determined empirically for the given pitch
-    major_radius = radius+0.44;
-    difference(){
-        cylinder(r1=base_r, r2=major_radius+1.2, h=h);
-        translate_z(-1){
-            cylinder(r=major_radius, h=h+2, $fn=60);
-        }
-    }
+
     translate_z(h-5){
         inner_thread(radius=radius,pitch=pitch,thread_base_width = 0.60,thread_length=5);
     }
@@ -227,9 +239,7 @@ module rms_optics_mount(optics_config, h, base_r, pedestal_h){
     // gripper for the tube lens
     lens_gripper(lens_r=tube_lens_r, lens_h=pedestal_h+1, h=pedestal_h+1+2.5, t=gripper_t);
     // pedestal to raise the tube lens up within the gripper
-    tube(ri=aperture_r, ro=aperture_r+1, h=2);
-
-
+    tube(ri=aperture_r, ro=aperture_r+.8, h=2);
 
 }
 
@@ -253,34 +263,37 @@ module optics_module_rms(params, optics_config, include_wedge=true){
     rms_optics_mount_h = objective_shoulder_z(params, optics_config)-rms_optics_mount_z;
 
     camera_mount_top_z = rms_camera_mount_top_z(params, optics_config);
-    union(){
-        // The bottom part is just a camera mount with a flat top
-        difference(){
-            // camera mount with a body that's shorter than the fitting wedge
-            optics_module_body(params,
-                               optics_config,
-                               body_r=rms_optics_mount_base_r,
-                               bottom_r=10.5,
-                               body_top=rms_optics_mount_z,
-                               wedge_top=wedge_top,
-                               include_wedge=include_wedge);
-            // camera cut-out and hole for the beam
-            if(beamsplitter){
-                optical_path_fl(params, optics_config, rms_optics_mount_z, camera_mount_top_z);
+    difference(){
+        union(){
+            // The bottom part is just a camera mount with a flat top
+            difference(){
+                // camera mount with a body that's shorter than the fitting wedge
+                optics_module_body(params,
+                                   optics_config,
+                                   body_r=rms_optics_mount_base_r,
+                                   bottom_r=10.5,
+                                   body_top=rms_optics_mount_z,
+                                   rms_mount_h=rms_optics_mount_h,
+                                   wedge_top=wedge_top,
+                                   include_wedge=include_wedge);
+                // camera cut-out and hole for the beam
+                if(beamsplitter){
+                    optical_path_fl(params, optics_config, rms_optics_mount_z, camera_mount_top_z);
+                }
+                else{
+                    optical_path(optics_config, rms_optics_mount_z, camera_mount_top_z);
+                }
+                // cut a hole for the rms thread and tube lens gripper
+                translate_z(rms_optics_mount_z){
+                    rms_mount_cutout(rms_optics_mount_h);
+                }
             }
-            else{
-                optical_path(optics_config, rms_optics_mount_z, camera_mount_top_z);
-            }
-            // cut a hole in the main body the correct size for the optics mount
             translate_z(rms_optics_mount_z){
-                cylinder(r=rms_optics_mount_base_r-tiny(), h=99);
+                rms_optics_mount(optics_config,
+                                 h=rms_optics_mount_h,
+                                 base_r=rms_optics_mount_base_r,
+                                 pedestal_h=pedestal_h);
             }
-        }
-        translate_z(rms_optics_mount_z){
-            rms_optics_mount(optics_config,
-                             h=rms_optics_mount_h,
-                             base_r=rms_optics_mount_base_r,
-                             pedestal_h=pedestal_h);
         }
     }
 }

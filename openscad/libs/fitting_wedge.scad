@@ -30,8 +30,7 @@ module fitting_wedge(h, nose_width, nose_shift=0.2, center=false){
     }
 }
 
-
-module fitting_wedge_cutout(z_pos, y_stop=false, nose_shift=0.2, max_screw=12){
+module fitting_wedge_cutout(z_pos, y_stop=false, nose_shift=0.2, max_screw=11){
     // Subtract this from a fitting wedge, to cut out a hole for the nut
     // so that it can be anchored to a mount
     // y_stop if set true will also cut flush the faces of the mount in case something is
