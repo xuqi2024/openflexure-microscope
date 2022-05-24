@@ -3,6 +3,7 @@ use <./utilities.scad>
 use <./z_axis.scad>
 use <./microscope_parameters.scad>
 use <./threads.scad>
+use <./lighttrap.scad>
 use <./libdict.scad>
 use <./lib_fl_cube.scad>
 use <./rms_calculations.scad>
