@@ -38,7 +38,7 @@ module nano_converter_plate(){
         }
 
         nano_conv_plate_pi_port_cutout();
-        translate_x(sanga_connector_x()){
+        translate_x(sanga_connector_x(sanga_version="v0.4")){
             nano_conv_plate_nano_cutout();
         }
         translate_z(0.5){
