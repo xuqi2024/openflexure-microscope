@@ -49,11 +49,10 @@ module insert_condenser_lens(frame){
 
 
 module rendered_condenser(pos, cut=false){
-    params = render_params();
     cut_dir = cut ? "+x" : "none";
     cutaway(cut_dir, extras_colour()){
         place_part(pos){
-            condenser(params);
+            condenser();
         }
     }
 }

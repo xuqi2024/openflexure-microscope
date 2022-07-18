@@ -214,9 +214,10 @@ module no2_selftap_hole(h=10, center=false){
     trylinder(r=.3, flat=1.73, h=h, center=center);
 }
 
-module no2_selftap_counterbore(bore_h=999, hole_h=999, flip_z=false){
+module no2_selftap_counterbore(bore_h=999, hole_h=999, flip_z=false, tight=false){
     $fn = 14;
-    generic_counterbore(bore_d=5.6, bore_h=bore_h, hole_d=2.5, hole_h=hole_h);
+    bore_d = tight ? 4.8 : 5.6;
+    generic_counterbore(bore_d=bore_d, bore_h=bore_h, hole_d=2.5, hole_h=hole_h, flip_z=flip_z);
 }
 
 // Counterbored through hole for an m3 cap screw counterbore is above z=0
@@ -229,16 +230,16 @@ module m3_cap_counterbore(bore_h=999, hole_h=999, flip_z=false){
 
 module generic_counterbore(bore_d, bore_h, hole_d, hole_h, flip_z=false){
     if (flip_z){
-        translate_z(-hole_h){
-            cylinder(d=hole_d, h=hole_h+tiny());
-        }
-        cylinder(d=bore_d, h=bore_h);
-    }
-    else{
         hole_from_bottom(r=hole_d/2, h=hole_h, big_bottom=false);
         translate_z(-(bore_h-tiny())){
             cylinder(d=bore_d, h=bore_h+tiny());
         }
+    }
+    else{
+        translate_z(-hole_h){
+            cylinder(d=hole_d, h=hole_h+tiny());
+        }
+        cylinder(d=bore_d, h=bore_h);
     }
 }
 

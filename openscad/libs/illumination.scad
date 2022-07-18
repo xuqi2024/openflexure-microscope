@@ -256,7 +256,7 @@ function condenser_dovetail_params() = let(
     )
 ) dt_params;
 
-module condenser_body(base_r, lens_assembly_z, include_mounting){
+module condenser_body(base_r, lens_assembly_z, include_mounting=true){
     dt_params = condenser_dovetail_params();
     dt_block_depth = key_lookup("block_depth", dt_params);
     dt_height = key_lookup("overall_height", dt_params);
@@ -284,7 +284,7 @@ module condenser_body(base_r, lens_assembly_z, include_mounting){
 }
 
 
-module condenser(led_r=4.5/2, lens_d=13, lens_t=1, lens_assembly_z= 30, include_mounting=true){
+module condenser(lens_d=13, lens_t=1, lens_assembly_z= 30, include_mounting=true){
 
     lens_r = lens_d/2;
     base_r = lens_r+2;
@@ -306,13 +306,15 @@ module condenser(led_r=4.5/2, lens_d=13, lens_t=1, lens_assembly_z= 30, include_
      }
 }
 
+
+
 module illumination_board_cutout(h, board_bore_depth){
     union(){
         translate_z(h-board_bore_depth){
             cylinder(h=h,d=16);
         }
-        translate([-3, 0, h-board_bore_depth-4]){
-            cube([6, 22, h]);
+        translate([-3, -3, h-board_bore_depth-4]){
+            cube([6, 25, h]);
         }
         translate([-2, 1, h-board_bore_depth-3.5]){
             cube([4, 99, h]);
@@ -361,6 +363,22 @@ module condenser_lid(lens_d=13){
         reflect_x(){
             translate(lid_mounting_hole_pos(base_r) + [0, 0, h-2]){
                 no2_selftap_counterbore(flip_z=true);
+            }
+        }
+    }
+}
+
+module condenser_led_holder(led_r=4.5/2){
+    difference(){
+        cylinder(h=4, d=15);
+        translate_z(-2*tiny()){
+            cylinder(d=led_r*2+0.5, h=5, $fn=32);
+        }
+        translate_z(1){
+            reflect_x(){
+                translate_x(illumination_mounting_hole_sep()/2){
+                    no2_selftap_counterbore(tight=true);
+                }
             }
         }
     }
