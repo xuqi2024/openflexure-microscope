@@ -82,8 +82,9 @@ build:
       - git reset --hard
       # Build STL files with OpenSCAD
       - mkdir -p /root/.local/share
-      - ./build.py --generate-stl-options-json --include-extra-files --force-clean
+      - ./build.py --include-extra-files --force-clean
       - python3 -c "import shutil; shutil.make_archive('docs/all-stls', 'zip', 'docs/models')"
+      
     artifacts:
       expire_in: 1 week
       name: "${CI_PROJECT_NAME}-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}"

@@ -4,49 +4,59 @@ the microscope STLs.
 '''
 
 import os
-
+from ninja import Writer
 from .util import parameters_to_string, get_openscad_exe
-from .json_generator import JsonGenerator
-from .stl_options import get_standard_configurations, get_option_docs, get_required_stls
-from .ninja_writer import NinjaWriter
+
+class NinjaWriter():
+    '''
+    A simple wrapper around `ninja.Writer` that allowes you to use `with`,
+    e.g. `with NinjaWriter() as w:`
+    '''
+    def __init__(self, build_filename="build.ninja"):
+        self._build_filename = build_filename
+        self._build_file = None
+        self._ninja = None
+
+    def __enter__(self):
+        # Create the ninja build file
+        self._build_file = open(self._build_filename, "w")
+        self._ninja = Writer(self._build_file, width=120)
+        return self
+
+    def __exit__(self, *_):
+        # Close the Ninja build file
+        self._build_file.close()
+
+    def rule(self, *args, **kwargs):
+        """
+        See ninja.Writer.rule
+        """
+        self._ninja.rule(*args, **kwargs)
+
+    def build(self, *args, **kwargs):
+        """
+        See ninja.Writer.rule
+        """
+        self._ninja.build(*args, **kwargs)
+
 
 class MicroscopeBuildWriter(NinjaWriter):
     """
     A custom ninja writer for builing the microscope. This handles
-    building openscad files, copying extra stl files, and registering the
-    STL files with the JSON generator
+    building openscad files
     """
     def __init__(
             self,
             build_dir,
-            build_filename,
-            include_extra_files=False,
-            generate_stl_options_json=False,
+            build_filename
         ):
         super().__init__(build_filename=build_filename)
         self._build_dir = build_dir
-        option_docs = get_option_docs(include_extra_files)
-        standard_configurations = get_standard_configurations()
-        required_stls = get_required_stls()
-        if generate_stl_options_json:
-            self._json_generator = JsonGenerator(
-                build_dir,
-                option_docs,
-                standard_configurations,
-                required_stls,
-            )
-        else:
-            self._json_generator = None
 
     def __enter__(self, *_):
         super().__enter__()
         self._create_rules()
         return self
-
-    def __exit__(self, *_):
-        if self._json_generator is not None:
-            self._json_generator.write()
-        super().__exit__()
 
     def _create_rules(self):
         executable = get_openscad_exe()
@@ -55,9 +65,8 @@ class MicroscopeBuildWriter(NinjaWriter):
             command=f"{executable} --hardwarnings $parameters $in -o $out -d $out.d",
             depfile="$out.d",
         )
-        self.rule("copy", command="cp $in $out")
 
-    def openscad(self, output, input_file, parameters=None, select_stl_if=None):
+    def openscad(self, output, input_file, parameters=None):
         """
         Invokes ninja task generation using the 'openscad' rule. If
         --generate-stl-options-json is enabled it registers the stl and its
@@ -67,50 +76,14 @@ class MicroscopeBuildWriter(NinjaWriter):
             output {str} -- file path of the output stl file
             input_file {str} -- file path of the input scad file
             parameters {dict} -- parameters passed to openscad using the `-D` switch
-            select_stl_if {dict}|{list}|string -- parameters that when set to the
-                values given mean selecting this stl when making a specific
-                variant. using a list means or-ing the combinations listed.
-                leaving this empty means the stl will never be selected and
-                setting it to "always" means it will always be selected.
         """
 
         if parameters is None:
             parameters = {}
 
-        if self._json_generator is not None:
-            self._json_generator.register(
-                output,
-                input_file,
-                select_stl_if=select_stl_if,
-            )
-
         self.build(
             os.path.join(self._build_dir, output),
             rule="openscad",
             inputs=os.path.join("openscad/", input_file),
-            variables={
-                "parameters": parameters_to_string(parameters)
-                },
+            variables={"parameters": parameters_to_string(parameters)},
         )
-
-    def copy_stl(self, stl_file, select_stl_if=None):
-        """
-        Invokes ninja task generation using the 'copy' rule. If
-        --generate-stl-options-json is enabled it registers the stl and its
-        parameters at this point.
-
-        Arguments:
-            stl_file {str} -- file path of the stl file to copy
-            select_stl_if {dict}|{list}|string -- parameters that when set to the
-                values given mean selecting this stl when making a specific
-                variant. using a list means or-ing the combinations listed.
-                leaving this empty means the stl will never be selected and
-                setting it to "always" means it will always be selected.
-        """
-        if self._json_generator is not None:
-            self._json_generator.register(
-                output=stl_file, input_file=stl_file, select_stl_if=select_stl_if
-            )
-        output = os.path.join(self._build_dir, stl_file)
-        input_file = os.path.join("openflexure-microscope-extra", stl_file)
-        self.build(output, rule="copy", inputs=input_file)
