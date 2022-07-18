@@ -28,13 +28,13 @@ module microscope_stand_rendered(low_cost=false, use_nano=false){
         }
         translate(pi_stand_side_screw_pos()){
             rotate_x(90){
-                m3_cap_x8();
+                m3_cap_x10();
             }
         }
         
         translate(pi_stand_front_screw_pos()){
             rotate_y(90){
-                m3_cap_x8();
+                m3_cap_x10();
             }
         }
     }
