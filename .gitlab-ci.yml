@@ -17,7 +17,7 @@ build:
       - pip3 install -r requirements.txt
 
     script:
-      - git clone --depth=1 https://gitlab.com/openflexure/openflexure-microscope-extra
+      - git clone --depth=1 --branch=for-v6.1 https://gitlab.com/openflexure/openflexure-microscope-extra
       # Build STL files with OpenSCAD
       - mkdir -p /root/.local/share
       - ./build.py --generate-stl-options-json --include-extra-files
