@@ -16,8 +16,10 @@ All the parts you need for this step are in the picture below:
 *   light grease (if available)
 
 ## Tools
-*   [Nut and O ring insertion tools](./parts/printed_tools/actuator_assembly_tools.md)
+*   [Nut and elastic band insertion tools](./parts/printed_tools/actuator_assembly_tools.md)
 *   Craft knife
+
+Note that the elastic band insertion tool only bends one way, with the thin parts on the **outside** of the bend. Do not bend it the other way, or it may snap.
 
 # Assembly Instructions
 There are three actuator columns on the microscope, for X, Y, and Z.  Follow these instructions for each column in turn.
@@ -39,7 +41,7 @@ Turn the microscope over and, using the elastic band tool or a craft knife, snap
 ![removing the ties that support the actuator column during printing](./images/actuator_assembly_snap_supports_1.jpg)
 
 ## Step 4
-Hook one of the Viton bands over the elastic band tool, and pass the tool through the foot as shown.  You should end up with one loop of elastic band passing over each fork-shaped end of the insertion tool.  The flat side of the tool should be on the outside, so that the channels in either end face towards the centre of the foot.  Make sure you pick the right foot - the middle axis (Z) has a smaller foot.  The angle of the feet is different, if the foot doesn't line up with the outside of the microscope casing, you may be using the wrong one.
+Hook one of the Viton bands over the elastic band tool, and pass the tool through the foot as shown.  You should end up with one loop of elastic band passing over each fork-shaped end of the band insertion tool.  The flat side of the tool should be on the outside, so that the channels in either end face towards the centre of the foot.  Make sure you pick the right foot - the middle axis (Z) has a smaller foot.  The angle of the feet is different, if the foot doesn't line up with the outside of the microscope casing, you may be using the wrong one.
 
 You may find it easier to put the band through the foot, then insert the tool and hook the band over either end - either way you should end up with the band, foot, and tool arranged as shown in the pictures. The band tool holder can be placed on the short end of the band insertion tool to hold it at the correct angle and increase the area to push against.
 
@@ -51,7 +53,7 @@ Place the foot on the body, taking care that it's in the right place (the outer 
 
 ![Feet fitted into the microscope](./images/insert_feet.jpg)
  
-Push the insertion tool in until the band clicks into place.  Use the nut insertion tool to hold the actuator in place while you do this.  It might help to unscrew the gear a bit (so you can see some of the screw thread between the body and the gear) and push down on the gear.  When you push the band in, it should click twice - once for each side.  If you don't manage to hook both sides on, you may need to completely remove the band and try again - a wooden skewer, or small flat-bladed screwdriver works well to unhook the band without damaging it.
+Push the band insertion tool in until the band clicks into place.  Use the nut insertion tool to hold the actuator in place while you do this.  It might help to unscrew the gear a bit (so you can see some of the screw thread between the body and the gear) and push down on the gear.  When you push the band in, it should click twice - once for each side.  If you don't manage to hook both sides on, you may need to completely remove the band and try again - a wooden skewer, or small flat-bladed screwdriver works well to unhook the band without damaging it.
  
 What's happening here is that the elastic band is pushed over little hooks inside the actuator column, near the top, and the click is the band popping into place.  The band pulls down on the actuator, so after it's in place the gear should turn with a little more resistance - this is important for the microscope to work properly.
 
