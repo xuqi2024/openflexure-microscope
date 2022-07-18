@@ -39,7 +39,7 @@ function right_illumination_screw_pos(params) = [20, z_nut_y(params), illuminati
 function left_illumination_screw_pos(params) = vector_mirror_x(right_illumination_screw_pos(params));
 function illumination_back_corner_pos(params) = [0, illumination_back_corner_y(params), illumination_dovetail_z(params)];
 // Defining the positions of the back corners of the rectangle for the top of the spacer
-// The triangular top of the spacer fits onto the triangular face of the z-axis in the main body. 
+// The triangular top of the spacer fits onto the triangular face of the z-axis in the main body.
 // The rectangular top of the spacer is atached to the rectangular face of the separate z-actuator, a rectangular face is used here for stability.
 function right_back_sq_illum_corner_pos(params) = [20, illumination_back_corner_y(params), illumination_dovetail_z(params)];
 function left_back_sq_illum_corner_pos(params) = vector_mirror_x(right_back_sq_illum_corner_pos(params));
@@ -138,7 +138,8 @@ module illumination_dovetail(params, h=50){
     dt_z = bottom_z + start_z;
     //height of the dovetail
     dt_h = h - start_z;
-
+    dt_params = illumination_dt_params();
+    dt_depth = key_lookup("depth", dt_params);
     lug_h = illumination_dovetail_lug_height();
 
     difference(){
@@ -147,16 +148,20 @@ module illumination_dovetail(params, h=50){
         each_front_illumination_screw(params){
             // wider than normal M3 clearance hole to ease adjustment of illumination
             m3_clear_loose = 3/2*1.33;
-            cyl_slot(r=m3_clear_loose, h=999, dy=3, center=true);
+            cyl_slot(r=m3_clear_loose, h=999, dy=3, center=true, $fn=12);
             translate_z(lug_h){
-                cyl_slot(r=6, h=999, dy=3);
+                cyl_slot(r=6, h=999, dy=3, $fn=24);
             }
         }
 
+        x_tr = -.6*illumination_dovetail_w()/2;
+        translate([x_tr, dt_y+dt_depth+2, bottom_z]){
+            cylinder(h=99, d=6, $fn=16);
+        }
         // cutout to make the dovetail
         translate([0,dt_y,dt_z]){
             mirror([0,1,0]){
-                dovetail_f_cutout(illumination_dt_params(), height=99);
+                dovetail_f_cutout(dt_params, height=99);
             }
         }
         // clearance for the motor
@@ -182,10 +187,10 @@ module condenser_lens_gripper(lens_r, lens_t, base_r){
     difference() {
         union() {
             trylinder_gripper(inner_r=lens_r,
-                                grip_h=pedestal_h + lens_t/3,
-                                h=h,
-                                base_r=base_r,
-                                flare=0.5);
+                              grip_h=pedestal_h + lens_t/3,
+                              h=h,
+                              base_r=base_r,
+                              flare=0.5);
             // pedestal to raise the lens up within the gripper
             cylinder(r=aperture_r+0.8, h=pedestal_h);
         }
