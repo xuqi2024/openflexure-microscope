@@ -230,7 +230,7 @@ module rendered_optics_module(pos,
             screw_pos = exploded ? screw_pos_ex :
                 screw_tight ? optics_module_screw_pos() : screw_pos_assembled;
             place_part(screw_pos){
-                m3_cap_x8();
+                m3_cap_x10();
             }
             if (exploded){
                 translate_y(-8){

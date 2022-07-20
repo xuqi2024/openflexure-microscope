@@ -179,6 +179,19 @@ module xz_slice(y=0){
     }
 }
 
+module tube(ri, ro, h, center=false){
+    difference(){
+        cylinder(r=ro, h=h, center=center);
+        if (center){
+            cylinder(r=ri, h=h+1, center=true);
+        }
+        else {
+            translate_z(-1){
+                cylinder(r=ri, h=h+2, center=false);
+            }
+        }
+    }
+}
 
 // Module: m4_selftap_hole()
 // Usage: m4_selftap_hole(h=5)

@@ -427,7 +427,7 @@ module xy_positioning_system(params){
     }
 }
 
-module central_optics_cut_out(params, h=10, center=true, offset_r=0) {
+module central_optics_cut_out(params, h=10, center=true) {
     // Central cut-out for optics of main body
     linear_extrude(h, center=center){
         central_optics_cut_out_projection(params);

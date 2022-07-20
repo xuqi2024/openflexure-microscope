@@ -31,10 +31,6 @@ module configurable_optics_module(optics, camera_type, beamsplitter){
         optics_config = rms_infinity_f50d13_config(camera_type=camera_type, beamsplitter=beamsplitter);
         optics_module_rms(params, optics_config);
     }
-    else if(optics=="rms_f40d16"){
-        optics_config = rms_f40d16_config(camera_type=camera_type, beamsplitter=beamsplitter);
-        optics_module_rms(params, optics_config);
-    }
     else{
         assert(false, "Unknown optics configuration specified");
     }

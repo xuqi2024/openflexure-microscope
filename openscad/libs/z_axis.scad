@@ -137,7 +137,7 @@ module objective_fitting_wedge(h, nose_shift=0.2, center=false){
 }
 
 
-module objective_fitting_cutout(params, y_stop=false, nose_shift=0.2, max_screw=12){
+module objective_fitting_cutout(params, y_stop=false, nose_shift=0.2, max_screw=10){
     // Subtract this from the optics module, to cut out a hole for the nut
     // that anchors it to the objective mount.
     // y_stop if set true will also cut flush the faces of the mount in case something is
