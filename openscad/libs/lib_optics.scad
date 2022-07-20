@@ -238,14 +238,16 @@ module rms_thread(h=5){
 * This is the mount for the objective and tube lens. This is the screw thread and
 * lens gripper
 */
-module rms_optics_mount(optics_config, h, pedestal_h){
+module rms_optics_mount(optics_config, h, pedestal_h, include_rms_thread=true){
 
     gripper_t = key_lookup("gripper_t", optics_config);
     tube_lens_r = key_lookup("tube_lens_r", optics_config);
     aperture_r = lens_aperture(tube_lens_r);
 
-    translate_z(h-5){
-        rms_thread(h=5);
+    if(include_rms_thread){
+        translate_z(h-5){
+            rms_thread(h=5);
+        }
     }
 
     // gripper for the tube lens

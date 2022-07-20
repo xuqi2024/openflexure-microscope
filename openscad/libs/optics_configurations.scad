@@ -30,6 +30,10 @@ function rms_infinity_f50d13_config(camera_type = "picamera_2", beamsplitter=fal
     replacements = [["is_finite_conjugate", false]]
 ) replace_multiple_values(replacements, finite_config);
 
+// The swappable optics module **may** need to modify lens_objective_distance
+// so this wrapper provides a place for us to do that.
+function swappable_rms_config(optics_config) = optics_config;
+
 function pilens_config(camera_type = "picamera_2") = let(
     config_dict = [["optics_type", "spacer"],
                    ["camera_type", camera_type],
