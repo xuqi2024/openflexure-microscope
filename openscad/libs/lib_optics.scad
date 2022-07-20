@@ -245,7 +245,7 @@ module rms_optics_mount(optics_config, h, pedestal_h){
     aperture_r = lens_aperture(tube_lens_r);
 
     translate_z(h-5){
-        rms_thread(h=5)
+        rms_thread(h=5);
     }
 
     // gripper for the tube lens
