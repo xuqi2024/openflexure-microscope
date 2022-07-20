@@ -205,18 +205,21 @@ function illumination_mounting_hole_sep() = 10;
 
 function lid_mounting_hole_pos(base_r) = [base_r-2, base_r+1, 0];
 
+function apeture_tray_t() = 1.5;
+function aperture_tray_width() = 7.5;
+function aperture_tray_depth() = aperture_tray_width() + 10;
+function aperture_tray_shift() = [0, -4, 0];
+
 module condenser_cutout(lens_r, lens_assembly_z){
     // This is the cutout for the beam to pass through the condenser.
     // It contains a light trap and mouning for the diffuser
 
     apeture_tray_z=1;
-    apeture_tray_t=1.5;
-    light_trap_start_z = apeture_tray_z+apeture_tray_t+tiny();
+    light_trap_start_z = apeture_tray_z+apeture_tray_t()+tiny();
 
     lighttrap_h = lens_assembly_z+3*tiny()-light_trap_start_z;
     aperture_r = lens_r-condenser_aperture_difference();
-    light_trap_width=8;
-    apeture_tray_width = light_trap_width-0.5;
+    light_trap_width = aperture_tray_width() + .5;
 
     //Light trap to reduce stray reflectins
 
@@ -225,9 +228,9 @@ module condenser_cutout(lens_r, lens_assembly_z){
         f1 = light_trap_width-2*r1;
         lighttrap_sqylinder(r1=r1, f1=f1, r2=aperture_r,f2=0, h=lighttrap_h+4*tiny(), $fn=16);
     }
-    translate_z(apeture_tray_z+apeture_tray_t/2){
-        translate_y(-4){
-            cube([apeture_tray_width, apeture_tray_width+10, apeture_tray_t], center=true);
+    translate_z(apeture_tray_z+apeture_tray_t()/2){
+        translate(aperture_tray_shift()){
+            cube([aperture_tray_width(), aperture_tray_depth(), apeture_tray_t()], center=true);
         }
     }
     cube([5,5,light_trap_start_z+1], center=true);
@@ -243,7 +246,22 @@ module condenser_cutout(lens_r, lens_assembly_z){
     }
 }
 
-
+module condenser_aperture(){
+    $fn=60;
+    nominal_size = [aperture_tray_width(), aperture_tray_depth(), apeture_tray_t()];
+    actual_size = nominal_size - [1, 1, 1]*0.5;
+    //Creat drilling hole for standard 118 degree drill
+    angle = 118/2;
+    cyl_h = actual_size.z+tiny();
+    bot_rad = 0.1;
+    top_rad = bot_rad + cyl_h*tan(angle);
+    difference(){
+        cube(actual_size, center=true);
+        translate(-aperture_tray_shift()){
+            cylinder(r1=bot_rad, r2=top_rad, h=cyl_h, center=true);
+        }
+    }
+}
 
 function condenser_dovetail_params() = let(
     block_depth = 16,
