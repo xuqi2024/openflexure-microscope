@@ -15,9 +15,16 @@ use <librender/electronics.scad>
 use <librender/hardware.scad>
 use <librender/rendered_components.scad>
 
-FRAME = 10;
+FRAME = 11;
 
 render_rms_assembly(FRAME);
+
+module cut_yz_plane(positive=true){
+    difference(){
+        children();
+        rotate_y(positive?90:-90) cylinder(r=999, h=999, $fn=5);
+    }
+}
 
 module render_rms_assembly(frame){
     if (frame <= 3){
@@ -48,7 +55,7 @@ module render_rms_assembly(frame){
         color("grey") swappable_rms_mount_dowels(render_params(), explode=false);
     }
     else if (frame == 10){
-        color("yellow", 0.5) swappable_rms_mount(render_params());
+        color("yellow") cut_yz_plane() swappable_rms_mount(render_params());
         color("grey") swappable_rms_mount_dowels(render_params(), explode=false);
 
         sp = swappable_rms_params(render_params());
@@ -57,10 +64,17 @@ module render_rms_assembly(frame){
         sep = mount_to_carrier_separation(render_params());
         translate([0,0,mount_h + carrier_h + sep]){
             rotate_y(180){
-            color("yellow", 0.5) swappable_rms_carrier(render_params());
+            color("yellow") cut_yz_plane(false) swappable_rms_carrier(render_params());
                 color("grey") swappable_rms_carrier_balls(render_params());
             }
         }
+    }
+    else if (frame == 11){
+        rp = render_params();
+        op = rms_f50d13_config();
+        coloured_render("yellow") place_part(swappable_rms_carrier_placement(rp, op)) cut_yz_plane(false) swappable_rms_carrier(render_params());
+        coloured_render("yellow") place_part(swappable_rms_mount_placement(rp, op)) cut_yz_plane(true) swappable_rms_mount(render_params());
+        coloured_render("yellow") optics_module_swappable_rms(rp, op);
     }
 }
 
