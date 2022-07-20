@@ -220,6 +220,21 @@ module rms_mount_cutout(mount_h){
 }
 
 /**
+* This is just the RMS thread.  It is an internal thread, but it's a
+* positive object, i.e. it needs to be `union`ed with a hole (e.g. made
+* by `rms_mount_cutout`) to produce the correct result.
+*
+* Normally, you'd make the mount, using a difference with
+* `rms_mount_cutout` to create the hole, then add in the thread.
+*/
+module rms_thread(h=5){
+    radius=rms_radius(tight=true);
+    pitch=0.7056;
+
+    inner_thread(radius=radius,pitch=pitch,thread_base_width = 0.60,thread_length=h);
+}
+
+/**
 * This is the mount for the objective and tube lens. This is the screw thread and
 * lens gripper
 */
@@ -229,11 +244,8 @@ module rms_optics_mount(optics_config, h, pedestal_h){
     tube_lens_r = key_lookup("tube_lens_r", optics_config);
     aperture_r = lens_aperture(tube_lens_r);
 
-    radius=rms_radius(tight=true);
-    pitch=0.7056;
-
     translate_z(h-5){
-        inner_thread(radius=radius,pitch=pitch,thread_base_width = 0.60,thread_length=5);
+        rms_thread(h=5)
     }
 
     // gripper for the tube lens
