@@ -67,6 +67,7 @@ def write_ninja_file(build_dir):
 
         # Standard illumination components
         writer.openscad("condenser.stl", "condenser.scad")
+        writer.openscad("condenser_lid.stl", "condenser_lid.scad")
         writer.openscad("illumination_dovetail.stl", "illumination_dovetail.scad")
         writer.openscad("illumination_thumbscrew.stl", "illumination_thumbscrew.scad")
 
@@ -81,6 +82,7 @@ def write_ninja_file(build_dir):
         writer.openscad("leg_test.stl", "test_pieces/leg_test.scad")
 
         # Special illumination components
+        writer.openscad("condenser_led_holder.stl", "condenser_led_holder.scad")
         writer.openscad("fl_cube.stl", "fl_cube.scad")
         writer.openscad("reflection_illuminator.stl", "reflection_illuminator.scad")
         writer.openscad("led_array_holder.stl", "led_array_holder.scad")
