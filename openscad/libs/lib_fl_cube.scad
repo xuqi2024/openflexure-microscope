@@ -267,6 +267,10 @@ module fl_cube(){
         translate([-emission_filter.x/2, bottom - roc*1.5, beamsplit.z-emission_filter.y/2]){
             cube([emission_filter.x, emission_filter.z, 999]);
         }
+        // hole for easy removal of emission filter
+        translate([0,emission_filter.z/2 + bottom - roc*1.5,0]){
+            cylinder(h=beamsplit.z-emission_filter.y/2, r=emission_filter.z/2);
+        }
         // access hole for the dichroic
         translate(beamsplit){
             rotate_x(-45){
