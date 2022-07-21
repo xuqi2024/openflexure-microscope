@@ -199,16 +199,17 @@ module fl_cube(){
     bottom = bottom_t + foot;
     $fn=8;
     difference(){
+        // mount for 45 degree dichroic, with bottom retaining clip
+        // y and z position of coated tip of dichroic + clearance room
+        by = beamsplit.y + dichroic.y/2/sqrt(2) + 0.3;
+        bz = beamsplit.z - dichroic.y/2/sqrt(2) + 0.3;
+        // y and z position of back tip of dichroic
+        bby = beamsplit.y + dichroic.y/2/sqrt(2) - dichroic.z/sqrt(2);
+        bbz = beamsplit.z - dichroic.y/2/sqrt(2) - dichroic.z/sqrt(2);
+
         union(){
             fl_cube_outer(roc, w, foot, bottom_t);
 
-            // mount for 45 degree dichroic, with bottom retaining clip
-            // y and z position of coated tip of dichroic + clearance room
-            by = beamsplit.y + dichroic.y/2/sqrt(2) + 0.3;
-            bz = beamsplit.z - dichroic.y/2/sqrt(2) + 0.3;
-            // y and z position of back tip of dichroic
-            bby = beamsplit.y + dichroic.y/2/sqrt(2) - dichroic.z/sqrt(2);
-            bbz = beamsplit.z - dichroic.y/2/sqrt(2) - dichroic.z/sqrt(2);
             sequential_hull(){
                 // tall back of triangle
                 translate([-inner_w/2, bottom, 0]){
@@ -281,5 +282,11 @@ module fl_cube(){
                 }
             }
         }
+        // hole for easy removal of the beamsplitter
+        beamsplitter_eject_hole_angle=32;
+        beamsplitter_eject_hole_r = 0.6;
+        translate([0, 0.3+bby+1*sin(beamsplitter_eject_hole_angle)+beamsplitter_eject_hole_r*cos(beamsplitter_eject_hole_angle) + bbz*tan(beamsplitter_eject_hole_angle),-1*cos(beamsplitter_eject_hole_angle)])
+                rotate_x(beamsplitter_eject_hole_angle) cylinder(h=5, r=beamsplitter_eject_hole_r);
+
     }
 }
