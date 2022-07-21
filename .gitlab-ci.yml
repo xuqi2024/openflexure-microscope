@@ -155,6 +155,7 @@ build-docs:
       - pip install gitbuilding
 
     script:
+      - git archive --format=zip --output=docs/source.zip HEAD
       - cd docs
       - gitbuilding build-html --hardwarnings
       - cd ..
