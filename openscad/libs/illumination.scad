@@ -386,6 +386,34 @@ module condenser_lid(lens_d=13){
     }
 }
 
+module condenser_board_spacer(thickness=1.5){
+    $fn=32;
+    diameter = 14.5;
+    hole_sep = illumination_mounting_hole_sep();
+    ring_width = diameter-hole_sep;
+    difference(){
+        union(){
+            difference(){
+                cylinder(h=thickness, d=diameter);
+                cylinder(h=3*thickness, d=diameter-ring_width, center=true);
+                translate_y(diameter){
+                    cube([2, 2, 2]*diameter, center=true);
+                }
+            }
+            reflect_x(){
+                translate_x(hole_sep/2){
+                    cylinder(h=thickness, d=ring_width);
+                }
+            }
+        }
+        reflect_x(){
+            translate_x(hole_sep/2){
+                no2_selftap_clearancehole(center=true);
+            }
+        }
+    }
+}
+
 module condenser_led_holder(led_r=4.5/2){
     difference(){
         cylinder(h=4, d=15);

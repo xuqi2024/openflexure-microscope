@@ -214,6 +214,10 @@ module no2_selftap_hole(h=10, center=false){
     trylinder(r=.3, flat=1.73, h=h, center=center);
 }
 
+module no2_selftap_clearancehole(h=10, center=false){
+    cylinder(d=2.5, h=h, center=center);
+}
+
 module no2_selftap_counterbore(bore_h=999, hole_h=999, flip_z=false, tight=false){
     $fn = 14;
     bore_d = tight ? 4.8 : 5.6;
