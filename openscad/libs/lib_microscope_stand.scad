@@ -9,7 +9,6 @@ use <./z_axis.scad>
 use <./libdict.scad>
 
 
-//TODO re-implement this
 function stand_wall_thickness() = 2.5;
 function stand_base_thickness() = 2;
 function stand_inner_offset_r() = 1.5;

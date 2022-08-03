@@ -108,16 +108,23 @@ module filleted_bridge(gap, roc_xy=2, roc_xz=2){
     }
 }
 
-//TODO think of a less confusing name for this!!!!!!
-// This is used to create long tilted extrusions where the bottom of the section may have a different angle
-// This module takes a child module, cuts it a tiny bit above z=0. This cut is extruded along the angle of the foot
-// Only a section of this is returned which extends from the input `z` up by a hight h. The angle this section is cut
+// This is used to create long tilted extrusions.
+// The direction of extrusion can be at an angle that is not perpendicular to
+// the section.
+// The end faces of the extrusion can be tilted with respect to the xy plane
+//
+// This is used in the creation of the feet
+//
+// This module takes a child module, cuts it a tiny bit above z=0.
+// This cut is extruded along the extrusion angle
+// Only a section of this is returned which extends from the input
+// `z` up by a height h. The angle this section is cut
 // can be tilted independently  by `section_angle`.
-module foot_section(foot_angle=0,    //the angle the actuator column makes with the Z axis
-                    section_angle=0, //the angle between the section and the XY plane
-                    offset=0,        //grow the section by this much in XY plane
-                    h=tiny(),        //thickness
-                    z=0){
+module angled_extrude(extrude_angle=0, //the angle of extrusion relative to the Z axis
+                      section_angle=0, //the angle between the end faces and the XY plane
+                      offset=0,        //grow the section by this much in XY plane
+                      h=tiny(),        //thickness
+                      z=0){
     assert(h<=999, "Maximum h for foot section is 999");
     intersection(){
         translate_z(z){
@@ -125,7 +132,7 @@ module foot_section(foot_angle=0,    //the angle the actuator column makes with 
                 cube([999,999,h],center=true);
             }
         }
-        rotate_x(foot_angle){
+        rotate_x(extrude_angle){
             // This is set to 1000 so that numbers up to 999 can be put into h
             offset_thick_section(h=1000, center=true, offset=offset){
                 children();
@@ -193,11 +200,11 @@ module foot(params,
                 union(){
                     difference(){
                         union(){
-                            foot_section(actuator_tilt, 0, h=2*h){
+                            angled_extrude(actuator_tilt, 0, h=2*h){
                                 //main part of foot
                                 screw_seat_shell();
                             }
-                            foot_section(actuator_tilt, 0, h=2*h+3){
+                            angled_extrude(actuator_tilt, 0, h=2*h+3){
                                 //lugs on top
                                 nut_seat_void();
                             }
@@ -206,16 +213,16 @@ module foot(params,
                         difference(){
                             //the core tapers at the top to support the lugs
                             sequential_hull(){
-                                foot_section(actuator_tilt, 0, z=-99){
+                                angled_extrude(actuator_tilt, 0, z=-99){
                                     nut_seat_void();
                                 }
-                                foot_section(actuator_tilt, 0, z=h-4){
+                                angled_extrude(actuator_tilt, 0, z=h-4){
                                     nut_seat_void();
                                 }
-                                foot_section(actuator_tilt, 0, offset=-wall_t, z=h){
+                                angled_extrude(actuator_tilt, 0, offset=-wall_t, z=h){
                                     nut_seat_void();
                                 }
-                                foot_section(actuator_tilt, 0, offset=-wall_t, z=99){
+                                angled_extrude(actuator_tilt, 0, offset=-wall_t, z=99){
                                     nut_seat_void();
                                 }
                             }
@@ -227,7 +234,7 @@ module foot(params,
                         //one on either side - rather than a ring around the top.
                         intersection(){
                             cube([cw-3.3*2, 999, 999],center=true);
-                            foot_section(actuator_tilt, 0, h=99, z=99/2+h-travel-0.5){
+                            angled_extrude(actuator_tilt, 0, h=99, z=99/2+h-travel-0.5){
                                 nut_seat_void();
                             }
                         }

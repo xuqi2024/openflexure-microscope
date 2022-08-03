@@ -78,7 +78,7 @@ module sample_clip(clamp_point, t=2.5, w=6, radius_of_curvature=undef, slope=30)
     }
 }
 
-// TODO make these an accesory
+// TODO make the mini culture plate clips an accessory
 //this is for mini culture plates, 39mm outer diameter and 12.4mm high
 //sample_clip([0,19/2+3,12.4-1.5],slope=7.5); //mini culture dish
 
