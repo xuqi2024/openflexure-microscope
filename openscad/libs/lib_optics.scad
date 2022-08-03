@@ -135,7 +135,7 @@ module extra_optics_body_for_beamsplitter(params, optics_config, body_r, body_to
                 fl_screw_holes(params, optics_config, d = 4, h =8);
             }
         }
-        //TODO: the section bellow is a repeat of above
+
         //the bottom of the tube
         translate_z(optics_wedge_bottom()){
             cylinder(r=bottom_r,h=tiny());

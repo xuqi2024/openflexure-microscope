@@ -304,7 +304,7 @@ module nut_y(d,h=undef,center=false,fudge=1.15,extra_height=0.7,shaft_length=0){
             sl = shaft_length>0 ? shaft_length : 999;
             translate_y(height/2){
                 reflect_y(){
-                    cylinder_with_45deg_top(h=sl,r=d/2*1.05*fudge,$fn=16,extra_height=extra_height);
+                    printable_horizontal_hole(h=sl,r=d/2*1.05*fudge,$fn=16,extra_height=extra_height);
                 }
             }
             //Center could be used instead of reflect
@@ -411,50 +411,6 @@ module sparse_matrix_transform(xx=1, yy=1, zz=1, xy=0, xz=0, yx=0, yz=0, zx=0, z
     }
 }
 
-//TODO: What does this do? Do we still want it?
-module support(size, height, baseheight=0, rotation=[0,0,0], supportangle=45, outline=false){
-    //generate "support material" in the STL file for selective supporting of things
-    module support_2d(){
-        sw=1.0;
-        sp=3;
-        union(){
-            if(outline){
-                difference()    {
-                    minkowski(){
-                        children();
-                        circle(r=sw,$fn=8);
-                    }
-                    children();
-                }
-            }
-            intersection(){
-                children();
-                rotate(supportangle){
-                    for(x=[-size:sp:size]){
-                        translate([x,0]){
-                            square([sw,2*size],center=true);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    unrotate(rotation){
-        translate_z(baseheight){
-            linear_extrude(height){
-                support_2d(){
-                    projection(){
-                        rotate(rotation){
-                            children();
-                        }
-                    }
-                }
-            }
-        }
-    }
-    children();
-}
 
 module rightangle_prism(size,center=false){
     intersection(){
@@ -519,10 +475,12 @@ module concave_fillet(r){
     }
 }
 
-//TODO: Give this a better name
-module cylinder_with_45deg_top(h,r,center=false,extra_height=0.7){
+
+module printable_horizontal_hole(h,r,center=false,extra_height=0.7){
     // Block on top of the hortizontal cylinder. Hulled with the cylinder
-    // This forms a 45 degree sloped roof for printing
+    // This forms a 45 degree sloped roof for printing correctly when
+    // subtracted from a shape
+
     top_block_dims = [2*sin(45/2)*r, 2*tiny(), h];
     top_block_z = center ? 0 : h/2;
     top_block_tr = [0, r-tiny(), top_block_z];
@@ -537,26 +495,6 @@ module cylinder_with_45deg_top(h,r,center=false,extra_height=0.7){
             translate(top_block_tr){
                 cube(top_block_dims + [0, 2*extra_height, 0], center=true);
             }
-        }
-    }
-}
-
-//TODO: Find out if this is still needed, and what it is!
-module feather_vertical_edges(flat_h=0.2,fin_r=0.5,fin_h=0.72,object_h=20){
-    union(){
-    //    children();
-        minkowski(){
-            intersection(){
-                children();
-                union(){
-                    for(i=[-floor(object_h/fin_h):floor(object_h/fin_h)]){
-                        translate_z(i*fin_h+flat_h*1.5){
-                            cube([999,999,flat_h],center=true);
-                        }
-                    }
-                }
-            }
-            cylinder(r1=0,r2=fin_r,h=fin_h-2*flat_h,$fn=8);
         }
     }
 }

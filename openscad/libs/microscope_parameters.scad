@@ -167,11 +167,11 @@ function actuating_nut_r(params) = let(
 ) (upper_xy_flex_z(params) - lower_xy_flex_z()) * xy_lever_ratio;
 
 
-//TODO explain this!
+
 /**
 * distance moved by XY axis actuators
 */
-function xy_actuator_travel(params) = actuating_nut_r(params)*0.15;
+function xy_actuator_travel(params) = actuating_nut_r(params)*flex_a();
 
 
 ////// Z axis parameters. Many are defined here to avoid cyclic imports //////
@@ -241,11 +241,10 @@ function z_nut_y(params) = let(
 ) z_anchor_y() - flex_dims().y/2 + z_lever_y_proj;
 
 
-//TODO explain this!
 /**
 * distance moved by z axis
 */
-function z_actuator_travel(params) = z_lever_length(params)*0.15;
+function z_actuator_travel(params) = z_lever_length(params)*flex_a();
 
 /**
 * The angle (in degrees) through which the z_actuator is tilted
