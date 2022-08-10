@@ -3,6 +3,8 @@ use <./microscope_parameters.scad>
 use <./libdict.scad>
 use <./lib_optics.scad>;
 use <./rms_calculations.scad>;
+use <./z_axis.scad>;
+use <./fitting_wedge.scad>;
 use <../../rendering/librender/render_utils.scad>;
 
 
@@ -99,6 +101,8 @@ module optics_module_swappable_rms(params, optics_config, include_wedge=true){
     rms_optics_mount_h = objective_shoulder_z(params, optics_config) - rms_optics_mount_z - carrier_h - 1;
     //height of the top of the wedge - should be level with the cropped RMS mount
     wedge_top = objective_shoulder_z(params, optics_config) - carrier_h - 1;
+    mount_screw_z = objective_mount_screw_pos(params).z - 10;
+
 
     camera_mount_top_z = rms_camera_mount_top_z(params, optics_config);
     difference(){
@@ -158,6 +162,11 @@ module optics_module_swappable_rms(params, optics_config, include_wedge=true){
                     translate(p + [0, 0, swappable_rms_mount_z(params, optics_config)]){
                         no2_selftap_hole(16, true);
                     }
+                }
+                // fitting wedge bolt, shifted down 10mm
+                // TODO: find a less hacky way of geting this in here...
+                translate_y(objective_mount_y()){
+                    fitting_wedge_cutout(z_pos=mount_screw_z);
                 }
             }
             translate_z(rms_optics_mount_z){
