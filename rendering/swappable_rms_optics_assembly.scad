@@ -73,8 +73,10 @@ module render_rms_assembly(frame){
         rp = render_params();
         op = rms_f50d13_config();
         coloured_render("yellow") place_part(swappable_rms_carrier_placement(rp, op)) cut_yz_plane(false) swappable_rms_carrier(render_params());
-        coloured_render("yellow") place_part(swappable_rms_mount_placement(rp, op)) cut_yz_plane(true) swappable_rms_mount(render_params());
-        coloured_render("yellow") optics_module_swappable_rms(rp, op);
+        coloured_render("grey") place_part(swappable_rms_carrier_placement(rp, op)) swappable_rms_carrier_balls(render_params());
+        coloured_render("darkgrey") place_part(swappable_rms_mount_placement(rp, op)) cut_yz_plane(true) swappable_rms_mount(render_params());
+        coloured_render("grey") place_part(swappable_rms_mount_placement(rp, op)) swappable_rms_mount_dowels(render_params(), explode=false);
+        coloured_render(optics_module_colour()) optics_module_swappable_rms(rp, op);
     }
 }
 
