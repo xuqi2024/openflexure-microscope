@@ -45,6 +45,7 @@ function default_params() = [["leg_r", 30],     // radius on which the innermost
                              ["actuator_h", 25], //height of the actuator columns
                              ["include_motor_lugs", true], //sets whether the motor lugs are included
                              ["foot_height", 15], //the height of the feet
+                             ["objective_mount_screw_z_shift", 0], // Shift the objective mounting screw in Z
                             ];
 
 ////// 3D printing specific paramenters //////

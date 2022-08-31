@@ -102,7 +102,11 @@ module optics_module_swappable_rms(params, optics_config, include_wedge=true){
     //height of the top of the wedge - should be level with the cropped RMS mount
     wedge_top = objective_shoulder_z(params, optics_config) - carrier_h - 1;
     mount_screw_z = objective_mount_screw_pos(params).z - 10;
-
+    // We modify the parameters passed to the optics module, so that the mounting screw is
+    // shifted in z.  This gives us a bit more clearance for the larger objective mount.
+    // It will, of course, require the objective mount to be positioned on a higher spacer
+    // to keep the sample in the right place.
+    optics_module_params = replace_value("objective_mount_screw_z_shift", -15, params);
 
     camera_mount_top_z = rms_camera_mount_top_z(params, optics_config);
     difference(){
@@ -111,7 +115,7 @@ module optics_module_swappable_rms(params, optics_config, include_wedge=true){
             difference(){
                 union(){
                     // camera mount with a body that comes up to 1mm from the RMS carrier
-                    optics_module_body(params,
+                    optics_module_body(optics_module_params,
                                     optics_config,
                                     body_r=rms_optics_mount_base_r,
                                     bottom_r=bottom_r,
@@ -162,11 +166,6 @@ module optics_module_swappable_rms(params, optics_config, include_wedge=true){
                     translate(p + [0, 0, swappable_rms_mount_z(params, optics_config)]){
                         no2_selftap_hole(16, true);
                     }
-                }
-                // fitting wedge bolt, shifted down 10mm
-                // TODO: find a less hacky way of geting this in here...
-                translate_y(objective_mount_y()){
-                    fitting_wedge_cutout(z_pos=mount_screw_z);
                 }
             }
             translate_z(rms_optics_mount_z){

@@ -123,7 +123,13 @@ module objective_mount(params){
 }
 
 
-function objective_mount_screw_pos(params) = [0, objective_mount_back_y(), (upper_z_flex_z(params) + lower_z_flex_z())/2];
+function objective_mount_screw_pos(params) = let(
+    z_shift = key_lookup("objective_mount_screw_z_shift", params)
+)[
+    0, 
+    objective_mount_back_y(), 
+    (upper_z_flex_z(params) + lower_z_flex_z())/2 + z_shift
+];
 
 module objective_fitting_wedge(h, nose_shift=0.2, center=false){
     // Create the fitting wedge for the optics module.
