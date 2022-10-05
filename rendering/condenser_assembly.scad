@@ -11,7 +11,7 @@ use <librender/optics.scad>
 use <librender/electronics.scad>
 use <mount_microscope.scad>
 
-USE_CACHED_STL = false;
+USE_BUILT_STL = true;
 FRAME = 7;
 assemble_condenser(FRAME);
 
@@ -137,7 +137,7 @@ module rendered_spacer(explode=false){
     coloured_render(extras_colour()){
         rotate_y(180){
             translate_z(z_pos + (explode?10:0)){
-                if (USE_CACHED_STL){
+                if (USE_BUILT_STL){
                     cached_stl("condenser_board_spacer");
                 }else{
                     condenser_board_spacer();
@@ -206,7 +206,7 @@ module rendered_condenser_lid(explode=false){
         // we must move the lid down so that it matches up with
         // the condenser.
         translate_z(-condenser_lid_h() - (explode ? 15 : 0)){
-            if (USE_CACHED_STL){
+            if (USE_BUILT_STL){
                 cached_stl("condenser_lid");
             }else{
                 condenser_lid();
@@ -248,7 +248,7 @@ module rendered_condenser(pos, cut=false){
     }else{
         coloured_render(extras_colour()){
             place_part(pos){
-                if (USE_CACHED_STL){
+                if (USE_BUILT_STL){
                     cached_stl("condenser");
                 }else{
                     condenser();
