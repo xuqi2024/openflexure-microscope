@@ -168,7 +168,7 @@ module rendered_illumination_connector(explode=false, straight_cable=false){
             translate_y(offset.y + (explode ? 15 : 0)){
                 rotate_x(-90){
                     dupont_connector_housing(2, center=true);
-                    if(false){
+                    if(straight_cable){
                         coloured_render("red"){
                             wire(d=1, points=[[2.54/2,0,8], [1/2,0,15], [1/2,0,99]]);
                         }
