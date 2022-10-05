@@ -1251,6 +1251,28 @@ module wire(d=1, points=[[0, 0, 0], [10,0,0]]){
     }
 }
 
+// This function takes a list of 3D points, and returns
+// an identically-sized list of unit vectors, which are
+// orthogonal to the lines joining each point to its
+// next and previous points
+// i.e. they are normalised cross products of
+// (p[i] - p[i-1]) cross (p[i+1] - p[i])
+function unit_vectors_perpendicular_to_segments(points, first=undef, last=undef) = let(
+    middle_points = [
+        for (i=[1:(len(points)-2)])
+            let(x=cross(points[i] - points[i-1], points[i+1] - points[i])) 
+                x/norm(x)
+    ]
+) [
+    is_undef(first) ? middle_points[0] : first,
+    each middle_points,
+    is_undef(last) ? middle_points[len(middle_points)-1] : last
+];
+
+function flat_wire_points(d=1, points=[], n=2, index=0) = (
+    points + (index - (n-1)/2)*d * unit_vectors_perpendicular_to_segments(points)
+);
+
 module ribbon_cable(width, positions){
     
     for (i = [0:len(positions)-2]){
