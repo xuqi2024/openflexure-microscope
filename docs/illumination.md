@@ -51,7 +51,7 @@ In this section we are assembling the transmission illuminator.  This mounts the
 
 * Turn the condenser over, so the flat side is on top.
 * Place the [diffuser]{qty: 1} on the condenser, then the [condenser board spacer]{qty:1}, then the [illumination PCB]{qty:1}.
-* Fix in place with two [No 2 6.5mm self tapping screws]{qty:2} using a [#1 pozidrive screwdriver]{cat:tool}.
+* Fix in place with two [No 2 6.5mm self tapping screws]{qty:2, cat:mech} using a [#1 pozidrive screwdriver]{cat:tool, qty:1}.
 
 ## Attach the illumination cable {pagestep}
 
@@ -68,7 +68,7 @@ In this section we are assembling the transmission illuminator.  This mounts the
 ![](renders/mount_condenser_lid4.png)
 
 * Place the [condenser lid]{qty:1} on top of the condenser assembly.
-* Secure in place with two [No 2 6.5mm self tapping screws]{qty:2} using a [#1 pozidrive screwdriver]{cat:tool}.
+* Secure in place with two [No 2 6.5mm self tapping screws]{qty:2, cat:mech} using a [#1 pozidrive screwdriver]{cat:tool, qty:1}.
 
 ## Insert the illumination wiring {pagestep}
 
