@@ -173,7 +173,7 @@ function camera_platform_screw_pos() = create_placement_dict(optics_module_mount
 function camera_platform_allen_key_pos() = create_placement_dict(optics_module_mount_pos() + [0, 2, 2], [0, 0, 25]);
 
 
-function condenser_z() = illumination_dovetail_z(PARAMS) + 65;
+function condenser_z() = illumination_dovetail_z(PARAMS) + 57;
 
 function condenser_pos() = create_placement_dict([0, 0, condenser_z()],
                                                  [0, 0, 180],
