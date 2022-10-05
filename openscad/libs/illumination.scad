@@ -125,6 +125,13 @@ module illumination_dovetail_structure(params, dt_z, dt_h){
     }
 }
 
+// The position in X,Y of the cable channel
+function illumination_cable_channel_xypos() = let(
+    x_tr = -.6*illumination_dovetail_w()/2,
+    dt_y = illumination_dovetail_y(),
+    dt_depth = key_lookup("depth", illumination_dt_params())
+) [x_tr, dt_y+dt_depth+2, 0];
+
 module illumination_dovetail(params, h=50){
     // The dovetail on which we mount the condenser for the illumination
     // This is built in place in the microscope coordinates.
@@ -154,9 +161,11 @@ module illumination_dovetail(params, h=50){
             }
         }
 
-        x_tr = -.6*illumination_dovetail_w()/2;
-        translate([x_tr, dt_y+dt_depth+2, bottom_z]){
-            cylinder(h=99, d=6, $fn=16);
+        // channel for the illumination wiring
+        translate(illumination_cable_channel_xypos()){
+            translate_z(bottom_z){
+                cylinder(h=99, d=6, $fn=16);
+            }
         }
         // cutout to make the dovetail
         translate([0,dt_y,dt_z]){
