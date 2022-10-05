@@ -161,6 +161,25 @@ def register_condenser_assembly(rendersystem):
         render = ScadRender(output_file, input_file, scad, imgsize, camera)
         rendersystem.register_scad_render(render)
 
+    camera = Camera(position=[0, 8, 30], angle=[62, 0, 130], distance=137)
+    imgsize = [2400, 2000]
+    for frame in [7, 8, 9, 10]:
+        scad = f"assemble_condenser({frame});"
+        output_file = f"docs/renders/mount_led_board{frame-6}.png"
+        render = ScadRender(output_file, input_file, scad, imgsize, camera)
+        rendersystem.register_scad_render(render)
+    for frame in [11, 12]:
+        scad = f"assemble_condenser({frame});"
+        output_file = f"docs/renders/mount_led_cable{frame-10}.png"
+        render = ScadRender(output_file, input_file, scad, imgsize, camera)
+        rendersystem.register_scad_render(render)
+    camera = Camera(position=[0, 8, 30], angle=[62, 0, 130], distance=237)
+    for frame in [13, 14, 15, 16]:
+        scad = f"assemble_condenser({frame});"
+        output_file = f"docs/renders/mount_condenser_lid{frame-12}.png"
+        render = ScadRender(output_file, input_file, scad, imgsize, camera)
+        rendersystem.register_scad_render(render)
+
 def register_optics_assembled(rendersystem):
     input_file = "rendering/optics_assembly.scad"
     camera = Camera(position=[30, 5, 60], angle=[90, 0, 110], distance=440)
@@ -359,24 +378,24 @@ def register_mount_motors(rendersystem):
 
 def main():
     rendersystem = RenderSystem()
-    rendersystem.register_zip_assets('rendering/librender/hardware.zip')
-    rendersystem.register_render_stl('rendering/librender/rendered_main_body.scad')
+    #rendersystem.register_zip_assets('rendering/librender/hardware.zip')
+    #rendersystem.register_render_stl('rendering/librender/rendered_main_body.scad')
     #Register all openscad renders (and associated post processing)
-    register_rms_optics_assembly(rendersystem)
-    register_low_cost_optics_assembly(rendersystem)
+    #register_rms_optics_assembly(rendersystem)
+    #register_low_cost_optics_assembly(rendersystem)
     register_condenser_assembly(rendersystem)
-    register_optics_assembled(rendersystem)
-    register_band(rendersystem)
-    register_brim_and_ties(rendersystem)
-    register_prepare_main_body(rendersystem)
-    register_prepare_stand(rendersystem)
-    register_actuator_assembly(rendersystem)
-    register_picam(rendersystem)
-    register_mount_optics(rendersystem)
-    register_mount_microscope(rendersystem)
-    register_mount_illumination(rendersystem)
-    register_motor_assembly(rendersystem)
-    register_mount_motors(rendersystem)
+    #register_optics_assembled(rendersystem)
+    #register_band(rendersystem)
+    #register_brim_and_ties(rendersystem)
+    #register_prepare_main_body(rendersystem)
+    #register_prepare_stand(rendersystem)
+    #register_actuator_assembly(rendersystem)
+    #register_picam(rendersystem)
+    #register_mount_optics(rendersystem)
+    #register_mount_microscope(rendersystem)
+    #register_mount_illumination(rendersystem)
+    #register_motor_assembly(rendersystem)
+    #register_mount_motors(rendersystem)
 
     rendersystem.render()
 

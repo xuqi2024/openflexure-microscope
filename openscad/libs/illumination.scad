@@ -301,8 +301,12 @@ module condenser_body(base_r, lens_assembly_z, include_mounting=true){
     }
 }
 
-
-module condenser(lens_d=13, lens_t=1, lens_assembly_z= 30, include_mounting=true){
+// NB the arguments are not currently used anywhere.  In all
+// the standard builds of the microscope, these parameters are
+// left as default.  Specifying lens_d, lens_t, or lens_assembly_z
+// may have unexpected effects, such as causing the renders to be
+// out of sync with the STLs.
+module condenser(lens_d=13, lens_t=1, lens_assembly_z=22, include_mounting=true){
 
     lens_r = lens_d/2;
     base_r = lens_r+2;
@@ -347,11 +351,16 @@ module illumination_board_cutout(h, board_bore_depth){
     }
 }
 
+// A lid to cover the LED and board on top of the condenser
+// NB this creates a shape where the top of the lid is
+// z=0, and the rest is at z>0
+// i.e. it is upside down.
+function condenser_lid_h()=13;
 module condenser_lid(lens_d=13){
     //allow space for 2 screw heads and for board thickness
     board_bore_depth = 6.5;
     //Total height must be deep enough for the self tap screw
-    h = 13;
+    h = condenser_lid_h();
     lens_r = lens_d/2;
     base_r = lens_r+2;
 
@@ -386,7 +395,9 @@ module condenser_lid(lens_d=13){
     }
 }
 
-module condenser_board_spacer(thickness=1.5){
+function condenser_board_spacer_thickness()=1.5;
+
+module condenser_board_spacer(thickness=condenser_board_spacer_thickness()){
     $fn=32;
     diameter = 14.5;
     hole_sep = illumination_mounting_hole_sep();
@@ -406,6 +417,26 @@ module condenser_board_spacer(thickness=1.5){
                 }
             }
         }
+        reflect_x(){
+            translate_x(hole_sep/2){
+                no2_selftap_clearancehole(center=true);
+            }
+        }
+    }
+}
+
+// A disc with clearance for the board mounting holes
+// This should be cut from a sheet of polycarbonate
+// It's easy enough to do by hand but we should
+// generate a DXF so it can be laser cut, I think
+function diffuser_thickness()=0.5;
+module diffuser(thickness=diffuser_thickness()){
+    $fn=32;
+    diameter = 14.5;
+    hole_sep = illumination_mounting_hole_sep();
+    ring_width = diameter-hole_sep;
+    difference(){
+        cylinder(h=thickness, d=diameter);
         reflect_x(){
             translate_x(hole_sep/2){
                 no2_selftap_clearancehole(center=true);

@@ -48,6 +48,7 @@ module illumination_board(){
     }
 }
 
+function illumination_board_connector_offset() = [0, 2.7 + 4.84, 3.5/2];
 
 function sangaboard_v0_4_dims() = [65, 57, 1.6];
 
@@ -764,6 +765,8 @@ module single_angled_header_pins(rows=20){
     }
 }
 
+// One right-angled header pin.
+// NB the connector housing ends at y=2.54+2.3=4.84mm
 module single_angled_header_pin(){
     translate_z(3.5/2){
         rotate_x(-90){
@@ -1257,6 +1260,29 @@ module ribbon_cable(width, positions){
             }
             place_part(positions[i+1]){
                 cube([0.5, width, 0.5], center=true);
+            }
+        }
+    }
+}
+
+// A rough sketch of a dupont-style 2.54mm pitch housing
+module dupont_connector_housing(columns=1, rows=1, center=true){
+    pitch = 2.54;
+    width = columns*pitch;
+    height = rows*pitch;
+    x = center ? -width/2 : -pitch/2;
+    y = center ? -height/2 : -pitch/2;
+    coloured_render("DimGray"){
+        difference(){
+            translate([x, y, 0]){
+                cube([width, height, 10]);
+            }
+
+            // Roughly cut out holes for the wires
+            repeat([pitch, 0, 0], columns, center=center){
+                repeat([pitch, 0, 0], rows, center=center){
+                    cube([1.2, 1.2, 8], center=true);
+                }
             }
         }
     }

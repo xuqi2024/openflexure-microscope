@@ -1,13 +1,15 @@
 # Assemble the illumination
 
-In this section we are assembling the sample illumination. This is for transmission illumination.
+In this section we are assembling the transmission illuminator.  This mounts the LED and condenser lens above the sample, so the transmitted light can be imaged by the microscope objective.
 
 {{BOM}}
 
 [M3 nut]: parts/mechanical.yml#Nut_M3_SS
 [M3x25mm stainless steel hex bolt]: parts/mechanical.yml#HexBolt_M3x25mm_SS
 [M3 stainless steel washers]: parts/mechanical.yml#Washer_M3_SS
+[No 2 6.5mm self tapping screws]: parts/mechanical.yml#SelfTap_PoziPan_No2x6.5_SS
 [2.5mm Ball-end Allen key]: parts/tools/2.5mmBallEndAllenKey.md
+[#1 pozidrive screwdriver]: missing
 
 ## Mount the dovetail {pagestep}
 
@@ -30,7 +32,6 @@ In this section we are assembling the sample illumination. This is for transmiss
 
 ## Add the condenser retaining screw {pagestep}
 
-
 ![](renders/assemble_condenser_thumbscrew1.png)
 ![](renders/assemble_condenser_thumbscrew2.png)
 ![](renders/assemble_condenser_thumbscrew3.png)
@@ -41,6 +42,33 @@ In this section we are assembling the sample illumination. This is for transmiss
 * Start to screw the thumbscrew into the nut from the outside of the dovetail 
 * Screw the thumbscrew by hand until it almost touches the dovetail. **Do not tighten further at this stage**
 
+## Mount the diffuser and LED board {pagestep}
+
+![](renders/mount_led_board1.png)
+![](renders/mount_led_board2.png)
+![](renders/mount_led_board3.png)
+![](renders/mount_led_board4.png)
+
+* Turn the condenser over, so the flat side is on top.
+* Place the [diffuser]{qty: 1} on the condenser, then the [condenser board spacer]{qty:1}, then the [illumination PCB]{qty:1}.
+* Fix in place with two [No 2 6.5mm self tapping screws]{qty:2} using a [#1 pozidrive screwdriver]{cat:tool}.
+
+## Attach the illumination cable
+
+![](renders/mount_led_cable1.png)
+![](renders/mount_led_cable2.png)
+
+* Attach the [illumination wiring harness]{qty:1} to the [illumination PCB]
+
+## Attach the illumination cover
+
+![](renders/mount_condenser_lid1.png)
+![](renders/mount_condenser_lid2.png)
+![](renders/mount_condenser_lid3.png)
+![](renders/mount_condenser_lid4.png)
+
+* Place the [condenser lid]{qty:1} on top of the condenser assembly.
+* Secure in place with two [No 2 6.5mm self tapping screws]{qty:2} using a [#1 pozidrive screwdriver]{cat:tool}.
 
 ## Mount the condenser arm {pagestep}
 
