@@ -340,6 +340,7 @@ def register_mount_illumination(rendersystem):
     cameras = [
         Camera(position=[-6, 49, 178], angle=[68, 0, 133], distance=360),
         Camera(position=[-6, 49, 178], angle=[68, 0, 133], distance=360),
+        Camera(position=[-6, 49, 178], angle=[60, 0, 308], distance=460),
         Camera(position=[-6, 49, 178], angle=[82, 0, 308], distance=360),
         Camera(position=[-6, 49, 178], angle=[82, 0, 308], distance=360),
         Camera(position=[-6, 49, 178], angle=[82, 0, 308], distance=360)

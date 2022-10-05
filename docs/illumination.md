@@ -53,14 +53,14 @@ In this section we are assembling the transmission illuminator.  This mounts the
 * Place the [diffuser]{qty: 1} on the condenser, then the [condenser board spacer]{qty:1}, then the [illumination PCB]{qty:1}.
 * Fix in place with two [No 2 6.5mm self tapping screws]{qty:2} using a [#1 pozidrive screwdriver]{cat:tool}.
 
-## Attach the illumination cable
+## Attach the illumination cable {pagestep}
 
 ![](renders/mount_led_cable1.png)
 ![](renders/mount_led_cable2.png)
 
 * Attach the [illumination wiring harness]{qty:1} to the [illumination PCB]
 
-## Attach the illumination cover
+## Attach the illumination cover {pagestep}
 
 ![](renders/mount_condenser_lid1.png)
 ![](renders/mount_condenser_lid2.png)
@@ -70,20 +70,20 @@ In this section we are assembling the transmission illuminator.  This mounts the
 * Place the [condenser lid]{qty:1} on top of the condenser assembly.
 * Secure in place with two [No 2 6.5mm self tapping screws]{qty:2} using a [#1 pozidrive screwdriver]{cat:tool}.
 
-## Mount the condenser arm {pagestep}
+## Insert the illumination wiring {pagestep}
 
 ![](renders/mount_illumination_{{var_optics, default:rms}}3.png)
+
+* Pass the [illumination wiring harness] from the top to the bottom of the cable guide in the illumination dovetail.
+* Pass the [illumination wiring harness] from the top to the bottom of the cable guide in the main body, between the Z gear and the Y gear.
+
+## Mount the condenser arm {pagestep}
+
 ![](renders/mount_illumination_{{var_optics, default:rms}}4.png)
 ![](renders/mount_illumination_{{var_optics, default:rms}}5.png)
+![](renders/mount_illumination_{{var_optics, default:rms}}6.png)
 
 * Slide the condenser arm into the illumination dovetail until it is approximately flush with the top
 * Tighten the thumbscrew by hand to lock the arm in place.
 * Do not worry about the exact position, this will be adjusted on first use.
-
-
-## Push-fit the LED {pagestep}
-
-* Get the [LED][LED assembly](fromstep){qty:1, cat:subassembly} you soldered earlier
-* Bend the LED cable to 90 degrees from the LED
-* Push the LED into the top of the condenser
 
