@@ -189,10 +189,10 @@ function condenser_pos_on_tool() = create_placement_dict([0, 0, 56],
                                                          [180, 0, 0]);
 
 function condenser_lens_tool_pos() = create_placement_dict([0, 0, lens_tool_height()+0.01]);
-function condenser_lens_pos_relative() = create_placement_dict([0, 0, 36.5], [180, 0, 0]);
+function condenser_lens_pos_relative() = create_placement_dict([0, 0, 28.5], [180, 0, 0]);
 
 function condenser_clamp_axis_pos(depth) = let(
-    tr = [0, 37.9, 10],
+    tr = [0, 37.9, 8],
     r1 = [0,0,60],
     init_tr = [0, -depth, 0]
 ) create_placement_dict(tr, r1, init_translation=init_tr);
