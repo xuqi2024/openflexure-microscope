@@ -315,20 +315,25 @@ module condenser_body(base_r, lens_assembly_z, include_mounting=true){
 // left as default.  Specifying lens_d, lens_t, or lens_assembly_z
 // may have unexpected effects, such as causing the renders to be
 // out of sync with the STLs.
-module condenser(lens_d=13, lens_t=1, lens_assembly_z=22, include_mounting=true){
-
-    lens_r = lens_d/2;
-    base_r = lens_r+2;
+function condenser_lens_assembly_z()=22;
+function condenser_lens_thickness()=1;
+function condenser_lens_diameter()=13;
+function condenser_base_r(lens_d)=lens_d/2+2;
+module condenser(include_mounting=true){
+    lens_d=condenser_lens_diameter();
+    lens_t=condenser_lens_thickness();
+    lens_assembly_z=condenser_lens_assembly_z(); 
+    base_r = condenser_base_r(lens_d);
 
     difference(){
         union(){
             condenser_body(base_r, lens_assembly_z+tiny(), include_mounting);
             //add the lens gripper
             translate_z(lens_assembly_z){
-                condenser_lens_gripper(lens_r, lens_t, base_r);
+                condenser_lens_gripper(lens_d/2, lens_t, base_r);
             }
         }
-        condenser_cutout(lens_r, lens_assembly_z);
+        condenser_cutout(lens_d/2, lens_assembly_z);
         reflect_x(){
             translate(lid_mounting_hole_pos(base_r) - [0, 0, 0.5]){
                 no2_selftap_hole(h=7);
@@ -365,13 +370,12 @@ module illumination_board_cutout(h, board_bore_depth){
 // z=0, and the rest is at z>0
 // i.e. it is upside down.
 function condenser_lid_h()=13;
-module condenser_lid(lens_d=13){
+module condenser_lid(lens_d=condenser_lens_diameter()){
     //allow space for 2 screw heads and for board thickness
     board_bore_depth = 6.5;
     //Total height must be deep enough for the self tap screw
     h = condenser_lid_h();
-    lens_r = lens_d/2;
-    base_r = lens_r+2;
+    base_r = condenser_base_r(lens_d);
 
     module cropped_body(base_r, y_cut_pos){
         difference(){
