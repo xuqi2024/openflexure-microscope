@@ -93,7 +93,7 @@ module upright_condenser(params, optics_config){
         union(){
             upright_condenser_platform(params, optics_config, base_r=5);
             translate([0,0,platform_h]){
-                condenser(lens_d=13, lens_t=1, lens_assembly_z= 30, include_mounting = false);
+                condenser(lens_assembly_z= 30, include_mounting = false);
             }
         }
         // Creating a large hole for the LED and wires to go through in the base

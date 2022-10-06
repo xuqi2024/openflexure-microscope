@@ -310,20 +310,18 @@ module condenser_body(base_r, lens_assembly_z, include_mounting=true){
     }
 }
 
-// NB the arguments are not currently used anywhere.  In all
-// the standard builds of the microscope, these parameters are
-// left as default.  Specifying lens_d, lens_t, or lens_assembly_z
-// may have unexpected effects, such as causing the renders to be
-// out of sync with the STLs.
+// lens_d and lens_t were only ever set to 13 and 1 respectively, so these are now
+// constants - they may be re-parameterised in the future.
+// lens_assembly_z is used at its default value in the STL and renders - it is only
+// changed in the upright condenser.
 function condenser_lens_assembly_z()=22;
 function condenser_lens_z()=condenser_lens_assembly_z()+condenser_lens_assembly_pedestal_height();
 function condenser_lens_thickness()=1;
 function condenser_lens_diameter()=13;
 function condenser_base_r(lens_d)=lens_d/2+2;
-module condenser(include_mounting=true){
+module condenser(lens_assembly_z=condenser_lens_assembly_z(), include_mounting=true){
     lens_d=condenser_lens_diameter();
     lens_t=condenser_lens_thickness();
-    lens_assembly_z=condenser_lens_assembly_z(); 
     base_r = condenser_base_r(lens_d);
 
     difference(){
