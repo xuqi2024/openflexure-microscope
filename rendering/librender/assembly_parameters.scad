@@ -184,10 +184,10 @@ function condenser_pos_exp() = translate_pos(condenser_pos(), [0, 0, 30]);
 function condenser_pos_above_tool() = create_placement_dict([0, 0, 90],
                                                             [0, 0, -90],
                                                             [180, 0, 0]);
-function condenser_pos_on_tool() = create_placement_dict([0, 0, lens_tool_height()+0.01+condenser_lens_assembly_z()+condenser_lens_thickness()],
+function condenser_pos_on_tool() = create_placement_dict([0, 0, lens_tool_height()+0.01+condenser_lens_z()+condenser_lens_thickness()],
                                                          [0, 0, -90],
                                                          [180, 0, 0]);
-function condenser_pos_above_tool() = translate_pos(condenser_pos_on_tool(), [0, 0, 35]);
+function condenser_pos_above_tool() = translate_pos(condenser_pos_on_tool(), [0, 0, 20]);
 
 function condenser_lens_tool_pos() = create_placement_dict([0, 0, lens_tool_height()+0.01]);
 function condenser_lens_pos_relative() = create_placement_dict([0, 0, 28.5], [180, 0, 0]);
