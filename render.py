@@ -401,19 +401,19 @@ def register_mount_sample_clips(rendersystem):
             rendersystem.register_scad_render(render)
 
 def register_complete_microscope(rendersystem):
-    input_file = "rendering/mount_sample_clips.scad"
+    input_file = "rendering/complete_microscope.scad"
     cameras = [
-        Camera(position=[0, 48, 98], angle=[53, 0, 133], distance=600),
-        Camera(position=[0, 48, 98], angle=[53, 0, 308], distance=600),
-        Camera(position=[0, 48, 98], angle=[90, 0, 90], distance=600),
-        Camera(position=[0, 48, 98], angle=[90, 0, 0], distance=600),
+        Camera(position=[0, 48, 98], angle=[65, 0, 133], distance=700),
+        Camera(position=[0, 48, 98], angle=[65, 0, 308], distance=700),
+        Camera(position=[0, 48, 98], angle=[90, 0, 90], distance=700),
+        Camera(position=[0, 48, 98], angle=[90, 0, 0], distance=700),
     ]
     imgsize = [2400, 2000]
     for optics in ["rms", "low_cost"]:
         low_cost = str(optics == "low_cost").lower()
         for i, camera in enumerate(cameras):
-            output_file = f"docs/renders/complete_microscope_noelectronics_{optics}{i}.png"
-            scad = f"render_mount_sample_clips({i}, {low_cost});"
+            output_file = f"docs/renders/complete_microscope_{optics}{i}.png"
+            scad = f"render_microscope({low_cost});"
             render = ScadRender(output_file, input_file, scad, imgsize, camera)
             rendersystem.register_scad_render(render)
 
