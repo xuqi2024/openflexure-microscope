@@ -212,7 +212,7 @@ module condenser_lens_gripper(lens_r, lens_t, base_r){
 
 function illumination_mounting_hole_sep() = 10;
 
-function lid_mounting_hole_pos(base_r) = [base_r-2, base_r+1, 0];
+function condenser_lid_mounting_hole_pos(base_r) = [base_r-2, base_r+1, 0];
 
 function apeture_tray_t() = 1.5;
 function aperture_tray_width() = 7.5;
@@ -335,7 +335,7 @@ module condenser(include_mounting=true){
         }
         condenser_cutout(lens_d/2, lens_assembly_z);
         reflect_x(){
-            translate(lid_mounting_hole_pos(base_r) - [0, 0, 0.5]){
+            translate(condenser_lid_mounting_hole_pos(base_r) - [0, 0, 0.5]){
                 no2_selftap_hole(h=7);
             }
         }
@@ -401,7 +401,7 @@ module condenser_lid(lens_d=condenser_lens_diameter()){
         }
         illumination_board_cutout(h, board_bore_depth);
         reflect_x(){
-            translate(lid_mounting_hole_pos(base_r) + [0, 0, h-2]){
+            translate(condenser_lid_mounting_hole_pos(base_r) + [0, 0, h-2]){
                 no2_selftap_counterbore(flip_z=true);
             }
         }

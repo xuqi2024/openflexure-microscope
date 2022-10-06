@@ -219,14 +219,10 @@ module rendered_condenser_lid(explode=false){
 module rendered_condenser_lid_screws(explode=false){
     z_pos = 2;
     exploded_z_pos = 25;
+    base_r = condenser_base_r(condenser_lens_diameter());
     rotate_y(180){
         reflect_x(){
-            // lid_mounting_hole_pos depends on base_r, which is defined in 
-            // `condenser` in `illumination.scad`.  This should probably be
-            // parameterised more nicely, e.g. via a dictionary, but for now
-            // is only ever used at its default value, which is lens_d/2+2,
-            // where lens_d is always 13.
-            translate(lid_mounting_hole_pos(base_r=13/2+2)){
+            translate(condenser_lid_mounting_hole_pos(base_r)){
                 translate_z((explode?exploded_z_pos:z_pos)){
                     no2_x6_5_selftap();
                 }
