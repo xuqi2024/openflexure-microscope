@@ -154,12 +154,18 @@ render:
 
     script:
       - xvfb-run --auto-servernum --server-args "-screen 0 1024x768x24" ./render.py
+      - mkdir -p docs/gltf
+      - pip install scad2gltf
+      - cd rendering
+      - scad2gltf complete_microscope.scad
+      - cp complete_microscope.glb ../docs/gltf/
 
     artifacts:
       expire_in: 1 week
       name: "${CI_PROJECT_NAME}-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}-renders"
       paths:
         - docs/renders/*.png
+        - docs/gltf/*
 
     only:
       - tags
