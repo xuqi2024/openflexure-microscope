@@ -186,10 +186,10 @@ module illumination_dovetail(params, h=50){
 * used in both condenser_lens_gripper and condenser_cutout
 */
 function condenser_aperture_difference() = 1.1;
-
+function condenser_lens_assembly_pedestal_height() = 5.5;
 module condenser_lens_gripper(lens_r, lens_t, base_r){
     // the lens holder on the end or the condenser
-    pedestal_h = 5.5;
+    pedestal_h = condenser_lens_assembly_pedestal_height();
     h = pedestal_h+lens_t+1.5;
     aperture_r = lens_r-condenser_aperture_difference();
 
@@ -316,6 +316,7 @@ module condenser_body(base_r, lens_assembly_z, include_mounting=true){
 // may have unexpected effects, such as causing the renders to be
 // out of sync with the STLs.
 function condenser_lens_assembly_z()=22;
+function condenser_lens_z()=condenser_lens_assembly_z()+condenser_lens_assembly_pedestal_height();
 function condenser_lens_thickness()=1;
 function condenser_lens_diameter()=13;
 function condenser_base_r(lens_d)=lens_d/2+2;
