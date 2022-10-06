@@ -11,7 +11,7 @@ use <librender/optics.scad>
 use <librender/electronics.scad>
 use <mount_microscope.scad>
 
-USE_BUILT_STL = false;
+USE_BUILT_STL = true;
 FRAME = 7;
 assemble_condenser(FRAME);
 
