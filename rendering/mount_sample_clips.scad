@@ -3,6 +3,7 @@
 
 use <../openscad/libs/microscope_parameters.scad>
 use <../openscad/libs/utilities.scad>
+use <../openscad/libs/libdict.scad>
 use <../openscad/libs/main_body_transforms.scad>
 use <../openscad/libs/main_body_structure.scad>
 use <librender/assembly_parameters.scad>
@@ -20,7 +21,9 @@ render_mount_sample_clips(FRAME, LOW_COST);
 
 module render_mount_sample_clips(frame, low_cost=false){
     assembled_microscope_without_electronics(low_cost=low_cost);
-    render_sample_clips(exploded=(frame==1));
+    mounted_microscope_frame(){
+        render_sample_clips(exploded=(frame==1));
+    }
 }
 
 module render_sample_clips(params=render_params(), exploded=false){
