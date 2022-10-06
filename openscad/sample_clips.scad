@@ -86,10 +86,15 @@ module sample_clips_stl(){
     for(a=[0,180]){
         rotate([0,-90,a]){
             translate([7/2,-10,-7+1]){
-                sample_clip([0,20,-1], w=7, radius_of_curvature=7);
+                default_sample_clip();
             }
         }
     }
+}
+
+// sample clip, upright, with default parameters
+module default_sample_clip(){
+    sample_clip([0,20,-1], w=7, radius_of_curvature=7);
 }
 
 sample_clips_stl();
