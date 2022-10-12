@@ -42,6 +42,16 @@ In this section we are assembling the transmission illuminator.  This mounts the
 * Start to screw the thumbscrew into the nut from the outside of the dovetail 
 * Screw the thumbscrew by hand until it almost touches the dovetail. **Do not tighten further at this stage**
 
+## Cut out the diffuser {pagestep}
+
+* Take a small sheet of [0.5mm polypropyline]{qty: 4cm^2}.
+* Cut out a circle, approximately 14mm in diameter, using a [utility knife]{qty:1}.  It is better to be slightly smaller than required, rather than slightly larger.
+* Using the [condenser board spacer](fromstep) as a guide, make two small holes for the screws that mount the illumination.
+* The diffuser is shown in white in the next step.
+
+[0.5mm polypropyline]: parts/materials/white_polypropyline_sheet.md "{cat:material}"
+[utility knife]: parts/tools/utility-knife.md "{cat: tool}"
+
 ## Mount the diffuser and LED board {pagestep}
 
 ![](renders/mount_led_board1.png)
