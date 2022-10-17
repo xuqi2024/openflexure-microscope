@@ -229,7 +229,7 @@ module no2_selftap_counterbore(bore_h=999, hole_h=999, flip_z=false, tight=false
 // it is also designed so that the counterbore can print prperly upsidedown
 module m3_cap_counterbore(bore_h=999, hole_h=999, flip_z=false){
     $fn = 14;
-    generic_counterbore(bore_d=6.5, bore_h=bore_h, hole_d=3.5, hole_h=hole_h);
+    generic_counterbore(bore_d=6.5, bore_h=bore_h, hole_d=3.5, hole_h=hole_h, flip_z=flip_z);
 }
 
 module generic_counterbore(bore_d, bore_h, hole_d, hole_h, flip_z=false){
