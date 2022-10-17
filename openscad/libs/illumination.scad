@@ -317,6 +317,10 @@ function condenser_lens_z()=condenser_lens_assembly_z()+condenser_lens_assembly_
 function condenser_lens_thickness()=1;
 function condenser_lens_diameter()=13;
 function condenser_base_r(lens_d)=lens_d/2+2;
+
+// Module: condenser()
+//   This makes the condenser arm, including the dovetail clamp, condenser
+//   lens holder, and mounting for the illumination PCB.
 module condenser(lens_assembly_z=condenser_lens_assembly_z(), include_mounting=true){
     lens_d=condenser_lens_diameter();
     lens_t=condenser_lens_thickness();
