@@ -146,7 +146,6 @@ module illumination_dovetail(params, h=50){
     //height of the dovetail
     dt_h = h - start_z;
     dt_params = illumination_dt_params();
-    dt_depth = key_lookup("depth", dt_params);
     lug_h = illumination_dovetail_lug_height();
 
     difference(){
@@ -285,7 +284,6 @@ function condenser_dovetail_params() = let(
 
 module condenser_body(base_r, lens_assembly_z, include_mounting=true){
     dt_params = condenser_dovetail_params();
-    dt_block_depth = key_lookup("block_depth", dt_params);
     dt_height = key_lookup("overall_height", dt_params);
     // the dovetail clip
     if (include_mounting){
@@ -446,7 +444,6 @@ module diffuser(thickness=diffuser_thickness()){
     $fn=32;
     diameter = 14.5;
     hole_sep = illumination_mounting_hole_sep();
-    ring_width = diameter-hole_sep;
     difference(){
         cylinder(h=thickness, d=diameter);
         reflect_x(){
