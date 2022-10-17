@@ -4,12 +4,17 @@ In this section we are assembling the transmission illuminator.  This mounts the
 
 {{BOM}}
 
-[M3 nut]: parts/mechanical.yml#Nut_M3_SS
-[M3x25mm stainless steel hex bolt]: parts/mechanical.yml#HexBolt_M3x25mm_SS
-[M3 stainless steel washers]: parts/mechanical.yml#Washer_M3_SS
-[No 2 6.5mm self tapping screws]: parts/mechanical.yml#SelfTap_PoziPan_No2x6.5_SS
-[2.5mm Ball-end Allen key]: parts/tools/2.5mmBallEndAllenKey.md
-[#1 pozidrive screwdriver]: missing
+[M3 nut]: parts/mechanical.yml#Nut_M3_SS "{cat:mech}"
+[M3x25mm stainless steel hex bolt]: parts/mechanical.yml#HexBolt_M3x25mm_SS "{cat:mech}"
+[M3 stainless steel washers]: parts/mechanical.yml#Washer_M3_SS "{cat:mech}"
+[M3x10 cap head screws]: parts/mechanical.yml#CapScrew_M3x10mm_SS "{cat:mech}"
+[No 2 6.5mm self tapping screws]: parts/mechanical.yml#SelfTap_PoziPan_No2x6.5_SS "{cat:mech}"
+[2.5mm Ball-end Allen key]: parts/tools/2.5mmBallEndAllenKey.md "{cat:tool}"
+[#1 pozidrive screwdriver]: missing "{cat:tool}"
+[illumination PCB]: ./parts/electronics/illumination_pcb.md "{cat:electronic, note: 'A 5mm LED can be used instead, if you follow the [LED workaround].'}"
+[LED workaround]: ./workaround_5mm_led/workaround_5mm_led.md
+
+>i If the illumination PCB is not available, you can use a 5mm LED instead, by following the [LED workaround].
 
 ## Mount the dovetail {pagestep}
 
@@ -18,7 +23,7 @@ In this section we are assembling the transmission illuminator.  This mounts the
 
 
 * Place the [illumination dovetail][Illumination dovetail](fromstep){qty:1, cat:printedpart} onto the stage above the z-actuator of the main body.
-* Secure in place with two [M3x10 cap head screws](parts/mechanical.yml#CapScrew_M3x10mm_SS){qty:2, cat:mech} and 2 [M3 Washers][M3 stainless steel washers]{qty:2, cat:mech} (using [2.5mm Ball-end Allen key]{qty:1, cat:tool})
+* Secure in place with two [M3x10 cap head screws]{qty:2} and 2 [M3 Washers][M3 stainless steel washers] (using [2.5mm Ball-end Allen key]{qty:1})
 
 
 ## Push-fit the lens {pagestep}
@@ -37,8 +42,8 @@ In this section we are assembling the transmission illuminator.  This mounts the
 ![](renders/assemble_condenser_thumbscrew3.png)
 
 
-* Place an [M3x25mm stainless steel hex bolt]{qty:1, cat:mech} through the [Illumination thumbscrew](fromstep){qty:1, cat:printedpart}
-* Drop an [M3 nut]{qty:1, cat:mech} into the nut slot on the condenser arm dovetail
+* Place an [M3x25mm stainless steel hex bolt]{qty:1} through the [Illumination thumbscrew](fromstep){qty:1, cat:printedpart}
+* Drop an [M3 nut]{qty:1} into the nut slot on the condenser arm dovetail
 * Start to screw the thumbscrew into the nut from the outside of the dovetail 
 * Screw the thumbscrew by hand until it almost touches the dovetail. **Do not tighten further at this stage**
 
@@ -60,8 +65,8 @@ In this section we are assembling the transmission illuminator.  This mounts the
 ![](renders/mount_led_board4.png)
 
 * Turn the condenser over, so the flat side is on top.
-* Place the [diffuser]{qty: 1} on the condenser, then the [condenser board spacer][Condenser board spacer](fromstep){qty:1}, then the [illumination PCB]{qty:1}.
-* Fix in place with two [No 2 6.5mm self tapping screws]{qty:2, cat:mech} using a [#1 pozidrive screwdriver]{cat:tool, qty:1}.
+* Place the diffuser on the condenser, then the [condenser board spacer][Condenser board spacer](fromstep){qty:1}, then the [illumination PCB]{qty:1}.
+* Fix in place with two [No 2 6.5mm self tapping screws]{qty:2} using a [#1 pozidrive screwdriver]{qty:1}.
 
 ## Attach the illumination cable {pagestep}
 
@@ -78,7 +83,7 @@ In this section we are assembling the transmission illuminator.  This mounts the
 ![](renders/mount_condenser_lid4.png)
 
 * Place the [condenser lid][Condenser lid](fromstep){qty:1} on top of the condenser assembly.
-* Secure in place with two [No 2 6.5mm self tapping screws]{qty:2, cat:mech} using a [#1 pozidrive screwdriver]{cat:tool, qty:1}.
+* Secure in place with two [No 2 6.5mm self tapping screws]{qty:2} using a [#1 pozidrive screwdriver]{qty:1}.
 
 ## Insert the illumination wiring {pagestep}
 
