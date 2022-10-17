@@ -180,6 +180,17 @@ def register_condenser_assembly(rendersystem):
         render = ScadRender(output_file, input_file, scad, imgsize, camera)
         rendersystem.register_scad_render(render)
 
+def register_workaround_5mm_led(rendersystem):
+    input_file = "rendering/workaround_5mm_led.scad"
+    camera = Camera(position=[0, 0, 0], angle=[42, 0, 313], distance=137)
+    imgsize = [2400, 2000]
+    for frame in [1, 2, 3, 4, 5]:
+        scad = f"workaround_5mm_led({frame});"
+        output_file = f"docs/renders/workaround_5mm_led{frame}.png"
+        render = ScadRender(output_file, input_file, scad, imgsize, camera)
+        rendersystem.register_scad_render(render)
+    
+
 def register_optics_assembled(rendersystem):
     input_file = "rendering/optics_assembly.scad"
     camera = Camera(position=[30, 5, 60], angle=[90, 0, 110], distance=440)
@@ -385,6 +396,7 @@ def main():
     register_rms_optics_assembly(rendersystem)
     register_low_cost_optics_assembly(rendersystem)
     register_condenser_assembly(rendersystem)
+    register_workaround_5mm_led(rendersystem)
     register_optics_assembled(rendersystem)
     register_band(rendersystem)
     register_brim_and_ties(rendersystem)

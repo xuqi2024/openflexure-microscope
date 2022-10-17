@@ -169,16 +169,21 @@ module rendered_illumination_connector(explode=false, straight_cable=false){
                 rotate_x(-90){
                     dupont_connector_housing(2, center=true);
                     if(straight_cable){
-                        coloured_render("red"){
-                            wire(d=1, points=[[2.54/2,0,8], [1/2,0,15], [1/2,0,99]]);
-                        }
-                        coloured_render("DimGray"){
-                            wire(d=1, points=[[-2.54/2,0,8], [-1/2,0,15], [-1/2,0,99]]);
-                        }
+                        illumination_wires();
                     }
                 }
             }
         }
+    }
+}
+
+// Straight red and black wires, up along the Z axis
+module illumination_wires(){
+    coloured_render("red"){
+        wire(d=1, points=[[2.54/2,0,8], [1/2,0,15], [1/2,0,99]]);
+    }
+    coloured_render("DimGray"){
+        wire(d=1, points=[[-2.54/2,0,8], [-1/2,0,15], [-1/2,0,99]]);
     }
 }
 
@@ -215,8 +220,57 @@ module rendered_condenser_lid(explode=false){
     }
 }
 
+module rendered_led_holder(explode=false){
+    coloured_render(extras_colour()){
+        translate_z(-condenser_lid_h() + 5 + (explode ? 20 : 0)){
+            if (USE_BUILT_STL){
+                cached_stl("condenser_led_holder");
+            }else{
+                condenser_led_holder();
+            }
+        }
+    }
+}
+
+module rendered_led(explode=false){
+    translate_z(-condenser_lid_h() + 5 + (explode ? 20 : 0)){
+        led();
+        reflect_x(){
+            translate([2.54/2, 0, -0.75]){
+                rotate_x(-90){
+                    coloured_render("DimGray"){
+                        cylinder(d=1.5, h=20);
+                    }
+                }
+            }
+        }
+        translate([0, 12, -0.75]){
+            rotate_x(-90){
+                illumination_wires();
+            }
+        }
+    }
+}
+
 // Lid mounting screws
 module rendered_condenser_lid_screws(explode=false){
+    z_pos = -condenser_lid_h() + 7;
+    exploded_z_pos = z_pos + 25;
+    base_r = condenser_base_r(condenser_lens_diameter());
+    reflect_x(){
+        translate_x(illumination_mounting_hole_sep()/2){
+            translate_z((explode?exploded_z_pos:z_pos)){
+                no2_x6_5_selftap();
+            }
+            if (explode){
+                construction_line([0, 0, z_pos], [0, 0, exploded_z_pos]);
+            }
+        }
+    }
+}
+
+// LED mounting screws
+module rendered_led_screws(explode=false){
     z_pos = 2;
     exploded_z_pos = 25;
     base_r = condenser_base_r(condenser_lens_diameter());
