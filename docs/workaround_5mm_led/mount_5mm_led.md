@@ -14,10 +14,10 @@ If you don't have a PCB for the illumination, you can mount a 5mm LED instead.
 ## Mount the LED {pagestep}
 
 ![Exploded view of the LED and LED holder](../renders/workaround_5mm_led1.png)
-![LED in the LED holder, above the condenser lid](../renders/workaround_5mm_led1.png)
-![LED in the condenser lid, ready for screws](../renders/workaround_5mm_led1.png)
-![Exploded view of the mounting screws](../renders/workaround_5mm_led1.png)
-![The assembled LED and condenser lid](../renders/workaround_5mm_led1.png)
+![LED in the LED holder, above the condenser lid](../renders/workaround_5mm_led2.png)
+![LED in the condenser lid, ready for screws](../renders/workaround_5mm_led3.png)
+![Exploded view of the mounting screws](../renders/workaround_5mm_led4.png)
+![The assembled LED and condenser lid](../renders/workaround_5mm_led5.png)
 
 * Push-fit the [LED assembly]{qty:1} into the [condenser LED holder]{qty:1} printed in the first step.
 * Secure the LED holder onto the lid of the condenser with two [No 2 6.5mm self tapping screws]{qty:2} using a [#1 pozidrive screwdriver]{qty:1}.
