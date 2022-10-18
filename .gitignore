@@ -42,7 +42,7 @@ source.zip
 *.backup
 
 # Python virtualenvironment
-.venv/
+.venv*/
 
 # Python cache
 __pycache__

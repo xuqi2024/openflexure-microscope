@@ -107,29 +107,6 @@ module filleted_bridge(gap, roc_xy=2, roc_xz=2){
         }
     }
 }
-module thick_section(h=tiny(), center=false, shift=true){
-    // A 3D object, corresponding to the linearly-extruded projection of another object.
-    linear_extrude(h, center=center){
-        projection(cut=true){
-            translate_z(shift ? -tiny() : 0){
-                children();
-            }
-        }
-    }
-}
-module offset_thick_section(h=tiny(), offset=0, center=false, shift=true){
-    // A 3D object, corresponding to the linearly-extruded projection of another object. Cut a tiny distance above z=0
-    linear_extrude(h, center=center){
-        offset(r=offset){
-            projection(cut=true){
-                translate_z(shift ? -tiny() : 0){
-                    children();
-                }
-            }
-        }
-    }
-}
-
 
 //TODO think of a less confusing name for this!!!!!!
 // This is used to create long tilted extrusions where the bottom of the section may have a different angle

@@ -31,12 +31,8 @@ module actuator_drilling_jig(){
 
     difference(){
         translate_z(-7){
-            linear_extrude(actuator_h+5){
-                offset(-outer_clearance){
-                    projection(cut=true){
-                        nut_seat_void();
-                    }
-                }
+            offset_thick_section(h=actuator_h+5, offset=-outer_clearance, center=false, shift=false){
+                nut_seat_void();
             }
         }
 

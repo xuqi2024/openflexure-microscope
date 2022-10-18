@@ -512,7 +512,20 @@ module complete_z_actuator(params){
     }
 }
 
+// Function: z_housing_bottom_pos(params, y_actuator=false)
+// Description:
+//   The position of the bottom of the cable housing on
+//   either side of the Z axis.  Which side is determined
+//   by `y_actuator`.
+function z_housing_bottom_pos(params, y_actuator=false) = let(
+    x_tr = y_actuator ? -23 : 23
+) [x_tr, z_nut_y(params), 0];
 
+// Function: z_housing_angle(params, y_actuator=false)
+// Description:
+//   How far to rotate the cable housings around the 
+//   Z axis
+function z_housing_angle(params, y_actuator=false) = y_actuator ? 15 : -15;
 
 // Module: z_housing_frame(params, y_actuator=false)
 // Description: 
@@ -525,10 +538,8 @@ module complete_z_actuator(params){
 //   we will be on the +y side of the Z actuator.
 module z_housing_frame(params, y_actuator=false){
     tilt = z_actuator_tilt(params);
-    x_tr = y_actuator ? -23 : 23;
-    angle = y_actuator ? 15 : -15;
-    translate([x_tr, z_nut_y(params), 0]){
-        rotate_z(angle){
+    translate(z_housing_bottom_pos(params, y_actuator)){
+        rotate_z(z_housing_angle(params, y_actuator)){
             rotate_x(tilt){
                 children();
             }
@@ -556,6 +567,21 @@ module z_cable_tidy_frame(params, z_extra=0){
         }
     }
 }
+
+// A point at the bottom of the illumination cable housing
+function illumination_cable_housing_bottom_pos(params) = (
+    z_housing_bottom_pos(params, y_actuator=true) - [4,0,0] // The 4 comes from `z_cable_housing_cutout`
+);
+
+// A point at (or above) the centre of the illumination cable housing
+// this is used to render the illumination wiring
+function illumination_cable_housing_top_pos(params, z_extra=0) = let(
+    tilt = z_actuator_tilt(params),
+    z_tr = z_motor_z_pos(params) + motor_bracket_h() + z_extra,
+    bottom = illumination_cable_housing_bottom_pos(params),
+    z_rotate = z_housing_angle(params, y_actuator=true),
+    unit_vector = [sin(tilt)*sin(z_rotate), -sin(tilt)*cos(z_rotate), cos(tilt)]
+) bottom + unit_vector * z_tr;
 
 module z_cable_tidy_frame_undo(params, z_extra=0){
     tilt = z_actuator_tilt(params);
@@ -600,11 +626,9 @@ module z_cable_housing(params){
 module z_cable_housing_top(params, h){
     // Must untilt and trasnlate before cutting. Then undo transforms
     z_cable_tidy_frame(params, z_extra=motor_bracket_h()){
-        linear_extrude(h){
-            projection(cut=true){
-                z_cable_tidy_frame_undo(params, z_extra=motor_bracket_h()-tiny()){
-                    z_cable_housing(params);
-                }
+        thick_section(h=h, center=false, shift=false){
+            z_cable_tidy_frame_undo(params, z_extra=motor_bracket_h()-tiny()){
+                z_cable_housing(params);
             }
         }
     }

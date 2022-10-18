@@ -122,6 +122,8 @@ archive-source:
 check_stls:
     stage: analyse
     image: python:3.7
+    needs: ["build"]
+    dependencies: ["build"]
     allow_failure: true
     variables:
       # prevents config waiting for user input, e.g. for tzdata
@@ -147,6 +149,8 @@ check_stls:
 render:
     extends: .scad-job
     stage: build
+    dependencies: ["build"]
+    needs: ["build"]
 
     script:
       - xvfb-run --auto-servernum --server-args "-screen 0 1024x768x24" ./render.py
@@ -170,6 +174,7 @@ build-docs:
       - build
       - render
       - archive-source
+    needs: ["build", "render", "archive-source"]
     image: "python:3.7"
 
     before_script:
