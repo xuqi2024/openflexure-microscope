@@ -288,7 +288,16 @@ module condenser_body(base_r, lens_assembly_z, include_mounting=true){
     // the dovetail clip
     if (include_mounting){
         translate_y(illumination_dovetail_y()){
-            dovetail_clamp_m(dt_params);
+            // Mirroring ensures the sloping nut trap retains the nut
+            // if the thumbscrew is unscrewed.  As the condenser is
+            // modelled upside down, if we didn't flip it in Z, the
+            // nut would slide out of the trap when the screw is
+            // removed.
+            translate_z(dt_height){
+                mirror([0,0,1]){
+                    dovetail_clamp_m(dt_params);
+                }
+            }
         }
     }
     cylinder(r=base_r+.2, h=lens_assembly_z+tiny());

@@ -393,6 +393,12 @@ module clamping_bolt_and_nut(p){
             rotate_y(-90){
                 cylinder(d=3*1.2, h=key_lookup("clamp_t", p)); //shaft of the screw
                 translate_z( fillet_r + 2){
+                    // The rotation below means the nut slides in at an angle, rather 
+                    // than horizontally.  This is important: it ensures that the nut
+                    // is retained by a ring of plastic within one layer, rather than
+                    // relying on inter-layer adhesion (which is weaker).
+                    // The entry slot should not be made horizontal without testing
+                    // carefully for strength.
                     rotate_z(60){
                         sequential_hull(){
                             // TODO: replace this with a proper parametric nut trap!
