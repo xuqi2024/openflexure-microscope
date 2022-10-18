@@ -378,7 +378,7 @@ module condenser_lid(lens_d=condenser_lens_diameter()){
     h = condenser_lid_h();
     base_r = condenser_base_r(lens_d);
 
-    module cropped_body(base_r, y_cut_pos){
+    module cropped_body(y_cut_pos){
         difference(){
             condenser_body(base_r, tiny());
             translate_y(y_cut_pos+100){
@@ -390,14 +390,14 @@ module condenser_lid(lens_d=condenser_lens_diameter()){
     difference(){
         minkowski(){
             offset_thick_section(h=h-1.5, offset=-2, shift=true){
-                cropped_body(base_r,illumination_dovetail_y()-3);
+                cropped_body(illumination_dovetail_y()-3);
             }
             sphere(r=3.5,$fn=16);
         }
 
         translate_z(h){
             offset_thick_section(h=h, offset=.5, shift=true){
-                cropped_body(base_r,illumination_dovetail_y());
+                cropped_body(illumination_dovetail_y());
             }
         }
         illumination_board_cutout(h, board_bore_depth);
