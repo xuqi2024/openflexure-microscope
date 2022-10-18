@@ -9,6 +9,8 @@ The official project uses the [Sangaboard motor controller](parts/electronics/sa
 [28BYJ-48 driver board]: parts/electronics.yml#28BYJ-48-Driver
 [Arduino Nano]: parts/electronics.yml#ArduinoNano
 [jumper cables]: parts/electronics.yml#JumperCable
+[solder]: parts/consumables/solder.md
+[soldering iron]: parts/tools/soldering_iron.md
 
 {{BOM}}
 

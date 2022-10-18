@@ -10,8 +10,9 @@ In this section we are assembling the transmission illuminator.  This mounts the
 [M3x10 cap head screws]: parts/mechanical.yml#CapScrew_M3x10mm_SS "{cat:mech}"
 [No 2 6.5mm self tapping screws]: parts/mechanical.yml#SelfTap_PoziPan_No2x6.5_SS "{cat:mech}"
 [2.5mm Ball-end Allen key]: parts/tools/2.5mmBallEndAllenKey.md "{cat:tool}"
-[#1 pozidrive screwdriver]: missing "{cat:tool}"
+[#1 pozidrive screwdriver]: parts/tools/pozidrive_1_screwdriver.md "{cat:tool}"
 [illumination PCB]: ./parts/electronics/illumination_pcb.md "{cat:electronic, note: 'A 5mm LED can be used instead, if you follow the [LED workaround].'}"
+
 [LED workaround]: ./workaround_5mm_led/workaround_5mm_led.md
 
 >i If the illumination PCB is not available, you can use a 5mm LED instead, by following the [LED workaround].
@@ -65,15 +66,24 @@ In this section we are assembling the transmission illuminator.  This mounts the
 ![](renders/mount_led_board4.png)
 
 * Turn the condenser over, so the flat side is on top.
-* Place the diffuser on the condenser, then the [condenser board spacer][Condenser board spacer](fromstep){qty:1}, then the [illumination PCB]{qty:1}.
+* Place the diffuser on the condenser, then the [condenser board spacer][Condenser board spacer](fromstep){qty:1, cat:printedpart}, then the [illumination PCB]{qty:1}.
 * Fix in place with two [No 2 6.5mm self tapping screws]{qty:2} using a [#1 pozidrive screwdriver]{qty:1}.
+
+## Assemble the illumination wiring harness {pagestep}
+* Take a [Red pre-crimped Female-Female jumper cable (30 cm)] and a [Black pre-crimped Female-Female jumper cable (30 cm)].
+* Attach a [2 pin Du Pont connector female housing]{qty:2} to each end.
+* This is the illumination wiring harness.
+
+[2 pin Du Pont connector female housing]: parts/electronics.yml#DuPont_Housing_1x2 "{cat:electronic}"
+[Red pre-crimped Female-Female jumper cable (30 cm)]: parts/electronics.yml#JumperCable_FF_300mm_Red "{cat:electronic}"
+[Black pre-crimped Female-Female jumper cable (30 cm)]: parts/electronics.yml#JumperCable_FF_300mm_Black "{cat:electronic}"
 
 ## Attach the illumination cable {pagestep}
 
 ![](renders/mount_led_cable1.png)
 ![](renders/mount_led_cable2.png)
 
-* Attach the [illumination wiring harness]{qty:1} to the [illumination PCB]
+* Attach the illumination wiring harness to the [illumination PCB]
 
 ## Attach the illumination cover {pagestep}
 
@@ -82,15 +92,15 @@ In this section we are assembling the transmission illuminator.  This mounts the
 ![](renders/mount_condenser_lid3.png)
 ![](renders/mount_condenser_lid4.png)
 
-* Place the [condenser lid][Condenser lid](fromstep){qty:1} on top of the condenser assembly.
+* Place the [condenser lid][Condenser lid](fromstep){qty:1, cat:printedpart} on top of the condenser assembly.
 * Secure in place with two [No 2 6.5mm self tapping screws]{qty:2} using a [#1 pozidrive screwdriver]{qty:1}.
 
 ## Insert the illumination wiring {pagestep}
 
 ![](renders/mount_illumination_{{var_optics, default:rms}}3.png)
 
-* Pass the [illumination wiring harness] from the top to the bottom of the cable guide in the illumination dovetail.
-* Pass the [illumination wiring harness] from the top to the bottom of the cable guide in the main body, between the Z gear and the Y gear.
+* Pass the illumination wiring harness from the top to the bottom of the cable guide in the illumination dovetail.
+* Pass the illumination wiring harness from the top to the bottom of the cable guide in the main body, between the Z gear and the Y gear.
 
 ## Mount the condenser arm {pagestep}
 

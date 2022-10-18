@@ -7,7 +7,7 @@ If you don't have a PCB for the illumination, you can mount a 5mm LED instead.
 {{BOM}}
 
 [No 2 6.5mm self tapping screws]: ../parts/mechanical.yml#SelfTap_PoziPan_No2x6.5_SS "{cat:mech}"
-[#1 pozidrive screwdriver]: missing "{cat:tool}"
+[#1 pozidrive screwdriver]: ../parts/tools/pozidrive_1_screwdriver.md "{cat:tool}"
 [LED assembly]: fromstep "{cat:electronic}"
 [condenser LED holder]: fromstep "{cat:printedPart}"
 
