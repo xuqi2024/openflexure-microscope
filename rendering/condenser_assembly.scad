@@ -252,8 +252,8 @@ module rendered_led(explode=false){
     }
 }
 
-// Lid mounting screws
-module rendered_condenser_lid_screws(explode=false){
+// Screws attaching the LED holder to the lid
+module rendered_led_screws(explode=false){
     z_pos = -condenser_lid_h() + 7;
     exploded_z_pos = z_pos + 25;
     base_r = condenser_base_r(condenser_lens_diameter());
@@ -269,8 +269,8 @@ module rendered_condenser_lid_screws(explode=false){
     }
 }
 
-// LED mounting screws
-module rendered_led_screws(explode=false){
+// Screws attaching the lid to the condenser
+module rendered_condenser_lid_screws(explode=false){
     z_pos = 2;
     exploded_z_pos = 25;
     base_r = condenser_base_r(condenser_lens_diameter());

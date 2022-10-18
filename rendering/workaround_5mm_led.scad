@@ -32,6 +32,6 @@ module mount_led(frame){
         rendered_led_holder(explode=(frame<3));
     }
     if(frame >= 4){
-        rendered_condenser_lid_screws(explode=(frame==4));
+        rendered_led_screws(explode=(frame==4));
     }
 }
