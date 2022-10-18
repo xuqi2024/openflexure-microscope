@@ -40,7 +40,10 @@ module cable_tidy_body(h, curve_both=false){
     }
 }
 
-
+// Cut-outs inside the cable tidy
+// NB h here is the top of the tallest cut-out, so
+// should be less than the overall height.
+// The cable cut-out will be either h or h-0.75 tall.
 module cable_tidy_body_cutouts(h, front=false){
     translate([-22,3.7,1.5]){
         cube([44,100,100]);    // The motor lugs
@@ -54,21 +57,21 @@ module cable_tidy_body_cutouts(h, front=false){
     // Void for the cable
     if (front){  // front means we are rendering the Z cable tidy
         translate([-10,-12,1]){
-            cube([20,6.1,h-3]);
+            cube([20,6.1,h-1]);
         }
         hull(){
             translate([-10,-12,1]){
-                cube([20,6.1,h-3.75]);
+                cube([20,6.1,h-1.75]);
             }
             rotate_z(-10){
                 translate([-20,-7,1]){
-                    cube([11,5.1,h-3.75]);
+                    cube([11,5.1,h-1.75]);
                 }
             }
         }
         rotate_z(-10){
             translate([-20,-7,-1]){
-                cube([11,5.1,h-1.75]);
+                cube([11,5.1,h+1-0.75]);
             }
         }
     }
@@ -79,20 +82,20 @@ module cable_tidy_body_cutouts(h, front=false){
         // in order to make bridging work
         // (that's the +2 in width and -2 in x)
         translate([-8-2,-12,1]){
-            cube([16+2,6.1,h-3]); 
+            cube([16+2,6.1,h-1]); 
         }
         // connection to the vertical shaft in the body
         // NB this is intentionally slightly lower, so that
         // the part will print correctly - it needs to bridge
         // here first.
         translate([-20,-12,1]){
-            cube([20,6.1,h-3.75]); 
+            cube([20,6.1,h-1.75]); 
         }
         // angled slot going through the bottom, so the cable
         // can be inserted
         rotate_z(-148){
             translate([0,-5.1,-1]){
-                cube([25,5.1,h-1.75]);
+                cube([25,5.1,h+1-0.75]);
             }
         }
     }
@@ -134,7 +137,7 @@ module thick_projection_with_rounded_top(h, roc=1.5, $fn=16){
     }
 }
 
-module side_cable_tidy(params, h=7){
+module side_cable_tidy(params, h=6){
     difference(){
         thick_projection_with_rounded_top(h=h){
             union(){
@@ -147,20 +150,20 @@ module side_cable_tidy(params, h=7){
             }
         }
         y_actuator_frame(params){
-            cable_tidy_body_cutouts(h);
+            cable_tidy_body_cutouts(h-1);
         }
-        side_housing_cutout(params, h-2.75);
+        side_housing_cutout(params, h-1.75);
     }
 }
 
-// Module: front_cable_tidy(params, h=7)
+// Module: front_cable_tidy(params, h=6)
 // Description: 
 //   The cable tidy at the front of the microscope (i.e. for the Z motor)
 //   NB this renders in-place and will need to be transformed to put it
 //   in printable position, using 
 //   z_cable_tidy_frame_undo(params, z_extra=motor_bracket_h())
-module front_cable_tidy(params, h=7){
-    cutout_h = z_motor_z_pos(params) + motor_bracket_h() + h - 2.75;
+module front_cable_tidy(params, h=6){
+    cutout_h = z_motor_z_pos(params) + motor_bracket_h() + h - 1.75;
     difference(){
         z_cable_tidy_frame(params, z_extra=motor_bracket_h()){
             // thick_projection needs the bottom to be flat and the
@@ -183,7 +186,7 @@ module front_cable_tidy(params, h=7){
             }
         }
         z_cable_tidy_frame(params, z_extra=motor_bracket_h()){
-            cable_tidy_body_cutouts(h, front=true);
+            cable_tidy_body_cutouts(h-1, front=true);
         }
         z_cable_housing_cutout(params, cutout_h, top=true);
     }
