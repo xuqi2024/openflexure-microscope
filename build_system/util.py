@@ -5,6 +5,7 @@ import sys
 import subprocess
 from copy import copy
 import re
+import platform
 
 def get_openscad_exe():
     """
@@ -33,7 +34,12 @@ def parameters_to_string(parameters):
         elif isinstance(value, str):
             value = f'"{value}"'
 
-        strings.append("-D '{}={}'".format(name, value))
+        if platform.system() == 'Windows':
+            # Add escape to quotes in value, use double quotes around param
+            value = value.replace("\"", "\\\"")
+            strings.append("-D \"{}={}\"".format(name, value))
+        else:
+            strings.append("-D '{}={}'".format(name, value))
 
     return " ".join(strings)
 
