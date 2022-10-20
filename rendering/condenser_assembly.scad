@@ -44,17 +44,20 @@ module assemble_condenser(frame){
 
 
 module assemble_condenser_thumbscrew(frame){
-    home = create_placement_dict([0, 0, 0]);
-    explode = (frame==1) ? "nut" :
-        (frame==2) ? "thumbscrew" :
-            undef;
+    explosions = ["nut", "thumbscrew", undef];
+    dovetail_height = key_lookup("overall_height", condenser_dovetail_params());
+    // The sloping nut trap means that it's best to put the nut in when
+    // the condenser is lens-down, i.e. in its orientation as used,
+    // with the print bed side on top, hence "flipped" orientation.
+    flipped = create_placement_dict([0, 0, dovetail_height], [0, 180, 0]);
+    echo("placement", flipped);
     thumbscrew = (frame>1) ? true : false;
-    rendered_condenser_assembly(home,
+    rendered_condenser_assembly(flipped,
                                 include_led=false,
                                 include_thumbscrew=thumbscrew,
                                 include_nut=true,
                                 include_lid=false,
-                                explode=explode);
+                                explode=explosions[frame - 1]);
 }
 
 module insert_condenser_lens(frame){
@@ -350,7 +353,7 @@ module rendered_condenser_assembly(pos=undef,
         if (include_nut){
             exploded = explode == "nut";
             nut_pos = condenser_clamp_axis_pos(4.4);
-            explode_nut_translation = 20*[cos(30)*sin(30), cos(30)*cos(30), sin(30)];
+            explode_nut_translation = 20*[cos(30)*sin(30), cos(30)*cos(30), -sin(30)];
             nut_pos_exp = translate_pos(condenser_clamp_axis_pos(4.4),
                                         explode_nut_translation);
             if (exploded){
