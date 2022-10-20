@@ -1,6 +1,5 @@
 
 
-
 use <../openscad/libs/microscope_parameters.scad>
 use <../openscad/libs/utilities.scad>
 use <../openscad/libs/libdict.scad>
@@ -37,7 +36,7 @@ module render_sample_clips(params=render_params(), exploded=false){
                     }
                 }
             }
-            translate_z(exploded?40:2.5){
+            translate_z(exploded?12:2.5){
                 m3_cap_x10();
             }
             if(exploded){
