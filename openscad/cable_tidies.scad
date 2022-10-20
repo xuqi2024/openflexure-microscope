@@ -1,5 +1,3 @@
-
-
 use <libs/microscope_parameters.scad>
 use <libs/main_body_transforms.scad>
 use <libs/utilities.scad>
@@ -87,14 +85,14 @@ module cable_tidy_body_cutouts(h, front=false){
         // in order to make bridging work
         // (that's the +2 in width and -2 in x)
         translate([-8-2,-12,1]){
-            cube([16+2,6.1,h-1]); 
+            cube([16+2,6.1,h-1]);
         }
         // connection to the vertical shaft in the body
         // NB this is intentionally slightly lower, so that
         // the part will print correctly - it needs to bridge
         // here first.
         translate([-20,-12,1]){
-            cube([20,6.1,h-1.75]); 
+            cube([20,6.1,h-1.75]);
         }
         // angled slot going through the bottom, so the cable
         // can be inserted
@@ -122,7 +120,7 @@ module linear_extrude_with_rounded_top(h, roc=1.5){
     // The curved top is achieved by insetting the 2D shape, then
     // convolving it with a sphere
     minkowski(){
-        sphere(r=roc);
+        sphere(r=roc, $fn=16);
         translate_z(h - roc){
             linear_extrude(tiny()){
                 offset(-roc){
@@ -134,7 +132,7 @@ module linear_extrude_with_rounded_top(h, roc=1.5){
 }
 
 // Project along Z, then extrude with a chamfered top edge
-module thick_projection_with_rounded_top(h, roc=1.5, $fn=16){
+module thick_projection_with_rounded_top(h, roc=1.5){
     linear_extrude_with_rounded_top(h=h, roc=roc){
         projection(){
             children();
@@ -147,9 +145,7 @@ module side_cable_tidy(params, h=6){
         thick_projection_with_rounded_top(h=h){
             union(){
                 y_actuator_frame(params){
-                
                     cable_tidy_body(h);
-                
                 }
                 side_housing(params, h=h,cavity_h=0, attach=false);
             }
@@ -168,7 +164,6 @@ module side_cable_tidy(params, h=6){
 //   in printable position, using 
 //   z_cable_tidy_frame_undo(params, z_extra=motor_bracket_h())
 module front_cable_tidy(params, h=6){
-    cutout_h = z_motor_z_pos(params) + motor_bracket_h() + h - 1.75;
     difference(){
         z_cable_tidy_frame(params, z_extra=motor_bracket_h()){
             // thick_projection needs the bottom to be flat and the
