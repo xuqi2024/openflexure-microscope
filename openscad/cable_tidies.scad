@@ -56,9 +56,12 @@ module cable_tidy_body_cutouts(h, front=false){
     }
     // Void for the cable
     if (front){  // front means we are rendering the Z cable tidy
+        // the wires where they exit the connector
         translate([-10,-12,1]){
             cube([20,6.1,h-1]);
         }
+        // connect this to the slot (NB lower height, to make
+        // bridging work)
         hull(){
             translate([-10,-12,1]){
                 cube([20,6.1,h-1.75]);
@@ -69,6 +72,8 @@ module cable_tidy_body_cutouts(h, front=false){
                 }
             }
         }
+        // slot that goes all the way to the bottom to allow cable
+        // to pass through.
         rotate_z(-10){
             translate([-20,-7,-1]){
                 cube([11,5.1,h+1-0.75]);
@@ -188,7 +193,15 @@ module front_cable_tidy(params, h=6){
         z_cable_tidy_frame(params, z_extra=motor_bracket_h()){
             cable_tidy_body_cutouts(h-1, front=true);
         }
-        z_cable_housing_cutout(params, cutout_h, top=true);
+        intersection(){
+            // The top of this part must be parallel with the print bed, or it 
+            // won't slice properly.  z_cable_housing_cutout on its own is at a
+            // slight angle, hence the intersection.
+            z_cable_housing_cutout(params, 99, top=true);
+            z_cable_tidy_frame(params, z_extra=motor_bracket_h()){
+                cube([99, 99, (h - 1.75)*2], center=true);
+            }
+        }
     }
 }
 
