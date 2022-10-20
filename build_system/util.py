@@ -34,9 +34,11 @@ def parameters_to_string(parameters):
         elif isinstance(value, str):
             value = f'"{value}"'
 
+            if platform.system() == 'Windows':
+                # Add escape to quotes in value, use double quotes around param
+                value = value.replace("\"", "\\\"")
+
         if platform.system() == 'Windows':
-            # Add escape to quotes in value, use double quotes around param
-            value = value.replace("\"", "\\\"")
             strings.append("-D \"{}={}\"".format(name, value))
         else:
             strings.append("-D '{}={}'".format(name, value))
