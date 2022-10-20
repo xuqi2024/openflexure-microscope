@@ -388,6 +388,35 @@ def register_mount_motors(rendersystem):
             render = ScadRender(output_file, input_file, scad, imgsize, camera)
             rendersystem.register_scad_render(render)
 
+def register_mount_sample_clips(rendersystem):
+    input_file = "rendering/mount_sample_clips.scad"
+    camera = Camera(position=[0, 0, 178], angle=[68, 0, 308], distance=250)
+    imgsize = [2400, 2000]
+    for optics in ["rms", "low_cost"]:
+        low_cost = str(optics == "low_cost").lower()
+        for i in [1, 2, 3, 4]:
+            output_file = f"docs/renders/mount_sample_clips_{optics}{i}.png"
+            scad = f"render_mount_sample_clips({i}, {low_cost});"
+            render = ScadRender(output_file, input_file, scad, imgsize, camera)
+            rendersystem.register_scad_render(render)
+
+def register_complete_microscope(rendersystem):
+    input_file = "rendering/complete_microscope.scad"
+    cameras = [
+        Camera(position=[0, 48, 98], angle=[65, 0, 133], distance=700),
+        Camera(position=[0, 48, 98], angle=[65, 0, 308], distance=700),
+        Camera(position=[0, 48, 98], angle=[90, 0, 90], distance=700),
+        Camera(position=[0, 48, 98], angle=[90, 0, 0], distance=700),
+    ]
+    imgsize = [2400, 2000]
+    for optics in ["rms", "low_cost"]:
+        low_cost = str(optics == "low_cost").lower()
+        for i, camera in enumerate(cameras):
+            output_file = f"docs/renders/complete_microscope_{optics}{i}.png"
+            scad = f"render_microscope({low_cost});"
+            render = ScadRender(output_file, input_file, scad, imgsize, camera)
+            rendersystem.register_scad_render(render)
+
 def main():
     rendersystem = RenderSystem()
     rendersystem.register_zip_assets('rendering/librender/hardware.zip')
@@ -409,7 +438,9 @@ def main():
     register_mount_illumination(rendersystem)
     register_motor_assembly(rendersystem)
     register_mount_motors(rendersystem)
-
+    register_mount_sample_clips(rendersystem)
+    register_complete_microscope(rendersystem)
+    
     rendersystem.render()
 
 if __name__ == "__main__":

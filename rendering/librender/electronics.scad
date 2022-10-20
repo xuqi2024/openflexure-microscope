@@ -1,6 +1,7 @@
 
 use <../../openscad/libs/utilities.scad>
 use <../../openscad/libs/logo.scad>
+use <../../openscad/libs/lib_microscope_stand.scad>
 use <render_utils.scad>
 
 $fn = 12;
