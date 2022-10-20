@@ -216,7 +216,7 @@ module fl_cube_mount(beam_d=5){
 
         // add a hole for the LED
         translate_z(beam_z){
-            cylinder_with_45deg_top(h=999, r=beam_d/2, $fn=16, extra_height=0, center=true);
+            printable_horizontal_hole(h=999, r=beam_d/2, $fn=16, extra_height=0, center=true);
         }
     }
 }

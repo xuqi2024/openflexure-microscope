@@ -165,8 +165,8 @@ module fl_cube_outer(roc, w, foot, bottom_t){
                 cube([w - roc*3*2 + 2*tiny(), bottom_t, w], center=true);
             }
 
-            //TODO: Find what this means?
-            // feet at the bottom (and also in the middle of the top part)
+            // Five mounting points for the cube. Three on the bottom of the cube
+            // one on each sprung arm on the top.
             points = [[-w/2+roc*3, roc, roc+0.5],
                       [w/2-roc*3, roc, roc+0.5],
                       [0, roc, w-roc],
@@ -236,7 +236,8 @@ module fl_cube(){
                 }
             }
 
-            //TODO - this should use the static dovetail library
+            // Note: This is a static dovetail that does not use the dovetail library.
+            // We should find a new way to mount this cube.
             // attachment for the excitation filter and LED
             reflect_x(){
                 translate([-w/2, bottom + 4, w]){
