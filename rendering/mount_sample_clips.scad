@@ -30,7 +30,7 @@ module render_mount_sample_clips(frame, low_cost=false){
     }
 }
 
-module render_sample_clips(params=render_params(), exploded=false, screws_exploded=true, allen_key=false){
+module render_sample_clips(params=render_params(), exploded=false, screws_exploded=false, allen_key=false){
     clip_z = exploded?10:0;
     screw_z = clip_z + (screws_exploded?12.5:2.5);
     each_actuator(params){
