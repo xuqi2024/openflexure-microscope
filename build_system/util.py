@@ -5,6 +5,7 @@ import sys
 import subprocess
 from copy import copy
 import re
+import platform
 
 def get_openscad_exe():
     """
@@ -31,9 +32,24 @@ def parameters_to_string(parameters):
             value = str(value).lower()
         # Wrap strings in quotes
         elif isinstance(value, str):
+            if '"' in value or "'" in value:
+                raise ValueError(
+                    "Strings passed as parameters may not contain quotation marks. "
+                    f"{name}=\"{value}\" is therefore not valid."
+                )
             value = f'"{value}"'
 
-        strings.append("-D '{}={}'".format(name, value))
+            if platform.system() == 'Windows':
+                # Add escape to quotes in value, so we can use double quotes around parameter below
+                value = value.replace("\"", "\\\"")
+
+        if platform.system() == 'Windows':
+            # Nested single/double quotes were being stripped out on Windows, so we use
+            # double quotes for both, and escape the inner ones (see above) for strings.
+            # The inner double quotes appear in `value` for strings
+            strings.append("-D \"{}={}\"".format(name, value))
+        else:
+            strings.append("-D '{}={}'".format(name, value))
 
     return " ".join(strings)
 
