@@ -49,12 +49,8 @@ module lens_gripper(lens_r=10,h=6,lens_h=3.5,base_r=-1,t=0.65,solid=false, flare
 
 module camera_mount_top_slice(optics_config){
     // A thin slice of the top of the camera mount
-    linear_extrude(tiny()){
-        offset(-tiny()){
-            projection(cut=true){
-                camera_mount(optics_config);
-            }
-        }
+    thick_section(h=tiny(), center=false, shift=false){
+        camera_mount(optics_config);
     }
 }
 
@@ -135,7 +131,7 @@ module extra_optics_body_for_beamsplitter(params, optics_config, body_r, body_to
                 fl_screw_holes(params, optics_config, d = 4, h =8);
             }
         }
-        //TODO: the section bellow is a repeat of above
+
         //the bottom of the tube
         translate_z(optics_wedge_bottom()){
             cylinder(r=bottom_r,h=tiny());

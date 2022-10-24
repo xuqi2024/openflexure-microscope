@@ -161,6 +161,36 @@ def register_condenser_assembly(rendersystem):
         render = ScadRender(output_file, input_file, scad, imgsize, camera)
         rendersystem.register_scad_render(render)
 
+    camera = Camera(position=[0, 8, 30], angle=[62, 0, 130], distance=137)
+    imgsize = [2400, 2000]
+    for frame in [7, 8, 9, 10]:
+        scad = f"assemble_condenser({frame});"
+        output_file = f"docs/renders/mount_led_board{frame-6}.png"
+        render = ScadRender(output_file, input_file, scad, imgsize, camera)
+        rendersystem.register_scad_render(render)
+    for frame in [11, 12]:
+        scad = f"assemble_condenser({frame});"
+        output_file = f"docs/renders/mount_led_cable{frame-10}.png"
+        render = ScadRender(output_file, input_file, scad, imgsize, camera)
+        rendersystem.register_scad_render(render)
+    camera = Camera(position=[0, 8, 30], angle=[62, 0, 130], distance=237)
+    for frame in [13, 14, 15, 16]:
+        scad = f"assemble_condenser({frame});"
+        output_file = f"docs/renders/mount_condenser_lid{frame-12}.png"
+        render = ScadRender(output_file, input_file, scad, imgsize, camera)
+        rendersystem.register_scad_render(render)
+
+def register_workaround_5mm_led(rendersystem):
+    input_file = "rendering/workaround_5mm_led.scad"
+    camera = Camera(position=[0, 0, 0], angle=[42, 0, 313], distance=137)
+    imgsize = [2400, 2000]
+    for frame in [1, 2, 3, 4, 5]:
+        scad = f"workaround_5mm_led({frame});"
+        output_file = f"docs/renders/workaround_5mm_led{frame}.png"
+        render = ScadRender(output_file, input_file, scad, imgsize, camera)
+        rendersystem.register_scad_render(render)
+    
+
 def register_optics_assembled(rendersystem):
     input_file = "rendering/optics_assembly.scad"
     camera = Camera(position=[30, 5, 60], angle=[90, 0, 110], distance=440)
@@ -321,6 +351,7 @@ def register_mount_illumination(rendersystem):
     cameras = [
         Camera(position=[-6, 49, 178], angle=[68, 0, 133], distance=360),
         Camera(position=[-6, 49, 178], angle=[68, 0, 133], distance=360),
+        Camera(position=[-6, 49, 178], angle=[60, 0, 308], distance=460),
         Camera(position=[-6, 49, 178], angle=[82, 0, 308], distance=360),
         Camera(position=[-6, 49, 178], angle=[82, 0, 308], distance=360),
         Camera(position=[-6, 49, 178], angle=[82, 0, 308], distance=360)
@@ -357,6 +388,35 @@ def register_mount_motors(rendersystem):
             render = ScadRender(output_file, input_file, scad, imgsize, camera)
             rendersystem.register_scad_render(render)
 
+def register_mount_sample_clips(rendersystem):
+    input_file = "rendering/mount_sample_clips.scad"
+    camera = Camera(position=[0, 0, 178], angle=[68, 0, 308], distance=250)
+    imgsize = [2400, 2000]
+    for optics in ["rms", "low_cost"]:
+        low_cost = str(optics == "low_cost").lower()
+        for i in [1, 2, 3, 4]:
+            output_file = f"docs/renders/mount_sample_clips_{optics}{i}.png"
+            scad = f"render_mount_sample_clips({i}, {low_cost});"
+            render = ScadRender(output_file, input_file, scad, imgsize, camera)
+            rendersystem.register_scad_render(render)
+
+def register_complete_microscope(rendersystem):
+    input_file = "rendering/complete_microscope.scad"
+    cameras = [
+        Camera(position=[0, 48, 98], angle=[65, 0, 133], distance=700),
+        Camera(position=[0, 48, 98], angle=[65, 0, 308], distance=700),
+        Camera(position=[0, 48, 98], angle=[90, 0, 90], distance=700),
+        Camera(position=[0, 48, 98], angle=[90, 0, 0], distance=700),
+    ]
+    imgsize = [2400, 2000]
+    for optics in ["rms", "low_cost"]:
+        low_cost = str(optics == "low_cost").lower()
+        for i, camera in enumerate(cameras):
+            output_file = f"docs/renders/complete_microscope_{optics}{i}.png"
+            scad = f"render_microscope({low_cost});"
+            render = ScadRender(output_file, input_file, scad, imgsize, camera)
+            rendersystem.register_scad_render(render)
+
 def main():
     rendersystem = RenderSystem()
     rendersystem.register_zip_assets('rendering/librender/hardware.zip')
@@ -365,6 +425,7 @@ def main():
     register_rms_optics_assembly(rendersystem)
     register_low_cost_optics_assembly(rendersystem)
     register_condenser_assembly(rendersystem)
+    register_workaround_5mm_led(rendersystem)
     register_optics_assembled(rendersystem)
     register_band(rendersystem)
     register_brim_and_ties(rendersystem)
@@ -377,7 +438,9 @@ def main():
     register_mount_illumination(rendersystem)
     register_motor_assembly(rendersystem)
     register_mount_motors(rendersystem)
-
+    register_mount_sample_clips(rendersystem)
+    register_complete_microscope(rendersystem)
+    
     rendersystem.render()
 
 if __name__ == "__main__":

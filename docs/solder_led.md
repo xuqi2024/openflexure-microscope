@@ -5,6 +5,8 @@
 [Black pre-crimped Female-Female jumper cable (30 cm)]: parts/electronics.yml#JumperCable_FF_300mm_Black
 [Black heatshrink - 4.8mm ID]: parts/electronics.yml#Heatshrink_4.8mm_Black
 [Red heatshrink - 2.4mm ID]: parts/electronics.yml#Heatshrink_2.4mm_Red
+[solder]: parts/consumables/solder.md
+[soldering iron]: parts/tools/soldering_iron.md
 
 # Solder the LED
 
@@ -19,7 +21,7 @@
 * Cut the longest leg down to about 5mm long using [precision wire cutters](parts/tools/precision-wire-cutters.md){qty:1, cat:tool}
 * Tin this leg with [solder]{qty: a little, cat:consumable}
 * Take a [150 Ohm Resistor]{qty:1, note:"The exact value will depend on the current rating of your LED.", cat:electronic} and cut each leg down to about 5mm long. [i](info_pages/why_led_resistor.md)
-* Tin both legs with solder
+* Tin both legs with [solder]
 * Solder one side of the resistor to the cut leg of the LED.
 * Cut the other leg of the LED to be the same height as the end of the resistor.
 * Tin the end of this leg

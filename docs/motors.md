@@ -7,6 +7,7 @@
 [28BYJ-48 micro geared stepper motors]: parts/electronics.yml#28BYJ-48
 [2.5mm Ball-end Allen key]: parts/tools/2.5mmBallEndAllenKey.md
 [No 2 6.5mm self tapping screws]: parts/mechanical.yml#SelfTap_PoziPan_No2x6.5_SS
+[#1 pozidrive screwdriver]: parts/tools/pozidrive_1_screwdriver.md "{cat:tool}"
 
 ## Attach the small gears {pagestep}
 

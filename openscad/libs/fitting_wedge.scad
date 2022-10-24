@@ -2,8 +2,7 @@
 
 use <./utilities.scad>
 
-
-module fitting_wedge(h, nose_width, nose_shift=0.2, center=false){
+module fitting_wedge(h, nose_width, nose_shift=0.2, y_depth=5, center=false){
     // A trapezoidal wedge that clamps can be clamped into a v-shape.
     // To enable clamping a nut trap must be suntracted from this shape
     // nose_shift moves the tip of the wedge in the -y direction
@@ -15,15 +14,21 @@ module fitting_wedge(h, nose_width, nose_shift=0.2, center=false){
     nose_y = nose_shift;
     nose_z = center ? -h/2 : 0;
     nose_position = [nose_x, nose_y, nose_z];
+    // the back of the wedge is filleted
+    fillet_rad = 2;
     mirror([0,1,0]){
         hull(){
             translate(nose_position){
                 cube([nose_width+2*nose_shift, tiny(), h]);
             }
             reflect_x(){
-                // TODO: understand these numbers and explain
-                translate([-nose_width/2-5+sqrt(2), 5+sqrt(2), 0]){
-                    cylinder(r=2, h=h, $fn=16, center=center);
+                //translate cylinders to be hulled by the y_depth in x and y
+                // to make 45 degree walls
+                translate([y_depth + nose_width/2, y_depth, 0]){
+                    // correct for size of cylinders.
+                    translate([-1, 1, 0]*fillet_rad/sqrt(2)){
+                        cylinder(r=fillet_rad, h=h, $fn=16, center=center);
+                    }
                 }
             }
         }

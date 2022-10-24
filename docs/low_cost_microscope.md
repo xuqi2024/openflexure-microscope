@@ -11,7 +11,6 @@ The assembly is broken up into several steps:
 
 1. [.](test_your_printer.md){step}
 1. [.](printing.md){step, var_type: low_cost}
-1. [.](solder_led.md){step}
 1. [.](prepare_main_body.md){step}
 1. [.](prepare_stand.md){step}
 1. [.](actuator_assembly.md){step}
@@ -19,6 +18,8 @@ The assembly is broken up into several steps:
 1. [.](mount_optics_and_microscope.md){step, var_optics: low_cost}
 1. [.](illumination.md){step, var_optics: low_cost}
 1. [.](motors.md){step, var_optics: low_cost}
-1. [.](attach_clips.md){step}
-1. [.](wiring.md){step}
+1. [.](attach_clips.md){step, var_optics: low_cost}
+1. [.](wiring.md){step, var_optics: low_cost}
+1. [.](finished.md){step, var_optics: low_cost}
 
+![A render of the completed microscope using the Raspberry Pi camera module's lens.](renders/complete_microscope_low_cost1.png)

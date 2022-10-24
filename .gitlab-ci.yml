@@ -98,9 +98,32 @@ build:
       - merge_requests
       - web
 
+archive-source:
+    stage: build
+    image: python:3.7
+
+    script:
+      - git clean -dfX
+      - rm -rf .git
+      - python3 -c "import shutil; shutil.make_archive('/tmp/source', 'zip', '.')"
+      - mv /tmp/source.zip docs/
+
+    artifacts:
+      expire_in: 1 week
+      name: "${CI_PROJECT_NAME}-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}"
+      paths:
+        - docs/source.zip
+
+    only:
+      - tags
+      - merge_requests
+      - web
+
 check_stls:
     stage: analyse
     image: python:3.7
+    needs: ["build"]
+    dependencies: ["build"]
     allow_failure: true
     variables:
       # prevents config waiting for user input, e.g. for tzdata
@@ -126,15 +149,23 @@ check_stls:
 render:
     extends: .scad-job
     stage: build
+    dependencies: ["build"]
+    needs: ["build"]
 
     script:
       - xvfb-run --auto-servernum --server-args "-screen 0 1024x768x24" ./render.py
+      - mkdir -p docs/gltf
+      - pip install scad2gltf
+      - cd rendering
+      - scad2gltf complete_microscope.scad
+      - cp complete_microscope.glb ../docs/gltf/
 
     artifacts:
       expire_in: 1 week
       name: "${CI_PROJECT_NAME}-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}-renders"
       paths:
         - docs/renders/*.png
+        - docs/gltf/*
 
     only:
       - tags
@@ -148,6 +179,8 @@ build-docs:
     dependencies:
       - build
       - render
+      - archive-source
+    needs: ["build", "render", "archive-source"]
     image: "python:3.7"
 
     before_script:

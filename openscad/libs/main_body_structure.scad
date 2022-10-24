@@ -100,10 +100,11 @@ module leg(params, brace=flex_dims().x){
     }
 }
 
-module actuator(params){
-    // A leg that supports the stage, plus a lever to tilt it.
-    // No longer includes the flexible nut seat actuating column.
-    // TODO: find the code that unifies this with leg()
+module actuator_leg(params){
+    // The wide leg that supports the stage on the actuator side,
+    // plus the horizontal lever that meets the flexure at the bottom
+    // of the actuator column. This does not include the flexure itself.
+
     brace=20;
     fw=flex_dims().x;
     w = actuator_dims(params).x;
@@ -139,7 +140,7 @@ module actuator_silhouette(params, h=999){
         minkowski(){
             circle(r=flex_dims().y,$fn=12);
             projection(){
-                actuator(params);
+                actuator_leg(params);
             }
         }
     }
@@ -272,7 +273,7 @@ module xy_actuators(params, ties_only=false){
     each_actuator(params){
         //actuator is the leg bat to connect to the flexure at the bottom of the column
         if (! ties_only){
-            actuator(params);
+            actuator_leg(params);
         }
         translate_y(actuating_nut_r(params)){
             if (! ties_only){

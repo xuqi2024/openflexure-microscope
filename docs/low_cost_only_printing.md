@@ -1,8 +1,4 @@
-* [Illumination dovetail]{output,qty:1}: [illumination_dovetail.stl](models/illumination_dovetail.stl){previewpage}
-* [Condenser arm]{output,qty:1}: [condenser.stl](models/condenser.stl){previewpage}
-* [Illumination thumbscrew]{output,qty:1}: [illumination_thumbscrew.stl](models/illumination_thumbscrew.stl){previewpage}
-* 3 [large gears]{output,qty:3}: [large_gears.stl](models/large_gears.stl){previewpage}
-* 3 [feet]{output,qty:3}: [feet.stl](models/feet.stl){previewpage}
+{{include: inverted_only_printing.md}}
 * [Lens spacer]{output,qty:1}: [lens_spacer_picamera_2_pilens.stl](models/lens_spacer_picamera_2_pilens.stl){previewpage} - **This must be printed in [black][Black PLA filament]{Qty: 50g}!** [i](info_pages/why_optics_black.md)
 * [pi camera platform]{output,qty:1}: [camera_platform_picamera_2_pilens.stl](models/camera_platform_picamera_2_pilens.stl){previewpage}
 
