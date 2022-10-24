@@ -192,12 +192,22 @@ build-docs:
       - gitbuilding build-html --hardwarnings
       - cd ..
       - mv docs/_site builds
+      - echo "JOB_ID=$CI_JOB_ID"
 
     artifacts:
       expire_in: 1 week
       name: "${CI_PROJECT_NAME}-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}-docs"
       paths:
         - builds/
+      reports:
+        dotenv: build-docs.env
+
+    # This exposes a link to the built docs.  The mechanism is intended to support deployment to an 
+    # external server, but I don't think that should be necessary here, as it's just a static
+    # site.
+    environment:
+      name: review/$CI_COMMIT_REF_SLUG
+      url: https://openflexure.gitlab.io/-/openflexure-microscope/-/jobs/$JOB_ID/artifacts/builds/index.html
 
     only:
       - tags
@@ -245,7 +255,6 @@ deploy:
   only:
     - tags
     - web
-
 
 zenodo:
   stage: zenodo
