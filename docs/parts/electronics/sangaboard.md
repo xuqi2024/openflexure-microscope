@@ -9,4 +9,4 @@ The Sangaboard uses surface mount components and custom boards, the makes it har
 [custom bootloader]: https://gitlab.com/bath_open_instrumentation_group/sangaboard/blob/master/Bootloader/README.md
 [Sangaboard arduino sketch]: https://gitlab.com/bath_open_instrumentation_group/sangaboard/-/tree/master/arduino_code
 
-We are looking into a way to sell the Sangaboard. If you cannot get a Sangaboard, you can [build your own Sangaboard-compatible motor controller](../../nano_sangaboard.md)
+We are looking into a way to sell the Sangaboard. If you cannot get a Sangaboard, you can [build your own Sangaboard-compatible motor controller](../../workaround_motor_electronics.md)
