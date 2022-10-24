@@ -192,7 +192,7 @@ build-docs:
       - gitbuilding build-html --hardwarnings
       - cd ..
       - mv docs/_site builds
-      - echo "JOB_ID=$CI_JOB_ID"
+      - echo "JOB_ID=$CI_JOB_ID" > build-docs.env
 
     artifacts:
       expire_in: 1 week
