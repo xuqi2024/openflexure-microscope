@@ -286,8 +286,14 @@ module fl_cube(){
         // hole for easy removal of the beamsplitter
         beamsplitter_eject_hole_angle=32;
         beamsplitter_eject_hole_r = 0.6;
-        translate([0, 0.3+bby+1*sin(beamsplitter_eject_hole_angle)+beamsplitter_eject_hole_r*cos(beamsplitter_eject_hole_angle) + bbz*tan(beamsplitter_eject_hole_angle),-1*cos(beamsplitter_eject_hole_angle)])
-                rotate_x(beamsplitter_eject_hole_angle) cylinder(h=5, r=beamsplitter_eject_hole_r);
+        translate([0, bby, bbz]){
+            rotate_x(beamsplitter_eject_hole_angle){
+                translate([0, beamsplitter_eject_hole_r, 0]){
+                    cylinder(h=10, r=beamsplitter_eject_hole_r, center=true);
+                }
+            }
+        }
+                
 
     }
 }
