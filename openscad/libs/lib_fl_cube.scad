@@ -199,16 +199,17 @@ module fl_cube(){
     bottom = bottom_t + foot;
     $fn=8;
     difference(){
+        // mount for 45 degree dichroic, with bottom retaining clip
+        // y and z position of coated tip of dichroic + clearance room
+        by = beamsplit.y + dichroic.y/2/sqrt(2) + 0.3;
+        bz = beamsplit.z - dichroic.y/2/sqrt(2) + 0.3;
+        // y and z position of back tip of dichroic
+        bby = beamsplit.y + dichroic.y/2/sqrt(2) - dichroic.z/sqrt(2);
+        bbz = beamsplit.z - dichroic.y/2/sqrt(2) - dichroic.z/sqrt(2);
+
         union(){
             fl_cube_outer(roc, w, foot, bottom_t);
 
-            // mount for 45 degree dichroic, with bottom retaining clip
-            // y and z position of coated tip of dichroic + clearance room
-            by = beamsplit.y + dichroic.y/2/sqrt(2) + 0.3;
-            bz = beamsplit.z - dichroic.y/2/sqrt(2) + 0.3;
-            // y and z position of back tip of dichroic
-            bby = beamsplit.y + dichroic.y/2/sqrt(2) - dichroic.z/sqrt(2);
-            bbz = beamsplit.z - dichroic.y/2/sqrt(2) - dichroic.z/sqrt(2);
             sequential_hull(){
                 // tall back of triangle
                 translate([-inner_w/2, bottom, 0]){
@@ -268,6 +269,10 @@ module fl_cube(){
         translate([-emission_filter.x/2, bottom - roc*1.5, beamsplit.z-emission_filter.y/2]){
             cube([emission_filter.x, emission_filter.z, 999]);
         }
+        // hole for easy removal of emission filter
+        translate([0,emission_filter.z/2 + bottom - roc*1.5,0]){
+            cylinder(h=beamsplit.z-emission_filter.y/2, r=emission_filter.z/2);
+        }
         // access hole for the dichroic
         translate(beamsplit){
             rotate_x(-45){
@@ -275,6 +280,16 @@ module fl_cube(){
                     scale([1.1,1,1.9]){
                         cube(dichroic, center=true);
                     }
+                }
+            }
+        }
+        // hole for easy removal of the beamsplitter
+        beamsplitter_eject_hole_angle=32;
+        beamsplitter_eject_hole_r = 0.6;
+        translate([0, bby, bbz]){
+            rotate_x(beamsplitter_eject_hole_angle){
+                translate([0, beamsplitter_eject_hole_r, 0]){
+                    cylinder(h=10, r=beamsplitter_eject_hole_r, center=true);
                 }
             }
         }
