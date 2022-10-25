@@ -18,21 +18,21 @@ module microscope_stand_rendered(low_cost=false, use_nano=false){
     
     slide = true;
     slide_dist = slide ? 90 : 0;
-    rendered_pi_stand(params, use_nano=use_nano, slide_dist=slide_dist);
+    rendered_electronics_drawer(params, use_nano=use_nano, slide_dist=slide_dist);
 
-    pi_stand_frame_xy(params){
-        translate(pi_stand_front_nut_trap_pos()){
+    electronics_drawer_frame_xy(params){
+        translate(electronics_drawer_front_nut_trap_pos()){
             rotate_y(90){
                 m3_nut();
             }
         }
-        translate(pi_stand_side_screw_pos()){
+        translate(electronics_drawer_side_screw_pos()){
             rotate_x(90){
                 m3_cap_x10();
             }
         }
         
-        translate(pi_stand_front_screw_pos()){
+        translate(electronics_drawer_front_screw_pos()){
             rotate_y(90){
                 m3_cap_x10();
             }
@@ -55,16 +55,16 @@ module microscope_stand_rendered(low_cost=false, use_nano=false){
 
 
 
-module rendered_pi_stand(params, use_nano=false, slide_dist=0){
+module rendered_electronics_drawer(params, use_nano=false, slide_dist=0){
     stand_params = default_stand_params();
     coloured_render(extras_colour()){
-        pi_stand_frame_xy(params, slide_dist=slide_dist){
-            pi_stand(stand_params);
+        electronics_drawer_frame_xy(params, slide_dist=slide_dist){
+            electronics_drawer(stand_params);
         }
     }
-    pi_stand_frame_xy(params, slide_dist=slide_dist){
-        inset = pi_stand_board_inset();
-        pi_pos = inset + [0, 0, pi_stand_standoff_h()] ;
+    electronics_drawer_frame_xy(params, slide_dist=slide_dist){
+        inset = electronics_drawer_board_inset();
+        pi_pos = inset + [0, 0, electronics_drawer_standoff_h()] ;
         sanga_pos = inset + [0, 0, sanga_stand_height()];
         translate(pi_pos){
             rpi_4b();
@@ -89,7 +89,7 @@ module rendered_pi_stand(params, use_nano=false, slide_dist=0){
                 no2_x6_5_selftap();
             }
             if (use_nano){
-                block_hole_pos = pi_stand_block_hole_pos();
+                block_hole_pos = electronics_drawer_block_hole_pos();
                 plate_screw_pos = [block_hole_pos.x, block_hole_pos.y, sanga_pos.z];
                 translate(plate_screw_pos){
                     no2_x6_5_selftap();
@@ -104,7 +104,7 @@ module rendered_pi_stand(params, use_nano=false, slide_dist=0){
                 no2_x6_5_selftap();
             }
         }
-        translate(pi_stand_side_nut_trap_pos()){
+        translate(electronics_drawer_side_nut_trap_pos()){
             rotate_x(90){
                 rotate_z(30){
                     m3_nut();
