@@ -9,7 +9,7 @@
 [soldering iron]: parts/tools/soldering_iron.md "{cat:tool}"
 [wire strippers]: parts/tools/wire_strippers.md "{cat:tool}"
 [precision wire cutters]: parts/tools/precision-wire-cutters.md "{cat:tool}"
-[heatgun]: parts/tools/heatgun.md "{cat:tool, note: 'If you don't have a heatgun the soldering iron can be used'}"
+[heatgun]: parts/tools/heatgun.md "{cat:tool, note: 'If a heatgun is not available, the soldering iron can be used.'}"
 
 # Solder the LED
 
