@@ -10,7 +10,7 @@ Here are some of the most common customisations. This page may not be as detaile
 
 #### No access to the Sangaboard
 
-Our custom motor board, the Sangaboard can be hard to get hold of. We are working on this. A workaround is to build a [Sangaboard-compatible motor controller](nano_sangaboard.md) using an Arudino nano, and the driver boards that come with each stepper motor.
+Our custom motor board, the Sangaboard can be hard to get hold of. We are working on this. A workaround is to build a [Sangaboard-compatible motor controller](workaround_motor_electronics.md) using an Arudino nano, and the driver boards that come with each stepper motor.
 
 This uses the standard "pi_stand" stl for the electronics drawer by you will need to print the [nano_converter_plate.stl](models/nano_converter_plate.stl){previewpage} and [nano_converter_plate_gripper.stl](models/nano_converter_plate_gripper.stl){previewpage}.
 
