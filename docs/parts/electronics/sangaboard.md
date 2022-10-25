@@ -4,7 +4,7 @@
 [version 4]: https://kitspace.org/boards/gitlab.com/bath_open_instrumentation_group/sangaboard/sangaboard_v0.4/
 
 We use a custom open source motor board called the Sangaboard. Currently we use [version 3], but we are looking to move to [version 4] in the near future. 
-The Sangaboard uses surface mount components and custom boards, the makes it hard to solder your own. If you do make a Sangaboard, you will first need to burn the [custom bootloader], before uploading the [Sangaboard arduino sketch].
+The Sangaboard uses surface mount components and custom boards, this makes it hard to solder your own. If you do make a Sangaboard, you will first need to burn the [custom bootloader], before uploading the [Sangaboard arduino sketch].
 
 [custom bootloader]: https://gitlab.com/bath_open_instrumentation_group/sangaboard/blob/master/Bootloader/README.md
 [Sangaboard arduino sketch]: https://gitlab.com/bath_open_instrumentation_group/sangaboard/-/tree/master/arduino_code

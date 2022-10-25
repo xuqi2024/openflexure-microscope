@@ -15,7 +15,7 @@ This page describes how to connect the microcontroller and three motor driver bo
 
 ## Wire up the boards {pagestep}
 
-Each of your motors should have come with a [driver board][28BYJ-48 driver board]{qty:3, cat:electronic}. You should wire these up to and [Arduino Nano]{qty:1, cat:electronic} using [jumper cables]{qty: 12, cat:electronic} as shown in the diagram below:
+Each of your motors should have come with a [driver board][28BYJ-48 driver board]{qty:3, cat:electronic}. You should wire these up to an [Arduino Nano]{qty:1, cat:electronic} using [jumper cables]{qty: 12, cat:electronic} as shown in the diagram below:
 
 ![Simple motor controller with Arduino](../images/sangaboard_simple.png)
 

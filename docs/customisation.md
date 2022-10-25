@@ -2,7 +2,7 @@
 
 For each version of the microscope we have specified a specific bill of materials to make the microscope simple to build for non-microscopists. One of the key advantage of the OpenFlexure Microscope is that is can be customised for different applications and modified if certain parts are not available.
 
-Here are some of the most common customisations. This page may not be as detailed as the core instructions, please consider helping us improve it.
+Here are some of the most common customisations. This page may not be as detailed as the core instructions, please consider helping us to improve it.
 
 >i You can [download every STL from here](all-stls.zip).
 
