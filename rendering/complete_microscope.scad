@@ -4,7 +4,7 @@
 use <../openscad/libs/microscope_parameters.scad>
 use <../openscad/libs/utilities.scad>
 use <../openscad/libs/lib_microscope_stand.scad>
-use <../openscad/pi_stand.scad>
+use <../openscad/electronics_drawer.scad>
 use <librender/assembly_parameters.scad>
 use <librender/render_utils.scad>
 use <librender/render_settings.scad>
@@ -23,16 +23,16 @@ module render_microscope(low_cost=false){
     mounted_microscope_frame(){
         render_sample_clips();
     }
-    pi_stand_frame_xy(render_params()){
+    electronics_drawer_frame_xy(render_params()){
         coloured_render(body_colour()){
-            pi_stand_stl();
+            electronics_drawer_stl();
         }
 
-        translate(pi_stand_board_inset() + [0, 0, pi_stand_standoff_h()]){
+        translate(electronics_drawer_board_inset() + [0, 0, electronics_drawer_standoff_h()]){
             rpi_4b();
         }
 
-        translate(pi_stand_board_inset() + [0, 0, sanga_stand_height("v0.4")]){
+        translate(electronics_drawer_board_inset() + [0, 0, sanga_stand_height("v0.4")]){
             sangaboard_v0_4();
         }
     }

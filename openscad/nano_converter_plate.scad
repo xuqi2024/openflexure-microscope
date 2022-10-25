@@ -9,11 +9,11 @@ module nano_converter_plate_stl(){
 }
 
 function nano_converter_plate_size() = let(
-    inset = pi_stand_board_inset(),
-    width = pi_stand_front_width()-inset.y,
+    inset = electronics_drawer_board_inset(),
+    width = electronics_drawer_front_width()-inset.y,
     // Plate thickness should be thick enough that the USB cut-out does not go
     // through the board.
-    usb_height = pi_stand_standoff_h() + 17,
+    usb_height = electronics_drawer_standoff_h() + 17,
     thickness = usb_height - sanga_stand_height() + 2
 ) [pi_board_dims().x, width, thickness];
 
@@ -21,7 +21,7 @@ module nano_converter_plate(){
 
     size = nano_converter_plate_size();
 
-    mount_hole = zero_z(pi_stand_block_hole_pos())-pi_stand_board_inset();
+    mount_hole = zero_z(electronics_drawer_block_hole_pos())-electronics_drawer_board_inset();
     mount_hole_positions = [pi_hole_pos()[0], pi_hole_pos()[1], mount_hole];
 
     difference(){

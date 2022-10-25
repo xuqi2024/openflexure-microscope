@@ -10,16 +10,16 @@ Here are some of the most common customisations. This page may not be as detaile
 
 ### No access to the Sangaboard
 
-Our custom motor board, the Sangaboard can be hard to get hold of. We are working on this. A workaround is to build a [Sangaboard-compatible motor controller](workaround_motor_electronics/workaround_motor_electronics.md) using an Arudino nano, and the driver boards that come with each stepper motor.  This uses the standard "pi_stand" stl for the electronics drawer but adds printed adapters to fit in the alternative boards.
+Our custom motor board, the Sangaboard can be hard to get hold of. We are working on this. A workaround is to build a [Sangaboard-compatible motor controller](workaround_motor_electronics/workaround_motor_electronics.md) using an Arudino nano, and the driver boards that come with each stepper motor.  This uses the standard `electronics_drawer` STL for the electronics drawer but adds printed adapters to fit in the alternative boards.
 
 
 ### Using a Raspberry Pi version 3, or a Sangaboard v0.3
 
 If you don't have access to a Raspberry Pi version 4 or a Sangaboard v0.4, but have an older boards, you can use one of these modified electronics drawers:
 
-* [pi_stand-pi3_sangav0.3.stl](models/pi_stand-pi3_sangav0.3.stl){previewpage}
-* [pi_stand-pi3_sangav0.4.stl](models/pi_stand-pi3_sangav0.4.stl){previewpage}
-* [pi_stand-pi4_sangav0.3.stl](models/pi_stand-pi4_sangav0.3.stl){previewpage}
+* [electronics_drawer-pi3_sangav0.3.stl](models/electronics_drawer-pi3_sangav0.3.stl){previewpage}
+* [electronics_drawer-pi3_sangav0.4.stl](models/electronics_drawer-pi3_sangav0.4.stl){previewpage}
+* [electronics_drawer-pi4_sangav0.3.stl](models/electronics_drawer-pi4_sangav0.3.stl){previewpage}
 
 ### No illumination PCB
 
