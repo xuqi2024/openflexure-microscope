@@ -6,7 +6,8 @@
 
 
 [Raspberry Pi]: parts/electronics.yml#RaspberryPi "{cat:electronic}"
-[Sangaboard]: parts/electronics/sangaboard.md "{cat:electronic, note: 'If you cannot get a Sangaboard try building [compatible arduino nano circuit](nano_sangaboard.md)'}"
+[Sangaboard]: parts/electronics/sangaboard.md "{cat:electronic, note: 'If you cannot get a Sangaboard, you can put together [workaround motor electronics] instead.'}"
+[workaround motor electronics]: workaround_motor_electronics/workaround_motor_electronics.md
 
 [No 2 6.5mm self tapping screws]: parts/mechanical.yml#SelfTap_PoziPan_No2x6.5_SS "{cat:mech}"
 [M3 nut]: parts/mechanical.yml#Nut_M3_SS "{cat:mech}"
