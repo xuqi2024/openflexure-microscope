@@ -24,7 +24,7 @@ In this section we are assembling the transmission illuminator.  This mounts the
 
 
 * Place the [illumination dovetail][Illumination dovetail](fromstep){qty:1, cat:printedpart} onto the stage above the z-actuator of the main body.
-* Secure in place with two [M3x10 cap head screws]{qty:2} and 2 [M3 Washers][M3 stainless steel washers] (using [2.5mm Ball-end Allen key]{qty:1})
+* Secure in place with two [M3x10 cap head screws]{qty:2} and 2 [M3 Washers][M3 stainless steel washers]{qty: 2} (using [2.5mm Ball-end Allen key]{qty:1})
 
 
 ## Push-fit the lens {pagestep}
