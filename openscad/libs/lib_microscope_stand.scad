@@ -17,14 +17,14 @@ function microscope_depth() = 3;
 function microscope_stand_height(stand_params) = microscope_stand_vert_height(stand_params) + 31;
 function microscope_stand_vert_height(stand_params) = let(
     inc_drawer = key_lookup("include_pi_tray_hole", stand_params),
-    drawer_h = inc_drawer ? key_lookup("pi_stand_h", stand_params) : 8,
+    drawer_h = inc_drawer ? key_lookup("electronics_drawer_h", stand_params) : 8,
     extra_h = key_lookup("extra_height", stand_params)
 ) drawer_h + extra_h;
 
 function default_stand_params(tall=false, no_pi=false, pi_version=4, sanga_version="v0.4") =
     assert(pi_version==3 || pi_version==4, "pi_version must be 3 or 4")
     assert(sanga_version=="v0.3" || sanga_version=="v0.4", "pi_version must be \"v0.3\" or \"v0.4\"")
-    [["pi_stand_h", 47], //The height of the tray the pi sits in.
+    [["electronics_drawer_h", 47], //The height of the tray the pi sits in.
      ["include_pi_tray_hole", !no_pi], //Whether the stand has a hole for the raspberry pi tray
      ["extra_height", tall ? 17 : 0], //extra height above the raspberry pi_tray
      ["block_usbc", true],
@@ -190,7 +190,7 @@ module microscope_stand_shell(params, stand_params){
     h = microscope_stand_height(stand_params);
     vert_h = microscope_stand_vert_height(stand_params);
 
-    assert(h-vert_h-10>15, "Stand is too short to print. Either increase height or reduce height of the pi stand");
+    assert(h-vert_h-10>15, "Stand is too short to print. Either increase height or reduce height of the electronics drawer");
 
     difference(){
         sequential_hull(){
@@ -221,7 +221,7 @@ module microscope_stand_shell(params, stand_params){
 }
 
 
-module pi_stand_frame_xy(params, for_base_section=false, slide_dist=0){
+module electronics_drawer_frame_xy(params, for_base_section=false, slide_dist=0){
     initial_pos = for_base_section ? [0,0,0] : [5,0,2];
     translate([34, -38, 0]){
         rotate(-y_wall_angle(params)){
@@ -234,8 +234,8 @@ module pi_stand_frame_xy(params, for_base_section=false, slide_dist=0){
 
 
 module microscope_stand_base_section(params, ex_rad=3){
-    pi_base_size = pi_stand_base_size();
-    pi_block_size = [pi_base_size.x, pi_stand_front_width(), tiny()];
+    pi_base_size = electronics_drawer_base_size();
+    pi_block_size = [pi_base_size.x, electronics_drawer_front_width(), tiny()];
     extra_front_space = 2;
     extra_back_space = 6;
     extra_x_space = extra_front_space + extra_back_space;
@@ -243,7 +243,7 @@ module microscope_stand_base_section(params, ex_rad=3){
     minkowski(){
         hull(){
             reflect_x(){
-                pi_stand_frame_xy(params, for_base_section=true){
+                electronics_drawer_frame_xy(params, for_base_section=true){
                     translate_x(-extra_back_space){
                         cube(block_size);
                     }
@@ -282,19 +282,19 @@ module microscope_stand(params, stand_params){
 }
 
 module pi_drawer_cutout(params, stand_params){
-    pi_stand_h = key_lookup("pi_stand_h", stand_params);
-    pi_base_size = pi_stand_base_size();
+    electronics_drawer_h = key_lookup("electronics_drawer_h", stand_params);
+    pi_base_size = electronics_drawer_base_size();
     extra_space = [1, 1, 1.5];
     tr_for_extra_space = [-extra_space.x/2, -extra_space.y/2, 0];
-    pi_space = [pi_base_size.x, pi_base_size.y, pi_stand_h];
-    front_wall_space = [pi_base_size.x, pi_stand_front_width(), pi_stand_h];
+    pi_space = [pi_base_size.x, pi_base_size.y, electronics_drawer_h];
+    front_wall_space = [pi_base_size.x, electronics_drawer_front_width(), electronics_drawer_h];
     //Cut out a further 99mm in x to make hole in front
     pi_cutout_size = pi_space + extra_space + [99, 0, 0];
     front_wall_cutout_size = front_wall_space + extra_space + [99, 0, 0];
-    pi_stand_frame_xy(params){
+    electronics_drawer_frame_xy(params){
         translate(tr_for_extra_space){
             cube(pi_cutout_size);
-            translate(pi_stand_front_pos()){
+            translate(electronics_drawer_front_pos()){
                 cube(front_wall_cutout_size);
             }
         }
@@ -302,7 +302,7 @@ module pi_drawer_cutout(params, stand_params){
         translate([5, -50, 2]){
             cube([60, 100, 25]);
         }
-        translate(pi_stand_side_screw_pos()){
+        translate(electronics_drawer_side_screw_pos()){
             rotate_x(90){
                 m3_cap_counterbore(10, 10);
             }
@@ -311,10 +311,10 @@ module pi_drawer_cutout(params, stand_params){
 }
 
 module pi_drawer_runner_and_mount(params){
-    pi_stand_frame_xy(params){
-        stand_base_size = pi_stand_base_size();
-        stand_block_size = pi_stand_mount_block_size();
-        position = pi_stand_mount_block_pos() + [0, 1, 0];
+    electronics_drawer_frame_xy(params){
+        stand_base_size = electronics_drawer_base_size();
+        stand_block_size = electronics_drawer_mount_block_size();
+        position = electronics_drawer_mount_block_pos() + [0, 1, 0];
         side_len = stand_base_size.x-stand_block_size.x;
         difference(){
             union(){
@@ -327,12 +327,12 @@ module pi_drawer_runner_and_mount(params){
                     }
                 }
             }
-            translate(pi_stand_front_screw_pos()){
+            translate(electronics_drawer_front_screw_pos()){
                 rotate_y(90){
                     m3_cap_counterbore(10, 99);
                 }
             }
-            translate(pi_stand_front_nut_trap_pos()){
+            translate(electronics_drawer_front_nut_trap_pos()){
                 hull(){
                     for(z_tr = [0, 20]){
                         translate_z(z_tr){
@@ -348,66 +348,66 @@ module pi_drawer_runner_and_mount(params){
 }
 
 function pi_board_dims() = [85, 56, 1.5];
-function pi_stand_board_inset() = [3, 3, 0];
-function pi_stand_wall_t() = pi_stand_board_inset().x - 0.5;
-function pi_stand_thickness() = 2;
-function pi_stand_base_size() = let(
-    t = pi_stand_thickness(),
+function electronics_drawer_board_inset() = [3, 3, 0];
+function electronics_drawer_wall_t() = electronics_drawer_board_inset().x - 0.5;
+function electronics_drawer_thickness() = 2;
+function electronics_drawer_base_size() = let(
+    t = electronics_drawer_thickness(),
     board_size = [pi_board_dims().x, pi_board_dims().y, t]
-) board_size + 2 * pi_stand_board_inset();
-function pi_stand_front_width() = pi_stand_base_size().y+10;
+) board_size + 2 * electronics_drawer_board_inset();
+function electronics_drawer_front_width() = electronics_drawer_base_size().y+10;
 
-//Position in the frame of the pi_stand
-function pi_stand_front_pos() = let(
-    x_tr = pi_stand_base_size().x - pi_stand_wall_t()
+//Position in the frame of the electronics_drawer
+function electronics_drawer_front_pos() = let(
+    x_tr = electronics_drawer_base_size().x - electronics_drawer_wall_t()
 ) [x_tr, 0, 0];
 
 function sanga_stand_height(sanga_version="v0.4") = let(
     extra_h = (sanga_version=="v0.4") ? 12.5 : 27
-) pi_stand_standoff_h() + extra_h;
+) electronics_drawer_standoff_h() + extra_h;
 
-function pi_stand_mount_block_size() = let(
+function electronics_drawer_mount_block_size() = let(
     height = sanga_stand_height("v0.4"),
-    width = pi_stand_front_width()-pi_stand_base_size().y
+    width = electronics_drawer_front_width()-electronics_drawer_base_size().y
 ) [10, width, height];
 
-function pi_stand_mount_block_pos() = let(
-    block_depth = pi_stand_wall_t()-pi_stand_mount_block_size().x
-) pi_stand_front_pos() + [block_depth, pi_stand_base_size().y, 0];
+function electronics_drawer_mount_block_pos() = let(
+    block_depth = electronics_drawer_wall_t()-electronics_drawer_mount_block_size().x
+) electronics_drawer_front_pos() + [block_depth, electronics_drawer_base_size().y, 0];
 
-function pi_stand_front_screw_pos() = let(
-    block_pos = pi_stand_mount_block_pos()
+function electronics_drawer_front_screw_pos() = let(
+    block_pos = electronics_drawer_mount_block_pos()
 ) [block_pos.x+3, block_pos.y+6, 5];
 
-function pi_stand_front_nut_trap_pos() = pi_stand_front_screw_pos() - [7, 0, 0];
+function electronics_drawer_front_nut_trap_pos() = electronics_drawer_front_screw_pos() - [7, 0, 0];
 
-function pi_stand_side_screw_pos() = [14, -3, 35];
+function electronics_drawer_side_screw_pos() = [14, -3, 35];
 
-function pi_stand_nut_block_depth() = 5;
+function electronics_drawer_nut_block_depth() = 5;
 
-function pi_stand_side_nut_trap_pos() = let(
-    wall_t = pi_stand_wall_t(),
-    nut_block_depth = pi_stand_nut_block_depth(),
-    side_screw_pos = pi_stand_side_screw_pos()
+function electronics_drawer_side_nut_trap_pos() = let(
+    wall_t = electronics_drawer_wall_t(),
+    nut_block_depth = electronics_drawer_nut_block_depth(),
+    side_screw_pos = electronics_drawer_side_screw_pos()
 ) [side_screw_pos.x, wall_t+nut_block_depth/2 ,side_screw_pos.z];
 
-function pi_stand_block_hole_pos() = let(
-    block_pos = pi_stand_mount_block_pos(),
-    block_size = pi_stand_mount_block_size(),
-    wall_size = [pi_stand_wall_t(), 0, 0],
+function electronics_drawer_block_hole_pos() = let(
+    block_pos = electronics_drawer_mount_block_pos(),
+    block_size = electronics_drawer_mount_block_size(),
+    wall_size = [electronics_drawer_wall_t(), 0, 0],
     block_cent = block_pos + block_size/2 - wall_size/2
 ) [block_cent.x, block_cent.y, block_size.z-6];
 
-function pi_stand_standoff_h() = 5.5;
+function electronics_drawer_standoff_h() = 5.5;
 
-module pi_stand(stand_params){
-    pi_stand_base();
-    pi_stand_walls(stand_params);
+module electronics_drawer(stand_params){
+    electronics_drawer_base();
+    electronics_drawer_walls(stand_params);
 }
 
 function pi_hole_pos(inset_for_stand=false) = let(
     hole_inset = [3.5, 3.5, 0],
-    board_inset = inset_for_stand ?  pi_stand_board_inset() : [0, 0, 0],
+    board_inset = inset_for_stand ?  electronics_drawer_board_inset() : [0, 0, 0],
     h1 = [0, 0, 0]+hole_inset+board_inset,
     h2 = [58, 0, 0]+hole_inset+board_inset,
     h3 = [0, 49, 0]+hole_inset+board_inset,
@@ -428,10 +428,10 @@ module pi_tap_holes(connector_side=true, inside=true){
     }
 }
 
-module pi_stand_base(){
+module electronics_drawer_base(){
 
-    standoff_h = pi_stand_standoff_h();
-    base_size = pi_stand_base_size();
+    standoff_h = electronics_drawer_standoff_h();
+    base_size = electronics_drawer_base_size();
     hole_pos = pi_hole_pos(true);
     difference(){
         union(){
@@ -455,42 +455,42 @@ module pi_stand_base(){
 }
 
 
-module pi_stand_walls(stand_params){
-    pi_stand_h = key_lookup("pi_stand_h", stand_params);
+module electronics_drawer_walls(stand_params){
+    electronics_drawer_h = key_lookup("electronics_drawer_h", stand_params);
     block_usbc = key_lookup("block_usbc", stand_params);
     pi_version = key_lookup("pi_version", stand_params);
     sanga_version = key_lookup("sanga_version", stand_params);
-    base_size = pi_stand_base_size();
-    wall_t = pi_stand_wall_t();
+    base_size = electronics_drawer_base_size();
+    wall_t = electronics_drawer_wall_t();
 
     difference(){
         union(){
-            cube([base_size.x, wall_t, pi_stand_h]);
-            translate(pi_stand_front_pos()){
-                cube([wall_t, pi_stand_front_width(), pi_stand_h]);
+            cube([base_size.x, wall_t, electronics_drawer_h]);
+            translate(electronics_drawer_front_pos()){
+                cube([wall_t, electronics_drawer_front_width(), electronics_drawer_h]);
             }
-            translate(pi_stand_mount_block_pos()){
-                cube(pi_stand_mount_block_size());
+            translate(electronics_drawer_mount_block_pos()){
+                cube(electronics_drawer_mount_block_size());
             }
-            pi_stand_nut_trap();
+            electronics_drawer_nut_trap();
             sanga_lugs(sanga_version);
         }
 
         pi_connector_holes(pi_version);
         sanga_connector_holes(sanga_version);
 
-        translate(pi_stand_front_screw_pos()){
+        translate(electronics_drawer_front_screw_pos()){
             rotate_y(90){
                 m3_cap_counterbore(999, 999);
             }
         }
-        translate(pi_stand_side_screw_pos()){
+        translate(electronics_drawer_side_screw_pos()){
             rotate_x(90){
                 //Change to through holes
                 m3_cap_counterbore(1, 999);
             }
         }
-        translate(pi_stand_block_hole_pos()){
+        translate(electronics_drawer_block_hole_pos()){
             no2_selftap_hole(h=99);
         }
 
@@ -509,7 +509,7 @@ function sanga_v0_3_holes() = let(
     sb_x = sanga_v0_3_board_dims().x,
     sb_y = sanga_v0_3_board_dims().y,
     offset_x = pi_board_dims().x-sb_x,
-    inset = pi_stand_board_inset() + [offset_x, 0, 0]
+    inset = electronics_drawer_board_inset() + [offset_x, 0, 0]
 ) [[4, 4, 0] + inset,
    [sb_x-4, 4, 0] + inset,
    [sb_x-4, sb_y-4, 0] + inset,
@@ -519,10 +519,10 @@ function sanga_v0_3_holes() = let(
 module sanga_connector_holes(sanga_version){
     v0_3_offset_x = pi_board_dims().x-sanga_v0_3_board_dims().x;
     board_inset = (sanga_version=="v0.4") ?
-        pi_stand_board_inset() :
-        pi_stand_board_inset() + [v0_3_offset_x, 0, 0];
+        electronics_drawer_board_inset() :
+        electronics_drawer_board_inset() + [v0_3_offset_x, 0, 0];
 
-    wall_t = pi_stand_wall_t();
+    wall_t = electronics_drawer_wall_t();
     connector_extra_z = (sanga_version=="v0.4") ? 3 : 3.75;
     connector_z = sanga_stand_height(sanga_version) + tiny() + connector_extra_z;
     connector_x = sanga_connector_x(sanga_version) + board_inset.x;
@@ -534,7 +534,7 @@ module sanga_connector_holes(sanga_version){
         }
     }
     if (sanga_version=="v0.3"){
-        x_dim = 2*pi_stand_base_size().x+1;
+        x_dim = 2*electronics_drawer_base_size().x+1;
         translate([0, board_inset.y, sanga_stand_height(sanga_version)]){
             translate([0, 32.5, 2+8/2]){
                 cube([x_dim, 15, 8], center=true);
@@ -579,16 +579,16 @@ module sanga_lugs(sanga_version){
             no2_selftap_lug(hole_pos, [hole_pos.x, 0.1, 0], 0);
         }
         for (hole_pos = front_lugs){
-            front_x = pi_stand_base_size().x-0.1;
+            front_x = electronics_drawer_base_size().x-0.1;
             no2_selftap_lug(hole_pos, [front_x, hole_pos.y, 0], 90);
         }
     }
 }
 
-module pi_stand_nut_trap(){
+module electronics_drawer_nut_trap(){
 
-    nut_block_depth = pi_stand_nut_block_depth();
-    nut_tr_pos = pi_stand_side_nut_trap_pos();
+    nut_block_depth = electronics_drawer_nut_block_depth();
+    nut_tr_pos = electronics_drawer_side_nut_trap_pos();
     translate(nut_tr_pos){
         difference(){
             hull(){
@@ -613,11 +613,11 @@ module pi_stand_nut_trap(){
 }
 
 module pi_connector_holes(pi_version){
-    board_inset = pi_stand_board_inset();
-    standoff_h = pi_stand_standoff_h();
+    board_inset = electronics_drawer_board_inset();
+    standoff_h = electronics_drawer_standoff_h();
 
     translate(board_inset + [0, 0, standoff_h+1]){
-        translate_x(pi_stand_base_size().x-10){
+        translate_x(electronics_drawer_base_size().x-10){
             pi_front_connectors(pi_version);
         }
 
@@ -693,8 +693,8 @@ module pi_side_connectors(pi_version){
 }
 
 module usb_c_blocker(){
-    standoff_h = pi_stand_standoff_h();
-    usb_c_x_pos = 11.2 + pi_stand_board_inset().x;
+    standoff_h = electronics_drawer_standoff_h();
+    usb_c_x_pos = 11.2 + electronics_drawer_board_inset().x;
     //Translate to bottom centre of hole
     translate([usb_c_x_pos, 0, standoff_h+1]){
         translate([-8/2, 0, .75]){

@@ -146,14 +146,14 @@ def generate_stand_with_pi(writer):
     for pi in [3,4]:
         for sanga in ["v0.3", "v0.4"]:
             if (pi==4) and (sanga=="v0.4"):
-                output = "pi_stand.stl"
+                output = "electronics_drawer.stl"
             else:
-                output = f"pi_stand-pi{pi}_sanga{sanga}.stl"
+                output = f"electronics_drawer-pi{pi}_sanga{sanga}.stl"
 
             parameters = {"PI_VERSION": pi,
                           "SANGA_VERSION": sanga}
 
-            writer.openscad(output, "pi_stand.scad", parameters)
+            writer.openscad(output, "electronics_drawer.scad", parameters)
 
 
 def copy_extra_stls(build_dir, extras_dir):
