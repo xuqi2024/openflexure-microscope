@@ -15,7 +15,7 @@ Our custom motor board, the Sangaboard can be hard to get hold of. We are workin
 
 ### Using a Raspberry Pi version 3, or a Sangaboard v0.3
 
-If you don't have access to a Raspberry Pi version 4 or a Sangaboard v0.4, but have an older boards, you can use one of these modified electronics drawers:
+If you don't have access to a Raspberry Pi version 4 or a Sangaboard v0.4, but have an older board, you can use one of these modified electronics drawers:
 
 * [electronics_drawer-pi3_sangav0.3.stl](models/electronics_drawer-pi3_sangav0.3.stl){previewpage}
 * [electronics_drawer-pi3_sangav0.4.stl](models/electronics_drawer-pi3_sangav0.4.stl){previewpage}
