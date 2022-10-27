@@ -10,8 +10,7 @@ Here are some of the most common customisations. This page may not be as detaile
 
 ### No access to the Sangaboard
 
-Our custom motor board, the Sangaboard can be hard to get hold of. We are working on this. A workaround is to build a [Sangaboard-compatible motor controller](workaround_motor_electronics/workaround_motor_electronics.md) using an Arudino nano, and the driver boards that come with each stepper motor.  This uses the standard `electronics_drawer` STL for the electronics drawer but adds printed adapters to fit in the alternative boards.
-
+Our custom motor board, the Sangaboard can be hard to get hold of. We are working on this. A workaround is to build a [Sangaboard-compatible motor controller](workaround_motor_electronics/workaround_motor_electronics.md) using an Arudino nano, and the driver boards that come with each stepper motor.  This uses the standard `electronics_drawer` STL for the electronics drawer but adds printed adapters to fit in the alternative boards.  If you are not using a Sangaboard, you may need to [wire the LED to the Raspberry Pi](./workaround_raspberry_pi_gpio_led.md) for power.
 
 ### Using a Raspberry Pi version 3, or a Sangaboard v0.3
 
@@ -50,7 +49,7 @@ The standard optics module is designed for a finite conjugate objective. If you 
 
 For the low cost microscope (without an objective), we currently only support the Raspberry Pi camera. The 3D printed parts work with both v1 and v2, but **only v2 is supported by the standard software.**
 
-For the RMS objective optics we also generate optics modules for an M12 camera. The **M12 camera is not supported in the standard software**. Our OpenSCAD can also generate optics modules for other cameras, however these have not been tested or used for a long time and might not function as expected.
+For the RMS objective optics we also generate optics modules for an M12 camera, or a Logitech C270 webcam, both of which connect to a computer via USB. **USB cameras are not supported in the standard software**. We only regularly check and test the optics modules mentioned in the main instructions, i.e. `optics_picamera_2_rms_f50d13.stl` and its beamsplitter variant. While the files linked below should stay up to date, it is possible that changes introduced elsewhere might stop them working. You are therefore advised to check them before printing.  If you can start by printing the default options, and swap in one of these later, that is often a good idea.
 
 The following optics modules are available:
 
@@ -58,6 +57,10 @@ The following optics modules are available:
 * [optics_m12_rms_f50d13.stl](models/optics_m12_rms_f50d13.stl){previewpage}
 * [optics_m12_rms_infinity_f50d13_beamsplitter.stl](models/optics_m12_rms_infinity_f50d13_beamsplitter.stl){previewpage}
 * [optics_m12_rms_infinity_f50d13.stl](models/optics_m12_rms_infinity_f50d13.stl){previewpage}
+* [optics_logitech_c270_rms_f50d13_beamsplitter.stl](models/optics_logitech_c270_rms_f50d13_beamsplitter.stl){previewpage}
+* [optics_logitech_c270_rms_f50d13.stl](models/optics_logitech_c270_rms_f50d13.stl){previewpage}
+* [optics_logitech_c270_rms_infinity_f50d13_beamsplitter.stl](models/optics_logitech_c270_rms_infinity_f50d13_beamsplitter.stl){previewpage}
+* [optics_logitech_c270_rms_infinity_f50d13.stl](models/optics_logitech_c270_rms_infinity_f50d13.stl){previewpage}
 * [optics_picamera_2_rms_f50d13_beamsplitter.stl](models/optics_picamera_2_rms_f50d13_beamsplitter.stl){previewpage}
 * [optics_picamera_2_rms_f50d13.stl](models/optics_picamera_2_rms_f50d13.stl){previewpage}
 * [optics_picamera_2_rms_infinity_f50d13_beamsplitter.stl](models/optics_picamera_2_rms_infinity_f50d13_beamsplitter.stl){previewpage}
