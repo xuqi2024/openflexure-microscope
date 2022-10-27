@@ -28,7 +28,7 @@ Take the [optics module][Optics module](fromstep){qty:1, cat:printedpart} and co
 ## Insert the tube lens {pagestep}
 
 * Place the [lens tool][Lens tool](fromstep){qty:1, cat:printedtool} on a steady surface
-* Place the [12.7 mm achromatic lens](parts/optics.yml#TubeLens){qty:1, cat:optical} on the lens tool
+* Place the [12.7 mm achromatic lens](parts/optics/tube_lens.md){qty:1, cat:optical} on the lens tool
 * Check the lens has the more curved side facing down
 * Take the optics module and place carefully over lens
 * Push down hard to seat the lens in the optics module
