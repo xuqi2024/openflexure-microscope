@@ -1,9 +1,0 @@
-
-
-CondenserLens:
-  Name: PMMA Condenser Lens
-  Description: The microscope illumination needs a condenser lens. We use low-cost PMMA lenses designed for collimating LEDs. The do not produce a high quality image, my are adequate for the illumination. These are easiest to buy in bulk from AliExpress, however the link changes regularly.
-  Specs:
-    Focal Length: 5 mm
-    Outer Diameter: 12.7 mm
-    Material: PMMA

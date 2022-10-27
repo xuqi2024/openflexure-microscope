@@ -11,7 +11,7 @@ In this section we are assembling the sample illumination. This is for transmiss
 
 ## Push-fit the lens {pagestep}
 
-* Place the [Condenser lens](parts/optics.yml#CondenserLens){qty:1, cat:optical} on the [lens tool][Lens tool](fromstep){qty:1, cat:printedtool} flat side down
+* Place the [Condenser lens](parts/optics/condenser_lens.md){qty:1, cat:optical} on the [lens tool][Lens tool](fromstep){qty:1, cat:printedtool} flat side down
 * Take the [upright condenser][Upright condenser](fromstep){qty:1, cat:printedpart} and align the opening over the lens
 * Push down until the lens clicks into place
 
