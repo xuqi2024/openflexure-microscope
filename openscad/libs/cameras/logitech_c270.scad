@@ -132,7 +132,6 @@ module c270_camera_mount(){
     }
 }
 
-// this is just the picamera counterbore for now
 module c270_counterbore(){
     translate_z(c270_camera_bottom_z()-1){
         c270_camera_bottom_mounting_posts(height=9, radius=1.25, cutouts=false);
@@ -143,7 +142,7 @@ module c270_counterbore(){
 }
 
 module c270_camera_bottom_mounting_posts(height=-1, radius=-1, outers=true, cutouts=true){
-    // posts to mount to pi camera from below
+    // posts to mount to Logitech C270 camera from below
     r = radius > 0 ? radius : 2;
     h = height > 0 ? height : 4;
     screw_x = c270_camera_hole_spacing();
