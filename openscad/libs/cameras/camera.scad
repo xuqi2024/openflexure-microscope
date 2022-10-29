@@ -80,7 +80,7 @@ module camera_mount(optics_config, screwhole=true, counterbore=false){
 module camera_bottom_mounting_posts(optics_config, h=-1, r=-1, outers=true, cutouts=true){
     camera_type = get_camera_type(optics_config);
     if(camera_type=="logitech_c270"){
-        assert(false, "This camera option does not have mounting posts set.");
+        c270_camera_bottom_mounting_posts(height=h, radius=r, outers=outers, cutouts=cutouts);
     }
     else if(camera_type=="m12"){
         assert(false, "This camera option does not have mounting posts set.");
@@ -100,6 +100,9 @@ module camera_mount_counterbore(optics_config){
     camera_type = get_camera_type(optics_config);
     if(camera_type=="picamera_2"){
         picamera_2_counterbore();
+    }
+    else if(camera_type=="logitech_c270"){
+        c270_counterbore();
     }
     else{
         assert(false, "This camera option does not have counterbore set.");
