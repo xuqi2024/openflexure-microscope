@@ -147,22 +147,33 @@ module c270_camera_bottom_mounting_posts(height=-1, radius=-1, outers=true, cuto
     r = radius > 0 ? radius : 2;
     h = height > 0 ? height : 4;
     screw_x = c270_camera_hole_spacing();
-    rotate(-45){
+    rotate_z(-45){
         reflect_x(){
-            
-                translate([screw_x, 0, 0]){
-                    difference(){
-                        if(outers){
-                            cylinder(r=r, h=h, $fn=12);
-                        }
-                        if(cutouts){
-                            translate_z(h-6+tiny()){
-                                no2_selftap_hole(h=6);
-                            }
+            translate([screw_x, 0, 0]){
+                difference(){
+                    if(outers){
+                        cylinder(r=r, h=h, $fn=12);
+                    }
+                    if(cutouts){
+                        translate_z(h-6+tiny()){
+                            no2_selftap_hole(h=6);
                         }
                     }
                 }
+            }
             
+        }
+        translate([-6,42.3,0]){
+                difference(){
+                    if(outers){
+                        cylinder(r=r, h=h, $fn=12);
+                    }
+                    if(cutouts){
+                        translate_z(h-6+tiny()){
+                            no2_selftap_hole(h=6);
+                        }
+                    }
+                }
         }
     }
 }
