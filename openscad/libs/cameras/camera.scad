@@ -23,6 +23,7 @@ use <./logitech_c270.scad>
 use <./picamera_2.scad>
 use <./m12.scad>
 use <./6led.scad>
+use <./arducam_b0196.scad>
 
 // If I was able to selectively include different files, this wouldn't be needed.
 // However, doing this saves the faff of precompiling the SCAD source with some
@@ -39,7 +40,9 @@ function get_camera_dictionary(optics_config) = let(
     camera_dicts = [["logitech_c270", c270_camera_dict()],
                     ["m12", m12_camera_dict()],
                     ["6led", 6led_camera_dict()],
-                    ["picamera_2", picamera_2_camera_dict()]]
+                    ["picamera_2", picamera_2_camera_dict()]
+                    ["arducam_b0196",arducam_b0196_camera_dict()]
+                    ]
 ) key_lookup(camera_type, camera_dicts);
 
 /**
@@ -72,6 +75,9 @@ module camera_mount(optics_config, screwhole=true, counterbore=false){
     else if(camera_type=="picamera_2"){
         picamera_2_camera_mount(screwhole=screwhole, counterbore=counterbore);
     }
+    else if(camera_type=="arducam_0196"){
+        arducam_b0196_camera_mount();
+    }
     else{
         assert(false, "This camera option does not have a mount set.");
     }
@@ -91,6 +97,9 @@ module camera_bottom_mounting_posts(optics_config, h=-1, r=-1, outers=true, cuto
     else if(camera_type=="picamera_2"){
         picamera_2_bottom_mounting_posts(height=h, radius=r, outers=outers, cutouts=cutouts);
     }
+    else if(camera_type=="arducam_0196"){
+        b0196_camera_bottom_mounting_posts(height=h, radius=r, outers=outers, cutouts=cutouts);
+    }
     else{
         assert(false, "This camera option does not have mounting posts set.");
     }
@@ -103,6 +112,9 @@ module camera_mount_counterbore(optics_config){
     }
     else if(camera_type=="logitech_c270"){
         c270_counterbore();
+    }
+    else if(camera_type=="arducam_0196"){
+        b0196_counterbore();
     }
     else{
         assert(false, "This camera option does not have counterbore set.");
