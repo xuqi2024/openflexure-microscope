@@ -14,6 +14,8 @@ use <./rms_thread.scad>
 // camera module depending on the optics configuration
 use <./cameras/camera.scad>
 
+use <./cameras/logitech_c270.scad>
+
 $fn=24;
 
 function optics_wedge_bottom() = -2; //bottom of dovetail (<0 to allow some play)
@@ -30,7 +32,11 @@ module optical_path(optics_config, lens_z, camera_mount_top_z){
     lens_r = rms ?
         key_lookup("tube_lens_r", optics_config):
         key_lookup("lens_r", optics_config);
-    aperture_r = lens_aperture(lens_r);
+    c270_spacer_yes = (key_lookup("optics_type", optics_config) == "spacer") && (key_lookup("camera_type", optics_config) == "logitech_c270") ;
+    aperture_r = c270_spacer_yes?
+        lens_aperture(lens_r)-2:
+        lens_aperture(lens_r);
+
     union(){
         translate_z(camera_mount_top_z-tiny()){
             //beam path
