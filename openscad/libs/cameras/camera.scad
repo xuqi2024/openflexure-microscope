@@ -40,7 +40,7 @@ function get_camera_dictionary(optics_config) = let(
     camera_dicts = [["logitech_c270", c270_camera_dict()],
                     ["m12", m12_camera_dict()],
                     ["6led", 6led_camera_dict()],
-                    ["picamera_2", picamera_2_camera_dict()]
+                    ["picamera_2", picamera_2_camera_dict()],
                     ["arducam_b0196",arducam_b0196_camera_dict()]
                     ]
 ) key_lookup(camera_type, camera_dicts);
