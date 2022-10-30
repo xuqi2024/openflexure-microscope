@@ -75,7 +75,7 @@ module camera_mount(optics_config, screwhole=true, counterbore=false){
     else if(camera_type=="picamera_2"){
         picamera_2_camera_mount(screwhole=screwhole, counterbore=counterbore);
     }
-    else if(camera_type=="arducam_0196"){
+    else if(camera_type=="arducam_b0196"){
         arducam_b0196_camera_mount();
     }
     else{
@@ -97,7 +97,7 @@ module camera_bottom_mounting_posts(optics_config, h=-1, r=-1, outers=true, cuto
     else if(camera_type=="picamera_2"){
         picamera_2_bottom_mounting_posts(height=h, radius=r, outers=outers, cutouts=cutouts);
     }
-    else if(camera_type=="arducam_0196"){
+    else if(camera_type=="arducam_b0196"){
         b0196_camera_bottom_mounting_posts(height=h, radius=r, outers=outers, cutouts=cutouts);
     }
     else{
@@ -113,7 +113,7 @@ module camera_mount_counterbore(optics_config){
     else if(camera_type=="logitech_c270"){
         c270_counterbore();
     }
-    else if(camera_type=="arducam_0196"){
+    else if(camera_type=="arducam_b0196"){
         b0196_counterbore();
     }
     else{

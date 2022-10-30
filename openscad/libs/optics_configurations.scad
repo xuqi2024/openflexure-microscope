@@ -53,3 +53,12 @@ function c270lens_config(camera_type = "logitech_c270") = let(
                    ["lens_h", 1],
                    ["lens_spacing", 17]]
 ) config_dict;
+
+function b0196lens_config(camera_type = "arducam_b0196") = let(
+    config_dict = [["optics_type", "spacer"],
+                   ["camera_type", camera_type],
+                   ["lens_r", 3],
+                   ["parfocal_distance", 6],
+                   ["lens_h", 2.5],
+                   ["lens_spacing", 17]]
+) config_dict;
