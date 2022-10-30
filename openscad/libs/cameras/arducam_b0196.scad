@@ -22,6 +22,7 @@
 use <../utilities.scad>
 use <../libdict.scad>
 use <./logitech_c270.scad>
+use <./picamera_2.scad>
 
 $fn=48;
 
@@ -31,59 +32,138 @@ function arducam_b0196_camera_dict() = [["mount_height", 4.5],
 function arducam_b0196_camera_bottom_z() = -key_lookup("mount_height", arducam_b0196_camera_dict());
 
 function arducam_b0196_camera_hole_spacing() = 28/2;
+function arducam_offset_y() = 2; // the sensor is offset towards the ribbom cable
 
-
-module b0196(beam_r=5, beam_h=6){
+module b0196(beam_r=5, beam_h=9){
     //cut-out to fit Arducam B0196 webcam
     //optical axis at (0,0)
     //top of PCB at (0,0,0)
-    mounting_hole_xy = arducam_b0196_camera_hole_spacing();
-    mirror([0,0,1]){ //parts cut out of the mount are z<0
-        //beam clearance
+
+    // This module is designed to be subtracted from the bottom of a shape.
+    // The z=0 plane should be the print bed.
+    // It includes cut-outs for the components on the PCB and also a push-fit hole
+    // for the camera module.  This uses flexible "fingers" to grip the camera firmly
+    // but gently.  Just push to insert, and wiggle to remove.  You may find popping
+    // off the brown ribbon cable and removing the PCB first helps when extracting
+    // the camera module again.
+
+    // mirror([0,0,1]){ //parts cut out of the mount are z<0
+
+    mount_height = key_lookup("mount_height", arducam_b0196_camera_dict());
+    //width camera box (NOTE: this is deliberately loose fitting)
+    camera_width = 8.5 + 1.0;
+    //height of camera box (including foam support)
+    camera_height=2.9;
+
+    //size of camera aperture
+    hole_r = 4.3;
+    union(){
+        sequential_hull(){
+            //cut-out for camera (/wider at bottom)
+            translate_z(-tiny()){
+                cube([camera_width+0.5,camera_width+0.5,tiny()],center=true);
+            }
+            translate_z(0.5){
+                cube([camera_width,camera_width,tiny()],center=true);
+            }
+            translate_z(camera_height/2){
+                cube([camera_width,camera_width,camera_height],center=true);
+            }
+            cylinder(r=hole_r, h=2*mount_height, center=true);
+        }
+
+        //clearance for the ribbon cable at top of camera
+        flex_h=2.5; // the height of the flex
+
+        extra_h = mount_height-flex_h-0.75; // extra height above the flex for the sloping "roof"
         hull(){
-            cube([8,8,6],center=true);
-            translate_z(-beam_h){
-                cylinder(r=beam_r,h=2*tiny(),center=true);
+            translate_z(-tiny()){
+                linear_extrude(flex_h){
+                    picam2_flex_and_components(camera_width);
+                }
+            }
+            translate_z(-tiny()){
+                linear_extrude(flex_h+extra_h){
+                    offset(-extra_h){
+                        picam2_flex_and_components(camera_width);
+                    }
+                }
             }
         }
 
-        //mounting holes
-        reflect_x(){
-            translate_x(mounting_hole_xy){
-                mounting_hole();
+        //beam clearance
+        cylinder(r=hole_r, h=beam_h);
+
+        mounting_hole_xy = arducam_b0196_camera_hole_spacing();
+        //Component clearance
+        translate_z(1.5/2-tiny()){
+            difference(){
+                translate_y(-arducam_offset_y()){
+                    cube([31,31,1.5],center = true);
+                }
+                union(){
+                    cube([15,15,3], center = true);
+                    translate_y(-arducam_offset_y()){
+                        reflect_x(){
+                            reflect_y(){
+                                translate([mounting_hole_xy, mounting_hole_xy,0]){
+                                    cylinder(d=4.5, h=10,center = true);
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
+
+    } 
+
 
         //clearance for PCB
-        hull(){
-            translate([-10/2,-13.5,0]){
-                cube([10,tiny(),8]);
-                }
-            translate([-21.5/2,-4,0]){
-                cube([21.5,41,8]);
-                }
-            translate([-10/2,45,0]){
-                cube([10,tiny(),8]);
-                }
-        }
-    }
+        // hull(){
+        //     translate([-10/2,-13.5,0]){
+        //         cube([10,tiny(),8]);
+        //         }
+        //     translate([-21.5/2,-4,0]){
+        //         cube([21.5,41,8]);
+        //         }
+        //     translate([-10/2,45,0]){
+        //         cube([10,tiny(),8]);
+        //         }
+        // }
+    
 }
+
+b0196();
+//picam2_cutout();
 
 module arducam_b0196_camera_mount(){
     // A mount for the Arducam B0196 USB camera
     // This should finish at z=0+tiny(), with a surface that can be
     // hull-ed onto the lens assembly.
-    h = 58;
-    w = 23;
+    h = 38;
+    w = 38;
+    
+    mounting_hole_xy = arducam_b0196_camera_hole_spacing();
 
     mount_height = key_lookup("mount_height", arducam_b0196_camera_dict());
     rotate(-45){
         difference(){
-            translate([-w/2, -13, -mount_height]){
+            translate([-w/2, -h/2 -arducam_offset_y(), -mount_height]){
                 cube([w, h, mount_height]);
             }
             translate_z(-mount_height){
                 b0196();
+                //mounting holes
+                translate_y(-arducam_offset_y()){
+                    reflect_x(){
+                        reflect_y(){
+                            translate([mounting_hole_xy, mounting_hole_xy,0]){
+                                mounting_hole();
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -105,16 +185,18 @@ module b0196_camera_bottom_mounting_posts(height=-1, radius=-1, outers=true, cut
     h = height > 0 ? height : 4;
     screw_xy = arducam_b0196_camera_hole_spacing();
     rotate(-45){
-        reflect_x(){
-            reflect_y(){
-                translate([screw_xy, screw_xy, 0]){
-                    difference(){
-                        if(outers){
-                            cylinder(r=r, h=h, $fn=12);
-                        }
-                        if(cutouts){
-                            translate_z(h-6+tiny()){
-                                no2_selftap_hole(h=6);
+        translate_y(-arducam_offset_y()){
+            reflect_x(){
+                reflect_y(){
+                    translate([screw_xy, screw_xy, 0]){
+                        difference(){
+                            if(outers){
+                                cylinder(r=r, h=h, $fn=12);
+                            }
+                            if(cutouts){
+                                translate_z(h-6+tiny()){
+                                    no2_selftap_hole(h=6);
+                                }
                             }
                         }
                     }
