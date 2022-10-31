@@ -117,12 +117,6 @@ module extra_optics_body_for_beamsplitter(params, optics_config, body_r, body_to
     camera_rotation = key_lookup("camera_rotation", optics_config);
     bs_rotation = key_lookup("beamsplitter_rotation", optics_config);
     hull(){
-        rotate(camera_rotation){
-            translate_z(camera_mount_top_z){
-                //Where the tube meets the camera
-                camera_mount_top_slice(optics_config);
-            }
-        }
         rotate(bs_rotation){
             hull(){
                 //the box to fit the fl cube in
