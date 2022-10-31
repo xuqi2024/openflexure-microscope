@@ -26,7 +26,11 @@ $fn=48;
 function c270_camera_dict() = [["mount_height", 4.5],
                                ["sensor_height", 0.2]];//Height of the sensor above the PCB
 
+function c270_camera_bottom_z() = -key_lookup("mount_height", c270_camera_dict());
 
+function c270_camera_hole_spacing() = 8.25;
+
+// Countersunk hole. countersink from the top
 module mounting_hole(){
     translate_z(-5){
         cylinder(r=0.8*1.2,h=999,$fn=12);
@@ -40,7 +44,7 @@ module C270(beam_r=5, beam_h=6){
     //cut-out to fit logitech C270 webcam
     //optical axis at (0,0)
     //top of PCB at (0,0,0)
-    mounting_hole_x = 8.25;
+    mounting_hole_x = c270_camera_hole_spacing();
     mirror([0,0,1]){ //parts cut out of the mount are z<0
         //beam clearance
         hull(){
@@ -88,12 +92,14 @@ module C270(beam_r=5, beam_h=6){
                     cube([10,9.5*2,15],center=true);
                 }
             }
-            translate([-5,39.5,-999]){
+            // cube at third mounting hole, cable end
+            translate([-3.5,36,-10]){
                 mirror([1,0,0]){
-                    cube([999,999,999]);
+                    cube([10,10,10]);
                 }
             }
         }
+        // third mounting hole, cable end
         translate([-6,42.3,0]){
             mounting_hole();
         }
@@ -109,11 +115,11 @@ module C270(beam_r=5, beam_h=6){
 }
 
 module c270_camera_mount(){
-    // A mount for the pi camera v2
+    // A mount for the Logitech C270 webcam
     // This should finish at z=0+tiny(), with a surface that can be
     // hull-ed onto the lens assembly.
     h = 58;
-    w = 25;
+    w = 23.5;
 
     mount_height = key_lookup("mount_height", c270_camera_dict());
     rotate(-45){
@@ -124,6 +130,51 @@ module c270_camera_mount(){
             translate_z(-mount_height){
                 C270();
             }
+        }
+    }
+}
+
+module c270_counterbore(){
+    translate_z(c270_camera_bottom_z()-1){
+        c270_camera_bottom_mounting_posts(height=9, radius=1.25, cutouts=false);
+    }
+    translate_z(c270_camera_bottom_z()+1){
+        c270_camera_bottom_mounting_posts(height=9, radius=2.8, cutouts=false);
+    }
+}
+
+module c270_camera_bottom_mounting_posts(height=-1, radius=-1, outers=true, cutouts=true){
+    // posts to mount to Logitech C270 camera from below
+    r = radius > 0 ? radius : 2;
+    h = height > 0 ? height : 4;
+    screw_x = c270_camera_hole_spacing();
+    rotate_z(-45){
+        reflect_x(){
+            translate([screw_x, 0, 0]){
+                difference(){
+                    if(outers){
+                        cylinder(r=r, h=h, $fn=12);
+                    }
+                    if(cutouts){
+                        translate_z(h-6+tiny()){
+                            no2_selftap_hole(h=6);
+                        }
+                    }
+                }
+            }
+            
+        }
+        translate([-6,42.3,0]){
+                difference(){
+                    if(outers){
+                        cylinder(r=r, h=h, $fn=12);
+                    }
+                    if(cutouts){
+                        translate_z(h-6+tiny()){
+                            no2_selftap_hole(h=6);
+                        }
+                    }
+                }
         }
     }
 }
