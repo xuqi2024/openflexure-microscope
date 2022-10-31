@@ -92,12 +92,14 @@ module C270(beam_r=5, beam_h=6){
                     cube([10,9.5*2,15],center=true);
                 }
             }
-            translate([-5,39.5,-999]){
+            // cube at third mounting hole, cable end
+            translate([-3.5,36,-10]){
                 mirror([1,0,0]){
-                    cube([999,999,999]);
+                    cube([10,10,10]);
                 }
             }
         }
+        // third mounting hole, cable end
         translate([-6,42.3,0]){
             mounting_hole();
         }
@@ -117,7 +119,7 @@ module c270_camera_mount(){
     // This should finish at z=0+tiny(), with a surface that can be
     // hull-ed onto the lens assembly.
     h = 58;
-    w = 23;
+    w = 23.5;
 
     mount_height = key_lookup("mount_height", c270_camera_dict());
     rotate(-45){
