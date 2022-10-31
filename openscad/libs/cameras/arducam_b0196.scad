@@ -96,13 +96,31 @@ module b0196(beam_r=5, beam_h=9){
 
         mounting_hole_xy = arducam_b0196_camera_hole_spacing();
         //Component clearance
-        translate_z(1.5/2-tiny()){
+        translate_z(2/2-tiny()){
             difference(){
-                translate_y(-arducam_offset_y()){
-                    cube([31,31,1.5],center = true);
+                union(){
+                    // main block for clearance over 1.5mm components
+                    translate_y(-arducam_offset_y()){
+                        cube([31,31,2],center = true);
+                    }
+                    // stepped region to cope with bridging
+                    translate([-4.5/2+31/2,-arducam_offset_y(),0]){
+                        cube([4.5,31,4],center = true);
+                    }
+                    translate([+4.5/2-31/2,-arducam_offset_y(),0]){
+                        cube([4.5,31,4],center = true);
+                    }
                 }
                 union(){
+                    // part surrounding camera
                     cube([15,15,3], center = true);
+                    translate([-6.8,3.5,0]){
+                        cube([3,22,3],center = true);
+                    }
+                    translate([+8,-5,0]){
+                        cube([16,5,5],center = true);
+                    }
+                    // pillars at mounting points
                     translate_y(-arducam_offset_y()){
                         reflect_x(){
                             reflect_y(){
@@ -110,6 +128,16 @@ module b0196(beam_r=5, beam_h=9){
                                     cylinder(d=4.5, h=10,center = true);
                                 }
                             }
+                        }
+                    }
+                    // bar at top and part at bottom
+                    translate([0,(7.0/2)-38/2-arducam_offset_y(),0]){
+                        cube([34,7.0,5],center = true);
+                    }
+                    translate([0,-(7.0/2)+38/2-arducam_offset_y(),0]){
+                        difference(){
+                            cube([34,7.0,5],center = true);
+                            cube([(38-16),9.0,6],center = true);
                         }
                     }
                 }
