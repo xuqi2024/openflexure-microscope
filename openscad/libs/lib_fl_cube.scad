@@ -79,8 +79,19 @@ module optical_path_fl(params, optics_config, lens_z, camera_mount_top_z){
     rotate(rotation){
         union(){
             translate_z(camera_mount_top_z-tiny()){
+                camera_mount_to_bs = fl_cube_bottom(params, optics_config)-camera_mount_top_z;
                 //beam path to bottom of cube
-                lighttrap_sqylinder(r1=5, f1=0, r2=0, f2=fl_cube_w()-4, h=fl_cube_bottom(params, optics_config)-camera_mount_top_z+2*tiny());
+                if(camera_mount_to_bs > 3){
+                    lighttrap_sqylinder(r1=5, f1=0, r2=0, f2=fl_cube_w()-4, h=camera_mount_to_bs+2*tiny());
+                }
+                else {
+                    hull(){
+                        cylinder(r=5, h=tiny());
+                        translate_z(camera_mount_to_bs+tiny()){
+                            cube([fl_cube_w()-4, fl_cube_w()-4, 2*tiny()], center=true);
+                        }
+                    }
+                }
             }
             //filter cube
             fl_cube_cutout(params, optics_config);
