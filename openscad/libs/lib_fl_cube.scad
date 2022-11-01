@@ -79,8 +79,17 @@ module optical_path_fl(params, optics_config, lens_z, camera_mount_top_z){
     rotate(rotation){
         union(){
             translate_z(camera_mount_top_z-tiny()){
-                //beam path to bottom of cube
-                lighttrap_sqylinder(r1=5, f1=0, r2=0, f2=fl_cube_w()-4, h=fl_cube_bottom(params, optics_config)-camera_mount_top_z+2*tiny());
+                // beam path from camera mount to bottom of cube
+                camera_mount_to_bs = fl_cube_bottom(params, optics_config)-camera_mount_top_z;
+                // The light trap will go wrong if it's not at least two ridges high - so if we
+                // are shorter than the default ridge spacing, make the ridges smaller.
+                ridge = (camera_mount_to_bs > 3) ? 1.5 : camera_mount_to_bs/2;
+                lighttrap_sqylinder(
+                    r1=5, f1=0,                      // The bottom is a circle, radius=5mm
+                    r2=0, f2=fl_cube_w()-4,          // The top is a square, side length fl_cube_w()-4
+                    h=camera_mount_to_bs+2*tiny(),
+                    ridge=ridge
+                );
             }
             //filter cube
             fl_cube_cutout(params, optics_config);
