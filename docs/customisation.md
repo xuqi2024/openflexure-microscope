@@ -63,34 +63,78 @@ For the RMS objective optics we also generate optics modules for an M12 camera, 
 
 The module that is used most of the time, and thus the one that is tested most frequently, is [optics_picamera_2_rms_f50d13.stl](models/optics_picamera_2_rms_f50d13.stl){previewpage}. This uses a 45mm parfocal, 160mm tube length, RMS-threaded objective, together with a 50mm achromatic lens and a Raspberry Pi camera module v2.  Other optics modules are generated every time we rebuild the project. We only regularly check and test the optics modules mentioned in the main instructions, i.e. `optics_picamera_2_rms_f50d13.stl` and its beamsplitter variant. While the files linked below should stay up to date, it is possible that changes introduced elsewhere might stop them working. You are therefore advised to check them before printing.  If you can start by printing the default options, and swap in one of these later, that is often a good idea.
 
-The options for each component are:
+You can select the options in the form below to pick the correct filename:
+<form id="opticsModuleSelectorForm">
+    <label for="camera">Camera: </label>
+    <select name="camera" id="cameraSelector" oninput="updateOpticsModuleLink()" >
+        <option value="picamera_2">Raspberry Pi camera module, version 2</option>
+        <option value="m12">Board camera with M12 lens</option>
+        <option value="logitech_c270">Logitech C270 webcam</option>
+    </select>
+    <br />
+    <label for="objective">Objective: </label>
+    <select name="objective" id="objectiveSelector" oninput="updateOpticsModuleLink()" >
+        <option value="rms">RMS threaded, finite conjugates (160mm tube length) objective with 45mm parfocal distance.</option>
+        <option value="rms_infinity">RMS threaded, infinity corrected objective with 45mm parfocal distance.</option>
+    </select>
+    <br />
+    <input type="checkbox" name="beamsplitter" id="beamsplitterCheckbox" value="yes" oninput="updateOpticsModuleLink()" />
+    <label for="beamsplitter">Include beamsplitter cut-out.</label>
+    <p>
+        <code><a id="opticsModuleSelectorLink" href="">Select options to generate a filename</a></code> 
+        <span id="tallStandWarning"></span>
+    </p>
+</form>
 
-* Camera:
-    * `picamera_2`: Raspberry Pi camera module, version 2.
-    * `m12`: Board camera with M12 lens (the important feature is the two mounting holes for the square lens mount).
-    * `logitech_c270`: Logitech C270 webcam.
-* Objective:
-    * `rms`: RMS threaded, finite conjugates (160mm tube length) objective with 45mm parfocal distance.
-    * `rms_infinity`: RMS threaded, infinity corrected objective with 45mm parfocal distance. **Requires a tall stand** (see below).
-* Tube lens:
-    * `f50d13`: 50mm focal length, 12.7mm diameter achromatic lens.
+<script type="text/javascript">
+//<![CDATA[
+function getRadioValue(name){
+    let options = document.getElementsByName(name);
+    for(i=0; i < options.length; i++){
+        if(options[i].checked){
+            return options[i].value;
+        }
+    }
+    return false;
+}
+function updateOpticsModuleLink(){
+    let camera = document.getElementById("cameraSelector").value;
+    let objective = document.getElementById("objectiveSelector").value;
+    let beamsplitter = document.getElementById("beamsplitterCheckbox").checked ? "_beamsplitter" : "";
+    let tubelens = "f50d13"
+    if(camera && objective){
+        let link = document.getElementById("opticsModuleSelectorLink");
+        let basename = "optics_" + camera + "_" + objective + "_" + tubelens + beamsplitter;
+        link.innerHTML = basename + ".stl";
+        link.href = "models/" + basename + ".html";
+        let warning = document.getElementById("tallStandWarning");
+        if(objective=="rms_infinity"){
+            warning.innerHTML = "<b>Requires tall microscope stand</b> (see below).";
+        }else{
+            warning.innerHTML = "";
+        }
+    }
+}
+updateOpticsModuleLink(); // Set the initial value
+//]]>
+</script>
 
 >i The infinity corrected optics modules are taller, and require a tall microscope stand (see "stands" section below).
 
-| Filename | Camera | Objective | Beamsplitter |
-|-|-|-|-|
-| [optics_picamera_2_rms_f50d13.stl](models/optics_picamera_2_rms_f50d13.stl){previewpage} (default) | `picamera_2` | `rms` | No |
-| [optics_picamera_2_rms_f50d13_beamsplitter.stl](models/optics_picamera_2_rms_f50d13_beamsplitter.stl){previewpage} | `picamera_2` | `rms` | Yes |
-| [optics_picamera_2_rms_infinity_f50d13_beamsplitter.stl](models/optics_picamera_2_rms_infinity_f50d13_beamsplitter.stl){previewpage} | `picamera_2` | `rms_infinity` | No |
-| [optics_picamera_2_rms_infinity_f50d13.stl](models/optics_picamera_2_rms_infinity_f50d13.stl){previewpage} | `picamera_2` | `rms_infinity` | Yes |
-| [optics_m12_rms_f50d13_beamsplitter.stl](models/optics_m12_rms_f50d13_beamsplitter.stl){previewpage} | `m12` | `rms` | No |
-| [optics_m12_rms_f50d13.stl](models/optics_m12_rms_f50d13.stl){previewpage} | `m12` | `rms` | Yes |
-| [optics_m12_rms_infinity_f50d13_beamsplitter.stl](models/optics_m12_rms_infinity_f50d13_beamsplitter.stl){previewpage} | `m12` | `rms_infinity` | No |
-| [optics_m12_rms_infinity_f50d13.stl](models/optics_m12_rms_infinity_f50d13.stl){previewpage} | `m12` | `rms_infinity` | Yes |
-| [optics_logitech_c270_rms_f50d13_beamsplitter.stl](models/optics_logitech_c270_rms_f50d13_beamsplitter.stl){previewpage} | `logitech_c270` | `rms` | No |
-| [optics_logitech_c270_rms_f50d13.stl](models/optics_logitech_c270_rms_f50d13.stl){previewpage} | `logitech_c270` | `rms` | Yes |
-| [optics_logitech_c270_rms_infinity_f50d13_beamsplitter.stl](models/optics_logitech_c270_rms_infinity_f50d13_beamsplitter.stl){previewpage} | `logitech_c270` | `rms_infinity` | No |
-| [optics_logitech_c270_rms_infinity_f50d13.stl](models/optics_logitech_c270_rms_infinity_f50d13.stl){previewpage} | `logitech_c270` | `rms_infinity` | Yes |
+Available optics module STLs:
+
+* [optics_picamera_2_rms_f50d13.stl](models/optics_picamera_2_rms_f50d13.stl){previewpage} (default)
+* [optics_picamera_2_rms_f50d13_beamsplitter.stl](models/optics_picamera_2_rms_f50d13_beamsplitter.stl){previewpage}
+* [optics_picamera_2_rms_infinity_f50d13_beamsplitter.stl](models/optics_picamera_2_rms_infinity_f50d13_beamsplitter.stl){previewpage}
+* [optics_picamera_2_rms_infinity_f50d13.stl](models/optics_picamera_2_rms_infinity_f50d13.stl){previewpage}
+* [optics_m12_rms_f50d13_beamsplitter.stl](models/optics_m12_rms_f50d13_beamsplitter.stl){previewpage}
+* [optics_m12_rms_f50d13.stl](models/optics_m12_rms_f50d13.stl){previewpage} 
+* [optics_m12_rms_infinity_f50d13_beamsplitter.stl](models/optics_m12_rms_infinity_f50d13_beamsplitter.stl){previewpage}
+* [optics_m12_rms_infinity_f50d13.stl](models/optics_m12_rms_infinity_f50d13.stl){previewpage}
+* [optics_logitech_c270_rms_f50d13_beamsplitter.stl](models/optics_logitech_c270_rms_f50d13_beamsplitter.stl){previewpage}
+* [optics_logitech_c270_rms_f50d13.stl](models/optics_logitech_c270_rms_f50d13.stl){previewpage}
+* [optics_logitech_c270_rms_infinity_f50d13_beamsplitter.stl](models/optics_logitech_c270_rms_infinity_f50d13_beamsplitter.stl){previewpage}
+* [optics_logitech_c270_rms_infinity_f50d13.stl](models/optics_logitech_c270_rms_infinity_f50d13.stl){previewpage}
 
 ## Stands
 
