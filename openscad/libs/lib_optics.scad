@@ -61,84 +61,95 @@ module optics_module_body_outer(params, optics_config, body_r, body_top, rms_mou
     camera_rotation = key_lookup("camera_rotation", optics_config);
     camera_mount_top_z = rms_camera_mount_top_z(params, optics_config);
 
-    union(){
-
-        //This section connects the top of the camera to the bottom of the main cylinder and wedge
-        hull(){
-            //Where the tube meets the camera
-            rotate(camera_rotation){
-                translate_z(camera_mount_top_z){
-                    camera_mount_top_slice(optics_config);
-                }
-            }
-            //the bottom of the tube
-            translate_z(optics_wedge_bottom()){
-                cylinder(r=bottom_r,h=tiny());
-            }
-            //the bottom of the wedge
-            if (include_wedge){
-                translate_z(optics_wedge_bottom()){
-                    objective_fitting_wedge(h=tiny());
-                }
+    // The top of the camera mount
+    module top_of_camera_mount_in_place(){
+        rotate(camera_rotation){
+            translate_z(camera_mount_top_z){
+                camera_mount_top_slice(optics_config);
             }
         }
+    }
 
-        // The main cylinder and wedge
-        wedge_height = wedge_top - optics_wedge_bottom() + tiny();
-        cyl_height = body_top - optics_wedge_bottom() + tiny();
+    // The bottom of the cylindrical body of the mount, and the fitting wedge
+    module bottom_of_body_and_wedge(){
         translate_z(optics_wedge_bottom()){
-            hull(){
-                if (include_wedge){
-                    objective_fitting_wedge(h=wedge_height);
-                }
-                cylinder(r1=bottom_r, r2=body_r ,h=cyl_height);
+            cylinder(r=bottom_r,h=tiny());
+        }
+        //the bottom of the wedge
+        if (include_wedge){
+            translate_z(optics_wedge_bottom()){
+                objective_fitting_wedge(h=tiny());
             }
         }
-        translate_z(body_top){
-            cylinder(r=body_r, h=rms_mount_h);
-        }
+    }
 
+    // The top of the cylindrical body, and the fitting wedge
+    module top_of_body_and_wedge(){
+        translate_z(body_top){
+            cylinder(r=body_r, h=tiny());
+        }
+        if (include_wedge){
+            translate_z(wedge_top){
+                objective_fitting_wedge(h=tiny());
+            }
+        }
+    }
+
+    // The optics module is built from the bottom upwards - each pair of
+    // shapes in the list below is hulled together to form the shape
+    union(){
+        if(beamsplitter){
+            sequential_hull(){
+                top_of_camera_mount_in_place();
+                union(){
+                    bottom_of_body_and_wedge();
+                    fl_cube_casing_bottom(params, optics_config);
+                }
+                union(){
+                    top_of_body_and_wedge();
+                    extra_optics_body_for_beamsplitter(params, optics_config);
+                }
+            }
+        } 
+        else {
+            sequential_hull(){
+                top_of_camera_mount_in_place();
+                bottom_of_body_and_wedge();
+                top_of_body_and_wedge();
+            }
+        }
         // The actual camera mount
         rotate(camera_rotation){
             translate_z(camera_mount_top_z){
                 camera_mount(optics_config);
             }
         }
+        // The housing for the RMS thread and tube lens gripper
+        translate_z(body_top){
+            cylinder(r=body_r, h=rms_mount_h);
+        }
+    }    
+}
 
-        if(beamsplitter){
-            // join together the top of the camera, the beamsplitter and the tube
-            extra_optics_body_for_beamsplitter(params, optics_config, body_r, body_top, bottom_r);
+module extra_optics_body_for_beamsplitter(params, optics_config){
+    bs_rotation = key_lookup("beamsplitter_rotation", optics_config);
+    rotate(bs_rotation){
+        hull(){
+            //the box to fit the fl cube in
+            fl_cube_casing(params, optics_config);
+            //the mounts for the fl cube screw holes
+            fl_screw_holes(params, optics_config, d = 4, h =8);
         }
     }
 }
 
-module extra_optics_body_for_beamsplitter(params, optics_config, body_r, body_top, bottom_r){
-    camera_mount_top_z = rms_camera_mount_top_z(params, optics_config);
-    camera_rotation = key_lookup("camera_rotation", optics_config);
-    bs_rotation = key_lookup("beamsplitter_rotation", optics_config);
-    hull(){
-        rotate(camera_rotation){
-            translate_z(camera_mount_top_z){
-                //Where the tube meets the camera
-                camera_mount_top_slice(optics_config);
+module fl_cube_casing_bottom(params, optics_config){
+    bottom = fl_cube_bottom(params, optics_config);
+    translate_z(bottom){
+        thick_section(){
+            translate_z(-bottom){
+                extra_optics_body_for_beamsplitter(params, optics_config);
             }
-        }
-        rotate(bs_rotation){
-            hull(){
-                //the box to fit the fl cube in
-                fl_cube_casing(params, optics_config);
-                //the mounts for the fl cube screw holes
-                fl_screw_holes(params, optics_config, d = 4, h =8);
-            }
-        }
-
-        //the bottom of the tube
-        translate_z(optics_wedge_bottom()){
-            cylinder(r=bottom_r,h=tiny());
-        }
-        //the top of the tube
-        translate_z(body_top){
-            cylinder(r=body_r,h=tiny());
         }
     }
 }
