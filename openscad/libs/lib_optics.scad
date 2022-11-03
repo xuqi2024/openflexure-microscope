@@ -86,7 +86,7 @@ module optics_module_body_outer(params, optics_config, body_r, body_top, rms_mou
     // The top of the cylindrical body, and the fitting wedge
     module top_of_body_and_wedge(){
         translate_z(body_top){
-            cylinder(r=body_r, h=rms_mount_h);
+            cylinder(r=body_r, h=tiny());
         }
         if (include_wedge){
             translate_z(wedge_top){
@@ -123,6 +123,10 @@ module optics_module_body_outer(params, optics_config, body_r, body_top, rms_mou
             translate_z(camera_mount_top_z){
                 camera_mount(optics_config);
             }
+        }
+        // The housing for the RMS thread and tube lens gripper
+        translate_z(body_top){
+            cylinder(r=body_r, h=rms_mount_h);
         }
     }    
 }
