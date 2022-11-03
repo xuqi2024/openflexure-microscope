@@ -63,22 +63,34 @@ For the RMS objective optics we also generate optics modules for an M12 camera, 
 
 The module that is used most of the time, and thus the one that is tested most frequently, is [optics_picamera_2_rms_f50d13.stl](models/optics_picamera_2_rms_f50d13.stl){previewpage}. This uses a 45mm parfocal, 160mm tube length, RMS-threaded objective, together with a 50mm achromatic lens and a Raspberry Pi camera module v2.  Other optics modules are generated every time we rebuild the project. We only regularly check and test the optics modules mentioned in the main instructions, i.e. `optics_picamera_2_rms_f50d13.stl` and its beamsplitter variant. While the files linked below should stay up to date, it is possible that changes introduced elsewhere might stop them working. You are therefore advised to check them before printing.  If you can start by printing the default options, and swap in one of these later, that is often a good idea.
 
-| Filename | Camera | Objective | Tube Lens | Beamsplitter |
-|-|-|-|-|-|
-| [optics_picamera_2_rms_f50d13.stl](models/optics_picamera_2_rms_f50d13.stl){previewpage} (default) | Raspberry Pi Camera Module v2 | RMS Thread, 45mm parfocal, 160mm tube | f=50mm, d=12.7mm | No |
-| [optics_picamera_2_rms_f50d13_beamsplitter.stl](models/optics_picamera_2_rms_f50d13_beamsplitter.stl){previewpage} | Raspberry Pi Camera Module v2 | RMS Thread, 45mm parfocal, 160mm tube | f=50mm, d=12.7mm | Yes |
-| [optics_picamera_2_rms_infinity_f50d13_beamsplitter.stl](models/optics_picamera_2_rms_infinity_f50d13_beamsplitter.stl){previewpage} | Raspberry Pi Camera Module v2 | RMS Thread, 45mm parfocal, infinity corrected |f=50mm, d=12.7mm | No |
-| [optics_picamera_2_rms_infinity_f50d13.stl](models/optics_picamera_2_rms_infinity_f50d13.stl){previewpage} | Raspberry Pi Camera Module v2 | RMS Thread, 45mm parfocal, infinity corrected |f=50mm, d=12.7mm | Yes |
-| [optics_m12_rms_f50d13_beamsplitter.stl](models/optics_m12_rms_f50d13_beamsplitter.stl){previewpage} | Board camera with M12 lens | RMS Thread, 45mm parfocal, 160mm tube |f=50mm, d=12.7mm | No |
-| [optics_m12_rms_f50d13.stl](models/optics_m12_rms_f50d13.stl){previewpage} | Board camera with M12 lens | RMS Thread, 45mm parfocal, 160mm tube |f=50mm, d=12.7mm | Yes |
-| [optics_m12_rms_infinity_f50d13_beamsplitter.stl](models/optics_m12_rms_infinity_f50d13_beamsplitter.stl){previewpage} | Board camera with M12 lens | RMS Thread, 45mm parfocal, infinity corrected |f=50mm, d=12.7mm | No |
-| [optics_m12_rms_infinity_f50d13.stl](models/optics_m12_rms_infinity_f50d13.stl){previewpage} | Board camera with M12 lens | RMS Thread, 45mm parfocal, infinity corrected |f=50mm, d=12.7mm | Yes |
-| [optics_logitech_c270_rms_f50d13_beamsplitter.stl](models/optics_logitech_c270_rms_f50d13_beamsplitter.stl){previewpage} | Logitech C270 Webcam | RMS Thread, 45mm parfocal, 160mm tube |f=50mm, d=12.7mm | No |
-| [optics_logitech_c270_rms_f50d13.stl](models/optics_logitech_c270_rms_f50d13.stl){previewpage} | Logitech C270 Webcam | RMS Thread, 45mm parfocal, 160mm tube |f=50mm, d=12.7mm | Yes |
-| [optics_logitech_c270_rms_infinity_f50d13_beamsplitter.stl](models/optics_logitech_c270_rms_infinity_f50d13_beamsplitter.stl){previewpage} | Logitech C270 Webcam | RMS Thread, 45mm parfocal, infinity corrected |f=50mm, d=12.7mm | No |
-| [optics_logitech_c270_rms_infinity_f50d13.stl](models/optics_logitech_c270_rms_infinity_f50d13.stl){previewpage} | Logitech C270 Webcam | RMS Thread, 45mm parfocal, infinity corrected |f=50mm, d=12.7mm | Yes |
+The options for each component are:
 
-The filenames contain the camera for which they were designed (`picamera_2`, `m12`, or `logitech_c270`), followed by `infinity` for the infinity corrected versions, then `f50d13` indicating a 12.7mm diameter, 50mm focal length tube length correction lens (or tube lens, for the infinity corrected version). Versions with a cut-out for a beamsplitter then have `beamsplitter` in the filename.
+* Camera:
+    * `picamera_2`: Raspberry Pi camera module, version 2.
+    * `m12`: Board camera with M12 lens (the important feature is the two mounting holes for the square lens mount).
+    * `logitech_c270`: Logitech C270 webcam.
+* Objective:
+    * `rms`: RMS threaded, finite conjugates (160mm tube length) objective with 45mm parfocal distance.
+    * `rms_infinity`: RMS threaded, infinity corrected objective with 45mm parfocal distance. **Requires a tall stand** (see below).
+* Tube lens:
+    * `f50d13`: 50mm focal length, 12.7mm diameter achromatic lens.
+
+>i The infinity corrected optics modules are taller, and require a tall microscope stand (see "stands" section below).
+
+| Filename | Camera | Objective | Beamsplitter |
+|-|-|-|-|
+| [optics_picamera_2_rms_f50d13.stl](models/optics_picamera_2_rms_f50d13.stl){previewpage} (default) | `picamera_2` | `rms` | No |
+| [optics_picamera_2_rms_f50d13_beamsplitter.stl](models/optics_picamera_2_rms_f50d13_beamsplitter.stl){previewpage} | `picamera_2` | `rms` | Yes |
+| [optics_picamera_2_rms_infinity_f50d13_beamsplitter.stl](models/optics_picamera_2_rms_infinity_f50d13_beamsplitter.stl){previewpage} | `picamera_2` | `rms_infinity` | No |
+| [optics_picamera_2_rms_infinity_f50d13.stl](models/optics_picamera_2_rms_infinity_f50d13.stl){previewpage} | `picamera_2` | `rms_infinity` | Yes |
+| [optics_m12_rms_f50d13_beamsplitter.stl](models/optics_m12_rms_f50d13_beamsplitter.stl){previewpage} | `m12` | `rms` | No |
+| [optics_m12_rms_f50d13.stl](models/optics_m12_rms_f50d13.stl){previewpage} | `m12` | `rms` | Yes |
+| [optics_m12_rms_infinity_f50d13_beamsplitter.stl](models/optics_m12_rms_infinity_f50d13_beamsplitter.stl){previewpage} | `m12` | `rms_infinity` | No |
+| [optics_m12_rms_infinity_f50d13.stl](models/optics_m12_rms_infinity_f50d13.stl){previewpage} | `m12` | `rms_infinity` | Yes |
+| [optics_logitech_c270_rms_f50d13_beamsplitter.stl](models/optics_logitech_c270_rms_f50d13_beamsplitter.stl){previewpage} | `logitech_c270` | `rms` | No |
+| [optics_logitech_c270_rms_f50d13.stl](models/optics_logitech_c270_rms_f50d13.stl){previewpage} | `logitech_c270` | `rms` | Yes |
+| [optics_logitech_c270_rms_infinity_f50d13_beamsplitter.stl](models/optics_logitech_c270_rms_infinity_f50d13_beamsplitter.stl){previewpage} | `logitech_c270` | `rms_infinity` | No |
+| [optics_logitech_c270_rms_infinity_f50d13.stl](models/optics_logitech_c270_rms_infinity_f50d13.stl){previewpage} | `logitech_c270` | `rms_infinity` | Yes |
 
 ## Stands
 
