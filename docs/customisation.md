@@ -41,38 +41,44 @@ These instruction need completing. For now please consult the [OpenFlexure Delta
 
 ### Using an infinity corrected objective
 
-The standard optics module is designed for a finite conjugate objective. If you wish to use an infinite conjugate objective print a version of the optics module with "infinity" in the name.
+The standard optics module is designed for a finite conjugate objective. If you wish to use an infinite conjugate objective print a version of the optics module with "infinity" in the name. See the list of available RMS optics modules below for alternative STLs.
 
 >i If you are using an infinity corrected objective you will need the tall stand (see below).
 
 ### Using 35mm parfocal objectives
 
 Since v7, the "sample riser" has been built into the microscope stage, so it is no longer possible to use objectives with a 35mm parfocal distance.  It is possible to print a modified optics module that will fit these older microscope objectives, but this is not currently generated automatically.  If you would like to generate one, you can visit the [repository](https://gitlab.com/openflexure/openflexure-microscope/) and follow the instructions in the `README` to build the OpenSCAD models.  You then need to either open `openscad/rms_optics_module.scad` and use the "customiser" feature to set `PARFOCAL_DISTANCE=35`, or compile it from the command line with:
-```
-openscad -D 'OPTICS="rms_f50d13"' -D 'CAMERA="picamera_2"' -D BEAMSPLITTER=false -D PARFOCAL_DISTANCE=35 ./openscad/rms_optics_module.scad -o ./optics_picamera_2_rms_f50d13_35mm_parfocal.stl
-``` 
+
+> ```openscad -D 'OPTICS="rms_f50d13"' -D 'CAMERA="picamera_2"' -D BEAMSPLITTER=false -D PARFOCAL_DISTANCE=35 ./openscad/rms_optics_module.scad -o ./optics_picamera_2_rms_f50d13_35mm_parfocal.stl``` 
+
 If you are using Windows, you may need to escape the `"` quotation marks by replacing them with `\"`.
 
 ### Using a different camera
 
 For the low cost microscope (without an objective), we currently only support the Raspberry Pi camera. The 3D printed parts work with both v1 and v2, but **only v2 is supported by the standard software.**
 
-For the RMS objective optics we also generate optics modules for an M12 camera, or a Logitech C270 webcam, both of which connect to a computer via USB. **USB cameras are not supported in the standard software**. We only regularly check and test the optics modules mentioned in the main instructions, i.e. `optics_picamera_2_rms_f50d13.stl` and its beamsplitter variant. While the files linked below should stay up to date, it is possible that changes introduced elsewhere might stop them working. You are therefore advised to check them before printing.  If you can start by printing the default options, and swap in one of these later, that is often a good idea.
+For the RMS objective optics we also generate optics modules for an M12 camera, or a Logitech C270 webcam, both of which connect to a computer via USB. **USB cameras are not supported in the standard software**. 
 
-The following optics modules are available:
+### List of available RMS optics modules
 
-* [optics_m12_rms_f50d13_beamsplitter.stl](models/optics_m12_rms_f50d13_beamsplitter.stl){previewpage}
-* [optics_m12_rms_f50d13.stl](models/optics_m12_rms_f50d13.stl){previewpage}
-* [optics_m12_rms_infinity_f50d13_beamsplitter.stl](models/optics_m12_rms_infinity_f50d13_beamsplitter.stl){previewpage}
-* [optics_m12_rms_infinity_f50d13.stl](models/optics_m12_rms_infinity_f50d13.stl){previewpage}
-* [optics_logitech_c270_rms_f50d13_beamsplitter.stl](models/optics_logitech_c270_rms_f50d13_beamsplitter.stl){previewpage}
-* [optics_logitech_c270_rms_f50d13.stl](models/optics_logitech_c270_rms_f50d13.stl){previewpage}
-* [optics_logitech_c270_rms_infinity_f50d13_beamsplitter.stl](models/optics_logitech_c270_rms_infinity_f50d13_beamsplitter.stl){previewpage}
-* [optics_logitech_c270_rms_infinity_f50d13.stl](models/optics_logitech_c270_rms_infinity_f50d13.stl){previewpage}
-* [optics_picamera_2_rms_f50d13_beamsplitter.stl](models/optics_picamera_2_rms_f50d13_beamsplitter.stl){previewpage}
-* [optics_picamera_2_rms_f50d13.stl](models/optics_picamera_2_rms_f50d13.stl){previewpage}
-* [optics_picamera_2_rms_infinity_f50d13_beamsplitter.stl](models/optics_picamera_2_rms_infinity_f50d13_beamsplitter.stl){previewpage}
-* [optics_picamera_2_rms_infinity_f50d13.stl](models/optics_picamera_2_rms_infinity_f50d13.stl){previewpage}
+The module that is used most of the time, and thus the one that is tested most frequently, is [optics_picamera_2_rms_f50d13.stl](models/optics_picamera_2_rms_f50d13.stl){previewpage}. This uses a 45mm parfocal, 160mm tube length, RMS-threaded objective, together with a 50mm achromatic lens and a Raspberry Pi camera module v2.  Other optics modules are generated every time we rebuild the project. We only regularly check and test the optics modules mentioned in the main instructions, i.e. `optics_picamera_2_rms_f50d13.stl` and its beamsplitter variant. While the files linked below should stay up to date, it is possible that changes introduced elsewhere might stop them working. You are therefore advised to check them before printing.  If you can start by printing the default options, and swap in one of these later, that is often a good idea.
+
+| Filename | Camera | Objective | Tube Lens | Beamsplitter |
+|-|-|-|-|-|
+| [optics_picamera_2_rms_f50d13.stl](models/optics_picamera_2_rms_f50d13.stl){previewpage} (default) | Raspberry Pi Camera Module v2 | RMS Thread, 45mm parfocal, 160mm tube | f=50mm, d=12.7mm | No |
+| [optics_picamera_2_rms_f50d13_beamsplitter.stl](models/optics_picamera_2_rms_f50d13_beamsplitter.stl){previewpage} | Raspberry Pi Camera Module v2 | RMS Thread, 45mm parfocal, 160mm tube | f=50mm, d=12.7mm | Yes |
+| [optics_picamera_2_rms_infinity_f50d13_beamsplitter.stl](models/optics_picamera_2_rms_infinity_f50d13_beamsplitter.stl){previewpage} | Raspberry Pi Camera Module v2 | RMS Thread, 45mm parfocal, infinity corrected |f=50mm, d=12.7mm | No |
+| [optics_picamera_2_rms_infinity_f50d13.stl](models/optics_picamera_2_rms_infinity_f50d13.stl){previewpage} | Raspberry Pi Camera Module v2 | RMS Thread, 45mm parfocal, infinity corrected |f=50mm, d=12.7mm | Yes |
+| [optics_m12_rms_f50d13_beamsplitter.stl](models/optics_m12_rms_f50d13_beamsplitter.stl){previewpage} | Board camera with M12 lens | RMS Thread, 45mm parfocal, 160mm tube |f=50mm, d=12.7mm | No |
+| [optics_m12_rms_f50d13.stl](models/optics_m12_rms_f50d13.stl){previewpage} | Board camera with M12 lens | RMS Thread, 45mm parfocal, 160mm tube |f=50mm, d=12.7mm | Yes |
+| [optics_m12_rms_infinity_f50d13_beamsplitter.stl](models/optics_m12_rms_infinity_f50d13_beamsplitter.stl){previewpage} | Board camera with M12 lens | RMS Thread, 45mm parfocal, infinity corrected |f=50mm, d=12.7mm | No |
+| [optics_m12_rms_infinity_f50d13.stl](models/optics_m12_rms_infinity_f50d13.stl){previewpage} | Board camera with M12 lens | RMS Thread, 45mm parfocal, infinity corrected |f=50mm, d=12.7mm | Yes |
+| [optics_logitech_c270_rms_f50d13_beamsplitter.stl](models/optics_logitech_c270_rms_f50d13_beamsplitter.stl){previewpage} | Logitech C270 Webcam | RMS Thread, 45mm parfocal, 160mm tube |f=50mm, d=12.7mm | No |
+| [optics_logitech_c270_rms_f50d13.stl](models/optics_logitech_c270_rms_f50d13.stl){previewpage} | Logitech C270 Webcam | RMS Thread, 45mm parfocal, 160mm tube |f=50mm, d=12.7mm | Yes |
+| [optics_logitech_c270_rms_infinity_f50d13_beamsplitter.stl](models/optics_logitech_c270_rms_infinity_f50d13_beamsplitter.stl){previewpage} | Logitech C270 Webcam | RMS Thread, 45mm parfocal, infinity corrected |f=50mm, d=12.7mm | No |
+| [optics_logitech_c270_rms_infinity_f50d13.stl](models/optics_logitech_c270_rms_infinity_f50d13.stl){previewpage} | Logitech C270 Webcam | RMS Thread, 45mm parfocal, infinity corrected |f=50mm, d=12.7mm | Yes |
+
+The filenames contain the camera for which they were designed (`picamera_2`, `m12`, or `logitech_c270`), followed by `infinity` for the infinity corrected versions, then `f50d13` indicating a 12.7mm diameter, 50mm focal length tube length correction lens (or tube lens, for the infinity corrected version). Versions with a cut-out for a beamsplitter then have `beamsplitter` in the filename.
 
 ## Stands
 
