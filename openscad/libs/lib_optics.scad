@@ -34,7 +34,7 @@ module optical_path(optics_config, lens_z, camera_mount_top_z){
         }
         translate_z(lens_z){
             //lens
-            cylinder(r=aperture_r,h=2*tiny());
+            cylinder(r=aperture_r,h=99);
         }
     }
 }
@@ -221,9 +221,7 @@ module rms_mount_cutout(mount_h){
     translate_z(mount_h-6){
         cylinder(r=rms_major_radius(tight=true), h=7, $fn=60);
     }
-    translate_z(-1){
-        cylinder(r=rms_major_radius(tight=true)-1.5, h=mount_h, $fn=60);
-    }
+    cylinder(r=rms_major_radius(tight=true)-1.5, h=mount_h, $fn=60);
 }
 
 /**
@@ -243,10 +241,14 @@ module rms_optics_mount(optics_config, h, pedestal_h){
         inner_thread(radius=radius,pitch=pitch,thread_base_width = 0.60,thread_length=5);
     }
 
-    // gripper for the tube lens
-    lens_gripper(lens_r=tube_lens_r, lens_h=pedestal_h+1, h=pedestal_h+1+2.5, t=gripper_t);
-    // pedestal to raise the tube lens up within the gripper
-    tube(ri=aperture_r, ro=aperture_r+.8, h=2);
+    translate_z(-tiny()){ // ensure these parts join properly to the floor at z=0
+        // gripper for the tube lens
+        lens_gripper(lens_r=tube_lens_r, lens_h=pedestal_h+1, h=pedestal_h+1+2.5+tiny(), t=gripper_t);
+        // pedestal to raise the tube lens up within the gripper
+        // NB this becomes a tube rather than a cylinder, but the inner part 
+        // is cut out by `optical_path` or `optical_path_fl`
+        cylinder(r=aperture_r+.8, h=pedestal_h+tiny());
+    }
 
 }
 
@@ -283,13 +285,6 @@ module optics_module_rms(params, optics_config, include_wedge=true){
                                    rms_mount_h=rms_optics_mount_h,
                                    wedge_top=wedge_top,
                                    include_wedge=include_wedge);
-                // camera cut-out and hole for the beam
-                if(beamsplitter){
-                    optical_path_fl(params, optics_config, rms_optics_mount_z, camera_mount_top_z);
-                }
-                else{
-                    optical_path(optics_config, rms_optics_mount_z, camera_mount_top_z);
-                }
                 // cut a hole for the rms thread and tube lens gripper
                 translate_z(rms_optics_mount_z){
                     rms_mount_cutout(rms_optics_mount_h);
@@ -300,6 +295,13 @@ module optics_module_rms(params, optics_config, include_wedge=true){
                                  h=rms_optics_mount_h,
                                  pedestal_h=pedestal_h);
             }
+        }
+        // camera cut-out and hole for the beam
+        if(beamsplitter){
+            optical_path_fl(params, optics_config, rms_optics_mount_z, camera_mount_top_z);
+        }
+        else{
+            optical_path(optics_config, rms_optics_mount_z, camera_mount_top_z);
         }
     }
 }

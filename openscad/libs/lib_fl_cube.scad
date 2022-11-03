@@ -99,7 +99,7 @@ module optical_path_fl(params, optics_config, lens_z, camera_mount_top_z){
             }
             translate_z(lens_z){
                 //lens
-                cylinder(r=aperture_r,h=2*tiny());
+                cylinder(r=aperture_r,h=99);
             }
         }
     }
