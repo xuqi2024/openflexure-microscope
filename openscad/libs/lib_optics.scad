@@ -374,7 +374,18 @@ module lens_spacer(params, optics_config){
                     // This is the main body of the mount
                     sequential_hull(){
                         translate_z(camera_mount_height){
-                            camera_mount_top_slice(optics_config);
+                            difference(){
+                                camera_mount_top_slice(optics_config);
+                                // the C270 board is too long, 
+                                // the long hull above the body gets in the way of the spacer getting close to the slide
+                                if(c270_spacer_yes(optics_config)){
+                                    rotate_z(lens_spacer_rotate){
+                                        translate_x(-99/2-15){
+                                            cube(99, center = true);
+                                        }
+                                    }
+                                }
+                            }
                         }
                         translate_z(camera_mount_height+5){
                             cylinder(r=6,h=tiny());
@@ -388,7 +399,18 @@ module lens_spacer(params, optics_config){
 
                     // add the camera mount
                     translate_z(camera_mount_height){
-                        camera_mount(optics_config, screwhole=false, counterbore=false);
+                        difference(){
+                            camera_mount(optics_config, screwhole=false, counterbore=false);
+                            // the C270 board is too long, 
+                            // the long body gets in the way of the spacer getting close to the slide
+                            if(c270_spacer_yes(optics_config)){
+                                rotate_z(lens_spacer_rotate){
+                                    translate_x(-99/2-15){
+                                        cube(99, center = true);
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
                 union(){
@@ -458,6 +480,10 @@ module camera_platform(params, optics_config, base_r){
             rotate_z(camera_mounting_posts_rotate){
                 camera_bottom_mounting_posts(optics_config, outers=false, cutouts=true);
             }
+        }
+        // mark the optic axis
+        translate_z(platform_h){
+            cylinder(r=1, h=2, center = true);
         }
     }
 }
