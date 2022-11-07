@@ -29,6 +29,8 @@ function c270_camera_dict() = [["mount_height", 4.5],
 function c270_camera_bottom_z() = -key_lookup("mount_height", c270_camera_dict());
 
 function c270_camera_hole_spacing() = 8.25;
+function c270_near_third_hole_pos() = [5,-9.5,0];
+function c270_far_third_hole_pos() = [-6,42.3,0];
 
 // Countersunk hole. countersink from the top
 module mounting_hole(){
@@ -44,7 +46,7 @@ module C270(beam_r=5, beam_h=6){
     //cut-out to fit logitech C270 webcam
     //optical axis at (0,0)
     //top of PCB at (0,0,0)
-    mounting_hole_x = c270_camera_hole_spacing();
+    
     mirror([0,0,1]){ //parts cut out of the mount are z<0
         //beam clearance
         hull(){
@@ -54,12 +56,6 @@ module C270(beam_r=5, beam_h=6){
             }
         }
 
-        //mounting holes
-        reflect_x(){
-            translate_x(mounting_hole_x){
-                mounting_hole();
-            }
-        }
 
         //clearance for PCB
         hull(){
@@ -73,15 +69,22 @@ module C270(beam_r=5, beam_h=6){
                 cube([10,tiny(),8]);
                 }
         }
-        reflect_y(){
-            hull(){
-                translate([-4.5,6,-1.5]){
-                    cube([9,7.5,8]);
-                }
-                translate([-5.5,6,-1.5]){
-                    cube([11,6.5,8]);
+        difference(){
+            reflect_y(){
+                hull(){
+                    translate([-4.5,6,-1.5]){
+                        cube([9,7.5,8]);
+                    }
+                    translate([-5.5,6,-1.5]){
+                        cube([11,6.5,8]);
+                    }
                 }
             }
+            // add a pillar at the near third hole place
+            translate(c270_near_third_hole_pos()){
+                cylinder(r=3, h=99, center = true);
+            }
+
         }
         difference(){
             hull(){
@@ -92,16 +95,18 @@ module C270(beam_r=5, beam_h=6){
                     cube([10,9.5*2,15],center=true);
                 }
             }
+            union(){
             // cube at third mounting hole, cable end
             translate([-3.5,36,-10]){
                 mirror([1,0,0]){
                     cube([10,10,10]);
                 }
             }
-        }
-        // third mounting hole, cable end
-        translate([-6,42.3,0]){
-            mounting_hole();
+                // add a pillar at the near third hole place
+                translate(c270_near_third_hole_pos()){
+                    cylinder(r=3, h=3.5, center = false);
+                }
+            }
         }
 
 
@@ -113,13 +118,14 @@ module C270(beam_r=5, beam_h=6){
         }
     }
 }
-
-module c270_camera_mount(){
+c270_camera_mount();
+module c270_camera_mount(screwhole=true, counterbore=false){
     // A mount for the Logitech C270 webcam
     // This should finish at z=0+tiny(), with a surface that can be
     // hull-ed onto the lens assembly.
     h = 58;
     w = 23.5;
+    mounting_hole_x = c270_camera_hole_spacing();
 
     mount_height = key_lookup("mount_height", c270_camera_dict());
     rotate(-45){
@@ -129,6 +135,22 @@ module c270_camera_mount(){
             }
             translate_z(-mount_height){
                 C270();
+                if(screwhole){
+                    //mounting holes
+                    reflect_x(){
+                        translate_x(mounting_hole_x){
+                            rotate_x(180){
+                                mounting_hole();
+                            }
+                        }
+                    }
+                    // third mounting hole, cable end
+                    translate(c270_far_third_hole_pos()){
+                        rotate_x(180){
+                            mounting_hole();
+                        }
+                    }
+                }
             }
         }
     }
@@ -136,10 +158,10 @@ module c270_camera_mount(){
 
 module c270_counterbore(){
     translate_z(c270_camera_bottom_z()-1){
-        c270_camera_bottom_mounting_posts(height=9, radius=1.25, cutouts=false);
+        c270_camera_bottom_mounting_posts(height=9, radius=1, cutouts=false);
     }
     translate_z(c270_camera_bottom_z()+1){
-        c270_camera_bottom_mounting_posts(height=9, radius=2.8, cutouts=false);
+        c270_camera_bottom_mounting_posts(height=9, radius=2, cutouts=false);
     }
 }
 
@@ -148,6 +170,8 @@ module c270_camera_bottom_mounting_posts(height=-1, radius=-1, outers=true, cuto
     r = radius > 0 ? radius : 2;
     h = height > 0 ? height : 4;
     screw_x = c270_camera_hole_spacing();
+    // Third hole position at the far end of the board [-6,42.3,0] is too far away and makes the camera platform too big
+    //c270_third_hole_pos = [5,-9.5,0];
     rotate_z(-45){
         reflect_x(){
             translate([screw_x, 0, 0]){
@@ -157,6 +181,7 @@ module c270_camera_bottom_mounting_posts(height=-1, radius=-1, outers=true, cuto
                     }
                     if(cutouts){
                         translate_z(h-6+tiny()){
+                            // TODO these holes are too big, the C"&) board holes are smaller than #2 screws
                             no2_selftap_hole(h=6);
                         }
                     }
@@ -164,7 +189,7 @@ module c270_camera_bottom_mounting_posts(height=-1, radius=-1, outers=true, cuto
             }
             
         }
-        translate([-6,42.3,0]){
+        translate(c270_near_third_hole_pos()){
                 difference(){
                     if(outers){
                         cylinder(r=r, h=h, $fn=12);
