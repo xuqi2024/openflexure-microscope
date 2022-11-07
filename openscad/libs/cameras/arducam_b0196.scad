@@ -121,15 +121,16 @@ module b0196(beam_r=5, beam_h=9){
                         cube([16,5,5],center = true);
                     }
                     // pillars at mounting points
-                    translate_y(-arducam_offset_y()){
-                        reflect_x(){
-                            reflect_y(){
-                                translate([mounting_hole_xy, mounting_hole_xy,0]){
-                                    cylinder(d=4.5, h=10,center = true);
-                                }
-                            }
-                        }
-                    }
+                    // translate_y(-arducam_offset_y()){
+                    //     reflect_x(){
+                    //         reflect_y(){
+                    //             translate([mounting_hole_xy, mounting_hole_xy,0]){
+                    //                 cylinder(d=4.5, h=10,center = true);
+                    //             }
+                    //         }
+                    //     }
+                    // }
+
                     // bar at top and part at bottom
                     translate([0,(7.0/2)-38/2-arducam_offset_y(),0]){
                         cube([34,7.0,5],center = true);
@@ -162,32 +163,53 @@ module b0196(beam_r=5, beam_h=9){
     
 }
 
-b0196();
+//arducam_b0196_camera_mount();
 //picam2_cutout();
 
-module arducam_b0196_camera_mount(){
+module arducam_rounded_block(b=33, w=33, h=6, roc = 2){
+    // a rounded block with the dimensions of the inner board of the Arducam B0196
+    // slot cutouts on the corners above 1mm+tiny
+    // centred on the origin
+    linear_extrude(h){
+        hull(){
+            reflect([1,0]){
+                reflect([0,1]){
+                    translate([w/2-roc, b/2-roc]){
+                        circle(r=roc,$fn=20);
+                    }
+                }
+            }
+        }
+    }
+}
+
+module arducam_b0196_camera_mount(screwhole=true, counterbore=false){
     // A mount for the Arducam B0196 USB camera
     // This should finish at z=0+tiny(), with a surface that can be
     // hull-ed onto the lens assembly.
-    h = 38;
-    w = 38;
+    w = 33;
+    b = 33;
     
     mounting_hole_xy = arducam_b0196_camera_hole_spacing();
 
     mount_height = key_lookup("mount_height", arducam_b0196_camera_dict());
     rotate(-45){
         difference(){
-            translate([-w/2, -h/2 -arducam_offset_y(), -mount_height]){
-                cube([w, h, mount_height]);
+            translate([0*-w/2, 0*-b/2 -arducam_offset_y(), -mount_height]){
+                arducam_rounded_block(w=w, b=b, h=mount_height, roc=3.5);
             }
             translate_z(-mount_height){
                 b0196();
                 //mounting holes
-                translate_y(-arducam_offset_y()){
-                    reflect_x(){
-                        reflect_y(){
-                            translate([mounting_hole_xy, mounting_hole_xy,0]){
-                                mounting_hole();
+                if(screwhole){
+                    translate_y(-arducam_offset_y()){
+                        reflect_x(){
+                            reflect_y(){
+                                translate([mounting_hole_xy, mounting_hole_xy,0]){
+                                    rotate_x(180){
+                                        mounting_hole();
+                                    }
+                                }
                             }
                         }
                     }
@@ -203,34 +225,35 @@ module b0196_counterbore(){
         b0196_camera_bottom_mounting_posts(height=9, radius=1.25, cutouts=false);
     }
     translate_z(arducam_b0196_camera_bottom_z()+1){
-        b0196_camera_bottom_mounting_posts(height=9, radius=2.8, cutouts=false);
+        b0196_camera_bottom_mounting_posts(height=9, radius=2.25, cutouts=false);
     }
 }
 
 module b0196_camera_bottom_mounting_posts(height=-1, radius=-1, outers=true, cutouts=true){
-    // posts to mount to pi camera from below
+    // posts to mount to arduino B0196 camera from below
     r = radius > 0 ? radius : 2;
     h = height > 0 ? height : 4;
     screw_xy = arducam_b0196_camera_hole_spacing();
+    mount_holes = [[screw_xy,screw_xy,0],
+                    [screw_xy,-screw_xy,0],
+                    [-screw_xy,-screw_xy,0]];
     rotate(-45){
         translate_y(-arducam_offset_y()){
-            reflect_x(){
-                reflect_y(){
-                    translate([screw_xy, screw_xy, 0]){
-                        difference(){
-                            if(outers){
-                                cylinder(r=r, h=h, $fn=12);
-                            }
-                            if(cutouts){
-                                translate_z(h-6+tiny()){
-                                    no2_selftap_hole(h=6);
-                                }
+            for(pos=mount_holes){
+                translate(pos){
+                    difference(){
+                        if(outers){
+                            cylinder(r=r, h=h, $fn=12);
+                        }
+                        if(cutouts){
+                            translate_z(h-6+tiny()){
+                                no2_selftap_hole(h=6);
                             }
                         }
                     }
                 }
             }
+            
         }
     }
 }
-
