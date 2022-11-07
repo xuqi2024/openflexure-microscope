@@ -6,6 +6,7 @@ use <./threads.scad>
 use <./libdict.scad>
 use <./lib_fl_cube.scad>
 use <./rms_calculations.scad>
+use <./rms_thread.scad>
 // camera.scad has generic camera modules forward the correct
 // camera module depending on the optics configuration
 use <./cameras/camera.scad>
@@ -34,7 +35,7 @@ module optical_path(optics_config, lens_z, camera_mount_top_z){
         }
         translate_z(lens_z){
             //lens
-            cylinder(r=aperture_r,h=2*tiny());
+            cylinder(r=aperture_r,h=99);
         }
     }
 }
@@ -61,84 +62,95 @@ module optics_module_body_outer(params, optics_config, body_r, body_top, rms_mou
     camera_rotation = key_lookup("camera_rotation", optics_config);
     camera_mount_top_z = rms_camera_mount_top_z(params, optics_config);
 
-    union(){
-
-        //This section connects the top of the camera to the bottom of the main cylinder and wedge
-        hull(){
-            //Where the tube meets the camera
-            rotate(camera_rotation){
-                translate_z(camera_mount_top_z){
-                    camera_mount_top_slice(optics_config);
-                }
-            }
-            //the bottom of the tube
-            translate_z(optics_wedge_bottom()){
-                cylinder(r=bottom_r,h=tiny());
-            }
-            //the bottom of the wedge
-            if (include_wedge){
-                translate_z(optics_wedge_bottom()){
-                    objective_fitting_wedge(h=tiny());
-                }
+    // The top of the camera mount
+    module top_of_camera_mount_in_place(){
+        rotate(camera_rotation){
+            translate_z(camera_mount_top_z){
+                camera_mount_top_slice(optics_config);
             }
         }
+    }
 
-        // The main cylinder and wedge
-        wedge_height = wedge_top - optics_wedge_bottom() + tiny();
-        cyl_height = body_top - optics_wedge_bottom() + tiny();
+    // The bottom of the cylindrical body of the mount, and the fitting wedge
+    module bottom_of_body_and_wedge(){
         translate_z(optics_wedge_bottom()){
-            hull(){
-                if (include_wedge){
-                    objective_fitting_wedge(h=wedge_height);
-                }
-                cylinder(r1=bottom_r, r2=body_r ,h=cyl_height);
+            cylinder(r=bottom_r,h=tiny());
+        }
+        //the bottom of the wedge
+        if (include_wedge){
+            translate_z(optics_wedge_bottom()){
+                objective_fitting_wedge(h=tiny());
             }
         }
-        translate_z(body_top){
-            cylinder(r=body_r, h=rms_mount_h);
-        }
+    }
 
+    // The top of the cylindrical body, and the fitting wedge
+    module top_of_body_and_wedge(){
+        translate_z(body_top){
+            cylinder(r=body_r, h=tiny());
+        }
+        if (include_wedge){
+            translate_z(wedge_top){
+                objective_fitting_wedge(h=tiny());
+            }
+        }
+    }
+
+    // The optics module is built from the bottom upwards - each pair of
+    // shapes in the list below is hulled together to form the shape
+    union(){
+        if(beamsplitter){
+            sequential_hull(){
+                top_of_camera_mount_in_place();
+                union(){
+                    bottom_of_body_and_wedge();
+                    fl_cube_casing_bottom(params, optics_config);
+                }
+                union(){
+                    top_of_body_and_wedge();
+                    extra_optics_body_for_beamsplitter(params, optics_config);
+                }
+            }
+        } 
+        else {
+            sequential_hull(){
+                top_of_camera_mount_in_place();
+                bottom_of_body_and_wedge();
+                top_of_body_and_wedge();
+            }
+        }
         // The actual camera mount
         rotate(camera_rotation){
             translate_z(camera_mount_top_z){
                 camera_mount(optics_config);
             }
         }
+        // The housing for the RMS thread and tube lens gripper
+        translate_z(body_top){
+            cylinder(r=body_r, h=rms_mount_h);
+        }
+    }    
+}
 
-        if(beamsplitter){
-            // join together the top of the camera, the beamsplitter and the tube
-            extra_optics_body_for_beamsplitter(params, optics_config, body_r, body_top, bottom_r);
+module extra_optics_body_for_beamsplitter(params, optics_config){
+    bs_rotation = key_lookup("beamsplitter_rotation", optics_config);
+    rotate(bs_rotation){
+        hull(){
+            //the box to fit the fl cube in
+            fl_cube_casing(params, optics_config);
+            //the mounts for the fl cube screw holes
+            fl_screw_holes(params, optics_config, d = 4, h =8);
         }
     }
 }
 
-module extra_optics_body_for_beamsplitter(params, optics_config, body_r, body_top, bottom_r){
-    camera_mount_top_z = rms_camera_mount_top_z(params, optics_config);
-    camera_rotation = key_lookup("camera_rotation", optics_config);
-    bs_rotation = key_lookup("beamsplitter_rotation", optics_config);
-    hull(){
-        rotate(camera_rotation){
-            translate_z(camera_mount_top_z){
-                //Where the tube meets the camera
-                camera_mount_top_slice(optics_config);
+module fl_cube_casing_bottom(params, optics_config){
+    bottom = fl_cube_bottom(params, optics_config);
+    translate_z(bottom){
+        thick_section(){
+            translate_z(-bottom){
+                extra_optics_body_for_beamsplitter(params, optics_config);
             }
-        }
-        rotate(bs_rotation){
-            hull(){
-                //the box to fit the fl cube in
-                fl_cube_casing(params, optics_config);
-                //the mounts for the fl cube screw holes
-                fl_screw_holes(params, optics_config, d = 4, h =8);
-            }
-        }
-
-        //the bottom of the tube
-        translate_z(optics_wedge_bottom()){
-            cylinder(r=bottom_r,h=tiny());
-        }
-        //the top of the tube
-        translate_z(body_top){
-            cylinder(r=body_r,h=tiny());
         }
     }
 }
@@ -196,47 +208,35 @@ module optics_module_body(
 
 }
 
-// reduce thread radius by 0.25mm this creates a tight fit when threadding into plastic
-function rms_radius(tight=false) = let(
-    nominal_r = 25.4*0.8/2,
-    adjustment = tight ? -0.25 : 0
-) nominal_r+adjustment;
-
-//Major raidus of thread. The 0.44 is determined empirically for the given pitch
-function rms_major_radius(tight=false) = rms_radius(tight=tight) + 0.44;
-
-
 module rms_mount_cutout(mount_h){
-    translate_z(mount_h-6){
-        cylinder(r=rms_major_radius(tight=true), h=7, $fn=60);
+    // cut the RMS thread for the objective
+    translate_z(mount_h - 5.5){
+        rms_thread_cutter(h=6, $fn=32, peak_points=2);
     }
-    translate_z(-1){
-        cylinder(r=rms_major_radius(tight=true)-1.5, h=mount_h, $fn=60);
-    }
+    // add a smaller cylinder to provide space for the lens gripper
+    // for the tube lens
+    cylinder(r=rms_thread_nominal_d()/2-1.2, h=mount_h-1, $fn=60);
 }
 
 /**
-* This is the mount for the objective and tube lens. This is the screw thread and
-* lens gripper
+* This is the mount for the tube lens. The objective threads into
+* the threaded hole, defined in rms_mount_cutout
 */
 module rms_optics_mount(optics_config, h, pedestal_h){
-
     gripper_t = key_lookup("gripper_t", optics_config);
     tube_lens_r = key_lookup("tube_lens_r", optics_config);
     aperture_r = lens_aperture(tube_lens_r);
 
-    radius=rms_radius(tight=true);
-    pitch=0.7056;
+    //NB the RMS thread is now part of rms_mount_cutout
 
-    translate_z(h-5){
-        inner_thread(radius=radius,pitch=pitch,thread_base_width = 0.60,thread_length=5);
+    translate_z(-tiny()){ // ensure these parts join properly to the floor at z=0
+        // gripper for the tube lens
+        lens_gripper(lens_r=tube_lens_r, lens_h=pedestal_h+1, h=pedestal_h+1+2.5+tiny(), t=gripper_t);
+        // pedestal to raise the tube lens up within the gripper
+        // NB this becomes a tube rather than a cylinder, but the inner part 
+        // is cut out by `optical_path` or `optical_path_fl`
+        cylinder(r=aperture_r+.8, h=pedestal_h+tiny());
     }
-
-    // gripper for the tube lens
-    lens_gripper(lens_r=tube_lens_r, lens_h=pedestal_h+1, h=pedestal_h+1+2.5, t=gripper_t);
-    // pedestal to raise the tube lens up within the gripper
-    tube(ri=aperture_r, ro=aperture_r+.8, h=2);
-
 }
 
 /**
@@ -255,7 +255,7 @@ module optics_module_rms(params, optics_config, include_wedge=true){
 
     // Calculate the position and size of the mout that holds the lens and
     rms_optics_mount_z = tube_lens_face_z(params, optics_config) - pedestal_h;
-    rms_optics_mount_base_r = rms_radius()+1;
+    rms_optics_mount_base_r = rms_thread_nominal_d()/2+1;
     rms_optics_mount_h = objective_shoulder_z(params, optics_config)-rms_optics_mount_z;
 
     camera_mount_top_z = rms_camera_mount_top_z(params, optics_config);
@@ -272,13 +272,6 @@ module optics_module_rms(params, optics_config, include_wedge=true){
                                    rms_mount_h=rms_optics_mount_h,
                                    wedge_top=wedge_top,
                                    include_wedge=include_wedge);
-                // camera cut-out and hole for the beam
-                if(beamsplitter){
-                    optical_path_fl(params, optics_config, rms_optics_mount_z, camera_mount_top_z);
-                }
-                else{
-                    optical_path(optics_config, rms_optics_mount_z, camera_mount_top_z);
-                }
                 // cut a hole for the rms thread and tube lens gripper
                 translate_z(rms_optics_mount_z){
                     rms_mount_cutout(rms_optics_mount_h);
@@ -289,6 +282,13 @@ module optics_module_rms(params, optics_config, include_wedge=true){
                                  h=rms_optics_mount_h,
                                  pedestal_h=pedestal_h);
             }
+        }
+        // camera cut-out and hole for the beam
+        if(beamsplitter){
+            optical_path_fl(params, optics_config, rms_optics_mount_z, camera_mount_top_z);
+        }
+        else{
+            optical_path(optics_config, rms_optics_mount_z, camera_mount_top_z);
         }
     }
 }

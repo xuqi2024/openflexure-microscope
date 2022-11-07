@@ -21,7 +21,7 @@ BUILD_DIR = "docs/models"
 
 #Some constants used in generating lists of parts
 
-CAMERAS = ["picamera_2", "m12"]
+CAMERAS = ["picamera_2", "m12", "logitech_c270"]
 
 # These are the optics configuration of objective and tube lens pairs.
 # Currently we only support the F50D13 option in the offical build.
@@ -82,6 +82,7 @@ def write_ninja_file(build_dir):
         # Test pieces
         writer.openscad("nut_trap_test.stl", "test_pieces/nut_trap_test.scad")
         writer.openscad("leg_test.stl", "test_pieces/leg_test.scad")
+        writer.openscad("rms_thread.stl", "test_pieces/rms_thread.scad")
 
         # Special illumination components
         writer.openscad("condenser_led_holder.stl", "condenser_led_holder.scad")
