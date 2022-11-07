@@ -129,19 +129,6 @@ function rms_thread_profile_section_points(offset=0, peak_points=5) = let(
     )
 ];
 
-
-
-// Convert from (2d) polar to cartesian coordinates
-function polar_point(angle, radius) = [cos(angle), sin(angle)] * radius;
-// Convert from cylindrical polars to cartesian coordinates
-// The first argument is an array of (r, z) points, the second
-// is a single polar angle, and the third is an optional cartesian
-// offset.
-function rz_to_xyz(rz_points, theta, offset=[0,0,0]) = [
-    for(p = rz_points) [each polar_point(theta, p[0]), p[1]] + offset
-    // NB p[0] is r, p[1] is z
-];
-
 // Cut an RMS internal thread
 // This module renders a 3D shape that can be subtracted from
 // a solid object to make an RMS thread, defined as per
@@ -175,6 +162,16 @@ module rms_thread_cutter(h=5, offset=0.25, peak_points=2, $fn=64){
     bottom_i = (N_sections+1)*Np;
     top_i = (N_sections+1)*Np + 1;
     function reverse(items) = [for(i=[len(items)-1:-1:0]) items[i]];  // reverse a list
+    // Convert from (2d) polar to cartesian coordinates
+    function polar_point(angle, radius) = [cos(angle), sin(angle)] * radius;
+    // Convert from cylindrical polars to cartesian coordinates
+    // The first argument is an array of (r, z) points, the second
+    // is a single polar angle, and the third is an optional cartesian
+    // offset.
+    function rz_to_xyz(rz_points, theta, offset=[0,0,0]) = [
+        for(p = rz_points) [each polar_point(theta, p[0]), p[1]] + offset
+        // NB p[0] is r, p[1] is z
+    ];
     polyhedron(
         points=[
             for(i=[0:N_sections]) each rz_to_xyz(profile, angle_per_point*i, offset=offset_per_point*i),
@@ -217,80 +214,3 @@ module rms_thread_cutter(h=5, offset=0.25, peak_points=2, $fn=64){
 }
 
 rms_thread_cutter(h=5, $fn=64);
-
-/*
-// If we are to define the screw thread using linear_extrude with a twist
-// parameter, we must think about it in the XY plane, rather than in the 
-// rz plane, which is the one it's usually defined in.
-// Taking a slice through the thread, we can calculate the radius for a 
-// given angle, by considering what part of the profile we are in at the
-// time.
-// This will need to be defined piecewise, for simplicity we can divide
-// the profile into the curved trough at z=0, the straight flank, and
-// the curved peak.
-function rms_thread_profile(z, tight=false) = let(
-    pitch = rms_thread_pitch(),
-    pr = rms_thread_peak_radius(),
-    nominal_d = rms_thread_nominal_d(tight=tight),
-    H = rms_thread_fundamental_triangle_h(),
-    angle = rms_thread_angle(),
-    curve_h = pr * cos(angle/2), // Z position of the transition from curve to flank
-    trough_centre_r = nominal_d/2 - pr,
-    peak_centre_r = nominal_d/2 - H*2/3 + pr,
-    fundamental_peak_r = nominal_d/2 + H/6, // peak of the fundamental triangle
-    z_modulo = z % pitch,  // The function is periodic, though see below
-    z_modulo_positive = z_modulo + ((z_modulo < 0) ? pitch : 0), // Force the modulo to give a +ve result
-    // We wrap the function at z=pitch/2, so we only need to define one flank
-    z_wrapped = (z_modulo_positive > pitch/2) ? pitch - z_modulo_positive : z_modulo_positive,
-    z_wrapped_from_peak = pitch/2 - z_wrapped
-) (
-    (z_wrapped < curve_h)
-    ? trough_centre_r + sqrt(pr^2 - z_wrapped^2)  // this line is the trough curve
-    :(
-        (z_wrapped_from_peak > curve_h) 
-        ? fundamental_peak_r - z_wrapped/tan(angle/2) // the flank
-        : peak_centre_r - sqrt(pr^2 - (z_wrapped_from_peak)^2) // the peak
-    )
-);
-
-module rms_thread_profile_rendered(tight=false, n=2){
-    pitch = rms_thread_pitch();
-    polygon([
-        [-tiny(), pitch*n], [-tiny(),0],
-        for(i=[0:$fn*n]) let(y=i/$fn*pitch) [rms_thread_profile(y, tight=tight), y]
-    ]);
-}
-
-//rms_thread_profile_rendered($fn=64);
-
-module rms_thread_xy_slice(tight=false){
-    pitch = rms_thread_pitch();
-    polygon([
-        for(i=[1:$fn]) let(
-            a=i*360/$fn, 
-            z=i*pitch/$fn
-        ) polar_point(a, rms_thread_profile(z, tight=tight))
-    ]);
-}
-
-// Cut an RMS internal thread
-// This module renders a 3D shape that can be subtracted from
-// a solid object to make an RMS thread, defined as per
-// ISO 8038-1
-// the "tight" argument shrinks the nominal diameter
-// by 0.25mm to give a tighter fit, and was determined
-// empirically.
-module rms_internal_thread_cutter(h=5, tight=false){
-    pitch = rms_thread_pitch();
-    fn_slice_thickness = pitch/$fn;
-    vertices_per_slice = max(floor(0.05/fn_slice_thickness), 1);
-    slice_thickness = vertices_per_slice * fn_slice_thickness;
-    linear_extrude(
-        height=h,
-        twist=360*h/pitch,
-        slices=h/slice_thickness - 1
-    ){
-        rms_thread_xy_slice(tight=tight, $fn=64);
-    }
-}
-*/
