@@ -12,7 +12,7 @@ In this section we are disassembling a Logitech C270 HD webcam to use with C270 
 [illumination PCB]: ./parts/electronics/illumination_pcb.md "{cat:electronic, note: 'A 5mm LED can be used instead, if you follow the [LED workaround].'}"
 
 [flat blade screwdriver]: parts/tools/2.5mmBallEndAllenKey.md "{cat:tool}"
-[#1 Philips screwdriver]: parts/tools/philips_1_screwdriver.md "{cat:tool}"
+[#0 Phillips screwdriver]: parts/tools/phillips_0_screwdriver.md "{cat:tool}"
 [side cutters]: parts/tools/side_cutters.md "{cat:tool}"
 [pliers]: parts/tools/pliers.md "{cat:tool}"
 
@@ -29,7 +29,8 @@ In this section we are disassembling a Logitech C270 HD webcam to use with C270 
 * Take the Logitech C270 web cam and place it on a clean surface
 * Release the outer bezel with a [flat blade screwdriver]{qty:1}
 * Remove the bezel and discard it
-* Unscrew three screws holding the inner front cover, using a [#1 Philips screwdriver]{qty:1}
+* Unscrew three screws holding the inner front cover, using a [#0 Phillips screwdriver]{qty:1}
+* Save the screws for mounting the camera if you are using a lens spacer 
 * Remove the inner cover and discard it
 
 
@@ -46,8 +47,8 @@ In this section we are disassembling a Logitech C270 HD webcam to use with C270 
 
 
 * Before touching the camera board touch a metal earthed object. If you own one, consider wearing and anti-static strap.
-* Unscrew two screws holding the camera board, using a [#1 Philips screwdriver]{qty:1}
-* Save one screw for mounting to the Openflexure optics module. Keep the other as a spare
+* Unscrew two screws holding the camera board, using a [#0 Phillips screwdriver]{qty:1}
+* Save the screws as spares
 * Release the board from the case. It is still attached to the case by the cable
 * Remove the E-clip from the cable retainer with a [flat blade screwdriver]{qty:1}
 * Release the cable holder from the case
@@ -81,8 +82,8 @@ In this section we are disassembling a Logitech C270 HD webcam to use with C270 
 >! Work in a dust-free area
 
 * Place the camera board with the lens facing down
-* Unscrew two screws holding the lens mount to the camera board, using a [#1 Philips screwdriver]{qty:1} 
-* Save both screws for mounting to the Openflexure optics module
+* Unscrew two screws holding the lens mount to the camera board, using a [#0 Phillips screwdriver]{qty:1} 
+* Save both screws for mounting the camera if you are using an Openflexure RMS optics module. These screws are different from the others
 * Turn the camera board over 
 * Hold the lens assembly and carefully pull it from the board{note: it is held with double-sided tape and requires a little force to remove}
 * Retain the lens assembly if you are going to use the basic optics module with a lens spacer
