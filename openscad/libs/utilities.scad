@@ -655,78 +655,16 @@ module hole_from_bottom(r, h, base_w=-1, delta_z=0.5, layers=4, big_bottom=true)
     }
 }
 
-// Module: lighttrap_cylinder)
-// Usage: lighttrap_cylinder(r1, r2, h, ridge=1.5);
-// Arguments:
-//   r1 = the radius of the bottom of the shape (i.e. the bottom of the bottom truncated cone)
-//   r2 = the inner radius of the top of the shape (i.e. the top of the top truncated cone)
-//   h = the overall height
-//   ---
-//   ridge = The height and change in `r` of each ridge (the angle is fixed at 45 degrees)
-// Description:
-//   A shape made up of truncated cones to form a christmas-tree-like shape.
-//   
-//   This is designed to be subtracted from a solid block, to form a light path
-//   that has minimal reflections from the walls of the cut-out, because the 
-//   surfaces are angled.
-//   
-//   NB for a nominally "straight-edged" cylinder, you must set `r2 = r1 - ridge`.
-// Example:
-//    lighttrap_cylinder(5, 5-1.5, 21);
-// Example:
-//    difference(){
-//        translate([-10, -10, 0]) cube(20);
-//        lighttrap_cylinder(5, 5-1.5, 21);
-//        translate([-99, -999, -1]) cube(999);
-//    }
-module lighttrap_cylinder(r1,r2,h,ridge=1.5){
-    //there must be at least one cone or we divide by zero
-    n_cones = max(floor(h/ridge),1);
-    cone_h = h/n_cones;
-
-    for(i = [0 : n_cones - 1]){
-        p = i/(n_cones - 1);
-        section_r1 = (1-p)*r1 + p*(r2+ridge);
-        section_r2 = (1-p)*(r1-ridge) + p*r2;
-        translate_z(i * cone_h - tiny()){
-            cylinder(r1=section_r1, r2=section_r2, h=cone_h+2*tiny());
-        }
-    }
-}
-
-module lighttrap_sqylinder(r1,f1,r2,f2,h,ridge=1.5){
-    //A shape made up of rounded truncated pyramids to form a
-    //square christmas-tree-like shape.
-    //Similar to lighttrap_cylinder each section has flat sides
-    //It can be subtracted from and object to create a square shaft that is
-    //good for trapping stray light in an optical path. The shaft rounded
-    //corners
-    //r1 is radius of cuvature of the bottom of the bottom pyramid
-    //f1 is the flat section of the bottom of the bottom pyramid
-    //r2 is radius of cuvature of the top of the top pyramid
-    //f2 is the flat section of the to of the top pyramid
-    //NOTE: to make a uniform width shaft set r2==r1-ridge and f1=f2
-    //ALSO NOTE: Each truncated pyramid is made by varying r, not f. As such
-    //    r1 must be greater than or equal to ridge
-
-    assert(r1>=ridge, "r1 is less than ridge this will cause the light trap to fail");
-    //there must be at least one cone or we divide by zero
-    n_cones = max(floor(h/ridge),1);
-    cone_h = h/n_cones;
-
-    for(i = [0 : n_cones - 1]){
-        p = i/(n_cones - 1);
-        section_r1 = (1-p)*r1 + p*(r2+ridge);
-        section_r2 = (1-p)*(r1-ridge) + p*r2;
-        section_flat_l = ((1-p)*f1 + p*f2);
-        translate_z(i * cone_h - tiny()){
-            minkowski(){
-                cylinder(r1=section_r1, r2=section_r2, h=cone_h);
-                cube([section_flat_l, section_flat_l, 2*tiny()], center=true);
-            }
-        }
-    }
-}
+// Reproduce OpenSCAD's behaviour, setting the number of points
+// around a circle based on the max. angle $fa, min. length $fs,
+// or exact number $fn.  This follows logic set out in:
+// https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Other_Language_Features#Special_variables
+// This gives a fragment of code to calculate the number of points.
+// I've duplicated it below, split over a couple of lines to aid readability.
+function determine_number_of_fragments(r) = let(
+    default_n_points = ceil(max(min(360/$fa,r*2*PI/$fs),5)), // use minimum size or maximum angle
+    n_points = max($fn>0?$fn:default_n_points, 3) // $fn takes precedence, with minimum of 3
+) n_points;
 
 module trylinder(r=1, flat=1, h=tiny(), center=false){
     //Triangular prism with filleted corners
