@@ -151,7 +151,7 @@ function rms_thread_profile_section_points(offset=0, peak_points=5) = let(
 // That means it looks like the thread you'd find on an 
 // objective, but it is slightly larger, because the standard
 // defines the two threads with a slight space between them.
-module rms_thread_cutter(h=5, offset=0.25, peak_points=2, $fn=64){
+module rms_thread_cutter(h=5, offset=0.6, peak_points=2, $fn=64){
     pitch = rms_thread_pitch();
     offset_per_point = [0, 0, pitch/$fn];
     angle_per_point = 360/$fn;
