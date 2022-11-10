@@ -662,7 +662,9 @@ module hole_from_bottom(r, h, base_w=-1, delta_z=0.5, layers=4, big_bottom=true)
 // This gives a fragment of code to calculate the number of points.
 // I've duplicated it below, split over a couple of lines to aid readability.
 function determine_number_of_fragments(r) = let(
-    default_n_points = ceil(max(min(360/$fa,r*2*PI/$fs),5)), // use minimum size or maximum angle
+    n_points_from_fa = ceil(360/$fa),
+    n_points_from_fs = ceil(r*2*PI/$fs),
+    default_n_points = max(min(n_points_from_fa, n_points_from_fs),5), // use minimum size or maximum angle
     n_points = max($fn>0?$fn:default_n_points, 3) // $fn takes precedence, with minimum of 3
 ) n_points;
 

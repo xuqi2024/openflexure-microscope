@@ -1,8 +1,10 @@
+// This file defines the optics modules
+// It is part of the OpenFlexure Microscope
+// It is released under the CERN Open Hardware License.
 
 use <./utilities.scad>
 use <./z_axis.scad>
 use <./microscope_parameters.scad>
-use <./threads.scad>
 use <./lighttrap.scad>
 use <./libdict.scad>
 use <./lib_fl_cube.scad>
@@ -112,7 +114,7 @@ module optics_module_body_outer(params, optics_config, body_r, body_top, rms_mou
                     extra_optics_body_for_beamsplitter(params, optics_config);
                 }
             }
-        } 
+        }
         else {
             sequential_hull(){
                 top_of_camera_mount_in_place();
@@ -130,7 +132,7 @@ module optics_module_body_outer(params, optics_config, body_r, body_top, rms_mou
         translate_z(body_top){
             cylinder(r=body_r, h=rms_mount_h);
         }
-    }    
+    }
 }
 
 module extra_optics_body_for_beamsplitter(params, optics_config){
@@ -226,7 +228,7 @@ module rms_thread_and_cutout_for_tube_lens(mount_h){
 * This is the mount for the tube lens. The objective threads into
 * the threaded hole, defined in rms_thread_and_cutout_for_tube_lens
 */
-module tube_lens_gripper(optics_config, h, pedestal_h){
+module tube_lens_gripper(optics_config, pedestal_h){
     gripper_t = key_lookup("gripper_t", optics_config);
     tube_lens_r = key_lookup("tube_lens_r", optics_config);
     aperture_r = lens_aperture(tube_lens_r);
@@ -286,7 +288,6 @@ module optics_module_rms(params, optics_config, include_wedge=true){
             translate_z(rms_optics_mount_z){
                 tube_lens_gripper(
                     optics_config,
-                    h=rms_optics_mount_h,
                     pedestal_h=pedestal_h
                 );
             }

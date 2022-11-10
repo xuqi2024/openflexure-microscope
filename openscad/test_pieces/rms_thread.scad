@@ -15,7 +15,7 @@ module rms_thread_test(d_offset=0.5){
         translate_z(1){
             rms_thread_cutter(h=6, d_offset=d_offset);
         }
-        
+
         translate([nominal_d/2 + 2, -3, 0.25]){
             linear_extrude(2){
                 text(str(d_offset), size=6);
@@ -23,6 +23,7 @@ module rms_thread_test(d_offset=0.5){
         }
     }
 }
+
 module rms_thread_tests(offsets=[0.75, 0.5, 0.25]){
     nominal_d = rms_thread_nominal_d();
     dy = nominal_d + 5;

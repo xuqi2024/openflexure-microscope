@@ -49,7 +49,7 @@ function rms_thread_peak_radius() = let(
 ) H / (6 * (1/sin(ta/2) - 1));
 // The radius is given in the standard, so let's check my maths:
 assert(
-    abs(rms_thread_peak_radius() - 0.097) < 0.001, 
+    abs(rms_thread_peak_radius() - 0.097) < 0.001,
     "Calculated radius does not match the standard!"
 );
 
@@ -70,7 +70,7 @@ function rms_thread_profile_section_points(d_offset=0, peak_points=5) = let(
     thread_angle = rms_thread_angle(),
     fundamental_triangle_h = rms_thread_fundamental_triangle_h(),
     radius = rms_thread_peak_radius(),
-    
+
     // We can define the actual thread depth too
     thread_depth = fundamental_triangle_h * 2/3,
 
@@ -88,7 +88,7 @@ function rms_thread_profile_section_points(d_offset=0, peak_points=5) = let(
 
     // The flank will start at:
     //circle_point(90 - thread_angle/2, radius, trough_circle_centre)
-    
+
     // Similarly, points on the peak will lie on a circle centred
     // on:
     upper_peak_circle_centre = [nominal_diameter/2 - thread_depth + radius, pitch/2],
@@ -104,8 +104,8 @@ function rms_thread_profile_section_points(d_offset=0, peak_points=5) = let(
     // NB the 1:N which means we start just above the peak - to 
     // avoid duplicating the point at the bottom of the next thread.
     for(i = [1:N]) circle_point(
-        180 - i/N*curve_angle, 
-        radius, 
+        180 - i/N*curve_angle,
+        radius,
         lower_peak_circle_centre
     ),
 
@@ -123,7 +123,7 @@ function rms_thread_profile_section_points(d_offset=0, peak_points=5) = let(
 
     // Upper peak, finishing at the peak (i.e. the vertical surface)
     for(i = [N:-1:0]) circle_point(
-        180 + i/N*curve_angle, 
+        180 + i/N*curve_angle,
         radius,
         upper_peak_circle_centre
     )
@@ -177,7 +177,7 @@ module rms_thread_cutter(h=5, d_offset=0.6, peak_points=2, $fn=64){
             for(i=[0:N_sections]) each rz_to_xyz(profile, angle_per_point*i, offset=offset_per_point*i),
             // This doesn't have any points in the middle - i.e. we're only rendering the outside of the thread
             // that will not be watertight.
-            
+
             // Manually add top and bottom points
             [0,0,-pitch/2], // index will be (N_sections+1)*Np
             [0,0,h+pitch/2]
@@ -203,7 +203,7 @@ module rms_thread_cutter(h=5, d_offset=0.6, peak_points=2, $fn=64){
             // we also join the bottom of each spiral to the top of the previous one - starting from 
             // the second row.  Again, this is done using quadrilaterals to keep the code simple.
             for(i=[$fn:N_sections-2]) [(i-$fn)*Np+(Np-1), i*Np, (i+1)*Np, (i-$fn+1)*Np+(Np-1)],
-            
+
             // The base, i.e. triangles between the bottom edge of each segment and the centre
             for(i=[0:$fn-1]) [i*Np, (i+1)*Np, bottom_i],
             // The top - note that winding order needs to be reversed so normals point outwards

@@ -140,7 +140,7 @@ module lighttrap_sqylinder(r1, f1, r2, f2, h, ridge=1.5){
         ],
         faces=[
             // Sloping faces
-            for(i = [0:(2*n_cones - 2)]) 
+            for(i = [0:(2*n_cones - 2)])
                 each join_rings_with_quads(i*n_points, (i+1)*n_points, n_points),
             // Bottom and top faces
             each circular_face(0, n_points, 2*n_points*n_cones, direction=1),
@@ -205,8 +205,10 @@ module old_lighttrap_sqylinder(r1,f1,r2,f2,h,ridge=1.5){
     }
 }
 
+// The following code was very useful when developing this module, so I could
+// check it rendered correctly.
 //$fn=16;
-translate_x(0)  lighttrap_cylinder(10, 6, 20);
-translate_x(30)  lighttrap_sqylinder(6, 8, 4.5, 8, 20);
-translate_x(60)  lighttrap_sqylinder(10, 0, 0, 20, 20);
-translate_x(90)  lighttrap_sqylinder(1.5, 17, 10, 0, 20);
+//translate_x(0)  lighttrap_cylinder(10, 6, 20);
+//translate_x(30)  lighttrap_sqylinder(6, 8, 4.5, 8, 20);
+//translate_x(60)  lighttrap_sqylinder(10, 0, 0, 20, 20);
+//translate_x(90)  lighttrap_sqylinder(1.5, 17, 10, 0, 20);
