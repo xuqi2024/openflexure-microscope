@@ -64,9 +64,9 @@ function circle_point(angle, radius, centre) = let(
 // used internally by `rms_thread_cutter()`.
 // To see the shape, you can try rendering:
 // `polygon([each rms_thread_profile_section_points(), [0,0]]);`
-function rms_thread_profile_section_points(offset=0, peak_points=5) = let(
+function rms_thread_profile_section_points(d_offset=0, peak_points=5) = let(
     pitch = rms_thread_pitch(),
-    nominal_diameter = rms_thread_nominal_d() + offset,
+    nominal_diameter = rms_thread_nominal_d() + d_offset,
     thread_angle = rms_thread_angle(),
     fundamental_triangle_h = rms_thread_fundamental_triangle_h(),
     radius = rms_thread_peak_radius(),
@@ -141,7 +141,7 @@ function rms_thread_profile_section_points(offset=0, peak_points=5) = let(
 //   as it starts at (`-pitch/2`) and finishes at (`h+pitch/2`).
 //   We recommend you always include at least an extra pitch/2 to
 //   allow for the start/stop of the thread.
-// * `offset` is added to the nominal diameter to give a tighter 
+// * `d_offset` is added to the nominal diameter to give a tighter 
 //   fit, and was determined empirically.
 // * `$fn` has its usual meaning, i.e. the number of points around 
 //   the circumference.
@@ -151,13 +151,13 @@ function rms_thread_profile_section_points(offset=0, peak_points=5) = let(
 // That means it looks like the thread you'd find on an 
 // objective, but it is slightly larger, because the standard
 // defines the two threads with a slight space between them.
-module rms_thread_cutter(h=5, offset=0.6, peak_points=2, $fn=64){
+module rms_thread_cutter(h=5, d_offset=0.6, peak_points=2, $fn=64){
     pitch = rms_thread_pitch();
     offset_per_point = [0, 0, pitch/$fn];
     angle_per_point = 360/$fn;
     N_sections = floor(h/pitch*$fn);
     assert(N_sections > $fn, "Cannot render a thread shorter than one pitch.");  // We must have at least one full thread
-    profile = rms_thread_profile_section_points(offset=offset, peak_points=peak_points);
+    profile = rms_thread_profile_section_points(d_offset=d_offset, peak_points=peak_points);
     Np = len(profile);
     bottom_i = (N_sections+1)*Np;
     top_i = (N_sections+1)*Np + 1;

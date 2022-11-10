@@ -13,7 +13,7 @@ module rms_thread_test(d_offset=0.5){
         }
 
         translate_z(1){
-            rms_thread_cutter(h=6, offset=d_offset);
+            rms_thread_cutter(h=6, d_offset=d_offset);
         }
         
         translate([nominal_d/2 + 2, -3, 0.25]){
