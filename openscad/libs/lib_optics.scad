@@ -209,7 +209,10 @@ module optics_module_body(
 
 }
 
-module rms_mount_cutout(mount_h){
+// An RMS thread cutter with an extra plug
+// This module cuts out an RMS thread, with space below it for
+// the tube_lens_gripper
+module rms_thread_and_cutout_for_tube_lens(mount_h){
     // cut the RMS thread for the objective
     translate_z(mount_h - 5.5){
         rms_thread_cutter(h=6, $fn=32, peak_points=2);
@@ -221,14 +224,14 @@ module rms_mount_cutout(mount_h){
 
 /**
 * This is the mount for the tube lens. The objective threads into
-* the threaded hole, defined in rms_mount_cutout
+* the threaded hole, defined in rms_thread_and_cutout_for_tube_lens
 */
-module rms_optics_mount(optics_config, h, pedestal_h){
+module tube_lens_gripper(optics_config, h, pedestal_h){
     gripper_t = key_lookup("gripper_t", optics_config);
     tube_lens_r = key_lookup("tube_lens_r", optics_config);
     aperture_r = lens_aperture(tube_lens_r);
 
-    //NB the RMS thread is now part of rms_mount_cutout
+    //NB the RMS thread is now part of rms_thread_and_cutout_for_tube_lens
 
     translate_z(-tiny()){ // ensure these parts join properly to the floor at z=0
         // gripper for the tube lens
@@ -254,7 +257,9 @@ module optics_module_rms(params, optics_config, include_wedge=true){
     //height of the top of the wedge
     wedge_top = 27;
 
-    // Calculate the position and size of the mout that holds the lens and
+    // The optics (i.e. tube lens and objective) are mounted in a cylinder at
+    // the top, with an RMS thread at the top and a gripper for the tube lens
+    // inside.
     rms_optics_mount_z = tube_lens_face_z(params, optics_config) - pedestal_h;
     rms_optics_mount_base_r = rms_thread_nominal_d()/2+1;
     rms_optics_mount_h = objective_shoulder_z(params, optics_config)-rms_optics_mount_z;
@@ -275,13 +280,15 @@ module optics_module_rms(params, optics_config, include_wedge=true){
                                    include_wedge=include_wedge);
                 // cut a hole for the rms thread and tube lens gripper
                 translate_z(rms_optics_mount_z){
-                    rms_mount_cutout(rms_optics_mount_h);
+                    rms_thread_and_cutout_for_tube_lens(rms_optics_mount_h);
                 }
             }
             translate_z(rms_optics_mount_z){
-                rms_optics_mount(optics_config,
-                                 h=rms_optics_mount_h,
-                                 pedestal_h=pedestal_h);
+                tube_lens_gripper(
+                    optics_config,
+                    h=rms_optics_mount_h,
+                    pedestal_h=pedestal_h
+                );
             }
         }
         // camera cut-out and hole for the beam
