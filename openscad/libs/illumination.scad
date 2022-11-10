@@ -20,6 +20,7 @@ use <./microscope_parameters.scad>
 use <./locking_dovetail.scad>
 use <./z_axis.scad>
 use <./libdict.scad>
+use <./lighttrap.scad>
 
 function illumination_dovetail_w() = 30; // width of the dovetail
 function illumination_dovetail_y() = 35; // position of the mating surface

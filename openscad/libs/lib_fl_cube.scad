@@ -1,5 +1,6 @@
 use <./utilities.scad>
 use <./libdict.scad>
+use <./lighttrap.scad>
 use <./rms_calculations.scad>
 
 //bottom of the beamsplitter filter cube (0 except for the RMS f=50mm modules where it's -8 or -20)
