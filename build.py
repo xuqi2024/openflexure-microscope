@@ -82,6 +82,7 @@ def write_ninja_file(build_dir):
         # Test pieces
         writer.openscad("nut_trap_test.stl", "test_pieces/nut_trap_test.scad")
         writer.openscad("leg_test.stl", "test_pieces/leg_test.scad")
+        writer.openscad("rms_thread.stl", "test_pieces/rms_thread.scad")
 
         # Special illumination components
         writer.openscad("condenser_led_holder.stl", "condenser_led_holder.scad")
