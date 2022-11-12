@@ -20,14 +20,18 @@ $fn=24;
 
 function optics_wedge_bottom() = -2; //bottom of dovetail (<0 to allow some play)
 
-//This is used for both the lens spacer and the tube lens gripper
+// This is used for both the lens spacer and the tube lens gripper
 function lens_aperture(lens_r) = lens_r - 1.5;
 
-//This function is used because the C270 camera needs to be rotated when used with a lens spacer
+// This function is used because the C270 camera needs to be rotated when used with a lens spacer
 // in order to fit in between the xy stage legs
 function c270_spacer_yes(optics_config) = (key_lookup("optics_type", optics_config) == "spacer") 
                                             && (key_lookup("camera_type", optics_config) == "logitech_c270") ;
-    
+
+// This function is used because the Arducam B0196 camera needs a cut-out in the 
+// camera platform for the USB cable
+function b0196_spacer_yes(optics_config) = (key_lookup("optics_type", optics_config) == "spacer") 
+                                            && (key_lookup("camera_type", optics_config) == "arducam_b0196") ;
 
 module optical_path(optics_config, lens_z, camera_mount_top_z){
     // The cut-out part of a camera mount, consisting of
@@ -484,6 +488,13 @@ module camera_platform(params, optics_config, base_r){
         // mark the optic axis
         translate_z(platform_h){
             cylinder(r=1, h=2, center = true);
+        }
+        if(b0196_spacer_yes(optics_config)){
+            rotate_z(45){
+                translate([10,-11.5,0]){
+                 cube([6,12,99]);
+                }
+            }
         }
     }
 }
