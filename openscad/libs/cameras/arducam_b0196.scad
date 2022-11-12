@@ -31,7 +31,8 @@ function arducam_b0196_camera_dict() = [["mount_height", 4.5],
 
 function arducam_b0196_camera_bottom_z() = -key_lookup("mount_height", arducam_b0196_camera_dict());
 
-function arducam_b0196_camera_hole_spacing() = 28/2;
+function arducam_b0196_corner_hole_spacing() = 28/2;
+function arducam_b0196_sensor_hole_spacing() = 18/2;
 function arducam_offset_y() = 2; // the sensor is offset towards the ribbom cable
 
 module b0196(beam_r=5, beam_h=9){
@@ -94,7 +95,8 @@ module b0196(beam_r=5, beam_h=9){
         //beam clearance
         cylinder(r=hole_r, h=beam_h);
 
-        mounting_hole_xy = arducam_b0196_camera_hole_spacing();
+        mounting_hole_xy = arducam_b0196_corner_hole_spacing();
+        close_hole_xy = arducam_b0196_sensor_hole_spacing();
         //Component clearance
         translate_z(2/2-tiny()){
             difference(){
@@ -121,16 +123,13 @@ module b0196(beam_r=5, beam_h=9){
                         cube([16,5,5],center = true);
                     }
                     // pillars at mounting points
-                    // translate_y(-arducam_offset_y()){
-                    //     reflect_x(){
-                    //         reflect_y(){
-                    //             translate([mounting_hole_xy, mounting_hole_xy,0]){
-                    //                 cylinder(d=4.5, h=10,center = true);
-                    //             }
-                    //         }
-                    //     }
-                    // }
-
+                    translate_y(-arducam_offset_y()){
+                         reflect_x(){
+                                translate([close_hole_xy,0,0]){
+                                    cylinder(d=5, h=99,center = true);
+                                }
+                            }
+                        }
                     // bar at top and part at bottom
                     translate([0,(7.0/2)-38/2-arducam_offset_y(),0]){
                         cube([34,7.0,5],center = true);
@@ -163,6 +162,7 @@ module b0196(beam_r=5, beam_h=9){
     
 }
 
+b0196();
 //arducam_b0196_camera_mount();
 //picam2_cutout();
 
@@ -190,7 +190,7 @@ module arducam_b0196_camera_mount(screwhole=true, counterbore=false){
     w = 33;
     b = 33;
     
-    mounting_hole_xy = arducam_b0196_camera_hole_spacing();
+    mounting_hole_xy = arducam_b0196_corner_hole_spacing();
 
     mount_height = key_lookup("mount_height", arducam_b0196_camera_dict());
     rotate(-45){
@@ -200,7 +200,7 @@ module arducam_b0196_camera_mount(screwhole=true, counterbore=false){
             }
             translate_z(-mount_height){
                 b0196();
-                //mounting holes
+                //mounting holes at the four corners
                 if(screwhole){
                     translate_y(-arducam_offset_y()){
                         reflect_x(){
@@ -224,19 +224,21 @@ module b0196_counterbore(){
     translate_z(arducam_b0196_camera_bottom_z()-1){
         b0196_camera_bottom_mounting_posts(height=9, radius=1.25, cutouts=false);
     }
-    translate_z(arducam_b0196_camera_bottom_z()+1){
+    translate_z(arducam_b0196_camera_bottom_z()+1.5){
         b0196_camera_bottom_mounting_posts(height=9, radius=2.25, cutouts=false);
     }
 }
 
 module b0196_camera_bottom_mounting_posts(height=-1, radius=-1, outers=true, cutouts=true){
     // posts to mount to arduino B0196 camera from below
-    r = radius > 0 ? radius : 2;
+    r = radius > 0 ? radius : 2.5;
     h = height > 0 ? height : 4;
-    screw_xy = arducam_b0196_camera_hole_spacing();
+    screw_xy = arducam_b0196_corner_hole_spacing();
+    close_screw_xy = arducam_b0196_sensor_hole_spacing();
     mount_holes = [[screw_xy,screw_xy,0],
-                    [screw_xy,-screw_xy,0],
-                    [-screw_xy,-screw_xy,0]];
+                    [-screw_xy,-screw_xy,0],
+                    [close_screw_xy,0,0],
+                    [-close_screw_xy,0,0]];
     rotate(-45){
         translate_y(-arducam_offset_y()){
             for(pos=mount_holes){
