@@ -7,7 +7,7 @@
 [PLA filament]: parts/materials/pla_filament.md "{cat:material}"
 [RepRap-style printer]: parts/tools/rep-rap.md
 [utility knife]: parts/tools/utility-knife.md
-[custom print settings]: smart_brim.md
+[custom print settings]: ./set_slice_gap_closing_radius.md
 
 ## Printing {pagestep}
 
