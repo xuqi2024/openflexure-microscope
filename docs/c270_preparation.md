@@ -23,7 +23,7 @@ In this section we are disassembling a Logitech C270 HD webcam to use with C270 
 ![](images/c270/IMG_4034.JPG)
 ![](images/c270/IMG_4037.JPG)
 ![](images/c270/IMG_4038.JPG)
-![](images/c270/IMG_4039.JPG)
+![](images/c270/IMG_4040.JPG)
 
 
 * Take the Logitech C270 web cam and place it on a clean surface
