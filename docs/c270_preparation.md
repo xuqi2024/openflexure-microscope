@@ -20,10 +20,10 @@ In this section we are disassembling a Logitech C270 HD webcam to use with C270 
 
 ## Open the C270 case {pagestep}
 
-![](images/c270/IMG_4034.jpg)
-![](images/c270/IMG_4037.jpg)
-![](images/c270/IMG_4038.jpg)
-![](images/c270/IMG_4039.jpg)
+![](images/c270/IMG_4034.JPG)
+![](images/c270/IMG_4037.JPG)
+![](images/c270/IMG_4038.JPG)
+![](images/c270/IMG_4039.JPG)
 
 
 * Take the Logitech C270 web cam and place it on a clean surface
@@ -35,11 +35,11 @@ In this section we are disassembling a Logitech C270 HD webcam to use with C270 
 
 
 ## Remove the camera board from the case {pagestep}
-![](images/c270/IMG_4041.jpg)
-![](images/c270/IMG_4043.jpg)
-![](images/c270/IMG_4046.jpg)
-![](images/c270/IMG_4047.jpg)
-![](images/c270/IMG_4048.jpg)
+![](images/c270/IMG_4041.JPG)
+![](images/c270/IMG_4043.JPG)
+![](images/c270/IMG_4046.JPG)
+![](images/c270/IMG_4047.JPG)
+![](images/c270/IMG_4048.JPG)
 
 >! **Caution!**
 >!
@@ -58,9 +58,9 @@ In this section we are disassembling a Logitech C270 HD webcam to use with C270 
 
 ## Remove the microphone {pagestep}
 
-![](images/c270/IMG_4053.jpg)
-![](images/c270/IMG_4054.jpg)
-![](images/c270/IMG_4055.jpg)
+![](images/c270/IMG_4053.JPG)
+![](images/c270/IMG_4054.JPG)
+![](images/c270/IMG_4055.JPG)
 
 
 * Remove the small rubber tube from the microphone {note: the microphone is the cylindrical cylinder in the middle of the board, it is the largest component other than the camera}
@@ -70,10 +70,10 @@ In this section we are disassembling a Logitech C270 HD webcam to use with C270 
 * Grasp the remaining microphone wires where they were in the spacer with small [pliers]{qty: 1}. Twist them to break and discard them
 
 ## Remove the lens {pagestep}
-![](images/c270/IMG_4049.jpg)
-![](images/c270/IMG_4050.jpg)
-![](images/c270/IMG_4051.jpg)
-![](images/c270/IMG_4052.jpg)
+![](images/c270/IMG_4049.JPG)
+![](images/c270/IMG_4050.JPG)
+![](images/c270/IMG_4051.JPG)
+![](images/c270/IMG_4052.JPG)
 
 
 >! **Caution!**
@@ -95,7 +95,7 @@ In this section we are disassembling a Logitech C270 HD webcam to use with C270 
 
 ## Prepare the lens to use in the basic optics module  {pagestep}
 
-![](images/c270/IMG_4052.jpg)
+![](images/c270/IMG_4052.JPG)
 
 
 * Grasp the square lens mount and the knurled round lens holder
