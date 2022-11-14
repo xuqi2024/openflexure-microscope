@@ -4,13 +4,6 @@ In this section we are disassembling a Logitech C270 HD webcam to use with C270 
 
 {{BOM}}
 
-[M3 nut]: parts/mechanical.yml#Nut_M3_SS "{cat:mech}"
-[M3x25mm stainless steel hex bolt]: parts/mechanical.yml#HexBolt_M3x25mm_SS "{cat:mech}"
-[M3 stainless steel washers]: parts/mechanical.yml#Washer_M3_SS "{cat:mech}"
-[M3x10 cap head screws]: parts/mechanical.yml#CapScrew_M3x10mm_SS "{cat:mech}"
-[No 2 6.5mm self tapping screws]: parts/mechanical.yml#SelfTap_PoziPan_No2x6.5_SS "{cat:mech}"
-[illumination PCB]: ./parts/electronics/illumination_pcb.md "{cat:electronic, note: 'A 5mm LED can be used instead, if you follow the [LED workaround].'}"
-
 [flat blade screwdriver]: parts/tools/2.5mmBallEndAllenKey.md "{cat:tool}"
 [#0 Phillips screwdriver]: parts/tools/phillips_0_screwdriver.md "{cat:tool}"
 [side cutters]: parts/tools/precision-wire-cutters.md "{cat:tool}"
@@ -46,7 +39,8 @@ In this section we are disassembling a Logitech C270 HD webcam to use with C270 
 >! The camera board is static sensitive.
 
 
-* Before touching the camera board touch a metal earthed object. If you own one, consider wearing and anti-static strap.
+* Before touching the camera board touch a metal earthed object. If you own one, consider wearing and anti-static strap
+* Remove the small rubber tube from the microphone and discard it {note: "The microphone is the cylindrical cylinder in the middle of the board, it is the largest component other than the camera"}
 * Unscrew two screws holding the camera board, using a [#0 Phillips screwdriver]{qty:1}
 * Save the screws as spares
 * Release the board from the case. It is still attached to the case by the cable
@@ -63,7 +57,6 @@ In this section we are disassembling a Logitech C270 HD webcam to use with C270 
 ![](images/c270/IMG_4055.JPG)
 
 
-* Remove the small rubber tube from the microphone {note: the microphone is the cylindrical cylinder in the middle of the board, it is the largest component other than the camera}
 * Grasp the microphone with small [pliers]{qty: 1}
 * Carefully twist forwards and backwards to break the small wires connecting the microphone to the board (you could alternatively unsolder the wires from the back of the board). Discard the microphone
 * Remove the white plastic spacer and discard it
@@ -73,7 +66,6 @@ In this section we are disassembling a Logitech C270 HD webcam to use with C270 
 ![](images/c270/IMG_4049.JPG)
 ![](images/c270/IMG_4050.JPG)
 ![](images/c270/IMG_4051.JPG)
-![](images/c270/IMG_4052.JPG)
 
 
 >! **Caution!**
@@ -85,7 +77,7 @@ In this section we are disassembling a Logitech C270 HD webcam to use with C270 
 * Unscrew two screws holding the lens mount to the camera board, using a [#0 Phillips screwdriver]{qty:1} 
 * Save both screws for mounting the camera if you are using an Openflexure RMS optics module. These screws are different from the others
 * Turn the camera board over 
-* Hold the lens assembly and carefully pull it from the board{note: it is held with double-sided tape and requires a little force to remove}
+* Hold the lens assembly and carefully pull it from the board{note: "The lens assembly is held with double-sided tape and requires a little force to remove"}
 * Retain the lens assembly if you are going to use the basic optics module with a lens spacer
 * Remove the small foam pad from the board, next to the lens mount
 
@@ -99,6 +91,6 @@ In this section we are disassembling a Logitech C270 HD webcam to use with C270 
 
 
 * Grasp the square lens mount and the knurled round lens holder
-* Unscrew the lens from the mount{note: there is some force required to start to unscrew the lens}
+* Unscrew the lens from the mount{note: "There is some force required to start to unscrew the lens"}
 
 
