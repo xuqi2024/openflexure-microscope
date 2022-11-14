@@ -27,7 +27,7 @@ use <./picamera_2.scad>
 $fn=48;
 
 function arducam_b0196_camera_dict() = [["mount_height", 4.5],
-                               ["sensor_height", 0.2]];//Height of the sensor above the PCB
+                                        ["sensor_height", 2]];//Height of the sensor above the PCB
 
 function arducam_b0196_camera_bottom_z() = -key_lookup("mount_height", arducam_b0196_camera_dict());
 
@@ -35,7 +35,7 @@ function arducam_b0196_corner_hole_spacing() = 28/2;
 function arducam_b0196_sensor_hole_spacing() = 18/2;
 function arducam_offset_y() = 2; // the sensor is offset towards the ribbom cable
 
-module b0196(beam_r=5, beam_h=9){
+module b0196(beam_h=9){
     //cut-out to fit Arducam B0196 webcam
     //optical axis at (0,0)
     //top of PCB at (0,0,0)
@@ -147,23 +147,11 @@ module b0196(beam_r=5, beam_h=9){
     } 
 
 
-        //clearance for PCB
-        // hull(){
-        //     translate([-10/2,-13.5,0]){
-        //         cube([10,tiny(),8]);
-        //         }
-        //     translate([-21.5/2,-4,0]){
-        //         cube([21.5,41,8]);
-        //         }
-        //     translate([-10/2,45,0]){
-        //         cube([10,tiny(),8]);
-        //         }
-        // }
     
 }
 
-b0196();
-//arducam_b0196_camera_mount();
+//b0196();
+arducam_b0196_camera_mount();
 //picam2_cutout();
 
 module arducam_rounded_block(b=33, w=33, h=6, roc = 2){
@@ -219,13 +207,19 @@ module arducam_b0196_camera_mount(screwhole=true, counterbore=false){
     }
 }
 
-// this is just the picamera counterbore for now
+// Counterbore mounting holes for the lens spacer to screw on from above
 module b0196_counterbore(){
+    // clearance holes
     translate_z(arducam_b0196_camera_bottom_z()-1){
         b0196_camera_bottom_mounting_posts(height=9, radius=1.25, cutouts=false);
     }
+    // counterbore holes, nomminally diameter 4.5, print at 4 to fit screw heads
     translate_z(arducam_b0196_camera_bottom_z()+1.5){
         b0196_camera_bottom_mounting_posts(height=9, radius=2.25, cutouts=false);
+    }
+    // Enlarged countebore for screwdriver, nominally diameter 5.5
+    translate_z(arducam_b0196_camera_bottom_z()+4){
+        b0196_camera_bottom_mounting_posts(height=9, radius=2.75, cutouts=false);
     }
 }
 

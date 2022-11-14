@@ -1,6 +1,6 @@
 /******************************************************************
 *                                                                 *
-* OpenFlexure Microscope: Logitech C270 screw-on-from-bottm mount *
+* OpenFlexure Microscope: Logitech c270 screw-on-from-bottm mount *
 *                                                                 *
 * This is part of the OpenFlexure microscope, an open-source      *
 * microscope and 3-axis translation stage.  It gets really good   *
@@ -9,7 +9,7 @@
 *                                                                 *
 * This file defines a camera mount (together with functions that  *
 * return the mount height and sensor position) for the Logitech   *
-* C270 webcam.                                                    *
+* c270 webcam.                                                    *
 *                                                                 *
 *                                                                 *
 * (c) Richard Bowman, January 2016                                *
@@ -45,87 +45,8 @@ module mounting_hole(){
     }
 }
 
-module old_C270(beam_r=5, beam_h=6){
-    //cut-out to fit logitech C270 webcam
-    //optical axis at (0,0)
-    //top of PCB at (0,0,0)
-    
-    mirror([0,0,1]){ //parts cut out of the mount are z<0
-        //beam clearance
-        hull(){
-            cube([8,8,6],center=true);
-            translate_z(-beam_h){
-                cylinder(r=beam_r,h=2*tiny(),center=true);
-            }
-        }
-
-
-        //clearance for PCB
-        hull(){
-            translate([-10/2,-13.5,0]){
-                cube([10,tiny(),8]);
-                }
-            translate([-21.5/2,-4,0]){
-                cube([21.5,41,8]);
-                }
-            translate([-10/2,45,0]){
-                cube([10,tiny(),8]);
-                }
-        }
-        difference(){
-            reflect_y(){
-                hull(){
-                    translate([-4.5,6,-1.5]){
-                        cube([9,7.5,8]);
-                    }
-                    translate([-5.5,6,-1.5]){
-                        cube([11,6.5,8]);
-                    }
-                }
-            }
-            // add a pillar at the 'near third hole' place
-            translate(c270_near_third_hole_pos()){
-                cylinder(r=3, h=99, center = true);
-            }
-
-        }
-        difference(){
-            hull(){
-                translate([0,22.5,0+4]){
-                    cube([20.5,28,15],center=true);
-                }
-                translate([0,34,0+4]){
-                    cube([10,9.5*2,15],center=true);
-                }
-            }
-            union(){
-            // cube at third mounting hole, cable end
-            translate([-3.5,36,-10]){
-                mirror([1,0,0]){
-                    cube([10,10,10]);
-                }
-            }
-                // add a pillar at the 'near third hole' place
-                translate(c270_near_third_hole_pos()){
-                    translate_z(-50){
-                        cylinder(r=3, h=99, center = false);
-                    }
-                }
-            }
-        }
-
-
-        //exit for cable
-        translate([4,20,0]){
-            rotate_x(-90){
-                cylinder(r=3,h=99);
-            }
-        }
-    }
-}
-
-module C270(beam_r=5, beam_h=6){
-    //cut-out to fit logitech C270 webcam
+module c270(beam_r=4.3, beam_h=4.5){
+    //cut-out to fit logitech c270 webcam
     //optical axis at (0,0)
     //top of PCB at (0,0,0)
     
@@ -202,11 +123,11 @@ module C270(beam_r=5, beam_h=6){
     }
 }
 
-c270_camera_mount();
-//C270();
+//c270_camera_mount();
+c270();
 
 module c270_camera_mount(screwhole=true, counterbore=false){
-    // A mount for the Logitech C270 webcam
+    // A mount for the Logitech c270 webcam
     // This should finish at z=0+tiny(), with a surface that can be
     // hull-ed onto the lens assembly.
     h = 58;
@@ -220,7 +141,7 @@ module c270_camera_mount(screwhole=true, counterbore=false){
                 cube([w, h, mount_height]);
             }
             translate_z(-mount_height){
-                C270();
+                c270();
                 if(screwhole){
                     //mounting holes
                     reflect_x(){
@@ -252,7 +173,7 @@ module c270_counterbore(){
 }
 
 module c270_camera_bottom_mounting_posts(height=-1, radius=-1, outers=true, cutouts=true){
-    // posts to mount to Logitech C270 camera from below
+    // posts to mount to Logitech c270 camera from below
     r = radius > 0 ? radius : 2.5;
     h = height > 0 ? height : 4;
     screw_x = c270_camera_hole_spacing();
