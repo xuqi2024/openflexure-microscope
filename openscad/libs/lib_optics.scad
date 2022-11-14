@@ -419,7 +419,10 @@ module lens_spacer(params, optics_config){
                 }
                 union(){
                     // cut out the optical path
-                    optical_path(optics_config, lens_assembly_z, camera_mount_top_z=0);
+                    z_offset_lens_spacer_optical_path = c270_spacer_yes(optics_config)? 
+                                                                    2.8: // to match the light trap to the mount aperture, C270
+                                                                    0; // to match the light trap to the mount aperture, Picam 2 and B0196
+                    optical_path(optics_config, lens_assembly_z, camera_mount_top_z=z_offset_lens_spacer_optical_path);
                     //cut out counterbores
                     translate_z(camera_mount_height){
                         camera_mount_counterbore(optics_config);
@@ -489,10 +492,11 @@ module camera_platform(params, optics_config, base_r){
         translate_z(platform_h){
             cylinder(r=1, h=2, center = true);
         }
+        // cut-out for Arducam b0196 cable
         if(b0196_spacer_yes(optics_config)){
             rotate_z(45){
-                translate([10,-11.5,0]){
-                 cube([6,12,99]);
+                translate([9,-11.5,10]){
+                 cube([7,12,99]);
                 }
             }
         }
