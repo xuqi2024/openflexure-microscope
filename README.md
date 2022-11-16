@@ -47,6 +47,9 @@ Things in need of attention are currently described in [issues](https://gitlab.c
 ## Developing
 If you want to play with the OpenSCAD files or change the documentation, you should fork the repository.  You can edit the documentation online in GitLab, or clone the repository if you want to edit the OpenSCAD files.  You will need to clone the whole repository as the OpenSCAD files are dependent on each other.
 
+### Changelog
+The changelog can be generated using `python generate_changelog.py`. In future, this should be used to keep the changelog up to date for each new release.
+
 ### Development environment
 We mostly use VSCode to edit the OpenSCAD files, and then use OpenSCAD with the editor hidden and the "automatic reload and compile" option ticked.  This is much nicer for a big multi-file project like the microscope than relying on OpenSCAD's built-in editor, and also works nicely with version control.
 
