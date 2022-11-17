@@ -375,7 +375,7 @@ module clamping_flange(p){
     }
 }
 
-module clamping_bolt_and_nut(p){
+module clamping_bolt_and_nut(p,inverted_print = false){
     // The counterbored screw and nut that clamp the dovetail
     h = key_lookup("overall_height", p);
     // Place the clamping bolt relative to the female point
@@ -399,7 +399,11 @@ module clamping_bolt_and_nut(p){
                     // relying on inter-layer adhesion (which is weaker).
                     // The entry slot should not be made horizontal without testing
                     // carefully for strength.
-                    rotate_z(60){
+                    nut_rotation = inverted_print? 
+                                        120:
+                                        60;
+                    echo(nut_rotation);
+                    rotate_z(nut_rotation){
                         sequential_hull(){
                             // TODO: replace this with a proper parametric nut trap!
                             cylinder(r=3*1.1, h=3.2, $fn=6);
@@ -509,16 +513,7 @@ module dovetail_clamp_m(p, inverted_print = false){
             clamping_flange(p);
             clamp_support(p);
         }
-        if(inverted_print){
-            translate_z(h){
-                mirror([0,0,1]){
-                 clamping_bolt_and_nut(p);
-                }
-            }
-        }
-        else{
-            clamping_bolt_and_nut(p);
-        }
+        clamping_bolt_and_nut(p,inverted_print = inverted_print);
 
         // work around "elephant's foot"/brim on mating faces
         undercut_male_dovetail(p);
