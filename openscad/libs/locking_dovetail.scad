@@ -402,7 +402,6 @@ module clamping_bolt_and_nut(p,inverted_print = false){
                     nut_rotation = inverted_print? 
                                         120:
                                         60;
-                    echo(nut_rotation);
                     rotate_z(nut_rotation){
                         sequential_hull(){
                             // TODO: replace this with a proper parametric nut trap!
