@@ -293,11 +293,7 @@ module condenser_body(base_r, lens_assembly_z, include_mounting=true){
             //  if we don't flip the nut trap by inverted_print = true
             // the nut would slide out of the trap when the screw is
             // removed. 
-            //translate_z(dt_height){
-                //mirror([0,0,1]){
             dovetail_clamp_m(dt_params, inverted_print = true);
-                //}
-            //}
         }
     }
     cylinder(r=base_r+.2, h=lens_assembly_z+tiny());
