@@ -1,3 +1,5 @@
+use <./libs/libdict.scad>
+use <./libs/utilities.scad>
 use <./libs/illumination.scad>
 
 condenser_stl();

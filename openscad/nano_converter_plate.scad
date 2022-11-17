@@ -1,3 +1,4 @@
+use <./libs/microscope_parameters.scad>
 use <./libs/lib_microscope_stand.scad>
 use <./libs/libdict.scad>
 use <../openscad/libs/utilities.scad>
@@ -5,7 +6,11 @@ use <../openscad/libs/utilities.scad>
 nano_converter_plate_stl();
 
 module nano_converter_plate_stl(){
-    nano_converter_plate();
+    params = default_params();
+    smart_brim_r = key_lookup("smart_brim_r", params);
+    exterior_brim(r=smart_brim_r, smooth_r = 4){
+        nano_converter_plate();
+    }
 }
 
 function nano_converter_plate_size() = let(
