@@ -1,5 +1,4 @@
-use <../illumination_dovetail.scad>
-use <./microscope_parameters.scad> 
+use <./microscope_parameters.scad>
 use <./main_body_structure.scad>
 use <./utilities.scad>
 use <./libdict.scad>
@@ -8,16 +7,14 @@ use <./wall.scad>
 use <./z_axis.scad>
 use <./illumination.scad>
 use <./compact_nut_seat.scad>
-use <./main_body_transforms.scad>
-use <./gears.scad>
 
 
-module seperate_z_actuator(params, cable_guides = false, cable_housing = false, rectangular = false){
+module separate_z_actuator(params, cable_guides = false, cable_housing = false, rectangular = false){
     //This is the z-axis of the main body 
     // The cable_housing variable allows cable guides to be included or omitted
     difference(){
         union(){
-            add_hull_base(microscope_base_t()); 
+            add_hull_base(microscope_base_t());
             // The wings have been removed from this design of the z-axis as they are not required 
             z_axis_casing(params, condenser_mount=true, cable_housing=cable_housing, rectangular=rectangular);
         }
@@ -28,7 +25,7 @@ module seperate_z_actuator(params, cable_guides = false, cable_housing = false, 
         central_optics_cut_out(params);
         z_axis_clearance(params);
         z_motor_clearance(params);
-        if (cable_guides){ 
+        if (cable_guides){
             // Cable guide cutouts to allow the cables to be threaded through 
             z_cable_housing_cutout(params, h=99, top=false);
         }
@@ -36,7 +33,7 @@ module seperate_z_actuator(params, cable_guides = false, cable_housing = false, 
 
     // Adding the z actuator
     difference(){
-        z_actuator_assembly(params);
+        complete_z_actuator(params);
         // Removing the extruding cylinders from the actuator
         translate([-50,0,-100]){
             cube(size = 100);
@@ -140,7 +137,7 @@ module upright_z_spacer_base(params){
     translate([0,0,-62]){
         hull(){
             // Creating the triangular bottom of the spacer using the position of the corners as previously defined
-            each_illumination_corner(params){ 
+            each_illumination_corner(params){
                 mirror([0,0,1]){
                     cylinder(r=5,h=tiny());
                 }

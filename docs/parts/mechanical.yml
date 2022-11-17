@@ -37,6 +37,25 @@ CapScrew_M3x8mm_SS:
     Westfield Fasteners:
       Link: https://www.westfieldfasteners.co.uk//Bolts-Screws-Metric/Socket-Head-Cap-Allen-Screw-M3x8-A2-Stainless.html
       PartNo: WF2344
+CapScrew_M3x10mm_SS:
+  Description: Socket Head Cap Screws ISO 4762 (DIN 912) M3 in A2 Stainless Steel
+  Name: Socket Head Cap (Allen) Screw M3 x 10mm in A2 Stainless
+  Specs:
+    Length: 10mm
+    Material: 'A2 Stainless Steel (Also known as: SAE 304; 18-8; UNS S30400; SUS304;
+      European norm 1.4301)'
+    Standards: ISO 4762, DIN 912
+    Thread: M3
+  Suppliers:
+    McMaster Carr (0):
+      Link: https://www.mcmaster.com/ISO-4762
+      PartNo: Search for ISO 4762
+    McMaster Carr (1):
+      Link: https://www.mcmaster.com/DIN-912
+      PartNo: Search for DIN 912
+    Westfield Fasteners:
+      Link: https://www.westfieldfasteners.co.uk//Bolts-Screws-Metric/Socket-Head-Cap-Allen-Screw-M3x10-A2-Stainless.html
+      PartNo: WF2345
 ButtonScrew_M4x6mm_SS:
   Description: Socket Head Button Screws ISO 7380 part 1 M4 in A2 Stainless Steel
   Name: Socket Head Button (Dome) Screw M4 x 6mm in A2 Stainless

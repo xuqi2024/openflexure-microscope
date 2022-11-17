@@ -39,7 +39,7 @@ function is_in(value, list) =
  * "tail-recursive" which lets OpenSCAD optimise it better.  This is
  * very close to the example given in the OpenSCAD docs.
  */
-function _libdict_sum_list(list, starting_element=0, running_total=0) = 
+function _libdict_sum_list(list, starting_element=0, running_total=0) =
     starting_element >= len(list) ?
         running_total :
         _libdict_sum_list(list, starting_element + 1, running_total + list[starting_element]);

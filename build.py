@@ -11,35 +11,17 @@ The selection for which extra STLs are copied in is in build_system/stl_copy
 
 import argparse
 import os
+import shutil
 import subprocess
 from ninja import BIN_DIR
 from build_system.microscope_build_writer import MicroscopeBuildWriter
 from build_system.util import version_string
 
-parser = argparse.ArgumentParser(
-    description="Run the OpenSCAD build for the Openflexure Microscope."
-)
-parser.add_argument(
-    "--generate-stl-options-json",
-    help="Generate a JSON file for the web STL selector.",
-    action="store_true",
-)
-parser.add_argument(
-    "--include-extra-files",
-    help="Copy over STL files from openflexure-microscope-extra/ into the builds/ folder.",
-    action="store_true",
-)
-parser.add_argument(
-    "--force-clean",
-    help="Ensures that the repo is clean before compiling",
-    action="store_true",
-)
+BUILD_DIR = "docs/models"
 
-# we get the flags above and will pass the rest to ninja
-args, ninja_args = parser.parse_known_args()
+#Some constants used in generating lists of parts
 
-
-CAMERAS = ["picamera_2", "m12"]
+CAMERAS = ["picamera_2", "m12", "logitech_c270"]
 
 # These are the optics configuration of objective and tube lens pairs.
 # Currently we only support the F50D13 option in the offical build.
@@ -52,6 +34,80 @@ INF_RMS_OPTICS = ["rms_infinity_f50d13"]
 # The when building the lens is assumed to be the lens of the camera!
 PLATFORM_OPTICS_MODULE_OPTIONS = [("picamera_2", "pilens")]
 
+def write_ninja_file(build_dir):
+    """
+    Register all files to be built. Some files options are generated in other functions
+    Once this function is complete a ninja file will have been written with all STLs that need generating.
+    """
+
+    with MicroscopeBuildWriter(build_dir, "build.ninja") as writer:
+        version_str = version_string(args.force_clean)
+        print(f'Compiling microscope version "{version_str}"')
+
+        # The main body
+        writer.openscad("main_body.stl", "main_body.scad", {"VERSION_STRING": version_str})
+
+        # Bases and electronics adapters
+        generate_stand_with_pi(writer)
+        writer.openscad("microscope_stand_no_pi.stl", "microscope_stand_no_pi.scad")
+        writer.openscad("nano_converter_plate.stl", "nano_converter_plate.scad")
+        writer.openscad("nano_converter_plate_gripper.stl", "nano_converter_plate_gripper.scad")
+
+        # Standard components
+        writer.openscad("feet.stl", "feet.scad")
+        writer.openscad("sample_clips.stl", "sample_clips.scad")
+        writer.openscad("cable_tidies.stl", "cable_tidies.scad")
+        writer.openscad("small_gears.stl", "small_gears.scad")
+        writer.openscad("large_gears.stl", "large_gears.scad")
+
+        # Optics modules and associated components
+        generate_rms_optics_modules(writer)
+        generate_platform_optics_modules(writer)
+        writer.openscad("picamera_2_cover.stl", "picamera_2_cover.scad")
+
+        # Standard illumination components
+        writer.openscad("condenser.stl", "condenser.scad")
+        writer.openscad("condenser_lid.stl", "condenser_lid.scad")
+        writer.openscad("condenser_board_spacer.stl", "condenser_board_spacer.scad")
+        writer.openscad("condenser_aperture.stl", "condenser_aperture.scad")
+        writer.openscad("illumination_dovetail.stl", "illumination_dovetail.scad")
+        writer.openscad("illumination_thumbscrew.stl", "illumination_thumbscrew.scad")
+
+        # Assembly tools
+        writer.openscad("actuator_assembly_tools.stl", "actuator_assembly_tools.scad")
+        writer.openscad("lens_tool.stl", "lens_tool.scad")
+        writer.openscad("picamera_2_gripper.stl", "accessories/picamera_2_gripper.scad")
+        writer.openscad("picamera_2_lens_gripper.stl", "accessories/picamera_2_lens_gripper.scad")
+
+        # Test pieces
+        writer.openscad("nut_trap_test.stl", "test_pieces/nut_trap_test.scad")
+        writer.openscad("leg_test.stl", "test_pieces/leg_test.scad")
+        writer.openscad("rms_thread.stl", "test_pieces/rms_thread.scad")
+
+        # Special illumination components
+        writer.openscad("condenser_led_holder.stl", "condenser_led_holder.scad")
+        writer.openscad("fl_cube.stl", "fl_cube.scad")
+        writer.openscad("reflection_illuminator.stl", "reflection_illuminator.scad")
+        writer.openscad("led_array_holder.stl", "led_array_holder.scad")
+
+        # Upright microscope components
+        writer.openscad("separate_z_actuator.stl", "separate_z_actuator.scad")
+        writer.openscad("upright_condenser.stl", "upright_condenser.scad")
+        writer.openscad("upright_large_gears.stl", "upright_large_gears.scad")
+        writer.openscad("upright_feet.stl", "upright_feet.scad")
+        writer.openscad("upright_z_actuator_mount.stl", "upright_z_actuator_mount.scad")
+        writer.openscad("accessories/upright_z_actuator_mount_5mm_sample.stl",
+                        "accessories/upright_z_actuator_mount_5mm_sample.scad")
+        writer.openscad("accessories/upright_z_actuator_mount_10mm_sample.stl",
+                        "accessories/upright_z_actuator_mount_10mm_sample.scad")
+
+        # Misc components
+        writer.openscad("thumbwheels.stl", "thumbwheels.scad")
+        writer.openscad("slide_riser.stl", "slide_riser.scad")
+        writer.openscad("accessories/actuator_tension_band.stl", "accessories/actuator_tension_band.scad")
+        writer.openscad("accessories/actuator_drilling_jig.stl", "accessories/actuator_drilling_jig.scad")
+
+
 def generate_rms_optics_modules(writer):
     """
     Add all rms optics modules to the ninja build
@@ -62,282 +118,85 @@ def generate_rms_optics_modules(writer):
                 bs_text = "_beamsplitter" if beamsplitter else ""
                 output = f"optics_{camera}_{optics}{bs_text}.stl"
 
-                parameters = {
-                    "OPTICS": optics,
-                    "CAMERA": camera,
-                    "BEAMSPLITTER": beamsplitter,
-                }
+                parameters = {"OPTICS": optics,
+                              "CAMERA": camera,
+                              "BEAMSPLITTER": beamsplitter}
 
-                if optics in RMS_OPTICS:
-                    objective_type = "finite_rms"
-                    base_type = {"rpi_base_tall", "rpi_base"}
-                elif optics in INF_RMS_OPTICS:
-                    objective_type = "infinite_rms"
-                    base_type = "rpi_base_tall"
-                else:
-                    raise ValueError("Unknown RMS optics module!?")
-
-                select_stl_if = {"objective_type": objective_type,
-                                 "camera": camera,
-                                 "reflection_illumination": beamsplitter,
-                                 "base_type": base_type}
-
-                writer.openscad(
-                    output,
-                    "rms_optics_module.scad",
-                    parameters=parameters,
-                    select_stl_if=select_stl_if,
-                )
-
+                writer.openscad(output, "rms_optics_module.scad", parameters)
 
 def generate_platform_optics_modules(writer):
     """
     Add both the lens spacers and the camera platforms to the ninja build
     """
+    # Note! As there is only one platform optics module option
+    # There are no input parameters to OpenSCAD This will need to
+    # be fixed as other options are added.
     for camera, optics in PLATFORM_OPTICS_MODULE_OPTIONS:
-        select_stl_if = {
-            "camera": camera,
-            "objective_type": "cam_lens",
-            "reflection_illumination": False}
-
-        output = f"camera_platform_{camera}_{optics}.stl"
-        writer.openscad(
-            output, "camera_platform.scad", select_stl_if=select_stl_if
-        )
-
-        output = f"lens_spacer_{camera}_{optics}.stl"
-        writer.openscad(
-            output, "lens_spacer.scad", select_stl_if=select_stl_if
-        )
-
-
-def generate_no_pi_stand(writer):
-    """
-    Add the stand without pi to the ninja build
-    """
-    # We set which bases are allowed when we made the optics modules
-    # So we don't need to say which optics are supported when we make the base
-    select_stl_if = {"base_type": "simple_base"}
-    writer.openscad(
-        "microscope_stand_no_pi.stl",
-        "microscope_stand_no_pi.scad",
-        select_stl_if=select_stl_if,
-    )
+        writer.openscad(f"camera_platform_{camera}_{optics}.stl", "camera_platform.scad")
+        writer.openscad(f"lens_spacer_{camera}_{optics}.stl", "lens_spacer.scad")
 
 def generate_stand_with_pi(writer):
     """
     Add two heights of stand with pi to the ninja build
     """
-    # We set which bases are allowed when we made the optics modules
-    # So we don't need to say which optics are supported when we make the base
-    for tall_base in [True, False]:
 
-        if tall_base:
-            output = "microscope_stand_tall.stl"
-            select_stl_if = {"base_type": "rpi_base_tall"}
-            parameters = {"TALL_BUCKET_BASE": True}
-        else:
-            output = "microscope_stand.stl"
-            select_stl_if = {"base_type": "rpi_base"}
-            parameters = {"TALL_BUCKET_BASE": False}
+    writer.openscad("microscope_stand.stl", "microscope_stand.scad", {"TALL_BUCKET_BASE": False})
+    writer.openscad("microscope_stand_tall.stl", "microscope_stand.scad", {"TALL_BUCKET_BASE": True})
 
-        writer.openscad(
-            output, "microscope_stand.scad", parameters, select_stl_if=select_stl_if
-        )
     # Also generate the tray for the pi itself
-    writer.openscad(
-        "pi_stand.stl",
-        "pi_stand.scad",
-        select_stl_if={"base_type": {"rpi_base", "rpi_base_tall"}}
-    )
+    for pi in [3,4]:
+        for sanga in ["v0.3", "v0.4"]:
+            if (pi==4) and (sanga=="v0.4"):
+                output = "electronics_drawer.stl"
+            else:
+                output = f"electronics_drawer-pi{pi}_sanga{sanga}.stl"
 
-def nano_converter(writer):
-    """Motor driver electronics case"""
-    
+            parameters = {"PI_VERSION": pi,
+                          "SANGA_VERSION": sanga}
 
-    select_stl_if = {"use_nano_sangaboard": True,
-                     "motorised": True}
-
-    writer.openscad(
-        "nano_converter_plate.stl",
-        "nano_converter_plate.scad",
-        select_stl_if=select_stl_if
-    )
-    writer.openscad(
-        "nano_converter_plate_gripper.stl",
-        "nano_converter_plate_gripper.scad",
-        select_stl_if=select_stl_if
-    )
+            writer.openscad(output, "electronics_drawer.scad", parameters)
 
 
-def generate_bases(writer):
+def copy_extra_stls(build_dir, extras_dir):
     """
-    Run all functions that add bases to the ninja build
-    """
-    generate_no_pi_stand(writer)
-    generate_stand_with_pi(writer)
-    nano_converter(writer)
-
-
-def generate_gears_and_thumbwheels(writer):
-    """
-    Add gears and thumbwheels to the ninja build
-    """
-    small_gear_selected = {"motorised": True}
-    large_gear_selected = [
-        {"motorised": True},
-        {"motorised": False, "use_motor_gears_for_hand_actuation": True},
-    ]
-    thumbwheels_selected = {
-        "motorised": False,
-        "use_motor_gears_for_hand_actuation": False,
-    }
-
-    writer.openscad(
-        "small_gears.stl", "small_gears.scad", select_stl_if=small_gear_selected
-    )
-    writer.openscad("large_gears.stl", "large_gears.scad", select_stl_if=large_gear_selected)
-    writer.openscad(
-        "thumbwheels.stl", "thumbwheels.scad", select_stl_if=thumbwheels_selected
-    )
-
-
-def generate_picamera_2_legacy_tools(writer):
-    """
-    Add the legacy picamera tools to the ninja build
-    """
-    picamera_2_legacy_tools = ["gripper", "lens_gripper"]
-    for tool in picamera_2_legacy_tools:
-        output = f"picamera_2_{tool}.stl"
-        input_file = f"accessories/picamera_2_{tool}.scad"
-        writer.openscad(
-            output,
-            input_file,
-            select_stl_if={"legacy_picamera_tools": True},
-        )
-
-
-def generate_small_parts(writer):
-    """
-    Add numerous extra small parts to the ninja build
-    """
-    generate_picamera_2_legacy_tools(writer)
-    writer.openscad(
-        "slide_riser.stl", "slide_riser.scad", select_stl_if={"slide_riser": True}
-    )
-    writer.openscad(
-        "actuator_assembly_tools.stl",
-        "actuator_assembly_tools.scad",
-        select_stl_if="always",
-    )
-    writer.openscad("condenser.stl", "condenser.scad", select_stl_if="always")
-    writer.openscad(
-        "illumination_dovetail.stl",
-        "illumination_dovetail.scad",
-        select_stl_if="always",
-    )
-    writer.openscad(
-        "illumination_thumbscrew.stl",
-        "illumination_thumbscrew.scad",
-        select_stl_if="always",
-    )
-    writer.openscad("lens_tool.stl", "lens_tool.scad", select_stl_if="always")
-    writer.openscad("nut_trap_test.stl", "test_pieces/nut_trap_test.scad", select_stl_if="always")
-    writer.openscad("feet.stl", "feet.scad", select_stl_if="always")
-    writer.openscad("sample_clips.stl", "sample_clips.scad", select_stl_if="always")
-    writer.openscad(
-        "fl_cube.stl",
-        "fl_cube.scad",
-        select_stl_if={"reflection_illumination": True},
-    )
-    writer.openscad("cable_tidies.stl", "cable_tidies.scad", select_stl_if="always")
-
-    writer.openscad(
-        "picamera_2_cover.stl",
-        "picamera_2_cover.scad",
-        select_stl_if={"camera": "picamera_2", "objective_type": {"infinite_rms", "finite_rms"}}
-    )
-    writer.openscad(
-        "accessories/actuator_tension_band.stl",
-        "accessories/actuator_tension_band.scad",
-        select_stl_if={"include_actuator_tension_band": True},
-    )
-    writer.openscad(
-        "accessories/actuator_drilling_jig.stl",
-        "accessories/actuator_drilling_jig.scad",
-        select_stl_if={"include_actuator_drilling_jig": True},
-    )
-    writer.openscad(
-        "reflection_illuminator.stl",
-        "reflection_illuminator.scad",
-        select_stl_if={"reflection_illumination": True},
-    )
-    writer.openscad("leg_test.stl", "test_pieces/leg_test.scad", select_stl_if="always")
-    writer.openscad("led_array_holder.stl", "led_array_holder.scad")
-
-def generate_upright_microscope_parts(writer):
-    writer.openscad(
-        "seperate_z_actuator.stl",
-        "seperate_z_actuator.scad",
-    )
-    writer.openscad(
-        "upright_condenser.stl",
-        "upright_condenser.scad",
-    )
-    writer.openscad(
-        "upright_z_actuator_mount.stl",
-        "upright_z_actuator_mount.scad",
-    )
-    writer.openscad(
-        "accessories/upright_z_actuator_mount_5mm_sample.stl",
-        "accessories/upright_z_actuator_mount_5mm_sample.scad",
-    )
-    writer.openscad(
-        "accessories/upright_z_actuator_mount_10mm_sample.stl",
-        "accessories/upright_z_actuator_mount_10mm_sample.scad",
-    )
-
-
-def add_extra_stls_to_writer(writer):
-    """
-    Instruct ninja to also copy external STL files into the output directory
+    Copy extra STLs to output directory
     """
 
-    for camera in ["6ledcam", "dashcam"]:
+    for root, dirs, files in os.walk(extras_dir):
+        hidden_dirs = [subdir for subdir in dirs if subdir.startswith('.')]
+        for hidden_dir in hidden_dirs:
+            dirs.remove(hidden_dir)
+        for name in files:
+            if name.endswith('.stl'):
+                stl_file = os.path.join(root, name)
+                rel_path = os.path.relpath(stl_file, extras_dir)
+                dest_dir = 'community-contributed-stls'
+                desitination = os.path.join(build_dir, dest_dir, rel_path)
+                os.makedirs(os.path.dirname(desitination), exist_ok=True)
+                shutil.copyfile(stl_file, desitination)
 
-        select_mount_top = {"camera": camera, "objective_type": "cam_lens"}
-        writer.copy_stl(f"{camera}_mount_top.stl", select_stl_if=select_mount_top)
-
-    select_mount_bottom = {"camera": {"dashcam", "6ledcam"}, "objective_type": "cam_lens"}
-    writer.copy_stl("dashcam_and_6ledcam_mount_bottom.stl", select_stl_if=select_mount_bottom)
-
-
-def write_ninja_file(extra_files, generate_json):
-    """
-    Use ninja to write a build.ninja file which specifies all the STLs to build
-    or copy
-    """
-
-    with MicroscopeBuildWriter("docs/models", "build.ninja", extra_files, generate_json) as mbw:
-        version_str = version_string(args.force_clean)
-        print(f'Compiling microscope version "{version_str}"')
-
-        # Generate basic STL files
-        mbw.openscad("main_body.stl",
-                     "main_body.scad",
-                     parameters={"VERSION_STRING": version_str},
-                     select_stl_if="always")
-        generate_rms_optics_modules(mbw)
-        generate_platform_optics_modules(mbw)
-        generate_bases(mbw)
-        generate_gears_and_thumbwheels(mbw)
-        generate_small_parts(mbw)
-        generate_upright_microscope_parts(mbw)
-        # Include extra STL files
-        if args.include_extra_files:
-            add_extra_stls_to_writer(mbw)
 
 if __name__ == "__main__":
-    write_ninja_file(args.include_extra_files, args.generate_stl_options_json)
+    parser = argparse.ArgumentParser(
+        description="Run the OpenSCAD build for the Openflexure Microscope."
+    )
+    parser.add_argument(
+        "--include-extra-files",
+        help="Copy over STL files from openflexure-microscope-extra/ into the builds/ folder.",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--force-clean",
+        help="Ensures that the repo is clean before compiling",
+        action="store_true",
+    )
+
+    # we get the flags above and will pass the rest to ninja
+    args, ninja_args = parser.parse_known_args()
+
+    write_ninja_file(BUILD_DIR)
+    # Include extra STL files
+    if args.include_extra_files:
+        copy_extra_stls(BUILD_DIR, extras_dir = 'openflexure-microscope-extra')
     # Run the "ninja.build" file we just created, to generate STLs
     subprocess.run([os.path.join(BIN_DIR, "ninja")] + ninja_args, check=True)

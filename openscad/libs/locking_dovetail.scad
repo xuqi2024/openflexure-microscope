@@ -45,19 +45,28 @@ function dovetail_default_params() = [
 
 function dovetail_params(
     // This is an experiment in how to handle the commonly-changed parameters more nicely
-    height=16,
-    width=30,
+    overall_height=16,
+    overall_width=30,
     block_depth=12,
     taper_block=false
 ) = replace_multiple_values(
     [
-        ["overall_height", height],
-        ["overall_width", width],
+        ["overall_height", overall_height],
+        ["overall_width", overall_width],
         ["block_depth", block_depth],
         ["taper_block", taper_block],
     ],
     dovetail_default_params()
 );
+
+function dovetail_back_width(p) = let(
+    w = key_lookup("overall_width", p),
+    depth = key_lookup("block_depth", p),
+    angle = key_lookup("angle", p),
+    taper_block = key_lookup("taper_block", p),
+    tapered_width = w - 2*tan(90-angle)*depth
+) taper_block ? tapered_width : w;
+
 
 module block_sharp(p){
     // the block to which we attach the male dovetail
@@ -65,9 +74,7 @@ module block_sharp(p){
 
     w = key_lookup("overall_width", p);
     depth = key_lookup("block_depth", p);
-    angle = key_lookup("angle", p);
-    back_w = key_lookup("taper_block", p) ? w - 2*tan(90-angle)*depth : w;
-
+    back_w = dovetail_back_width(p);
     polygon([
         [     -w/2,      0],
         [      w/2,      0],
@@ -80,14 +87,15 @@ module back_of_block_2d(p){
     // or from which we cut the female one
 
     depth = key_lookup("block_depth", p);
-    w = key_lookup("overall_width", p);
     angle = key_lookup("angle", p);
-    back_w = key_lookup("taper_block", p) ? w - 2*tan(90-angle)*depth : w;
+    back_w = dovetail_back_width(p);
     fillet_r = key_lookup("fillet_r", p);
 
     hull(){
         reflect_x(){
-            translate([back_w/2 - fillet_r*tan(angle/2), -depth + fillet_r]){
+            x_tr = back_w/2 - fillet_r*tan(angle/2);
+            y_tr = -depth + fillet_r;
+            translate([x_tr, y_tr]){
                 circle(r=fillet_r);
             }
         }
@@ -282,7 +290,9 @@ module clamp_cutout_base_2d(p){
         hull(){
             translate(female_point(p)){
                 circle(relief_r);
-                translate([-key_lookup("clamp_t", p)/sin(key_lookup("angle", p)), 0]){
+                clamp_t = key_lookup("clamp_t", p);
+                angle = key_lookup("angle", p);
+                translate([-clamp_t/sin(angle), 0]){
                     circle(relief_r);
                 }
             }
@@ -325,7 +335,7 @@ module clamp_back_2d(p, extra_left=0, extra_right=0, extra_top=0){
 
 module clamping_flange_2d(p){
     // 2D shape of the part of the flange that moves
-    convex_fillet(p){
+    dovetail_convex_fillet(p){
         difference(){
             union(){
                 hull(){
@@ -383,6 +393,12 @@ module clamping_bolt_and_nut(p){
             rotate_y(-90){
                 cylinder(d=3*1.2, h=key_lookup("clamp_t", p)); //shaft of the screw
                 translate_z( fillet_r + 2){
+                    // The rotation below means the nut slides in at an angle, rather 
+                    // than horizontally.  This is important: it ensures that the nut
+                    // is retained by a ring of plastic within one layer, rather than
+                    // relying on inter-layer adhesion (which is weaker).
+                    // The entry slot should not be made horizontal without testing
+                    // carefully for strength.
                     rotate_z(60){
                         sequential_hull(){
                             // TODO: replace this with a proper parametric nut trap!
@@ -426,29 +442,26 @@ module clamp_support(p){
     }
 }
 
-module convex_fillet(p){
+module dovetail_convex_fillet(p){
     // smooth the convex corners
     $fn=12;
 
-    offset(key_lookup("fillet_r", p)){
-        offset(-key_lookup("fillet_r", p)){
-            children();
-        }
+    convex_fillet(key_lookup("fillet_r", p)){
+        children();
     }
 }
-module concave_fillet(p){
+
+module dovetail_concave_fillet(p){
     // smooth the concave corners
     $fn=12;
-
-    offset(-key_lookup("fillet_r", p)){
-        offset(key_lookup("fillet_r", p)){
-            children();
-        }
+    concave_fillet(key_lookup("fillet_r", p)){
+        children();
     }
 }
 
+
 module dovetail_section_m(p, relief=true){
-    convex_fillet(p){
+    dovetail_convex_fillet(p){
         dovetail_section_m_sharp(p, relief=relief);
     }
 }
@@ -474,7 +487,7 @@ module dovetail_clamp_m(p){
         union(){
             difference(){
                 linear_extrude(h){
-                    convex_fillet(p){
+                    dovetail_convex_fillet(p){
                         difference(){
                             dovetail_section_m_sharp(p);
                             clamp_cutout_base_2d(p);
@@ -485,7 +498,7 @@ module dovetail_clamp_m(p){
                 // void for clamp
                 translate_z(2){
                     linear_extrude(h-4){
-                        concave_fillet(p){
+                        dovetail_concave_fillet(p){
                             clamp_cutout_empty_2d(p);
                         }
                     }
@@ -510,7 +523,7 @@ module dovetail_f(p, height=undef){
     // A female dovetail, existing in y<0 with mating face at y=0
     h = is_undef(height) ? key_lookup("overall_height", p) : height;
     linear_extrude(h){
-        convex_fillet(p){
+        dovetail_convex_fillet(p){
             dovetail_section_f_sharp(p);
         }
     }
@@ -522,7 +535,7 @@ module dovetail_f_cutout(p, height=undef){
     h = is_undef(height) ? key_lookup("overall_height", p) : height;
     w = key_lookup("overall_width", p);
     linear_extrude(h){
-        concave_fillet(p){
+        dovetail_concave_fillet(p){
             union(){
                 dovetail_section_f_sharp_cutout(p);
                 translate([-w/2, tiny()]){
@@ -537,7 +550,7 @@ module dovetail_block(p, height=undef){
     // A 3D block, filleted as the dovetail would be
     h = is_undef(height) ? key_lookup("overall_height", p) : height;
     linear_extrude(h){
-        convex_fillet(p){
+        dovetail_convex_fillet(p){
             block_sharp(p);
         }
     }

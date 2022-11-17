@@ -101,9 +101,16 @@ PiCamera_RibbonCable:
     Length: 15cm
     Pitch: 1mm
     Pins: 15
+PiCamera_RibbonCable_200mm:
+  Name: Raspberry Pi Camera Ribbon Cable (30cm)
+  Description: 20 cm Ribbon cable for Raspberry Pi Camera Module V2.1. This is a 15 pin FPC cable with 1mm pitch. This is longer than the standard ribbon cable the Pi Camera is sold with!
+  Specs:
+    Length: 20cm
+    Pitch: 1mm
+    Pins: 15
 PiCamera_RibbonCable_300mm:
   Name: Raspberry Pi Camera Ribbon Cable (30cm)
-  Description: 30 cm Ribbon cable for Raspberry Pi Camera Module V2.1. This is a 15 pin FPC cable with 1mm pitch. 
+  Description: 30 cm Ribbon cable for Raspberry Pi Camera Module V2.1. This is a 15 pin FPC cable with 1mm pitch. This is longer than the standard ribbon cable the Pi Camera is sold with!
   Specs:
     Length: 30cm
     Pitch: 1mm
@@ -126,3 +133,10 @@ RaspberryPi_PowerSupply:
     RS Components:
       Link: https://uk.rs-online.com/web/p/raspberry-pi-power-supplies/1873416/
       PartNo: 187-3416
+ArduinoNano:
+  Name: Arduino Nano
+  Description: The Arduino Nano 3.0 is a compact board featuring the ATmega328 microcontroller. It’s a complete, bread-board friendly development board which measures just 45 x 18 mm.
+  Suppliers:
+    RS Components:
+      Link: https://uk.rs-online.com/web/p/arduino/6961667/
+      PartNo: 696-1667

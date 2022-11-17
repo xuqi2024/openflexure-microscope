@@ -4,8 +4,6 @@ use <./illumination.scad>
 use <./lib_optics.scad>
 use <./libdict.scad>
 use <./utilities.scad>
-use <./cameras/camera.scad>
-use <./cameras/picamera_2.scad>
 use <./z_axis.scad>
 
 
@@ -42,12 +40,12 @@ module upright_condenser_platform(params, optics_config, base_r){
             sequential_hull(){
                 hull(){
                     cylinder(r=base_r,h=tiny());
-                    objective_fitting_base(params);
+                    objective_fitting_wedge(h=tiny());
                 }
                 translate_z(platform_h){
                     hull(){
                         cylinder(r=base_r,h=tiny());
-                        objective_fitting_base(params);
+                        objective_fitting_wedge(h=tiny());
                         upright_condenser_top_hull();
                     }
                 }
@@ -84,9 +82,7 @@ module led_boring_holes(boring_radius){
                 hole_from_bottom(r=led_diameter/2, h=2, base_w=999, delta_z=0.4, layers=2, big_bottom=true);
             }
         }
-          
-        
-    } 
+    }
 }
 
 module upright_condenser(params, optics_config){
@@ -97,7 +93,7 @@ module upright_condenser(params, optics_config){
         union(){
             upright_condenser_platform(params, optics_config, base_r=5);
             translate([0,0,platform_h]){
-                condenser(params, lens_d=13, lens_t=1, lens_assembly_z= 30, include_mounting = false);
+                condenser(lens_assembly_z= 30, include_mounting = false);
             }
         }
         // Creating a large hole for the LED and wires to go through in the base

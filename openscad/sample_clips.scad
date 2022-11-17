@@ -12,21 +12,22 @@
 *                                                                 *
 ******************************************************************/
 
-use <./libs/microscope_parameters.scad>
 use <./libs/utilities.scad>
 
-$fn=32; 
+$fn=32;
 
 module sample_clip(clamp_point, t=2.5, w=6, radius_of_curvature=undef, slope=30){
-    
+
     default_roc = clamp_point.z/2 + clamp_point.y*sin(slope) - t/2;
     roc = if_undefined_set_default(radius_of_curvature, default_roc);
 
+    //z distance from the contact point to the centre of the curved part
+    z_dist = clamp_point.z - roc - t/2;
     //a is the distance from the contact-point cylinder to the
     //centre of the curved part
-    a = sqrt(pow(clamp_point.y, 2) + pow(clamp_point.z - roc - t/2, 2));
+    a = sqrt(clamp_point.y^2 + z_dist^2);
     //angle through which we must rotate the join between
-    angle = acos( (roc + t/2) / a ) + atan((clamp_point.z - roc - t/2)/clamp_point.y);
+    angle = acos((roc + t/2) / a) + atan(z_dist/clamp_point.y);
 
 
     difference(){
@@ -77,7 +78,7 @@ module sample_clip(clamp_point, t=2.5, w=6, radius_of_curvature=undef, slope=30)
     }
 }
 
-// TODO make these an accesory
+// TODO make the mini culture plate clips an accessory
 //this is for mini culture plates, 39mm outer diameter and 12.4mm high
 //sample_clip([0,19/2+3,12.4-1.5],slope=7.5); //mini culture dish
 
@@ -85,10 +86,15 @@ module sample_clips_stl(){
     for(a=[0,180]){
         rotate([0,-90,a]){
             translate([7/2,-10,-7+1]){
-                sample_clip([0,20,-1], w=7, radius_of_curvature=7);
+                default_sample_clip();
             }
         }
     }
+}
+
+// sample clip, upright, with default parameters
+module default_sample_clip(){
+    sample_clip([0,20,-1], w=7, radius_of_curvature=7);
 }
 
 sample_clips_stl();

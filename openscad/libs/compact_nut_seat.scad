@@ -39,7 +39,7 @@ function actuator_dims(params) = let(
  ) [width, actuating_nut_r(params), 6];
 
 /**
-* The dimensions of the but slot in the actuator
+* The dimensions of the nut slot in the actuator
 */
 function actuator_nut_slot_size() = let(
     //nominal width of the nut (vertex-to-vertex) multiplied by a clearance factor of 10%
@@ -48,10 +48,13 @@ function actuator_nut_slot_size() = let(
 ) [nut_w*sin(60), nut_w, nut_h+0.4];
 
 
-//TODO find out where all the magic numbers come from
+
 function column_core_size() = let(
     nut_slot_xy =  zero_z(actuator_nut_slot_size()),
     // Adding extra material to the column. Note, must leave z=0 here
+    // 1.5 is added in x and y as the top of the actuator column is 3mm wider
+    // than the nut slot. The 7 relates to the size of the hook, and the other
+    // number set the clearance.
     extra_xy =  2*[1.5+7+1, 1.5+1.5, 0]
 ) nut_slot_xy + extra_xy;
 
@@ -238,7 +241,7 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
                 actuator_hooks(h, top);
             }
             // join the column to the casing, for strength during printing
-            // This module does the tilt itself so it can be rendered seperately
+            // This module does the tilt itself so it can be rendered separately
             // for instructions
             if(join_to_casing){
                 actuator_ties(tilt, lever_tip);
@@ -367,7 +370,6 @@ module screw_seat_shell(h=1, tilt=0){
     }
 }
 
-//TODO: h is currently the actator height plus travel. This should be a parameter rather than calculated ad-hoc
 module motor_lugs(h, tilt=0, angle=0){
     screw_pos = motor_screw_pos(h);
     // lugs to mount a micro geared stepper motor on a screw_seat.
@@ -412,7 +414,7 @@ module screw_seat(params, h, travel, tilt=0, extra_entry_h=7, include_motor_lugs
     // support the screw (see screw_seat_shell)
 
     create_motor_lugs = if_undefined_set_default(include_motor_lugs,
-                                                 key_lookup("include_motor_lugs", params));    
+                                                 key_lookup("include_motor_lugs", params));
 
     entry_h = extra_entry_h + travel; //ensure the actuator can move
     nut_slot_z = h-actuator_nut_size()-1.5-actuator_nut_slot_size().z;

@@ -55,7 +55,7 @@ module leg_flexures(params, brace){
                     }
                 }
             }
-            //Repeat two flexures may be seperate depending on brace.
+            //Repeat two flexures may be separate depending on brace.
             repeat([0,brace_pos,0],2){
                 translate_x(-flex_size.x/2){
                     cube(flex_size);
@@ -100,10 +100,11 @@ module leg(params, brace=flex_dims().x){
     }
 }
 
-module actuator(params){
-    // A leg that supports the stage, plus a lever to tilt it.
-    // No longer includes the flexible nut seat actuating column.
-    // TODO: find the code that unifies this with leg()
+module actuator_leg(params){
+    // The wide leg that supports the stage on the actuator side,
+    // plus the horizontal lever that meets the flexure at the bottom
+    // of the actuator column. This does not include the flexure itself.
+
     brace=20;
     fw=flex_dims().x;
     w = actuator_dims(params).x;
@@ -139,7 +140,7 @@ module actuator_silhouette(params, h=999){
         minkowski(){
             circle(r=flex_dims().y,$fn=12);
             projection(){
-                actuator(params);
+                actuator_leg(params);
             }
         }
     }
@@ -272,7 +273,7 @@ module xy_actuators(params, ties_only=false){
     each_actuator(params){
         //actuator is the leg bat to connect to the flexure at the bottom of the column
         if (! ties_only){
-            actuator(params);
+            actuator_leg(params);
         }
         translate_y(actuating_nut_r(params)){
             if (! ties_only){
@@ -427,17 +428,10 @@ module xy_positioning_system(params){
     }
 }
 
-module central_optics_cut_out(params) {
-    // Central cut-out for optics
-    sequential_hull(){
-        h=microscope_base_t()*3;
-        translate_y(back_lug_x_pos(params)+1.5-14/2){
-            cube([14,2*tiny(),h],center=true);
-        }
-        cube([2*(back_lug_x_pos(params)-flex_dims().x),1,h],center=true);
-        translate_y(8-(back_lug_x_pos(params)-flex_dims().x-tiny())){
-            cube([16,2*tiny(),h],center=true);
-        }
+module central_optics_cut_out(params, h=10, center=true) {
+    // Central cut-out for optics of main body
+    linear_extrude(h, center=center){
+        central_optics_cut_out_projection(params);
     }
 }
 
@@ -531,7 +525,7 @@ module main_body(params, version_string){
     }
 
     //z axis - Only the actuator column is housed at this point
-    z_actuator_assembly(params);
+    complete_z_actuator(params);
 
     difference(){
         actuator_walls_and_z_casing(params);

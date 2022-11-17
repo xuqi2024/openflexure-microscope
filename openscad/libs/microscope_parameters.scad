@@ -30,7 +30,7 @@ use <./libdict.scad>
 * Sets the basic geometry of the default microscope
 * Stages can be built with modified parameters but with **no guarantee** that any other
 * set of parameters will work.
-* These parameters define the default size for the structural elements of the micoroscope, optics parameters are set seperately.
+* These parameters define the default size for the structural elements of the micoroscope, optics parameters are set separately.
 */
 function default_params() = [["leg_r", 30],     // radius on which the innermost part of legs sit. (This sets the stage size)
                              ["sample_z", 75 ], // z position of sample
@@ -39,13 +39,11 @@ function default_params() = [["leg_r", 30],     // radius on which the innermost
                              ["stage_hole_r", 20], // size of hole in the stage
                              ["xy_lever_ratio", 4.0/7.0], // mechanical advantage of actuator over xy-stage - can be used to trade speed and precision
                              ["z_lever_ratio", 1.0], //  mechanical advantage of actuator over objective mount (must be >1)
-                             ["condenser_angle", 0], //angle of the top of the condenser relative to the xy plane
                              ["print_ties", true], //sets whether the ties that support printing are on. It is usefull to be able to turn these off for rendering
                              ["smart_brim_r", 5], // The radius of the smart brim on the main body
                              ["actuator_h", 25], //height of the actuator columns
                              ["include_motor_lugs", true], //sets whether the motor lugs are included
                              ["foot_height", 15], //the height of the feet
-                             ["pi_stand_h", 47] //The height of the tray the pi sits in. This sets the microscope stand height
                             ];
 
 ////// 3D printing specific paramenters //////
@@ -72,7 +70,7 @@ function leg_height(params) = let(
 /**
 * The distance holes on the XY stage are inset from leg_r (the radius on which the legs sit)
 */
-function stage_hole_inset() = flex_dims().y+4; 
+function stage_hole_inset() = flex_dims().y+4;
 
 /**
 * Width of the middle part of each leg
@@ -168,11 +166,11 @@ function actuating_nut_r(params) = let(
 ) (upper_xy_flex_z(params) - lower_xy_flex_z()) * xy_lever_ratio;
 
 
-//TODO explain this!
+
 /**
 * distance moved by XY axis actuators
 */
-function xy_actuator_travel(params) = actuating_nut_r(params)*0.15; 
+function xy_actuator_travel(params) = actuating_nut_r(params)*flex_a();
 
 
 ////// Z axis parameters. Many are defined here to avoid cyclic imports //////
@@ -181,7 +179,7 @@ function xy_actuator_travel(params) = actuating_nut_r(params)*0.15;
 /**
 * Length of struts supporting Z carriage.
 */
-function z_strut_l() = 18; 
+function z_strut_l() = 18;
 
 /**
 * y position of the optics mounting wedge
@@ -242,11 +240,10 @@ function z_nut_y(params) = let(
 ) z_anchor_y() - flex_dims().y/2 + z_lever_y_proj;
 
 
-//TODO explain this!
 /**
 * distance moved by z axis
 */
-function z_actuator_travel(params) = z_lever_length(params)*0.15;
+function z_actuator_travel(params) = z_lever_length(params)*flex_a();
 
 /**
 * The angle (in degrees) through which the z_actuator is tilted
@@ -337,13 +334,13 @@ function actuator_wall_h() = 15;
 /**
 * Thickness of the walls on the main body
 * The wall where the reflection illumination cut-out is has double thickness
-*/ 
+*/
 function microscope_wall_t() = 2;
 
 /**
 * Height of walls inside xy_stage
 */
-function inner_wall_h(params) = upper_z_flex_z(params) - 10; 
+function inner_wall_h(params) = upper_z_flex_z(params) - 10;
 
 /**
 * Height of the cutout in the main body wall for the reflection optics

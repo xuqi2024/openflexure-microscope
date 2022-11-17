@@ -23,6 +23,10 @@ module printable_small_gears(){
     // Add 4mm of clearance
     spacing = 2*small_gear_pitch_radius() + 4;
     repeat([0, spacing, 0], 3, center=true){
-        small_gear();
+        // 3.15 is a trade off. Firm to push on some printers that print
+        // the gears loose. Should be press fit with a small clamp/vice
+        // if the printer prints tight. All are then locked with two screws
+        // Can be adjusted for printers outside this range.
+        small_gear(flat_shaft_w=3.15);
     }
 }

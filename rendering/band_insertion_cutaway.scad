@@ -10,12 +10,15 @@ use <../openscad/libs/compact_nut_seat.scad>
 use <../openscad/libs/utilities.scad>
 use <../openscad/libs/lib_actuator_assembly_tools.scad>
 use <../openscad/libs/microscope_parameters.scad>
-use <../openscad/feet.scad>
+use <../openscad/libs/libfeet.scad>
+use <../openscad/libs/gears.scad>
 use <../openscad/libs/main_body_structure.scad>
 use <../openscad/libs/libdict.scad>
 use <librender/hardware.scad>
 use <librender/render_settings.scad>
 use <librender/assembly_parameters.scad>
+use <librender/render_utils.scad>
+use <actuator_assembly.scad>
 
 module cut_actuator_housing(params, cut=true){
     difference(){
@@ -49,7 +52,7 @@ module render_band_insertion(frame_dict){
     tool_kink = key_lookup("tool_kink", frame_dict);
     actuator_h = key_lookup("actuator_h", params);
 
-    color(body_colour(), 1.0){
+    coloured_render(body_colour(), 1.0){
         actuator_column(actuator_h, 0, join_to_casing=false);
     }
 
@@ -71,6 +74,25 @@ module render_band_insertion(frame_dict){
             }
         }
     }
+    translate_z(xy_lead_assembly_height()){
+        lead_screw_assembly();
+    }
+    translate_z(xy_nut_height()){
+        rotate_z(30){
+            m3_nut(brass=true, center=true);
+        }
+    }
+
+    color(tools_colour()){
+        render(6){
+            rotate_z(180){
+                translate([0, -15, xy_nut_height()-4]){
+                    nut_tool();
+                }
+            }
+        }
+    }
+
     // See though object last
     color(body_colour(), casing_alpha){
         render(6){

@@ -117,43 +117,44 @@ module large_gear(){
     }
 }
 
+function small_gear_height() = 9.5;
+function small_gear_screw_hole(flat_shaft_w=3.15) = let(
+    //Adding 1.25 makes the wall very close to 0.4 mm
+    // Should print as a single filament with a 0.4mm nozzle
+    y=flat_shaft_w/2+1.25,
+    z=small_gear_height()-1.5
+) [0, y, z];
+
 
 /**
 * The cut-out in the small gear for the motor shaft
 */
-module motor_shaft_cut_out(h){    
-    flat_h=h-3.5;
-    shaft_r=5/2*1.1;
+module motor_shaft_cut_out(flat_shaft_w){
+    shaft_d=5.2;
     intersection(){
-        cylinder(r=shaft_r, h=999, center=true);
-        sequential_hull(){
-            translate_z(-tiny()){
-                cube([999,3,tiny()]*1.1,center=true);
-            }
-            translate_z(flat_h){
-                cube([999,3,tiny()]*1.1,center=true);
-            }
-            translate_z(flat_h+2){
-                cube([999,7,tiny()]*1.1,center=true);
-            }
-            translate_z(999){
-                cube([999,7,tiny()]*1.1,center=true);
+        //5.4mm diameter, slightly loose for 5mm shaft.
+        cylinder(d=shaft_d, h=99, center=true);
+        cube([99,flat_shaft_w,99], center=true);
+    }
+    cylinder(d=shaft_d, h=3, center=true);
+    reflect_y(){
+        screw_pos = small_gear_screw_hole(flat_shaft_w);
+        translate_y(screw_pos.y){
+            no2_selftap_hole(h=99, center=true);
+            //counterbore
+            translate_z(screw_pos.z){
+                cylinder(d=4.5, h=99);
             }
         }
     }
-    //chamfer the top/bottom for better fit
-    translate_z(h){
-        cylinder(r1=shaft_r,r2=shaft_r+2,h=2,center=true);
-    }
-    cylinder(r2=shaft_r,r1=shaft_r+2,h=2,center=true);
 }
 
 /**
 * Small gears that attach onto the 28BYJ-48 stepper motor shaft for motorised actuation
 */
-module small_gear(){
+module small_gear(flat_shaft_w=3.15){
     $fn=small_gear_fn();
-    h=8;
+    h=small_gear_height();
     difference(){
         union(){
             gear(number_of_teeth=n_teeth_small_gear(),
@@ -167,7 +168,7 @@ module small_gear(){
             //Flange on the bottom of the gear improve adhesion during printing
             cylinder(r=small_gear_flange_radius(),h=0.5);
         }
-        motor_shaft_cut_out(h);
+        motor_shaft_cut_out(flat_shaft_w=flat_shaft_w);
     }
 }
 
@@ -205,7 +206,7 @@ module thumbwheel(){
 * A lobe for the thumbwheel with conical support
 */
 module thumbwheel_lobe(r=5, h=5)
-{   
+{
     hull(){
         cylinder(r=r,h=h);
         translate_z(-h){
@@ -238,7 +239,7 @@ module illumination_thumbscrew(){
 * Approximate cut-out for a 28BYJ-48 stepper motor body
 * Note this does not include clearance for the cable or motor shaft
 * The centre of the body is at the origin, NOT the shaft.
-*/ 
+*/
 module motor_clearance(h=15){
 
     linear_extrude(height=h){
@@ -267,7 +268,7 @@ module motor_clearance(h=15){
 * flat surface for the large gear, in motor_lugs in compact_nut_seat.scad.
 */
 module motor_and_gear_clearance(gear_h=10, h=999){
-    
+
     linear_extrude(h){
         offset(1.5){
             hull(){

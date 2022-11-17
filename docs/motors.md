@@ -5,30 +5,40 @@
 
 [M4x6mm button head screws]: parts/mechanical.yml#ButtonScrew_M4x6mm_SS
 [28BYJ-48 micro geared stepper motors]: parts/electronics.yml#28BYJ-48
+[2.5mm Ball-end Allen key]: parts/tools/2.5mmBallEndAllenKey.md
+[No 2 6.5mm self tapping screws]: parts/mechanical.yml#SelfTap_PoziPan_No2x6.5_SS
+[#1 pozidrive screwdriver]: parts/tools/pozidrive_1_screwdriver.md "{cat:tool}"
 
 ## Attach the small gears {pagestep}
 
+
+![](renders/motor_assembly1.png)
+![](renders/motor_assembly2.png)
+
+
 * Take a [stepper motor][28BYJ-48 micro geared stepper motors]{qty:3, cat:electronic} and a [small gear][small gears](fromstep){qty:3, cat:printedpart}
 * Place the motor on the work surface with the shaft pointing up
-* Apply a small drop of [threadlock adhesive]{qty: 6 drops, cat:consumable} to each side of the motor shaft near the top
 * Align the flat sides of the motor shaft with the flat sides of the hole in the gear.
 * Push the gear onto the motor with the flanged side downwards (motor side).
+* Take two [self tapping screws][No 2 6.5mm self tapping screws]{qty: 6, cat:mech} and drive them fully into the holes on either side of the shaft. [#1 pozidrive screwdriver]{qty:1, cat:tool}
 * Repeat for the other two motors
 
-## Attach the motors {pagestep}
+## Attach the x and y motors {pagestep}
+
+![](renders/mount_motors_{{var_optics, default:rms}}1.png)
+
 
 Note that each motor has a cable tidy cap that is different. Which cap to use should be apparent from the shape.
 
-* Get a [2.5mm Allen key]{qty:1, cat:tool} ready
+* Get a [2.5mm Ball-end Allen key]{qty:1, cat:tool} ready
 * Feed the cable from the motor through the rectangular wall in the outer wall by the x-actuator.
 * Place the motor on the motor lugs with the small gear towards the outside of the microscope
 * Check that the small gear and the large gear are meshed correctly
 * Take the x [cable tidy cap][cable tidy caps](fromstep){qty:3, cat:printedpart, note: "- Each cap is a different shape"} and place it over the motor
 * Check that the motor cable is running through the cable tidy rather than pinched underneath.
 * Fasten the motor and cable tidy caps to the motor lugs with two [M4x6mm button head screws]{qty:6, cat:mech}
-* Repeat for y and z actuators. For the z-actuator use the rectangular slot to the left of the actuator.
+* Repeat for y-actuator
 
-
-![](renders/cable_management.png)
-
+{{include: z_motor.md, if: var_type is not upright}}
+{{include: upright_z_motor.md, if: var_type is upright}}
 

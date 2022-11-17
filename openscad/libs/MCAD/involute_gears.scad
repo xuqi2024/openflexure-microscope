@@ -218,27 +218,28 @@ function involute_intersect_angle(base_radius, radius) = sqrt(pow(radius/base_ra
 
 // Calculate the involute position for a given base radius and involute angle.
 
-function rotated_involute(rotate, base_radius, involute_angle) =
+function rotated_involute(rotate, base_radius, involute_angle) = let(
+    unrotated_involute = involute(base_radius, involute_angle)
+)
 [
-    cos(rotate) * involute(base_radius, involute_angle)[0] + sin(rotate) * involute(base_radius, involute_angle)[1],
-    cos(rotate) * involute(base_radius, involute_angle)[1] - sin(rotate) * involute(base_radius, involute_angle)[0]
+    cos(rotate) * unrotated_involute.x + sin(rotate) * unrotated_involute.y,
+    cos(rotate) * unrotated_involute.y - sin(rotate) * unrotated_involute.x
 ];
 
 function mirror_point(coord) =
-[
-    coord[0],
-    -coord[1]
-];
+[coord.x, -coord.y];
 
 function rotate_point(rotate, coord) =
 [
-    cos(rotate) * coord[0] + sin(rotate) * coord[1],
-    cos(rotate) * coord[1] - sin(rotate) * coord[0]
+    cos(rotate) * coord.x + sin(rotate) * coord.y,
+    cos(rotate) * coord.y - sin(rotate) * coord.x
 ];
 
-function involute(base_radius, involute_angle) =
+function involute(base_radius, involute_angle) = let(
+    angle_radian = involute_angle*PI/180
+)
 [
-    base_radius*(cos(involute_angle) + involute_angle*PI/180*sin(involute_angle)),
-    base_radius*(sin(involute_angle) - involute_angle*PI/180*cos(involute_angle))
+    base_radius*(cos(involute_angle) + angle_radian*sin(involute_angle)),
+    base_radius*(sin(involute_angle) - angle_radian*cos(involute_angle))
 ];
 

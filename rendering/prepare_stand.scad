@@ -1,0 +1,86 @@
+use <librender/hardware.scad>
+use <librender/render_utils.scad>
+use <librender/assembly_parameters.scad>
+use <librender/render_settings.scad>
+use <../openscad/libs/utilities.scad>
+use <../openscad/libs/lib_microscope_stand.scad>
+
+FRAME=2;
+
+render_prepare_stand(FRAME);
+
+module render_prepare_stand(frame){
+    params = render_params();
+    stand_params = default_stand_params();
+    if (frame==1){
+        render_stand(params, stand_params);
+        stand_nut(params, stand_params, exploded=true);
+    }else if (frame==2){
+         render_stand(params, stand_params);
+        stand_nut(params, stand_params, low=true);
+        stand_nut_temp_screw(params, stand_params, exploded=true);
+    }else if (frame==3){
+        render_stand(params, stand_params);
+        stand_nut(params, stand_params);
+        stand_nut_temp_screw(params, stand_params, turn=true);
+    }else if (frame==4){
+        render_stand(params, stand_params);
+        stand_nut(params, stand_params);
+        stand_nut(params, stand_params, nut_num=1, exploded=true);
+        stand_nut(params, stand_params, nut_num=2, exploded=true);
+        stand_nut(params, stand_params, nut_num=3, exploded=true);
+    }
+    else if (frame==5){
+        render_stand(params, stand_params);
+        stand_nut(params, stand_params);
+        stand_nut(params, stand_params, nut_num=1);
+        stand_nut_temp_screw(params, stand_params, nut_num=1, turn=true);
+        stand_nut(params, stand_params, nut_num=2);
+        stand_nut_temp_screw(params, stand_params, nut_num=2, turn=true);
+        stand_nut(params, stand_params, nut_num=3);
+        stand_nut_temp_screw(params, stand_params, nut_num=3, turn=true);
+    }
+    else if (frame==6){
+        stand_prepared(params, stand_params);
+    }
+}
+
+module stand_prepared(params, stand_params){
+    render_stand(params, stand_params);
+    stand_nut(params, stand_params);
+    stand_nut(params, stand_params, nut_num=1);
+    stand_nut(params, stand_params, nut_num=2);
+    stand_nut(params, stand_params, nut_num=3);
+}
+
+module render_stand(params, stand_params){
+    coloured_render(stand_colour()){
+        microscope_stand(params, stand_params);
+    }
+}
+
+module stand_nut_temp_screw(params, stand_params, nut_num=0, turn=false, exploded=false){
+    nut_pos = exploded ? stand_nut_temp_screw_pos_exp(params, stand_params, nut_num) : stand_nut_temp_screw_pos(params, stand_params, nut_num);
+    if (exploded){
+        construction_line(stand_nut_temp_screw_pos(params, stand_params, nut_num), stand_nut_temp_screw_pos_exp(params, stand_params, nut_num));
+    }
+    place_part(nut_pos){
+        m3_cap_x10();
+        if (turn){
+            translate_z(4){
+                turn_clockwise(5);
+            }
+        }
+    }
+}
+
+module stand_nut(params, stand_params, nut_num=0, low=false, exploded=false){
+    nut_pos = exploded ? stand_nut_placement_exp(params, stand_params, nut_num) :
+        low ? stand_nut_placement_low(params, stand_params, nut_num) : stand_nut_placement(params, stand_params, nut_num);
+    if (exploded){
+        construction_line(stand_nut_placement_low(params, stand_params, nut_num), stand_nut_placement_exp(params, stand_params, nut_num));
+    }
+    place_part(nut_pos){
+        m3_nut(center=true);
+    }
+}

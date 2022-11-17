@@ -4,26 +4,67 @@ use <../openscad/libs/microscope_parameters.scad>
 use <../openscad/libs/lib_microscope_stand.scad>
 use <../openscad/nano_converter_plate.scad>
 use <./librender/electronics.scad>
+use <./librender/assembly_parameters.scad>
 use <./librender/render_utils.scad>
+use <./librender/render_settings.scad>
 use <./librender/hardware.scad>
+use <mount_motors.scad>
 
-microscope_stand_rendered();
+LOW_COST = false;
+microscope_stand_rendered(low_cost=LOW_COST);
 
+module microscope_stand_rendered(low_cost=false, use_nano=false){
+    params = render_params();
+    
+    slide = true;
+    slide_dist = slide ? 90 : 0;
+    rendered_electronics_drawer(params, use_nano=use_nano, slide_dist=slide_dist);
 
-module microscope_stand_rendered(use_nano=false){
-    params = default_params();
-    pi_stand_h = 42;
-    coloured_render("#505050"){
-        microscope_stand(params, pi_stand_h);
-    }
-    coloured_render("Dodgerblue"){
-        pi_stand_frame_xy(params){
-            pi_stand(pi_stand_h);
+    electronics_drawer_frame_xy(params){
+        translate(electronics_drawer_front_nut_trap_pos()){
+            rotate_y(90){
+                m3_nut();
+            }
+        }
+        translate(electronics_drawer_side_screw_pos()){
+            rotate_x(90){
+                m3_cap_x10();
+            }
+        }
+        
+        translate(electronics_drawer_front_screw_pos()){
+            rotate_y(90){
+                m3_cap_x10();
+            }
         }
     }
-    pi_stand_frame_xy(params){
-        inset = pi_stand_board_inset();
-        pi_pos = inset + [0, 0, pi_stand_standoff_h()] ;
+    connector_positions = [x_connector_pos_board(params),
+                           y_connector_pos_board(params),
+                           z_connector_pos_board(params)];
+    connector_positions_out = [x_connector_pos_board_out(params, slide_dist),
+                               y_connector_pos_board_out(params, slide_dist),
+                               z_connector_pos_board_out(params, slide_dist)];
+    con_pos = slide ? connector_positions_out : connector_positions;
+
+    cable_positions = [y_cable_verticies(slide), y_cable_verticies(slide), z_cable_verticies(slide)];
+
+    assembled_microscope_without_electronics(low_cost=low_cost,
+                                             connector_positions=con_pos,
+                                             cable_positions=cable_positions);
+}
+
+
+
+module rendered_electronics_drawer(params, use_nano=false, slide_dist=0){
+    stand_params = default_stand_params();
+    coloured_render(extras_colour()){
+        electronics_drawer_frame_xy(params, slide_dist=slide_dist){
+            electronics_drawer(stand_params);
+        }
+    }
+    electronics_drawer_frame_xy(params, slide_dist=slide_dist){
+        inset = electronics_drawer_board_inset();
+        pi_pos = inset + [0, 0, electronics_drawer_standoff_h()] ;
         sanga_pos = inset + [0, 0, sanga_stand_height()];
         translate(pi_pos){
             rpi_4b();
@@ -31,7 +72,7 @@ module microscope_stand_rendered(use_nano=false){
 
         translate(sanga_pos){
             if (use_nano){
-                coloured_render("Dodgerblue"){
+                coloured_render(extras_colour()){
                     nano_converter_plate();
                 }
             }
@@ -48,7 +89,7 @@ module microscope_stand_rendered(use_nano=false){
                 no2_x6_5_selftap();
             }
             if (use_nano){
-                block_hole_pos = pi_stand_block_hole_pos();
+                block_hole_pos = electronics_drawer_block_hole_pos();
                 plate_screw_pos = [block_hole_pos.x, block_hole_pos.y, sanga_pos.z];
                 translate(plate_screw_pos){
                     no2_x6_5_selftap();
@@ -63,27 +104,13 @@ module microscope_stand_rendered(use_nano=false){
                 no2_x6_5_selftap();
             }
         }
-        translate(pi_stand_side_nut_trap_pos()){
+        translate(electronics_drawer_side_nut_trap_pos()){
             rotate_x(90){
                 rotate_z(30){
                     m3_nut();
                 }
             }
         }
-        translate(pi_stand_side_screw_pos()){
-            rotate_x(90){
-                m3_cap_x8();
-            }
-        }
-        translate(pi_stand_front_nut_trap_pos()){
-            rotate_y(90){
-                m3_nut();
-            }
-        }
-        translate(pi_stand_front_screw_pos()){
-            rotate_y(90){
-                m3_cap_x8();
-            }
-        }
+        
     }
 }

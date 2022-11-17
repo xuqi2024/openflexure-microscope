@@ -11,4 +11,8 @@ module condenser_stl(){
     exterior_brim(r=smart_brim_r){
         condenser(params, lens_d=13, lens_t=1, lens_assembly_z= 30);
     }
+    // NB the module is called in the renders with default arguments.  If
+    // non-default arguments are used here, it will mean the STL doesn't
+    // match the renders.
+    condenser();
 }

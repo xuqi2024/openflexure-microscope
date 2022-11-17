@@ -1,6 +1,10 @@
 # Don't take stl files
 *.stl
 
+# Or gLTF files
+*.gltf
+*.glb
+
 # Ignore gcode files
 *.g
 *.gcode
@@ -27,6 +31,7 @@ docs/renders/
 rendering/annotations/*.png
 stl_options.json
 admesh_report.xml
+source.zip
 
 # Ignore IDE files
 .vscode/
@@ -37,7 +42,7 @@ admesh_report.xml
 *.backup
 
 # Python virtualenvironment
-.venv/
+.venv*/
 
 # Python cache
 __pycache__

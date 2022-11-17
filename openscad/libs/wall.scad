@@ -197,6 +197,18 @@ module wall_between_actuators(params, y_actuator=true){
     }
 }
 
+module central_optics_cut_out_projection(params) {
+    // Central cut-out for optics of main body
+    hull(){
+        translate_y(back_lug_x_pos(params)+1.5-14/2){
+            square([14,2*tiny()],center=true);
+        }
+        square([2*(back_lug_x_pos(params)-flex_dims().x),1],center=true);
+        translate_y(8-(back_lug_x_pos(params)-flex_dims().x-tiny())){
+            square([16,2*tiny()],center=true);
+        }
+    }
+}
 
 //wall angle about the motor lug
 function y_wall_angle(params) = let(

@@ -1,6 +1,5 @@
 use <./libs/utilities.scad>
-use <./libs/lib_optics.scad>
-use <./libs/microscope_parameters.scad>
+use <./libs/lib_fl_cube.scad>
 use <./libs/static_dovetail.scad>
 
 $fn=32;
@@ -154,13 +153,12 @@ module lens_holder(){
     lens_z = lens_holder_z_pos(led_h, aperture_to_lens, aperture_h);
     pedestal_h = 3;
     lens_r = 13/2;
-    
+
     block_height = lens_z-pedestal_h;
     w= illuminator_width();
     difference(){
         lens_holder_body(w, block_height, pedestal_h, lens_r);
         lens_holder_optics_cutout(led_h, aperture_to_lens, aperture_h, lens_r);
-        
 
         //screws for LED star
         for(i = [0:1]){
@@ -188,9 +186,8 @@ module lens_holder(){
 * The block the slip plate mounts to. This forms part of the `illuminator_holder()`
 */
 module fl_cube_mount(beam_d=5){
-    
+
     beam_z = filter_cube_z()+fl_cube_w()/2;
-    
     roc = 0.6;
     // This part clips on to the filter cube, to allow a light source (generally LED) to be coupled in using the beamsplitter.
     $fn=8;
@@ -219,7 +216,7 @@ module fl_cube_mount(beam_d=5){
 
         // add a hole for the LED
         translate_z(beam_z){
-            cylinder_with_45deg_top(h=999, r=beam_d/2, $fn=16, extra_height=0, center=true);
+            printable_horizontal_hole(h=999, r=beam_d/2, $fn=16, extra_height=0, center=true);
         }
     }
 }
@@ -279,7 +276,7 @@ module reflection_illumintor_mount(){
         translate_z(100+screw_height){
             cube([w_cut, 3*depth, 200], center=true);
         }
-        
+
         reflect_x(){
                 //mounting hole to optics module
             translate([(fl_cube_w()/2+3),-tiny(),screw_height]){

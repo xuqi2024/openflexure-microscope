@@ -24,70 +24,91 @@ z_axis_struts() makes the two connections between the objective_mount()
 
 use <./utilities.scad>
 use <./compact_nut_seat.scad>
-use <./main_body_transforms.scad>
 use <./wall.scad>
 use <./gears.scad>
+use <./fitting_wedge.scad>
 use <./illumination.scad>
 use <./microscope_parameters.scad>
 use <./libdict.scad>
 
-module each_om_contact_plane(){
-    // This transform puts y=0 in the plane of contact between the
-    // optics module and the mount for it, with the origin at the
-    // nominal corner of the wedge.
-    reflect_x(){
-        translate([-objective_mount_nose_w()/2,objective_mount_y(),0]){
-            rotate(135){
-                children();
+
+module objective_mount_internal_wedge_2d(){
+    // The fitting wedge with a negative nose shift for clearance.
+
+    projection(){
+        objective_fitting_wedge(h=tiny(), nose_shift=-0.25);
+    }
+}
+
+module objective_mount_body(params, h){
+
+    // overlap set the contact between the mount and the wedge on
+    // the optics module.
+    overlap = 4;
+    //overall width
+    w = objective_mount_nose_w() + 2*overlap + 4;
+
+    fillet_r = 1;
+    mount_front = objective_mount_y() - overlap*cos(45) - fillet_r;
+    mount_size = [w, objective_mount_back_y()-mount_front+5];
+
+    linear_extrude(h){
+        // Fillet outer corners
+        convex_fillet(1){
+            difference(){
+                // Outer cross section is a square intersected with
+                // the cutout in the centre of the microscope with
+                // 1.2mm clearance
+                intersection(){
+                    translate([-w/2, mount_front, 0]){
+                        square(mount_size);
+                    }
+                    offset(-1.2){
+                        central_optics_cut_out_projection(params);
+                    }
+                }
+                //subtracte grove for wedge
+                objective_mount_internal_wedge_2d();
+            }
+        }
+    }
+}
+
+module objective_mount_chamfer(){
+    hull(){
+        translate_z(-tiny()){
+            linear_extrude(tiny()){
+                offset(1){
+                    objective_mount_internal_wedge_2d();
+                }
+            }
+        }
+        translate_z(1){
+            linear_extrude(tiny()){
+                objective_mount_internal_wedge_2d();
             }
         }
     }
 }
 
 module objective_mount(params){
+    $fn=16;
     // The fitting to which the optics module is attached
     h = upper_z_flex_z(params) + 4*sqrt(2);
-    overlap = 4; // we have this much contact between
-                 // the mount and the wedge on the optics module.
-    roc=1.5; // radius of curvature of the arms
-    w = objective_mount_nose_w() + 2*overlap + 4; //overall width
 
     difference(){
-        hull(){
-            // the back of the mount
-            translate([-w/2,objective_mount_back_y()+5,0]){
-                cube([w,tiny(),h]);
-            }
-            // the front of the mount (this makes contact with the optics module)
-            each_om_contact_plane(){
-                translate_y(overlap-tiny()){
-                    cube([2*roc,tiny(),h]);
-                }
-            }
-        }
+        objective_mount_body(params, h);
 
-        // bolt slot to mount objective
-        hull(){
-            translate_z(lower_z_flex_z()+8){
-                rotate_x(-90){
-                    cylinder(d=3.5, h=999);
-                }
-            }
-            translate_z(upper_z_flex_z(params)-5){
-                rotate_x(-90){
-                    cylinder(d=3.5, h=999);
-                }
-            }
-        }
-        // make the bolt slot keyhole-shaped to allow the screw to be easily inserted
-        translate_z(lower_z_flex_z()+6){
+        objective_mount_chamfer();
+
+        // Keyhole
+        slot_bottom = lower_z_flex_z() + 6;
+        slot_length = objective_mount_screw_pos(params).z - slot_bottom;
+        translate_z(slot_bottom){
             rotate_x(-90){
-                cylinder(d=6.5, h=999);
+                keyhole(h=99, r_hole=6.5/2, r_slot=3.5/2, l_slot=-slot_length);
             }
         }
-
-
-        objective_fitting_wedge(params, h=999,nose_shift=-0.25,center=true);
 
         // cut-outs for flexures to attach
         hull(){
@@ -98,100 +119,33 @@ module objective_mount(params){
             }
         }
 
-        // cut out the back so it fits in the available space
-        reflect_x(){
-            translate([-back_lug_x_pos(params),0,-99]){
-                rotate(45){
-                    cube(999);
-                }
-            }
-        }
-    }
-    // Nice rounded fronts either side
-    each_om_contact_plane(){
-        translate([roc,overlap,0]){
-            cylinder(r=roc,h=h);
-        }
     }
 }
 
 
-//TODO find out what these are and whther they are still needed!
 function objective_mount_screw_pos(params) = [0, objective_mount_back_y(), (upper_z_flex_z(params) + lower_z_flex_z())/2];
 
-module objective_mount_screw(params){
-    translate(objective_mount_screw_pos(params)){
-        rotate_x(-90){
-            cylinder(r=3, h=2.5);
-            mirror([0,0,1]){
-                cylinder(d=3, h=12);
-            }
-        }
-    }
-}
+module objective_fitting_wedge(h, nose_shift=0.2, center=false){
+    // Create the fitting wedge for the optics module.
+    // This is is justthe body without the nut trap.
 
-module objective_fitting_wedge(params, h=undef, nose_shift=0.2, center=false){
-    // A trapezoidal wedge that clamps onto the objective mount.
-    // NB you must subtract the objective_fitting_cutout from this to allow
-    // the screw and nut to be attached.
-    // NB nose_shift moves the tip of the wedge in the -y direction (i.e. increases
-    // the gap at the tip, if we are making the optics module).  If subtracting this
-    // to make a mount for the optics module, use nose_shift < 0
-
-    height = is_undef(h) ? upper_z_flex_z(params)+4 : h;
     //width of the pointy end
     nose_width = objective_mount_nose_w();
-    nose_x = -nose_width/2-nose_shift;
-    nose_y = nose_shift;
-    nose_z = center ? -height/2 : 0;
-    nose_position = [nose_x, nose_y, nose_z];
     translate_y(objective_mount_y()){
-        mirror([0,1,0]){
-            hull(){
-                translate(nose_position){
-                    cube([nose_width+2*nose_shift, tiny(), height]);
-                }
-                reflect_x(){
-                    translate([-nose_width/2-5+sqrt(2), 5+sqrt(2), 0]){
-                        cylinder(r=2, h=height, $fn=16, center=center);
-                    }
-                }
-            }
-        }
+        fitting_wedge(h, nose_width, nose_shift, center=center);
     }
-
 }
 
-module ofc_nut(shaft=false, max_screw=12){
-    // For convenience, this is the nut that we use to hold the optics module on.
-    // it is used from objective_fitting_cutout only.
-    shaft_length = shaft ? max_screw-4 : 0;
-    nut_y(3, h=2.5, extra_height=0, shaft_length=shaft_length);
-}
 
-module objective_fitting_cutout(params, max_screw=12, y_stop=false, nose_shift=0.2){
+module objective_fitting_cutout(params, y_stop=false, nose_shift=0.2, max_screw=10){
     // Subtract this from the optics module, to cut out a hole for the nut
     // that anchors it to the objective mount.
-    // TODO: also relieve the faces of the mount in case there are protrusions
-    oms = objective_mount_screw_pos(params);
-    translate([oms.x, objective_mount_y() - 1.2 - 2.5, oms.z]){
-        ofc_nut(shaft=true, max_screw=max_screw);
-        sequential_hull(){
-            ofc_nut();
-            translate_z(7){
-                ofc_nut();
-            }
-            translate([0,10,7]){
-                repeat([0,0,10],2){
-                    ofc_nut();
-                }
-            }
-        }
-    }
-    if(y_stop){
-        translate([-10,objective_mount_y()-nose_shift,-99]){
-            cube([20,999,999]);
-        }
+    // y_stop if set true will also cut flush the faces of the mount in case something is
+    // protruding.
+    z_pos = objective_mount_screw_pos(params).z;
+
+    translate_y(objective_mount_y()){
+        fitting_wedge_cutout(z_pos, y_stop=y_stop, nose_shift=nose_shift, max_screw=max_screw);
     }
 }
 
@@ -284,19 +238,30 @@ module z_axis_clearance(params){
     }
 }
 
+function objective_mounting_screw_access_angle() = [-93,0,22];
+
 module objective_mounting_screw_access(params){
     // access hole for the objective mounting screw
 
-    translate([0,objective_mount_back_y(), upper_z_flex_z(params)/2]){
+    hole_angle = objective_mounting_screw_access_angle();
+
+    // The access hole needs to point to the opening in the cap screw
+    // This is +3mm in y from the position of the screw.
+    translate(objective_mount_screw_pos(params) + [0, 3, 0]){
         hull(){
-            rotate([-90,0,22]){
-                cylinder(h=999, d=7, $fn=16);
+            rotate(hole_angle){
+                cylinder(h=999, d=4, $fn=16);
             }
-            translate([-1,0,4]){
-                rotate_x(-90){
-                    cylinder(h=tiny(), d=4, $fn=16);
+            translate([-.5, 0, -3]){
+                rotate(hole_angle){
+                    cylinder(h=999, d=5, $fn=16);
                 }
             }
+            //translate([-1,0,4]){
+            //    rotate_x(-90){
+            //        cylinder(h=tiny(), d=4, $fn=16);
+            //    }
+            //}
         }
     }
 }
@@ -379,7 +344,7 @@ module z_axis_casing(params, condenser_mount=false, cable_housing = true, rectan
     }
 }
 
-// Boring holes for the screws in the spacer and rectangular z-axis
+// Boring holes for the screws in the spacer and separate z-actuator
 module z_axis_boring_holes(boring_radius){
     hull(){
         translate([8,-8,20]){
@@ -457,7 +422,7 @@ module z_axis_tri_top_counterbores(params){
         }
         reflect_x(){
             translate(right_illumination_screw_pos(params)){
-                rotate_z(-20){
+                rotate_z(right_illumination_screw_rotation()){
                     translate_z(z_offset){
                         m3_nut_trap_with_shaft(0,0);
                     }
@@ -509,7 +474,7 @@ module z_actuator_housing(params, include_motor_lugs=undef){
     // This houses the actuator column and provides screw seat/motor lugs
     h = key_lookup("actuator_h", params);
     inc_motor_lugs = if_undefined_set_default(include_motor_lugs,
-                                              key_lookup("include_motor_lugs", params)); 
+                                              key_lookup("include_motor_lugs", params));
     translate_y(z_nut_y(params)){
         screw_seat(params,
                    h,
@@ -531,7 +496,7 @@ module z_actuator_cutout(params){
 }
 
 
-module z_actuator_assembly(params){
+module complete_z_actuator(params){
     // This is the z-actuator, objective mount and the z-flexures.
     // The flexure that join the body are not attached to anything on the body-side.
 
@@ -547,15 +512,34 @@ module z_actuator_assembly(params){
     }
 }
 
+// Function: z_housing_bottom_pos(params, y_actuator=false)
+// Description:
+//   The position of the bottom of the cable housing on
+//   either side of the Z axis.  Which side is determined
+//   by `y_actuator`.
+function z_housing_bottom_pos(params, y_actuator=false) = let(
+    x_tr = y_actuator ? -23 : 23
+) [x_tr, z_nut_y(params), 0];
 
+// Function: z_housing_angle(params, y_actuator=false)
+// Description:
+//   How far to rotate the cable housings around the 
+//   Z axis
+function z_housing_angle(params, y_actuator=false) = y_actuator ? 15 : -15;
 
-
+// Module: z_housing_frame(params, y_actuator=false)
+// Description: 
+//   Transform into the frame of the Z cable housing.
+//   The origin will be in the z=0 plane, either to the
+//   left or the right of the bottom of the Z actuator 
+//   column.  It will be tilted to match the Z actuator,
+//   but rotated 15 degrees around z in the same direction
+//   as it is translated - if y_actuator is false (default)
+//   we will be on the +y side of the Z actuator.
 module z_housing_frame(params, y_actuator=false){
     tilt = z_actuator_tilt(params);
-    x_tr = y_actuator ? -23 : 23;
-    angle = y_actuator ? 15 : -15;
-    translate([x_tr, z_nut_y(params), 0]){
-        rotate_z(angle){
+    translate(z_housing_bottom_pos(params, y_actuator)){
+        rotate_z(z_housing_angle(params, y_actuator)){
             rotate_x(tilt){
                 children();
             }
@@ -563,6 +547,13 @@ module z_housing_frame(params, y_actuator=false){
     }
 }
 
+// Module: z_cable_tidy_frame(params, z_extra=0)
+// Description: 
+//   Transform children into the frame of the Z cable tidy.
+//   This puts the origin at the centre of the Z motor shaft
+//   in the plane of the front face of the motor.  It's also
+//   rotated 180 degrees about Z such that the y axis points
+//   approximately in the opposite direction to y.
 module z_cable_tidy_frame(params, z_extra=0){
     tilt = z_actuator_tilt(params);
     z_tr = z_motor_z_pos(params) + z_extra;
@@ -576,6 +567,21 @@ module z_cable_tidy_frame(params, z_extra=0){
         }
     }
 }
+
+// A point at the bottom of the illumination cable housing
+function illumination_cable_housing_bottom_pos(params) = (
+    z_housing_bottom_pos(params, y_actuator=true) - [4,0,0] // The 4 comes from `z_cable_housing_cutout`
+);
+
+// A point at (or above) the centre of the illumination cable housing
+// this is used to render the illumination wiring
+function illumination_cable_housing_top_pos(params, z_extra=0) = let(
+    tilt = z_actuator_tilt(params),
+    z_tr = z_motor_z_pos(params) + motor_bracket_h() + z_extra,
+    bottom = illumination_cable_housing_bottom_pos(params),
+    z_rotate = z_housing_angle(params, y_actuator=true),
+    unit_vector = [sin(tilt)*sin(z_rotate), -sin(tilt)*cos(z_rotate), cos(tilt)]
+) bottom + unit_vector * z_tr;
 
 module z_cable_tidy_frame_undo(params, z_extra=0){
     tilt = z_actuator_tilt(params);
@@ -591,7 +597,11 @@ module z_cable_tidy_frame_undo(params, z_extra=0){
     }
 }
 
-
+// Module: z_cable_housing(params)
+// Description: 
+//   A solid block that is the right size to contain the cable channels
+//   either side of the Z axis.  Its bottom is the z=0 plane, and its top
+//   is parallel to the face of the Z motor.
 module z_cable_housing(params){
     difference(){
         hull(){
@@ -609,21 +619,27 @@ module z_cable_housing(params){
     }
 }
 
+// Module: z_cable_housing_top(params, h)
+// Description: 
+//   A block of height h that has the same shape as the top of the z
+//   cable housing.
 module z_cable_housing_top(params, h){
     // Must untilt and trasnlate before cutting. Then undo transforms
     z_cable_tidy_frame(params, z_extra=motor_bracket_h()){
-        linear_extrude(h){
-            projection(cut=true){
-                z_cable_tidy_frame_undo(params, z_extra=motor_bracket_h()-tiny()){
-                    z_cable_housing(params);
-                }
+        thick_section(h=h, center=false, shift=false){
+            z_cable_tidy_frame_undo(params, z_extra=motor_bracket_h()-tiny()){
+                z_cable_housing(params);
             }
         }
     }
 }
 
 
-
+// Module: z_cable_housing_x(params)
+// Description: 
+//   A solid block big enough to contain the motor cable from the Z axis.
+//   Note that the z cable housing includes one of these on each side of
+//   the Z axis.
 module z_cable_housing_x(params){
     h=z_motor_z_pos(params)+motor_bracket_h();
     housing = [motor_connector_size().y+5, motor_connector_size().x+5, h*3];
@@ -650,17 +666,29 @@ module z_cable_housing_x(params){
     }
 }
 
+// Module: z_cable_housing_cutout(params, h=99, top=false)
+// Description: 
+//   A block that can be subtracted from the z_cable_housing
+//   to make the channel for the cable.  NB this module renders one
+//   on either side of the Z axis, though the one next to the
+//   Y actuator is smaller as it's for the illumination cable.
+//   
+//   If top is true, we shift the cutout slightly in X.
+//   For now, we the illumination cable is also extended in -y
+//   to cut the side of the cable tidy and allow access to the channel.
+//   This will eventually be replaced with something more neatly enclosed.
 module z_cable_housing_cutout(params, h=99, top=false){
     cutout_size = [motor_connector_size().y+2, motor_connector_size().x+2, 2*h];
     inset = top ? [2,0,0] : [0,0,0];
+    illumination_extra = top ? [0,20,0] : [0,0,0];
     z_housing_frame(params, y_actuator=false){
         translate(-inset){
             cube(cutout_size, center=true);
         }
     }
     z_housing_frame(params, y_actuator=true){
-        translate([-4,0,0]+inset){
-            cube(cutout_size-[8,0,0], center=true);
+        translate([-4,0,0]+inset-illumination_extra/2){
+            cube(cutout_size-[8,0,0]+illumination_extra, center=true);
         }
     }
 }

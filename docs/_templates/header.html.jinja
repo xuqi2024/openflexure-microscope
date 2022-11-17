@@ -1,0 +1,14 @@
+<div class=header-text>
+{% if title is not none %}   
+    <h1 class="site-title"><img class="ofm-logo" src="{{root}}assets/OpenFlexureMicroscopeLogo.svg">{{title}}</h1>
+{%endif %}
+{% if subtitle is not none %}
+    <p class="site-subtitle">{{subtitle}}</p>
+{%endif %}
+{% if authors is not none %}   
+    <p class="author">by {{authors}}</p>
+{%endif %}
+{% if affiliation is not none %}
+    <p class="affiliation">{{affiliation}}</p>
+{%endif %}
+</div>

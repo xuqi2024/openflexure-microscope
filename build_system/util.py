@@ -5,6 +5,7 @@ import sys
 import subprocess
 from copy import copy
 import re
+import platform
 
 def get_openscad_exe():
     """
@@ -14,72 +15,6 @@ def get_openscad_exe():
     if sys.platform.startswith("darwin"):
         return "/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD"
     return "openscad"
-
-def merge_dicts(dict1, dict2):
-    """
-    Recursively merge two dictionaries condensing all non-dict values into
-    sets. The result is a dict containing sets of all the values used.
-
-    >>> merge_dicts({'a': 1}, {'a': 2})
-    {'a': {1, 2}}
-    >>> merge_dicts({'a': 1}, {'b': 2})
-    {'a': {1}, 'b': {2}}
-    >>> merge_dicts({'a': {'b': 2}}, {'a': {'b': 1}})
-    {'a': {'b': {1, 2}}}
-
-    We assume that the dicts are compatible in structure: one dict
-    shouldn't have a value where the other has a dict or a TypeError will
-    be raised.
-
-    >>> merge_dicts({'a': 1}, {'a': {'b': 1}})
-    TypeError: Expecting 'dict' at key 'a', got <class 'set'>
-
-
-    Any sets that are values in the original dicts are merged in.
-
-    >>> merge_dicts({'a': {1}, {'a': {2}})
-    {'a': {1, 2}}
-    >>> merge_dicts({'a': 1, {'a': {2}})
-    {'a': {1, 2}}
-
-    Arguments:
-        dict1 {dict}
-        dict2 {dict}
-
-    """
-    merged = {}
-    for dictionary in [dict1, dict2]:
-        for key, value in dictionary.items():
-            if isinstance(value, dict):
-                if key not in merged:
-                    merged[key] = {}
-                if not isinstance(merged[key], dict):
-                    raise TypeError(
-                        "Expecting 'dict' at key '{}', got {}".format(
-                            key, type(merged[key])
-                        )
-                    )
-
-                merged[key] = merge_dicts(merged[key], value)
-
-            elif isinstance(value, set):
-                if key not in merged:
-                    merged[key] = set()
-                if not isinstance(merged[key], set):
-                    raise TypeError(
-                        "Expecting 'set' at key '{}', got {}".format(key, type(merged[key]))
-                    )
-
-                merged[key] = merged[key].union(value)
-
-            else:
-                if key not in merged:
-                    merged[key] = set()
-
-                merged[key].add(value)
-
-    return merged
-
 
 
 def parameters_to_string(parameters):
@@ -97,9 +32,24 @@ def parameters_to_string(parameters):
             value = str(value).lower()
         # Wrap strings in quotes
         elif isinstance(value, str):
+            if '"' in value or "'" in value:
+                raise ValueError(
+                    "Strings passed as parameters may not contain quotation marks. "
+                    f"{name}=\"{value}\" is therefore not valid."
+                )
             value = f'"{value}"'
 
-        strings.append("-D '{}={}'".format(name, value))
+            if platform.system() == 'Windows':
+                # Add escape to quotes in value, so we can use double quotes around parameter below
+                value = value.replace("\"", "\\\"")
+
+        if platform.system() == 'Windows':
+            # Nested single/double quotes were being stripped out on Windows, so we use
+            # double quotes for both, and escape the inner ones (see above) for strings.
+            # The inner double quotes appear in `value` for strings
+            strings.append("-D \"{}={}\"".format(name, value))
+        else:
+            strings.append("-D '{}={}'".format(name, value))
 
     return " ".join(strings)
 
