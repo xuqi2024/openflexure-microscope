@@ -480,7 +480,7 @@ module undercut_male_dovetail(p){
     }
 }
 
-module dovetail_clamp_m(p){
+module dovetail_clamp_m(p, inverted_print = false){
     // male dovetail with clamping arm
     h = key_lookup("overall_height", p);
     difference(){
@@ -509,8 +509,16 @@ module dovetail_clamp_m(p){
             clamping_flange(p);
             clamp_support(p);
         }
-
-        clamping_bolt_and_nut(p);
+        if(inverted_print){
+            translate_z(h){
+                mirror([0,0,1]){
+                 clamping_bolt_and_nut(p);
+                }
+            }
+        }
+        else{
+            clamping_bolt_and_nut(p);
+        }
 
         // work around "elephant's foot"/brim on mating faces
         undercut_male_dovetail(p);
