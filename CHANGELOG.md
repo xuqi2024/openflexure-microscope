@@ -1,3 +1,7 @@
+## [v7.0.0-beta1](https://gitlab.com/openflexure/openflexure-microscope/compare/v7.0.0-alpha3..v7.0.0-beta1/) (2022-11-17)
+
+* [!313](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/313): Generate a changelog
+
 ## [v7.0.0-alpha3](https://gitlab.com/openflexure/openflexure-microscope/compare/v7.0.0-alpha2..v7.0.0-alpha3/) (2022-11-11)
 
 * [!293](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/293): Draft: experimental light trap
