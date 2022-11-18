@@ -9,5 +9,5 @@ camera_platform_stl();
 module camera_platform_stl(){
     params = default_params();
     optics_config = b0196lens_config();
-    camera_platform(params, optics_config, 5);
+    camera_platform(params, optics_config, base_r = 5);
 }
