@@ -399,7 +399,7 @@ module clamping_bolt_and_nut(p,inverted_print = false){
                     // relying on inter-layer adhesion (which is weaker).
                     // The entry slot should not be made horizontal without testing
                     // carefully for strength.
-                    nut_rotation = inverted_print? 
+                    nut_rotation = inverted_print?
                                         120:
                                         60;
                     rotate_z(nut_rotation){
@@ -485,6 +485,11 @@ module undercut_male_dovetail(p){
 
 module dovetail_clamp_m(p, inverted_print = false){
     // male dovetail with clamping arm
+    // The clamp is designed with internal bridging that 
+    // only works when printed in the orientation
+    // given here.
+    // If the clamp is used the other way up after printing, then 
+    // inverted_print = true changes the slant of the nut trap
     h = key_lookup("overall_height", p);
     difference(){
         union(){
