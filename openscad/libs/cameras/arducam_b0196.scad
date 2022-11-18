@@ -9,8 +9,8 @@
 * mechanisms.                                                     *
 *                                                                 *
 * This file defines a camera mount (together with functions that  *
-* return the mount height and sensor position) for the Logitech   *
-* C270 webcam.                                                    *
+* return the mount height and sensor position) for the Arducam    *
+* B0196 webcam.                                                   *
 *                                                                 *
 *                                                                 *
 * (c) Richard Bowman, January 2016                                *

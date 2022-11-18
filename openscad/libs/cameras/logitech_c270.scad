@@ -188,8 +188,8 @@ module c270_camera_bottom_mounting_posts(height=-1, radius=-1, outers=true, cuto
                     }
                     if(cutouts){
                         translate_z(h-6+tiny()){
-                            // TODO these holes are too big, the C"&) board holes are smaller than #2 screws
-                            no2_selftap_hole(h=6);
+                            // The C270 board holes are smaller than #2 screws
+                            no1_selftap_hole(h=6);
                         }
                     }
                 }
@@ -203,7 +203,8 @@ module c270_camera_bottom_mounting_posts(height=-1, radius=-1, outers=true, cuto
                     }
                     if(cutouts){
                         translate_z(h-6+tiny()){
-                            no2_selftap_hole(h=6);
+                            // The C270 board holes are smaller than #2 screws
+                            no1_selftap_hole(h=6);
                         }
                     }
                 }
