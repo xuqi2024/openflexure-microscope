@@ -482,6 +482,8 @@ module camera_platform(params, optics_config, base_r){
         translate_z(-4){
             objective_fitting_cutout(params, y_stop=true);
         }
+        // Undercut on build plate
+        undercut_objective_fitting_wedge();
         // add the camera mount holes
         translate_z(platform_h){
             rotate_z(camera_mounting_posts_rotate){
@@ -502,3 +504,39 @@ module camera_platform(params, optics_config, base_r){
         }
     }
 }
+
+
+// A module to difference() from an objective fitting wedge
+// to undercut a little and so stop over extrusion or brim
+// interfering with the mounting.
+// At 45 degrees in y-z plane, less than 45 degrees on the plane of the mating faces
+module undercut_objective_fitting_wedge(wedge_width_plus=20, undercut_height = 1.5)
+    difference(){
+        translate([0,13,-(10/2 - undercut_height + tiny())]){
+            rotate_x(-45){
+                cube([wedge_width_plus,10,20], center = true);
+            }
+        }
+        sequential_hull(){
+            translate_z(-10 + undercut_height){
+                hull(){
+                    translate_x(-wedge_width_plus/2){
+                        cube([wedge_width_plus,tiny(),tiny()]);
+                    }
+                    translate_y(-10){
+                        objective_fitting_wedge(h=tiny());
+                    }
+                }
+            }
+            translate_z(10 + undercut_height){
+                hull(){
+                    translate_x(-wedge_width_plus/2){
+                        cube([wedge_width_plus,tiny(),tiny()]);
+                    }
+                    translate_y(10){
+                        objective_fitting_wedge(h=tiny());
+                    }
+                }
+            }
+        }
+    }
