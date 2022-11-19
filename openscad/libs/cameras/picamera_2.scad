@@ -137,7 +137,7 @@ module picam2_cutout( beam_length=15){
 
     }
 }
-
+picamera_2_camera_mount();
 
 module picam2_board(h=tiny()){
     // a rounded rectangle with the dimensions of the picamera board v2
