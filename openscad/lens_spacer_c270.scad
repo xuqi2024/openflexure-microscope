@@ -19,7 +19,7 @@ lens_spacer_stl();
 // render on the x-y plane rather than in place and add brim
 module lens_spacer_stl(){
     params = default_params();
-    optics_config = c270lens_config();   
+    optics_config = c270lens_config();
     exterior_brim(smooth_r=5){
         translate_z(-lens_spacer_z(params, optics_config)){
             lens_spacer(params, optics_config);

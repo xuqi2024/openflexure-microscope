@@ -14,8 +14,6 @@ use <./rms_thread.scad>
 // camera module depending on the optics configuration
 use <./cameras/camera.scad>
 
-use <./cameras/logitech_c270.scad>
-
 $fn=24;
 
 function optics_wedge_bottom() = -2; //bottom of dovetail (<0 to allow some play)
@@ -25,12 +23,12 @@ function lens_aperture(lens_r) = lens_r - 1.5;
 
 // This function is used because the C270 camera needs to be rotated when used with a lens spacer
 // in order to fit in between the xy stage legs
-function c270_spacer_yes(optics_config) = (key_lookup("optics_type", optics_config) == "spacer") 
-                                            && (key_lookup("camera_type", optics_config) == "logitech_c270") ;
+function c270_spacer_yes(optics_config) = (key_lookup("optics_type", optics_config) == "spacer")
+                                            && (key_lookup("camera_type", optics_config) == "logitech_c270");
 
 // This function is used because the Arducam B0196 camera needs a cut-out in the 
 // camera platform for the USB cable
-function b0196_spacer_yes(optics_config) = (key_lookup("optics_type", optics_config) == "spacer") 
+function b0196_spacer_yes(optics_config) = (key_lookup("optics_type", optics_config) == "spacer")
                                             && (key_lookup("camera_type", optics_config) == "arducam_b0196") ;
 
 module optical_path(optics_config, lens_z, camera_mount_top_z){
@@ -419,7 +417,7 @@ module lens_spacer(params, optics_config){
                 }
                 union(){
                     // cut out the optical path
-                    z_offset_lens_spacer_optical_path = c270_spacer_yes(optics_config)? 
+                    z_offset_lens_spacer_optical_path = c270_spacer_yes(optics_config) ?
                                                                     2.8: // to match the light trap to the mount aperture, C270
                                                                     0; // to match the light trap to the mount aperture, Picam 2 and B0196
                     optical_path(optics_config, lens_assembly_z, camera_mount_top_z=z_offset_lens_spacer_optical_path);
@@ -483,7 +481,7 @@ module camera_platform(params, optics_config, base_r){
             objective_fitting_cutout(params, y_stop=true);
         }
         // Undercut on build plate
-        undercut_objective_fitting_wedge();
+        undercut_objective_fitting_wedge(undercut_height = 1.5);
         // add the camera mount holes
         translate_z(platform_h){
             rotate_z(camera_mounting_posts_rotate){
@@ -510,7 +508,7 @@ module camera_platform(params, optics_config, base_r){
 // to undercut a little and so stop over extrusion or brim
 // interfering with the mounting.
 // At 45 degrees in y-z plane, less than 45 degrees on the plane of the mating faces
-module undercut_objective_fitting_wedge(wedge_width_plus=20, undercut_height = 1.5)
+module undercut_objective_fitting_wedge(wedge_width_plus=20, undercut_height = 1.5){
     difference(){
         translate([0,13,-(10/2 - undercut_height + tiny())]){
             rotate_x(-45){
@@ -540,3 +538,4 @@ module undercut_objective_fitting_wedge(wedge_width_plus=20, undercut_height = 1
             }
         }
     }
+}

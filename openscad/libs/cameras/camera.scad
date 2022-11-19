@@ -64,7 +64,7 @@ function camera_sensor_height(optics_config) = let(
 module camera_mount(optics_config, screwhole=true, counterbore=false){
     camera_type = get_camera_type(optics_config);
     if(camera_type=="logitech_c270"){
-        c270_camera_mount(screwhole=screwhole, counterbore=counterbore);
+        c270_camera_mount(screwhole=screwhole);
     }
     else if(camera_type=="m12"){
         m12_camera_mount();
@@ -76,7 +76,7 @@ module camera_mount(optics_config, screwhole=true, counterbore=false){
         picamera_2_camera_mount(screwhole=screwhole, counterbore=counterbore);
     }
     else if(camera_type=="arducam_b0196"){
-        arducam_b0196_camera_mount(screwhole=screwhole, counterbore=counterbore);
+        arducam_b0196_camera_mount(screwhole=screwhole);
     }
     else{
         assert(false, "This camera option does not have a mount set.");

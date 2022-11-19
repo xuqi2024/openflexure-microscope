@@ -1,6 +1,6 @@
 /******************************************************************
 *                                                                 *
-* OpenFlexure Microscope: Logitech c270 screw-on-from-bottm mount *
+* OpenFlexure Microscope: Logitech C270 screw-on-from-bottm mount *
 *                                                                 *
 * This is part of the OpenFlexure microscope, an open-source      *
 * microscope and 3-axis translation stage.  It gets really good   *
@@ -9,7 +9,7 @@
 *                                                                 *
 * This file defines a camera mount (together with functions that  *
 * return the mount height and sensor position) for the Logitech   *
-* c270 webcam.                                                    *
+* C270 webcam.                                                    *
 *                                                                 *
 *                                                                 *
 * (c) Richard Bowman, January 2016                                *
@@ -46,10 +46,10 @@ module mounting_hole(){
 }
 
 module c270(beam_r=4.3, beam_h=4.5){
-    //cut-out to fit logitech c270 webcam
+    //cut-out to fit Logitech C270 webcam
     //optical axis at (0,0)
     //top of PCB at (0,0,0)
-    
+
     mirror([0,0,1]){ //parts cut out of the mount are z<0
         //beam clearance
         hull(){
@@ -126,8 +126,8 @@ module c270(beam_r=4.3, beam_h=4.5){
 //c270_camera_mount();
 c270();
 
-module c270_camera_mount(screwhole=true, counterbore=false){
-    // A mount for the Logitech c270 webcam
+module c270_camera_mount(screwhole=true){
+    // A mount for the Logitech C270 webcam
     // This should finish at z=0+tiny(), with a surface that can be
     // hull-ed onto the lens assembly.
     h = 58;
@@ -173,11 +173,12 @@ module c270_counterbore(){
 }
 
 module c270_camera_bottom_mounting_posts(height=-1, radius=-1, outers=true, cutouts=true){
-    // posts to mount to Logitech c270 camera from below
+    // posts to mount to Logitech C270 camera from below
     r = radius > 0 ? radius : 2.5;
     h = height > 0 ? height : 4;
     screw_x = c270_camera_hole_spacing();
-    // Third hole position at the far end of the board [-6,42.3,0] is too far away and makes the camera platform too big
+    // Third hole position at the far end of the board [-6,42.3,0] is too far away and makes 
+    // the camera platform too big for mounting from above.
     //c270_third_hole_pos = [5,-9.5,0];
     rotate_z(-45){
         reflect_x(){
@@ -194,7 +195,6 @@ module c270_camera_bottom_mounting_posts(height=-1, radius=-1, outers=true, cuto
                     }
                 }
             }
-            
         }
         translate(c270_near_third_hole_pos()){
                 difference(){

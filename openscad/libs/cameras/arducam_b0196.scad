@@ -95,7 +95,6 @@ module b0196(beam_h=9){
         //beam clearance
         cylinder(r=hole_r, h=beam_h);
 
-        mounting_hole_xy = arducam_b0196_corner_hole_spacing();
         close_hole_xy = arducam_b0196_sensor_hole_spacing();
         //Component clearance
         translate_z(2/2-tiny()){
@@ -145,9 +144,6 @@ module b0196(beam_h=9){
         }
 
     } 
-
-
-    
 }
 
 //b0196();
@@ -171,13 +167,13 @@ module arducam_rounded_block(b=33, w=33, h=6, roc = 2){
     }
 }
 
-module arducam_b0196_camera_mount(screwhole=true, counterbore=false){
+module arducam_b0196_camera_mount(screwhole=true){
     // A mount for the Arducam B0196 USB camera
     // This should finish at z=0+tiny(), with a surface that can be
     // hull-ed onto the lens assembly.
     w = 33;
     b = 33;
-    
+
     mounting_hole_xy = arducam_b0196_corner_hole_spacing();
 
     mount_height = key_lookup("mount_height", arducam_b0196_camera_dict());
@@ -249,7 +245,6 @@ module b0196_camera_bottom_mounting_posts(height=-1, radius=-1, outers=true, cut
                     }
                 }
             }
-            
         }
     }
 }
