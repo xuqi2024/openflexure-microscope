@@ -41,6 +41,7 @@ function dovetail_default_params() = [
     ["clamp_angle", 7],      // angle through which we allow the clamp to bend
     ["pinch_bolt_inset", 2], // distance from centre of clamping bolt to female point
     ["taper_block", false],  // set this to true to taper the block parallel to the flanges
+    ["nut_slot_slope", "up"] // set the nut slot to slope up from the nut. The other allowed value is "down"
 ];
 
 function dovetail_params(
@@ -48,13 +49,15 @@ function dovetail_params(
     overall_height=16,
     overall_width=30,
     block_depth=12,
-    taper_block=false
+    taper_block=false,
+    nut_slot_slope = "up"
 ) = replace_multiple_values(
     [
         ["overall_height", overall_height],
         ["overall_width", overall_width],
         ["block_depth", block_depth],
         ["taper_block", taper_block],
+        ["nut_slot_slope", nut_slot_slope]
     ],
     dovetail_default_params()
 );
@@ -381,6 +384,12 @@ module clamping_bolt_and_nut(p){
     // Place the clamping bolt relative to the female point
     clamp_y = key_lookup("lever", p) - key_lookup("pinch_bolt_inset", p);
     fillet_r = key_lookup("fillet_r", p);
+    // The nut slot should slope up from the nut in use, so that the nut does not 
+    // slip out when the screw is removed, nut_slot_slope set to 'up'. If the 
+    // dovetail is inverted after printing for use set nut_slot_slope to 'down' 
+    nut_rotation = key_lookup("nut_slot_slope",p) == "down"?
+                                        120:
+                                        60; 
     // We place everything relative to
     clamp_frame(p){
         translate([0, clamp_y, h/2]){
@@ -399,7 +408,7 @@ module clamping_bolt_and_nut(p){
                     // relying on inter-layer adhesion (which is weaker).
                     // The entry slot should not be made horizontal without testing
                     // carefully for strength.
-                    rotate_z(60){
+                    rotate_z(nut_rotation){
                         sequential_hull(){
                             // TODO: replace this with a proper parametric nut trap!
                             cylinder(r=3*1.1, h=3.2, $fn=6);
@@ -482,6 +491,14 @@ module undercut_male_dovetail(p){
 
 module dovetail_clamp_m(p){
     // male dovetail with clamping arm
+    //
+    // NOTE: The clamp is designed with internal bridging that 
+    // only works when printed in the orientation
+    // given here.
+    // There is an undercut on the mating surfaces to make sure that 
+    // overextrusion or remnants of brim do not foul the mating surface
+    // If the clamp is used the other way up after printing, then 
+    // in set nut_slot_slope to 'down' the parameter dictionary p. 
     h = key_lookup("overall_height", p);
     difference(){
         union(){
@@ -509,7 +526,6 @@ module dovetail_clamp_m(p){
             clamping_flange(p);
             clamp_support(p);
         }
-
         clamping_bolt_and_nut(p);
 
         // work around "elephant's foot"/brim on mating faces
