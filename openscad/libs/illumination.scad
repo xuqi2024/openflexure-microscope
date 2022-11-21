@@ -279,7 +279,12 @@ function condenser_dovetail_params() = let(
         overall_width=illumination_dovetail_w(),
         overall_height=height,
         block_depth = block_depth,
-        taper_block = true
+        taper_block = true,
+        // As the condenser is modelled and printed upside down,
+        //  if we don't flip the nut trap by nut_slot_slope = "down"
+        //  the nut would slide out of the trap when the screw is
+        //  removed. 
+        nut_slot_slope = "down"
     )
 ) dt_params;
 
@@ -289,11 +294,7 @@ module condenser_body(base_r, lens_assembly_z, include_mounting=true){
     // the dovetail clip
     if (include_mounting){
         translate_y(illumination_dovetail_y()){
-            // As the condenser is modelled and printed upside down,
-            //  if we don't flip the nut trap by inverted_print = true
-            // the nut would slide out of the trap when the screw is
-            // removed. 
-            dovetail_clamp_m(dt_params, inverted_print = true);
+            dovetail_clamp_m(dt_params);
         }
     }
     cylinder(r=base_r+.2, h=lens_assembly_z+tiny());
