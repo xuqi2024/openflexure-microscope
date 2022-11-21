@@ -389,7 +389,7 @@ module clamping_bolt_and_nut(p){
     // dovetail is inverted after printing for use set nut_slot_slope to 'down' 
     nut_rotation = key_lookup("nut_slot_slope",p) == "down"?
                                         120:
-                                        60; 
+                                        60;
     // We place everything relative to
     clamp_frame(p){
         translate([0, clamp_y, h/2]){
