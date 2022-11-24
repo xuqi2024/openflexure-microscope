@@ -38,7 +38,12 @@ module assemble_condenser(frame){
         mount_led_cable(frame-10);
     }
     else if(frame <= 16){
-        mount_condenser_lid(frame-12);
+        //TODO: this is a fudge to get the module the right way up andin the right place
+        translate_z(75-5+1.5){
+            rotate_y(180){
+                mount_condenser_lid(frame-12);
+            }
+        }
     }
 }
 
@@ -215,10 +220,12 @@ module rendered_condenser_lid(explode=false){
         // we must move the lid down so that it matches up with
         // the condenser.
         translate_z(-upright_condenser_platform_height() + 1.5 - (explode ? 15 : 0)){
-            if (USE_BUILT_STL){
-                cached_stl("upright_condenser_platform");
-            }else{
-                upright_condenser_platform_separate();
+            rotate_z(180){
+                if (USE_BUILT_STL){
+                    cached_stl("upright_condenser_platform");
+                }else{
+                    upright_condenser_platform_separate();
+                }
             }
         }
     }
@@ -298,16 +305,20 @@ module rendered_condenser(pos, cut=false){
     if (cut){
         cutaway("+x", extras_colour()){
             place_part(pos){
-                upright_condenser_separate();
+                rotate_z(180){
+                    upright_condenser_separate();
+                }
             }
         }
     }else{
         coloured_render(extras_colour()){
             place_part(pos){
-                if (USE_BUILT_STL){
-                    cached_stl("upright_condenser");
-                }else{
-                    upright_condenser_separate();
+                rotate_z(180){
+                    if (USE_BUILT_STL){
+                        cached_stl("upright_condenser");
+                    }else{
+                        upright_condenser_separate();
+                    }
                 }
             }
         }
