@@ -26,22 +26,22 @@ module cached_stl(fname){
 
 module upright_assemble_condenser(frame){
     if (frame<=3){
-        insert_condenser_lens(frame);
+        upright_insert_condenser_lens(frame);
     }
     else if(frame <= 6){
-        assemble_condenser_thumbscrew(frame-3);
+        upright_assemble_condenser_thumbscrew(frame-3);
     }
     else if(frame <= 10){
-        mount_led_board(frame-6);
+        upright_mount_led_board(frame-6);
     }
     else if(frame <= 12){
-        mount_led_cable(frame-10);
+        upright_mount_led_cable(frame-10);
     }
     else if(frame <= 16){
         //TODO: this is a fudge to get the module the right way up andin the right place
         translate_z(75-5+1.5){
             rotate_y(180){
-                mount_condenser_lid(frame-12);
+                upright_mount_condenser_lid(frame-12);
             }
         }
     }
@@ -49,7 +49,7 @@ module upright_assemble_condenser(frame){
 
 
 
-module assemble_condenser_thumbscrew(frame){
+module upright_assemble_condenser_thumbscrew(frame){
     explosions = ["nut", "thumbscrew", undef];
     dovetail_height = key_lookup("overall_height", condenser_dovetail_params());
     // The sloping nut trap means that it's best to put the nut in when
@@ -58,7 +58,7 @@ module assemble_condenser_thumbscrew(frame){
     flipped = create_placement_dict([0, 0, dovetail_height], [0, 180, 0]);
     echo("placement", flipped);
     thumbscrew = (frame>1) ? true : false;
-    rendered_condenser_assembly(flipped,
+    upright_rendered_condenser_assembly(flipped,
                                 include_led=false,
                                 include_thumbscrew=thumbscrew,
                                 include_nut=true,
@@ -66,21 +66,21 @@ module assemble_condenser_thumbscrew(frame){
                                 explode=explosions[frame - 1]);
 }
 
-module insert_condenser_lens(frame){
+module upright_insert_condenser_lens(frame){
     rendered_lens_tool();
     place_part(condenser_lens_tool_pos()){
         condenser_lens();
     }
     pos = (frame == 1) ? condenser_pos_above_tool() : condenser_pos_on_tool();
     cut = (frame == 3) ? true : false;
-    rendered_condenser(pos, cut);
+    upright_rendered_condenser(pos, cut);
 }
 
 function condenser_upside_down() = create_placement_dict([0, 0, 30], rotation1=[0,180,0]);
 
-module mount_led_board(frame){
+module upright_mount_led_board(frame){
     explosions = ["led_board", undef, "led_board_screws", undef];
-    rendered_condenser_assembly(
+    upright_rendered_condenser_assembly(
         condenser_upside_down(),
         include_led=false,
         include_thumbscrew=false,
@@ -92,8 +92,8 @@ module mount_led_board(frame){
     );
 }
 
-module mount_led_cable(frame){
-    rendered_condenser_assembly(
+module upright_mount_led_cable(frame){
+    upright_rendered_condenser_assembly(
         condenser_upside_down(),
         include_led=false,
         include_thumbscrew=false,
@@ -111,9 +111,9 @@ module mount_led_cable(frame){
     }
 }
 
-module mount_condenser_lid(frame){
+module upright_mount_condenser_lid(frame){
     explosions=["lid", undef, "lid_screws", undef];
-    rendered_condenser_assembly(
+    upright_rendered_condenser_assembly(
         condenser_upside_down(),
         include_led=false,
         include_thumbscrew=false,
@@ -214,12 +214,12 @@ module rendered_illumination_pcb_screws(explode=false){
 }
 
 // Lid of the condenser is the upright coedenser platform
-module rendered_condenser_lid(explode=false){
+module upright_rendered_condenser_lid(explode=false){
     coloured_render(extras_colour()){
         // NB both the lid and the condenser render upside down, so
         // we must move the lid down so that it matches up with
         // the condenser.
-        translate_z(-upright_condenser_platform_height() + 1.5 - (explode ? 15 : 0)){
+        translate_z(-upright_condenser_platform_height() - (explode ? 15 : 0)){
             rotate_z(180){
                 if (USE_BUILT_STL){
                     cached_stl("upright_condenser_platform");
@@ -281,7 +281,7 @@ module rendered_led_screws(explode=false){
 }
 
 // Screws attaching the lid to the condenser
-module rendered_condenser_lid_screws(explode=false){
+module upright_rendered_condenser_lid_screws(explode=false){
     z_pos = -2;
     exploded_z_pos = -25;
     // base_r = condenser_base_r(condenser_lens_diameter());
@@ -301,7 +301,7 @@ module rendered_condenser_lid_screws(explode=false){
     }
 }
 
-module rendered_condenser(pos, cut=false){
+module upright_rendered_condenser(pos, cut=false){
     if (cut){
         cutaway("+x", extras_colour()){
             place_part(pos){
@@ -336,7 +336,7 @@ module rendered_condenser(pos, cut=false){
 // to enable the internal components for this).
 // `explode` is set to a string (see the definition for valid ones)
 // and will cause the relevant part to appear "exploded".
-module rendered_condenser_assembly(pos=undef,
+module upright_rendered_condenser_assembly(pos=undef,
                                    include_led=false,
                                    include_thumbscrew=true,
                                    include_nut=true,
@@ -348,7 +348,7 @@ module rendered_condenser_assembly(pos=undef,
                                    explode=undef,
                                    tighten_arrow=false){
     cond_pos = is_undef(pos) ? condenser_pos() : pos;
-    rendered_condenser(cond_pos, cut=cut);
+    upright_rendered_condenser(cond_pos, cut=cut);
     place_part(cond_pos){
         place_part(condenser_lens_pos_relative()){
             condenser_lens();
@@ -401,9 +401,9 @@ module rendered_condenser_assembly(pos=undef,
             }
         }
         if (include_lid){
-            rendered_condenser_lid(explode=(explode=="lid"));
+            upright_rendered_condenser_lid(explode=(explode=="lid"));
             if (is_undef(include_lid_screws) || include_lid_screws){
-                rendered_condenser_lid_screws(explode=(explode=="lid_screws"));
+                upright_rendered_condenser_lid_screws(explode=(explode=="lid_screws"));
             }
         }else if (include_lid_screws){
             echo("WARNING: condenser lid screws are only included if the lid is also included.");
