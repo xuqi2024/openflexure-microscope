@@ -1,27 +1,11 @@
 
 use <./microscope_parameters.scad>
 use <./illumination.scad>
-use <./lib_optics.scad>
 use <./libdict.scad>
 use <./utilities.scad>
 use <./z_axis.scad>
 
 
-// module upright_condenser_top_hull(){
-//     // Creates a base for the cylindrical consenser tube to stand on.
-//     cylinder(r =10+tiny(), h = tiny());
-
-// }
-
-// module upright_objective_fitting_cutout(params, y_stop=true){
-//     // Creates a mount for the nut and screw hole that holds it on
-//     difference(){
-//         objective_fitting_cutout(params, y_stop=y_stop);
-//         translate([-50, -10,35]){
-//             cube([100,100,1000]);
-//         }
-//     }
-// }
 
 // the condenser lens is 5mm focal length and the body is 30mm long
 // seems to be formed from:
@@ -101,54 +85,7 @@ module upright_condenser_platform_separate(params, base_r){
     }
 }
 
-// module led_boring_holes(boring_radius){
-//     // Boring holes for the LED to be inserted into the condenser
-//     led_access_h=10;
-//     // Diameter of LED flange is 6mm. This needs to fit through teh square/octagonal hole of the hole_from_bottom
-//     led_diameter = 7;
-//     translate([0,0,tiny()]){
-//         intersection(){
-//             hull(){
-//                 translate([0,0,0.5-led_access_h+tiny()]) {
-//                     cylinder(r=boring_radius, h = led_access_h);
-//                 }
-//                 translate([0,0,-4]){
-//                     hull(){
-//                         cylinder(r = boring_radius + tiny(), h = 0.5);
-//                         translate([0,-25,-30]) {
-//                             cylinder(r = boring_radius + tiny(), h = 0.5);
-//                         }
-//                     }
-//                 }
-//             }
-//             translate([0,0,-2.0]){
-//                 hole_from_bottom(r=led_diameter/2, h=2, base_w=999, delta_z=0.4, layers=2, big_bottom=true);
-//             }
-//         }
-//     }
-// }
 
-// // Condenser including mount to z-axis dovetail
-// // for use with upright microscope
-// // 5mm LED only - note : poor LED fit
-// module upright_condenser(params, optics_config){
-//     $fn = 32;
-//     // Combines the isolated condenser unit with the platform to create a single structure.  
-//         platform_h = lens_spacer_z(params, optics_config) - 5;
-//     difference(){
-//         union(){
-// //TODO
-// //            upright_condenser_platform(params, optics_config, base_r=5);
-//             translate([0,0,platform_h]){
-//                 condenser(lens_assembly_z= 30, include_mounting = false, basic_condenser = true);
-//             }
-//         }
-//         // Creating a large hole for the LED and wires to go through in the base
-//         translate([0,0,platform_h+0.5]){
-//             led_boring_holes(boring_radius = 6);
-//         }
-//     }
-// }
 
 function upright_condenser_lug_x() = 12;
 // Condenser for attaching to platform to mount to z-axis dovetail
