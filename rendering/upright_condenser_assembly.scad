@@ -1,4 +1,5 @@
 use <../openscad/libs/illumination.scad>
+use <../openscad/libs/upright_illumination.scad>
 use <../openscad/libs/utilities.scad>
 use <../openscad/libs/libdict.scad>
 use <../openscad/libs/gears.scad>
@@ -12,8 +13,8 @@ use <librender/electronics.scad>
 use <mount_microscope.scad>
 
 USE_BUILT_STL = true;
-FRAME = 15;
-assemble_condenser(FRAME);
+FRAME = 16;
+upright_assemble_condenser(FRAME);
 
 // Use a pre-built STL file
 // TODO: make this robust to stale or missing STL files
@@ -23,7 +24,7 @@ module cached_stl(fname){
     import(str(STL_FOLDER, "/", fname, ".stl"));
 }
 
-module assemble_condenser(frame){
+module upright_assemble_condenser(frame){
     if (frame<=3){
         insert_condenser_lens(frame);
     }
@@ -37,7 +38,12 @@ module assemble_condenser(frame){
         mount_led_cable(frame-10);
     }
     else if(frame <= 16){
-        mount_condenser_lid(frame-12);
+        //TODO: this is a fudge to get the module the right way up andin the right place
+        translate_z(75-5+1.5){
+            rotate_y(180){
+                mount_condenser_lid(frame-12);
+            }
+        }
     }
 }
 
@@ -77,8 +83,8 @@ module mount_led_board(frame){
     rendered_condenser_assembly(
         condenser_upside_down(),
         include_led=false,
-        include_thumbscrew=true,
-        include_nut=true,
+        include_thumbscrew=false,
+        include_nut=false,
         include_led_board=true,
         include_led_board_screws=(frame>2),
         include_lid=false,
@@ -90,8 +96,8 @@ module mount_led_cable(frame){
     rendered_condenser_assembly(
         condenser_upside_down(),
         include_led=false,
-        include_thumbscrew=true,
-        include_nut=true,
+        include_thumbscrew=false,
+        include_nut=false,
         include_led_board=true,
         include_led_board_screws=true,
         include_lid=false,
@@ -110,8 +116,8 @@ module mount_condenser_lid(frame){
     rendered_condenser_assembly(
         condenser_upside_down(),
         include_led=false,
-        include_thumbscrew=true,
-        include_nut=true,
+        include_thumbscrew=false,
+        include_nut=false,
         include_led_board=true,
         include_led_board_screws=true,
         include_lid=true,
@@ -207,17 +213,19 @@ module rendered_illumination_pcb_screws(explode=false){
     }
 }
 
-// Lid of the condenser
+// Lid of the condenser is the upright coedenser platform
 module rendered_condenser_lid(explode=false){
     coloured_render(extras_colour()){
         // NB both the lid and the condenser render upside down, so
         // we must move the lid down so that it matches up with
         // the condenser.
-        translate_z(-condenser_lid_h() - (explode ? 15 : 0)){
-            if (USE_BUILT_STL){
-                cached_stl("condenser_lid");
-            }else{
-                condenser_lid();
+        translate_z(-upright_condenser_platform_height() + 1.5 - (explode ? 15 : 0)){
+            rotate_z(180){
+                if (USE_BUILT_STL){
+                    cached_stl("upright_condenser_platform");
+                }else{
+                    upright_condenser_platform_separate();
+                }
             }
         }
     }
@@ -225,7 +233,7 @@ module rendered_condenser_lid(explode=false){
 
 module rendered_led_holder(explode=false){
     coloured_render(extras_colour()){
-        translate_z(-condenser_lid_h() + 5 + (explode ? 20 : 0)){
+        translate_z(-upright_condenser_platform_height() + 5 + (explode ? 20 : 0)){
             if (USE_BUILT_STL){
                 cached_stl("condenser_led_holder");
             }else{
@@ -236,7 +244,7 @@ module rendered_led_holder(explode=false){
 }
 
 module rendered_led(explode=false){
-    translate_z(-condenser_lid_h() + 5 + (explode ? 20 : 0)){
+    translate_z(-upright_condenser_platform_height() + 5 + (explode ? 20 : 0)){
         led();
         reflect_x(){
             translate([2.54/2, 0, -0.75]){
@@ -257,7 +265,7 @@ module rendered_led(explode=false){
 
 // Screws attaching the LED holder to the lid
 module rendered_led_screws(explode=false){
-    z_pos = -condenser_lid_h() + 7;
+    z_pos = -upright_condenser_platform_height() + 7;
     exploded_z_pos = z_pos + 25;
     base_r = condenser_base_r(condenser_lens_diameter());
     reflect_x(){
@@ -274,14 +282,16 @@ module rendered_led_screws(explode=false){
 
 // Screws attaching the lid to the condenser
 module rendered_condenser_lid_screws(explode=false){
-    z_pos = 2;
-    exploded_z_pos = 25;
-    base_r = condenser_base_r(condenser_lens_diameter());
+    z_pos = -2;
+    exploded_z_pos = -25;
+    // base_r = condenser_base_r(condenser_lens_diameter());
     rotate_y(180){
         reflect_x(){
-            translate(condenser_lid_mounting_hole_pos(base_r)){
+            translate_x(12){
                 translate_z((explode?exploded_z_pos:z_pos)){
-                    no2_x6_5_selftap();
+                    mirror([0,0,1]){
+                        no2_x6_5_selftap();
+                    }
                 }
                 if (explode){
                     construction_line([0, 0, z_pos], [0, 0, exploded_z_pos]);
@@ -295,16 +305,20 @@ module rendered_condenser(pos, cut=false){
     if (cut){
         cutaway("+x", extras_colour()){
             place_part(pos){
-                condenser();
+                rotate_z(180){
+                    upright_condenser_separate();
+                }
             }
         }
     }else{
         coloured_render(extras_colour()){
             place_part(pos){
-                if (USE_BUILT_STL){
-                    cached_stl("condenser");
-                }else{
-                    condenser();
+                rotate_z(180){
+                    if (USE_BUILT_STL){
+                        cached_stl("upright_condenser");
+                    }else{
+                        upright_condenser_separate();
+                    }
                 }
             }
         }
