@@ -3,6 +3,7 @@
 * 4 [feet]{output,qty:4}: [upright_feet.stl](models/upright_feet.stl){previewpage}
 * 4 [large gears]{output,qty:4}: [upright_large_gears.stl](models/upright_large_gears.stl){previewpage}
 * [Upright condenser]{output,qty:1}: [upright_condenser.stl](models/upright_condenser.stl){previewpage} - The condenser may require [custom print settings] as used for the smart brim.
+* [Upright condenser platform]{output,qty:1}: [upright_condenser_platform.stl](models/upright_condenser_platform.stl){previewpage}
 * [Lens spacer]{output,qty:1}: [lens_spacer_picamera_2_pilens.stl](models/lens_spacer_picamera_2_pilens.stl){previewpage} - **This must be printed in [black][Black PLA filament]{Qty: 50g}!** [i](info_pages/why_optics_black.md)
 * [pi camera platform]{output,qty:1}: [camera_platform_picamera_2_pilens.stl](models/camera_platform_picamera_2_pilens.stl){previewpage}
 

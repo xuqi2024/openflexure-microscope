@@ -7,21 +7,21 @@ use <./utilities.scad>
 use <./z_axis.scad>
 
 
-module upright_condenser_top_hull(){
-    // Creates a base for the cylindrical consenser tube to stand on.
-    cylinder(r =10+tiny(), h = tiny());
+// module upright_condenser_top_hull(){
+//     // Creates a base for the cylindrical consenser tube to stand on.
+//     cylinder(r =10+tiny(), h = tiny());
 
-}
+// }
 
-module upright_objective_fitting_cutout(params, y_stop=true){
-    // Creates a mount for the nut and screw hole that holds it on
-    difference(){
-        objective_fitting_cutout(params, y_stop=y_stop);
-        translate([-50, -10,35]){
-            cube([100,100,1000]);
-        }
-    }
-}
+// module upright_objective_fitting_cutout(params, y_stop=true){
+//     // Creates a mount for the nut and screw hole that holds it on
+//     difference(){
+//         objective_fitting_cutout(params, y_stop=y_stop);
+//         translate([-50, -10,35]){
+//             cube([100,100,1000]);
+//         }
+//     }
+// }
 
 
 // Module to create a platform with a fitting wedge for the z-axis
@@ -91,58 +91,60 @@ module upright_condenser_platform_separate(params, base_r){
                     }
                 }
             }
+            // Undercut on build plate
+            // undercut_objective_fitting_wedge(undercut_height = 1.5);
         }
     }
 }
 
-module led_boring_holes(boring_radius){
-    // Boring holes for the LED to be inserted into the condenser
-    led_access_h=10;
-    // Diameter of LED flange is 6mm. This needs to fit through teh square/octagonal hole of the hole_from_bottom
-    led_diameter = 7;
-    translate([0,0,tiny()]){
-        intersection(){
-            hull(){
-                translate([0,0,0.5-led_access_h+tiny()]) {
-                    cylinder(r=boring_radius, h = led_access_h);
-                }
-                translate([0,0,-4]){
-                    hull(){
-                        cylinder(r = boring_radius + tiny(), h = 0.5);
-                        translate([0,-25,-30]) {
-                            cylinder(r = boring_radius + tiny(), h = 0.5);
-                        }
-                    }
-                }
-            }
-            translate([0,0,-2.0]){
-                hole_from_bottom(r=led_diameter/2, h=2, base_w=999, delta_z=0.4, layers=2, big_bottom=true);
-            }
-        }
-    }
-}
+// module led_boring_holes(boring_radius){
+//     // Boring holes for the LED to be inserted into the condenser
+//     led_access_h=10;
+//     // Diameter of LED flange is 6mm. This needs to fit through teh square/octagonal hole of the hole_from_bottom
+//     led_diameter = 7;
+//     translate([0,0,tiny()]){
+//         intersection(){
+//             hull(){
+//                 translate([0,0,0.5-led_access_h+tiny()]) {
+//                     cylinder(r=boring_radius, h = led_access_h);
+//                 }
+//                 translate([0,0,-4]){
+//                     hull(){
+//                         cylinder(r = boring_radius + tiny(), h = 0.5);
+//                         translate([0,-25,-30]) {
+//                             cylinder(r = boring_radius + tiny(), h = 0.5);
+//                         }
+//                     }
+//                 }
+//             }
+//             translate([0,0,-2.0]){
+//                 hole_from_bottom(r=led_diameter/2, h=2, base_w=999, delta_z=0.4, layers=2, big_bottom=true);
+//             }
+//         }
+//     }
+// }
 
-// Condenser including mount to z-axis dovetail
-// for use with upright microscope
-// 5mm LED only - note : poor LED fit
-module upright_condenser(params, optics_config){
-    $fn = 32;
-    // Combines the isolated condenser unit with the platform to create a single structure.  
-        platform_h = lens_spacer_z(params, optics_config) - 5;
-    difference(){
-        union(){
-//TODO
-//            upright_condenser_platform(params, optics_config, base_r=5);
-            translate([0,0,platform_h]){
-                condenser(lens_assembly_z= 30, include_mounting = false, basic_condenser = true);
-            }
-        }
-        // Creating a large hole for the LED and wires to go through in the base
-        translate([0,0,platform_h+0.5]){
-            led_boring_holes(boring_radius = 6);
-        }
-    }
-}
+// // Condenser including mount to z-axis dovetail
+// // for use with upright microscope
+// // 5mm LED only - note : poor LED fit
+// module upright_condenser(params, optics_config){
+//     $fn = 32;
+//     // Combines the isolated condenser unit with the platform to create a single structure.  
+//         platform_h = lens_spacer_z(params, optics_config) - 5;
+//     difference(){
+//         union(){
+// //TODO
+// //            upright_condenser_platform(params, optics_config, base_r=5);
+//             translate([0,0,platform_h]){
+//                 condenser(lens_assembly_z= 30, include_mounting = false, basic_condenser = true);
+//             }
+//         }
+//         // Creating a large hole for the LED and wires to go through in the base
+//         translate([0,0,platform_h+0.5]){
+//             led_boring_holes(boring_radius = 6);
+//         }
+//     }
+// }
 
 function upright_condenser_lug_x() = 12;
 // Condenser for attaching to platform to mount to z-axis dovetail
@@ -175,39 +177,4 @@ module upright_condenser_separate(){
     }
 }
 
-use <./optics_configurations.scad>
-
-    difference(){
-        upright_condenser_platform_separate(params = default_params() ,  base_r = 5);
-        // translate_z(75-5-30){
-        //     // rotate cable exit away from dovetail
-        //     rotate_z(180){
-        //         //allow space for 2 screw heads and for board thickness
-        //         board_bore_depth = 6.5;
-        //         // Note: in illumination_board_cutout, 
-        //         // h is used both for positioning and for the sizes of the cut-out parts
-        //         // final position is relative to a mounting plane at z=h
-        //         h = condenser_lid_h();
-        //         translate_z(-condenser_lid_h()){
-        //             illumination_board_cutout(h, board_bore_depth);
-        //         }
-        //     }
-        //     reflect_x(){
-        //         translate([upright_condenser_lug_x(),0,tiny()]){
-        //             mirror([0,0,1]){
-        //                 no2_selftap_hole(h=8);
-        //             }
-        //         }
-        //     }
-
-        // }
-    }
-
-translate_y(-30){
-    upright_condenser_separate();
-}
-
-// translate([10,0,75-5-30-condenser_lid_h()]){
-//     condenser_lid();
-// }
 
