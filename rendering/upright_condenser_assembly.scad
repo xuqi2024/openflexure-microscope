@@ -14,7 +14,7 @@ use <mount_microscope.scad>
 
 USE_BUILT_STL = true;
 FRAME = 16;
-assemble_condenser(FRAME);
+upright_assemble_condenser(FRAME);
 
 // Use a pre-built STL file
 // TODO: make this robust to stale or missing STL files
@@ -24,7 +24,7 @@ module cached_stl(fname){
     import(str(STL_FOLDER, "/", fname, ".stl"));
 }
 
-module assemble_condenser(frame){
+module upright_assemble_condenser(frame){
     if (frame<=3){
         insert_condenser_lens(frame);
     }
