@@ -192,7 +192,7 @@ def register_upright_condenser_assembly(rendersystem):
         rendersystem.register_scad_render(render)
     rendersystem.register_inkscape_annotation(
         "docs/renders/upright_optics_assembly_condenser_lens.png",
-        "rendering/annotations/annotate_optics_assembly_condenser_lens.svg"
+        "rendering/annotations/upright_annotate_optics_assembly_condenser_lens.svg"
     )
 
 ## no thumbscrew for upright

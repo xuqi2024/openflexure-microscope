@@ -13,7 +13,7 @@ use <librender/electronics.scad>
 use <mount_microscope.scad>
 
 USE_BUILT_STL = true;
-FRAME = 16;
+FRAME = 1;
 upright_assemble_condenser(FRAME);
 
 // Use a pre-built STL file
