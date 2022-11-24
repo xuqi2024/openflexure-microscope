@@ -28,16 +28,18 @@ use <./z_axis.scad>
 //    condenser_lens_assembly_z() (22mm) + condenser_lens_diameter()/2 (6.5mm) 
 //    + lens base thickness (1mm) + gripper (1.5mm)
 // effective lens position at 30 - 1.5 mm
-sample_z = key_lookup("sample_z", default_params());
-function  upright_condenser_platform_height() = sample_z - 5 - (condenser_lens_assembly_z() + 6.5 -1.5 );
+function  upright_condenser_platform_height() = let(
+    sample_z = key_lookup("sample_z", default_params()),
+    platform_ht = sample_z - 5 - (condenser_lens_assembly_z() + 6.5 -1.5 )
+) platform_ht;
 
 // Module to create a platform with a fitting wedge for the z-axis
 // and a mounting face for the condenser adn cut-out for a 5mm LED or LED PCB
 module upright_condenser_platform_separate(params, base_r){
-    
+
     platform_h = upright_condenser_platform_height();
     assert(platform_h > upper_z_flex_z(params), "Platform height too low for z-axis mounting");
-    
+
     // Make a platform with a dovetail on the side and a platform on the top
     // this is similar to the camera_platform, but does not have posts and has an extra cut-out
     // so it is defined separately.
@@ -56,7 +58,7 @@ module upright_condenser_platform_separate(params, base_r){
                         objective_fitting_wedge(h=tiny());
                         // cylinder to match the base of the condenser
                         lens_d=condenser_lens_diameter();
-                        cylinder(r = condenser_base_r(lens_d) + 2, h = tiny());;
+                        cylinder(r = condenser_base_r(lens_d) + 2, h = tiny());
                         // mounting positions for the condenser
                         reflect_x(){
                             translate_x(upright_condenser_lug_x()){
