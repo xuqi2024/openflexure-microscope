@@ -1,7 +1,7 @@
 # Assemble the illumination
 
 In this section we are assembling the transmission illuminator.  This mounts the LED and condenser lens above the sample, so the transmitted light can be imaged by the microscope objective.
-
+ 
 {{BOM}}
 
 [M3 nut]: parts/mechanical.yml#Nut_M3_SS "{cat:mech}"
