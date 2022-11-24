@@ -477,6 +477,7 @@ module camera_platform(params, optics_config, base_r){
         }
 
         // Mount for the nut that holds it on
+        // TODO what is the -4 doing?
         translate_z(-4){
             objective_fitting_cutout(params, y_stop=true);
         }
