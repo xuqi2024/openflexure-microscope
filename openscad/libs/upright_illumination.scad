@@ -23,17 +23,19 @@ use <./z_axis.scad>
 //     }
 // }
 
+// the condenser lens is 5mm focal length and the body is 30mm long
+// seems to be formed from:
+//    condenser_lens_assembly_z() (22mm) + condenser_lens_diameter()/2 (6.5mm) 
+//    + lens base thickness (1mm) + gripper (1.5mm)
+// effective lens position at 30 - 1.5 mm
+sample_z = key_lookup("sample_z", default_params());
+function  upright_condenser_platform_height() = sample_z - 5 - (condenser_lens_assembly_z() + 6.5 -1.5 );
 
 // Module to create a platform with a fitting wedge for the z-axis
 // and a mounting face for the condenser adn cut-out for a 5mm LED or LED PCB
 module upright_condenser_platform_separate(params, base_r){
-    sample_z = key_lookup("sample_z", params);
-    // the condenser lens is 5mm focal length and the body is 30mm long
-    // seems to be formed from:
-    //    condenser_lens_assembly_z() (22mm) + condenser_lens_diameter()/2 (6.5mm) 
-    //    + lens base thickness (1mm) + gripper (1.5mm)
-    // effective lens position at 30 - 1.5 mm
-    platform_h = sample_z - 5 - (30 - 1.5);
+    
+    platform_h = upright_condenser_platform_height();
     assert(platform_h > upper_z_flex_z(params), "Platform height too low for z-axis mounting");
     
     // Make a platform with a dovetail on the side and a platform on the top
@@ -151,7 +153,7 @@ function upright_condenser_lug_x() = 12;
 // for use with upright microscope
 // 5mm LED or LED PCB
 module upright_condenser_separate(){
-    condenser(lens_assembly_z= 30, include_mounting = false, basic_condenser = true);
+    condenser(lens_assembly_z= condenser_lens_assembly_z(), include_mounting = false, basic_condenser = true);
     lens_d=condenser_lens_diameter();
     base_r = condenser_base_r(lens_d);
     difference(){
