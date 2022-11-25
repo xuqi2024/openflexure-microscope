@@ -29,7 +29,7 @@
      transform="translate(600.47906,-13.252337)"
      id="g76">
     <image
-       xlink:href="optics_assembly_condenser_lens1.png"
+       xlink:href="upright_optics_assembly_condenser_lens1.png"
        y="13.252337"
        x="-600.47906"
        id="image48"
@@ -37,7 +37,7 @@
        height="529.16669"
        width="264.58334" />
     <image
-       xlink:href="optics_assembly_condenser_lens2.png"
+       xlink:href="upright_optics_assembly_condenser_lens2.png"
        y="13.252337"
        x="-335.89572"
        id="image59"
@@ -45,7 +45,7 @@
        height="529.16669"
        width="264.58334" />
     <image
-       xlink:href="optics_assembly_condenser_lens3.png"
+       xlink:href="upright_optics_assembly_condenser_lens3.png"
        y="13.252337"
        x="-71.31237"
        id="image70"
