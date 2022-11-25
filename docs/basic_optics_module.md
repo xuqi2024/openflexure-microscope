@@ -13,6 +13,8 @@ The imaging optics for this version of the microscope consist of an the Raspberr
 [Raspberry Pi Camera Module v2]: parts/electronics.yml#PiCamera_2 "{cat:electronic}"
 [{{var_ribbon_len, default:200mm}} Pi Camera ribbon cable]: parts/electronics.yml#PiCamera_RibbonCable_{{var_ribbon_len, default:200mm}} "{cat:electronic, note: 'This is longer than the standard ribbon cable the Pi Camera is sold with!'}"
 
+{{include: upright_optics_note.md, if: var_upright is upright}}
+
 ## Visually inspect the lens spacer {pagestep}
 
 Take the [lens spacer][Lens spacer](fromstep){qty:1, cat:printedpart} and confirm that:
