@@ -31,7 +31,7 @@ module upright_condenser_platform(params, optics_config, base_r){
     platform_h = lens_spacer_z(params, optics_config) - 5;
     assert(platform_h > upper_z_flex_z(params), "Platform height too low for z-axis mounting");
     // screw_x = picamera_2_hole_spacing()/2;
-    screw_shift = 15; // Vertical distance the mounting screw needs to be translated by to insert into the z-axis of the main body
+    screw_shift = 12; // Vertical distance the mounting screw needs to be translated by to insert into the z-axis of the main body
 
     // Make a camera platform with a dovetail on the side and a platform on the top
     difference(){
@@ -93,7 +93,7 @@ module upright_condenser(params, optics_config){
         union(){
             upright_condenser_platform(params, optics_config, base_r=5);
             translate([0,0,platform_h]){
-                condenser(lens_assembly_z= 30, include_mounting = false);
+                condenser(lens_assembly_z= 30, include_mounting = false, basic_condenser = true);
             }
         }
         // Creating a large hole for the LED and wires to go through in the base
