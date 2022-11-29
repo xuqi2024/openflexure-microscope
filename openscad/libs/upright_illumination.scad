@@ -12,9 +12,10 @@ use <./z_axis.scad>
 //    condenser_lens_assembly_z() (22mm) + condenser_lens_diameter()/2 (6.5mm) 
 //    + lens base thickness (1mm) + gripper (1.5mm)
 // effective lens position at 30 - 1.5 mm
+// The condenser focus is a little further away, so space by 7mm not f=5mm
 function  upright_condenser_platform_height() = let(
     sample_z = key_lookup("sample_z", default_params()),
-    platform_ht = sample_z - 5 - (condenser_lens_assembly_z() + 6.5 -1.5 )
+    platform_ht = sample_z - 7 - (condenser_lens_assembly_z() + condenser_lens_diameter()/2 -1.5 )
 ) platform_ht;
 
 // Module to create a platform with a fitting wedge for the z-axis
