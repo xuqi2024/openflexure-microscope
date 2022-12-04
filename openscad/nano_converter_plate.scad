@@ -2,7 +2,7 @@ use <./libs/lib_microscope_stand.scad>
 use <./libs/libdict.scad>
 use <../openscad/libs/utilities.scad>
 
-exterior_brim(smooth_r = 7){
+exterior_brim(smooth_r = 5){
     nano_converter_plate_stl();
 }
 
@@ -111,7 +111,7 @@ module nano_conv_plate_nano_cutout(){
             translate_y(47){
                 cube([9, 10, 20], center=true);
             }
-            translate([-4,12.5-tiny(),6]){
+            translate([-4,12.5-tiny(),6.5]){
                 cube([6, 7, 10], center=true);
                 cube([4, 5, 20], center=true);
             }
