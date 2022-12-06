@@ -258,6 +258,23 @@ module xy_stage(params, h=10, on_buildplate=false){
                     }
                 }
             }
+            // hole from bottom in each corner, offest
+            m3_clearance_xystage = 3.5/2;
+            each_leg(params){
+                translate([0,-stage_hole_inset(), (z+ 0.4/2 - tiny())]){
+                    hull(){
+                        translate_y(m3_clearance_xystage){
+                            cube([11.8,tiny(),0.4],center=true);
+                        }
+                        translate_y(-m3_clearance_xystage){
+                            cube([19,tiny(),0.4],center=true);
+                        }
+                    }
+                }
+                translate([3.5,-stage_hole_inset(), z + 0.4 -tiny()]){
+                    hole_from_bottom(r = 3.5/2,h=99, big_bottom=false);
+                }
+            }                    
         }
     }
 }
@@ -337,14 +354,20 @@ module xy_stage_with_nut_traps(params)
 {
     //This is the microscope xy-stage built at the correct height
     //and including the nut traps.
-    stage_t = key_lookup("stage_t", params);
+    // 4mm of stage is on the main microscope body
+    stage_t = key_lookup("stage_t", params)-5;
     difference(){
-        translate_z(upper_xy_flex_z(params)){
-            xy_stage(params, h=stage_t);
+        translate_z(upper_xy_flex_z(params)+5){
+            xy_stage(params, h=stage_t,on_buildplate=true);
         }
         each_leg(params){
-            translate([0, -stage_hole_inset(), leg_height(params)]){
+            translate([-3.5, -stage_hole_inset(), leg_height(params)]){
                 m3_nut_trap_with_shaft(0,0); //mounting holes
+            }
+            translate([3.5, -stage_hole_inset(), leg_height(params)+10]){
+                rotate_y(180){
+                    #m3_nut_trap_with_shaft(0,0); //mounting holes
+                }
             }
         }
     }
@@ -416,7 +439,10 @@ module xy_positioning_system(params){
     ties = key_lookup("print_ties", params);
     xy_legs_and_actuators(params);
     internal_xy_structure(params);
-    xy_stage_with_nut_traps(params);
+    // stage_t = 5;
+    translate_z(upper_xy_flex_z(params)){
+        xy_stage(params , h=5 , on_buildplate = false);
+    }
 
     // Connect the legs to the stage and structure with flexures
     xy_flexures(params);
@@ -530,5 +556,13 @@ module main_body(params, version_string){
     difference(){
         actuator_walls_and_z_casing(params);
         body_logos(params, version_string);
+    }
+}
+
+xy_stage_with_nut_traps(params=default_params());
+
+translate_x(80){
+    exterior_brim(r=5){
+        xy_only_body(params=default_params());
     }
 }
