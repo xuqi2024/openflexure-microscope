@@ -23,3 +23,5 @@ The assembly is broken up into several steps:
 1. [.](finished.md){step, var_optics: rms}
 
 ![A render of the completed high resolution microscope](renders/complete_microscope_rms1.png)
+
+There is also an [interactive 3D view](interactive_3d_view_rms.md) of the finished microscope.
