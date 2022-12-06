@@ -2,7 +2,9 @@ use <./libs/lib_microscope_stand.scad>
 use <./libs/libdict.scad>
 use <../openscad/libs/utilities.scad>
 
-nano_converter_plate_stl();
+exterior_brim(smooth_r = 5){
+    nano_converter_plate_stl();
+}
 
 module nano_converter_plate_stl(){
     nano_converter_plate();
@@ -27,6 +29,10 @@ module nano_converter_plate(){
     difference(){
         union(){
             cube(size);
+            // additional cube in -x direction for wall around Pico
+            translate_x(-2){
+                cube([4,size.y,size.z]);
+            }
             translate_z(size.z-tiny()){
                 nano_conv_plate_zc_a0591_mounts("standoff");
             }
@@ -62,7 +68,8 @@ module nano_conv_plate_zc_a0591_mounts(type="hole"){
     }
     translate(zc_a0591_pos(board_no=3)){
         rotate_z(90){
-            zc_a0591_board_mounts(type);
+            hole_nos = (type=="hole") ? [0,2,3] : [0,1,2,3];
+            zc_a0591_board_mounts(type, hole_nos=hole_nos);
         }
     }
 }
@@ -82,19 +89,54 @@ module nano_conv_plate_pi_port_cutout(){
 
 //A cutout for an upside down arduino nano.
 module nano_conv_plate_nano_cutout(){
-
-    cube([8,18,20], center=true);
-    translate([-19/2, -tiny(), 3.5]){
-        cube([19, 44.5, 20]);
-    }
-    translate_y(40.8){
-        cube([9, 6, 20], center=true);
-    }
-    translate_y(25.8){
-        cube([8, 6, 20], center=true);
-    }
-    translate_y(55){
-        no2_selftap_hole(h=99, center=true);
+    difference(){
+        union(){
+            cube([8,18,20], center=true);
+            translate([-19/2, -tiny(), 3.5]){
+                cube([19, 44.5, 20]);
+            }
+            translate_y(40.8){
+                cube([9, 6, 20], center=true);
+            }
+            translate_y(25.8){
+                cube([8, 6, 20], center=true);
+            }
+            translate_y(55){
+                no2_selftap_hole(h=99, center=true);
+            }
+            // RaspberryPi Pico additions
+            translate([-22/2, -tiny(), 4]){
+                cube([22, 52, 20]);
+            }
+            translate_y(47){
+                cube([9, 10, 20], center=true);
+            }
+            translate([-4,12.5-tiny(),6.5]){
+                cube([6, 7, 10], center=true);
+                cube([4, 5, 20], center=true);
+            }
+        }
+        union(){
+            // a break-off bit to support back of a nano
+            translate([-24/2, 44.5, 4.75]){
+                cube([24, 1, 1]);
+            }
+            translate([-24/2, 50, 4.75]){
+                cube([24, 1, 1]);
+            } 
+            translate([-18/2, 44.5, 5.75-tiny()]){
+                cube([18, 6.5, 10]);
+            }
+            hull(){
+                translate([-7/2, 44.5, 3.5]){
+                   cube([7, 6.5, 10]);
+                }
+                translate([0, 44.5+6.5/2, 0]){
+                    $fn=12;
+                    cylinder(d=6.5, h=tiny());
+                }
+            } 
+        }
     }
 }
 
