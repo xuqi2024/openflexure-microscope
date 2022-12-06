@@ -157,8 +157,9 @@ render:
       - mkdir -p docs/gltf
       - pip install scad2gltf
       - cd rendering
-      - scad2gltf complete_microscope.scad
-      - cp complete_microscope.glb ../docs/gltf/
+      - scad2gltf complete_microscope_rms.scad
+      - scad2gltf complete_microscope_low_cost.scad
+      - cp complete_microscope_*.glb ../docs/gltf/
 
     artifacts:
       expire_in: 1 week
