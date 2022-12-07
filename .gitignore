@@ -1,6 +1,9 @@
 # Don't take stl files
 *.stl
 
+# Ignore CSG files (OpenSCAD output)
+*.csg
+
 # Or gLTF files
 *.gltf
 *.glb
