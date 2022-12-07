@@ -61,13 +61,8 @@ class MicroscopeBuildWriter(NinjaWriter):
     def _create_rules(self):
         executable = get_openscad_exe()
         self.rule(
-            "openscad_scad_to_csg",
+            "openscad",
             command=f"{executable} --hardwarnings $parameters $in -o $out -d $out.d",
-            depfile="$out.d",
-        )
-        self.rule(
-            "openscad_csg_to_stl",
-            command=f"{executable} --hardwarnings $in -o $out -d $out.d",
             depfile="$out.d",
         )
 
@@ -93,7 +88,12 @@ class MicroscopeBuildWriter(NinjaWriter):
 
         self.build(
             os.path.abspath(os.path.join(self._build_dir, output_csg)),
-            rule="openscad_scad_to_csg",
+            rule="openscad",
             inputs=os.path.join("openscad/", input_file),
             variables={"parameters": parameters_to_string(parameters)},
+        )
+        self.build(
+            os.path.join(self._build_dir, output),
+            rule="openscad",
+            inputs=os.path.join(self._build_dir, output_csg),
         )
