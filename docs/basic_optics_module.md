@@ -1,6 +1,6 @@
 # Assemble the basic optics module
 
-The imaging optics for this version of the microscope consist of an the Raspberry pi camera and the lens from the camera. To create a microscope the wide angle lens is reversed and separated from the camera. This makes quite a good microscope objective with a field of view about 400μm across and a resolution of around 2μm.
+The imaging optics for this version of the microscope consist of a Raspberry pi camera and the lens from the camera. To create a microscope, the wide angle lens is reversed and separated from the camera. This makes quite a good microscope objective with a field of view about 400μm across and a resolution of around 2μm.
 
 {{BOM}}
 
@@ -12,6 +12,8 @@ The imaging optics for this version of the microscope consist of an the Raspberr
 
 [Raspberry Pi Camera Module v2]: parts/electronics.yml#PiCamera_2 "{cat:electronic}"
 [{{var_ribbon_len, default:200mm}} Pi Camera ribbon cable]: parts/electronics.yml#PiCamera_RibbonCable_{{var_ribbon_len, default:200mm}} "{cat:electronic, note: 'This is longer than the standard ribbon cable the Pi Camera is sold with!'}"
+
+{{include: upright_optics_note.md, if: var_upright is upright}}
 
 ## Visually inspect the lens spacer {pagestep}
 
