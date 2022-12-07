@@ -35,6 +35,7 @@ rendering/annotations/*.png
 stl_options.json
 admesh_report.xml
 source.zip
+docs/models/libs/logos/
 
 # Ignore IDE files
 .vscode/

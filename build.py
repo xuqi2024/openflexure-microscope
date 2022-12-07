@@ -176,6 +176,28 @@ def copy_extra_stls(build_dir, extras_dir):
                 shutil.copyfile(stl_file, desitination)
 
 
+def copy_included_logos(build_dir):
+    """When compiling from CSG, we will need the DXFs for logos in the right place
+    
+    The CSG files will have relative imports, from `libs/logos/`. It's probably 
+    simplest just to copy these, to avoid platform-dependent issues with 
+    symlinks.
+    """
+    logos_dir = os.path.join("openscad", "libs", "logos")
+    output_dir = os.path.join(build_dir, "libs", "logos")
+    os.makedirs(output_dir, exist_ok=True)
+    for fname in [
+        "oshw_gear.dxf", 
+        "openflexure_logo_above.dxf", 
+        "openflexure_logo.dxf", 
+        "openflexure_emblem.dxf"
+    ]:
+        shutil.copyfile(
+            os.path.join(logos_dir, fname), 
+            os.path.join(output_dir, fname)
+        )
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Run the OpenSCAD build for the Openflexure Microscope."
@@ -198,5 +220,6 @@ if __name__ == "__main__":
     # Include extra STL files
     if args.include_extra_files:
         copy_extra_stls(BUILD_DIR, extras_dir = 'openflexure-microscope-extra')
+    copy_included_logos(BUILD_DIR)
     # Run the "ninja.build" file we just created, to generate STLs
     subprocess.run([os.path.join(BIN_DIR, "ninja")] + ninja_args, check=True)
