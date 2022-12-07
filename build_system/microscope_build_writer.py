@@ -72,6 +72,8 @@ class MicroscopeBuildWriter(NinjaWriter):
         --generate-stl-options-json is enabled it registers the stl and its
         parameters at this point.
 
+        Absolute paths are used in the Ninja file, to work around a bug in OpenSCAD's CSG export.
+
         Arguments:
             output {str} -- file path of the output stl file
             input_file {str} -- file path of the input scad file
@@ -89,11 +91,11 @@ class MicroscopeBuildWriter(NinjaWriter):
         self.build(
             os.path.abspath(os.path.join(self._build_dir, output_csg)),
             rule="openscad",
-            inputs=os.path.join("openscad/", input_file),
+            inputs=os.path.abspath(os.path.join("openscad/", input_file)),
             variables={"parameters": parameters_to_string(parameters)},
         )
         self.build(
-            os.path.join(self._build_dir, output),
+            os.path.abspath(os.path.join(self._build_dir, output)),
             rule="openscad",
-            inputs=os.path.join(self._build_dir, output_csg),
+            inputs=os.path.abspath(os.path.join(self._build_dir, output_csg)),
         )
