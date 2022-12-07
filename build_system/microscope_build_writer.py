@@ -65,6 +65,11 @@ class MicroscopeBuildWriter(NinjaWriter):
             command=f"{executable} --hardwarnings $parameters $in -o $out -d $out.d",
             depfile="$out.d",
         )
+        self.rule(
+            "fix_csg",
+            command=f"python -m build_system.fix_csg $in $out",
+            depfile="$out.d",
+        )
 
     def openscad(self, output, input_file, parameters=None):
         """
@@ -85,6 +90,7 @@ class MicroscopeBuildWriter(NinjaWriter):
 
         if output.endswith(".stl"):
             output_csg = output[:-4] + ".csg"
+            fixed_csg = output[:-4] + ".fixed.csg"
         else:
             raise ValueError("OpenSCAD rules should output STL files ending with .stl")
 
@@ -95,7 +101,12 @@ class MicroscopeBuildWriter(NinjaWriter):
             variables={"parameters": parameters_to_string(parameters)},
         )
         self.build(
+            os.path.abspath(os.path.join(self._build_dir, fixed_csg)),
+            rule="fix_csg",
+            inputs=os.path.abspath(os.path.join(self._build_dir, output_csg)),
+        )
+        self.build(
             os.path.abspath(os.path.join(self._build_dir, output)),
             rule="openscad",
-            inputs=os.path.abspath(os.path.join(self._build_dir, output_csg)),
+            inputs=os.path.abspath(os.path.join(self._build_dir, fixed_csg)),
         )
