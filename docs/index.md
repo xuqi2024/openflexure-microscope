@@ -3,6 +3,8 @@ The OpenFlexure Microscope is a 3D printable microscope, with a very precise mec
 
 These instructions will take you through how to assemble various configurations. They also describe how to make a [Sangaboard Compatible motor controller](workaround_motor_electronics/workaround_motor_electronics.md) if you can't get hold of an official one.
 
+There are interactive 3D views of the [RMS](interactive_3d_view_rms.md) and [low cost](interactive_3d_view_low_cost.md) versions of the microscope.
+
 ## Microscope Configurations:
 
 #### [High-resolution motorised microscope](high_res_microscope.md)
