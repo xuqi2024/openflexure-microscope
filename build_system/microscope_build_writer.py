@@ -67,7 +67,7 @@ class MicroscopeBuildWriter(NinjaWriter):
         )
         self.rule(
             "fix_csg",
-            command=f"python -m build_system.fix_csg $in $out",
+            command="python -m build_system.fix_csg $in $out",
             depfile="$out.d",
         )
 

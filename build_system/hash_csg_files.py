@@ -1,15 +1,29 @@
+"""
+Generate hashes of all built files and their dependencies
+
+This will enable us to reliably figure out which ones have changed. In time, it will
+also form the basis of a proper cacheing system that enables incremental builds.
+"""
+
+
 import argparse
-from hashlib import file_digest
+import hashlib
+import io
 import os
 import sys
-import yaml
 import fnmatch
+import yaml
 
-def hash(fname: str):
+def generate_hash(fname: str):
     """Calculate a git-style SHA1 hash of a file"""
+    hasher = hashlib.sha256()
     with open(fname, "rb") as f:
-        d = file_digest(f, "sha256")
-    return d.hexdigest()
+        f.seek(0, io.SEEK_END)
+        size = f.tell()
+        hasher.update(f"blob {size}\0")
+        for chunk in iter(lambda: f.read(4096), b''):
+            hasher.update(chunk)
+    return hasher.hexdigest()
 
 def normalise_path(fpath: str):
     """Normalise a path (with os.path.normpath) and ensure it uses forward slashes"""
@@ -18,13 +32,12 @@ def normalise_path(fpath: str):
 
 def find_output_files(dirname, patterns=None):
     """Find all the output files
-    
-    This filters according to a series of patterns (default `['*.stl']`) 
+
+    This filters according to a series of patterns (default `['*.stl']`)
     and recursively traverses `dirname`.
     """
     if patterns is None:
         patterns = ["*.stl"]
-    """Enumerate output files matching a pattern and parse dependencies"""
     paths = []
     for folder, _subfolders, files in os.walk(dirname):
         # Filter out the matching files (probably just STL for now)
@@ -33,10 +46,11 @@ def find_output_files(dirname, patterns=None):
                 if fnmatch.fnmatch(fname, pattern):
                     paths.append(normalise_path(os.path.join(folder, fname)))
     return paths
-        
+
+
 def parse_dependencies(output_files):
     """Parse .d files for the outputs to construct a dependency graph
-    
+
     Currently this only works for OpenSCAD depfiles, which put one file
     per line."""
     graph = {}
@@ -54,25 +68,35 @@ def parse_dependencies(output_files):
     return graph
 
 def add_hashes_to_graph(graph):
+    """Calculate hashes of input and output files, and add them to a dictionary"""
     for k in graph.keys():
-        graph[k]["output_hash"] = hash(k)
+        graph[k]["output_hash"] = generate_hash(k)
         graph[k]["dependency_hashes"] = {
-            dep: hash(dep) for dep in graph[k]["dependencies"]
+            dep: generate_hash(dep) for dep in graph[k]["dependencies"]
         }
     return graph
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Calculate hashes of build products and dependencies")
-    parser.add_argument("output_directory", help="The directory where output files are located")
-    parser.add_argument("--output", "-o", nargs="?", help="Output filename for the YAML dictionary with hashes.")
+    parser = argparse.ArgumentParser(
+        description="Calculate hashes of build products and dependencies"
+    )
+    parser.add_argument(
+        "output_directory",
+        help="The directory where output files are located"
+    )
+    parser.add_argument(
+        "--output", "-o",
+        nargs="?",
+        help="Output filename for the YAML dictionary with hashes."
+    )
     args = parser.parse_args()
 
     outputs = find_output_files(args.output_directory)
-    graph = parse_dependencies(outputs)
-    graph = add_hashes_to_graph(graph)
+    depgraph = parse_dependencies(outputs)
+    depgraph = add_hashes_to_graph(depgraph)
 
     if args.output:
-        with open(args.output, "w") as f:
-            yaml.dump(graph, f)
+        with open(args.output, "w") as outfile:
+            yaml.dump(depgraph, outfile)
     else:
-        yaml.dump(graph, sys.stdout)
+        yaml.dump(depgraph, sys.stdout)
