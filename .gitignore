@@ -36,6 +36,7 @@ stl_options.json
 admesh_report.xml
 source.zip
 docs/models/libs/logos/
+docs/models/dependency_hashes.yaml
 
 # Ignore IDE files
 .vscode/
