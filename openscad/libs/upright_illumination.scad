@@ -118,5 +118,3 @@ module upright_condenser_separate(){
         }
     }
 }
-
-
