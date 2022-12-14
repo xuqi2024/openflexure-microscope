@@ -18,9 +18,15 @@ def generate_hash(fname: str):
     """Calculate a git-style SHA1 hash of a file"""
     hasher = hashlib.sha256()
     with open(fname, "rb") as f:
+        # Find the file's size by seeking to the end and checking our position
         f.seek(0, io.SEEK_END)
         size = f.tell()
-        hasher.update(f"blob {size}\0")
+        # Git prefixes the file contents with the string below:
+        hasher.update(f"blob {size}\0".encode("utf-8"))
+        # Reset the position so we hash the whole file
+        f.seek(0)
+        # We read and hash the file in chunks, to avoid holding the whole
+        # file in memory.
         for chunk in iter(lambda: f.read(4096), b''):
             hasher.update(chunk)
     return hasher.hexdigest()
