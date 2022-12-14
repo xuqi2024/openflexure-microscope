@@ -70,6 +70,14 @@ class MicroscopeBuildWriter(NinjaWriter):
             command="python -m build_system.fix_csg $in $out",
             depfile="$out.d",
         )
+        self.rule(
+            "cached_csg_compile",
+            command=(
+                "python -m build_system.cached_csg_compiler $in $out "
+                "--hash_file docs/models/dependency_hashes.yaml"
+            ),
+            depfile="$out.d"
+        )
 
     def openscad(self, output, input_file, parameters=None):
         """
@@ -107,6 +115,6 @@ class MicroscopeBuildWriter(NinjaWriter):
         )
         self.build(
             os.path.abspath(os.path.join(self._build_dir, output)),
-            rule="openscad",
+            rule="cached_csg_compile",
             inputs=os.path.abspath(os.path.join(self._build_dir, fixed_csg)),
         )
