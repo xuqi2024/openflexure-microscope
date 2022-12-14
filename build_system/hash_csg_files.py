@@ -26,12 +26,12 @@ def generate_hash(fpath: str):
     """
     if fpath not in _filepath_to_hash_cache:
         fhash = subprocess.check_output(["git", "hash-object", fpath])
-        _filepath_to_hash_cache[fpath] = fhash.decode("utf-8")
+        _filepath_to_hash_cache[fpath] = fhash.decode("utf-8").strip()
     return _filepath_to_hash_cache[fpath]
 
 def normalise_path(fpath: str):
     """Normalise a path (with os.path.normpath) and ensure it uses forward slashes"""
-    npath = os.path.normpath(fpath)
+    npath = os.path.normpath(os.path.relpath(fpath, '.'))
     return npath.replace("\\", "/")
 
 def find_output_files(dirname, patterns=None):
@@ -66,7 +66,7 @@ def parse_dependencies(output_files):
                 assert first_line.endswith(": \\\n")
                 dependencies = [line.strip("\t \\\n") for line in depfile]
             normalised_dependencies = [
-                normalise_path(os.path.relpath(d, '.')) for d in dependencies
+                normalise_path(d) for d in dependencies
             ]
             graph[fname] = {"dependencies": normalised_dependencies}
     return graph
