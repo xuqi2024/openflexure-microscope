@@ -7,29 +7,27 @@ also form the basis of a proper cacheing system that enables incremental builds.
 
 
 import argparse
-import hashlib
-import io
 import os
+import subprocess
 import sys
 import fnmatch
 import yaml
 
-def generate_hash(fname: str):
-    """Calculate a git-style SHA1 hash of a file"""
-    hasher = hashlib.sha256()
-    with open(fname, "rb") as f:
-        # Find the file's size by seeking to the end and checking our position
-        f.seek(0, io.SEEK_END)
-        size = f.tell()
-        # Git prefixes the file contents with the string below:
-        hasher.update(f"blob {size}\0".encode("utf-8"))
-        # Reset the position so we hash the whole file
-        f.seek(0)
-        # We read and hash the file in chunks, to avoid holding the whole
-        # file in memory.
-        for chunk in iter(lambda: f.read(4096), b''):
-            hasher.update(chunk)
-    return hasher.hexdigest()
+_filepath_to_hash_cache = {}
+def generate_hash(fpath: str):
+    """Calculate a git-style SHA1 hash of a file
+
+    I've switched to using git (much slower than hashlib) because
+    it normalises line endings, and I think that's very helpful.
+
+    If you always calculate the hashes on one machine there's no
+    issue, but I think there is great value in consistency over
+    speed.
+    """
+    if fpath not in _filepath_to_hash_cache:
+        fhash = subprocess.check_output(["git", "hash-object", fpath])
+        _filepath_to_hash_cache[fpath] = fhash.decode("utf-8")
+    return _filepath_to_hash_cache[fpath]
 
 def normalise_path(fpath: str):
     """Normalise a path (with os.path.normpath) and ensure it uses forward slashes"""
@@ -43,7 +41,7 @@ def find_output_files(dirname, patterns=None):
     and recursively traverses `dirname`.
     """
     if patterns is None:
-        patterns = ["*.stl"]
+        patterns = ["*.stl", "*.csg"]
     paths = []
     for folder, _subfolders, files in os.walk(dirname):
         # Filter out the matching files (probably just STL for now)
@@ -61,12 +59,12 @@ def parse_dependencies(output_files):
     per line."""
     graph = {}
     for fname in output_files:
-        depfile = fname + ".d"
-        if fname not in graph and os.path.exists(depfile):
-            with open(depfile, "r") as f:
-                first_line = f.readline()
+        depfname = fname + ".d"
+        if fname not in graph and os.path.exists(depfname):
+            with open(depfname, "r") as depfile:
+                first_line = depfile.readline()
                 assert first_line.endswith(": \\\n")
-                dependencies = [line.strip("\t \\\n") for line in f]
+                dependencies = [line.strip("\t \\\n") for line in depfile]
             normalised_dependencies = [
                 normalise_path(os.path.relpath(d, '.')) for d in dependencies
             ]
