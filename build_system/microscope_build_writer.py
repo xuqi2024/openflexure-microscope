@@ -65,12 +65,19 @@ class MicroscopeBuildWriter(NinjaWriter):
             command=f"{executable} --hardwarnings $parameters $in -o $out -d $out.d",
             depfile="$out.d",
         )
+        self.rule(
+            "fix_csg",
+            command="python -m build_system.fix_csg $in $out",
+            depfile="$out.d",
+        )
 
     def openscad(self, output, input_file, parameters=None):
         """
         Invokes ninja task generation using the 'openscad' rule. If
         --generate-stl-options-json is enabled it registers the stl and its
         parameters at this point.
+
+        Absolute paths are used in the Ninja file, to work around a bug in OpenSCAD's CSG export.
 
         Arguments:
             output {str} -- file path of the output stl file
@@ -81,9 +88,25 @@ class MicroscopeBuildWriter(NinjaWriter):
         if parameters is None:
             parameters = {}
 
+        if output.endswith(".stl"):
+            output_csg = output[:-4] + ".csg"
+            fixed_csg = output[:-4] + ".fixed.csg"
+        else:
+            raise ValueError("OpenSCAD rules should output STL files ending with .stl")
+
         self.build(
-            os.path.join(self._build_dir, output),
+            os.path.abspath(os.path.join(self._build_dir, output_csg)),
             rule="openscad",
-            inputs=os.path.join("openscad/", input_file),
+            inputs=os.path.abspath(os.path.join("openscad/", input_file)),
             variables={"parameters": parameters_to_string(parameters)},
+        )
+        self.build(
+            os.path.abspath(os.path.join(self._build_dir, fixed_csg)),
+            rule="fix_csg",
+            inputs=os.path.abspath(os.path.join(self._build_dir, output_csg)),
+        )
+        self.build(
+            os.path.abspath(os.path.join(self._build_dir, output)),
+            rule="openscad",
+            inputs=os.path.abspath(os.path.join(self._build_dir, fixed_csg)),
         )
