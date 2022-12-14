@@ -83,8 +83,11 @@ def parse_command_line_args():
 
 def process_one_file(input_path, output_path, hash_file, ignore_unchanged_outputs=False):
     """Compile one input file into an output file, checking against the hashes"""
-    hashes = load_hash_file(hash_file)
-    if needs_recompile(output_path, hashes, ignore_unchanged=ignore_unchanged_outputs):
+    try:
+        hashes = load_hash_file(hash_file)
+        if needs_recompile(output_path, hashes, ignore_unchanged=ignore_unchanged_outputs):
+            run_openscad(input_path, output_path)
+    except FileNotFoundError:
         run_openscad(input_path, output_path)
 
 if __name__ == "__main__":
