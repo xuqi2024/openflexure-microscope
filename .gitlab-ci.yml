@@ -18,7 +18,7 @@ stages:
     # Install everything needed for all OpenSCAD jobs so they run in a consistent environment
     before_script:
       - apt-get update -qq
-      - apt-get -o DPkg::Options::=--force-confdef -y -qq install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates python3-pip git xvfb imagemagick unzip inkscape wget
+      - apt-get -o DPkg::Options::=--force-confdef -y -qq install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates python3-pip python-is-python3 git xvfb imagemagick unzip inkscape wget
       - wget https://build.openflexure.org/assets/openscad_2021.01-1~20.04_amd64.deb -O /tmp/openscad_2021.01-1~20.04_amd64.deb
       - apt -o DPkg::Options::=--force-confdef -y -qq install /tmp/openscad_2021.01-1~20.04_amd64.deb
       - pip3 install -r requirements.txt
@@ -83,6 +83,7 @@ build:
       # Build STL files with OpenSCAD
       - mkdir -p /root/.local/share
       - ./build.py --include-extra-files --force-clean
+      - python3 -m build_system.hash_csg_files docs/models -o docs/models/dependency_hashes.yaml
       - python3 -c "import shutil; shutil.make_archive('docs/all-stls', 'zip', 'docs/models')"
       
     artifacts:
@@ -92,6 +93,7 @@ build:
         - docs/models/**/*.stl
         - docs/models/*.json
         - docs/all-stls.zip
+        - docs/models/*.yaml
 
     only:
       - tags

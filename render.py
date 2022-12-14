@@ -189,7 +189,7 @@ def register_workaround_5mm_led(rendersystem):
         output_file = f"docs/renders/workaround_5mm_led{frame}.png"
         render = ScadRender(output_file, input_file, scad, imgsize, camera)
         rendersystem.register_scad_render(render)
-    
+
 
 def register_optics_assembled(rendersystem):
     input_file = "rendering/optics_assembly.scad"
@@ -440,7 +440,7 @@ def main():
     register_mount_motors(rendersystem)
     register_mount_sample_clips(rendersystem)
     register_complete_microscope(rendersystem)
-    
+
     rendersystem.render()
 
 if __name__ == "__main__":
