@@ -197,7 +197,7 @@ build-docs:
     script:
       - cd docs
       # The .yaml extension confuses gitbuilding, for now I'll just gzip it to get around that.
-      - gzip models/build_hashes.yaml
+      - gzip models/dependency_hashes.yaml
       - gitbuilding build-html --hardwarnings
       - cd ..
       - mv docs/_site builds
