@@ -89,14 +89,14 @@ build:
     cache:
       - key: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
         paths:
-          - docs/models/
+          - docs/models/**/*.stl
+          - docs/models/dependency_hashes.yaml
 
     artifacts:
       expire_in: 1 week
       name: "${CI_PROJECT_NAME}-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}"
       paths:
         - docs/models/**/*.stl
-        - docs/models/*.json
         - docs/all-stls.zip
         - docs/models/*.yaml
 
