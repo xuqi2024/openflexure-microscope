@@ -88,6 +88,7 @@ def process_one_file(input_path, output_path, hash_file, ignore_unchanged_output
         if needs_recompile(output_path, hashes, ignore_unchanged=ignore_unchanged_outputs):
             run_openscad(input_path, output_path)
     except FileNotFoundError:
+        logging.info("BUILD %s because the hash file is missing", output_path)
         run_openscad(input_path, output_path)
 
 if __name__ == "__main__":
