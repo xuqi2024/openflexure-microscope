@@ -36,8 +36,9 @@ PLATFORM_OPTICS_MODULE_OPTIONS = [("picamera_2", "pilens")]
 
 def write_ninja_file(build_dir):
     """
-    Register all files to be built. Some files options are generated in other functions
-    Once this function is complete a ninja file will have been written with all STLs that need generating.
+    Register all files to be built. Some files options are generated in other
+    functions. Once this function is complete a ninja file will have been
+    written with all STLs that need generating.
     """
 
     with MicroscopeBuildWriter(build_dir, "build.ninja") as writer:
@@ -104,8 +105,14 @@ def write_ninja_file(build_dir):
         # Misc components
         writer.openscad("thumbwheels.stl", "thumbwheels.scad")
         writer.openscad("slide_riser.stl", "slide_riser.scad")
-        writer.openscad("accessories/actuator_tension_band.stl", "accessories/actuator_tension_band.scad")
-        writer.openscad("accessories/actuator_drilling_jig.stl", "accessories/actuator_drilling_jig.scad")
+        writer.openscad(
+            "accessories/actuator_tension_band.stl",
+            "accessories/actuator_tension_band.scad"
+        )
+        writer.openscad(
+            "accessories/actuator_drilling_jig.stl",
+            "accessories/actuator_drilling_jig.scad"
+        )
 
 
 def generate_rms_optics_modules(writer):
@@ -141,7 +148,11 @@ def generate_stand_with_pi(writer):
     """
 
     writer.openscad("microscope_stand.stl", "microscope_stand.scad", {"TALL_BUCKET_BASE": False})
-    writer.openscad("microscope_stand_tall.stl", "microscope_stand.scad", {"TALL_BUCKET_BASE": True})
+    writer.openscad(
+        "microscope_stand_tall.stl",
+        "microscope_stand.scad",
+        {"TALL_BUCKET_BASE": True}
+    )
 
     # Also generate the tray for the pi itself
     for pi in [3,4]:
@@ -176,6 +187,28 @@ def copy_extra_stls(build_dir, extras_dir):
                 shutil.copyfile(stl_file, desitination)
 
 
+def copy_included_logos(build_dir):
+    """When compiling from CSG, we will need the DXFs for logos in the right place
+
+    The CSG files will have relative imports, from `libs/logos/`. It's probably
+    simplest just to copy these, to avoid platform-dependent issues with
+    symlinks.
+    """
+    logos_dir = os.path.join("openscad", "libs", "logos")
+    output_dir = os.path.join(build_dir, "libs", "logos")
+    os.makedirs(output_dir, exist_ok=True)
+    for fname in [
+        "oshw_gear.dxf",
+        "openflexure_logo_above.dxf",
+        "openflexure_logo.dxf",
+        "openflexure_emblem.dxf"
+    ]:
+        shutil.copyfile(
+            os.path.join(logos_dir, fname),
+            os.path.join(output_dir, fname)
+        )
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Run the OpenSCAD build for the Openflexure Microscope."
@@ -198,5 +231,6 @@ if __name__ == "__main__":
     # Include extra STL files
     if args.include_extra_files:
         copy_extra_stls(BUILD_DIR, extras_dir = 'openflexure-microscope-extra')
+    copy_included_logos(BUILD_DIR)
     # Run the "ninja.build" file we just created, to generate STLs
     subprocess.run([os.path.join(BIN_DIR, "ninja")] + ninja_args, check=True)
