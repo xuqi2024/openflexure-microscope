@@ -20,4 +20,4 @@ This configuration of the microscope has the objective above the sample rather t
 
 The OpenFlexure Microscope is designed to be customisable. There are a number of customisation options already available as discussed on our [customisations and alternatives page](customisation.md).
 
-If you want to get more hands on with customisation all source files are available. You can either [download a zip of the source files for this release](source.zip) or visit our [GitLab page](https://gitlab.com/openflexure/openflexure-microscope/) to see our ongoing development.
+If you want to get more hands on with customisation all source files are available. You can either [download a zip of the source files for this release](source.zip) or visit our [GitLab page](https://gitlab.com/openflexure/openflexure-microscope/) to see our ongoing development. In preparation for the release of v7, we also save a [hash file](models/dependency_hashes.yaml) that will allow us to determine which STL files have changed between revisions.
