@@ -6,16 +6,16 @@ use <./utilities.scad>
 use <./z_axis.scad>
 
 
-
-// the condenser lens is 5mm focal length and the body is 30mm long
-// seems to be formed from:
-//    condenser_lens_assembly_z() (22mm) + condenser_lens_diameter()/2 (6.5mm) 
+// The condenser lens is 5mm focal length and the condenser body is 30mm long
+// It is formed from:
+//    condenser_lens_assembly_z() (22mm) + condenser_lens_assembly_pedestal_height() (5.5mm) 
 //    + lens base thickness (1mm) + gripper (1.5mm)
-// effective lens position at 30 - 1.5 mm
-// The condenser focus is a little further away, so space by 7mm not f=5mm
+// 
+// The condenser focus is a little further away, so space by 7mm from the lens inner face not f=5mm
 function  upright_condenser_platform_height() = let(
     sample_z = key_lookup("sample_z", default_params()),
-    platform_ht = sample_z - 7 - (condenser_lens_assembly_z() + condenser_lens_diameter()/2 -1.5 )
+    bottom_of_lens = condenser_lens_assembly_z() + condenser_lens_assembly_pedestal_height(),
+    platform_ht = sample_z - bottom_of_lens - 7 
 ) platform_ht;
 
 // Module to create a platform with a fitting wedge for the z-axis
@@ -81,7 +81,7 @@ module upright_condenser_platform_separate(params, base_r){
                 }
             }
             // Undercut on build plate
-            // undercut_objective_fitting_wedge(undercut_height = 1.5);
+            undercut_objective_fitting_wedge(undercut_height = 1.5);
         }
     }
 }
