@@ -19,7 +19,7 @@ function  upright_condenser_platform_height() = let(
 ) platform_ht;
 
 // Module to create a platform with a fitting wedge for the z-axis
-// and a mounting face for the condenser adn cut-out for a 5mm LED or LED PCB
+// and a mounting face for the condenser and cut-out for a 5mm LED or LED PCB
 module upright_condenser_platform_separate(params, base_r){
 
     platform_h = upright_condenser_platform_height();
