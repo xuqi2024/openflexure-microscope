@@ -183,79 +183,68 @@ module m3_lug(pos, angle, holes=true){
     }
 }
 
-
-
 module reflection_illuminator_cutout(extra_depth=0){
     // The shape for a hole in the main body for the reflection illuminator to poke through.
 
     top_cutout_w = 17.8;
     mid_cutout_w = illuminator_width() + 1;
     bottom_cutout_w = illuminator_width() + 4;
+    cutout_below_zero = 22; \\ size of cut-out below the z-zero datum
 
-    reflecton_illuminator_cutout_points = [[-(bottom_cutout_w)/2, -22-extra_depth],
+    reflecton_illuminator_cutout_points = [[-(bottom_cutout_w)/2, -cutout_below_zero-extra_depth],
                                         [-(bottom_cutout_w)/2, 0.5],
                                         [-(mid_cutout_w)/2, 11],
                                         [-top_cutout_w/2, reflection_cutout_height()],
                                         [top_cutout_w/2, reflection_cutout_height()],
                                         [(mid_cutout_w)/2, 11],
                                         [(bottom_cutout_w)/2, 0.5],
-                                        [(bottom_cutout_w)/2, -22-extra_depth]
+                                        [(bottom_cutout_w)/2, -cutout_below_zero-extra_depth]
                                         ];
-    // gap between cut-out and break-out block
-    gap = 1.5; 
-    reflecton_illuminator_cutout_points_inner = reflecton_illuminator_cutout_points - 
-                                                [
-                                                [-gap,-gap],
-                                                [-gap,0],
-                                                [-gap,0],
-                                                [-gap,gap],
-                                                [gap,gap],
-                                                [gap,0],
-                                                [gap,0],
-                                                [gap,-gap]
-                                                ];
 
-        
+    // gap between illuminator cut-out and break-out block
+    gap = 1.5; 
+           
     // Create a trapezoidal shape with width=top_cutout_w at the top.
     // This is the widest cutout we can make at height 'reflection_cutout_height()'
     // without the bridge having a corner in it.
     difference(){
-        sequential_hull() {
-            //cut below for stand
-            translate([-(bottom_cutout_w)/2, -49, -22-extra_depth]){
-                cube([bottom_cutout_w, 49, 1]);
-            }
-            translate([-(bottom_cutout_w)/2, -49, -0.5]){
-                cube([bottom_cutout_w, 49, 1]);
-            }
-            translate([-(mid_cutout_w)/2, -49, 10]){
-                cube([mid_cutout_w, 49, 1]);
-            }
-            translate([-top_cutout_w/2, -49, reflection_cutout_height()-1]){
-                cube([top_cutout_w, 49, 1]);
+        translate_y(-0){
+            rotate_x(90){
+                linear_extrude(height = 999, center = false, twist = 0){
+                    polygon(reflecton_illuminator_cutout_points);
+                }
             }
         }
         union(){
-            //distance to wall is set as a fixed number here
+            // Distance to wall is set as a fixed number here
+            // knock_out_displace_y makes the break-out part thinner than the main wall
+            // mainly to make teh webs easier to cut. 
             knock_out_displace_y = 26 ;
             knock_out_web_thickness = 0.6;
             translate_y(-knock_out_displace_y){
                 rotate_x(90){
                     linear_extrude(height = 50, center = false, twist = 0){
-                        polygon(reflecton_illuminator_cutout_points_inner);
+                        offset(-gap){
+                            polygon(reflecton_illuminator_cutout_points_inner);
+                        }
                     }
                 }
             }
+            // Lower supporting web in the microscope body. The base overlaps the body by 3mm so this is set to be
+            // at exactly the top of the base.
             translate([-40/2,-50 - knock_out_displace_y, 3-knock_out_web_thickness]){
                 cube([40, 50, knock_out_web_thickness]);
             }
+            // Supporting web towards the top of the cutout in eth microscope body.
             translate([-40/2,-50 - knock_out_displace_y, reflection_cutout_height() - 3]){
                 cube([40, 50, knock_out_web_thickness]);
             }
+            // Supporting web in the base, just below z-zero datum
             translate([-40/2,-50 - knock_out_displace_y, -2]){
                 cube([40, 50, knock_out_web_thickness]);
             }
-            translate([-40/2,-50 - knock_out_displace_y, -(22-gap)]){
+            // Supporting web at the bottom of the knock-out block, also serves as bridge during printing
+            translate([-40/2,-50 - knock_out_displace_y, -(cutout_below_zero+extra_depth-gap)]){
                 cube([40, 50, knock_out_web_thickness]);
             }
         }
