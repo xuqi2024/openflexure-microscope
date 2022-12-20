@@ -189,7 +189,7 @@ module reflection_illuminator_cutout(extra_depth=0){
     top_cutout_w = 17.8;
     mid_cutout_w = illuminator_width() + 1;
     bottom_cutout_w = illuminator_width() + 4;
-    cutout_below_zero = 22; \\ size of cut-out below the z-zero datum
+    cutout_below_zero = 22; // size of cut-out below the z-zero datum
 
     reflecton_illuminator_cutout_points = [[-(bottom_cutout_w)/2, -cutout_below_zero-extra_depth],
                                         [-(bottom_cutout_w)/2, 0.5],
