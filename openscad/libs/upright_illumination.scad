@@ -81,7 +81,7 @@ module upright_condenser_platform_separate(params, base_r){
                 }
             }
             // Undercut on build plate
-            undercut_objective_fitting_wedge(undercut_height = 1.5);
+            // undercut_objective_fitting_wedge(undercut_height = 1.5);
         }
     }
 }
