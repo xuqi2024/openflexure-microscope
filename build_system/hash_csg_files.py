@@ -37,7 +37,7 @@ def normalise_path(fpath: str):
 def find_output_files(dirname, patterns=None):
     """Find all the output files
 
-    This filters according to a series of patterns (default `['*.stl']`)
+    This filters according to a series of patterns (default `['*.stl', '*.csg']`)
     and recursively traverses `dirname`.
     """
     if patterns is None:

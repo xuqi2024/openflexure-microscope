@@ -44,19 +44,19 @@ def needs_recompile(output_path, hashes, ignore_unchanged=False):
         if generate_hash(output_path) == hashes[output_path]["output_hash"]:
             logging.info("HIT %s is unchanged", output_path)
             return False
-        logging.info("BUILD %s as it doesn't match the output hash", output_path)
+        logging.warning("BUILD %s as it doesn't match the output hash", output_path)
         if output_path.endswith(".stl"):
             logging.warning(
                 "%s has been rebuilt because it doesn't match the output hash. "
-                "STL builds in OpenSCAD are not deterministic, so this probably "
-                "means your hash file does not match your build cache.",
+                "STL builds in OpenSCAD are not deterministic, so "
+                "the rebuilt file will also not match the old hash.",
                 output_path
             )
         return True
     # If the output is missing, ignore_unchanged must have been false, or
     # we would have returned true before checking hashes. So, ignore_unchanged
     # is true, and we should not recompile a file that's missing but unchanged
-    logging.info("IGNORE %s as it's missing but unchanged", output_path)
+    logging.info("SKIP %s as it's unchanged, even though it is missing.", output_path)
     return False
 
 def run_openscad(input_path, output_path):
