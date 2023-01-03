@@ -63,7 +63,7 @@ module upright_condenser_platform_separate(params, base_r){
                 // rotate cable exit away from dovetail
                 rotate_z(180){
                     //allow space for 2 screw heads and for board thickness
-                    board_bore_depth = 6.5;
+                    board_bore_depth = 8.0;
                     // Note: in illumination_board_cutout, 
                     // h is used both for positioning and for the sizes of the cut-out parts
                     // final position is relative to a mounting plane at z=h
