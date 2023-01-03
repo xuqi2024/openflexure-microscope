@@ -12,7 +12,7 @@ use <librender/electronics.scad>
 use <mount_microscope.scad>
 use <condenser_assembly.scad>
 
-FRAME = 7;
+FRAME = 5;
 workaround_5mm_led(FRAME);
 
 

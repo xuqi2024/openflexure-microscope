@@ -237,7 +237,9 @@ module rendered_led_holder(explode=false){
 
 module rendered_led(explode=false){
     translate_z(-condenser_lid_h() + 5 + (explode ? 20 : 0)){
-        led();
+        translate_z(-0.5){
+            led();
+        }
         reflect_x(){
             translate([2.54/2, 0, -0.75]){
                 rotate_x(-90){
