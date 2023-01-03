@@ -8,6 +8,7 @@ use <./main_body_transforms.scad>
 use <../reflection_illuminator.scad>
 use <./libdict.scad>
 use <./microscope_parameters.scad> //All the geometric variables are now in here.
+use <./lib_microscope_stand.scad>
 $fn = 32;
 
 // base_mounting_holes returns a list of the holes for mounting the microscope
@@ -237,22 +238,22 @@ module reflection_illuminator_cutout(extra_depth=0){
                     }
                 }
             }
-            // Lower supporting web in the microscope body. The base overlaps the body by 3mm so this is set to be
-            // at exactly the top of the base. 
-            // TODO: make the loacl variable in the microscope base a global parameter that can be shared and used here as well
-            translate([-40/2, -50 - knock_out_displace_y, 3 - knock_out_web_thickness]){
+            // Lower supporting web in the microscope body. The base overlaps the body by 3mm 
+            // which is set in lib_microscope_stand.scad as microscope_depth()
+            // so this is set to be at exactly the top of the base. 
+            translate([-40/2, (-50 - knock_out_displace_y), microscope_depth() - knock_out_web_thickness]){
                 cube([40, 50, knock_out_web_thickness]);
             }
-            // Supporting web towards the top of the cutout in eth microscope body.
-            translate([-40/2, -50 - knock_out_displace_y, reflection_cutout_height() - 3]){
+            // Supporting web towards the top of the cutout in the microscope body.
+            translate([-40/2, (-50 - knock_out_displace_y), reflection_cutout_height() - 3]){
                 cube([40, 50, knock_out_web_thickness]);
             }
             // Supporting web in the base, just below z-zero datum
-            translate([-40/2, -50 - knock_out_displace_y, -2]){
+            translate([-40/2, (-50 - knock_out_displace_y), -2]){
                 cube([40, 50, knock_out_web_thickness]);
             }
             // Supporting web at the bottom of the knock-out block, also serves as bridge during printing
-            translate([-40/2, -50 - knock_out_displace_y, -(cutout_below_zero + extra_depth - gap)]){
+            translate([-40/2, (-50 - knock_out_displace_y), -(cutout_below_zero + extra_depth - gap)]){
                 cube([40, 50, knock_out_web_thickness]);
             }
         }
