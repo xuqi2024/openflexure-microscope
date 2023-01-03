@@ -15,7 +15,7 @@ use <./z_axis.scad>
 function  upright_condenser_platform_height() = let(
     sample_z = key_lookup("sample_z", default_params()),
     bottom_of_lens = condenser_lens_assembly_z() + condenser_lens_assembly_pedestal_height(),
-    platform_ht = sample_z - bottom_of_lens - 7 
+    platform_ht = sample_z - bottom_of_lens - 7
 ) platform_ht;
 
 // Module to create a platform with a fitting wedge for the z-axis
@@ -26,24 +26,24 @@ module upright_condenser_platform_separate(params, base_r){
     assert(platform_h > upper_z_flex_z(params), "Platform height too low for z-axis mounting");
 
     // Make a platform with a dovetail on the side and a platform on the top
-    // this is similar to the camera_platform, but does not have posts and has an extra cut-out
+    // this is similar to the camera_platform() module, but does not have posts and has an extra cut-out
     // so it is defined separately.
     difference(){
         union(){
             // This is the main body of the mount
             sequential_hull(){
                 hull(){
-                    cylinder(r=base_r,h=tiny());
+                    cylinder(r=base_r, h=tiny());
                     objective_fitting_wedge(h=tiny());
                 }
                 translate_z(platform_h-tiny()){
                     hull(){
                         // cylinder above base
-                        cylinder(r=base_r,h=tiny());
+                        cylinder(r=base_r, h=tiny());
                         objective_fitting_wedge(h=tiny());
                         // cylinder to match the base of the condenser
-                        lens_d=condenser_lens_diameter();
-                        cylinder(r = condenser_base_r(lens_d) + 2, h = tiny());
+                        lens_d = condenser_lens_diameter();
+                        cylinder(r=condenser_base_r(lens_d)+2, h=tiny());
                         // mounting positions for the condenser
                         reflect_x(){
                             translate_x(upright_condenser_lug_x()){
@@ -56,7 +56,7 @@ module upright_condenser_platform_separate(params, base_r){
         }
         union(){
             // Mount for the nut and screw hole that holds it on
-            translate([0,tiny(),0]){
+            translate([0, tiny(), 0]){
                 objective_fitting_cutout(params, y_stop=true);
             }
             translate_z(platform_h){
@@ -73,28 +73,27 @@ module upright_condenser_platform_separate(params, base_r){
                     }
                 }
                 reflect_x(){
-                    translate([upright_condenser_lug_x(),0,tiny()]){
-                        mirror([0,0,1]){
+                    translate([upright_condenser_lug_x(), 0, tiny()]){
+                        mirror([0, 0, 1]){
                             no2_selftap_hole(h=8);
                         }
                     }
                 }
             }
-            // Undercut on build plate
-            // undercut_objective_fitting_wedge(undercut_height = 1.5);
+            // // Undercut on build plate
+            // undercut_objective_fitting_wedge(undercut_height=1.5);
         }
     }
 }
 
-
-
 function upright_condenser_lug_x() = 12;
+
 // Condenser for attaching to platform to mount to z-axis dovetail
 // for use with upright microscope
 // 5mm LED or LED PCB
 module upright_condenser_separate(){
-    condenser(lens_assembly_z= condenser_lens_assembly_z(), include_mounting = false, basic_condenser = true);
-    lens_d=condenser_lens_diameter();
+    condenser(lens_assembly_z=condenser_lens_assembly_z(), include_mounting=false, basic_condenser=true);
+    lens_d = condenser_lens_diameter();
     base_r = condenser_base_r(lens_d);
     difference(){
         hull(){
@@ -111,7 +110,7 @@ module upright_condenser_separate(){
             // so cutout base_r is certainly smaller, no need for - tiny()
             cylinder(r=base_r , h=99, center = true);
             reflect_x(){
-                translate([upright_condenser_lug_x(),0,2]){
+                translate([upright_condenser_lug_x(), 0, 2]){
                     no2_selftap_counterbore(flip_z=false);
                     }
             }
