@@ -65,27 +65,27 @@ In this section we are assembling the transmission illuminator for an upright mi
 
 * Attach the illumination wiring harness to the [illumination PCB]
 
-## Attach the illumination platform {pagestep}
+## Attach the condenser to the condenser platform {pagestep}
 
 ![](renders/upright_mount_condenser_lid1.png)
 ![](renders/upright_mount_condenser_lid2.png)
 ![](renders/upright_mount_condenser_lid3.png)
 ![](renders/upright_mount_condenser_lid4.png)
 
-* Place the [upright condenser platform][upright condenser platform](fromstep){qty:1, cat:printedpart} on top of the condenser assembly.
+* Place the assembled condenser on the [upright condenser platform][upright condenser platform](fromstep){qty:1, cat:printedpart}.
 >i Checkthat the illumination wiring and the small slot in the condenser body are both pointing away from the mounting dovetail.
 * Secure in place with two [No 2 6.5mm self tapping screws]{qty:2} using a [#1 pozidrive screwdriver]{qty:1}.
 
 ## Add the condenser mounting screw {pagestep}
 
-* Take an [M3 nut]{qty:1, cat:mech} and push it into the nut trap in the condenser mount from the top
+* Take an [M3 nut]{qty:1, cat:mech} and push it into the nut trap in the condenser platform from the top
 * Take an [M3x10 cap head screws](parts/mechanical.yml#CapScrew_M3x10mm_SS){qty:1, cat:mech} and screw it into the nut, only screw a couple of turns about **5mm of thread should still be visible at this stage** 
 
 
 ## Mount the upright condenser onto the main body {pagestep}
 
-* Take the complete upright condenser and pass is through the bottom of the main body until the top of the condenser is in line with the stage.
+* Take the complete upright condenser and pass is through the bottom of the main body until the top of the condenser is a little below the stage.
 * Insert the exposed mounting screw into the screw hole in the z-actuator of the main body.
 * Insert the [2.5mm Ball-end Allen key]{qty:1, cat:tool} through the teardrop shaped hole on the front of the microscope. Until it engages with the mounting screw.
 * Slide the upright condenser up the keyhole until the top of the condenser is 2-4mm below the top of the stage while keeping the Allen key engaged with the screw. 
-* Tighten the screw with the Allen key to lock the optics in place.
+* Tighten the screw with the Allen key to lock the condenser in place.
