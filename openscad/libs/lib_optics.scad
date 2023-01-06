@@ -18,8 +18,18 @@ $fn=24;
 
 function optics_wedge_bottom() = -2; //bottom of dovetail (<0 to allow some play)
 
-//This is used for both the lens spacer and the tube lens gripper
+// This is used for both the lens spacer and the tube lens gripper
 function lens_aperture(lens_r) = lens_r - 1.5;
+
+// This function is used because the C270 camera needs to be rotated when used with a lens spacer
+// in order to fit in between the xy stage legs
+function c270_spacer_yes(optics_config) = (key_lookup("optics_type", optics_config) == "spacer")
+                                            && (key_lookup("camera_type", optics_config) == "logitech_c270");
+
+// This function is used because the Arducam B0196 camera needs a cut-out in the 
+// camera platform for the USB cable
+function b0196_spacer_yes(optics_config) = (key_lookup("optics_type", optics_config) == "spacer")
+                                            && (key_lookup("camera_type", optics_config) == "arducam_b0196") ;
 
 module optical_path(optics_config, lens_z, camera_mount_top_z){
     // The cut-out part of a camera mount, consisting of
@@ -30,7 +40,10 @@ module optical_path(optics_config, lens_z, camera_mount_top_z){
     lens_r = rms ?
         key_lookup("tube_lens_r", optics_config):
         key_lookup("lens_r", optics_config);
-    aperture_r = lens_aperture(lens_r);
+    aperture_r = c270_spacer_yes(optics_config)?
+        lens_aperture(lens_r)-2:
+        lens_aperture(lens_r);
+
     union(){
         translate_z(camera_mount_top_z-tiny()){
             //beam path
@@ -317,7 +330,7 @@ module lens_spacer_gripper(lens_r, lens_h, pedestal_h, lens_assembly_base_r, len
                           squeeze=lens_r*0.15);
         // pedestal to raise the tube lens up within the gripper
         aperture_r = lens_aperture(lens_r);
-        tube(ri=aperture_r, ro=aperture_r+1, h=2);
+        tube(ri=aperture_r, ro=aperture_r+1, h=pedestal_h);
     }
 }
 
@@ -354,36 +367,64 @@ module lens_spacer(params, optics_config){
 
     //This is the height of the block the camera mounts into.
     camera_mount_height = camera_mount_height(optics_config);
+    lens_spacer_rotate = c270_spacer_yes(optics_config)? -135: 0;
 
-    translate_z(lens_spacer_z(params, optics_config)){
-        difference(){
-            union(){
-                // This is the main body of the mount
-                sequential_hull(){
+    rotate_z(lens_spacer_rotate){
+        translate_z(lens_spacer_z(params, optics_config)){
+            difference(){
+                union(){
+                    // This is the main body of the mount
+                    sequential_hull(){
+                        translate_z(camera_mount_height){
+                            difference(){
+                                camera_mount_top_slice(optics_config);
+                                // the C270 board is too long, 
+                                // the long hull above the body gets in the way of the spacer getting close to the slide
+                                if(c270_spacer_yes(optics_config)){
+                                    rotate_z(lens_spacer_rotate){
+                                        translate_x(-99/2-15){
+                                            cube(99, center = true);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        translate_z(camera_mount_height+5){
+                            cylinder(r=6,h=tiny());
+                        }
+                        translate_z(lens_assembly_z){
+                            cylinder(r=lens_assembly_base_r, h=tiny());
+                        }
+                    }
+
+                    lens_spacer_gripper(lens_r, lens_h, pedestal_h, lens_assembly_base_r, lens_assembly_z);
+
+                    // add the camera mount
                     translate_z(camera_mount_height){
-                        camera_mount_top_slice(optics_config);
-                    }
-                    translate_z(camera_mount_height+5){
-                        cylinder(r=6,h=tiny());
-                    }
-                    translate_z(lens_assembly_z){
-                        cylinder(r=lens_assembly_base_r, h=tiny());
+                        difference(){
+                            camera_mount(optics_config, screwhole=false, counterbore=false);
+                            // the C270 board is too long, 
+                            // the long body gets in the way of the spacer getting close to the slide
+                            if(c270_spacer_yes(optics_config)){
+                                rotate_z(lens_spacer_rotate){
+                                    translate_x(-99/2-15){
+                                        cube(99, center = true);
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
-
-                lens_spacer_gripper(lens_r, lens_h, pedestal_h, lens_assembly_base_r, lens_assembly_z);
-
-                // add the camera mount
-                translate_z(camera_mount_height){
-                    camera_mount(optics_config, screwhole=false, counterbore=false);
-                }
-            }
-            union(){
-                // cut out the optical path
-                optical_path(optics_config, lens_assembly_z, camera_mount_top_z=0);
-                //cut out counterbores
-                translate_z(camera_mount_height){
-                    camera_mount_counterbore(optics_config);
+                union(){
+                    // cut out the optical path
+                    z_offset_lens_spacer_optical_path = c270_spacer_yes(optics_config) ?
+                                                                    2.8: // to match the light trap to the mount aperture, C270
+                                                                    0; // to match the light trap to the mount aperture, Picam 2 and B0196
+                    optical_path(optics_config, lens_assembly_z, camera_mount_top_z=z_offset_lens_spacer_optical_path);
+                    //cut out counterbores
+                    translate_z(camera_mount_height){
+                        camera_mount_counterbore(optics_config);
+                    }
                 }
             }
         }
@@ -405,6 +446,7 @@ module camera_platform(params, optics_config, base_r){
     platform_h = lens_spacer_z(params, optics_config) - 5;
     assert(platform_h > upper_z_flex_z(params), "Platform height too low for z-axis mounting");
 
+    camera_mounting_posts_rotate  = c270_spacer_yes(optics_config)? -135: 0;
 
     // Make a camera platform with a fitting wedge on the side and a platform on the top
     difference(){
@@ -419,24 +461,82 @@ module camera_platform(params, optics_config, base_r){
                     hull(){
                         cylinder(r=base_r,h=tiny());
                         objective_fitting_wedge(h=tiny());
-                        camera_bottom_mounting_posts(optics_config, h=tiny());
+                        rotate_z(camera_mounting_posts_rotate){
+                            camera_bottom_mounting_posts(optics_config, h=tiny());
+                        }
                     }
                 }
             }
 
             // add the camera mount posts
             translate_z(platform_h){
-                camera_bottom_mounting_posts(optics_config, cutouts=false);
+                rotate_z(camera_mounting_posts_rotate){
+                    camera_bottom_mounting_posts(optics_config, cutouts=false);
+                }
             }
         }
 
         // Mount for the nut that holds it on
+        // TODO what is the -4 doing?
         translate_z(-4){
             objective_fitting_cutout(params, y_stop=true);
         }
+        // Undercut on build plate
+        undercut_objective_fitting_wedge(undercut_height = 1.5);
         // add the camera mount holes
         translate_z(platform_h){
-            camera_bottom_mounting_posts(optics_config, outers=false, cutouts=true);
+            rotate_z(camera_mounting_posts_rotate){
+                camera_bottom_mounting_posts(optics_config, outers=false, cutouts=true);
+            }
+        }
+        // mark the optic axis
+        translate_z(platform_h){
+            cylinder(r=1, h=2, center = true);
+        }
+        // cut-out for Arducam b0196 cable
+        if(b0196_spacer_yes(optics_config)){
+            rotate_z(45){
+                translate([9,-11.5,10]){
+                 cube([7,12,99]);
+                }
+            }
+        }
+    }
+}
+
+
+// A module to difference() from an objective fitting wedge
+// to undercut a little and so stop over extrusion or brim
+// interfering with the mounting.
+// At 45 degrees in y-z plane, less than 45 degrees on the plane of the mating faces
+module undercut_objective_fitting_wedge(wedge_width_plus=20, undercut_height = 1.5){
+    difference(){
+        translate([0,13,-(10/2 - undercut_height + tiny())]){
+            rotate_x(-45){
+                cube([wedge_width_plus,10,20], center = true);
+            }
+        }
+        sequential_hull(){
+            translate_z(-10 + undercut_height){
+                hull(){
+                    translate_x(-wedge_width_plus/2){
+                        cube([wedge_width_plus,tiny(),tiny()]);
+                    }
+                    translate_y(-10){
+                        objective_fitting_wedge(h=tiny());
+                    }
+                }
+            }
+            translate_z(10 + undercut_height){
+                hull(){
+                    translate_x(-wedge_width_plus/2){
+                        cube([wedge_width_plus,tiny(),tiny()]);
+                    }
+                    translate_y(10){
+                        objective_fitting_wedge(h=tiny());
+                    }
+                }
+            }
         }
     }
 }
