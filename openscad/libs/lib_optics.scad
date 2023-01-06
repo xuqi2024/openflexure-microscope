@@ -330,7 +330,7 @@ module lens_spacer_gripper(lens_r, lens_h, pedestal_h, lens_assembly_base_r, len
                           squeeze=lens_r*0.15);
         // pedestal to raise the tube lens up within the gripper
         aperture_r = lens_aperture(lens_r);
-        tube(ri=aperture_r, ro=aperture_r+1, h=2);
+        tube(ri=aperture_r, ro=aperture_r+1, h=pedestal_h);
     }
 }
 

@@ -279,39 +279,38 @@ function condenser_dovetail_params() = let(
         overall_width=illumination_dovetail_w(),
         overall_height=height,
         block_depth = block_depth,
-        taper_block = true
+        taper_block = true,
+        // As the condenser is modelled and printed upside down,
+        //  if we don't flip the nut trap by nut_slot_slope = "down"
+        //  the nut would slide out of the trap when the screw is
+        //  removed. 
+        nut_slot_slope = "down"
     )
 ) dt_params;
 
-module condenser_body(base_r, lens_assembly_z, include_mounting=true){
+module condenser_body(base_r, lens_assembly_z, include_mounting=true, basic_condenser = false){
     dt_params = condenser_dovetail_params();
     dt_height = key_lookup("overall_height", dt_params);
     // the dovetail clip
     if (include_mounting){
         translate_y(illumination_dovetail_y()){
-            // Mirroring ensures the sloping nut trap retains the nut
-            // if the thumbscrew is unscrewed.  As the condenser is
-            // modelled upside down, if we didn't flip it in Z, the
-            // nut would slide out of the trap when the screw is
-            // removed.
-            translate_z(dt_height){
-                mirror([0,0,1]){
-                    dovetail_clamp_m(dt_params);
-                }
-            }
+            dovetail_clamp_m(dt_params);
         }
     }
+    // main cylinder of the condenser
     cylinder(r=base_r+.2, h=lens_assembly_z+tiny());
-    //this hull is the outer shape of the body of the condenser
-    sequential_hull(){
-        cylinder(r=base_r+.2, h=dt_height);
-        translate_y(base_r){
+    if (!basic_condenser){
+        //this hull is the outer shape of the body of the condenser
+        sequential_hull(){
             cylinder(r=base_r+.2, h=dt_height);
-        }
-        if (include_mounting){
-            translate_y(illumination_dovetail_y()){
-                linear_extrude(dt_height){
-                    back_of_block_2d(dt_params);
+            translate_y(base_r){
+                cylinder(r=base_r+.2, h=dt_height);
+            }
+            if (include_mounting){
+                translate_y(illumination_dovetail_y()){
+                    linear_extrude(dt_height){
+                        back_of_block_2d(dt_params);
+                    }
                 }
             }
         }
@@ -331,14 +330,14 @@ function condenser_base_r(lens_d)=lens_d/2+2;
 // Module: condenser()
 //   This makes the condenser arm, including the dovetail clamp, condenser
 //   lens holder, and mounting for the illumination PCB.
-module condenser(lens_assembly_z=condenser_lens_assembly_z(), include_mounting=true){
+module condenser(lens_assembly_z=condenser_lens_assembly_z(), include_mounting=true, basic_condenser = false){
     lens_d=condenser_lens_diameter();
     lens_t=condenser_lens_thickness();
     base_r = condenser_base_r(lens_d);
 
     difference(){
         union(){
-            condenser_body(base_r, lens_assembly_z+tiny(), include_mounting);
+            condenser_body(base_r, lens_assembly_z+tiny(), include_mounting, basic_condenser);
             //add the lens gripper
             translate_z(lens_assembly_z){
                 condenser_lens_gripper(lens_d/2, lens_t, base_r);
