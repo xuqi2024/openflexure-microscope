@@ -11,6 +11,7 @@ use <./libs/microscope_parameters.scad>
 use <./libs/lib_optics.scad>
 use <./libs/optics_configurations.scad>
 use <./libs/utilities.scad>
+use <./libs/libdict.scad>
 
 lens_spacer_stl();
 
