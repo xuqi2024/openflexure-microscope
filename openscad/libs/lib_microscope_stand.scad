@@ -300,7 +300,7 @@ module pi_drawer_cutout(params, stand_params){
         }
         //Cutout for the side connectors
         translate([5, -50, 2]){
-            cube([60, 100, 25]);
+            cube([60, 100, 27.5]);
         }
         translate(electronics_drawer_side_screw_pos()){
             rotate_x(90){
