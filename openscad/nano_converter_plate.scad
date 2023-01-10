@@ -2,12 +2,17 @@ use <./libs/lib_microscope_stand.scad>
 use <./libs/libdict.scad>
 use <../openscad/libs/utilities.scad>
 
-exterior_brim(smooth_r = 5){
-    nano_converter_plate_stl();
-}
+PI_VERSION = 3;
 
-module nano_converter_plate_stl(){
-    nano_converter_plate();
+
+nano_converter_plate_stl(PI_VERSION);
+
+
+module nano_converter_plate_stl(pi_version=4){
+    exterior_brim(r=8, smooth_r = 5){
+        nano_converter_plate(pi_version);
+    }
+    echo(pi_version);
 }
 
 function nano_converter_plate_size() = let(
@@ -19,19 +24,19 @@ function nano_converter_plate_size() = let(
     thickness = usb_height - sanga_stand_height() + 2
 ) [pi_board_dims().x, width, thickness];
 
-module nano_converter_plate(){
+module nano_converter_plate(pi_version=4){
 
     size = nano_converter_plate_size();
 
     mount_hole = zero_z(electronics_drawer_block_hole_pos())-electronics_drawer_board_inset();
-    mount_hole_positions = [pi_hole_pos()[0], pi_hole_pos()[1], mount_hole];
+    mount_hole_positions = [(pi_hole_pos()[0]+[-8,0,0]), pi_hole_pos()[1], mount_hole];
 
     difference(){
         union(){
             cube(size);
             // additional cube in -x direction for wall around Pico
-            translate_x(-2){
-                cube([4,size.y,size.z]);
+            translate_x(-9){
+                cube([11,size.y,size.z]);
             }
             translate_z(size.z-tiny()){
                 nano_conv_plate_zc_a0591_mounts("standoff");
@@ -43,7 +48,7 @@ module nano_converter_plate(){
             }
         }
 
-        nano_conv_plate_pi_port_cutout();
+        nano_conv_plate_pi_port_cutout(pi_version);
         translate_x(sanga_connector_x(sanga_version="v0.4")){
             nano_conv_plate_nano_cutout();
         }
@@ -74,16 +79,30 @@ module nano_conv_plate_zc_a0591_mounts(type="hole"){
     }
 }
 
-module nano_conv_plate_pi_port_cutout(){
+module nano_conv_plate_pi_port_cutout(pi_version=4){
     size = nano_converter_plate_size();
-    translate([size.x-18, 1.5, -2]){
-        cube([19, 15, size.z]);
+    if (pi_version==3){
+        translate([size.x-18, 39.5, -2]){
+            cube([19, 15, size.z]);
+        }
+        translate([size.x-18, 21.5, -2]){
+            cube([19, 15, size.z]);
+        }
+        translate([size.x-22, 1.5, -2]){
+            cube([23, 18, size.z]);
+        }
+
     }
-    translate([size.x-18, 19.5, -2]){
-        cube([19, 15, size.z]);
-    }
-    translate([size.x-22, 37, -2]){
-        cube([23, 18, size.z]);
+    else{
+        translate([size.x-18, 1.5, -2]){
+            cube([19, 15, size.z]);
+        }
+        translate([size.x-18, 19.5, -2]){
+            cube([19, 15, size.z]);
+        }
+        translate([size.x-22, 37, -2]){
+            cube([23, 18, size.z]);
+        }
     }
 }
 
