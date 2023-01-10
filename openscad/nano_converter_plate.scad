@@ -88,7 +88,7 @@ module nano_conv_plate_pi_port_cutout(pi_version=4){
         translate([size.x-18, 21.5, -2]){
             cube([19, 15, size.z]);
         }
-        translate([size.x-22, 1.5, -2]){
+        translate([size.x-21, 1.5, -2]){
             cube([23, 18, size.z]);
         }
 
