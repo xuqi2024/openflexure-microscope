@@ -2,10 +2,17 @@ use <./libs/lib_microscope_stand.scad>
 use <./libs/libdict.scad>
 use <../openscad/libs/utilities.scad>
 
-nano_converter_plate_stl();
+PI_VERSION = 4;
 
-module nano_converter_plate_stl(){
-    nano_converter_plate();
+
+nano_converter_plate_stl(PI_VERSION);
+
+
+module nano_converter_plate_stl(pi_version=4){
+    exterior_brim(r=8, smooth_r = 5){
+        nano_converter_plate(pi_version);
+    }
+    echo(pi_version);
 }
 
 function nano_converter_plate_size() = let(
@@ -17,32 +24,59 @@ function nano_converter_plate_size() = let(
     thickness = usb_height - sanga_stand_height() + 2
 ) [pi_board_dims().x, width, thickness];
 
-module nano_converter_plate(){
+module nano_converter_plate(pi_version=4){
 
     size = nano_converter_plate_size();
 
     mount_hole = zero_z(electronics_drawer_block_hole_pos())-electronics_drawer_board_inset();
-    mount_hole_positions = [pi_hole_pos()[0], pi_hole_pos()[1], mount_hole];
+    // extra mounting hole position is hard wired at -8mm from the HAT lug location
+    // TODO make it a parameter so that it always matches
+    mount_hole_positions = [(pi_hole_pos()[0]+[-8,0,0]), pi_hole_pos()[1], mount_hole];
+    side_lug_positions = [pi_hole_pos()[0], pi_hole_pos()[1], (pi_hole_pos()[0]+[-8,0,0])];
 
     difference(){
         union(){
             cube(size);
+            // additional cube in -x direction for wall around Pico
+            translate_x(-9){
+                cube([11,size.y,size.z]);
+            }
             translate_z(size.z-tiny()){
                 nano_conv_plate_zc_a0591_mounts("standoff");
             }
         }
+        // Counterbore the base for Sanga v0.5 side lugs
+        // lower the board 2.5mm (0.1") over teh lugs
+        plate_lower = 2.5;
+        for (lug = side_lug_positions){
+            hull(){
+                translate(lug + [0, 0, -tiny()]){
+                    cylinder(d=6, h=2*plate_lower, center=true);
+                }
+                translate(lug + [0, -99, -tiny()]){
+                    cylinder(d=6, h=2*plate_lower, center=true);
+                }
+            }
+        }
         for (hole = mount_hole_positions){
-            translate(hole + [0, 0, 1.5]){
+            translate(hole + [0, 0, 1.5+plate_lower]){
                 no2_selftap_counterbore();
             }
         }
 
-        nano_conv_plate_pi_port_cutout();
+        nano_conv_plate_pi_port_cutout(pi_version);
         translate_x(sanga_connector_x(sanga_version="v0.4")){
             nano_conv_plate_nano_cutout();
         }
         translate_z(0.5){
             nano_conv_plate_zc_a0591_mounts();
+        }
+        translate([45, 10, size.z-0.5]){
+            rotate_z(90){
+                linear_extrude(10){
+                    text(str("Pi ",pi_version,"B"), 5);
+                }
+            }
         }
     }
 }
@@ -62,39 +96,89 @@ module nano_conv_plate_zc_a0591_mounts(type="hole"){
     }
     translate(zc_a0591_pos(board_no=3)){
         rotate_z(90){
-            zc_a0591_board_mounts(type);
+            hole_nos = (type=="hole") ? [0,2,3] : [0,1,2,3];
+            zc_a0591_board_mounts(type, hole_nos=hole_nos);
         }
     }
 }
 
-module nano_conv_plate_pi_port_cutout(){
+module nano_conv_plate_pi_port_cutout(pi_version=4){
     size = nano_converter_plate_size();
-    translate([size.x-18, 1.5, -2]){
-        cube([19, 15, size.z]);
+    if (pi_version==3){
+        translate([size.x-18, 39.5, -2]){
+            cube([19, 15, size.z]);
+        }
+        translate([size.x-18, 21.5, -2]){
+            cube([19, 15, size.z]);
+        }
+        translate([size.x-21, 1.5, -2]){
+            cube([23, 18, size.z]);
+        }
+
     }
-    translate([size.x-18, 19.5, -2]){
-        cube([19, 15, size.z]);
-    }
-    translate([size.x-22, 37, -2]){
-        cube([23, 18, size.z]);
+    else{
+        translate([size.x-18, 1.5, -2]){
+            cube([19, 15, size.z]);
+        }
+        translate([size.x-18, 19.5, -2]){
+            cube([19, 15, size.z]);
+        }
+        translate([size.x-22, 37, -2]){
+            cube([23, 18, size.z]);
+        }
     }
 }
 
 //A cutout for an upside down arduino nano.
 module nano_conv_plate_nano_cutout(){
-
-    cube([8,18,20], center=true);
-    translate([-19/2, -tiny(), 3.5]){
-        cube([19, 44.5, 20]);
-    }
-    translate_y(40.8){
-        cube([9, 6, 20], center=true);
-    }
-    translate_y(25.8){
-        cube([8, 6, 20], center=true);
-    }
-    translate_y(55){
-        no2_selftap_hole(h=99, center=true);
+    difference(){
+        union(){
+            cube([8,18,20], center=true);
+            translate([-19/2, -tiny(), 3.5]){
+                cube([19, 44.5, 20]);
+            }
+            translate_y(40.8){
+                cube([9, 6, 20], center=true);
+            }
+            translate_y(25.8){
+                cube([8, 6, 20], center=true);
+            }
+            translate_y(55){
+                no2_selftap_hole(h=99, center=true);
+            }
+            // RaspberryPi Pico additions
+            translate([-22/2, -tiny(), 4]){
+                cube([22, 52, 20]);
+            }
+            translate_y(47){
+                cube([9, 10, 20], center=true);
+            }
+            translate([-4,12.5-tiny(),6.5]){
+                cube([6, 7, 10], center=true);
+                cube([4, 5, 20], center=true);
+            }
+        }
+        union(){
+            // a break-off bit to support back of a nano
+            translate([-24/2, 44.5, 4.75]){
+                cube([24, 1, 1]);
+            }
+            translate([-24/2, 50, 4.75]){
+                cube([24, 1, 1]);
+            } 
+            translate([-18/2, 44.5, 5.75-tiny()]){
+                cube([18, 6.5, 10]);
+            }
+            hull(){
+                translate([-7/2, 44.5, 3.5]){
+                   cube([7, 6.5, 10]);
+                }
+                translate([0, 44.5+6.5/2, 0]){
+                    $fn=12;
+                    cylinder(d=6.5, h=tiny());
+                }
+            } 
+        }
     }
 }
 
