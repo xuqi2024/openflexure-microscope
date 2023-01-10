@@ -21,7 +21,7 @@ function nano_converter_plate_size() = let(
     // Plate thickness should be thick enough that the USB cut-out does not go
     // through the board.
     usb_height = electronics_drawer_standoff_h() + 17,
-    thickness = usb_height - sanga_stand_height() + 2
+    thickness = usb_height - sanga_stand_height(sanga_version="v0.5") + 2
 ) [pi_board_dims().x, width, thickness];
 
 module nano_converter_plate(pi_version=4){
@@ -37,29 +37,34 @@ module nano_converter_plate(pi_version=4){
     difference(){
         union(){
             cube(size);
+            end_thickness = (size.z < 6.5) ? 6.5 : size.z;
             // additional cube in -x direction for wall around Pico
             translate_x(-9){
-                cube([11,size.y,size.z]);
+                cube([11,size.y,end_thickness]);
             }
+            // cubes to make sure there is a wall around nano both sides
+            // This will not add anything if the plate thickness > 6.5
+            cube([25, 20, end_thickness]);
+            cube([15, size.y, end_thickness]);
             translate_z(size.z-tiny()){
                 nano_conv_plate_zc_a0591_mounts("standoff");
             }
         }
-        // Counterbore the base for Sanga v0.5 side lugs
-        // lower the board 2.5mm (0.1") over teh lugs
-        plate_lower = 2.5;
-        for (lug = side_lug_positions){
-            hull(){
-                translate(lug + [0, 0, -tiny()]){
-                    cylinder(d=6, h=2*plate_lower, center=true);
-                }
-                translate(lug + [0, -99, -tiny()]){
-                    cylinder(d=6, h=2*plate_lower, center=true);
-                }
-            }
-        }
+        // // Counterbore the base for Sanga v0.5 side lugs
+        // // lower the board 2.5mm (0.1") over teh lugs
+        // plate_lower = 2.5;
+        // for (lug = side_lug_positions){
+        //     hull(){
+        //         translate(lug + [0, 0, -tiny()]){
+        //             cylinder(d=6, h=2*plate_lower, center=true);
+        //         }
+        //         translate(lug + [0, -99, -tiny()]){
+        //             cylinder(d=6, h=2*plate_lower, center=true);
+        //         }
+        //     }
+        // }
         for (hole = mount_hole_positions){
-            translate(hole + [0, 0, 1.5+plate_lower]){
+            translate(hole + [0, 0, 1.5]){
                 no2_selftap_counterbore();
             }
         }
@@ -168,6 +173,9 @@ module nano_conv_plate_nano_cutout(){
             } 
             translate([-18/2, 44.5, 5.75-tiny()]){
                 cube([18, 6.5, 10]);
+            }
+            translate([3, 44.5, 5.6]){
+                cube([1, 10, 1]);
             }
             hull(){
                 translate([-7/2, 44.5, 3.5]){
