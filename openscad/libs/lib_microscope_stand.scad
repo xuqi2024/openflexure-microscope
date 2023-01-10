@@ -594,6 +594,7 @@ module no2_selftap_lug(hole_pos, wall_pos, wall_angle){
 module sanga_lugs(sanga_version){
 
     side_lugs = (sanga_version=="v0.4" || sanga_version=="v0.5") ?
+        // TODO: third hole for Nano plate is just a number -8mm. Make this a parameter for nano plate to use as well
         [pi_hole_pos(true)[0], pi_hole_pos(true)[1], (pi_hole_pos(true)[0]+[-8,0,0])] :
         [sanga_v0_3_holes()[0], sanga_v0_3_holes()[1]];
     front_lugs = (sanga_version=="v0.4" || sanga_version=="v0.5") ?

@@ -32,6 +32,7 @@ module nano_converter_plate(pi_version=4){
     // extra mounting hole position is hard wired at -8mm from the HAT lug location
     // TODO make it a parameter so that it always matches
     mount_hole_positions = [(pi_hole_pos()[0]+[-8,0,0]), pi_hole_pos()[1], mount_hole];
+    side_lug_positions = [pi_hole_pos()[0], pi_hole_pos()[1], (pi_hole_pos()[0]+[-8,0,0])];
 
     difference(){
         union(){
@@ -44,8 +45,21 @@ module nano_converter_plate(pi_version=4){
                 nano_conv_plate_zc_a0591_mounts("standoff");
             }
         }
+        // Counterbore the base for Sanga v0.5 side lugs
+        // lower the board 2.5mm (0.1") over teh lugs
+        plate_lower = 2.5;
+        for (lug = side_lug_positions){
+            hull(){
+                translate(lug + [0, 0, -tiny()]){
+                    cylinder(d=6, h=2*plate_lower, center=true);
+                }
+                translate(lug + [0, -99, -tiny()]){
+                    cylinder(d=6, h=2*plate_lower, center=true);
+                }
+            }
+        }
         for (hole = mount_hole_positions){
-            translate(hole + [0, 0, 1.5]){
+            translate(hole + [0, 0, 1.5+plate_lower]){
                 no2_selftap_counterbore();
             }
         }
