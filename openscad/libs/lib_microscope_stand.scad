@@ -23,7 +23,7 @@ function microscope_stand_vert_height(stand_params) = let(
 
 function default_stand_params(tall=false, no_pi=false, pi_version=4, sanga_version="v0.4") =
     assert(pi_version==3 || pi_version==4, "pi_version must be 3 or 4")
-    assert(sanga_version=="v0.3" || sanga_version=="v0.4", "pi_version must be \"v0.3\" or \"v0.4\"")
+    assert(sanga_version=="v0.3" || sanga_version=="v0.4" || sanga_version=="v0.5", "sanga_version must be \"v0.3\", \"v0.4\" or \"0.5\"")
     [["electronics_drawer_h", 47], //The height of the tray the pi sits in.
      ["include_pi_tray_hole", !no_pi], //Whether the stand has a hole for the raspberry pi tray
      ["extra_height", tall ? 17 : 0], //extra height above the raspberry pi_tray
@@ -363,7 +363,11 @@ function electronics_drawer_front_pos() = let(
 ) [x_tr, 0, 0];
 
 function sanga_stand_height(sanga_version="v0.4") = let(
-    extra_h = (sanga_version=="v0.4") ? 12.5 : 27
+    extra_h = (sanga_version=="v0.4") ? 
+                12.5 : 
+                (sanga_version=="v0.5") ?
+                15 :
+                27  // otherwise Sangaboard v0.3
 ) electronics_drawer_standoff_h() + extra_h;
 
 function electronics_drawer_mount_block_size() = let(
@@ -517,7 +521,9 @@ module electronics_drawer_walls(stand_params){
     }
 }
 
-function sanga_connector_x(sanga_version) = (sanga_version=="v0.4") ? 11.2 : 23.7;
+function sanga_connector_x(sanga_version) = (sanga_version=="v0.4" || sanga_version=="v0.5") ? 
+                                                11.2 : 
+                                                23.7;
 
 
 function sanga_v0_3_board_dims() = [65, 55, 1.5];
@@ -535,12 +541,14 @@ function sanga_v0_3_holes() = let(
 
 module sanga_connector_holes(sanga_version){
     v0_3_offset_x = pi_board_dims().x-sanga_v0_3_board_dims().x;
-    board_inset = (sanga_version=="v0.4") ?
+    board_inset = (sanga_version=="v0.4" || sanga_version=="v0.5") ?
         electronics_drawer_board_inset() :
         electronics_drawer_board_inset() + [v0_3_offset_x, 0, 0];
 
     wall_t = electronics_drawer_wall_t();
-    connector_extra_z = (sanga_version=="v0.4") ? 3 : 3.75;
+    connector_extra_z = (sanga_version=="v0.4" || sanga_version=="v0.5") ? 
+                            3 :
+                            3.75;
     connector_z = sanga_stand_height(sanga_version) + tiny() + connector_extra_z;
     connector_x = sanga_connector_x(sanga_version) + board_inset.x;
     sanga_connector_pos = [connector_x, 0, connector_z];
@@ -585,10 +593,10 @@ module no2_selftap_lug(hole_pos, wall_pos, wall_angle){
 
 module sanga_lugs(sanga_version){
 
-    side_lugs = (sanga_version=="v0.4") ?
+    side_lugs = (sanga_version=="v0.4" || sanga_version=="v0.5") ?
         [pi_hole_pos(true)[0], pi_hole_pos(true)[1], (pi_hole_pos(true)[0]+[-8,0,0])] :
         [sanga_v0_3_holes()[0], sanga_v0_3_holes()[1]];
-    front_lugs = (sanga_version=="v0.4") ?
+    front_lugs = (sanga_version=="v0.4" || sanga_version=="v0.5") ?
         [] :
         [sanga_v0_3_holes()[2]];
     translate_z(sanga_stand_height(sanga_version)){
