@@ -2,7 +2,7 @@ use <./libs/lib_microscope_stand.scad>
 use <./libs/libdict.scad>
 use <../openscad/libs/utilities.scad>
 
-PI_VERSION = 3;
+PI_VERSION = 4;
 
 
 nano_converter_plate_stl(PI_VERSION);
@@ -29,6 +29,8 @@ module nano_converter_plate(pi_version=4){
     size = nano_converter_plate_size();
 
     mount_hole = zero_z(electronics_drawer_block_hole_pos())-electronics_drawer_board_inset();
+    // extra mounting hole position is hard wired at -8mm from the HAT lug location
+    // TODO make it a parameter so that it always matches
     mount_hole_positions = [(pi_hole_pos()[0]+[-8,0,0]), pi_hole_pos()[1], mount_hole];
 
     difference(){
@@ -54,6 +56,13 @@ module nano_converter_plate(pi_version=4){
         }
         translate_z(0.5){
             nano_conv_plate_zc_a0591_mounts();
+        }
+        translate([45, 10, size.z-0.5]){
+            rotate_z(90){
+                linear_extrude(10){
+                    text(str("Pi ",pi_version,"B"), 5);
+                }
+            }
         }
     }
 }
