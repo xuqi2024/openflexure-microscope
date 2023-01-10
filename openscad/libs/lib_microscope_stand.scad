@@ -381,7 +381,7 @@ function electronics_drawer_front_screw_pos() = let(
 
 function electronics_drawer_front_nut_trap_pos() = electronics_drawer_front_screw_pos() - [7, 0, 0];
 
-function electronics_drawer_side_screw_pos() = [14, -3, 35];
+function electronics_drawer_side_screw_pos() = [0, -3, 35];
 
 function electronics_drawer_nut_block_depth() = 5;
 
@@ -401,7 +401,7 @@ function electronics_drawer_block_hole_pos() = let(
 function electronics_drawer_standoff_h() = 5.5;
 
 module electronics_drawer(stand_params){
-    electronics_drawer_base();
+    electronics_drawer_base(stand_params);
     electronics_drawer_walls(stand_params);
 }
 
@@ -428,8 +428,9 @@ module pi_tap_holes(connector_side=true, inside=true){
     }
 }
 
-module electronics_drawer_base(){
-
+module electronics_drawer_base(stand_params){
+    pi_version = key_lookup("pi_version", stand_params);
+    sanga_version = key_lookup("sanga_version", stand_params);
     standoff_h = electronics_drawer_standoff_h();
     base_size = electronics_drawer_base_size();
     hole_pos = pi_hole_pos(true);
@@ -451,6 +452,19 @@ module electronics_drawer_base(){
         translate_y(base_size.y/2){
             cube(25, center=true);
         }
+        text_height = 6;
+        version_string_p = str("Pi ", pi_version,"B"); 
+        version_string_s = str("Sanga ",sanga_version);
+        translate([20, (base_size.y/2 + text_height*0.5), 1]){
+            linear_extrude(10){
+                text(version_string_p,text_height);
+            }
+        }
+        translate([20, (base_size.y/2 - text_height), 1]){
+            linear_extrude(10){
+                text(version_string_s,text_height);
+            }
+        }
     }
 }
 
@@ -462,10 +476,13 @@ module electronics_drawer_walls(stand_params){
     sanga_version = key_lookup("sanga_version", stand_params);
     base_size = electronics_drawer_base_size();
     wall_t = electronics_drawer_wall_t();
+    extra_wall_length = 5; // to accommodate a mounting lug for nano convertor plate
 
     difference(){
         union(){
-            cube([base_size.x, wall_t, electronics_drawer_h]);
+            translate_x(-extra_wall_length){
+                cube([(base_size.x + extra_wall_length), wall_t, electronics_drawer_h]);
+            }
             translate(electronics_drawer_front_pos()){
                 cube([wall_t, electronics_drawer_front_width(), electronics_drawer_h]);
             }
@@ -569,7 +586,7 @@ module no2_selftap_lug(hole_pos, wall_pos, wall_angle){
 module sanga_lugs(sanga_version){
 
     side_lugs = (sanga_version=="v0.4") ?
-        [pi_hole_pos(true)[0], pi_hole_pos(true)[1]] :
+        [pi_hole_pos(true)[0], pi_hole_pos(true)[1], (pi_hole_pos(true)[0]+[-8,0,0])] :
         [sanga_v0_3_holes()[0], sanga_v0_3_holes()[1]];
     front_lugs = (sanga_version=="v0.4") ?
         [] :
