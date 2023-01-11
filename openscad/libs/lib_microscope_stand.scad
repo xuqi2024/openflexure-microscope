@@ -459,12 +459,12 @@ module electronics_drawer_base(stand_params){
         text_height = 6;
         version_string_p = str("Pi ", pi_version,"B"); 
         version_string_s = str("Sanga ",sanga_version);
-        translate([20, (base_size.y/2 + text_height*0.5), 1]){
+        translate([20, (base_size.y/2 + text_height*0.5), base_size.z-0.5]){
             linear_extrude(10){
                 text(version_string_p,text_height);
             }
         }
-        translate([20, (base_size.y/2 - text_height), 1]){
+        translate([20, (base_size.y/2 - text_height), base_size.z-0.5]){
             linear_extrude(10){
                 text(version_string_s,text_height);
             }
@@ -480,7 +480,7 @@ module electronics_drawer_walls(stand_params){
     sanga_version = key_lookup("sanga_version", stand_params);
     base_size = electronics_drawer_base_size();
     wall_t = electronics_drawer_wall_t();
-    extra_wall_length = 5; // to accommodate a mounting lug for nano convertor plate
+    extra_wall_length = 5.5; // to accommodate a mounting lug for nano convertor plate
 
     difference(){
         union(){

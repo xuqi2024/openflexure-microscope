@@ -42,27 +42,11 @@ module nano_converter_plate(pi_version=4){
             translate_x(-9){
                 cube([11,size.y,end_thickness]);
             }
-            // cubes to make sure there is a wall around nano both sides
-            // This will not add anything if the plate thickness > 6.5
-            cube([25, 20, end_thickness]);
-            cube([15, size.y, end_thickness]);
+            nano_conv_plate_nano_walls(size);
             translate_z(size.z-tiny()){
                 nano_conv_plate_zc_a0591_mounts("standoff");
             }
         }
-        // // Counterbore the base for Sanga v0.5 side lugs
-        // // lower the board 2.5mm (0.1") over teh lugs
-        // plate_lower = 2.5;
-        // for (lug = side_lug_positions){
-        //     hull(){
-        //         translate(lug + [0, 0, -tiny()]){
-        //             cylinder(d=6, h=2*plate_lower, center=true);
-        //         }
-        //         translate(lug + [0, -99, -tiny()]){
-        //             cylinder(d=6, h=2*plate_lower, center=true);
-        //         }
-        //     }
-        // }
         for (hole = mount_hole_positions){
             translate(hole + [0, 0, 1.5]){
                 no2_selftap_counterbore();
@@ -85,6 +69,29 @@ module nano_converter_plate(pi_version=4){
         }
     }
 }
+
+// cubes to make sure there is a wall around nano both sides
+// This will not add anything if the plate thickness > 6.5
+module nano_conv_plate_nano_walls(size)
+    if (size.z<6.5){
+        cyl_r = 6.5 - size.z + 0.5;
+        end_thickness = 6.5;
+        cube([25, 30, end_thickness]);
+        translate([25, 0, end_thickness-cyl_r]){
+            rotate_x(-90){
+                $fn = 12;
+                cylinder(r=cyl_r, h=30, center=false);
+            }
+        }
+        cube([15, size.y, end_thickness]);
+        translate([15, size.y-17, end_thickness-cyl_r]){
+            rotate_x(-90){
+                $fn = 12;
+                cylinder(r=cyl_r, h=17, center=false);
+            }
+        }
+    }
+    
 
 module nano_conv_plate_zc_a0591_mounts(type="hole"){
     assert(is_in(type, ["standoff", "hole"]), "Mount type must be standoff or hole");
@@ -134,7 +141,7 @@ module nano_conv_plate_pi_port_cutout(pi_version=4){
     }
 }
 
-//A cutout for an upside down arduino nano.
+// A cutout for an upside down arduino nano or Raspberry Pi Pico
 module nano_conv_plate_nano_cutout(){
     difference(){
         union(){
