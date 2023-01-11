@@ -580,9 +580,13 @@ module no2_selftap_lug(hole_pos, wall_pos, wall_angle){
                 translate(hole_pos){
                     cylinder(d=5.5, h=5, $fn=12);
                 }
-                translate([wall_pos.x, wall_pos.y, hole_pos.z]){
+                // make the lug at 45 degree slope
+                z_for_angle = sqrt((hole_pos.y - wall_pos.y)^2 + (hole_pos.x - wall_pos.x)^2);
+                translate([(wall_pos.x), wall_pos.y, (hole_pos.z - z_for_angle)]){
                     rotate_z(wall_angle){
-                        cube([5.5, 0.1, 10], center=true);
+                        translate_x(-5.5/2){
+                            cube([5.5, 0.1, 5+z_for_angle], center=false);
+                        }
                     }
                 }
             }
@@ -593,11 +597,13 @@ module no2_selftap_lug(hole_pos, wall_pos, wall_angle){
     }
 }
 
+// offset from pi_hole_pos()[0] for a third mounting hole for the nano convertor plate, 
+function nano_conv_plate_third_screw_ofst() = [-8, 3, 0];
+
 module sanga_lugs(sanga_version){
 
     side_lugs = (sanga_version=="v0.4" || sanga_version=="v0.5") ?
-        // TODO: third hole for Nano plate is just a number -8mm. Make this a parameter for nano plate to use as well
-        [pi_hole_pos(true)[0], pi_hole_pos(true)[1], (pi_hole_pos(true)[0]+[-8,0,0])] :
+        [pi_hole_pos(true)[0], pi_hole_pos(true)[1], (pi_hole_pos(true)[0]+ nano_conv_plate_third_screw_ofst())] :
         [sanga_v0_3_holes()[0], sanga_v0_3_holes()[1]];
     front_lugs = (sanga_version=="v0.4" || sanga_version=="v0.5") ?
         [] :

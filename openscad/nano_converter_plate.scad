@@ -29,9 +29,7 @@ module nano_converter_plate(pi_version=4){
     size = nano_converter_plate_size();
 
     mount_hole = zero_z(electronics_drawer_block_hole_pos())-electronics_drawer_board_inset();
-    // extra mounting hole position is hard wired at -8mm from the HAT lug location
-    // TODO make it a parameter so that it always matches
-    mount_hole_positions = [(pi_hole_pos()[0]+[-8,0,0]), pi_hole_pos()[1], mount_hole];
+    mount_hole_positions = [(pi_hole_pos()[0]+nano_conv_plate_third_screw_ofst()), pi_hole_pos()[1], mount_hole];
     side_lug_positions = [pi_hole_pos()[0], pi_hole_pos()[1], (pi_hole_pos()[0]+[-8,0,0])];
 
     difference(){
