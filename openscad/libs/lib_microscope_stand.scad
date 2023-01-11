@@ -371,7 +371,7 @@ function sanga_stand_height(sanga_version="v0.4") = let(
 ) electronics_drawer_standoff_h() + extra_h;
 
 function electronics_drawer_mount_block_size() = let(
-    height = sanga_stand_height("v0.4"),
+    height = sanga_stand_height("v0.5"),
     width = electronics_drawer_front_width()-electronics_drawer_base_size().y
 ) [10, width, height];
 
