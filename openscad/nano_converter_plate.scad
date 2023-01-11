@@ -153,7 +153,7 @@ module nano_conv_plate_nano_cutout(){
             translate_y(25.8){
                 cube([8, 6, 20], center=true);
             }
-            translate_y(55){
+            translate_y(57){
                 no2_selftap_hole(h=99, center=true);
             }
             // RaspberryPi Pico additions
