@@ -66,9 +66,9 @@ If you are using Windows, you may need to escape the `"` quotation marks by repl
 
 The recommended camera is the Raspberry Pi camera. The 3D printed parts work with both v1 and v2, but **only v2 is supported by the standard software.** 
 
-For the RMS objective optics we also generate optics modules for an M12 camera, or a Logitech C270 webcam, both of which connect to a computer via USB. These modules are not extensively tested. **USB cameras are not supported in the standard software**. 
+For the RMS objective optics we also generate optics modules for an M12 camera, or a Logitech C270 webcam, both of which connect to a computer via USB. These optics modules are not extensively tested. **USB cameras are not supported in the standard software**. 
 
-For the basic optics module we also generate lens spacers and camera platforms for a Logitech C270 webcam or an Arduino B0196 USB webcam (which is based on the same Sony camera module as the Raspberry Pi camera v2). These modules are not extensively tested. **USB cameras are not supported in the standard software**.
+For the basic optics module we also generate lens spacers and camera platforms for a Logitech C270 webcam ([lens spacer](lens_spacer_c270.stl){prieviewpage}, [camera platform](camera_platform_c270.stl){previewpage}) or an Arduino B0196 USB webcam (which is based on the same Sony IMX219 camera module as the Raspberry Pi camera v2, ([lens spacer](lens_spacer_arducam_b0196.stl){prieviewpage}, [camera platform](camera_platform_arducam_b0196.stl){previewpage})). These camera configurations are not extensively tested. **USB cameras are not supported in the standard software**.
 
 #### List of available RMS optics modules
 
