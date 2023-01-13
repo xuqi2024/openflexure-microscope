@@ -48,9 +48,9 @@ function pilens_config(camera_type = "picamera_2") = let(
 function c270lens_config(camera_type = "logitech_c270") = let(
     config_dict = [["optics_type", "spacer"],
                    ["camera_type", camera_type],
-                   ["lens_r", 6],
+                   ["lens_r", (11.6/2)],
                    ["parfocal_distance", (6+1)], // For a lens spacer, this is the full lens thickness plus the working distance
-                   ["lens_h", 5], // For a lens spacer this is the lens thickness to be gripped
+                   ["lens_h", 4], // For a lens spacer this is the lens thickness to be gripped
                    ["lens_spacing", 17]]
 ) config_dict;
 
