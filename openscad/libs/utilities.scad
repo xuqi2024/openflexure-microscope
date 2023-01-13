@@ -224,6 +224,16 @@ module no2_selftap_counterbore(bore_h=999, hole_h=999, flip_z=false, tight=false
     generic_counterbore(bore_d=bore_d, bore_h=bore_h, hole_d=2.5, hole_h=hole_h, flip_z=flip_z);
 }
 
+// Module: no1_selftap_hole()
+// Usage: no1_selftap_hole(h=5)
+// Description:
+//   Use to create a hole for a No1 self-tap screw using a `difference()` operation.
+//   This is a triangular cross-section hole.
+module no1_selftap_hole(h=10, center=false){
+    //This value for flat came from scaling the No2 hole.
+    trylinder(r=.3, flat=1.23, h=h, center=center);
+}
+
 // Counterbored through hole for an m3 cap screw counterbore is above z=0
 // through hole is below z=0. If flip_z is used the hole is not only flipped in z,
 // it is also designed so that the counterbore can print prperly upsidedown
