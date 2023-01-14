@@ -363,8 +363,8 @@ function electronics_drawer_front_pos() = let(
 ) [x_tr, 0, 0];
 
 function sanga_stand_height(sanga_version="v0.4") = let(
-    extra_h = (sanga_version=="v0.4") ? 
-                12.5 : 
+    extra_h = (sanga_version=="v0.4") ?
+                12.5 :
                 (sanga_version=="v0.5") ?
                 15 :
                 27  // otherwise Sangaboard v0.3
@@ -459,7 +459,7 @@ module electronics_drawer_base(stand_params){
             cube(25, center=true);
         }
         text_height = 6;
-        version_string_p = str("Pi ", pi_version,"B"); 
+        version_string_p = str("Pi ", pi_version,"B");
         version_string_s = str("Sanga ",sanga_version);
         translate([20, (base_size.y/2 + text_height*0.5), base_size.z-0.5]){
             linear_extrude(10){
@@ -523,8 +523,8 @@ module electronics_drawer_walls(stand_params){
     }
 }
 
-function sanga_connector_x(sanga_version) = (sanga_version=="v0.4" || sanga_version=="v0.5") ? 
-                                                11.2 : 
+function sanga_connector_x(sanga_version) = (sanga_version=="v0.4" || sanga_version=="v0.5") ?
+                                                11.2 :
                                                 23.7;
 
 
@@ -548,7 +548,7 @@ module sanga_connector_holes(sanga_version){
         electronics_drawer_board_inset() + [v0_3_offset_x, 0, 0];
 
     wall_t = electronics_drawer_wall_t();
-    connector_extra_z = (sanga_version=="v0.4" || sanga_version=="v0.5") ? 
+    connector_extra_z = (sanga_version=="v0.4" || sanga_version=="v0.5") ?
                             3 :
                             3.75;
     connector_z = sanga_stand_height(sanga_version) + tiny() + connector_extra_z;
