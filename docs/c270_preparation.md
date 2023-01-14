@@ -40,7 +40,7 @@ In this section we are disassembling a Logitech C270 HD webcam to use with C270 
 
 
 * Before touching the camera board touch a metal earthed object. If you own one, consider wearing and anti-static strap
-* Remove the small rubber tube from the microphone and discard it {note: "The microphone is the cylindrical cylinder in the middle of the board, it is the largest component other than the camera"}
+* Remove the small rubber tube from the microphone and discard it. The microphone is the cylindrical component in the middle of the board, it is the largest component other than the camera.
 * Unscrew two screws holding the camera board, using a [#0 Phillips screwdriver]{qty:1}
 * Save the screws as spares
 * Release the board from the case. It is still attached to the case by the cable
@@ -77,7 +77,7 @@ In this section we are disassembling a Logitech C270 HD webcam to use with C270 
 * Unscrew two screws holding the lens mount to the camera board, using a [#0 Phillips screwdriver]{qty:1} 
 * Save both screws for mounting the camera if you are using an Openflexure RMS optics module. These screws are different from the others
 * Turn the camera board over 
-* Hold the lens assembly and carefully pull it from the board{note: "The lens assembly is held with double-sided tape and requires a little force to remove"}
+* Hold the lens assembly and carefully pull it from the board. The lens assembly is held with double-sided tape and requires a little force to remove.
 * Retain the lens assembly if you are going to use the basic optics module with a lens spacer
 * Remove the small foam pad from the board, next to the lens mount
 
@@ -91,6 +91,6 @@ In this section we are disassembling a Logitech C270 HD webcam to use with C270 
 
 
 * Grasp the square lens mount and the knurled round lens holder
-* Unscrew the lens from the mount{note: "There is some force required to start to unscrew the lens"}
+* Unscrew the lens from the mount. There is some force required to start to unscrew the lens as it is held in place with a little glue.
 
 
