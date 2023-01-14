@@ -30,7 +30,6 @@ module nano_converter_plate(pi_version=4){
 
     mount_hole = zero_z(electronics_drawer_block_hole_pos())-electronics_drawer_board_inset();
     mount_hole_positions = [(pi_hole_pos()[0]+nano_conv_plate_third_screw_ofst()), pi_hole_pos()[1], mount_hole];
-    side_lug_positions = [pi_hole_pos()[0], pi_hole_pos()[1], (pi_hole_pos()[0]+[-8,0,0])];
 
     difference(){
         union(){
@@ -77,19 +76,16 @@ module nano_conv_plate_nano_walls(size)
         cube([25, 30, end_thickness]);
         translate([25, 0, end_thickness-cyl_r]){
             rotate_x(-90){
-                $fn = 12;
-                cylinder(r=cyl_r, h=30, center=false);
+                cylinder(r=cyl_r, h=30, center=false, $fn = 12);
             }
         }
         cube([15, size.y, end_thickness]);
         translate([15, size.y-17, end_thickness-cyl_r]){
             rotate_x(-90){
-                $fn = 12;
-                cylinder(r=cyl_r, h=17, center=false);
+                cylinder(r=cyl_r, h=17, center=false, $fn = 12);
             }
         }
     }
-    
 
 module nano_conv_plate_zc_a0591_mounts(type="hole"){
     assert(is_in(type, ["standoff", "hole"]), "Mount type must be standoff or hole");
@@ -175,7 +171,7 @@ module nano_conv_plate_nano_cutout(){
             }
             translate([-24/2, 50, 4.75]){
                 cube([24, 1, 1]);
-            } 
+            }
             translate([-18/2, 44.5, 5.75-tiny()]){
                 cube([18, 6.5, 10]);
             }
@@ -187,10 +183,9 @@ module nano_conv_plate_nano_cutout(){
                    cube([7, 6.5, 10]);
                 }
                 translate([0, 44.5+6.5/2, 0]){
-                    $fn=12;
-                    cylinder(d=6.5, h=tiny());
+                    cylinder(d=6.5, h=tiny(), $fn=12);
                 }
-            } 
+            }
         }
     }
 }
