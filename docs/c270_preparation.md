@@ -1,6 +1,6 @@
 # Prepare the Logitech C270 HD webcam for mounting 
 
-In this section we are disassembling a Logitech C270 HD webcam to use with C270 versions of Openflexure optics modules.
+In this section we are disassembling a Logitech C270 HD webcam to use with C270 versions of Openflexure optics modules. It is not supported in the Openflexure software, but it can be used with many simple webcam programs.
 
 {{BOM}}
 
@@ -70,7 +70,7 @@ In this section we are disassembling a Logitech C270 HD webcam to use with C270 
 
 >! **Caution!**
 >!
->! The camera sensor is very delicate
+>! The camera sensor is very delicate  
 >! Work in a dust-free area
 
 * Place the camera board with the lens facing down
@@ -93,4 +93,4 @@ In this section we are disassembling a Logitech C270 HD webcam to use with C270 
 * Grasp the square lens mount and the knurled round lens holder
 * Unscrew the lens from the mount. There is some force required to start to unscrew the lens as it is held in place with a little glue.
 
-
+The [prepared Logitech C270 camera]{output, qty:1} and lens are now ready to attach to your optics module or lens spacer
