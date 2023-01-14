@@ -446,6 +446,7 @@ module electronics_drawer_base(stand_params){
                     cylinder(d=5.5, h=standoff_h, $fn=12);
                 }
             }
+            // TODO remove unused code when confirmed
             // // bumps to locate Pi, do not seem to be necessary as the ports fit the walls snugly.
             // // makes it slighty harder to remove the Pi when it is unscrewed.
             // for (hole = [hole_pos[0], hole_pos[1]]){
