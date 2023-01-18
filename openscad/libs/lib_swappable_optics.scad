@@ -19,7 +19,7 @@ function swappable_rms_params(params) = let(
     objective_r = rms_r + 3
 ) [
     ["dowel_d", dowel_d],                       // diameter of dowel pins
-    ["dowel_l", 16],                      // length of dowel pins
+    ["dowel_l", 12],                      // length of dowel pins
     ["dowel_separation", dowel_d + 0.8], // centre-to-centre separation of dowel pins, (magnet_d + dowel_d)/2/sqrt(2) for 45 degrees
     ["magnet_d", magnet_d],                      // diameter of ball magnets
     ["rms_r", rms_r],
@@ -333,9 +333,9 @@ module swappable_rms_mount(params){
                 }
                 // Vertical holes so the balls can make contact
                 hull(){
-                    translate([0, 0, dowel_z]){ // This might want to be lower...
-                        repeat([0, magnet_r, 0], 2){
-                            cylinder(d=dowel_sep + dowel_d, h=99, $fn=16);
+                    translate([0, magnet_r, dowel_z]){ // This might want to be lower...
+                        repeat([0, -magnet_r, 0], 1){
+                            cylinder(d=magnet_d, h=99, $fn=16);
                         }
                     }
                 }
