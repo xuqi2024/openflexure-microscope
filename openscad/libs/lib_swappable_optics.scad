@@ -97,12 +97,11 @@ module optics_module_swappable_rms(params, optics_config, include_wedge=true){
 
     // Calculate the position and size of the mout that holds the lens and
     rms_optics_mount_z = tube_lens_face_z(params, optics_config) - pedestal_h;
-    rms_optics_mount_base_r = rms_radius()+1;
+    rms_optics_mount_base_r = rms_thread_nominal_d()/2+1;
     // We chop the RMS bit off the RMS mount, so it can be replaced by the carrier
     rms_optics_mount_h = objective_shoulder_z(params, optics_config) - rms_optics_mount_z - carrier_h - 1;
     //height of the top of the wedge - should be level with the cropped RMS mount
     wedge_top = objective_shoulder_z(params, optics_config) - carrier_h - 1;
-    mount_screw_z = objective_mount_screw_pos(params).z - 10;
     // We modify the parameters passed to the optics module, so that the mounting screw is
     // shifted in z.  This gives us a bit more clearance for the larger objective mount.
     // It will, of course, require the objective mount to be positioned on a higher spacer
@@ -142,38 +141,38 @@ module optics_module_swappable_rms(params, optics_config, include_wedge=true){
                         }
                     }
                 }
-                // camera cut-out and hole for the beam
-                if(beamsplitter){
-                    optical_path_fl(params, optics_config, rms_optics_mount_z, camera_mount_top_z);
-                }
-                else{
-                    optical_path(optics_config, rms_optics_mount_z, camera_mount_top_z);
-                }
                 // cut a hole for the rms thread and tube lens gripper
                 translate_z(rms_optics_mount_z){
-                    rms_mount_cutout(rms_optics_mount_h);
-                }
-                // clearance for the optics carrier
-                place_part(swappable_rms_carrier_placement(params, optics_config)){
-                    minkowski(){
-                        swappable_rms_carrier_base(params);
-                        translate([-0.5, -99 + 0.5, -0.5]){
-                            cube([1, 99, 1]);
-                        }
-                    }
-                }
-                // mounting screws
-                for(p=swappable_rms_mounting_screw_positions(params)){
-                    translate(p + [0, 0, swappable_rms_mount_z(params, optics_config)]){
-                        no2_selftap_hole(16, true);
-                    }
+                    rms_thread_and_cutout_for_tube_lens(rms_optics_mount_h);
                 }
             }
             translate_z(rms_optics_mount_z){
-                rms_optics_mount(optics_config,
-                                 h=rms_optics_mount_h,
-                                 pedestal_h=pedestal_h,
-                                 include_rms_thread=false);
+                tube_lens_gripper(
+                    optics_config,
+                    pedestal_h=pedestal_h
+                );
+            }
+        }
+        // camera cut-out and hole for the beam
+        if(beamsplitter){
+            optical_path_fl(params, optics_config, rms_optics_mount_z, camera_mount_top_z);
+        }
+        else{
+            optical_path(optics_config, rms_optics_mount_z, camera_mount_top_z);
+        }
+        // clearance for the optics carrier
+        place_part(swappable_rms_carrier_placement(params, optics_config)){
+            minkowski(){
+                swappable_rms_carrier_base(params);
+                translate([-0.5, -99 + 0.5, -1]){
+                    cube([1, 99, 1.5]);
+                }
+            }
+        }
+        // mounting screws
+        for(p=swappable_rms_mounting_screw_positions(params)){
+            translate(p + [0, 0, swappable_rms_mount_z(params, optics_config)]){
+                no2_selftap_hole(16, true);
             }
         }
     }
