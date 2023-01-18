@@ -214,23 +214,37 @@ module no2_selftap_hole(h=10, center=false){
     trylinder(r=.3, flat=1.73, h=h, center=center);
 }
 
-module no2_selftap_counterbore(bore_h=999, hole_h=999){
+module no2_selftap_clearancehole(h=10, center=false){
+    cylinder(d=2.5, h=h, center=center);
+}
+
+module no2_selftap_counterbore(bore_h=999, hole_h=999, flip_z=false, tight=false){
     $fn = 14;
-    generic_counterbore(bore_d=5.6, bore_h=bore_h, hole_d=2.5, hole_h=hole_h);
+    bore_d = tight ? 4.8 : 5.6;
+    generic_counterbore(bore_d=bore_d, bore_h=bore_h, hole_d=2.5, hole_h=hole_h, flip_z=flip_z);
 }
 
 // Counterbored through hole for an m3 cap screw counterbore is above z=0
-// through hole is below z=0
-module m3_cap_counterbore(bore_h=999, hole_h=999){
+// through hole is below z=0. If flip_z is used the hole is not only flipped in z,
+// it is also designed so that the counterbore can print prperly upsidedown
+module m3_cap_counterbore(bore_h=999, hole_h=999, flip_z=false){
     $fn = 14;
-    generic_counterbore(bore_d=6.5, bore_h=bore_h, hole_d=3.5, hole_h=hole_h);
+    generic_counterbore(bore_d=6.5, bore_h=bore_h, hole_d=3.5, hole_h=hole_h, flip_z=flip_z);
 }
 
-module generic_counterbore(bore_d, bore_h, hole_d, hole_h){
-    translate_z(-hole_h){
-        cylinder(d=hole_d, h=hole_h+tiny());
+module generic_counterbore(bore_d, bore_h, hole_d, hole_h, flip_z=false){
+    if (flip_z){
+        hole_from_bottom(r=hole_d/2, h=hole_h, big_bottom=false);
+        translate_z(-(bore_h-tiny())){
+            cylinder(d=bore_d, h=bore_h+tiny());
+        }
     }
-    cylinder(d=bore_d, h=bore_h);
+    else{
+        translate_z(-hole_h){
+            cylinder(d=hole_d, h=hole_h+tiny());
+        }
+        cylinder(d=bore_d, h=bore_h);
+    }
 }
 
 module nut(d,h=undef,center=false,fudge=1.18,shaft=false){
@@ -304,7 +318,7 @@ module nut_y(d,h=undef,center=false,fudge=1.15,extra_height=0.7,shaft_length=0){
             sl = shaft_length>0 ? shaft_length : 999;
             translate_y(height/2){
                 reflect_y(){
-                    cylinder_with_45deg_top(h=sl,r=d/2*1.05*fudge,$fn=16,extra_height=extra_height);
+                    printable_horizontal_hole(h=sl,r=d/2*1.05*fudge,$fn=16,extra_height=extra_height);
                 }
             }
             //Center could be used instead of reflect
@@ -411,50 +425,6 @@ module sparse_matrix_transform(xx=1, yy=1, zz=1, xy=0, xz=0, yx=0, yz=0, zx=0, z
     }
 }
 
-//TODO: What does this do? Do we still want it?
-module support(size, height, baseheight=0, rotation=[0,0,0], supportangle=45, outline=false){
-    //generate "support material" in the STL file for selective supporting of things
-    module support_2d(){
-        sw=1.0;
-        sp=3;
-        union(){
-            if(outline){
-                difference()    {
-                    minkowski(){
-                        children();
-                        circle(r=sw,$fn=8);
-                    }
-                    children();
-                }
-            }
-            intersection(){
-                children();
-                rotate(supportangle){
-                    for(x=[-size:sp:size]){
-                        translate([x,0]){
-                            square([sw,2*size],center=true);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    unrotate(rotation){
-        translate_z(baseheight){
-            linear_extrude(height){
-                support_2d(){
-                    projection(){
-                        rotate(rotation){
-                            children();
-                        }
-                    }
-                }
-            }
-        }
-    }
-    children();
-}
 
 module rightangle_prism(size,center=false){
     intersection(){
@@ -519,10 +489,33 @@ module concave_fillet(r){
     }
 }
 
-//TODO: Give this a better name
-module cylinder_with_45deg_top(h,r,center=false,extra_height=0.7){
+module thick_section(h=tiny(), center=false, shift=true){
+    // A 3D object, corresponding to the linearly-extruded projection of another object.
+    // The projection is at z=0 if shift=false, or a tiny distance above z=0 if shift=true.
+    offset_thick_section(h=h, center=center, shift=shift){
+        children();
+    }
+}
+module offset_thick_section(h=tiny(), offset=0, center=false, shift=true){
+    // A 3D object, corresponding to the linearly-extruded projection of another object, where
+    // the projection is offset before extrusion.
+    // The projection is at z=0 if shift=false, or a tiny distance above z=0 if shift=true.
+    linear_extrude(h, center=center){
+        offset(r=offset){
+            projection(cut=true){
+                translate_z(shift ? -tiny() : 0){
+                    children();
+                }
+            }
+        }
+    }
+}
+
+module printable_horizontal_hole(h,r,center=false,extra_height=0.7){
     // Block on top of the hortizontal cylinder. Hulled with the cylinder
-    // This forms a 45 degree sloped roof for printing
+    // This forms a 45 degree sloped roof for printing correctly when
+    // subtracted from a shape
+
     top_block_dims = [2*sin(45/2)*r, 2*tiny(), h];
     top_block_z = center ? 0 : h/2;
     top_block_tr = [0, r-tiny(), top_block_z];
@@ -537,26 +530,6 @@ module cylinder_with_45deg_top(h,r,center=false,extra_height=0.7){
             translate(top_block_tr){
                 cube(top_block_dims + [0, 2*extra_height, 0], center=true);
             }
-        }
-    }
-}
-
-//TODO: Find out if this is still needed, and what it is!
-module feather_vertical_edges(flat_h=0.2,fin_r=0.5,fin_h=0.72,object_h=20){
-    union(){
-    //    children();
-        minkowski(){
-            intersection(){
-                children();
-                union(){
-                    for(i=[-floor(object_h/fin_h):floor(object_h/fin_h)]){
-                        translate_z(i*fin_h+flat_h*1.5){
-                            cube([999,999,flat_h],center=true);
-                        }
-                    }
-                }
-            }
-            cylinder(r1=0,r2=fin_r,h=fin_h-2*flat_h,$fn=8);
         }
     }
 }
@@ -682,78 +655,18 @@ module hole_from_bottom(r, h, base_w=-1, delta_z=0.5, layers=4, big_bottom=true)
     }
 }
 
-// Module: lighttrap_cylinder)
-// Usage: lighttrap_cylinder(r1, r2, h, ridge=1.5);
-// Arguments:
-//   r1 = the radius of the bottom of the shape (i.e. the bottom of the bottom truncated cone)
-//   r2 = the inner radius of the top of the shape (i.e. the top of the top truncated cone)
-//   h = the overall height
-//   ---
-//   ridge = The height and change in `r` of each ridge (the angle is fixed at 45 degrees)
-// Description:
-//   A shape made up of truncated cones to form a christmas-tree-like shape.
-//   
-//   This is designed to be subtracted from a solid block, to form a light path
-//   that has minimal reflections from the walls of the cut-out, because the 
-//   surfaces are angled.
-//   
-//   NB for a nominally "straight-edged" cylinder, you must set `r2 = r1 - ridge`.
-// Example:
-//    lighttrap_cylinder(5, 5-1.5, 21);
-// Example:
-//    difference(){
-//        translate([-10, -10, 0]) cube(20);
-//        lighttrap_cylinder(5, 5-1.5, 21);
-//        translate([-99, -999, -1]) cube(999);
-//    }
-module lighttrap_cylinder(r1,r2,h,ridge=1.5){
-    //there must be at least one cone or we divide by zero
-    n_cones = max(floor(h/ridge),1);
-    cone_h = h/n_cones;
-
-    for(i = [0 : n_cones - 1]){
-        p = i/(n_cones - 1);
-        section_r1 = (1-p)*r1 + p*(r2+ridge);
-        section_r2 = (1-p)*(r1-ridge) + p*r2;
-        translate_z(i * cone_h - tiny()){
-            cylinder(r1=section_r1, r2=section_r2, h=cone_h+2*tiny());
-        }
-    }
-}
-
-module lighttrap_sqylinder(r1,f1,r2,f2,h,ridge=1.5){
-    //A shape made up of rounded truncated pyramids to form a
-    //square christmas-tree-like shape.
-    //Similar to lighttrap_cylinder each section has flat sides
-    //It can be subtracted from and object to create a square shaft that is
-    //good for trapping stray light in an optical path. The shaft rounded
-    //corners
-    //r1 is radius of cuvature of the bottom of the bottom pyramid
-    //f1 is the flat section of the bottom of the bottom pyramid
-    //r2 is radius of cuvature of the top of the top pyramid
-    //f2 is the flat section of the to of the top pyramid
-    //NOTE: to make a uniform width shaft set r2==r1-ridge and f1=f2
-    //ALSO NOTE: Each truncated pyramid is made by varying r, not f. As such
-    //    r1 must be greater than or equal to ridge
-
-    assert(r1>=ridge, "r1 is less than ridge this will cause the light trap to fail");
-    //there must be at least one cone or we divide by zero
-    n_cones = max(floor(h/ridge),1);
-    cone_h = h/n_cones;
-
-    for(i = [0 : n_cones - 1]){
-        p = i/(n_cones - 1);
-        section_r1 = (1-p)*r1 + p*(r2+ridge);
-        section_r2 = (1-p)*(r1-ridge) + p*r2;
-        section_flat_l = ((1-p)*f1 + p*f2);
-        translate_z(i * cone_h - tiny()){
-            minkowski(){
-                cylinder(r1=section_r1, r2=section_r2, h=cone_h);
-                cube([section_flat_l, section_flat_l, 2*tiny()], center=true);
-            }
-        }
-    }
-}
+// Reproduce OpenSCAD's behaviour, setting the number of points
+// around a circle based on the max. angle $fa, min. length $fs,
+// or exact number $fn.  This follows logic set out in:
+// https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Other_Language_Features#Special_variables
+// This gives a fragment of code to calculate the number of points.
+// I've duplicated it below, split over a couple of lines to aid readability.
+function determine_number_of_fragments(r) = let(
+    n_points_from_fa = ceil(360/$fa),
+    n_points_from_fs = ceil(r*2*PI/$fs),
+    default_n_points = max(min(n_points_from_fa, n_points_from_fs),5), // use minimum size or maximum angle
+    n_points = max($fn>0?$fn:default_n_points, 3) // $fn takes precedence, with minimum of 3
+) n_points;
 
 module trylinder(r=1, flat=1, h=tiny(), center=false){
     //Triangular prism with filleted corners

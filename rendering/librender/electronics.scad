@@ -1,9 +1,55 @@
 
 use <../../openscad/libs/utilities.scad>
+use <../../openscad/libs/logo.scad>
 use <../../openscad/libs/lib_microscope_stand.scad>
 use <render_utils.scad>
 
 $fn = 12;
+
+
+module illumination_board(){
+    board_t = 1.5;
+    coloured_render("green"){
+        difference(){
+            translate_z(-board_t){
+                cylinder(d=15, h=board_t, $fn=24);
+            }
+            for (x_tr = [5, -5]){
+                translate_x(x_tr){
+                    cylinder(d=2.2, h=99, center=true);
+                }
+            }
+        }
+    }
+    translate([-1.27, 2.7, 0]){
+        single_angled_header_pins(2);
+    }
+    coloured_render("white"){
+        translate([-4.4,-3, 0]){
+            openflexure_emblem(h=tiny(), scale_factor=.04);
+        }
+        translate([-5,-4.3, 0]){
+            linear_extrude(tiny()){
+                text("openflexure.org", size=1.1, font="Calibri", halign="left");
+            }
+        }
+        translate_z(-board_t){
+            cube([2.8, 3.5, 1.5], center=true);
+        }
+    }
+    translate_z(-board_t){
+        coloured_render("orange"){
+            cube([2.5, 3.2, 1.6], center=true);
+        }
+        reflect_z(){
+            chip(0,-3,2.6, 1.5, 1);
+            chip(.5,-4.8,2, 1.25, 1.2, "darkkhaki");
+            chip(2.2,-3.5,.8,,1.75,.7, "darkkhaki");
+        }
+    }
+}
+
+function illumination_board_connector_offset() = [0, 2.7 + 4.84, 3.5/2];
 
 function sangaboard_v0_4_dims() = [65, 57, 1.6];
 
@@ -686,6 +732,77 @@ module double_header_pin(){
     }
 }
 
+module single_header_pins(rows=20){
+    for (row_num = [0:rows-1]){
+        translate_x(row_num*2.54){
+            single_header_pin();
+        }
+    }
+}
+
+module single_header_pin(){
+    color("DimGray"){
+        hull(){
+            translate([-2/2, -3.5/2, 0]){
+                cube([2, 3.5, 2.3]);
+            }
+            translate([-2.55/2, -.8/2, 0]){
+                cube([2.55, .8, 2.3]);
+            }
+        }
+    }
+    color("Gold"){
+        translate([-0.3, -0.3, -3]){
+            cube([0.6, 0.6, 11.5]);
+        }
+    }
+}
+
+module single_angled_header_pins(rows=20){
+    for (row_num = [0:rows-1]){
+        translate_x(row_num*2.54){
+            single_angled_header_pin();
+        }
+    }
+}
+
+// One right-angled header pin.
+// NB the connector housing ends at y=2.54+2.3=4.84mm
+module single_angled_header_pin(){
+    translate_z(3.5/2){
+        rotate_x(-90){
+            translate_z(2.54){
+                color("DimGray"){
+                    hull(){
+                        translate([-2/2, -3.5/2, 0]){
+                            cube([2, 3.5, 2.3]);
+                        }
+                        translate([-2.55/2, -.8/2, 0]){
+                            cube([2.55, .8, 2.3]);
+                        }
+                    }
+                }
+                color("Gold"){
+                    translate([-0.3, -0.3, -2.54]){
+                        cube([0.6, 0.6, 11.5]);
+                    }
+                }
+            }
+        }
+    }
+    color("Gold"){
+        translate([-0.3, -0.3, -3]){
+            cube([0.6, 0.6, 3+3.5/2]);
+        }
+        translate_z(3.5/2){
+            rotate_y(-90){
+                cylinder(d=.6, h=.6, center=true);
+            }
+        }
+    }
+
+}
+
 function picamera2_size() = [23.862, 25, 1];
 function picamera2_cam_pos_x() = 9.462;
 
@@ -1135,6 +1252,28 @@ module wire(d=1, points=[[0, 0, 0], [10,0,0]]){
     }
 }
 
+// This function takes a list of 3D points, and returns
+// an identically-sized list of unit vectors, which are
+// orthogonal to the lines joining each point to its
+// next and previous points
+// i.e. they are normalised cross products of
+// (p[i] - p[i-1]) cross (p[i+1] - p[i])
+function unit_vectors_perpendicular_to_segments(points, first=undef, last=undef) = let(
+    middle_points = [
+        for (i=[1:(len(points)-2)])
+            let(x=cross(points[i] - points[i-1], points[i+1] - points[i])) 
+                x/norm(x)
+    ]
+) [
+    is_undef(first) ? middle_points[0] : first,
+    each middle_points,
+    is_undef(last) ? middle_points[len(middle_points)-1] : last
+];
+
+function flat_wire_points(d=1, points=[], n=2, index=0) = (
+    points + (index - (n-1)/2)*d * unit_vectors_perpendicular_to_segments(points)
+);
+
 module ribbon_cable(width, positions){
     
     for (i = [0:len(positions)-2]){
@@ -1144,6 +1283,29 @@ module ribbon_cable(width, positions){
             }
             place_part(positions[i+1]){
                 cube([0.5, width, 0.5], center=true);
+            }
+        }
+    }
+}
+
+// A rough sketch of a dupont-style 2.54mm pitch housing
+module dupont_connector_housing(columns=1, rows=1, center=true){
+    pitch = 2.54;
+    width = columns*pitch;
+    height = rows*pitch;
+    x = center ? -width/2 : -pitch/2;
+    y = center ? -height/2 : -pitch/2;
+    coloured_render("DimGray"){
+        difference(){
+            translate([x, y, 0]){
+                cube([width, height, 10]);
+            }
+
+            // Roughly cut out holes for the wires
+            repeat([pitch, 0, 0], columns, center=center){
+                repeat([pitch, 0, 0], rows, center=center){
+                    cube([1.2, 1.2, 8], center=true);
+                }
             }
         }
     }

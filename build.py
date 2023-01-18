@@ -21,7 +21,7 @@ BUILD_DIR = "docs/models"
 
 #Some constants used in generating lists of parts
 
-CAMERAS = ["picamera_2", "m12"]
+CAMERAS = ["picamera_2", "m12", "logitech_c270"]
 
 # These are the optics configuration of objective and tube lens pairs.
 # Currently we only support the F50D13 option in the offical build.
@@ -36,8 +36,9 @@ PLATFORM_OPTICS_MODULE_OPTIONS = [("picamera_2", "pilens")]
 
 def write_ninja_file(build_dir):
     """
-    Register all files to be built. Some files options are generated in other functions
-    Once this function is complete a ninja file will have been written with all STLs that need generating.
+    Register all files to be built. Some files options are generated in other
+    functions. Once this function is complete a ninja file will have been
+    written with all STLs that need generating.
     """
 
     with MicroscopeBuildWriter(build_dir, "build.ninja") as writer:
@@ -67,6 +68,9 @@ def write_ninja_file(build_dir):
 
         # Standard illumination components
         writer.openscad("condenser.stl", "condenser.scad")
+        writer.openscad("condenser_lid.stl", "condenser_lid.scad")
+        writer.openscad("condenser_board_spacer.stl", "condenser_board_spacer.scad")
+        writer.openscad("condenser_aperture.stl", "condenser_aperture.scad")
         writer.openscad("illumination_dovetail.stl", "illumination_dovetail.scad")
         writer.openscad("illumination_thumbscrew.stl", "illumination_thumbscrew.scad")
 
@@ -79,8 +83,10 @@ def write_ninja_file(build_dir):
         # Test pieces
         writer.openscad("nut_trap_test.stl", "test_pieces/nut_trap_test.scad")
         writer.openscad("leg_test.stl", "test_pieces/leg_test.scad")
+        writer.openscad("rms_thread.stl", "test_pieces/rms_thread.scad")
 
         # Special illumination components
+        writer.openscad("condenser_led_holder.stl", "condenser_led_holder.scad")
         writer.openscad("fl_cube.stl", "fl_cube.scad")
         writer.openscad("reflection_illuminator.stl", "reflection_illuminator.scad")
         writer.openscad("led_array_holder.stl", "led_array_holder.scad")
@@ -99,8 +105,14 @@ def write_ninja_file(build_dir):
         # Misc components
         writer.openscad("thumbwheels.stl", "thumbwheels.scad")
         writer.openscad("slide_riser.stl", "slide_riser.scad")
-        writer.openscad("accessories/actuator_tension_band.stl", "accessories/actuator_tension_band.scad")
-        writer.openscad("accessories/actuator_drilling_jig.stl", "accessories/actuator_drilling_jig.scad")
+        writer.openscad(
+            "accessories/actuator_tension_band.stl",
+            "accessories/actuator_tension_band.scad"
+        )
+        writer.openscad(
+            "accessories/actuator_drilling_jig.stl",
+            "accessories/actuator_drilling_jig.scad"
+        )
 
 
 def generate_rms_optics_modules(writer):
@@ -136,20 +148,24 @@ def generate_stand_with_pi(writer):
     """
 
     writer.openscad("microscope_stand.stl", "microscope_stand.scad", {"TALL_BUCKET_BASE": False})
-    writer.openscad("microscope_stand_tall.stl", "microscope_stand.scad", {"TALL_BUCKET_BASE": True})
+    writer.openscad(
+        "microscope_stand_tall.stl",
+        "microscope_stand.scad",
+        {"TALL_BUCKET_BASE": True}
+    )
 
     # Also generate the tray for the pi itself
     for pi in [3,4]:
         for sanga in ["v0.3", "v0.4"]:
             if (pi==4) and (sanga=="v0.4"):
-                output = "pi_stand.stl"
+                output = "electronics_drawer.stl"
             else:
-                output = f"pi_stand-pi{pi}_sanga{sanga}.stl"
+                output = f"electronics_drawer-pi{pi}_sanga{sanga}.stl"
 
             parameters = {"PI_VERSION": pi,
                           "SANGA_VERSION": sanga}
 
-            writer.openscad(output, "pi_stand.scad", parameters)
+            writer.openscad(output, "electronics_drawer.scad", parameters)
 
 
 def copy_extra_stls(build_dir, extras_dir):
@@ -169,6 +185,28 @@ def copy_extra_stls(build_dir, extras_dir):
                 desitination = os.path.join(build_dir, dest_dir, rel_path)
                 os.makedirs(os.path.dirname(desitination), exist_ok=True)
                 shutil.copyfile(stl_file, desitination)
+
+
+def copy_included_logos(build_dir):
+    """When compiling from CSG, we will need the DXFs for logos in the right place
+
+    The CSG files will have relative imports, from `libs/logos/`. It's probably
+    simplest just to copy these, to avoid platform-dependent issues with
+    symlinks.
+    """
+    logos_dir = os.path.join("openscad", "libs", "logos")
+    output_dir = os.path.join(build_dir, "libs", "logos")
+    os.makedirs(output_dir, exist_ok=True)
+    for fname in [
+        "oshw_gear.dxf",
+        "openflexure_logo_above.dxf",
+        "openflexure_logo.dxf",
+        "openflexure_emblem.dxf"
+    ]:
+        shutil.copyfile(
+            os.path.join(logos_dir, fname),
+            os.path.join(output_dir, fname)
+        )
 
 
 if __name__ == "__main__":
@@ -193,5 +231,6 @@ if __name__ == "__main__":
     # Include extra STL files
     if args.include_extra_files:
         copy_extra_stls(BUILD_DIR, extras_dir = 'openflexure-microscope-extra')
+    copy_included_logos(BUILD_DIR)
     # Run the "ninja.build" file we just created, to generate STLs
     subprocess.run([os.path.join(BIN_DIR, "ninja")] + ninja_args, check=True)

@@ -9,6 +9,9 @@ The imaging optics for this version of the microscope consist of an RMS objectiv
 
 [M3 nut]: parts/mechanical.yml#Nut_M3_SS
 [No 2 6.5mm self tapping screws]: parts/mechanical.yml#SelfTap_PoziPan_No2x6.5_SS
+[#1 pozidrive screwdriver]: parts/tools/pozidrive_1_screwdriver.md "{cat:tool}"
+[Pi Camera lens tool]: parts/tools/pi_camera_lens_tool.md "{cat:tool, note: 'This should come with the [Raspberry Pi Camera Module v2].  If it is missing, you can 3D print a [workaround lens remover].'}"
+[workaround lens remover]: workaround_lens_remover.md
 
 [Raspberry Pi Camera Module v2]: parts/electronics.yml#PiCamera_2 "{cat:electronic}"
 [200mm Pi Camera ribbon cable]: parts/electronics.yml#PiCamera_RibbonCable_200mm "{cat:electronic, note: 'This is longer than the standard ribbon cable the Pi Camera is sold with!'}"
@@ -25,7 +28,7 @@ Take the [optics module][Optics module](fromstep){qty:1, cat:printedpart} and co
 ## Insert the tube lens {pagestep}
 
 * Place the [lens tool][Lens tool](fromstep){qty:1, cat:printedtool} on a steady surface
-* Place the [12.7 mm achromatic lens](parts/optics.yml#TubeLens){qty:1, cat:optical} on the lens tool
+* Place the [12.7 mm achromatic lens](parts/optics/tube_lens.md){qty:1, cat:optical} on the lens tool
 * Check the lens has the more curved side facing down
 * Take the optics module and place carefully over lens
 * Push down hard to seat the lens in the optics module
@@ -42,7 +45,7 @@ Take the [optics module][Optics module](fromstep){qty:1, cat:printedpart} and co
 * Before touching the Pi Camera touch a metal earthed object. If you own one, consider wearing and anti-static strap.
 * Take the [Pi Camera][Raspberry Pi Camera Module v2]{Qty:1} out of the package. Make sure to **hold it only by the sides of the board**.
 * Take the protective film off the lens.
-* Take the [Pi Camera lens tool]{qty: 1, cat:tool, note: "This should come with the pi camera"} and place it over the lens
+* Take the [Pi Camera lens tool]{qty: 1} and place it over the lens
 * Slowly unscrew the lens (About 4 full turns of the tool)
 * Carefully lift off the lens. We do not use the lens in this version of the microscope.
 

@@ -9,24 +9,30 @@ use <./libdict.scad>
 //                        at 180 degree from the mount and -60 for the fl cube exiting at 120
 //                        from the mount)
 
-function rms_f50d13_config(camera_type = "picamera_2", beamsplitter=false) = let(
+function rms_f50d13_config(camera_type = "picamera_2", beamsplitter=false, parfocal_distance=45) = let(
+    // if the parfocal distance is undefined, use the default.
+    parfocal_distance_validated = (parfocal_distance == undef) ? 45 : parfocal_distance,
+    // if parfocal distance is the default 45mm, the lens is 8.5mm below the objective.
+    // if a shorter parfocal distance is used, we increase that distance, to stop the camera module
+    // from rising up inside the microscope.
+    lens_objective_distance = max(45 - parfocal_distance_validated, 0) + 8.5,
     config_dict = [["optics_type", "RMS"],
                    ["camera_type", camera_type],
                    ["tube_lens_ffd", 47],
                    ["tube_lens_f", 50],
                    ["tube_lens_r", 12.7/2+0.1],
-                   ["objective_parfocal_distance", 45],
+                   ["objective_parfocal_distance", parfocal_distance_validated],
                    ["beamsplitter", beamsplitter],
                    ["gripper_t", 1],
                    ["is_finite_conjugate", true],
                    ["objective_mechanical_tube_length", 160],
-                   ["lens_objective_distance", 8.5],
+                   ["lens_objective_distance", lens_objective_distance],
                    ["camera_rotation", 0],
                    ["beamsplitter_rotation", 0]]
 ) config_dict;
 
-function rms_infinity_f50d13_config(camera_type = "picamera_2", beamsplitter=false) = let(
-    finite_config = rms_f50d13_config(camera_type, beamsplitter),
+function rms_infinity_f50d13_config(camera_type = "picamera_2", beamsplitter=false, parfocal_distance=undef) = let(
+    finite_config = rms_f50d13_config(camera_type, beamsplitter, parfocal_distance=parfocal_distance),
     replacements = [["is_finite_conjugate", false]]
 ) replace_multiple_values(replacements, finite_config);
 

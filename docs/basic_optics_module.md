@@ -1,14 +1,19 @@
 # Assemble the basic optics module
 
-The imaging optics for this version of the microscope consist of an the Raspberry pi camera and the lens from the camera. To create a microscope the wide angle lens is reversed and separated from the camera. This makes quite a good microscope objective with a field of view about 400μm across and a resolution of around 2μm.
+The imaging optics for this version of the microscope consist of a Raspberry pi camera and the lens from the camera. To create a microscope, the wide angle lens is reversed and separated from the camera. This makes quite a good microscope objective with a field of view about 400μm across and a resolution of around 2μm.
 
 {{BOM}}
 
 [M3 nut]: parts/mechanical.yml#Nut_M3_SS
 [No 2 6.5mm self tapping screws]: parts/mechanical.yml#SelfTap_PoziPan_No2x6.5_SS
+[#1 pozidrive screwdriver]: parts/tools/pozidrive_1_screwdriver.md "{cat:tool}"
+[Pi Camera lens tool]: parts/tools/pi_camera_lens_tool.md "{cat:tool, note: 'This should come with the [Raspberry Pi Camera Module v2].  If it is missing, you can 3D print a [workaround lens remover].'}"
+[workaround lens remover]: workaround_lens_remover.md
 
 [Raspberry Pi Camera Module v2]: parts/electronics.yml#PiCamera_2 "{cat:electronic}"
 [{{var_ribbon_len, default:200mm}} Pi Camera ribbon cable]: parts/electronics.yml#PiCamera_RibbonCable_{{var_ribbon_len, default:200mm}} "{cat:electronic, note: 'This is longer than the standard ribbon cable the Pi Camera is sold with!'}"
+
+{{include: upright_optics_note.md, if: var_upright is upright}}
 
 ## Visually inspect the lens spacer {pagestep}
 
@@ -29,7 +34,7 @@ Take the [lens spacer][Lens spacer](fromstep){qty:1, cat:printedpart} and confir
 * Before touching the Pi Camera touch a metal earthed object. If you own one, consider wearing and anti-static strap.
 * Take the [Pi Camera][Raspberry Pi Camera Module v2]{Qty:1} out of the package. Make sure to **hold it only by the sides of the board**.
 * Take the protective film off the lens.
-* Take the [Pi Camera lens tool]{qty: 1, cat:tool, note: "This should come with the pi camera"} and place it over the lens
+* Take the [Pi Camera lens tool]{qty: 1} and place it over the lens
 * Slowly unscrew the lens (About 4 full turns of the tool)
 * Carefully lift off the lens.
 * Save the lens and the camera, we use both this version of the microscope.

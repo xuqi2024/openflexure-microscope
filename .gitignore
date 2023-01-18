@@ -1,6 +1,9 @@
 # Don't take stl files
 *.stl
 
+# Ignore CSG files (OpenSCAD output)
+*.csg
+
 # Or gLTF files
 *.gltf
 *.glb
@@ -31,6 +34,9 @@ docs/renders/
 rendering/annotations/*.png
 stl_options.json
 admesh_report.xml
+source.zip
+docs/models/libs/logos/
+docs/models/dependency_hashes.yaml
 
 # Ignore IDE files
 .vscode/
