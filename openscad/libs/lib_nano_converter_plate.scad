@@ -126,30 +126,41 @@ module nano_conv_plate_pi_port_cutout(pi_version=4){
 module nano_conv_plate_nano_cutout(){
     difference(){
         union(){
+            // USB connector
             cube([8,18,20], center=true);
+            // Nano main board
             translate([-19/2, -tiny(), 3.5]){
                 cube([19, 44.5, 20]);
             }
+            // Nano programming port
             translate_y(40.8){
                 cube([9, 6, 20], center=true);
             }
+            // Nano reset button
             translate_y(25.8){
                 cube([8, 6, 20], center=true);
             }
+            // hole for the gripper screw
             translate_y(57){
                 no2_selftap_hole(h=99, center=true);
             }
-            // RaspberryPi Pico additions
+            // RaspberryPi Pico main board
             translate([-22/2, -tiny(), 4]){
                 cube([22, 52, 20]);
             }
+            // Pico programming port 
             translate_y(47){
                 cube([9, 10, 20], center=true);
             }
+            // Pico reset button
             translate([-4,12.5-tiny(),6.5]){
                 cube([6, 7, 10], center=true);
                 cube([4, 5, 20], center=true);
             }
+            // Pico power components
+            translate([4.5,10-tiny(),7.5]){
+                cube([8, 12, 10], center=true);
+            } 
         }
         union(){
             // a break-off bit to support back of a nano
