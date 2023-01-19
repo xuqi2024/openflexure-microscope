@@ -212,13 +212,17 @@ module optics_module_body(
 }
 
 // An RMS thread cutter with an extra plug
-// This module cuts out an RMS thread, with space below it for
-// the tube_lens_gripper
-module rms_thread_and_cutout_for_tube_lens(mount_h){
+// This module cuts out an RMS thread
+// NB the tube lens gripper cutout is a separate module, below.
+module rms_thread_for_optics_module(mount_h){
     // cut the RMS thread for the objective
     translate_z(mount_h - 5.5){
         rms_thread_cutter(h=6, $fn=32, peak_points=2);
     }
+}
+
+// A cylinder that provides clearance for the tube lens gripper
+module tube_lens_gripper_cutout(mount_h){
     // add a smaller cylinder to provide space for the lens gripper
     // for the tube lens
     cylinder(r=rms_thread_nominal_d()/2-1.2, h=mount_h-1, $fn=60);
@@ -245,8 +249,15 @@ module tube_lens_gripper(optics_config, pedestal_h){
     }
 }
 
+// The radius of the bottom of the RMS mount
+function rms_optics_mount_bottom_r() = 10.5;
+
 /**
 * This optics module takes an RMS objective and a tube length correction lens
+*
+* It can be extended by passing in children - any geometry that is
+* a child of this module is unioned together with the optics module body,
+* meaning that the various cut-outs still apply.
 */
 module optics_module_rms(params, optics_config, include_wedge=true){
     assert(key_lookup("optics_type", optics_config)=="RMS",
@@ -272,17 +283,22 @@ module optics_module_rms(params, optics_config, include_wedge=true){
             // The bottom part is just a camera mount with a flat top
             difference(){
                 // camera mount with a body that's shorter than the fitting wedge
-                optics_module_body(params,
+                union(){
+                    optics_module_body(params,
                                    optics_config,
                                    body_r=rms_optics_mount_base_r,
-                                   bottom_r=10.5,
+                                   bottom_r=rms_optics_mount_bottom_r(),
                                    body_top=rms_optics_mount_z,
                                    rms_mount_h=rms_optics_mount_h,
                                    wedge_top=wedge_top,
                                    include_wedge=include_wedge);
+                    // allow extra geometry to be stuck on, without fouling cut-outs:
+                    children();
+                }
                 // cut a hole for the rms thread and tube lens gripper
                 translate_z(rms_optics_mount_z){
-                    rms_thread_and_cutout_for_tube_lens(rms_optics_mount_h);
+                    rms_thread_for_optics_module(rms_optics_mount_h);
+                    tube_lens_gripper_cutout(rms_optics_mount_h);
                 }
             }
             translate_z(rms_optics_mount_z){
