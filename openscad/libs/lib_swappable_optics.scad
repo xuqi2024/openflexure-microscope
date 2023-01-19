@@ -73,92 +73,46 @@ function swappable_rms_mounting_screw_positions(params) = let(
     [20 + 8*cos(60), -8*sin(60), 0],
 ];
 
+// This shape is added to an optics module body, so that it can have
+// the (separate printed part) swappable optics mount attached to it.
+module connector_for_swappable_optics_mount(params, optics_config){
+    intersection(){
+        // We use an intersection with a cube to limit the extent in Y, and avoid
+        // fouling the objective mounting wedge.
+        cube([999, 22, 999], center=true);
+        hull(){
+            // the bottom of the tube
+            translate_z(optics_wedge_bottom()){
+                cylinder(r=rms_optics_mount_bottom_r(),h=tiny());
+            }
+            // the mount at the top
+            translate_z(swappable_rms_mount_z(params, optics_config) - tiny()){
+                linear_extrude(tiny()){
+                    projection(){
+                        swappable_rms_mount(params);
+                    }
+                } 
+            }
+        }
+    }
+}
+
 /**
 * This optics module takes an RMS objective and a tube length correction lens
 * The objective sits in a carrier plate, allowing it to be swapped.
 * Currently the large size of the top of this mount makes it incompatible
 * with the inverted/delta geometries.
-*
-* TODO: this should really be deduplicated with the non-swappable version.
 */
 module optics_module_swappable_rms(params, optics_config, include_wedge=true){
-    assert(key_lookup("optics_type", optics_config)=="RMS",
-    "Cannot create an RMS optics module for a non-RMS configuration.");
-
-    swappable_params = swappable_rms_params(params);
-
-    beamsplitter = key_lookup("beamsplitter", optics_config);
-    carrier_h = key_lookup("carrier_h", swappable_params);
-
-    // height of pedestal for tube lens to sit on (to allow for flex)
-    pedestal_h = 2;
-
-    bottom_r = 10.5;
-
-    // Calculate the position and size of the mout that holds the lens and
-    rms_optics_mount_z = tube_lens_face_z(params, optics_config) - pedestal_h;
-    rms_optics_mount_base_r = rms_thread_nominal_d()/2+1;
-    // We chop the RMS bit off the RMS mount, so it can be replaced by the carrier
-    rms_optics_mount_h = objective_shoulder_z(params, optics_config) - rms_optics_mount_z - carrier_h - 1;
-    //height of the top of the wedge - should be level with the cropped RMS mount
-    wedge_top = objective_shoulder_z(params, optics_config) - carrier_h - 1;
-    // We modify the parameters passed to the optics module, so that the mounting screw is
-    // shifted in z.  This gives us a bit more clearance for the larger objective mount.
-    // It will, of course, require the objective mount to be positioned on a higher spacer
-    // to keep the sample in the right place.
-    optics_module_params = replace_value("objective_mount_screw_z_shift", -15, params);
-
-    camera_mount_top_z = rms_camera_mount_top_z(params, optics_config);
     difference(){
-        union(){
-            // The bottom part is just a camera mount with a flat top
-            difference(){
-                union(){
-                    // camera mount with a body that comes up to 1mm from the RMS carrier
-                    optics_module_body(optics_module_params,
-                                    optics_config,
-                                    body_r=rms_optics_mount_base_r,
-                                    bottom_r=bottom_r,
-                                    body_top=rms_optics_mount_z,
-                                    rms_mount_h=rms_optics_mount_h,
-                                    wedge_top=wedge_top,
-                                    include_wedge=include_wedge);
-                    intersection(){
-                        cube([999, 22, 999], center=true); // cut it off so we don't foul the mounting wedge
-                        hull(){
-                            // the bottom of the tube
-                            translate_z(optics_wedge_bottom()){
-                                cylinder(r=bottom_r,h=tiny());
-                            }
-                            // the mount at the top
-                            translate_z(swappable_rms_mount_z(params, optics_config) - tiny()){
-                                linear_extrude(tiny()){
-                                    projection(){
-                                        swappable_rms_mount(params);
-                                    }
-                                } 
-                            }
-                        }
-                    }
-                }
-                // cut a hole for the rms thread and tube lens gripper
-                translate_z(rms_optics_mount_z){
-                    rms_thread_and_cutout_for_tube_lens(rms_optics_mount_h);
-                }
-            }
-            translate_z(rms_optics_mount_z){
-                tube_lens_gripper(
-                    optics_config,
-                    pedestal_h=pedestal_h
-                );
-            }
-        }
-        // camera cut-out and hole for the beam
-        if(beamsplitter){
-            optical_path_fl(params, optics_config, rms_optics_mount_z, camera_mount_top_z);
-        }
-        else{
-            optical_path(optics_config, rms_optics_mount_z, camera_mount_top_z);
+        // We use the regular RMS optics module, but add in some extra geometry
+        // to let us screw the kelvin mount plate on top.
+        // This is done using children rather than a union() to preserve the 
+        // various holes that are needed in the mount.
+        // NB this currently renders, then discards, an RMS thread. That could
+        // be disabled for performance reasons but shouldn't cause any problems.
+        optics_module_rms(params, optics_config, include_wedge=include_wedge){
+            connector_for_swappable_optics_mount(params, optics_config);
         }
         // clearance for the optics carrier
         place_part(swappable_rms_carrier_placement(params, optics_config)){
@@ -298,12 +252,21 @@ module swappable_rms_mount(params){
     difference(){
         union(){
             hull(){
+                // The basic shape is formed from cuboids that house the
+                // dowel pins
                 for(a = [0, 120, -120]){
                     rotate(a){
                         w = dowel_sep + dowel_d + 3;
                         translate([-w/2, magnet_r, 0]){
                             cube([w, dowel_l - magnet_d/2 - 1, h]);
                         }
+                    }
+                }    
+                // We also add cylinders to make sure there is enough material
+                // for the mounting screws
+                for(p=swappable_rms_mounting_screw_positions(params)){
+                    translate(p){
+                        cylinder(d=7, h=h);
                     }
                 }
             }
@@ -342,7 +305,6 @@ module swappable_rms_mount(params){
             }
         }
 
-        
         // mounting screws
         for(p=swappable_rms_mounting_screw_positions(params)){
             translate(p + [0, 0, 2]){
