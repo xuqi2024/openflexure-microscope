@@ -26,7 +26,9 @@ function swappable_rms_params(params) = let(
     ["mount_h", 5],
     ["carrier_h", 5],
     ["objective_r", objective_r],                        // guessed width of the objective - for clearance
-    ["magnet_r", (objective_r + magnet_d/2 + 2) * 2/sqrt(3)]  // distance of magnets from the origin
+    ["magnet_r", (objective_r + magnet_d/2 + 2) * 2/sqrt(3)],  // distance of magnets from the origin
+    ["magnet_centre_to_carrier_surface", 0.2*magnet_d],           // how far the magnet is embedded into the carrier (should be >0)
+    ["dowel_centre_to_mount_surface", dowel_d/2 + 0.25]
 ];
 
 
@@ -41,13 +43,14 @@ function mount_to_carrier_separation(params) = let(
     sp = swappable_rms_params(params),
     dowel_d = key_lookup("dowel_d", sp),
     magnet_d = key_lookup("magnet_d", sp),
-    dowel_sep = key_lookup("dowel_separation", sp)
-) (
-    sqrt(
-        ((dowel_d + magnet_d)/2)^2
-        - (dowel_sep/2 + dowel_d/2)^2
-    ) - 0.25 * magnet_d - 0.5
-);
+    dowel_sep = key_lookup("dowel_separation", sp),
+    centre_to_centre_distance = (dowel_d + magnet_d)/2,
+    c_to_c_vertical_separation = sqrt( // centre to centre dowel to magnet
+        centre_to_centre_distance^2 - (dowel_sep/2)^2
+    ),
+    magnet_c_to_s = key_lookup("magnet_centre_to_carrier_surface", sp),
+    dowel_c_to_s = key_lookup("dowel_centre_to_mount_surface", sp)
+) c_to_c_vertical_separation - magnet_c_to_s - dowel_c_to_s;
 
 assert(
     mount_to_carrier_separation(default_params()) > 0.3, 
@@ -120,7 +123,7 @@ module optics_module_swappable_rms(original_params, optics_config, include_wedge
             minkowski(){
                 swappable_rms_carrier_base(params);
                 translate([-0.5, -99 + 0.5, -1]){
-                    cube([1, 99, 1.5]);
+                    cube([1, 99, 99]);
                 }
             }
         }
@@ -181,6 +184,8 @@ module swappable_rms_carrier(params){
     magnet_r = key_lookup("magnet_r", swappable_params);
     h = key_lookup("carrier_h", swappable_params);
     objective_r = key_lookup("objective_r", swappable_params);
+    magnet_centre_to_carrier_surface = key_lookup("magnet_centre_to_carrier_surface", swappable_params);
+    magnet_bottom_z = h - magnet_centre_to_carrier_surface - magnet_d/2;
     $fn=16;
 
     difference(){
@@ -196,7 +201,7 @@ module swappable_rms_carrier(params){
             rotate(a){
                 // NB if you change the height of the magnet, you need to update
                 // mount_to_carrier_separation() as well
-                translate([0, magnet_r, h - magnet_d*0.75]){
+                translate([0, magnet_r, magnet_bottom_z]){
                     deformable_hole_trylinder(
                         magnet_d/2 - 0.3, 
                         magnet_d/2 + 0.4, 
@@ -247,8 +252,9 @@ module swappable_rms_mount(params){
     h = key_lookup("mount_h", swappable_params);
     objective_r = key_lookup("objective_r", swappable_params);
     dowel_sep = key_lookup("dowel_separation", swappable_params);
+    dowel_centre_to_mount_surface = key_lookup("dowel_centre_to_mount_surface", swappable_params);
     // The calculation for dowel_z needs to match mount_to_carrier_separation()
-    dowel_z = h - dowel_d/2 - 0.5;
+    dowel_z = h - dowel_centre_to_mount_surface;
 
     difference(){
         union(){
