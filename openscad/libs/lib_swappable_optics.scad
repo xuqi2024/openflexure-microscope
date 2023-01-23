@@ -103,7 +103,8 @@ module connector_for_swappable_optics_mount(params, optics_config){
 * Currently the large size of the top of this mount makes it incompatible
 * with the inverted/delta geometries.
 */
-module optics_module_swappable_rms(params, optics_config, include_wedge=true){
+module optics_module_swappable_rms(original_params, optics_config, include_wedge=true){
+    params = replace_value("objective_mount_screw_z_shift", -15, original_params);
     difference(){
         // We use the regular RMS optics module, but add in some extra geometry
         // to let us screw the kelvin mount plate on top.
