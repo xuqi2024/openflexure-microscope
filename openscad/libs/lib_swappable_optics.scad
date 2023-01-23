@@ -245,7 +245,7 @@ module swappable_rms_carrier_balls(params){
  *
  * NB the mating surface is the top - which wants to print on the
  * bottom. This is the right way up, only if you're thinking of the
- * optics module as inverted.
+ * optics module as used in the upright microscope.
  */
 module swappable_rms_mount(params){
     swappable_params = swappable_rms_params(params);
