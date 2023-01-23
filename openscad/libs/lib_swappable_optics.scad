@@ -242,6 +242,10 @@ module swappable_rms_carrier_balls(params){
 /**
  * Static Kelvin mount to which the swappable_rms_carrier attaches.
  * This should be screwed onto the top of an optics module
+ *
+ * NB the mating surface is the top - which wants to print on the
+ * bottom. This is the right way up, only if you're thinking of the
+ * optics module as inverted.
  */
 module swappable_rms_mount(params){
     swappable_params = swappable_rms_params(params);
@@ -304,9 +308,7 @@ module swappable_rms_mount(params){
                 // Vertical holes so the balls can make contact
                 hull(){
                     translate([0, magnet_r, dowel_z]){ // This might want to be lower...
-                        repeat([0, -magnet_r, 0], 1){
-                            cylinder(d=magnet_d, h=99, $fn=16);
-                        }
+                        cylinder(d=magnet_d, h=99, $fn=16);
                     }
                 }
             }
