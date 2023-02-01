@@ -180,6 +180,50 @@ def register_condenser_assembly(rendersystem):
         render = ScadRender(output_file, input_file, scad, imgsize, camera)
         rendersystem.register_scad_render(render)
 
+def register_upright_condenser_assembly(rendersystem):
+    input_file = "rendering/upright_condenser_assembly.scad"
+    camera = Camera(position=[29, 0, 59], angle=[69, 0, 90], distance=290)
+    imgsize = [1000, 2000]
+
+    for frame in [1, 2, 3]:
+        scad = f"upright_assemble_condenser({frame});"
+        output_file = f"rendering/annotations/upright_optics_assembly_condenser_lens{frame}.png"
+        render = ScadRender(output_file, input_file, scad, imgsize, camera)
+        rendersystem.register_scad_render(render)
+    rendersystem.register_inkscape_annotation(
+        "docs/renders/upright_optics_assembly_condenser_lens.png",
+        "rendering/annotations/upright_annotate_optics_assembly_condenser_lens.svg"
+    )
+
+## no thumbscrew for upright
+    # camera = Camera(position=[0, 8, 15.5], angle=[62, 0, 130], distance=237)
+    # imgsize = [2400, 2000]
+    # for frame in [4, 5, 6]:
+    #     scad = f"upright_assemble_condenser({frame});"
+    #     output_file = f"docs/renders/upright_assemble_condenser_thumbscrew{frame-3}.png"
+    #     render = ScadRender(output_file, input_file, scad, imgsize, camera)
+    #     rendersystem.register_scad_render(render)
+
+    camera = Camera(position=[0, 8, 30], angle=[62, 0, 130], distance=137)
+    imgsize = [2400, 2000]
+    for frame in [7, 8, 9, 10]:
+        scad = f"upright_assemble_condenser({frame});"
+        output_file = f"docs/renders/upright_mount_led_board{frame-6}.png"
+        render = ScadRender(output_file, input_file, scad, imgsize, camera)
+        rendersystem.register_scad_render(render)
+    for frame in [11, 12]:
+        scad = f"upright_assemble_condenser({frame});"
+        output_file = f"docs/renders/upright_mount_led_cable{frame-10}.png"
+        render = ScadRender(output_file, input_file, scad, imgsize, camera)
+        rendersystem.register_scad_render(render)
+    camera = Camera(position=[0, 8, 30], angle=[62, 0, 130], distance=237)
+    for frame in [13, 14, 15, 16]:
+        scad = f"upright_assemble_condenser({frame});"
+        output_file = f"docs/renders/upright_mount_condenser_lid{frame-12}.png"
+        render = ScadRender(output_file, input_file, scad, imgsize, camera)
+        rendersystem.register_scad_render(render)
+
+
 def register_workaround_5mm_led(rendersystem):
     input_file = "rendering/workaround_5mm_led.scad"
     camera = Camera(position=[0, 0, 0], angle=[42, 0, 313], distance=137)
@@ -425,6 +469,7 @@ def main():
     register_rms_optics_assembly(rendersystem)
     register_low_cost_optics_assembly(rendersystem)
     register_condenser_assembly(rendersystem)
+    register_upright_condenser_assembly(rendersystem)
     register_workaround_5mm_led(rendersystem)
     register_optics_assembled(rendersystem)
     register_band(rendersystem)
