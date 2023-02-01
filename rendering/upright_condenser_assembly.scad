@@ -106,7 +106,7 @@ module upright_mount_condenser_lid(frame){
 }
 
 
-// Lid of the condenser is the upright coedenser platform
+// The 'lid' of the condenser is the upright condenser platform
 module upright_rendered_condenser_lid(explode=false){
     coloured_render(extras_colour()){
         // NB both the lid and the condenser render upside down, so
