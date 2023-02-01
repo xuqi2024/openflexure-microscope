@@ -31,7 +31,7 @@ module upright_assemble_condenser(frame){
     else if(frame <= 6){
         // To keep the frame numbers consistent with the inverted version of the microscope
         // miss out the frames numbers that relate to the thumbscrew assembly
-        assert(false, "The thumbscrew is not used in the upright condenser")
+        assert(false, "The thumbscrew is not used in the upright condenser");
     }
     else if(frame <= 10){
         upright_mount_led_board(frame-6);
