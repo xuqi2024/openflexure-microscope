@@ -24,5 +24,5 @@ If you don't have a PCB for the illumination, you can mount a 5mm LED instead.
 
 ## Mount the diffuser {pagestep}
 
-* Fix the diffuser onto the condenser, as described in the main condenser page, omitting the board spacer and PCB.
+* Fix the diffuser [i](../info_pages/illumination_optics_explanation.md) onto the condenser, as described in the main condenser page, omitting the board spacer and PCB.
 * Alternatively, PTFE tape can be used on the LED, as in previous versions of the instructions, instead of the diffuser.
