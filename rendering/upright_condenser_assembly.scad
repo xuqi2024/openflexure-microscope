@@ -46,22 +46,6 @@ module upright_assemble_condenser(frame){
     }
 }
 
-module upright_assemble_condenser_thumbscrew(frame){
-    explosions = ["nut", "thumbscrew", undef];
-    dovetail_height = key_lookup("overall_height", condenser_dovetail_params());
-    // The sloping nut trap means that it's best to put the nut in when
-    // the condenser is lens-down, i.e. in its orientation as used,
-    // with the print bed side on top, hence "flipped" orientation.
-    flipped = create_placement_dict([0, 0, dovetail_height], [0, 180, 0]);
-    echo("placement", flipped);
-    thumbscrew = (frame>1) ? true : false;
-    upright_rendered_condenser_assembly(flipped,
-                                include_led=false,
-                                include_thumbscrew=thumbscrew,
-                                include_nut=true,
-                                include_lid=false,
-                                explode=explosions[frame - 1]);
-}
 
 module upright_insert_condenser_lens(frame){
     rendered_lens_tool();
@@ -78,7 +62,6 @@ module upright_mount_led_board(frame){
     upright_rendered_condenser_assembly(
         condenser_upside_down(),
         include_led=false,
-        include_thumbscrew=false,
         include_nut=false,
         include_led_board=true,
         include_led_board_screws=(frame>2),
@@ -91,7 +74,6 @@ module upright_mount_led_cable(frame){
     upright_rendered_condenser_assembly(
         condenser_upside_down(),
         include_led=false,
-        include_thumbscrew=false,
         include_nut=false,
         include_led_board=true,
         include_led_board_screws=true,
@@ -111,7 +93,6 @@ module upright_mount_condenser_lid(frame){
     upright_rendered_condenser_assembly(
         condenser_upside_down(),
         include_led=false,
-        include_thumbscrew=false,
         include_nut=false,
         include_led_board=true,
         include_led_board_screws=true,
@@ -190,7 +171,7 @@ module upright_rendered_condenser(pos, cut=false){
 }
 
 // This module renders the condenser (excluding cable), including
-// the thumbscrew, lid, lens, and internals.  By default, the LED
+// the lid, lens, and internals.  By default, the LED
 // board and other internal components are not rendered, as they
 // are not visible.
 //
@@ -202,7 +183,6 @@ module upright_rendered_condenser(pos, cut=false){
 // and will cause the relevant part to appear "exploded".
 module upright_rendered_condenser_assembly(pos=undef,
                                    include_led=false,
-                                   include_thumbscrew=true,
                                    include_nut=true,
                                    include_led_board=false,
                                    include_led_board_screws=false,
@@ -239,29 +219,6 @@ module upright_rendered_condenser_assembly(pos=undef,
             }                            
             place_part(exploded ? nut_pos_exp : nut_pos){
                 condenser_nut();
-            }
-        }
-        if (include_thumbscrew){
-            exploded = explode == "thumbscrew";
-            screw_pos = exploded ? 40 : 1;
-            thumbscrew_pos = exploded ? 20 : 14.4;
-            if (exploded){
-                construction_line(condenser_clamp_axis_pos(4),
-                                  condenser_clamp_axis_pos(50));
-            }
-            if (tighten_arrow){
-                place_part(condenser_clamp_axis_pos(29)){
-                    rotate_x(90){
-                        turn_clockwise(8, 5, .15);
-                    }
-                }
-            }
-
-            place_part(condenser_clamp_axis_pos(screw_pos)){
-                condenser_m3x25();
-            }
-            place_part(condenser_clamp_axis_pos(thumbscrew_pos)){
-                rendered_illumination_thumbscrew();
             }
         }
         if (include_lid){
