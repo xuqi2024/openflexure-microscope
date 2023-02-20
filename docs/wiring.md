@@ -7,7 +7,7 @@ The microscope must be completed by mounting the motor driver electronics and th
 >i If you are using a version of the Raspberry Pi other than v4, or Sangaboard other than version 0.4, you will need a different electronics drawer.  The options are described in the [customisation] page.
 >i If you do not have a Sangaboard, you can make up a compatible solution from a microcontroller and separate driver boards.  This is described in the [motor electronics workaround] page.
 
-[customisation]: customisation.md/#electronics "Customisation and work-around options for the microscope."
+[customisation]: customisation.md "Customisation and work-around options for the microscope."
 [motor electronics workaround]: workaround_motor_electronics/workaround_motor_electronics.md "Solutions to drive the motors without a Sangaboard PCB."
 
 {{BOM}}
