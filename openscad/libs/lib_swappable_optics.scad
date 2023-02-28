@@ -105,9 +105,11 @@ module connector_for_swappable_optics_mount(params, optics_config){
 * The objective sits in a carrier plate, allowing it to be swapped.
 * Currently the large size of the top of this mount makes it incompatible
 * with the inverted/delta geometries.
+* use -18 so lower z screw position will allow clearance for objective mount sliding
 */
 module optics_module_swappable_rms(original_params, optics_config, include_wedge=true){
-    params = replace_value("objective_mount_screw_z_shift", -15, original_params);
+    params = replace_value("objective_mount_screw_z_shift", -18, original_params);
+    optics_config = replace_value("camera_rotation", 180, optics_config);   // rotate camera cutout by 180deg for routing
     difference(){
         // We use the regular RMS optics module, but add in some extra geometry
         // to let us screw the kelvin mount plate on top.
@@ -211,6 +213,19 @@ module swappable_rms_carrier(params){
             }
         }      
 
+    }
+    
+//add one-way bar to keep objectives one way round 
+    minkowski(){
+        hull(){
+            translate([0,-13,2.5])
+                cube([5,5,5], center = true);
+    
+            translate([0,-17,2.5])
+                cube([45,5,5], center = true);
+    }
+        translate([0,-2.5,0])
+        cylinder(r=1,h=0.5);
     }
 }
 
