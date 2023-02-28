@@ -44,6 +44,8 @@ function default_params() = [["leg_r", 30],     // radius on which the innermost
                              ["actuator_h", 25], //height of the actuator columns
                              ["include_motor_lugs", true], //sets whether the motor lugs are included
                              ["foot_height", 15], //the height of the feet
+                             ["objective_mount_screw_z_shift", 0], // Shift the objective mounting screw in Z
+                             ["objective_mount_max_height", 35], // Maximum height of the mount for the objective
                             ];
 
 ////// 3D printing specific paramenters //////
@@ -197,9 +199,17 @@ function objective_mount_nose_w() = 6;
 function lower_z_flex_z() = 8;
 
 /**
+* The maximum height of the objective mount
+*/
+function objective_mount_max_height(params) = key_lookup("objective_mount_max_height", params);
+
+/**
 * height of the upper flexure on z actuator
 */
-function upper_z_flex_z(params) = min(leg_height(params) - 12, 35);
+function upper_z_flex_z(params) = min(
+    leg_height(params) - 12,
+    objective_mount_max_height(params)
+);
 
 /**
 * y position of the back of the objective mount
