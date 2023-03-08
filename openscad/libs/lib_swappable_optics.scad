@@ -175,6 +175,25 @@ module swappable_rms_carrier_base(params){
             }
         }
     }
+
+    // Adds a one-way tab to keep objectives one way round
+    difference(){
+        hull(){
+            translate_z(h/2)
+                cube([h, h, h], center = true);
+            
+            // Tab just needs to extend far enough out before being hulled;
+            // -0.5*magnet_r will take centre point to approx. the y distance of the magnets
+            translate_y(-0.5*magnet_r)  
+                scale([2,1.25])  
+                    cylinder(r=0.5*magnet_r, h=3*h/4, $fn=64);
+        }
+        
+        // Subtracts small indent for grabbing
+        translate([0, -magnet_r, h/2])  
+            scale([1,0.5])  
+                cylinder(r=0.5*magnet_r, h=h);
+    }
 }
 
 /* A carrier for an RMS microscope objective, with three balls for a Kelvin mount.
@@ -213,19 +232,6 @@ module swappable_rms_carrier(params){
             }
         }      
 
-    }
-    
-//add one-way bar to keep objectives one way round 
-    minkowski(){
-        hull(){
-            translate([0,-13,2.5])
-                cube([5,5,5], center = true);
-    
-            translate([0,-17,2.5])
-                cube([45,5,5], center = true);
-    }
-        translate([0,-2.5,0])
-        cylinder(r=1,h=0.5);
     }
 }
 
