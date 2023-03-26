@@ -70,7 +70,7 @@ In this section we are assembling the transmission illuminator.  This mounts the
 * Fix in place with two [No 2 6.5mm self tapping screws]{qty:2} using a [#1 pozidrive screwdriver]{qty:1}.
 
 ## Assemble the illumination wiring harness {pagestep}
-* Take a [Red pre-crimped Female-Female jumper cable (30 cm)] and a [Black pre-crimped Female-Female jumper cable (30 cm)].
+* Take a [Red pre-crimped Female-Female jumper cable (30 cm)]{qty:1} and a [Black pre-crimped Female-Female jumper cable (30 cm)]{qty:1}.
 * Attach a [2 pin Du Pont connector female housing]{qty:2} to each end.
 * This is the illumination wiring harness.
 
