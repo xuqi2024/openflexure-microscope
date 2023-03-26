@@ -17,20 +17,26 @@ use <./microscope_parameters.scad>
 use <./utilities.scad>
 
 
-/*
-* Gearing ratio between the large and small gears
+// /*
+// * Gearing ratio between the large and small gears
+// */
+// function gear_ratio() = 2;
+
+/**
+* Total number of teeth on the large and small gears
 */
-function gear_ratio() = 2;
+function total_gear_teeth() = 36;
+
 
 /**
 * Number of teeth on the small gear
 */
-function n_teeth_small_gear() = 12;
+function n_teeth_small_gear(ratio=2) = total_gear_teeth() / (ratio + 1);
 
 /**
 * Number of teeth on the large gear
 */
-function n_teeth_large_gear() = n_teeth_small_gear() * gear_ratio();
+function n_teeth_large_gear(ratio=2) = n_teeth_small_gear(ratio) * ratio;
 
 /**
 * Distance from the centre of the small gear to the centre of the large gear
@@ -40,7 +46,7 @@ function gear_c2c_distance() = 20;
 /**
 * The cirular pitch used for both the small and large gears
 */
-function gear_pitch() = gear_c2c_distance() * 360 / (n_teeth_small_gear() + n_teeth_large_gear());
+function gear_pitch() = gear_c2c_distance() * 360 / (total_gear_teeth());
 
 /**
 * The pitch radius for the large gear.
@@ -48,13 +54,13 @@ function gear_pitch() = gear_c2c_distance() * 360 / (n_teeth_small_gear() + n_te
 * This is calcualted as:
 *    pitch radius = Nteeth * circular_pitch / 360
 */
-function large_gear_pitch_radius() = gear_pitch_radius(gear_pitch(), n_teeth_large_gear());
+function large_gear_pitch_radius(ratio=2) = gear_pitch_radius(gear_pitch(), n_teeth_large_gear(ratio));
 
 
 /**
 * The total radius of the large gear
 */
-function large_gear_radius() = gear_outer_radius(large_gear_pitch_radius(), n_teeth_large_gear());
+function large_gear_radius(ratio=2) = gear_outer_radius(large_gear_pitch_radius(ratio), n_teeth_large_gear(ratio));
 
 /**
 * The poisition of the screw for the large gear relateive to the centre of the bottom plane of the gear.
@@ -67,12 +73,12 @@ function large_gear_screw_pos() = [0, 0, 1.5];
 * This is calcualted as:
 *    pitch radius = Nteeth * circular_pitch / 360
 */
-function small_gear_pitch_radius() = gear_pitch_radius(gear_pitch(), n_teeth_small_gear());
+function small_gear_pitch_radius(ratio=2) = gear_pitch_radius(gear_pitch(), n_teeth_small_gear(ratio));
 
 /**
 * The total radius of the small gear measired over the teeth
 */
-function small_gear_radius() = gear_outer_radius(small_gear_pitch_radius(), n_teeth_small_gear());
+function small_gear_radius(ratio=2) = gear_outer_radius(small_gear_pitch_radius(ratio), n_teeth_small_gear(ratio));
 
 /**
 * The value of $fn used for the small gear
@@ -83,9 +89,9 @@ function small_gear_fn() = 32;
 * Radius of the flange on the large gear. This is larger than the radius across the teeth
 * by half the distance from the meshing point to the end of the teeth.
 */
-function small_gear_flange_radius() = let(
-    pitch_r = small_gear_pitch_radius(),
-    outer_r = small_gear_radius(),
+function small_gear_flange_radius(ratio=2) = let(
+    pitch_r = small_gear_pitch_radius(ratio),
+    outer_r = small_gear_radius(ratio),
     additional_r = (outer_r-pitch_r)/2
 ) outer_r + additional_r;
 
@@ -93,15 +99,15 @@ function small_gear_flange_radius() = let(
 * Large gears that are attached to the actuator lead screw and sit ontop
 * of the actuator housing. These are driven by the small gear (see `small_gear()`).
 */
-module large_gear(){
+module large_gear(ratio=2){
     $fn=32;
 
-    pitch_r = large_gear_pitch_radius();
+    pitch_r = large_gear_pitch_radius(ratio);
 
     difference(){
         // intersection used to chamfer the bottom of the gear
         intersection(){
-            gear(number_of_teeth=n_teeth_large_gear(),
+            gear(number_of_teeth=n_teeth_large_gear(ratio),
                  circular_pitch=gear_pitch(),
                  circles=0,
                  gear_thickness=6,
@@ -152,12 +158,12 @@ module motor_shaft_cut_out(flat_shaft_w){
 /**
 * Small gears that attach onto the 28BYJ-48 stepper motor shaft for motorised actuation
 */
-module small_gear(flat_shaft_w=3.15){
+module small_gear(flat_shaft_w=3.15, ratio=2){
     $fn=small_gear_fn();
     h=small_gear_height();
     difference(){
         union(){
-            gear(number_of_teeth=n_teeth_small_gear(),
+            gear(number_of_teeth=n_teeth_small_gear(ratio),
                  circular_pitch=gear_pitch(),
                  circles=0,
                  gear_thickness=h,
@@ -166,7 +172,7 @@ module small_gear(flat_shaft_w=3.15){
                  rim_thickness=h,
                  bore_diameter=1);
             //Flange on the bottom of the gear improve adhesion during printing
-            cylinder(r=small_gear_flange_radius(),h=0.5);
+            cylinder(r=small_gear_flange_radius(ratio),h=0.5);
         }
         motor_shaft_cut_out(flat_shaft_w=flat_shaft_w);
     }
