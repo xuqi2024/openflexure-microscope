@@ -16,17 +16,21 @@
 use <./libs/gears.scad>
 use <./libs/utilities.scad>
 
-printable_small_gears();
+RATIO = 0.8;
 
-module printable_small_gears(){
+printable_small_gears(ratio=RATIO);
+
+module printable_small_gears(ratio=2){
+    // check the ratio gives an integer number of teeth
+    assert(floor(n_teeth_small_gear(ratio))==n_teeth_small_gear(ratio),"The number of teeth on the large gear is not integer");
     // Calculate the spacing from the gear pitch radius.
     // Add 4mm of clearance
-    spacing = 2*small_gear_pitch_radius() + 4;
+    spacing = 2*small_gear_pitch_radius(ratio) + 4;
     repeat([0, spacing, 0], 3, center=true){
         // 3.15 is a trade off. Firm to push on some printers that print
         // the gears loose. Should be press fit with a small clamp/vice
         // if the printer prints tight. All are then locked with two screws
         // Can be adjusted for printers outside this range.
-        small_gear(flat_shaft_w=3.15);
+        small_gear(flat_shaft_w=3.15, ratio=ratio);
     }
 }
