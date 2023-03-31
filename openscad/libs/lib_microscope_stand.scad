@@ -604,9 +604,11 @@ function nano_conv_plate_third_screw_ofst() = [-8, 3, 0];
 
 module sanga_lugs(sanga_version){
 
-    side_lugs = (sanga_version=="v0.4" || sanga_version=="v0.5") ?
+    side_lugs = (sanga_version=="v0.5")?
         [pi_hole_pos(true)[0], pi_hole_pos(true)[1], (pi_hole_pos(true)[0]+ nano_conv_plate_third_screw_ofst())] :
-        [sanga_v0_3_holes()[0], sanga_v0_3_holes()[1]];
+        (sanga_version=="v0.4") ?
+            [pi_hole_pos(true)[0], pi_hole_pos(true)[1]] :
+            [sanga_v0_3_holes()[0], sanga_v0_3_holes()[1]];
     front_lugs = (sanga_version=="v0.4" || sanga_version=="v0.5") ?
         [] :
         [sanga_v0_3_holes()[2]];
