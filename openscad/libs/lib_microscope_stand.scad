@@ -385,7 +385,7 @@ function electronics_drawer_front_screw_pos() = let(
 
 function electronics_drawer_front_nut_trap_pos() = electronics_drawer_front_screw_pos() - [7, 0, 0];
 
-function electronics_drawer_side_screw_pos() = [0, -3, 35];
+function electronics_drawer_side_screw_pos() = [-1, -3, 35];
 
 function electronics_drawer_nut_block_depth() = 5;
 
