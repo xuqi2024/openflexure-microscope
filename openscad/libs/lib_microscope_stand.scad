@@ -581,8 +581,9 @@ module no2_selftap_lug(hole_pos, wall_pos, wall_angle){
                 translate(hole_pos){
                     cylinder(d=5.5, h=5, $fn=12);
                 }
-                // make the lug at 45 degree slope
-                z_for_angle = sqrt((hole_pos.y - wall_pos.y)^2 + (hole_pos.x - wall_pos.x)^2);
+                // make the lug at consistent slope, about 30 deg above horizontal, by setting the 
+                // z height of the bottom of the lug slope at a bit less than the distance from the wall
+                z_for_angle = 0.75 * sqrt((hole_pos.y - wall_pos.y)^2 + (hole_pos.x - wall_pos.x)^2);
                 translate([(wall_pos.x), wall_pos.y, (hole_pos.z - z_for_angle)]){
                     rotate_z(wall_angle){
                         translate_x(-5.5/2){
