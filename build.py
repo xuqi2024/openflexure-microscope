@@ -145,8 +145,8 @@ def generate_stand_with_pi(writer):
 
     # Also generate the tray for the pi itself
     for pi in [3,4]:
-        for sanga in ["v0.3", "v0.4", "v0.5"]:
-            if (pi==4) and (sanga=="v0.5"):
+        for sanga in ["v0.3", "HAT_8.5mm", "HAT_11mm"]:
+            if (pi==4) and (sanga=="HAT_11mm"):
                 output = "electronics_drawer.stl"
             else:
                 output = f"electronics_drawer-pi{pi}_sanga{sanga}.stl"

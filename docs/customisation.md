@@ -14,18 +14,18 @@ Our custom motor board, the Sangaboard, can be hard to get hold of. We are worki
 
 For a Raspberry Pi version 3, you will need a different electronics drawer and adapter plate  
 
-* [electronics_drawer-pi3_sangav0.5.stl](models/electronics_drawer-pi3_sangav0.5.stl){previewpage}
+* [electronics_drawer-pi3_sangaHAT_11mm.stl](models/electronics_drawer-pi3_sangaHAT_11mm.stl){previewpage}
 * [nano_converter_plate-pi3.stl](models/nano_converter_plate-pi3.stl){previewpage}
 
 ### Using a Raspberry Pi version 3, or alternative Sangaboard
 
-If you don't have access to a Raspberry Pi version 4 or a Sangaboard v0.5, but have an older board, you can use one of these modified electronics drawers:
+If you don't have access to a Raspberry Pi version 4 or a Sangaboard HAT_11mm, but have an older board, you can use one of these modified electronics drawers:
 
 * [electronics_drawer-pi3_sangav0.3.stl](models/electronics_drawer-pi3_sangav0.3.stl){previewpage}
-* [electronics_drawer-pi3_sangav0.4.stl](models/electronics_drawer-pi3_sangav0.4.stl){previewpage}
-* [electronics_drawer-pi3_sangav0.5.stl](models/electronics_drawer-pi3_sangav0.5.stl){previewpage}  
+* [electronics_drawer-pi3_sangaHAT_8.5mm.stl](models/electronics_drawer-pi3_sangaHAT_8.5mm.stl){previewpage}
+* [electronics_drawer-pi3_sangaHAT_11mm.stl](models/electronics_drawer-pi3_sangaHAT_11mm.stl){previewpage}  
 * [electronics_drawer-pi4_sangav0.3.stl](models/electronics_drawer-pi4_sangav0.3.stl){previewpage}
-* [electronics_drawer-pi4_sangav0.4.stl](models/electronics_drawer-pi4_sangav0.4.stl){previewpage}
+* [electronics_drawer-pi4_sangaHAT_8.5mm.stl](models/electronics_drawer-pi4_sangaHAT_8.5mm.stl){previewpage}
 
 ### No illumination PCB
 

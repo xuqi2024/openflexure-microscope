@@ -32,7 +32,7 @@ module render_microscope(low_cost=false){
             rpi_4b();
         }
 
-        translate(electronics_drawer_board_inset() + [0, 0, sanga_stand_height("v0.4")]){
+        translate(electronics_drawer_board_inset() + [0, 0, sanga_stand_height("HAT_8.5mm")]){
             sangaboard_v0_4();
         }
     }
