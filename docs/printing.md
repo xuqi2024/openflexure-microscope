@@ -21,7 +21,7 @@ Now you have tested your [printer][RepRap-style printer]{qty:1,cat:tool} and [fi
 * 3 [cable tidy caps]{output,qty:3}: [cable_tidies.stl](models/cable_tidies.stl){previewpage}
 * [Sample clips]{output,qty:2}: [sample_clips.stl](models/sample_clips.stl){previewpage}
 * [Microscope stand]{output, qty:1}: [microscope_stand.stl](models/microscope_stand.stl){previewpage}
-* [Electronics drawer]{output, qty:1}: [electronics_drawer.stl](models/electronics_drawer.stl){previewpage}
+* [Electronics drawer]{output, qty:1}: [electronics_drawer-pi4_sangaHAT_11mm.stl](models/electronics_drawer-pi4_sangaHAT_11mm.stl){previewpage}
 * 3 [small gears]{output,qty:3}: [small_gears.stl](models/small_gears.stl){previewpage}
 {{include: {{var_type}}_only_printing.md}}
 
