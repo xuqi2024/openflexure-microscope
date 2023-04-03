@@ -50,10 +50,14 @@ You will need to ensure the Sangaboard has the correct firmware and bootloader b
 
 ## Connect the LED to the Sangaboard {pagestep}
 
-* Insert the 2-pin male connector into the 4x2 way female header on the [Sangaboard].
-* If you are not using a Sangaboard v4, you can also [connect the LED to the Raspberry Pi](workaround_raspberry_pi_gpio_led.md)
-
 ![Connect the LED to the Sangaboard](diagrams/illumination_to_sangaboard_wiring.png)
+
+The LED needs to be connected to Ground and 5V. You will find this in different places for different motor controllers.
+
+* For Sangaboard V0.5, plug the 2-pin female connector onto the 2 way male header labelled `5V GND`. Do not use the header labelled `LED`, it has functions that are not yet available in the Microscope software 
+* For Sangaboard V0.3, plug the 2-pin female connector onto one of the male headers with pins labelled `5V` and `GROUND` or `G`.
+* If you are using the [workaround motor electronics] you can attach the LED to the motor 5V supply.
+* Alternatively you can [connect the LED to the Raspberry Pi](workaround_raspberry_pi_gpio_led.md)
 
 ## Mount the electronics drawer {pagestep}
 
@@ -66,4 +70,4 @@ You will need to ensure the Sangaboard has the correct firmware and bootloader b
 
 To power up your microscope you will need a [power supply][Raspberry Pi Power Supply](parts/electronics.yml#RaspberryPi_PowerSupply){qty:1, cat:electronic}.  
 
->i The power supply may change if you have used a different option for the motor electronics, so check what is required by your motor driver board.  Some motor electronics options (Sangaboard v4 and v5) will power the Raspberry Pi, others may require separate power supplies for the Raspberry Pi and the motors.
+>i The power supply may change if you have used a different option for the motor electronics, so check what is required by your motor driver board.  Some motor electronics options (Sangaboard v0.4 and v0.5) will power the Raspberry Pi, others may require separate power supplies for the Raspberry Pi and the motors.
