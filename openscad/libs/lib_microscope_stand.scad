@@ -459,7 +459,7 @@ module electronics_drawer_base(stand_params){
         translate_y(base_size.y/2){
             cube(25, center=true);
         }
-        text_height = 6;
+        text_height = 5;
         version_string_p = str("Pi ", pi_version,"B");
         version_string_s = str("Sanga ",sanga_version);
         translate([20, (base_size.y/2 + text_height*0.5), base_size.z-0.5]){
