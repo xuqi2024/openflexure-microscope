@@ -20,7 +20,7 @@ The microscope must be completed by mounting the motor driver electronics and th
 [No 2 6.5mm self tapping screws]: parts/mechanical.yml#SelfTap_PoziPan_No2x6.5_SS "{cat:mech}"
 [M3 nut]: parts/mechanical.yml#Nut_M3_SS "{cat:mech}"
 [M3x10 cap head screws]: parts/mechanical.yml#CapScrew_M3x10mm_SS "{cat:mech}"
-[electronics drawer]: fromstep "{cat:printedpart}"
+[Electronics drawer]: fromstep "{cat:printedpart}"
 
 ## Assembly video
 
@@ -28,7 +28,7 @@ The microscope must be completed by mounting the motor driver electronics and th
 
 ## Connect the Raspberry Pi {pagestep}
 
-* Take the [electronics drawer]{qty:1} you printed earlier and push the [Raspberry Pi]{qty:1} into place so the connectors show through the holes.
+* Take the [electronics drawer][Electronics drawer]{qty:1} you printed earlier and push the [Raspberry Pi]{qty:1} into place so the connectors show through the holes.
 * Secure the Raspberry Pi in place with two [self tapping screws][No 2 6.5mm self tapping screws]{qty:2}
 * Insert the ribbon cable from the optics module into the camera port of the Rasberry Pi, ensuring the contacts are on the opposite side from the clasp. There are [detailed instructions on the Rasbperry Pi website](https://projects.raspberrypi.org/en/projects/getting-started-with-picamera/2).
 
@@ -62,9 +62,9 @@ The LED needs to be connected to Ground and 5V. You will find this in different 
 ## Mount the electronics drawer {pagestep}
 
 * Place an [M3 nut]{qty:1, cat:mech} into the slot just inside the hole in the front of the microscope base.
-* Place another [M3 nut]{qty:1} into the slot above the Sangaboard power connector on the [electronics drawer].
-* Slide the [electronics drawer] into the microscope base making sure not to pinch any wires.
-* Hold the [electronics drawer] in place with two [M3x10 cap head screws]{qty: 2} which should screw into the two nuts.
+* Place another [M3 nut]{qty:1} into the slot above the Sangaboard power connector on the [electronics drawer][Electronics drawer].
+* Slide the [electronics drawer][Electronics drawer] into the microscope base making sure not to pinch any wires.
+* Hold the [electronics drawer][Electronics drawer] in place with two [M3x10 cap head screws]{qty: 2} which should screw into the two nuts.
 
 ## Wiring Complete {pagestep}
 
