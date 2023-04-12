@@ -145,11 +145,8 @@ def generate_stand_with_pi(writer):
 
     # Also generate the tray for the pi itself
     for pi in [3,4]:
-        for sanga in ["v0.3", "v0.4", "v0.5"]:
-            if (pi==4) and (sanga=="v0.5"):
-                output = "electronics_drawer.stl"
-            else:
-                output = f"electronics_drawer-pi{pi}_sanga{sanga}.stl"
+        for sanga in ["v0.3", "HAT_8.5mm", "HAT_11mm"]:
+            output = f"electronics_drawer-pi{pi}_sanga{sanga}.stl"
 
             parameters = {"PI_VERSION": pi,
                           "SANGA_VERSION": sanga}
@@ -161,10 +158,7 @@ def generate_nano_converter_plate(writer):
     Add nano converter plates to go over Pi3 or Pi4 to the ninja build
     """
     for pi in [3,4]:
-        if (pi==4):
-            output = "nano_converter_plate.stl"
-        else:
-            output = f"nano_converter_plate-pi{pi}.stl"
+        output = f"nano_converter_plate-pi{pi}.stl"
 
         parameters = {"PI_VERSION": pi}
 
