@@ -6,6 +6,8 @@ Here are some of the most common customisations. This page may not be as detaile
 
 >i You can [download every STL from here](all-stls.zip).
 
+The [forum](https://openflexure.discourse.group/) also has many customisations and alternatives suggested by the community.
+
 ## Electronics
 
 ### No access to the Sangaboard
