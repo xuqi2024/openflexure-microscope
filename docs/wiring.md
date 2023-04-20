@@ -49,7 +49,7 @@ You will need to ensure the Sangaboard has the correct firmware and bootloader b
 
 ## Connect the LED to the Sangaboard {pagestep}
 
-![Connect the LED to the Sangaboard](diagrams/illumination_to_sangaboard_wiring.png)
+![Connect the LED to the Sangaboard](diagrams/illumination_to_sanga_board_wiring.png)
 
 The LED needs to be connected to Ground and 5V. You will find this in different places for different motor controllers.
 
