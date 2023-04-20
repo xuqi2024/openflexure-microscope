@@ -1,6 +1,6 @@
 # Complete the wiring
 
-The microscope must be completed by mounting the motor driver electronics and the Raspberry Pi, connecting the motors to the motor driver, and connecting the illumination to a power source.  These instructions assume you are using a Raspberry Pi v4 and a Sangaboard v4 or v5.  See the box below if you are not using these electronics.
+The microscope must be completed by mounting the motor driver electronics and the Raspberry Pi, connecting the motors to the motor driver, and connecting the illumination to a power source.  These instructions assume you are using a Raspberry Pi v4 and a Sangaboard v0.4 or v0.5.  See the box below if you are not using these electronics.
 
 >i **Alternative electronics options**
 >i
@@ -35,10 +35,10 @@ The microscope must be completed by mounting the motor driver electronics and th
 
 You will need to ensure the Sangaboard has the correct firmware and bootloader before it can be used. This is often easier to do before mounting it. 
 
->i Sangaboard v3 and v4 have two micro-USB ports.  One is for power only, the other is for data only.  You must upload the firmware using the "data" port.
+>i Sangaboard v0.3 and v0.4 have two micro-USB ports.  One is for power only, the other is for data only.  You must upload the firmware using the "data" port.
 
 * Plug the Sangaboard into a computer, using the "data" micro-USB port.  If it shows up as a Sangaboard (or as a USB serial port) when plugged into a computer, this means you already have a bootloader and can skip the next bullet point and go straight to uploading the firmware.
-* For home-made Sangaboard v3 and v4 you need to follow the [instructions in the repository to burn the bootloader](https://gitlab.com/bath_open_instrumentation_group/sangaboard/-/tree/master/Bootloader).
+* For home-made Sangaboard v0.3 and v0.4 you need to follow the [instructions in the repository to burn the bootloader](https://gitlab.com/bath_open_instrumentation_group/sangaboard/-/tree/master/Bootloader).
 * Once you have the correct bootloader, you must follow the [instructions in the repository to upload the firmware](https://gitlab.com/bath_open_instrumentation_group/sangaboard/-/tree/master/arduino_code).
 
 ## Connect the Sangaboard {pagestep}
@@ -53,8 +53,8 @@ You will need to ensure the Sangaboard has the correct firmware and bootloader b
 
 The LED needs to be connected to Ground and 5V. You will find this in different places for different motor controllers.
 
-* For Sangaboard V0.5, plug the 2-pin female connector onto the 2 way male header labelled `5V GND`. Do not use the header labelled `LED`, it has functions that are not yet available in the Microscope software 
-* For Sangaboard V0.3, plug the 2-pin female connector onto one of the male headers with pins labelled `5V` and `GROUND` or `G`.
+* For Sangaboard v0.5, plug the 2-pin female connector onto the 2 way male header labelled `5V GND`. Do not use the header labelled `LED`, it has functions that are not yet available in the Microscope software 
+* For Sangaboard v0.3, plug the 2-pin female connector onto one of the male headers with pins labelled `5V` and `GROUND` or `G`.
 * If you are using the [workaround motor electronics] you can attach the LED to the motor 5V supply.
 * Alternatively you can [connect the LED to the Raspberry Pi](workaround_raspberry_pi_gpio_led.md)
 
