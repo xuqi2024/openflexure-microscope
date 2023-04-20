@@ -18,3 +18,7 @@ Setting up the software is not yet included in these instructions.  It is detail
 
 ["Install" page]: https://openflexure.org/projects/microscope/install
 ["control" page]: https://openflexure.org/projects/microscope/control
+
+## Join the community {pagestep}
+
+OpenFlexure is community project, and we are always delighted to hear from people who have built it on the [forum](https://openflexure.discourse.group/). The forum is also a great resource for things to do with your microscope, tips and tricks, and others who have built it. Posting photos of your build, pictures taken with the microscope, or even just the fact that you've built it, will all help to keep the project thriving.
