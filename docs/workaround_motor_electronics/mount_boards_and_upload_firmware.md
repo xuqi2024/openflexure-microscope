@@ -8,7 +8,7 @@ Using the [nano converter plate](fromstep){qty:1} and [nano converter plate grip
 
 ## Upload the firmware {pagestep}
 
-Using the Arduno IDE load the [Sangaboard arduino sketch] onto the Arduino nano, in the same way as you would do for a Sangaboard v4.  If you have problems, check the troubleshooting hints below.
+Using the Arduno IDE load the [Sangaboard arduino sketch] onto the Arduino nano, in the same way as you would do for a Sangaboard v0.4.  If you have problems, check the troubleshooting hints below.
 
 ---
 
