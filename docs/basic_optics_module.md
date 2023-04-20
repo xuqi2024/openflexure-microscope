@@ -36,7 +36,7 @@ Take the [lens spacer][Lens spacer](fromstep){qty:1, cat:printedpart} and confir
 * Take the [Pi Camera lens tool]{qty: 1} and place it over the lens
 * Slowly unscrew the lens (About 4 full turns of the tool)
 * Carefully lift off the lens.
-* Save the lens and the camera, we use both this version of the microscope.
+* Save the lens and the camera, we use both in this version of the microscope.
 
 ![](renders/picam1.png)
 ![](renders/picam2.png)
