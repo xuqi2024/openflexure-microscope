@@ -8,7 +8,7 @@ function nano_converter_plate_size() = let(
     // Plate thickness should be thick enough that the USB cut-out does not go
     // through the board.
     usb_height = electronics_drawer_standoff_h() + 17,
-    thickness = usb_height - sanga_stand_height(sanga_version="v0.5") + 2
+    thickness = usb_height - sanga_stand_height(sanga_version="stack_11mm") + 2
 ) [pi_board_dims().x, width, thickness];
 
 module nano_converter_plate(pi_version=4){
@@ -46,7 +46,7 @@ module nano_converter_plate(pi_version=4){
             cube([pi_pin_access_length, 2.54+0.75, 10], center = true);
         }
 
-        translate_x(sanga_connector_x(sanga_version="v0.4")){
+        translate_x(sanga_connector_x(sanga_version="stack_8.5mm")){
             nano_conv_plate_nano_cutout();
         }
         translate_z(0.5){

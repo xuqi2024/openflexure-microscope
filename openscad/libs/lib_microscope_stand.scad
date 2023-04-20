@@ -21,9 +21,9 @@ function microscope_stand_vert_height(stand_params) = let(
     extra_h = key_lookup("extra_height", stand_params)
 ) drawer_h + extra_h;
 
-function default_stand_params(tall=false, no_pi=false, pi_version=4, sanga_version="v0.4") =
+function default_stand_params(tall=false, no_pi=false, pi_version=4, sanga_version="stack_8.5mm") =
     assert(pi_version==3 || pi_version==4, "pi_version must be 3 or 4")
-    assert(sanga_version=="v0.3" || sanga_version=="v0.4" || sanga_version=="v0.5", "sanga_version must be \"v0.3\", \"v0.4\" or \"0.5\"")
+    assert(sanga_version=="v0.3" || sanga_version=="stack_8.5mm" || sanga_version=="stack_11mm", "sanga_version must be \"v0.3\", \"stack_8.5mm\" or \"0.5\"")
     [["electronics_drawer_h", 47], //The height of the tray the pi sits in.
      ["include_pi_tray_hole", !no_pi], //Whether the stand has a hole for the raspberry pi tray
      ["extra_height", tall ? 17 : 0], //extra height above the raspberry pi_tray
@@ -362,16 +362,16 @@ function electronics_drawer_front_pos() = let(
     x_tr = electronics_drawer_base_size().x - electronics_drawer_wall_t()
 ) [x_tr, 0, 0];
 
-function sanga_stand_height(sanga_version="v0.4") = let(
-    extra_h = (sanga_version=="v0.4") ?
+function sanga_stand_height(sanga_version="stack_8.5mm") = let(
+    extra_h = (sanga_version=="stack_8.5mm") ?
                 12.5 :
-                (sanga_version=="v0.5") ?
+                (sanga_version=="stack_11mm") ?
                 15 :
                 27  // otherwise Sangaboard v0.3
 ) electronics_drawer_standoff_h() + extra_h;
 
 function electronics_drawer_mount_block_size() = let(
-    height = sanga_stand_height("v0.5"),
+    height = sanga_stand_height("stack_11mm"),
     width = electronics_drawer_front_width()-electronics_drawer_base_size().y
 ) [10, width, height];
 
@@ -459,7 +459,7 @@ module electronics_drawer_base(stand_params){
         translate_y(base_size.y/2){
             cube(25, center=true);
         }
-        text_height = 6;
+        text_height = 5;
         version_string_p = str("Pi ", pi_version,"B");
         version_string_s = str("Sanga ",sanga_version);
         translate([20, (base_size.y/2 + text_height*0.5), base_size.z-0.5]){
@@ -524,7 +524,7 @@ module electronics_drawer_walls(stand_params){
     }
 }
 
-function sanga_connector_x(sanga_version) = (sanga_version=="v0.4" || sanga_version=="v0.5") ?
+function sanga_connector_x(sanga_version) = (sanga_version=="stack_8.5mm" || sanga_version=="stack_11mm") ?
                                                 11.2 :
                                                 23.7;
 
@@ -544,12 +544,12 @@ function sanga_v0_3_holes() = let(
 
 module sanga_connector_holes(sanga_version){
     v0_3_offset_x = pi_board_dims().x-sanga_v0_3_board_dims().x;
-    board_inset = (sanga_version=="v0.4" || sanga_version=="v0.5") ?
+    board_inset = (sanga_version=="stack_8.5mm" || sanga_version=="stack_11mm") ?
         electronics_drawer_board_inset() :
         electronics_drawer_board_inset() + [v0_3_offset_x, 0, 0];
 
     wall_t = electronics_drawer_wall_t();
-    connector_extra_z = (sanga_version=="v0.4" || sanga_version=="v0.5") ?
+    connector_extra_z = (sanga_version=="stack_8.5mm" || sanga_version=="stack_11mm") ?
                             3 :
                             3.75;
     connector_z = sanga_stand_height(sanga_version) + tiny() + connector_extra_z;
@@ -604,12 +604,12 @@ function nano_conv_plate_third_screw_ofst() = [-8, 3, 0];
 
 module sanga_lugs(sanga_version){
 
-    side_lugs = (sanga_version=="v0.5")?
+    side_lugs = (sanga_version=="stack_11mm")?
         [pi_hole_pos(true)[0], pi_hole_pos(true)[1], (pi_hole_pos(true)[0]+ nano_conv_plate_third_screw_ofst())] :
-        (sanga_version=="v0.4") ?
+        (sanga_version=="stack_8.5mm") ?
             [pi_hole_pos(true)[0], pi_hole_pos(true)[1]] :
             [sanga_v0_3_holes()[0], sanga_v0_3_holes()[1]];
-    front_lugs = (sanga_version=="v0.4" || sanga_version=="v0.5") ?
+    front_lugs = (sanga_version=="stack_8.5mm" || sanga_version=="stack_11mm") ?
         [] :
         [sanga_v0_3_holes()[2]];
     translate_z(sanga_stand_height(sanga_version)){
