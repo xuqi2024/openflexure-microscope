@@ -1,6 +1,6 @@
 # Troubleshooting
 
->i The [forum](https://openflexure.discourse.group) is a great place to get help, advice, solutions and work-arounds from the OpenFlexure Community.
+>i The [OpenFlexure forum](https://openflexure.discourse.group) is a great place to get help, advice, solutions and work-arounds from the OpenFlexure Community.
 
 ### My Raspberry Pi Camera did not come with the lens removal tools
 
