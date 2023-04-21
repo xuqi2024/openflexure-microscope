@@ -3,6 +3,8 @@ The OpenFlexure Microscope is a 3D printable microscope, with a very precise mec
 
 These instructions will take you through how to assemble various configurations. They also describe how to make a [Sangaboard Compatible motor controller](workaround_motor_electronics/workaround_motor_electronics.md) if you can't get hold of an official one.
 
+There are interactive 3D views of the [RMS](interactive_3d_view_rms.md) and [low cost](interactive_3d_view_low_cost.md) versions of the microscope.
+
 ## Microscope Configurations:
 
 #### [High-resolution motorised microscope](high_res_microscope.md)
@@ -20,4 +22,4 @@ This configuration of the microscope has the objective above the sample rather t
 
 The OpenFlexure Microscope is designed to be customisable. There are a number of customisation options already available as discussed on our [customisations and alternatives page](customisation.md).
 
-If you want to get more hands on with customisation all source files are available. You can either [download a zip of the source files for this release](source.zip) or visit our [GitLab page](https://gitlab.com/openflexure/openflexure-microscope/) to see our ongoing development.
+If you want to get more hands on with customisation all source files are available. You can either [download a zip of the source files for this release](source.zip) or visit our [GitLab page](https://gitlab.com/openflexure/openflexure-microscope/) to see our ongoing development. In preparation for the release of v7, we also save a [hash file](models/dependency_hashes.yaml.gz) that will allow us to determine which STL files have changed between revisions.

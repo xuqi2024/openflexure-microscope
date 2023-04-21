@@ -288,7 +288,7 @@ function condenser_dovetail_params() = let(
     )
 ) dt_params;
 
-module condenser_body(base_r, lens_assembly_z, include_mounting=true){
+module condenser_body(base_r, lens_assembly_z, include_mounting=true, basic_condenser = false){
     dt_params = condenser_dovetail_params();
     dt_height = key_lookup("overall_height", dt_params);
     // the dovetail clip
@@ -297,17 +297,20 @@ module condenser_body(base_r, lens_assembly_z, include_mounting=true){
             dovetail_clamp_m(dt_params);
         }
     }
+    // main cylinder of the condenser
     cylinder(r=base_r+.2, h=lens_assembly_z+tiny());
-    //this hull is the outer shape of the body of the condenser
-    sequential_hull(){
-        cylinder(r=base_r+.2, h=dt_height);
-        translate_y(base_r){
+    if (!basic_condenser){
+        //this hull is the outer shape of the body of the condenser
+        sequential_hull(){
             cylinder(r=base_r+.2, h=dt_height);
-        }
-        if (include_mounting){
-            translate_y(illumination_dovetail_y()){
-                linear_extrude(dt_height){
-                    back_of_block_2d(dt_params);
+            translate_y(base_r){
+                cylinder(r=base_r+.2, h=dt_height);
+            }
+            if (include_mounting){
+                translate_y(illumination_dovetail_y()){
+                    linear_extrude(dt_height){
+                        back_of_block_2d(dt_params);
+                    }
                 }
             }
         }
@@ -327,14 +330,14 @@ function condenser_base_r(lens_d)=lens_d/2+2;
 // Module: condenser()
 //   This makes the condenser arm, including the dovetail clamp, condenser
 //   lens holder, and mounting for the illumination PCB.
-module condenser(lens_assembly_z=condenser_lens_assembly_z(), include_mounting=true){
+module condenser(lens_assembly_z=condenser_lens_assembly_z(), include_mounting=true, basic_condenser = false){
     lens_d=condenser_lens_diameter();
     lens_t=condenser_lens_thickness();
     base_r = condenser_base_r(lens_d);
 
     difference(){
         union(){
-            condenser_body(base_r, lens_assembly_z+tiny(), include_mounting);
+            condenser_body(base_r, lens_assembly_z+tiny(), include_mounting, basic_condenser);
             //add the lens gripper
             translate_z(lens_assembly_z){
                 condenser_lens_gripper(lens_d/2, lens_t, base_r);
@@ -359,10 +362,10 @@ module illumination_board_cutout(h, board_bore_depth){
         translate([-3, -3, h-board_bore_depth-4]){
             cube([6, 25, h]);
         }
-        translate([-2, 1, h-board_bore_depth-3.5]){
+        translate([-2, 1, h-7]){
             cube([4, 99, h]);
         }
-        translate_z(.5){
+        translate_z(-2.5){
             reflect_x(){
                 translate_x(illumination_mounting_hole_sep()/2){
                     no2_selftap_hole(h=h);
@@ -378,8 +381,8 @@ module illumination_board_cutout(h, board_bore_depth){
 // i.e. it is upside down.
 function condenser_lid_h()=13;
 module condenser_lid(lens_d=condenser_lens_diameter()){
-    //allow space for 2 screw heads and for board thickness
-    board_bore_depth = 6.5;
+    //allow space for 2 screw heads and for board thickness, and for the LED
+    board_bore_depth = 8.0;
     //Total height must be deep enough for the self tap screw
     h = condenser_lid_h();
     base_r = condenser_base_r(lens_d);

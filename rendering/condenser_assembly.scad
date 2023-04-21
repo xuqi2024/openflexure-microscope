@@ -138,12 +138,14 @@ module rendered_diffuser(explode=false){
 module rendered_spacer(explode=false){
     z_pos = diffuser_thickness();
     coloured_render(extras_colour()){
-        rotate_y(180){
-            translate_z(z_pos + (explode?10:0)){
-                if (USE_BUILT_STL){
-                    cached_stl("condenser_board_spacer");
-                }else{
-                    condenser_board_spacer();
+        rotate_z(180){
+            rotate_y(180){
+                translate_z(z_pos + (explode?10:0)){
+                    if (USE_BUILT_STL){
+                        cached_stl("condenser_board_spacer");
+                    }else{
+                        condenser_board_spacer();
+                    }
                 }
             }
         }
@@ -237,7 +239,9 @@ module rendered_led_holder(explode=false){
 
 module rendered_led(explode=false){
     translate_z(-condenser_lid_h() + 5 + (explode ? 20 : 0)){
-        led();
+        translate_z(-0.5){
+            led();
+        }
         reflect_x(){
             translate([2.54/2, 0, -0.75]){
                 rotate_x(-90){
