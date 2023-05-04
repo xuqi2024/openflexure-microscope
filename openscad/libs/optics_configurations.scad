@@ -42,7 +42,7 @@ function pilens_config(camera_type = "picamera_2") = let(
                    ["lens_r", 3],
                    ["parfocal_distance", 6], // For a lens spacer, this is the full lens thickness plus the working distance
                    ["lens_h", 2.5], // For a lens spacer this is the lens thickness to be gripped
-                   ["lens_spacing", 17]]
+                   ["lens_spacing", 17]] // Minimum 17 for spacer to build correctly
 ) config_dict;
 
 function c270lens_config(camera_type = "logitech_c270") = let(
@@ -51,7 +51,7 @@ function c270lens_config(camera_type = "logitech_c270") = let(
                    ["lens_r", (11.6/2)],
                    ["parfocal_distance", (6+1)], // For a lens spacer, this is the full lens thickness plus the working distance
                    ["lens_h", 4], // For a lens spacer this is the lens thickness to be gripped
-                   ["lens_spacing", 17]]
+                   ["lens_spacing", 17]] // Minimum 13 for spacer to build correctly
 ) config_dict;
 
 function b0196lens_config(camera_type = "arducam_b0196") = let(
@@ -60,5 +60,5 @@ function b0196lens_config(camera_type = "arducam_b0196") = let(
                    ["lens_r", 3],
                    ["parfocal_distance", 6], // For a lens spacer, this is the full lens thickness plus the working distance
                    ["lens_h", 2.5], // For a lens spacer this is the lens thickness to be gripped
-                   ["lens_spacing", 17]]
+                   ["lens_spacing", 17]] // Minimum 17 for spacer to build correctly
 ) config_dict;
