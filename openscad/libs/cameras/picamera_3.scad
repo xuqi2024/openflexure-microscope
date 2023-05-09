@@ -66,8 +66,8 @@ module picam3_flex_and_components(){
         square([10,13.4-4]);
     }
     //connector
-    translate([-10/2-2.5,13.4-5.4]){
-        square([12.5, 5.4]);
+    translate([-10/2-2,13.4-5.4]){
+        square([12, 5.4]);
     }
 }
 
