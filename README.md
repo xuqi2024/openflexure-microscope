@@ -29,7 +29,7 @@ If you've built one, let us know. You can let us know on [our forum](https://ope
 Most of the development of this design has been done as part of various [research projects](http://www.bath.ac.uk/physics/contacts/academics/richard-bowman/index.html) - if you would like to join our research group at Bath, and you have funding or are interested in applying for it, do get in touch.  Check the University of Bath jobs site, or findaphd.com, to see if we are currently advertising any vacancies.  The team is bigger than Bath, though, and there are contributors in Cambridge, Dar es Salaam, and beyond.
 
 ## Kits and License
-This project is open-source and is released under the CERN open hardware license.  We are working on bring able to sell kits through [OpenFlexure Industries Ltd.](https://www.openflexure.com/), and will update here once we have a good way of doing it.
+This project is open-source and is Released under the CERN Open Hardware License, strongly reciprocal, v2.0 or later (CERN-OHL-S-2.0) (CERN-OHL-S, see the License file).  Several companies are currently selling kits, including [Labmaker](https://www.labmaker.org/) and [Foxhill Engineering (formerly OpenFlexure Industries)](https://openflexure.com).
 
 ## Get Involved!
 This project is open so that anyone can get involved, and you don't have to learn OpenSCAD to help (although that would be great).  Ways you can contribute include:
