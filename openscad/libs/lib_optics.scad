@@ -431,6 +431,11 @@ module lens_spacer(params, optics_config){
     }
 }
 
+function camera_mounting_post_height(optics_config) = key_lookup("mounting_post_height", optics_config);
+    
+function camera_board_thickness(optics_config) = key_lookup("board_thickness", optics_config);
+
+
 /**
 * camera_platform(params, base_r, h)
 *
@@ -442,10 +447,8 @@ module camera_platform(params, optics_config, base_r){
 
     assert(key_lookup("optics_type", optics_config)=="spacer", "Use spacer optics configuration to create a camera_platform.");
 
-    camera_mounting_post_height = key_lookup("mounting_post_height", optics_config);
-
     // platform height is 5mm below the lens spacer (board is 1mm thick mounting posts are 4mm tall)
-    platform_h = lens_spacer_z(params, optics_config) - camera_mounting_post_height - 1;
+    platform_h = lens_spacer_z(params, optics_config) - camera_mounting_post_height(optics_config) - camera_board_thickness(optics_config);
     assert(platform_h > upper_z_flex_z(params), "Platform height too low for z-axis mounting");
 
     camera_mounting_posts_rotate  = c270_spacer_yes(optics_config)? -135: 0;
@@ -473,7 +476,7 @@ module camera_platform(params, optics_config, base_r){
             // add the camera mount posts
             translate_z(platform_h){
                 rotate_z(camera_mounting_posts_rotate){
-                    camera_bottom_mounting_posts(optics_config, h=camera_mounting_post_height, cutouts=false);
+                    camera_bottom_mounting_posts(optics_config, h=camera_mounting_post_height(optics_config), cutouts=false);
                 }
             }
         }
@@ -490,7 +493,7 @@ module camera_platform(params, optics_config, base_r){
         // add the camera mount holes
         translate_z(platform_h){
             rotate_z(camera_mounting_posts_rotate){
-                camera_bottom_mounting_posts(optics_config, h=camera_mounting_post_height, outers=false, cutouts=true);
+                camera_bottom_mounting_posts(optics_config, h=camera_mounting_post_height(optics_config), outers=false, cutouts=true);
             }
         }
         // mark the optic axis
