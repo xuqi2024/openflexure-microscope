@@ -482,12 +482,8 @@ module camera_platform(params, optics_config, base_r){
         }
 
         // Mount for the nut that holds it on
-        // TODO what is the -4 doing? 
-        // TODO cont. - it might be to fix a problem with "parfocal distance = 6", 
-        // TODO cont. - when lens thicknss = 2.5 and the working distance is only ~0-1mm
-        translate_z(-4){
-            objective_fitting_cutout(params, y_stop=true);
-        }
+        objective_fitting_cutout(params, y_stop=true);
+        
         // Undercut on build plate
         undercut_objective_fitting_wedge(undercut_height = 1.5);
         // add the camera mount holes

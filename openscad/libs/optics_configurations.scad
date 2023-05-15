@@ -40,7 +40,7 @@ function pilens_config(camera_type = "picamera_2") = let(
     config_dict = [["optics_type", "spacer"],
                    ["camera_type", camera_type],
                    ["lens_r", 3],
-                   ["parfocal_distance", 6], // For a lens spacer, this is the full lens thickness plus the working distance
+                   ["parfocal_distance", (3+1)], // For a lens spacer, this is the full lens thickness plus the working distance
                    ["lens_h", 2.5], // For a lens spacer this is the lens thickness to be gripped
                    ["lens_spacing", 17], // Minimum 17 for spacer to build correctly
                    ["mounting_post_height",4],
@@ -62,7 +62,7 @@ function b0196lens_config(camera_type = "arducam_b0196") = let(
     config_dict = [["optics_type", "spacer"],
                    ["camera_type", camera_type],
                    ["lens_r", 3],
-                   ["parfocal_distance", 6], // For a lens spacer, this is the full lens thickness plus the working distance
+                   ["parfocal_distance", (3+1)], // For a lens spacer, this is the full lens thickness plus the working distance
                    ["lens_h", 2.5], // For a lens spacer this is the lens thickness to be gripped
                    ["lens_spacing", 17], // Minimum 17 for spacer to build correctly
                    ["mounting_post_height",4],
