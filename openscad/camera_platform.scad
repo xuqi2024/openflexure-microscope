@@ -5,6 +5,9 @@ use <./libs/lib_optics.scad>
 use <./libs/optics_configurations.scad>
 
 camera_platform_stl();
+params = default_params();
+    optics_config = pilens_config();
+    lens_spacer(params, optics_config);
 
 module camera_platform_stl(){
     params = default_params();
