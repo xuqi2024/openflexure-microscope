@@ -119,7 +119,7 @@ function z_oring_placement() = create_placement_dict(z_actuator_pos(PARAMS)+[0, 
                                                      z_actuator_rot());
 
 function optics_module_pos(low_cost=false) = let(
-    z = low_cost ? 3 : 0
+    z = low_cost ? -1 : 0
 ) create_placement_dict([0, 0, z]);
 function optics_module_pos_above_tool() = create_placement_dict([0, 0, 75] ,[0, 180, 0], [0, 0, 180]);
 function optics_module_pos_on_tool() = create_placement_dict([0, 0, 42] ,[0, 180, 0], [0, 0, 180]);
