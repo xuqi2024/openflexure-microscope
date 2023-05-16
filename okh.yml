@@ -31,12 +31,12 @@ project-link: https://openflexure.org/projects/microscope/
 contact:
   name: Richard Bowman
   affiliation: University of Bath
-  email: "rwb34@bath.ac.uk"
+  email: "richard.bowman@glasgow.ac.uk"
   social:
     - platform: Twitter
       user-handle: "@OpenFlexure"
 
-version: 6.1.2
+version: 7.0
 
 development-stage: stable
 
@@ -45,14 +45,14 @@ made: true
 made-independently: true
 
 license:
-  hardware: CERN OHL v1.2
+  hardware:  CERN-OHL-S-2.0
   documentation: GPL-3.0
   software: GPL-3.0
 
 licensor:
   name: Richard Bowman
-  affiliation: University of Bath
-  email: "rwb34@bath.ac.uk"
+  affiliation: University of Glasgow
+  email: "richard.bowman@glasgow.ac.uk"
 
 
 # Documentation
