@@ -168,8 +168,8 @@ function lens_spacer_pos_on_tool(params, optics_config) = let(
     z_tr = pi_lens_z_pos(params, optics_config)
 ) create_placement_dict([0, 0, z_tr], [0, 180, 0], [0, 0, 180]);
 
-function camera_platform_nut_pos() = create_placement_dict(optics_module_mount_pos() - [0, 3.25, 4], [90, 0, 0], [0, 0, 30]);
-function camera_platform_screw_pos() = create_placement_dict(optics_module_mount_pos() - [0, 0, 4], [-90, 0, 0], [0, 0, 30]);
+function camera_platform_nut_pos() = create_placement_dict(optics_module_mount_pos() - [0, 3.25, 0], [90, 0, 0], [0, 0, 30]);
+function camera_platform_screw_pos() = create_placement_dict(optics_module_mount_pos() - [0, 0, 0], [-90, 0, 0], [0, 0, 30]);
 function camera_platform_allen_key_pos() = create_placement_dict(optics_module_mount_pos() + [0, 2, 2], [0, 0, 25]);
 
 
