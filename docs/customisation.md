@@ -4,6 +4,8 @@ For each version of the microscope we have specified a specific bill of material
 
 Here are some of the most common customisations. This page may not be as detailed as the core instructions, please consider helping us to improve it.
 
+The [OpenFlexure forum](https://openflexure.discourse.group/) also has many customisations and alternatives suggested by the community.
+
 >i You can [download every STL from here](all-stls.zip).
 
 ## Electronics
