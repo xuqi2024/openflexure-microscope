@@ -1,7 +1,6 @@
 # Troubleshooting
 
-## Visit the Forum
-The [Openflexure Forum](https://openflexure.discourse.group/) is a great place to find solutions from other microscope builders, or to post your own questions on building or using the Microscope.
+>i The [OpenFlexure forum](https://openflexure.discourse.group) is a great place to get help, advice, solutions and work-arounds from the OpenFlexure Community.
 
 ### My Raspberry Pi Camera did not come with the lens removal tools
 

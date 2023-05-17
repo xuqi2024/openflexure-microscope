@@ -16,9 +16,14 @@
 }
 
 .ofm-logo{
-    width:40%;
+    width:100%;
     padding-right: 20px;
     padding-bottom: 20px;
+}
+
+.ofm-logo-link{
+  width:40%;
+  line-height: 0.5;
 }
 
 .site-title {
