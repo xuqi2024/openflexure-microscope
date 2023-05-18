@@ -57,11 +57,13 @@ If you are using Windows, you may need to escape the `"` quotation marks by repl
 
 ### Using a different camera
 
-For the low cost microscope (without an objective), we currently only support the Raspberry Pi camera. The 3D printed parts work with both v1 and v2, but **only v2 is supported by the standard software.**
+The recommended camera is the Raspberry Pi camera. The 3D printed parts work with both v1 and v2, but **only v2 is supported by the standard software.** 
 
-For the RMS objective optics we also generate optics modules for an M12 camera, or a Logitech C270 webcam, both of which connect to a computer via USB. **USB cameras are not supported in the standard software**. 
+For the RMS objective optics we also generate optics modules for an M12 camera, or a Logitech C270 webcam, both of which connect to a computer via USB. The available parts are listed below. These optics modules are not extensively tested. **USB cameras are not supported in the standard software**. 
 
-### List of available RMS optics modules
+For the basic optics module we also generate lens spacers and camera platforms for a Logitech C270 webcam or an Arduino B0196 USB webcam (which is based on the same Sony IMX219 camera module as the Raspberry Pi camera v2). The available parts are listed below. These camera configurations are not extensively tested. **USB cameras are not supported in the standard software**.
+
+#### List of available RMS optics modules
 
 The module that is used most of the time, and thus the one that is tested most frequently, is [optics_picamera_2_rms_f50d13.stl](models/optics_picamera_2_rms_f50d13.stl){previewpage}. This uses a 45mm parfocal, 160mm tube length, RMS-threaded objective, together with a 50mm achromatic lens and a Raspberry Pi camera module v2.  Other optics modules are generated every time we rebuild the project. We only regularly check and test the optics modules mentioned in the main instructions, i.e. `optics_picamera_2_rms_f50d13.stl` and its beamsplitter variant. While the files linked below should stay up to date, it is possible that changes introduced elsewhere might stop them working. You are therefore advised to check them before printing.  If you can start by printing the default options, and swap in one of these later, that is often a good idea.
 
@@ -137,6 +139,14 @@ Available optics module STLs:
 * [optics_logitech_c270_rms_f50d13.stl](models/optics_logitech_c270_rms_f50d13.stl){previewpage}
 * [optics_logitech_c270_rms_infinity_f50d13_beamsplitter.stl](models/optics_logitech_c270_rms_infinity_f50d13_beamsplitter.stl){previewpage}
 * [optics_logitech_c270_rms_infinity_f50d13.stl](models/optics_logitech_c270_rms_infinity_f50d13.stl){previewpage}
+
+#### List of basic optics modules
+The standard version of the [basic optics module](basic_optics_module.md) uses the lens from a Raspberry Pi camera v2 and a spacer to make it into a microscope with a field of view similar to a x20 microscope objective. The same principle can be used for other small camera modules with removeable lenses. Assembly is similar to the standard [basic optics module](basic_optics_module.md), you will need to remove the camera lens and reverse it when it is put into the lens spacer. **USB cameras are not supported in the standard software**.  
+ 
+You will need to print a lens spacer and camera platform.
+
+* Arducam B0196: [camera_platform_arducam_b0196.stl](models/camera_platform_arducam_b0196.stl){previewpage}, [lens_spacer_arducam_b0196.stl](models/lens_spacer_arducam_b0196.stl){previewpage}(printed in black [i](info_pages/why_optics_black.md)).  
+* Logitech C270: [camera_platform_c270.stl](models/camera_platform_c270.stl){previewpage}, [lens_spacer_c270.stl](models/lens_spacer_c270.stl){previewpage}(printed in black [i](info_pages/why_optics_black.md)).  
 
 ## Stands
 

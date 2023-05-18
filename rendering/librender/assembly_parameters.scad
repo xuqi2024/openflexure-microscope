@@ -119,7 +119,7 @@ function z_oring_placement() = create_placement_dict(z_actuator_pos(PARAMS)+[0, 
                                                      z_actuator_rot());
 
 function optics_module_pos(low_cost=false) = let(
-    z = low_cost ? 3 : 0
+    z = low_cost ? 0 : 0
 ) create_placement_dict([0, 0, z]);
 function optics_module_pos_above_tool() = create_placement_dict([0, 0, 75] ,[0, 180, 0], [0, 0, 180]);
 function optics_module_pos_on_tool() = create_placement_dict([0, 0, 42] ,[0, 180, 0], [0, 0, 180]);
@@ -168,8 +168,8 @@ function lens_spacer_pos_on_tool(params, optics_config) = let(
     z_tr = pi_lens_z_pos(params, optics_config)
 ) create_placement_dict([0, 0, z_tr], [0, 180, 0], [0, 0, 180]);
 
-function camera_platform_nut_pos() = create_placement_dict(optics_module_mount_pos() - [0, 3.25, 4], [90, 0, 0], [0, 0, 30]);
-function camera_platform_screw_pos() = create_placement_dict(optics_module_mount_pos() - [0, 0, 4], [-90, 0, 0], [0, 0, 30]);
+function camera_platform_nut_pos() = create_placement_dict(optics_module_mount_pos() - [0, 3.25, 1], [90, 0, 0], [0, 0, 30]);
+function camera_platform_screw_pos() = create_placement_dict(optics_module_mount_pos() - [0, 0, 1], [-90, 0, 0], [0, 0, 30]);
 function camera_platform_allen_key_pos() = create_placement_dict(optics_module_mount_pos() + [0, 2, 2], [0, 0, 25]);
 
 
