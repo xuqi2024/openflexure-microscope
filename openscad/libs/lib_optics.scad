@@ -482,8 +482,12 @@ module camera_platform(params, optics_config, base_r){
         }
 
         // Mount for the nut that holds it on
-        objective_fitting_cutout(params, y_stop=true);
-        
+        // This needs to be translated down 1mm in order to make the module fit
+        // with the base of the platform level with the base of the microscope. 
+        translate_z(-1){
+            objective_fitting_cutout(params, y_stop=true);
+        }
+
         // Undercut on build plate
         undercut_objective_fitting_wedge(undercut_height = 1.5);
         // add the camera mount holes
