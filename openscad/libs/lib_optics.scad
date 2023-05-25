@@ -432,7 +432,7 @@ module lens_spacer(params, optics_config){
 }
 
 function camera_mounting_post_height(optics_config) = key_lookup("mounting_post_height", optics_config);
-    
+
 function camera_board_thickness(optics_config) = key_lookup("board_thickness", optics_config);
 
 
@@ -452,7 +452,7 @@ module camera_platform(params, optics_config, base_r){
     assert(platform_h > upper_z_flex_z(params), "Platform height too low for z-axis mounting");
 
     camera_mounting_posts_rotate  = c270_spacer_yes(optics_config)? -135: 0;
-    
+
     // Make a camera platform with a fitting wedge on the side and a platform on the top
     difference(){
         union(){
