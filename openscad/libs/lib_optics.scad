@@ -482,8 +482,10 @@ module camera_platform(params, optics_config, base_r){
         }
 
         // Mount for the nut that holds it on
-        // This needs to be translated down 1mm in order to make the module fit
-        // with the base of the platform level with the base of the microscope. 
+        // An extra 1mm z tolerance added for the low cost optics module to allow for use cases
+        // of the low cost optics when the slide is placed with the sample on top the
+        // working distance is enough to focus and the extra 1mm in nut position allows
+        // the mechanics to reach that point.  
         translate_z(-1){
             objective_fitting_cutout(params, y_stop=true);
         }
