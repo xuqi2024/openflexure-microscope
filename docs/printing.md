@@ -9,6 +9,14 @@
 [utility knife]: parts/tools/utility-knife.md
 [custom print settings]: ./set_slice_gap_closing_radius.md
 
+## Check your printer settings {pagestep}
+
+Check your printer is configured as suggested in the [Test your printer] page.
+
+>i The recommended printer settings are given in the [Test your printer] page. It's also a good idea to try the test print if you have not printed the microscope before.
+
+[Test your printer]: test_your_printer.md#set-your-printer-settings-pagestep
+
 ## Printing {pagestep}
 
 >i The microscope body has a custom brim included in the STL. This may require [custom print settings].
@@ -22,6 +30,7 @@ Now you have tested your [printer][RepRap-style printer]{qty:1,cat:tool} and [fi
 * [Sample clips]{output,qty:2}: [sample_clips.stl](models/sample_clips.stl){previewpage}
 * [Microscope stand]{output, qty:1}: [microscope_stand.stl](models/microscope_stand.stl){previewpage}
 * [Electronics drawer]{output, qty:1}: [electronics_drawer-pi4_sanga_stack_11mm.stl](models/electronics_drawer-pi4_sanga_stack_11mm.stl){previewpage}
+ - **This electronics drawer is for a Pi 4 and HAT-style Sangaboard with 11mm tall headers. For all other combinations of electronics, refer to the [customisation page](customisation.md)**
 * 3 [small gears]{output,qty:3}: [small_gears.stl](models/small_gears.stl){previewpage}
 {{include: {{var_type}}_only_printing.md}}
 
