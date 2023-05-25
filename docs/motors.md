@@ -23,6 +23,8 @@
 * Take two [self tapping screws][No 2 6.5mm self tapping screws]{qty: 6, cat:mech} and drive them fully into the holes on either side of the shaft. [#1 pozidrive screwdriver]{qty:1, cat:tool}
 * Repeat for the other two motors
 
+>i It's important to keep track of which motor cable corresponds to which axis. You may find it helpful to mark each cable connector with a marker or different-coloured tape before continuing.
+
 ## Attach the x and y motors {pagestep}
 
 ![](renders/mount_motors_{{var_optics, default:rms}}1.png)
