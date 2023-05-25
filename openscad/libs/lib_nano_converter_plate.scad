@@ -42,8 +42,8 @@ module nano_converter_plate(pi_version=4){
         // cutout for access to power and UART Pi pins
         pi_pin_access_length = 10*2.54;
         pi_40_pin_header_pos = 29-10*2.54;
-        pin_cutout_x_pos = pi_hole_pos()[2]+[pi_40_pin_header_pos+pi_pin_access_length/2;
-        translate(pin_cutout_x_pos, 2.54/2+0.5, 0]){
+        pin_cutout_pos = pi_hole_pos()[2] + [pi_40_pin_header_pos+pi_pin_access_length/2, 2.54/2+0.5, 0];
+        translate(pin_cutout_pos){
             cube([pi_pin_access_length, 2.54+0.75, 10], center = true);
         }
 
