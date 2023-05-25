@@ -9,8 +9,6 @@
 [No 2 6.5mm self tapping screws]: parts/mechanical.yml#SelfTap_PoziPan_No2x6.5_SS
 [#1 pozidrive screwdriver]: parts/tools/pozidrive_1_screwdriver.md "{cat:tool}"
 
->i It's important to keep track of which motor cable corresponds to which axis. You may find it helpful to mark each cable connector with a marker or different-coloured tape before continuing.
-
 ## Attach the small gears {pagestep}
 
 
@@ -24,6 +22,8 @@
 * Push the gear onto the motor with the flanged side downwards (motor side).
 * Take two [self tapping screws][No 2 6.5mm self tapping screws]{qty: 6, cat:mech} and drive them fully into the holes on either side of the shaft. [#1 pozidrive screwdriver]{qty:1, cat:tool}
 * Repeat for the other two motors
+
+>i It's important to keep track of which motor cable corresponds to which axis. You may find it helpful to mark each cable connector with a marker or different-coloured tape before continuing.
 
 ## Attach the x and y motors {pagestep}
 
