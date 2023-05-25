@@ -33,6 +33,7 @@ In this section we are assembling the transmission illuminator.  This mounts the
 * Place the [condenser lens](parts/optics/condenser_lens.md){qty:1, cat:optical} on the [lens tool][Lens tool](fromstep){qty:1, cat:printedtool} flat side down
 * Take the [condenser arm][Condenser arm](fromstep){qty:1, cat:printedpart} and align the opening over the lens
 * Push down until the lens clicks into place.
+* Visually inspect the positioning of the lens. It should be flat, not seated at an angle. If necessary, push against the [lens tool][Lens tool](fromstep){qty:1, cat:printedtool} to align properly.
 
 ![](renders/optics_assembly_condenser_lens.png)
 
