@@ -7,7 +7,7 @@ The imaging optics for this version of the microscope consist of a Raspberry pi 
 [M3 nut]: parts/mechanical.yml#Nut_M3_SS
 [No 2 6.5mm self tapping screws]: parts/mechanical.yml#SelfTap_PoziPan_No2x6.5_SS
 [#1 pozidrive screwdriver]: parts/tools/pozidrive_1_screwdriver.md "{cat:tool}"
-[Pi Camera lens tool]: parts/tools/pi_camera_lens_tool.md "{cat:tool, note: 'This should come with the [Raspberry Pi Camera Module v2].  If it is missing, you can 3D print a [workaround lens remover](workaround_lens_remover.md).'}"
+[Pi Camera lens tool]: parts/tools/pi_camera_lens_tool.md "{cat:tool, note: 'This should come with the [Raspberry Pi Camera Module v2](parts/electronics.yml#PiCamera_2).  If it is missing, you can 3D print a [workaround lens remover](workaround_lens_remover.md).'}"
 
 [Raspberry Pi Camera Module v2]: parts/electronics.yml#PiCamera_2 "{cat:electronic}"
 [{{var_ribbon_len, default:200mm}} Pi Camera ribbon cable]: parts/electronics.yml#PiCamera_RibbonCable_{{var_ribbon_len, default:200mm}} "{cat:electronic, note: 'This is longer than the standard ribbon cable the Pi Camera is sold with!'}"
