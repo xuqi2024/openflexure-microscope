@@ -1,3 +1,6 @@
+---
+Tags: knowledge
+---
 # The OpenFlexure Microscope Imaging Optics
 
 The OpenFlexure microscope is a digital microscope using a camera instead of an eyepiece. Most microscopy guides explain how a microscope images for a analogue microscope with an eyepiece. We have found that this can cause confusion when understanding the OpenFlexure imaging as standard names no longer make as much sense.

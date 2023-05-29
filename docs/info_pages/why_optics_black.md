@@ -1,3 +1,6 @@
+---
+Tags: knowledge
+---
 # Why print the optics module or lens spacer in black?
 
 The optics module (high resolution microscope) or lens spacer (low-cost microscope) is used to separate the imaging optics from the camera sensor. In an ideal microscope the only light that reaches the camera sensor should be the light focused by these optics. To improve the performance of the OpenFlexure microscope the optics module has a built-in ridges light trap to try to catch stray light:
