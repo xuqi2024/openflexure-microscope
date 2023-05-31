@@ -193,7 +193,7 @@ build-docs:
 
     before_script:
       - python --version
-      - pip install "gitbuilding=0.11.0"
+      - pip install "gitbuilding==0.11.0"
 
     script:
       - cd docs
