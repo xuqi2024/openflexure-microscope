@@ -1,3 +1,6 @@
+---
+Tags: knowledge
+---
 # Why does the LED need a resistor?
 
 LEDs are designed to be driven at constant current.  Simply connecting an LED to a 5V power supply is likely to result in too much current being drawn, potentially damaging either the power supply or the LED.  A resistor is a very basic way of driving the LED safely, but for low power LEDs such as the ones we use here, it is generally sufficient.  
