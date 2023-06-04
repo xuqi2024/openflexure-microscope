@@ -22,7 +22,7 @@ use <./z_axis.scad>
 use <./libdict.scad>
 use <./lighttrap.scad>
 
-// $fn=200;
+$fn=200;
 
 function illumination_dovetail_w() = 30; // width of the dovetail
 function illumination_dovetail_y() = 35; // position of the mating surface
@@ -283,6 +283,24 @@ module condenser_aperture(ap_tray_t=apeture_tray_t(),
         cube(actual_size, center=true);
         translate(-ap_tray_shift){
             cylinder(r1=bot_rad, r2=top_rad, h=cyl_h, center=true);
+        }
+    }
+}
+
+module condenser_lens_gripper_seperate() {
+    lens_d=condenser_lens_diameter();
+    lens_t=condenser_lens_thickness();
+    base_r = condenser_base_r(lens_d);
+    union() {
+        condenser_lens_gripper(lens_d/2, lens_t, base_r);
+        // Need to add a base
+        translate([0,0,-lens_t]) {
+            difference() {
+                cylinder(r=base_r, h=lens_t);
+                translate_z(-tiny()) {
+                    cylinder(r=(lens_d/2) - condenser_aperture_difference(), h=lens_t+tiny()*2);
+                }
+            }
         }
     }
 }

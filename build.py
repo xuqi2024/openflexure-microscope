@@ -92,18 +92,18 @@ def write_ninja_file(build_dir):
         writer.openscad("reflection_illuminator.stl", "reflection_illuminator.scad")
         writer.openscad("led_array_holder.stl", "led_array_holder.scad")
 
-        # # Additional illumination components
-        writer.openscad("condenser_8mm_with_inbuilt_annulus.stl", "condenser_8mm_with_inbuilt_annulus.scad")
-        writer.openscad("condenser_with_inbuilt_annulus.stl", "condenser_with_inbuilt_annulus.scad")
-        writer.openscad("condenser_annulus_standalone.stl", "condenser_annulus_standalone.scad")
-        writer.openscad("condenser_body_dovemount.stl", "condenser_body_dovemount.scad")
-        # writer.openscad("condenser_lens_gripper.stl", "condenser_lens_gripper.scad")
+        # Additional illumination components
+        writer.openscad("condenser_with_inbuilt_annulus.stl", "additional_illumination/condenser_with_inbuilt_annulus.scad")
+        writer.openscad("condenser_annulus_standalone.stl", "additional_illumination/condenser_annulus_standalone.scad")
+        writer.openscad("condenser_body_dovemount.stl", "additional_illumination/condenser_body_dovemount.scad")
+        writer.openscad("condenser_lens_gripper.stl", "additional_illumination/condenser_lens_gripper.scad")
 
         # # 8 mm LED illumination components
-        writer.openscad("condenser_8mm.stl", "condenser_8mm.scad")
-        writer.openscad("condenser_lid_8mm.stl", "condenser_lid_8mm.scad")
-        writer.openscad("condenser_led_holder_8mm.stl", "condenser_led_holder_8mm.scad")
-        writer.openscad("condenser_8mm_body_dovemount.stl", "condenser_8mm_body_dovemount.scad")
+        writer.openscad("condenser_8mm.stl", "additional_illumination/condenser_8mm.scad")
+        writer.openscad("condenser_8mm_with_inbuilt_annulus.stl", "additional_illumination/condenser_8mm_with_inbuilt_annulus.scad")
+        writer.openscad("condenser_lid_8mm.stl", "additional_illumination/condenser_lid_8mm.scad")
+        writer.openscad("condenser_led_holder_8mm.stl", "additional_illumination/condenser_led_holder_8mm.scad")
+        writer.openscad("condenser_8mm_body_dovemount.stl", "additional_illumination/condenser_8mm_body_dovemount.scad")
 
         # Upright microscope components
         writer.openscad("separate_z_actuator.stl", "separate_z_actuator.scad")
@@ -128,7 +128,6 @@ def write_ninja_file(build_dir):
             "accessories/actuator_drilling_jig.stl",
             "accessories/actuator_drilling_jig.scad"
         )
-
 
 def generate_rms_optics_modules(writer):
     """
