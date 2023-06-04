@@ -22,7 +22,7 @@ use <./z_axis.scad>
 use <./libdict.scad>
 use <./lighttrap.scad>
 
-$fn=200;
+// $fn=200;
 
 function illumination_dovetail_w() = 30; // width of the dovetail
 function illumination_dovetail_y() = 35; // position of the mating surface

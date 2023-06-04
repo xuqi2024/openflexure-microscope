@@ -14,7 +14,7 @@ use <./rms_thread.scad>
 // camera module depending on the optics configuration
 use <./cameras/camera.scad>
 
-$fn=200;
+$fn=24;
 
 function optics_wedge_bottom() = -2; //bottom of dovetail (<0 to allow some play)
 
