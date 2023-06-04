@@ -97,7 +97,7 @@ def write_ninja_file(build_dir):
         writer.openscad("condenser_with_inbuilt_annulus.stl", "condenser_with_inbuilt_annulus.scad")
         writer.openscad("condenser_annulus_standalone.stl", "condenser_annulus_standalone.scad")
         writer.openscad("condenser_body_dovemount.stl", "condenser_body_dovemount.scad")
-        writer.openscad("condenser_lens_gripper.stl", "condenser_lens_gripper.scad")
+        # writer.openscad("condenser_lens_gripper.stl", "condenser_lens_gripper.scad")
 
         # # 8 mm LED illumination components
         writer.openscad("condenser_8mm.stl", "condenser_8mm.scad")
