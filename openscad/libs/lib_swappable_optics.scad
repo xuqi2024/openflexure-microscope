@@ -28,7 +28,10 @@ function swappable_rms_params(params) = let(
     ["objective_r", objective_r],                        // guessed width of the objective - for clearance
     ["magnet_r", (objective_r + magnet_d/2 + 2) * 2/sqrt(3)],  // distance of magnets from the origin
     ["magnet_centre_to_carrier_surface", 0.2*magnet_d],           // how far the magnet is embedded into the carrier (should be >0)
-    ["dowel_centre_to_mount_surface", dowel_d/2 + 0.25]
+    ["dowel_centre_to_mount_surface", dowel_d/2 + 0.25],
+    ["disc_magnet_h", 2.5],     // height of disc magnet
+    ["disc_magnet_d", 5],       // diameter of disc magnet
+    ["disc_magnet_dist", objective_r+magnet_d], // distance from origin of disc magnets
 ];
 
 
@@ -162,6 +165,8 @@ module swappable_rms_carrier_base(params){
     magnet_r = key_lookup("magnet_r", swappable_params);
     h = key_lookup("carrier_h", swappable_params);
     objective_r = key_lookup("objective_r", swappable_params);
+    disc_magnet_d = key_lookup("disc_magnet_d", swappable_params);
+    disc_magnet_dist = key_lookup("disc_magnet_dist", swappable_params);
     $fn=16;
 
     // Base the shape on where the mounting balls are
@@ -178,8 +183,8 @@ module swappable_rms_carrier_base(params){
 
                 // Extra cylinders for disc magnets. TODO see if distance parameters want to change here? Currently keeping them the same for sake of simplicity
                 rotate(b){
-                    translate([0, magnet_r, 0]){
-                        cylinder(d=magnet_d+2*2, h=h);  // Ball mount (x3)
+                    translate([0, disc_magnet_dist+disc_magnet_d, 0]){
+                        cylinder(d=disc_magnet_d, h=h);  // Ball mount (x3)
                     }
                 }
             }
@@ -217,6 +222,10 @@ module swappable_rms_carrier(params){
     objective_r = key_lookup("objective_r", swappable_params);
     magnet_centre_to_carrier_surface = key_lookup("magnet_centre_to_carrier_surface", swappable_params);
     magnet_bottom_z = h - magnet_centre_to_carrier_surface - magnet_d/2;
+
+    disc_magnet_h = key_lookup("disc_magnet_h", swappable_params);
+    disc_magnet_d = key_lookup("disc_magnet_d", swappable_params);
+    disc_magnet_dist = key_lookup("disc_magnet_dist", swappable_params);
     $fn=16;
 
     difference(){
@@ -244,11 +253,9 @@ module swappable_rms_carrier(params){
 
             // Holes for push-fitting disc magnets collinear to objective TODO make these actual push fits!
                 rotate(b){
-                    translate([0, magnet_r, magnet_bottom_z]){
-                        deformable_hole_trylinder(
-                            magnet_d/2 - 0.3, 
-                            magnet_d/2 + 0.4, 
-                            h=magnet_d
+                    translate([0, disc_magnet_dist, (h-disc_magnet_h)]){
+                        cylinder(
+                            h = disc_magnet_h+tiny(), r = disc_magnet_d  //add tiny() here to get round rendering artifacts
                         );
                     }
                 }      
