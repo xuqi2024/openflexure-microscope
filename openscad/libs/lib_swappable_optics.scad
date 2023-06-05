@@ -165,12 +165,22 @@ module swappable_rms_carrier_base(params){
     $fn=16;
 
     // Base the shape on where the mounting balls are
+    // Add extra cylinders either side for magnet mounts
     for(a = [0, 120, -120]){
-        hull(){
-            cylinder(r=objective_r, h=h, $fn=32);   // RMS mount (x1)
-            rotate(a){
-                translate([0, magnet_r, 0]){
-                    cylinder(d=magnet_d+2*2, h=h);  // Ball mount (x3)
+        for(b = [90, -90]){
+            hull(){
+                cylinder(r=objective_r, h=h, $fn=32);   // RMS mount (x1)
+                rotate(a){
+                    translate([0, magnet_r, 0]){
+                        cylinder(d=magnet_d+2*2, h=h);  // Ball mount (x3)
+                    }
+                }
+
+                // Extra cylinders for disc magnets. TODO see if distance parameters want to change here? Currently keeping them the same for sake of simplicity
+                rotate(b){
+                    translate([0, magnet_r, 0]){
+                        cylinder(d=magnet_d+2*2, h=h);  // Ball mount (x3)
+                    }
                 }
             }
         }
@@ -219,6 +229,7 @@ module swappable_rms_carrier(params){
 
         // Push-fits for the magnetic balls
         for(a = [0, 120, -120]){
+            for(b=[-90,90]){
             rotate(a){
                 // NB if you change the height of the magnet, you need to update
                 // mount_to_carrier_separation() as well
@@ -230,8 +241,20 @@ module swappable_rms_carrier(params){
                     );
                 }
             }
-        }      
 
+            // Holes for push-fitting disc magnets collinear to objective TODO make these actual push fits!
+                rotate(b){
+                    translate([0, magnet_r, magnet_bottom_z]){
+                        deformable_hole_trylinder(
+                            magnet_d/2 - 0.3, 
+                            magnet_d/2 + 0.4, 
+                            h=magnet_d
+                        );
+                    }
+                }      
+
+            }
+        }
     }
 }
 
