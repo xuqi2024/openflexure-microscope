@@ -68,6 +68,7 @@ def write_ninja_file(build_dir):
 
         # Standard illumination components
         writer.openscad("condenser.stl", "condenser.scad")
+        writer.openscad("condenser_brim.stl", "condenser_smartbrim.scad")
         writer.openscad("condenser_lid.stl", "condenser_lid.scad")
         writer.openscad("condenser_board_spacer.stl", "condenser_board_spacer.scad")
         writer.openscad("condenser_aperture.stl", "condenser_aperture.scad")
