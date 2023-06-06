@@ -31,7 +31,7 @@ function swappable_rms_params(params) = let(
     ["dowel_centre_to_mount_surface", dowel_d/2 + 0.25],
     ["disc_magnet_h", 2.5],     // height of disc magnet
     ["disc_magnet_d", 5],       // diameter of disc magnet
-    ["disc_magnet_dist", objective_r+magnet_d], // distance from origin of disc magnets
+    ["disc_magnet_dist", objective_r+(magnet_d/2)], // distance from origin of disc magnets
 ];
 
 
@@ -81,6 +81,7 @@ function swappable_rms_mounting_screw_positions(params) = let(
 
 // This shape is added to an optics module body, so that it can have
 // the (separate printed part) swappable optics mount attached to it.
+// TODO - Note to self (Freya) - this geometry changes to accomodate the carrier but will need to be made larger to not get too cut out
 module connector_for_swappable_optics_mount(params, optics_config){
     intersection(){
         // We use an intersection with a cube to limit the extent in Y, and avoid
@@ -181,10 +182,10 @@ module swappable_rms_carrier_base(params){
                     }
                 }
 
-                // Extra cylinders for disc magnets. TODO see if distance parameters want to change here? Currently keeping them the same for sake of simplicity
+                // Extra cylinders for disc magnets. TODO see if distance parameters want to change here? disc_magnet_dist is currently a bit handwavy
                 rotate(b){
-                    translate([0, disc_magnet_dist+disc_magnet_d, 0]){
-                        cylinder(d=disc_magnet_d, h=h);  // Ball mount (x3)
+                    translate([0, disc_magnet_dist, 0]){
+                        cylinder(d=1.2*disc_magnet_d, h=h);  // Disc magnet cylinders - make slightly larger than diameter of disc magnets so they are enclosed
                     }
                 }
             }
@@ -226,7 +227,7 @@ module swappable_rms_carrier(params){
     disc_magnet_h = key_lookup("disc_magnet_h", swappable_params);
     disc_magnet_d = key_lookup("disc_magnet_d", swappable_params);
     disc_magnet_dist = key_lookup("disc_magnet_dist", swappable_params);
-    $fn=16;
+    $fn=32;
 
     difference(){
         swappable_rms_carrier_base(params);
@@ -255,7 +256,7 @@ module swappable_rms_carrier(params){
                 rotate(b){
                     translate([0, disc_magnet_dist, (h-disc_magnet_h)]){
                         cylinder(
-                            h = disc_magnet_h+tiny(), r = disc_magnet_d  //add tiny() here to get round rendering artifacts
+                            h = disc_magnet_h+tiny(), d = disc_magnet_d+0.1  //add tiny() here to get round rendering artifacts, make diameter slightly larger to allow push-fit
                         );
                     }
                 }      
