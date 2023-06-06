@@ -1,3 +1,6 @@
+---
+Tags: knowledge
+---
 # The OpenFlexure Microscope Illumination
 
 The standard configuration of the OpenFlexure microscope is for transmission bright-field imaging: the sample is illuminated from one side, and the transmitted light is imaged on the other side.  This works particularly well for nearly-transparent, thin samples, where image contrast comes from absorption of light.  This was the first, and still most widely used, way of taking microscopic images.  
