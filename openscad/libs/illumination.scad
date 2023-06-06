@@ -22,8 +22,6 @@ use <./z_axis.scad>
 use <./libdict.scad>
 use <./lighttrap.scad>
 
-$fn=200;
-
 function illumination_dovetail_w() = 30; // width of the dovetail
 function illumination_dovetail_y() = 35; // position of the mating surface
 function illumination_dovetail_z(params) = leg_height(params)-2;
@@ -235,7 +233,8 @@ module condenser_cutout(lens_r, lens_assembly_z,
     // This is the cutout for the beam to pass through the condenser.
     // It contains a light trap and mouning for the diffuser
 
-    apeture_tray_z=1;
+    led_z_offset = (led_size - 5);
+    apeture_tray_z = 1 + led_z_offset;
     light_trap_start_z = apeture_tray_z+ap_tray_t+tiny();
 
     lighttrap_h = lens_assembly_z+3*tiny()-light_trap_start_z;
@@ -254,7 +253,9 @@ module condenser_cutout(lens_r, lens_assembly_z,
             cube([ap_tray_width, ap_tray_depth, ap_tray_t], center=true);
         }
     }
-    cube([led_size,led_size,light_trap_start_z+1], center=true);
+    translate_z(led_z_offset){
+        cube([led_size, led_size, light_trap_start_z+1], center=true);
+    }
 
     reflect_x(){
         translate_x(illumination_mounting_hole_sep()/2){
@@ -269,8 +270,7 @@ module condenser_cutout(lens_r, lens_assembly_z,
 
 module condenser_aperture(ap_tray_t=apeture_tray_t(), 
                         ap_tray_width=aperture_tray_width(), 
-                        ap_tray_depth=aperture_tray_depth(), 
-                        ap_tray_shift=aperture_tray_shift()){
+                        ap_tray_depth=aperture_tray_depth()){
     $fn=60;
     nominal_size = [ap_tray_width, ap_tray_depth, ap_tray_t];
     actual_size = nominal_size - [1, 1, 1]*0.5;
@@ -287,7 +287,7 @@ module condenser_aperture(ap_tray_t=apeture_tray_t(),
     }
 }
 
-module condenser_lens_gripper_seperate() {
+module condenser_lens_gripper_seperate(module_holder_height=0) {
     lens_d=condenser_lens_diameter();
     lens_t=condenser_lens_thickness();
     base_r = condenser_base_r(lens_d);
@@ -299,6 +299,16 @@ module condenser_lens_gripper_seperate() {
                 cylinder(r=base_r, h=lens_t);
                 translate_z(-tiny()) {
                     cylinder(r=(lens_d/2) - condenser_aperture_difference(), h=lens_t+tiny()*2);
+                }
+            }
+        }
+
+        // Need a hollow cylinder
+        translate([0,0,-module_holder_height]) {
+            difference() {
+                cylinder(r=base_r+1.5, h=module_holder_height);
+                translate_z(-tiny()) {
+                    cylinder(r=base_r+0.25, h=module_holder_height+tiny()*2);
                 }
             }
         }

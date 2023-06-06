@@ -4,5 +4,5 @@ $fn=200;
 condenser_lens_gripper_stl();
 
 module condenser_lens_gripper_stl(){
-    condenser_lens_gripper_seperate();
+    condenser_lens_gripper_seperate(module_holder_height=10);
 }

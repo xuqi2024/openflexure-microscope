@@ -104,6 +104,7 @@ def write_ninja_file(build_dir):
         writer.openscad("condenser_lid_8mm.stl", "additional_illumination/condenser_lid_8mm.scad")
         writer.openscad("condenser_led_holder_8mm.stl", "additional_illumination/condenser_led_holder_8mm.scad")
         writer.openscad("condenser_8mm_body_dovemount.stl", "additional_illumination/condenser_8mm_body_dovemount.scad")
+        writer.openscad("condenser_aperture_8mm.stl", "additional_illumination/condenser_aperture_8mm.scad")
 
         # Upright microscope components
         writer.openscad("separate_z_actuator.stl", "separate_z_actuator.scad")
