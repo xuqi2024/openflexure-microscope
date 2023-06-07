@@ -73,10 +73,10 @@ function swappable_rms_mount_z(params, optics_config) = (
 function swappable_rms_mounting_screw_positions(params) = let(
     sp = swappable_rms_params(params)
 ) [
-    [-20 - 8*cos(60), -8*sin(60), 0],
-    [-20 + 8*cos(60), 8*sin(60), 0],
-    [20 - 8*cos(60), 8*sin(60), 0],
-    [20 + 8*cos(60), -8*sin(60), 0],
+    [-25 - 8*cos(60), -8*sin(60), 0],   //-12.3, 2.43 initial values with 20 > 25
+    [-25 + 8*cos(60), 8*sin(60), 0],    //-27.61, -2.43
+    [25 - 8*cos(60), 8*sin(60), 0],     //27.61, -2.43
+    [25 + 8*cos(60), -8*sin(60), 0],    //12.3, 2.43
 ];
 
 // This shape is added to an optics module body, so that it can have
