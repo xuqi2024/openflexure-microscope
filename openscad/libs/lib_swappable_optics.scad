@@ -252,7 +252,7 @@ module swappable_rms_carrier(params){
                 }
             }
 
-            // Holes for push-fitting disc magnets collinear to objective TODO make these actual push fits!
+            // Holes for push-fitting disc magnets collinear to objective
                 rotate(b){
                     translate([0, disc_magnet_dist, (h-disc_magnet_h)]){
                         cylinder(
@@ -311,6 +311,12 @@ module swappable_rms_mount(params){
     dowel_centre_to_mount_surface = key_lookup("dowel_centre_to_mount_surface", swappable_params);
     // The calculation for dowel_z needs to match mount_to_carrier_separation()
     dowel_z = h - dowel_centre_to_mount_surface;
+
+    // disc magnet parameters
+    disc_magnet_h = key_lookup("disc_magnet_h", swappable_params);
+    disc_magnet_d = key_lookup("disc_magnet_d", swappable_params);
+    disc_magnet_dist = key_lookup("disc_magnet_dist", swappable_params);
+    $fn=32;
 
     difference(){
         union(){
@@ -373,6 +379,17 @@ module swappable_rms_mount(params){
                     no2_selftap_counterbore();
                 }
             }
+        }
+
+        // add disc magnet cutouts to mount
+        for(b=[-90,90]){
+            rotate(b){
+                    translate([0, disc_magnet_dist, (h-disc_magnet_h)]){
+                        cylinder(
+                            h = disc_magnet_h+tiny(), d = disc_magnet_d+0.1  //add tiny() here to get round rendering artifacts, make diameter slightly larger to allow push-fit
+                        );
+                    }
+                }     
         }
     }
 }
