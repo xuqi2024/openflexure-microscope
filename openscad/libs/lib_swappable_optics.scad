@@ -259,8 +259,17 @@ module swappable_rms_carrier(params){
                             h = disc_magnet_h+tiny(), d = disc_magnet_d+0.1  //add tiny() here to get round rendering artifacts, make diameter slightly larger to allow push-fit
                         );
                     }
-                }      
-
+                }
+                
+            for(c=[-90,90]){
+                rotate(c){
+                translate([0, disc_magnet_dist, 0]){
+                    cylinder(
+                        h = (h+tiny()), d = disc_magnet_d/2+0.1
+                    );
+                }
+            }
+        }
             }
         }
     }
@@ -384,12 +393,23 @@ module swappable_rms_mount(params){
         // add disc magnet cutouts to mount
         for(b=[-90,90]){
             rotate(b){
-                    translate([0, disc_magnet_dist, (h-disc_magnet_h)]){
-                        cylinder(
-                            h = disc_magnet_h+tiny(), d = disc_magnet_d+0.1  //add tiny() here to get round rendering artifacts, make diameter slightly larger to allow push-fit
-                        );
-                    }
-                }     
+                translate([0, disc_magnet_dist, (h-disc_magnet_h)]){
+                    cylinder(
+                        h = disc_magnet_h+tiny(), d = disc_magnet_d+0.1  //add tiny() here to get round rendering artifacts, make diameter slightly larger to allow push-fit
+                    );
+                }
+            }
+        }
+
+        // cutout small cylinders for ejecting disc magnets if needed -TODO I'm pretty sure this is one of the least efficient ways of doing this! Can't seem to get this to play nicely with nesting inside the earlier rotate() yet
+        for(c=[-90,90]){
+            rotate(c){
+                translate([0, disc_magnet_dist, 0]){
+                    cylinder(
+                        h = (h+tiny()), d = disc_magnet_d/2+0.1
+                    );
+                }
+            }
         }
     }
 }
