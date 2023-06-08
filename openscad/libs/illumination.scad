@@ -464,8 +464,8 @@ module illumination_board_cutout(h, board_bore_depth, led_base_diameter=6, led_h
 // i.e. it is upside down.
 function condenser_lid_h()=13;
 module condenser_lid(lens_d=condenser_lens_diameter(), led_base_diameter=6, led_height_offset=4){
-    //allow space for 2 screw heads and for board thickness
-    board_bore_depth = 8;
+    //allow space for 2 screw heads and for board thickness, and for the LED
+    board_bore_depth = 8.0;
     //Total height must be deep enough for the self tap screw
     h = condenser_lid_h();
     base_r = condenser_base_r(lens_d);
