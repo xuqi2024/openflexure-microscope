@@ -215,42 +215,36 @@ function illumination_mounting_hole_sep() = 10;
 function condenser_lid_mounting_hole_pos(base_r) = [base_r-2, base_r+1, 0];
 
 function apeture_tray_t() = 1.5;
-function aperture_tray_width() = 7.5;
-function aperture_tray_depth() = aperture_tray_width() + 10;
+function aperture_tray_width(led_size) = 7.5 + (led_size - 5);
+function aperture_tray_depth(led_size) = aperture_tray_width(led_size) + 10;
 function aperture_tray_shift() = [0, -4, 0];
-module bridge(width, length, height) {
+module annulus_bridge(width, length, height) {
     cube([width, length, height], center=true);
 }
 
-
-module condenser_cutout(lens_r, lens_assembly_z, 
-                        led_size=5, 
-                        ap_tray_t=apeture_tray_t(), 
-                        ap_tray_width=aperture_tray_width(), 
-                        ap_tray_depth=aperture_tray_depth(), 
-                        ap_tray_shift=aperture_tray_shift()) {
+module condenser_cutout(lens_r, lens_assembly_z, led_size=5) {
     // Existing code...
     // This is the cutout for the beam to pass through the condenser.
     // It contains a light trap and mouning for the diffuser
 
     led_z_offset = (led_size - 5);
     apeture_tray_z = 1 + led_z_offset;
-    light_trap_start_z = apeture_tray_z+ap_tray_t+tiny();
+    light_trap_start_z = apeture_tray_z+apeture_tray_t()+tiny();
 
     lighttrap_h = lens_assembly_z+3*tiny()-light_trap_start_z;
     aperture_r = lens_r-condenser_aperture_difference();
-    light_trap_width = ap_tray_width + .5;
+    light_trap_width = aperture_tray_width(led_size) + .5;
 
-    //Light trap to reduce stray reflectins
+    //Light trap to reduce stray reflections
 
     translate_z(light_trap_start_z-tiny()){
         r1=2;
         f1 = light_trap_width-2*r1;
         lighttrap_sqylinder(r1=r1, f1=f1, r2=aperture_r,f2=0, h=lighttrap_h+4*tiny(), $fn=16);
     }
-    translate_z(apeture_tray_z+ap_tray_t/2){
-        translate(ap_tray_shift){
-            cube([ap_tray_width, ap_tray_depth, ap_tray_t], center=true);
+    translate_z(apeture_tray_z+apeture_tray_t()/2){
+        translate(aperture_tray_shift()){
+            cube([aperture_tray_width(led_size), aperture_tray_depth(led_size), apeture_tray_t()], center=true);
         }
     }
     translate_z(led_z_offset){
@@ -268,11 +262,9 @@ module condenser_cutout(lens_r, lens_assembly_z,
     }
 }
 
-module condenser_aperture(ap_tray_t=apeture_tray_t(), 
-                        ap_tray_width=aperture_tray_width(), 
-                        ap_tray_depth=aperture_tray_depth()){
-    $fn=60;
-    nominal_size = [ap_tray_width, ap_tray_depth, ap_tray_t];
+module condenser_aperture(led_size=5){
+    $fn=200;
+    nominal_size = [aperture_tray_width(led_size), aperture_tray_depth(led_size), apeture_tray_t()];
     actual_size = nominal_size - [1, 1, 1]*0.5;
     //Creat drilling hole for standard 118 degree drill
     angle = 118/2;
@@ -281,7 +273,7 @@ module condenser_aperture(ap_tray_t=apeture_tray_t(),
     top_rad = bot_rad + cyl_h*tan(angle);
     difference(){
         cube(actual_size, center=true);
-        translate(-ap_tray_shift){
+        translate(-aperture_tray_shift()){
             cylinder(r1=bot_rad, r2=top_rad, h=cyl_h, center=true);
         }
     }
@@ -296,7 +288,7 @@ module condenser_lens_gripper_seperate(module_holder_height=0) {
         // Need to add a base
         translate([0,0,-lens_t]) {
             difference() {
-                cylinder(r=base_r, h=lens_t);
+                cylinder(r=base_r+1.5, h=lens_t);
                 translate_z(-tiny()) {
                     cylinder(r=(lens_d/2) - condenser_aperture_difference(), h=lens_t+tiny()*2);
                 }
@@ -307,8 +299,9 @@ module condenser_lens_gripper_seperate(module_holder_height=0) {
         translate([0,0,-module_holder_height]) {
             difference() {
                 cylinder(r=base_r+1.5, h=module_holder_height);
+                // Need to add a hole
                 translate_z(-tiny()) {
-                    cylinder(r=base_r+0.25, h=module_holder_height+tiny()*2);
+                    cylinder(r=base_r+0.17, h=module_holder_height+tiny()*2);
                 }
             }
         }
@@ -321,7 +314,7 @@ module condenser_annulus(inner_radius, outer_radius, ring_width, height, bridge_
         difference() {
             // Outer cylinder
             cylinder(r = outer_radius, h = height);
-            // Inner cylinder
+            // Hole for ring and inner disk
             translate_z(-tiny()) {
                 cylinder(r = inner_radius + ring_width, h = height + tiny()*2);
             }
@@ -333,7 +326,7 @@ module condenser_annulus(inner_radius, outer_radius, ring_width, height, bridge_
         for (angle = [0:120:240]) {
             rotate([0, 0, angle]) {
                 translate([inner_radius + 1, 0, height/2]) {
-                    bridge(bridge_width, bridge_length, height);
+                    annulus_bridge(bridge_width, bridge_length, height);
                 }
             }
         }
@@ -389,7 +382,7 @@ module condenser_body(base_r, lens_assembly_z, include_mounting=true, basic_cond
 // constants - they may be re-parameterised in the future.
 // lens_assembly_z is used at its default value in the STL and renders - it is only
 // changed in the upright condenser.
-function condenser_lens_assembly_z()=22;
+function condenser_lens_assembly_z(led_size=5) = led_size == 8 ? 28 : 22;
 function condenser_lens_z()=condenser_lens_assembly_z()+condenser_lens_assembly_pedestal_height();
 function condenser_lens_thickness()=1;
 function condenser_lens_diameter()=13;
@@ -399,8 +392,9 @@ function condenser_base_r(lens_d)=lens_d/2+2;
 //   This makes the condenser arm, including the dovetail clamp, condenser
 //   lens holder, and mounting for the illumination PCB.
 module condenser(lens_assembly_z=condenser_lens_assembly_z(), include_mounting=true, led_size=5,
-                ap_tray_width=aperture_tray_width(), basic_condenser = false, include_gripper=true,
-                annulus_inner_radius=0, annulus_ring_width=2, annulus_height=3){
+                basic_condenser = false, include_gripper=true,
+                with_annulus=false,
+                dovetail_stop_thickness=0){
     lens_d=condenser_lens_diameter();
     lens_t=condenser_lens_thickness();
     base_r = condenser_base_r(lens_d);
@@ -413,17 +407,27 @@ module condenser(lens_assembly_z=condenser_lens_assembly_z(), include_mounting=t
                 translate_z(lens_assembly_z){
                     condenser_lens_gripper(lens_d/2, lens_t, base_r);
                 }
+            } else {
+                dt_params = condenser_dovetail_params();
+                dt_height = key_lookup("overall_height", dt_params);
+                // add a stopper for the slided external lens gripper
+                translate_z(dt_height){
+                    cylinder(r=base_r + 2, h=dovetail_stop_thickness);
+                }
             }
         }
-        condenser_cutout(lens_d/2, lens_assembly_z, led_size, ap_tray_width=ap_tray_width);
+        condenser_cutout(lens_d/2, lens_assembly_z, led_size);
         reflect_x(){
             translate(condenser_lid_mounting_hole_pos(base_r) - [0, 0, 0.5]){
                 no2_selftap_hole(h=7);
             }
         }
-     }
-     // Add the annulus 5mm above the lens gripper
-    if (annulus_inner_radius != 0) {
+    }
+    // Add the annulus 5mm above the lens gripper
+    if (with_annulus) {
+        annulus_inner_radius=4.5;
+        annulus_ring_width=2;
+        annulus_height=3;
         translate_z(lens_assembly_z - 4) {
             condenser_annulus(annulus_inner_radius, base_r, annulus_ring_width, annulus_height, 1);
         }

@@ -1,4 +1,4 @@
-use <../libs/illumination.scad>
+use <../../libs/illumination.scad>
 
 condenser_led_holder_stl();
 
