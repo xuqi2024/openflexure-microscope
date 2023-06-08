@@ -263,7 +263,7 @@ module condenser_cutout(lens_r, lens_assembly_z, led_size=5) {
 }
 
 module condenser_aperture(led_size=5){
-    $fn=200;
+    $fn=60;
     nominal_size = [aperture_tray_width(led_size), aperture_tray_depth(led_size), apeture_tray_t()];
     actual_size = nominal_size - [1, 1, 1]*0.5;
     //Creat drilling hole for standard 118 degree drill

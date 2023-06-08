@@ -1,5 +1,6 @@
 use <../../libs/illumination.scad>
 
+$fn=200;
 condenser_8mm_stl();
 
 module condenser_8mm_stl(){
