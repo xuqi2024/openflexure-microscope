@@ -47,50 +47,50 @@ def write_ninja_file(build_dir):
         print(f'Compiling microscope version "{version_str}"')
 
         # The main body
-        # writer.openscad("main_body.stl", "main_body.scad", {"VERSION_STRING": version_str})
+        writer.openscad("main_body.stl", "main_body.scad", {"VERSION_STRING": version_str})
 
-        # # Bases and electronics adapters
-        # generate_stand_with_pi(writer)
-        # writer.openscad("microscope_stand_no_pi.stl", "microscope_stand_no_pi.scad")
-        # writer.openscad("nano_converter_plate.stl", "nano_converter_plate.scad")
-        # writer.openscad("nano_converter_plate_gripper.stl", "nano_converter_plate_gripper.scad")
+        # Bases and electronics adapters
+        generate_stand_with_pi(writer)
+        writer.openscad("microscope_stand_no_pi.stl", "microscope_stand_no_pi.scad")
+        writer.openscad("nano_converter_plate.stl", "nano_converter_plate.scad")
+        writer.openscad("nano_converter_plate_gripper.stl", "nano_converter_plate_gripper.scad")
 
-        # # Standard components
-        # writer.openscad("feet.stl", "feet.scad")
-        # writer.openscad("sample_clips.stl", "sample_clips.scad")
-        # writer.openscad("cable_tidies.stl", "cable_tidies.scad")
-        # writer.openscad("small_gears.stl", "small_gears.scad")
-        # writer.openscad("large_gears.stl", "large_gears.scad")
+        # Standard components
+        writer.openscad("feet.stl", "feet.scad")
+        writer.openscad("sample_clips.stl", "sample_clips.scad")
+        writer.openscad("cable_tidies.stl", "cable_tidies.scad")
+        writer.openscad("small_gears.stl", "small_gears.scad")
+        writer.openscad("large_gears.stl", "large_gears.scad")
 
-        # # Optics modules and associated components
-        # generate_rms_optics_modules(writer)
-        # generate_platform_optics_modules(writer)
-        # writer.openscad("picamera_2_cover.stl", "picamera_2_cover.scad")
+        # Optics modules and associated components
+        generate_rms_optics_modules(writer)
+        generate_platform_optics_modules(writer)
+        writer.openscad("picamera_2_cover.stl", "picamera_2_cover.scad")
 
-        # # Standard illumination components
-        # writer.openscad("condenser.stl", "condenser.scad")
-        # writer.openscad("condenser_lid.stl", "condenser_lid.scad")
-        # writer.openscad("condenser_board_spacer.stl", "condenser_board_spacer.scad")
-        # writer.openscad("condenser_aperture.stl", "condenser_aperture.scad")
-        # writer.openscad("illumination_dovetail.stl", "illumination_dovetail.scad")
-        # writer.openscad("illumination_thumbscrew.stl", "illumination_thumbscrew.scad")
+        # Standard illumination components
+        writer.openscad("condenser.stl", "condenser.scad")
+        writer.openscad("condenser_lid.stl", "condenser_lid.scad")
+        writer.openscad("condenser_board_spacer.stl", "condenser_board_spacer.scad")
+        writer.openscad("condenser_aperture.stl", "condenser_aperture.scad")
+        writer.openscad("illumination_dovetail.stl", "illumination_dovetail.scad")
+        writer.openscad("illumination_thumbscrew.stl", "illumination_thumbscrew.scad")
 
-        # # Assembly tools
-        # writer.openscad("actuator_assembly_tools.stl", "actuator_assembly_tools.scad")
-        # writer.openscad("lens_tool.stl", "lens_tool.scad")
-        # writer.openscad("picamera_2_gripper.stl", "accessories/picamera_2_gripper.scad")
-        # writer.openscad("picamera_2_lens_gripper.stl", "accessories/picamera_2_lens_gripper.scad")
+        # Assembly tools
+        writer.openscad("actuator_assembly_tools.stl", "actuator_assembly_tools.scad")
+        writer.openscad("lens_tool.stl", "lens_tool.scad")
+        writer.openscad("picamera_2_gripper.stl", "accessories/picamera_2_gripper.scad")
+        writer.openscad("picamera_2_lens_gripper.stl", "accessories/picamera_2_lens_gripper.scad")
 
-        # # Test pieces
-        # writer.openscad("nut_trap_test.stl", "test_pieces/nut_trap_test.scad")
-        # writer.openscad("leg_test.stl", "test_pieces/leg_test.scad")
-        # writer.openscad("rms_thread.stl", "test_pieces/rms_thread.scad")
+        # Test pieces
+        writer.openscad("nut_trap_test.stl", "test_pieces/nut_trap_test.scad")
+        writer.openscad("leg_test.stl", "test_pieces/leg_test.scad")
+        writer.openscad("rms_thread.stl", "test_pieces/rms_thread.scad")
 
-        # # Special illumination components
-        # writer.openscad("condenser_led_holder.stl", "condenser_led_holder.scad")
-        # writer.openscad("fl_cube.stl", "fl_cube.scad")
-        # writer.openscad("reflection_illuminator.stl", "reflection_illuminator.scad")
-        # writer.openscad("led_array_holder.stl", "led_array_holder.scad")
+        # Special illumination components
+        writer.openscad("condenser_led_holder.stl", "condenser_led_holder.scad")
+        writer.openscad("fl_cube.stl", "fl_cube.scad")
+        writer.openscad("reflection_illuminator.stl", "reflection_illuminator.scad")
+        writer.openscad("led_array_holder.stl", "led_array_holder.scad")
 
         # Additional illumination components
         writer.openscad("condenser_with_inbuilt_annulus.stl", "additional_illumination/condenser_with_inbuilt_annulus.scad")
@@ -106,29 +106,29 @@ def write_ninja_file(build_dir):
         writer.openscad("condenser_8mm_body_dovemount.stl", "additional_illumination/8mm_led/condenser_8mm_body_dovemount.scad")
         writer.openscad("condenser_aperture_8mm.stl", "additional_illumination/8mm_led/condenser_aperture_8mm.scad")
 
-        # # Upright microscope components
-        # writer.openscad("separate_z_actuator.stl", "separate_z_actuator.scad")
-        # writer.openscad("upright_condenser.stl", "upright_condenser.scad")
-        # writer.openscad("upright_condenser_platform.stl", "upright_condenser_platform.scad")
-        # writer.openscad("upright_large_gears.stl", "upright_large_gears.scad")
-        # writer.openscad("upright_feet.stl", "upright_feet.scad")
-        # writer.openscad("upright_z_actuator_mount.stl", "upright_z_actuator_mount.scad")
-        # writer.openscad("accessories/upright_z_actuator_mount_5mm_sample.stl",
-        #                 "accessories/upright_z_actuator_mount_5mm_sample.scad")
-        # writer.openscad("accessories/upright_z_actuator_mount_10mm_sample.stl",
-        #                 "accessories/upright_z_actuator_mount_10mm_sample.scad")
+        # Upright microscope components
+        writer.openscad("separate_z_actuator.stl", "separate_z_actuator.scad")
+        writer.openscad("upright_condenser.stl", "upright_condenser.scad")
+        writer.openscad("upright_condenser_platform.stl", "upright_condenser_platform.scad")
+        writer.openscad("upright_large_gears.stl", "upright_large_gears.scad")
+        writer.openscad("upright_feet.stl", "upright_feet.scad")
+        writer.openscad("upright_z_actuator_mount.stl", "upright_z_actuator_mount.scad")
+        writer.openscad("accessories/upright_z_actuator_mount_5mm_sample.stl",
+                        "accessories/upright_z_actuator_mount_5mm_sample.scad")
+        writer.openscad("accessories/upright_z_actuator_mount_10mm_sample.stl",
+                        "accessories/upright_z_actuator_mount_10mm_sample.scad")
 
-        # # Misc components
-        # writer.openscad("thumbwheels.stl", "thumbwheels.scad")
-        # writer.openscad("slide_riser.stl", "slide_riser.scad")
-        # writer.openscad(
-        #     "accessories/actuator_tension_band.stl",
-        #     "accessories/actuator_tension_band.scad"
-        # )
-        # writer.openscad(
-        #     "accessories/actuator_drilling_jig.stl",
-        #     "accessories/actuator_drilling_jig.scad"
-        # )
+        # Misc components
+        writer.openscad("thumbwheels.stl", "thumbwheels.scad")
+        writer.openscad("slide_riser.stl", "slide_riser.scad")
+        writer.openscad(
+            "accessories/actuator_tension_band.stl",
+            "accessories/actuator_tension_band.scad"
+        )
+        writer.openscad(
+            "accessories/actuator_drilling_jig.stl",
+            "accessories/actuator_drilling_jig.scad"
+        )
 
 def generate_rms_optics_modules(writer):
     """
