@@ -23,7 +23,7 @@ function microscope_stand_vert_height(stand_params) = let(
 
 function default_stand_params(tall=false, no_pi=false, pi_version=4, sanga_version="stack_8.5mm") =
     assert(pi_version==3 || pi_version==4, "pi_version must be 3 or 4")
-    assert(sanga_version=="v0.3" || sanga_version=="stack_8.5mm" || sanga_version=="stack_11mm", "sanga_version must be \"v0.3\", \"stack_8.5mm\" or \"0.5\"")
+    assert(sanga_version=="v0.3" || sanga_version=="stack_8.5mm" || sanga_version=="stack_11mm", "sanga_version must be \"v0.3\", \"stack_8.5mm\" or \"stack_11mm\"")
     [["electronics_drawer_h", 47], //The height of the tray the pi sits in.
      ["include_pi_tray_hole", !no_pi], //Whether the stand has a hole for the raspberry pi tray
      ["extra_height", tall ? 17 : 0], //extra height above the raspberry pi_tray
@@ -446,14 +446,6 @@ module electronics_drawer_base(stand_params){
                     cylinder(d=5.5, h=standoff_h, $fn=12);
                 }
             }
-            // TODO remove unused code when confirmed
-            // // bumps to locate Pi, do not seem to be necessary as the ports fit the walls snugly.
-            // // makes it slighty harder to remove the Pi when it is unscrewed.
-            // for (hole = [hole_pos[0], hole_pos[1]]){
-            //     translate(hole + [0, 0, standoff_h-.8]){
-            //         sphere(d=2.6, $fn=10);
-            //     }
-            // }
         }
         pi_tap_holes(connector_side=false);
         translate_y(base_size.y/2){

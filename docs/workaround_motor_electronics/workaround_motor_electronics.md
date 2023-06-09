@@ -6,7 +6,7 @@ The official project uses the [Sangaboard motor controller](../parts/electronics
 
 {{BOM}}
 
-* The alternative electronics use the same electronics drawer as the Sangaboard v0.4 and v0.5, so you should print this as described in the main instructions.
+* The alternative electronics use the same electronics drawer as the HAT-style Sangaboards with 11mm headers, so you should print this as described in the main instructions.
 * [Print the additional holders for the boards](./print_board_holders.md){step}.
 * [Wire up the electronics boards](./wire_up_boards.md){step}.
 * [Mount the boards and upload the firmware](./mount_boards_and_upload_firmware.md){step}.

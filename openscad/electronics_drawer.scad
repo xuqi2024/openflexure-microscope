@@ -1,6 +1,6 @@
 use <./libs/lib_microscope_stand.scad>
 
-PI_VERSION = 3;
+PI_VERSION = 4;
 SANGA_VERSION = "stack_11mm";
 
 electronics_drawer_stl(PI_VERSION, SANGA_VERSION);

@@ -1,7 +1,7 @@
 use <./libs/lib_nano_converter_plate.scad>
 use <./libs/utilities.scad>
 
-PI_VERSION = 3;
+PI_VERSION = 4;
 
 nano_converter_plate_stl(PI_VERSION);
 
