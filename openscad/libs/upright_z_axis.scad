@@ -8,9 +8,17 @@ use <./z_axis.scad>
 use <./illumination.scad>
 use <./compact_nut_seat.scad>
 
+/**
+* Replace the maximum height of the objective mount
+*/
+function shrink_objective_mount(params, new_h) = replace_value(
+    "objective_mount_max_height", new_h, params
+);
 
-module separate_z_actuator(params, cable_guides = false, cable_housing = false, rectangular = false){
+module separate_z_actuator(old_params, cable_guides = false, cable_housing = false, rectangular = false){
     //This is the z-axis of the main body 
+    // We need to make the objective mount slightly smaller to avoid fouling the insert
+    params = shrink_objective_mount(old_params, 32);
     // The cable_housing variable allows cable guides to be included or omitted
     difference(){
         union(){
