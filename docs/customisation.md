@@ -52,3 +52,12 @@ If using tall optics such as an infinity corrected objective you need a taller v
 If you have built a custom microscope without a rasberry Raspberry Pi, you can print a smaller stand to just hold the microscope.
 
 [microscope_stand_no_pi.stl](models/microscope_stand_no_pi.stl){previewpage}
+
+## Manual Microscope
+
+For a microscope without motors there is a version of the main body without the channels for motor cables.  
+There are thumbwheels to fit that body which are nicer to turn by hand than the large gears.
+
+[main_body_manual.stl](models/main_body_manual.stl){previewpage}
+[thumbwheels.stl](models/thumbwheels.stl){previewpage}
+[microscope_stand_no_pi.stl](models/microscope_stand_no_pi.stl){previewpage}
