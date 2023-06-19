@@ -47,6 +47,7 @@ def write_ninja_file(build_dir):
 
         # The main body
         writer.openscad("main_body.stl", "main_body.scad", {"VERSION_STRING": version_str})
+        writer.openscad("main_body_manual.stl", "main_body_manual.scad", {"VERSION_STRING": version_str})
 
         # Bases and electronics adapters
         generate_stand_with_pi(writer)
