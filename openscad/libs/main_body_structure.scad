@@ -495,7 +495,7 @@ module xy_actuator_cut_outs(params){
 }
 
 
-module actuator_walls_and_z_casing(params, z_axis=true){
+module actuator_walls_and_z_casing(params, z_axis=true, cable_housing=true){
     // These are the wall that link the actuators. And the casing for the
     // z-axis. This casing includes the mount for the illumination dovetail.
     difference(){
@@ -515,11 +515,17 @@ module actuator_walls_and_z_casing(params, z_axis=true){
                 }
                 // outer profile of casing and anchor for the z axis
                 if (z_axis){
-                    z_axis_casing(params, condenser_mount=true);
+                    z_axis_casing(params, condenser_mount=true, cable_housing=cable_housing);
                 }
             }
             reflect_x(){
-                side_housing(params);
+                if (cable_housing){
+                    side_housing(params);
+                }
+                else {
+                    // Basic side housing required to join to mounting lugs as to take the logo 
+                    side_housing(params, h=22, cavity_h=0.5);
+                }
             }
             //lugs to bolt the microscope down to base
             mounting_hole_lugs(params);
@@ -527,7 +533,9 @@ module actuator_walls_and_z_casing(params, z_axis=true){
         //This also cuts the walls hence why it is two objects
         if (z_axis){
             z_axis_casing_cutouts(params);
-            z_cable_housing_cutout(params);
+            if (cable_housing){
+                z_cable_housing_cutout(params);
+            }
         }
         xy_actuator_cut_outs(params);
         central_optics_cut_out(params);
@@ -566,19 +574,24 @@ module xy_only_body(params){
     }
 }
 
-module main_body(params, version_string){
+module main_body(params, version_string, cable_housing=true){
     // This module represents the main body of the microscope, including the positioning mechanism.
 
     difference(){
         xy_positioning_system(params);
-        z_axis_casing_cutouts(params);
+        if (cable_housing){
+            z_axis_casing_cutouts(params);
+        }
     }
 
     //z axis - Only the actuator column is housed at this point
     complete_z_actuator(params);
 
     difference(){
-        actuator_walls_and_z_casing(params);
-        body_logos(params, version_string);
+        actuator_walls_and_z_casing(params, z_axis=true, cable_housing=cable_housing);
+        logo_move = cable_housing? 0 : -7;
+        translate_z(logo_move){ 
+            body_logos(params, version_string);
+        }
     }
 }
