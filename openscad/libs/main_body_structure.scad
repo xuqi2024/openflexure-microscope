@@ -536,6 +536,13 @@ module actuator_walls_and_z_casing(params, z_axis=true, cable_housing=true){
             if (cable_housing){
                 z_cable_housing_cutout(params);
             }
+            else {
+                z_housing_frame(params, y_actuator=true){
+                    translate([1,-5,-2]){
+                        cube([7,5,7], center=true);
+                    }
+                }           
+            }
         }
         xy_actuator_cut_outs(params);
         central_optics_cut_out(params);
@@ -579,9 +586,7 @@ module main_body(params, version_string, cable_housing=true){
 
     difference(){
         xy_positioning_system(params);
-        if (cable_housing){
-            z_axis_casing_cutouts(params);
-        }
+        z_axis_casing_cutouts(params);
     }
 
     //z axis - Only the actuator column is housed at this point
