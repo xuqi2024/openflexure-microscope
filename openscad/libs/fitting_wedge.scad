@@ -34,33 +34,31 @@ module fitting_wedge(h, nose_width, nose_shift=0.2, y_depth=5, center=false){
         }
     }
 }
-
+fitting_wedge_cutout(z_pos=0, y_stop=false, nose_shift=0.2, max_screw=11);
 module fitting_wedge_cutout(z_pos, y_stop=false, nose_shift=0.2, max_screw=11){
     // Subtract this from a fitting wedge, to cut out a hole for the nut
     // so that it can be anchored to a mount
     // y_stop if set true will also cut flush the faces of the mount in case something is
     // protruding.
 
-    module fitting_wedge_nut(shaft=false){
+    module fitting_wedge_nut(shaft=false, nut_angle=0){
         // For convenience, this is the nut for the fitting wedge
         shaft_length = shaft ? max_screw-4 : 0;
-        rotate_y(30){
-            nut_y(3, h=2.6, fudge=1.22, extra_height=0, shaft_length=shaft_length);
-        }
+        nut_y(3, h=2.6, fudge=1.22, extra_height=0, shaft_length=shaft_length, nut_angle=nut_angle);
     }
 
     translate([0, -3.7, z_pos]){
-        fitting_wedge_nut(shaft=true);
+        fitting_wedge_nut(shaft=true, nut_angle=30);
         sequential_hull(){
             translate_z(-0.5){ // allow a little extra depth for the nut in the slot 
-                fitting_wedge_nut();
+                fitting_wedge_nut(nut_angle=30);
             }
             translate_z(7){
-                fitting_wedge_nut();
+                fitting_wedge_nut(nut_angle=30);
             }
             translate([0,10,7]){
                 repeat([0,0,10],2){
-                    fitting_wedge_nut();
+                    fitting_wedge_nut(nut_angle=30);
                 }
             }
         }
