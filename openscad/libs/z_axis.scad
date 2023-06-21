@@ -228,7 +228,11 @@ module pivot_z_axis(angle){
 
 module z_axis_clearance(params){
     // Clearance for the moving part of the Z axis
-    for(a=[-6,0,6]){
+    // - down and up 6 degrees is needed for the motion 
+    // - extend to -25 degrees to make the top 
+    //   surface angle covering the lower horizontal part printable
+    // - intermediate angles to make a smooth shape
+    for(a=[-25,-15,-6,0,6]){ 
         pivot_z_axis(a){
             minkowski(){
                 cylinder(r=1, h=4, center=true, $fn=8);
