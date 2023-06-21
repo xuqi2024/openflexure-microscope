@@ -250,7 +250,9 @@ module objective_mounting_screw_access(params){
     translate(objective_mount_screw_pos(params) + [0, 3, 0]){
         hull(){
             rotate(hole_angle){
-                cylinder(h=999, d=4, $fn=16);
+                rotate_x(90){ // printable hole is horizontal, hole_angle is relative to vertical
+                    printable_horizontal_hole(h=999,r=2,center=false,extra_height=0, $fn=16);
+                }
             }
             translate([-.5, 0, -3]){
                 rotate(hole_angle){
