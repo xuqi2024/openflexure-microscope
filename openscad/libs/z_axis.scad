@@ -172,6 +172,8 @@ module z_axis_flexures(params, h=flex_dims().z){
     }
 }
 
+params=default_params();
+z_axis_struts(params);
 module z_axis_struts(params){
     // The parts that tilt as the Z axis is moved, including the lever that
     // connects to the actuator column (but not the column itself).
@@ -199,10 +201,10 @@ module z_axis_struts(params){
     difference(){
         sequential_hull(){
             translate_y(z_nut_y(params)){
-                cylinder(d=w, h=lever_h);
+                cylinder_to_square_column(d=w, h=lever_h);
             }
             translate_y(z_anchor_y() + w/2 + 2){
-                cylinder(d=w, h=lower_z_flex_z()+2*delta_z);
+                cylinder_to_square_column(d=w, h=lower_z_flex_z()+2*delta_z);
             }
             translate([-w/2, z_anchor_y() - flex_dims().x - tiny(), lower_z_flex_z() + delta_z]){
                 cube([w,tiny(), 5-tiny()]);
