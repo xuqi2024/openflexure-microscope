@@ -172,8 +172,7 @@ module z_axis_flexures(params, h=flex_dims().z){
     }
 }
 
-params=default_params();
-z_axis_struts(params);
+
 module z_axis_struts(params){
     // The parts that tilt as the Z axis is moved, including the lever that
     // connects to the actuator column (but not the column itself).
@@ -237,7 +236,7 @@ module z_axis_clearance(params){
     for(a=[-25,-15,-6,0,6]){ 
         pivot_z_axis(a){
             minkowski(){
-                cylinder(r=1, h=4, center=true, $fn=8);
+                cube([2,2,4], center=true);
                 z_axis_struts(params);
             }
         }
