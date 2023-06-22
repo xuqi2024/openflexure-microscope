@@ -172,6 +172,7 @@ module z_axis_flexures(params, h=flex_dims().z){
     }
 }
 
+
 module z_axis_struts(params){
     // The parts that tilt as the Z axis is moved, including the lever that
     // connects to the actuator column (but not the column itself).
@@ -199,10 +200,10 @@ module z_axis_struts(params){
     difference(){
         sequential_hull(){
             translate_y(z_nut_y(params)){
-                cylinder(d=w, h=lever_h);
+                cylinder_to_square_column(d=w, h=lever_h);
             }
             translate_y(z_anchor_y() + w/2 + 2){
-                cylinder(d=w, h=lower_z_flex_z()+2*delta_z);
+                cylinder_to_square_column(d=w, h=lower_z_flex_z()+2*delta_z);
             }
             translate([-w/2, z_anchor_y() - flex_dims().x - tiny(), lower_z_flex_z() + delta_z]){
                 cube([w,tiny(), 5-tiny()]);
@@ -228,10 +229,14 @@ module pivot_z_axis(angle){
 
 module z_axis_clearance(params){
     // Clearance for the moving part of the Z axis
-    for(a=[-6,0,6]){
+    // - down and up 6 degrees is needed for the motion 
+    // - extend to -25 degrees to make the top 
+    //   surface angle covering the lower horizontal part printable
+    // - intermediate angles to make a smooth shape
+    for(a=[-25,-15,-6,0,6]){ 
         pivot_z_axis(a){
             minkowski(){
-                cylinder(r=1, h=4, center=true, $fn=8);
+                cube([2,2,4], center=true);
                 z_axis_struts(params);
             }
         }
@@ -250,7 +255,9 @@ module objective_mounting_screw_access(params){
     translate(objective_mount_screw_pos(params) + [0, 3, 0]){
         hull(){
             rotate(hole_angle){
-                cylinder(h=999, d=4, $fn=16);
+                rotate_x(90){ // printable hole is horizontal, hole_angle is relative to vertical
+                    printable_horizontal_hole(h=999,r=2,center=false,extra_height=0, $fn=16);
+                }
             }
             translate([-.5, 0, -3]){
                 rotate(hole_angle){
