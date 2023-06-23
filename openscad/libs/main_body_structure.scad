@@ -549,42 +549,35 @@ module actuator_walls_and_z_casing(params, z_axis=true, cable_housing=true){
 module body_logos(params, message){
     // The openflexure and opehardware logos. Plus a customisable message.
     xy_cable_tidies = key_lookup("include_motor_lugs",params);
+    size = xy_cable_tidies? 0.25 : 0.24;
+    ofm_logo_position = xy_cable_tidies?
+                        [9,actuator_wall_h()-2-15*size,-0.5] :
+                        [9.5,actuator_wall_h()-0-15*size,-0.5] ;
+    oshwa_logo_position = xy_cable_tidies?
+                        [-34, actuator_wall_h()-2-15*size, -0.5] :
+                        [-27, actuator_wall_h()-3-15*size, -0.5] ;
 
-    if (xy_cable_tidies){
-        size = 0.25;
-        place_on_wall(params, is_y=false, housing=true){
-            translate([9,actuator_wall_h()-2-15*size,-0.5]){
-                scale([size,size,10]){
+    place_on_wall(params, is_y=false, housing=xy_cable_tidies){
+        translate(ofm_logo_position){
+            scale([size,size,10]){
+                if (xy_cable_tidies){
                     openflexure_logo_above();
                 }
-            }
-        }
-
-        place_on_wall(params, housing=true){
-            translate([-34, actuator_wall_h()-2-15*size, -0.5]){
-                mirror([1,0,0]){
-                    scale([size,size,10]){
-                        oshw_logo_and_text(message);
-                    }
+                else {
+                    openflexure_logo();
                 }
             }
         }
     }
 
-    else { // no cable tidies
-        size = 0.24;
-        place_on_wall(params, is_y=false, housing=false){
-            translate([9.5,actuator_wall_h()-0-15*size,-0.5]){
+    place_on_wall(params, housing=xy_cable_tidies){
+        translate(oshwa_logo_position){
+            mirror([1,0,0]){
                 scale([size,size,10]){
-                    openflexure_logo();
-                }
-            }
-        }
-
-        place_on_wall(params, housing=false){
-            translate([-27, actuator_wall_h()-3-15*size, -0.5]){
-                mirror([1,0,0]){
-                    scale([size,size,10]){
+                    if (xy_cable_tidies){
+                        oshw_logo_and_text(message);
+                    }
+                    else {
                         oshw_logo_and_text_beside(message);
                     }
                 }
