@@ -549,6 +549,7 @@ module actuator_walls_and_z_casing(params, z_axis=true, cable_housing=true){
 module body_logos(params, message){
     // The openflexure and opehardware logos. Plus a customisable message.
     xy_cable_tidies = key_lookup("include_motor_lugs",params);
+
     if (xy_cable_tidies){
         size = 0.25;
         place_on_wall(params, is_y=false, housing=true){
@@ -570,7 +571,7 @@ module body_logos(params, message){
         }
     }
 
-    else {
+    else { // no cable tidies
         size = 0.24;
         place_on_wall(params, is_y=false, housing=false){
             translate([9.5,actuator_wall_h()-0-15*size,-0.5]){
@@ -581,10 +582,10 @@ module body_logos(params, message){
         }
 
         place_on_wall(params, housing=false){
-            translate([-30, actuator_wall_h()-8-15*size, -0.5]){
+            translate([-27, actuator_wall_h()-3-15*size, -0.5]){
                 mirror([1,0,0]){
                     scale([size,size,10]){
-                        oshw_logo_and_text(message);
+                        oshw_logo_and_text_beside(message);
                     }
                 }
             }
