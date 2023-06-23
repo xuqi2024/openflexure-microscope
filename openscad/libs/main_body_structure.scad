@@ -537,7 +537,7 @@ module actuator_walls_and_z_casing(params, z_axis=true, cable_housing=true){
                     translate([1,-5,-2]){
                         cube([7,5,7], center=true);
                     }
-                }           
+                }
             }
         }
         xy_actuator_cut_outs(params);
