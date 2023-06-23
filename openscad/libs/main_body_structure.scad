@@ -155,7 +155,7 @@ module mounting_hole_lugs(params, holes=true){
     hole_pos = base_mounting_holes(params);
     for (n = [0:len(hole_pos)-1]){
         hole = hole_pos[n];
-        angle = lug_angles()[n];
+        angle = lug_angles(params)[n];
         m3_lug(hole, angle, holes=holes);
     }
 }
@@ -495,7 +495,7 @@ module xy_actuator_cut_outs(params){
 }
 
 
-module actuator_walls_and_z_casing(params, z_axis=true){
+module actuator_walls_and_z_casing(params, z_axis=true, cable_housing=true){
     // These are the wall that link the actuators. And the casing for the
     // z-axis. This casing includes the mount for the illumination dovetail.
     difference(){
@@ -515,11 +515,13 @@ module actuator_walls_and_z_casing(params, z_axis=true){
                 }
                 // outer profile of casing and anchor for the z axis
                 if (z_axis){
-                    z_axis_casing(params, condenser_mount=true);
+                    z_axis_casing(params, condenser_mount=true, cable_housing=cable_housing);
                 }
             }
             reflect_x(){
-                side_housing(params);
+                if (cable_housing){
+                    side_housing(params);
+                }
             }
             //lugs to bolt the microscope down to base
             mounting_hole_lugs(params);
@@ -527,7 +529,16 @@ module actuator_walls_and_z_casing(params, z_axis=true){
         //This also cuts the walls hence why it is two objects
         if (z_axis){
             z_axis_casing_cutouts(params);
-            z_cable_housing_cutout(params);
+            if (cable_housing){
+                z_cable_housing_cutout(params);
+            }
+            else {
+                z_housing_frame(params, y_actuator=true){
+                    translate([1,-5,-2]){
+                        cube([7,5,7], center=true);
+                    }
+                }           
+            }
         }
         xy_actuator_cut_outs(params);
         central_optics_cut_out(params);
@@ -536,20 +547,44 @@ module actuator_walls_and_z_casing(params, z_axis=true){
 
 module body_logos(params, message){
     // The openflexure and opehardware logos. Plus a customisable message.
-    size = 0.25;
-    place_on_wall(params, is_y=false){
-        translate([9,actuator_wall_h()-2-15*size,-0.5]){
-            scale([size,size,10]){
-                openflexure_logo_above();
+    xy_cable_tidies = key_lookup("include_motor_lugs",params);
+    if (xy_cable_tidies){
+        size = 0.25;
+        place_on_wall(params, is_y=false, housing=true){
+            translate([9,actuator_wall_h()-2-15*size,-0.5]){
+                scale([size,size,10]){
+                    openflexure_logo_above();
+                }
+            }
+        }
+
+        place_on_wall(params, housing=true){
+            translate([-34, actuator_wall_h()-2-15*size, -0.5]){
+                mirror([1,0,0]){
+                    scale([size,size,10]){
+                        oshw_logo_and_text(message);
+                    }
+                }
             }
         }
     }
 
-    place_on_wall(params){
-        translate([-34, actuator_wall_h()-2-15*size, -.5]){
-            mirror([1,0,0]){
+    else {
+        size = 0.24;
+        place_on_wall(params, is_y=false, housing=false){
+            translate([9.5,actuator_wall_h()-0-15*size,-0.5]){
                 scale([size,size,10]){
-                    oshw_logo_and_text(message);
+                    openflexure_logo();
+                }
+            }
+        }
+
+        place_on_wall(params, housing=false){
+            translate([-30, actuator_wall_h()-8-15*size, -0.5]){
+                mirror([1,0,0]){
+                    scale([size,size,10]){
+                        oshw_logo_and_text(message);
+                    }
                 }
             }
         }
@@ -566,7 +601,7 @@ module xy_only_body(params){
     }
 }
 
-module main_body(params, version_string){
+module main_body(params, version_string, cable_housing=true){
     // This module represents the main body of the microscope, including the positioning mechanism.
 
     difference(){
@@ -578,7 +613,7 @@ module main_body(params, version_string){
     complete_z_actuator(params);
 
     difference(){
-        actuator_walls_and_z_casing(params);
+        actuator_walls_and_z_casing(params, z_axis=true, cable_housing=cable_housing);
         body_logos(params, version_string);
     }
 }
