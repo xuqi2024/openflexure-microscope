@@ -560,7 +560,7 @@ module body_logos(params, message){
         }
 
         place_on_wall(params, housing=true){
-            translate([-34, actuator_wall_h()-2-15*size, -.5]){
+            translate([-34, actuator_wall_h()-2-15*size, -0.5]){
                 mirror([1,0,0]){
                     scale([size,size,10]){
                         oshw_logo_and_text(message);
@@ -571,17 +571,17 @@ module body_logos(params, message){
     }
 
     else {
-        size = 0.25;
+        size = 0.24;
         place_on_wall(params, is_y=false, housing=false){
-            translate([9,actuator_wall_h()-2-15*size,-0.5]){
+            translate([9.5,actuator_wall_h()-0-15*size,-0.5]){
                 scale([size,size,10]){
-                    openflexure_logo_above();
+                    openflexure_logo();
                 }
             }
         }
 
         place_on_wall(params, housing=false){
-            translate([-34, actuator_wall_h()-2-15*size, -.5]){
+            translate([-30, actuator_wall_h()-8-15*size, -0.5]){
                 mirror([1,0,0]){
                     scale([size,size,10]){
                         oshw_logo_and_text(message);
@@ -615,9 +615,6 @@ module main_body(params, version_string, cable_housing=true){
 
     difference(){
         actuator_walls_and_z_casing(params, z_axis=true, cable_housing=cable_housing);
-        logo_move = cable_housing? 0 : -7;
-        translate_z(logo_move){ 
-            body_logos(params, version_string);
-        }
+        body_logos(params, version_string);
     }
 }
