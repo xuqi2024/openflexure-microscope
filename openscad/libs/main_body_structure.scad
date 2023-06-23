@@ -155,7 +155,7 @@ module mounting_hole_lugs(params, holes=true){
     hole_pos = base_mounting_holes(params);
     for (n = [0:len(hole_pos)-1]){
         hole = hole_pos[n];
-        angle = lug_angles()[n];
+        angle = lug_angles(params)[n];
         m3_lug(hole, angle, holes=holes);
     }
 }
@@ -522,10 +522,6 @@ module actuator_walls_and_z_casing(params, z_axis=true, cable_housing=true){
                 if (cable_housing){
                     side_housing(params);
                 }
-                else {
-                    // Basic side housing required to join to mounting lugs as to take the logo 
-                    side_housing(params, h=22, cavity_h=0.5);
-                }
             }
             //lugs to bolt the microscope down to base
             mounting_hole_lugs(params);
@@ -551,20 +547,44 @@ module actuator_walls_and_z_casing(params, z_axis=true, cable_housing=true){
 
 module body_logos(params, message){
     // The openflexure and opehardware logos. Plus a customisable message.
-    size = 0.25;
-    place_on_wall(params, is_y=false){
-        translate([9,actuator_wall_h()-2-15*size,-0.5]){
-            scale([size,size,10]){
-                openflexure_logo_above();
+    xy_cable_tidies = key_lookup("include_motor_lugs",params);
+    if (xy_cable_tidies){
+        size = 0.25;
+        place_on_wall(params, is_y=false, housing=true){
+            translate([9,actuator_wall_h()-2-15*size,-0.5]){
+                scale([size,size,10]){
+                    openflexure_logo_above();
+                }
+            }
+        }
+
+        place_on_wall(params, housing=true){
+            translate([-34, actuator_wall_h()-2-15*size, -.5]){
+                mirror([1,0,0]){
+                    scale([size,size,10]){
+                        oshw_logo_and_text(message);
+                    }
+                }
             }
         }
     }
 
-    place_on_wall(params){
-        translate([-34, actuator_wall_h()-2-15*size, -.5]){
-            mirror([1,0,0]){
+    else {
+        size = 0.25;
+        place_on_wall(params, is_y=false, housing=false){
+            translate([9,actuator_wall_h()-2-15*size,-0.5]){
                 scale([size,size,10]){
-                    oshw_logo_and_text(message);
+                    openflexure_logo_above();
+                }
+            }
+        }
+
+        place_on_wall(params, housing=false){
+            translate([-34, actuator_wall_h()-2-15*size, -.5]){
+                mirror([1,0,0]){
+                    scale([size,size,10]){
+                        oshw_logo_and_text(message);
+                    }
                 }
             }
         }
