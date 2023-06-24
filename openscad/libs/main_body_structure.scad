@@ -546,7 +546,7 @@ module body_logos(params, message){
     }
 
     place_on_wall(params){
-        translate([-34, actuator_wall_h()-2-15*size, -.5]){
+        translate([-24.5, actuator_wall_h()-15*size, -0.5]){
             mirror([1,0,0]){
                 scale([size,size,10]){
                     oshw_logo_and_text(message);
