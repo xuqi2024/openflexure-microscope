@@ -20,12 +20,12 @@ use <./libs/main_body_structure.scad>
 //Note that the main body is complex enough you should run Render not preview
 // To use in preview wrap with render(6)
 VERSION_STRING = "Custom";
-main_body_stl(VERSION_STRING, cable_housing=true);
+main_body_stl(VERSION_STRING);
 
-module main_body_stl(version_string, cable_housing=true){
+module main_body_stl(version_string){
     params = default_params();
     smart_brim_r = key_lookup("smart_brim_r", params);
     exterior_brim(r=smart_brim_r){
-        main_body(params, version_string, cable_housing=cable_housing);
+        main_body(params, version_string);
     }
 }
