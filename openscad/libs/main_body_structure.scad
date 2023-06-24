@@ -496,9 +496,10 @@ module xy_actuator_cut_outs(params){
 }
 
 
-module actuator_walls_and_z_casing(params, z_axis=true, cable_housing=true){
+module actuator_walls_and_z_casing(params, z_axis=true){
     // These are the wall that link the actuators. And the casing for the
     // z-axis. This casing includes the mount for the illumination dovetail.
+    xy_cable_tidies = key_lookup("include_motor_lugs",params);
     difference(){
         union(){
             add_hull_base(microscope_base_t()) {
@@ -516,11 +517,12 @@ module actuator_walls_and_z_casing(params, z_axis=true, cable_housing=true){
                 }
                 // outer profile of casing and anchor for the z axis
                 if (z_axis){
+                    cable_housing = xy_cable_tidies; // for the main body there are no z-cable tidies if there are no xy cable tidies
                     z_axis_casing(params, condenser_mount=true, cable_housing=cable_housing);
                 }
             }
             reflect_x(){
-                if (cable_housing){
+                if (xy_cable_tidies){
                     side_housing(params);
                 }
             }
@@ -530,7 +532,7 @@ module actuator_walls_and_z_casing(params, z_axis=true, cable_housing=true){
         //This also cuts the walls hence why it is two objects
         if (z_axis){
             z_axis_casing_cutouts(params);
-            if (cable_housing){
+            if (xy_cable_tidies){
                 z_cable_housing_cutout(params);
             }
             else {
@@ -596,7 +598,7 @@ module xy_only_body(params){
     }
 }
 
-module main_body(params, version_string, cable_housing=true){
+module main_body(params, version_string){
     // This module represents the main body of the microscope, including the positioning mechanism.
 
     difference(){
@@ -608,7 +610,7 @@ module main_body(params, version_string, cable_housing=true){
     complete_z_actuator(params);
 
     difference(){
-        actuator_walls_and_z_casing(params, z_axis=true, cable_housing=cable_housing);
+        actuator_walls_and_z_casing(params, z_axis=true);
         body_logos(params, version_string);
     }
 }
