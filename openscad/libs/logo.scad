@@ -57,13 +57,13 @@ module openflexure_logo_above(h=1){
 
 module oshw_logo_and_text(text=""){
     union(){
-        translate([-40,50,0]){
+        translate([0,45,0]){
             oshw_logo();
         }
 
         mirror([1,0,0]){
             linear_extrude(1){
-                text(text, size=14, font="Calibri", halign="left");
+                text(text, size=14, font="Calibri", halign="center");
             }
         }
     }
