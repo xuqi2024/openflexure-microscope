@@ -50,7 +50,7 @@ module simple_leg_stand(params, type="back", wall_height=10){
                     y_actuator_frame(params){
                         screw_seat_outline(h=999,adjustment=+tiny(),center=true);
                     }
-                }        
+                }
             }
         }
     }
