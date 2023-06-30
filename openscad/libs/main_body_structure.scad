@@ -155,7 +155,7 @@ module mounting_hole_lugs(params, holes=true){
     hole_pos = base_mounting_holes(params);
     for (n = [0:len(hole_pos)-1]){
         hole = hole_pos[n];
-        angle = lug_angles()[n];
+        angle = lug_angles(params)[n];
         m3_lug(hole, angle, holes=holes);
     }
 }
@@ -498,6 +498,7 @@ module xy_actuator_cut_outs(params){
 module actuator_walls_and_z_casing(params, z_axis=true){
     // These are the wall that link the actuators. And the casing for the
     // z-axis. This casing includes the mount for the illumination dovetail.
+    xy_cable_tidies = key_lookup("include_motor_lugs",params);
     difference(){
         union(){
             add_hull_base(microscope_base_t()) {
@@ -515,11 +516,14 @@ module actuator_walls_and_z_casing(params, z_axis=true){
                 }
                 // outer profile of casing and anchor for the z axis
                 if (z_axis){
-                    z_axis_casing(params, condenser_mount=true);
+                    cable_housing = xy_cable_tidies; // for the main body there are no z-cable tidies if there are no xy cable tidies
+                    z_axis_casing(params, condenser_mount=true, cable_housing=cable_housing);
                 }
             }
             reflect_x(){
-                side_housing(params);
+                if (xy_cable_tidies){
+                    side_housing(params);
+                }
             }
             //lugs to bolt the microscope down to base
             mounting_hole_lugs(params);
@@ -527,7 +531,16 @@ module actuator_walls_and_z_casing(params, z_axis=true){
         //This also cuts the walls hence why it is two objects
         if (z_axis){
             z_axis_casing_cutouts(params);
-            z_cable_housing_cutout(params);
+            if (xy_cable_tidies){
+                z_cable_housing_cutout(params);
+            }
+            else {
+                z_housing_frame(params, y_actuator=true){
+                    translate([1,-5,-2]){
+                        cube([7,5,7], center=true);
+                    }
+                }
+            }
         }
         xy_actuator_cut_outs(params);
         central_optics_cut_out(params);
@@ -536,20 +549,38 @@ module actuator_walls_and_z_casing(params, z_axis=true){
 
 module body_logos(params, message){
     // The openflexure and opehardware logos. Plus a customisable message.
-    size = 0.25;
-    place_on_wall(params, is_y=false){
-        translate([9,actuator_wall_h()-2-15*size,-0.5]){
+    xy_cable_tidies = key_lookup("include_motor_lugs",params);
+    size = xy_cable_tidies? 0.25 : 0.24;
+    ofm_logo_position = xy_cable_tidies?
+                        [9,actuator_wall_h()-2-15*size,-0.5] :
+                        [9.5,actuator_wall_h()-0-15*size,-0.5] ;
+    oshwa_logo_position = xy_cable_tidies?
+                        [-34, actuator_wall_h()-2-15*size, -0.5] :
+                        [-27, actuator_wall_h()-3-15*size, -0.5] ;
+
+    place_on_wall(params, is_y=false, housing=xy_cable_tidies){
+        translate(ofm_logo_position){
             scale([size,size,10]){
-                openflexure_logo_above();
+                if (xy_cable_tidies){
+                    openflexure_logo_above();
+                }
+                else {
+                    openflexure_logo();
+                }
             }
         }
     }
 
-    place_on_wall(params){
-        translate([-34, actuator_wall_h()-2-15*size, -.5]){
+    place_on_wall(params, housing=xy_cable_tidies){
+        translate(oshwa_logo_position){
             mirror([1,0,0]){
                 scale([size,size,10]){
-                    oshw_logo_and_text(message);
+                    if (xy_cable_tidies){
+                        oshw_logo_and_text(message);
+                    }
+                    else {
+                        oshw_logo_and_text_beside(message);
+                    }
                 }
             }
         }
@@ -578,7 +609,7 @@ module main_body(params, version_string){
     complete_z_actuator(params);
 
     difference(){
-        actuator_walls_and_z_casing(params);
+        actuator_walls_and_z_casing(params, z_axis=true);
         body_logos(params, version_string);
     }
 }
