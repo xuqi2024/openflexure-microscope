@@ -54,6 +54,7 @@ def write_ninja_file(build_dir):
         writer.openscad("microscope_stand_no_pi.stl", "microscope_stand_no_pi.scad")
         writer.openscad("nano_converter_plate.stl", "nano_converter_plate.scad")
         writer.openscad("nano_converter_plate_gripper.stl", "nano_converter_plate_gripper.scad")
+        writer.openscad("simple_post_stand.stl","simple_post_stand.scad")
 
         # Standard components
         writer.openscad("feet.stl", "feet.scad")
