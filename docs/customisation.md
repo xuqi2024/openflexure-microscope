@@ -159,4 +159,4 @@ There are thumbwheels to fit that body which are nicer to turn by hand than the 
 For a manual microscope with webcam-based optics, use the full stand without the electronics drawer, or a simple leg stand.
 
 * [microscope_stand_no_pi.stl](models/microscope_stand_no_pi.stl){previewpage}
-* [simple_leg_stand.stl](models/simple_leg_stand.stl){previewpage}
+* [simple_post_stand.stl](models/simple_post_stand.stl){previewpage}

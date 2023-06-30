@@ -6,8 +6,8 @@ use <./main_body_structure.scad>
 use <./libdict.scad>
 
 
-// Module: simple_leg_stand()
-// Usage: simple_leg_stand(params, type="back", wall_height=10);
+// Module: simple_post_stand()
+// Usage: simple_post_stand(params, type="back", wall_height=10);
 // Description: 
 //   Builds posts to fit under main body mointing points, to use instead of a complete base.
 //   Cable tie loops are included on the legs under the stage.
@@ -16,7 +16,7 @@ use <./libdict.scad>
 //   type: which of the mounting holes to make posts for. The posts are the same height as the actuator feet so
 //         it is recommended to build posts only for the feet under the stage (type="back") and rest on the actuator feet.
 //   wall_height: the height of a wall that runs between the "back" legs, around stage, to stop tipping.
-module simple_leg_stand(params, type="back", wall_height=10){
+module simple_post_stand(params, type="back", wall_height=10){
     hole_pos = base_mounting_holes(params,type=type);
     foot_height= key_lookup("foot_height",params);
     post_height = foot_height;
