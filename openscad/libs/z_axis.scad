@@ -233,7 +233,7 @@ module z_axis_clearance(params){
     // - extend to -25 degrees to make the top 
     //   surface angle covering the lower horizontal part printable
     // - intermediate angles to make a smooth shape
-    for(a=[-25,-15,-6,0,6]){ 
+    for(a=[-25,-15,-6,0,6]){
         pivot_z_axis(a){
             minkowski(){
                 cube([2,2,4], center=true);
