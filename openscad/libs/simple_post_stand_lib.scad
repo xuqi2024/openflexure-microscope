@@ -20,6 +20,8 @@ module simple_post_stand(params, type="back", wall_height=10){
     hole_pos = base_mounting_holes(params,type=type);
     foot_height= key_lookup("foot_height",params);
     post_height = foot_height;
+    base_d=20;
+    top_d=10;
 
     // a post at each mounting foot position
     for (n = [0:len(hole_pos)-1]){
@@ -27,10 +29,11 @@ module simple_post_stand(params, type="back", wall_height=10){
         angle = lug_angles(params)[n];
         difference(){ // difference to cut off the leg parts from xy lugs
                 translate(hole){
-                    cylinder(d1=20, d2=10, h=post_height+2, $fn=32);
-                    if (hole.y<0) { // cable ties on back posts only
-                        cable_tie_point_x = (hole.x)>0? -7 : 7 ;
-                        translate([cable_tie_point_x,0,7]){
+                    cylinder(d1=base_d, d2=top_d, h=post_height+2, $fn=32);
+                    if (hole.y<0) { // cable ties and screw mounts on back posts only
+                        tie_offset = -0.5 + (top_d + base_d)/4;
+                        cable_tie_point_x = (hole.x)>0? -tie_offset : tie_offset ;
+                        translate([cable_tie_point_x,0,-0.5+post_height/2]){
                             rotate([90,0,0]){
                                 tube(ro=8.5/2, ri=6/2, h=3, $fn=32);
                             }
