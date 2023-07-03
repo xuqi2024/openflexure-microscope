@@ -834,3 +834,18 @@ module fillet_2d(r=3)
         }
     }
 }
+
+module cylinder_to_square_column(d=undef, r=undef, h=undef, transition=undef){
+    _r = if_undefined_set_default(r, 0.5);
+    _d = if_undefined_set_default(d, 2*_r);
+    _h = if_undefined_set_default(h, 1);
+    _transition = if_undefined_set_default(transition, _h-0.01);
+    assert(_transition<_h,"Transition length must be shorter than the column height");
+    _thin = _h - _transition ;
+    hull(){
+        cylinder(d=_d,h=_thin);
+        translate([-_d/2,-_d/2,_h-_thin]){
+            cube([_d,_d,_thin]);
+        }
+    }
+}
