@@ -16,7 +16,7 @@ use <./libdict.scad>
 //   type: which of the mounting holes to make posts for. The posts are the same height as the actuator feet so
 //         it is recommended to build posts only for the feet under the stage (type="back") and rest on the actuator feet.
 //   wall_height: the height of a wall that runs between the "back" legs, around stage, to stop tipping.
-module simple_post_stand(params, type="back", wall_height=10){
+module simple_post_stand(params, type="back", wall_height=10, screws=false){
     hole_pos = base_mounting_holes(params,type=type);
     foot_height= key_lookup("foot_height",params);
     post_height = foot_height;
@@ -36,6 +36,25 @@ module simple_post_stand(params, type="back", wall_height=10){
                         translate([cable_tie_point_x,0,-0.5+post_height/2]){
                             rotate([90,0,0]){
                                 tube(ro=8.5/2, ri=6/2, h=3, $fn=32);
+                            }
+                        }
+                        if (screws) {
+                            screw_offset = (base_d/2)+4;
+                            screw_translate = (hole.x)>0? -screw_offset : screw_offset ;
+                            screw_angle = 35;
+                            screw_rotate = (hole.x)>0? screw_angle : -screw_angle ;
+                            rotate_z(screw_rotate){
+                                difference(){
+                                    hull(){
+                                        translate_x(screw_translate){
+                                            cylinder(r=4, h=1.5, $fn=32);
+                                        }
+                                        cylinder(r=4, h=1.5, $fn=32);
+                                    }
+                                    translate_x(screw_translate){
+                                        cylinder(r=4/2, h=1.5*2.5, center=true, $fn=32);
+                                    }
+                                }
                             }
                         }
                     }

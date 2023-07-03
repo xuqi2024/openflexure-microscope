@@ -5,5 +5,5 @@ simple_post_stand_stl();
 
 module simple_post_stand_stl(){
     params= default_params();
-    simple_post_stand(params, type="back", wall_height=10);
+    simple_post_stand(params, type="back", wall_height=10, screws=true);
 }
