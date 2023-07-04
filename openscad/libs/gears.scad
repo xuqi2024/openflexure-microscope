@@ -296,3 +296,38 @@ module motor_and_gear_clearance(gear_h=10, h=999){
         motor_clearance(h=h-gear_h);
     }
 }
+
+/**
+* Clearance for the thumbwheels, without motor.
+* It's positioned with the centre of the thumbwheel at the origin.
+* Note: gear_h should match the height of the motor lugs above the
+* flat surface for the large gear, in motor_lugs in compact_nut_seat.scad.
+*/
+module thumbwheel_clearance(gear_h=10, h=999){
+    thumbwheel_r = 20;
+    small_gear_nominal_r = 8.5;
+    linear_extrude(h){
+        offset(1.5){
+            hull(){
+                circle(r=thumbwheel_r, $fn=32);
+                translate([0,gear_c2c_distance()]){
+                    circle(r=small_gear_nominal_r, $fn=32);
+                }
+            }
+        }
+    }
+    // Motor lugs and screw cut-outs are not necessary for thumbwheels,
+    // but the motor lugs are useful in defining the illuminator mount shape,
+    // and the blank screw cut-outs make more space to hold the thumbwheel
+    translate([0,gear_c2c_distance()-7.8,gear_h]){
+        linear_extrude(h){
+            hull(){
+                reflect([1,0]){
+                    translate([motor_screw_separation()/2,0]){
+                        circle(r=4.5);
+                    }
+                }
+            }
+        }
+    }
+}
