@@ -230,10 +230,13 @@ module foot(params,
                             //doesn't protrude outside the part.
                             cube([2*column_base_radius()+1.5, 999, 2*(h-travel-0.5)],center=true);
                         }
-                        //cut out the core again, without tapering, in the middle (to make two lugs,
-                        //one on either side - rather than a ring around the top.
+                        //cut out the core again, without tapering, in the middle (to make four prongs,
+                        //two on either side - rather than a ring around the top.
                         intersection(){
-                            cube([cw-3.3*2, 999, 999],center=true);
+                            rotate_x(actuator_tilt){
+                                cube([cw-5*2, 999, 999], center=true);
+                                cube([999,6.5,999], center=true);
+                            }
                             angled_extrude(actuator_tilt, 0, h=99, z=99/2+h-travel-0.5){
                                 nut_seat_void();
                             }
