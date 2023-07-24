@@ -50,14 +50,16 @@ function dovetail_params(
     overall_width=30,
     block_depth=12,
     taper_block=false,
-    nut_slot_slope = "up"
+    nut_slot_slope = "up",
+    depth=4
 ) = replace_multiple_values(
     [
         ["overall_height", overall_height],
         ["overall_width", overall_width],
         ["block_depth", block_depth],
         ["taper_block", taper_block],
-        ["nut_slot_slope", nut_slot_slope]
+        ["nut_slot_slope", nut_slot_slope],
+        ["depth", depth]
     ],
     dovetail_default_params()
 );
