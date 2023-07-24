@@ -50,14 +50,16 @@ function dovetail_params(
     overall_width=30,
     block_depth=12,
     taper_block=false,
-    nut_slot_slope = "up"
+    nut_slot_slope = "up",
+    depth=4
 ) = replace_multiple_values(
     [
         ["overall_height", overall_height],
         ["overall_width", overall_width],
         ["block_depth", block_depth],
         ["taper_block", taper_block],
-        ["nut_slot_slope", nut_slot_slope]
+        ["nut_slot_slope", nut_slot_slope],
+        ["depth", depth]
     ],
     dovetail_default_params()
 );
@@ -155,10 +157,20 @@ module dovetail_section_m_sharp(p){
     }
 }
 
-module dovetail_section_f_sharp_cutout(p){
-    // We cut this shape out of a block to make the female cutout
+module solid_male_dovetail(p, height=undef){
+    // Cut this shape out of a block with a face at y=0 to make
+    // a dovetail
+    h = is_undef(height) ? key_lookup("overall_height", p) : height;
+    linear_extrude(h){
+        // The male dovetail
+        male_dovetail_2d(p);
+    }
+}
 
-    // The male dovetail
+
+module male_dovetail_2d(p){
+    // Used to create the female cut out. Can also be used on its own
+    // for a non-locking dovetail
     hull(){
         reflect([1, 0]){
             mirror([0,1]){
@@ -166,6 +178,13 @@ module dovetail_section_f_sharp_cutout(p){
             }
         }
     }
+}
+
+module dovetail_section_f_sharp_cutout(p){
+    // We cut this shape out of a block to make the female cutout
+
+    // The male dovetail
+    male_dovetail_2d(p);
 
     // relieve internal corners
     hull(){
