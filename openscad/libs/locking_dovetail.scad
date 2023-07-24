@@ -155,10 +155,9 @@ module dovetail_section_m_sharp(p){
     }
 }
 
-module dovetail_section_f_sharp_cutout(p){
-    // We cut this shape out of a block to make the female cutout
-
-    // The male dovetail
+module solid_male_dovetail(p){
+    // Used to create the female cut out. Can be used on its own
+    // for a non-locking dovetail
     hull(){
         reflect([1, 0]){
             mirror([0,1]){
@@ -166,6 +165,13 @@ module dovetail_section_f_sharp_cutout(p){
             }
         }
     }
+}
+
+module dovetail_section_f_sharp_cutout(p){
+    // We cut this shape out of a block to make the female cutout
+
+    // The male dovetail
+    solid_male_dovetail(p);
 
     // relieve internal corners
     hull(){
