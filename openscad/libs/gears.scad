@@ -16,7 +16,6 @@ use <./MCAD/involute_gears.scad> // forward slash - for platform independence
 use <./microscope_parameters.scad>
 use <./utilities.scad>
 
-
 /*
 * Gearing ratio between the large and small gears
 */
@@ -38,7 +37,10 @@ function n_teeth_large_gear() = n_teeth_small_gear() * gear_ratio();
 function gear_c2c_distance() = 20;
 
 /**
-* The cirular pitch used for both the small and large gears
+* The MCAD cirular pitch used for both the small and large gears.
+* Note that MCAD uses its own definition of circular pitch. To get the true
+* circular pitch (the distance between teeth along the pitch circle) you
+* must muliply by pi/180.
 */
 function gear_pitch() = gear_c2c_distance() * 360 / (n_teeth_small_gear() + n_teeth_large_gear());
 
