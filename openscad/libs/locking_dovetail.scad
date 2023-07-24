@@ -155,8 +155,19 @@ module dovetail_section_m_sharp(p){
     }
 }
 
-module solid_male_dovetail(p){
-    // Used to create the female cut out. Can be used on its own
+module solid_male_dovetail(p, height=undef){
+    // Cut this shape out of a block with a face at y=0 to make
+    // a dovetail
+    h = is_undef(height) ? key_lookup("overall_height", p) : height;
+    linear_extrude(h){
+        // The male dovetail
+        male_dovetail_2d(p);
+    }
+}
+
+
+module male_dovetail_2d(p){
+    // Used to create the female cut out. Can also be used on its own
     // for a non-locking dovetail
     hull(){
         reflect([1, 0]){
@@ -171,7 +182,7 @@ module dovetail_section_f_sharp_cutout(p){
     // We cut this shape out of a block to make the female cutout
 
     // The male dovetail
-    solid_male_dovetail(p);
+    male_dovetail_2d(p);
 
     // relieve internal corners
     hull(){
