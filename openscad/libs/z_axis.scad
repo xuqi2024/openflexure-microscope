@@ -199,6 +199,10 @@ module z_axis_struts(params){
     lever_h = 6;
     difference(){
         sequential_hull(){
+            // Using cylinder_to_square_column() instead of cylinder() so that the top of the hull()
+            //   remains flat in the x-z plane.
+            // This is needed because the shape of the actuator is used to define the shape of the cut-out around it, and 
+            //   that cut-out needs to have a flat top for stable bridges when printing.
             translate_y(z_nut_y(params)){
                 cylinder_to_square_column(d=w, h=lever_h);
             }
