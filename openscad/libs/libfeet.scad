@@ -230,8 +230,9 @@ module foot(params,
                             //doesn't protrude outside the part.
                             cube([2*column_base_radius()+1.5, 999, 2*(h-travel-0.5)],center=true);
                         }
-                        //cut out the core again, without tapering, in the middle (to make four prongs,
-                        //two on either side - rather than a ring around the top.
+                        //cut out the core again, without tapering, in the middle to make four lugs,
+                        //two on either side - rather than a ring around the top. The gap between the lugs allows
+                        //the band tool to spread to give more space for the band. 
                         intersection(){
                             rotate_x(actuator_tilt){
                                 cube([cw-5*2, 999, 999], center=true);
