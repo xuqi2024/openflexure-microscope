@@ -44,7 +44,7 @@ module fitting_wedge_cutout(z_pos, y_stop=false, nose_shift=0.2, max_screw=11){
     module fitting_wedge_nut(shaft=false, nut_angle=0){
         // For convenience, this is the nut for the fitting wedge
         shaft_length = shaft ? max_screw-4 : 0;
-        nut_y(3, h=2.6, fudge=1.22, extra_height=0, shaft_length=shaft_length, nut_angle=nut_angle);
+        nut_y(3, h=2.6, fudge=1.1, extra_height=0.1, shaft_length=shaft_length, nut_angle=nut_angle);
     }
 
     translate([0, -3.7, z_pos]){
