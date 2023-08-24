@@ -373,7 +373,7 @@ def register_mount_optics(rendersystem):
         Camera(position=[-18.5, 42.75, 23.75], angle=[57, 0, 143], distance=495),
     ]
     imgsize = [2400, 2000]
-    for optics_version in ["rms", "low_cost"]:
+    for optics_version in ["rms", "low_cost", "upright"]:
         for i, camera in enumerate(cameras):
             frame = i + 1
             output_file = f"docs/renders/mount_optics_{optics_version}{frame}.png"
@@ -429,7 +429,7 @@ def register_mount_motors(rendersystem):
     input_file = "rendering/mount_motors.scad"
     camera = Camera(position=[13.5, 48, 98], angle=[53, 0, 115], distance=360)
     imgsize = [2400, 2000]
-    for optics_version in ["rms", "low_cost"]:
+    for optics_version in ["rms", "low_cost", "upright"]:
         for i in [1, 2, 3]:
             output_file = f"docs/renders/mount_motors_{optics_version}{i}.png"
             scad = f"render_mount_motors({i}, \"{optics_version}\");"
@@ -440,7 +440,7 @@ def register_mount_sample_clips(rendersystem):
     input_file = "rendering/mount_sample_clips.scad"
     camera = Camera(position=[0, 0, 178], angle=[68, 0, 308], distance=250)
     imgsize = [2400, 2000]
-    for optics_version in ["rms", "low_cost"]:
+    for optics_version in ["rms", "low_cost", "upright"]:
         for i in [1, 2, 3, 4]:
             output_file = f"docs/renders/mount_sample_clips_{optics_version}{i}.png"
             scad = f"render_mount_sample_clips({i}, \"{optics_version}\");"
@@ -456,7 +456,7 @@ def register_complete_microscope(rendersystem):
         Camera(position=[0, 48, 98], angle=[90, 0, 0], distance=700),
     ]
     imgsize = [2400, 2000]
-    for optics_version in ["rms", "low_cost"]:
+    for optics_version in ["rms", "low_cost", "upright"]:
         for i, camera in enumerate(cameras):
             output_file = f"docs/renders/complete_microscope_{optics_version}{i}.png"
             scad = f"render_microscope(\"{optics_version}\");"
