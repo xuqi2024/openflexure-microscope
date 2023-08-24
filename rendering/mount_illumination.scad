@@ -60,7 +60,7 @@ module mount_illumination(frame, optics_version="rms"){
     }
 }
 
-module mounted_microscope_with_illumination(optics_version=optics_version){
+module mounted_microscope_with_illumination(optics_version="rms"){
     mounted_microscope_frame(){
         rendered_illumination_dovetail_assembly();
         rendered_condenser_assembly();
