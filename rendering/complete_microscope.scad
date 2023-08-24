@@ -16,11 +16,11 @@ use <mount_sample_clips.scad>
 use <mount_microscope.scad>
 
 
-LOW_COST = false;
-render_microscope(LOW_COST);
+OPTICS_VERSION = "rms";
+render_microscope(OPTICS_VERSION);
 
-module render_microscope(low_cost=false){
-    assembled_microscope_without_electronics(low_cost=low_cost);
+module render_microscope(optics_version="rms"){
+    assembled_microscope_without_electronics(optics_version=optics_version);
     mounted_microscope_frame(){
         render_sample_clips();
     }
