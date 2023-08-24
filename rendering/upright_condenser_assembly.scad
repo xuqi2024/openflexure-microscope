@@ -244,7 +244,7 @@ module completed_upright_condenser(explode="none", nut=true, screw =true, screw_
         explode=false
     ); 
     
-    if (true){//(nut){
+    if (nut){
         exploded = (explode == "nut" || explode =="both") ? true : false;
         nut_pos_ex = translate_pos(optics_module_nut_pos(), [0, 5, 20]);
         nut_pos = exploded ? nut_pos_ex : optics_module_nut_pos();
@@ -258,7 +258,7 @@ module completed_upright_condenser(explode="none", nut=true, screw =true, screw_
             }
         }
     }
-    if (true){//(screw){
+    if (screw){
         exploded = (explode == "screw" || explode =="both") ? true : false;
         screw_pos_ex = translate_pos(optics_module_screw_pos(), [0, 12, 0]);
         screw_pos_assembled = translate_pos(optics_module_screw_pos(), [0, 4, 0]);
