@@ -17,26 +17,26 @@ use <mount_microscope.scad>
 use <motor_assembly.scad>
 
 FRAME=3;
-LOW_COST = false;
-render_mount_motors(FRAME, LOW_COST);
+OPTICS_VERSION = "rms";
+render_mount_motors(FRAME, OPTICS_VERSION);
 
-module render_mount_motors(frame, low_cost=false){
+module render_mount_motors(frame, optics_version="rms"){
     if (frame == 1){
-        assembled_microscope_without_electronics(low_cost=low_cost,
+        assembled_microscope_without_electronics(optics_version=optics_version,
                                                  xy_motor=true,
                                                  z_motor=false,
                                                  explode="xy");
     }
     else if(frame == 2){
-        assembled_microscope_without_electronics(low_cost=low_cost, explode="z");
+        assembled_microscope_without_electronics(optics_version=optics_version, explode="z");
     }
     else if(frame == 3){
-        assembled_microscope_without_electronics(low_cost=low_cost);
+        assembled_microscope_without_electronics(optics_version=optics_version);
     }
 }
 
 
-module assembled_microscope_without_electronics(low_cost=false,
+module assembled_microscope_without_electronics(optics_version="rms",
                                                 xy_motor=true,
                                                 z_motor=true,
                                                 explode=undef,
@@ -68,7 +68,7 @@ module assembled_microscope_without_electronics(low_cost=false,
                             cable_pos=cable_positions.z);
         }
     }
-    mounted_microscope_with_illumination(low_cost=low_cost);
+    mounted_microscope_with_illumination(optics_version=optics_version);
 }
 
 module y_motor_and_cap(params, exploded=false, connector_pos=undef, cable_pos=undef, mirror_connector=false){
