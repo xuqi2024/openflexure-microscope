@@ -375,12 +375,11 @@ def register_mount_microscope(rendersystem):
         Camera(position=[24, 43.5, 84], angle=[65.5, 0, 103], distance=550),
     ]
     imgsize = [2400, 2000]
-    for optics in ["rms", "low_cost"]:
-        low_cost = str(optics == "low_cost").lower()
+    for optics_version in ["rms", "low_cost", "upright"]:
         for i, camera in enumerate(cameras):
             frame = i + 1
-            output_file = f"docs/renders/mount_microscope_{optics}{frame}.png"
-            scad = f"render_mount_microscope({frame}, {low_cost});"
+            output_file = f"docs/renders/mount_microscope_{optics_version}{frame}.png"
+            scad = f"render_mount_microscope({frame}, {optics_version});"
             render = ScadRender(output_file, input_file, scad, imgsize, camera)
             rendersystem.register_scad_render(render)
 
