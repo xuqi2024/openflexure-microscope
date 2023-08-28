@@ -65,6 +65,18 @@ def write_ninja_file(build_dir):
         generate_rms_optics_modules(writer)
         generate_platform_optics_modules(writer)
         writer.openscad("picamera_2_cover.stl", "picamera_2_cover.scad")
+        writer.openscad("accessories/picamera_2_shim-0.2mm.stl",
+                        "accessories/picamera_2_shim.scad",
+                        {"SHIM_T": 0.2})
+        writer.openscad("accessories/picamera_2_shim-0.3mm.stl",
+                        "accessories/picamera_2_shim.scad",
+                        {"SHIM_T": 0.3})
+        writer.openscad("accessories/picamera_2_shim-0.5mm.stl",
+                        "accessories/picamera_2_shim.scad",
+                        {"SHIM_T": 0.5})
+        writer.openscad("accessories/picamera_2_shim-1.0mm.stl",
+                        "accessories/picamera_2_shim.scad",
+                        {"SHIM_T": 1.0})
 
         # Standard illumination components
         writer.openscad("condenser.stl", "condenser.scad")
