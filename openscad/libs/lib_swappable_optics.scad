@@ -28,7 +28,7 @@ function swappable_rms_params(params) = let(
     ["objective_r", objective_r],                        // guessed width of the objective - for clearance
     ["magnet_r", (objective_r + magnet_d/2 + 2) * 2/sqrt(3)],  // distance of magnets from the origin
     ["magnet_centre_to_carrier_surface", 0.2*magnet_d],           // how far the magnet is embedded into the carrier (should be >0)
-    ["dowel_centre_to_mount_surface", dowel_d/2 + 0.25],
+    ["dowel_centre_to_mount_surface", dowel_d/2 + 0.75],        // dowel holes should be recessed enough to avoid plastic deformation when dowels are inserted
     ["disc_magnet_h", 2.5],     // height of disc magnet
     ["disc_magnet_d", 5],       // diameter of disc magnet
     ["disc_magnet_dist", objective_r+(magnet_d/2)], // distance from origin of disc magnets
@@ -201,15 +201,14 @@ module swappable_rms_carrier_base(params){
             // Tab just needs to extend far enough out before being hulled;
             // -0.5*magnet_r will take centre point to approx. the y distance of the magnets
             translate_y(-0.5*magnet_r)  
-                scale([2,1.25])  
+                scale([2,1.5])  
                     cylinder(r=0.5*magnet_r, h=3*h/4, $fn=64);
         }
-        
-        // Subtracts small indent for grabbing
-        translate([0, -magnet_r, h/2])  
+    }
+                // Subtracts small indent for grabbing
+        translate([0, -magnet_r, 0])  
             scale([1,0.5])  
                 cylinder(r=0.5*magnet_r, h=h);
-    }
 }
 
 /* A carrier for an RMS microscope objective, with three balls for a Kelvin mount.
