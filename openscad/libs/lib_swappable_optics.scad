@@ -300,6 +300,48 @@ module swappable_rms_carrier_balls(params){
 }
 
 /**
+* Simple mounting jig for the ball bearings of the objective lens carrier,
+* to ensure even seating. Each carrier nests inside and force is applied from the back face
+* onto a flat surface
+* to push-fit the bearings at an even height (currently, protruding from the carrier by one magnet radius. This will probably want to change.)
+*/
+
+module swappable_rms_carrier_jig(params){
+    swappable_params = swappable_rms_params(params);
+    magnet_d = key_lookup("magnet_d", swappable_params);
+    magnet_r = key_lookup("magnet_r", swappable_params);
+    h = key_lookup("carrier_h", swappable_params);
+    objective_r = key_lookup("objective_r", swappable_params);
+    magnet_centre_to_carrier_surface = key_lookup("magnet_centre_to_carrier_surface", swappable_params);
+    magnet_bottom_z = h - magnet_centre_to_carrier_surface - magnet_d/2;
+
+    disc_magnet_h = key_lookup("disc_magnet_h", swappable_params);
+    disc_magnet_d = key_lookup("disc_magnet_d", swappable_params);
+    disc_magnet_dist = key_lookup("disc_magnet_dist", swappable_params);
+    $fn=32;
+
+    difference(){
+        translate([-magnet_r*1.5,-magnet_r*1.5,0]){
+            cube([magnet_r*3, magnet_r*3, h+(magnet_d)]);
+        }
+        
+        // jig should ideally seat ball bearings at height of magnet diameter/2 above carrier - so jig height should be h + magnet_d/2
+        translate([0,0,magnet_d/2]){
+        
+        // cut out base of carrier, scale slightly so piece can fit comfortably inside hollow
+            linear_extrude(3*h){
+                scale([1.01,1.01]){
+                    projection(cut=true){
+                        swappable_rms_carrier_base(default_params());
+                    }
+                }
+            }
+            
+        }
+    }
+}
+
+/**
  * Static Kelvin mount to which the swappable_rms_carrier attaches.
  * This should be screwed onto the top of an optics module
  *
@@ -307,6 +349,7 @@ module swappable_rms_carrier_balls(params){
  * bottom. This is the right way up, only if you're thinking of the
  * optics module as used in the upright microscope.
  */
+
 module swappable_rms_mount(params){
     swappable_params = swappable_rms_params(params);
     magnet_d = key_lookup("magnet_d", swappable_params);
@@ -443,9 +486,11 @@ module swappable_rms_mount_dowels(params, explode=false){
         }
     }
 }
+
 function swappable_rms_mount_placement(params, optics_config) = let(
     mount_h = key_lookup("mount_h", swappable_rms_params(params))
 ) create_placement_dict(
     [0, 0, swappable_rms_mount_z(params, optics_config) + mount_h],
     [0, 180, 0] // Flip it upside down (hence needing to shift by carrier_h)
 );
+
