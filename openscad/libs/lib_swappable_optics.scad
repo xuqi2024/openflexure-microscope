@@ -303,7 +303,7 @@ module swappable_rms_carrier_balls(params){
 * Simple mounting jig for the ball bearings of the objective lens carrier,
 * to ensure even seating. Each carrier nests inside and force is applied from the back face
 * onto a flat surface
-* to push-fit the bearings at an even height (currently, protruding from the carrier by one magnet radius. This will probably want to change.)
+* to push-fit the bearings at an even height (currently, protruding from the carrier by one magnet radius + 1mm. This will probably want to change.)
 */
 
 module swappable_rms_carrier_jig(params){
@@ -322,11 +322,11 @@ module swappable_rms_carrier_jig(params){
 
     difference(){
         translate([-magnet_r*1.5,-magnet_r*1.5,0]){
-            cube([magnet_r*3, magnet_r*3, h+(magnet_d)]);
+            cube([magnet_r*3, magnet_r*3, 2*h]);
         }
         
-        // jig should ideally seat ball bearings at height of magnet diameter/2 above carrier - so jig height should be h + magnet_d/2
-        translate([0,0,magnet_d/2]){
+        // jig should ideally seat ball bearings at roughly height of magnet diameter/2 above carrier
+        translate([0,0,(magnet_d/2)+1]){
         
         // cut out base of carrier, scale slightly so piece can fit comfortably inside hollow
             linear_extrude(3*h){
@@ -337,6 +337,59 @@ module swappable_rms_carrier_jig(params){
                 }
             }
             
+        }
+    }
+}
+
+
+/**
+* Simple thin mounting jig for the ball bearings of the objective lens carrier,
+* to ensure even seating. Each bearing is seated at an even height by allowing the jig to suspend the carrier face-down at the height the bearings should seat at.
+* to push-fit the bearings evenly (currently, protruding from the carrier by one magnet radius + 1mm. This will probably want to change.)
+*/
+module swappable_rms_carrier_thin_jig(params){
+    swappable_params = swappable_rms_params(params);
+    magnet_d = key_lookup("magnet_d", swappable_params);
+    magnet_r = key_lookup("magnet_r", swappable_params);
+    h = key_lookup("carrier_h", swappable_params);
+    objective_r = key_lookup("objective_r", swappable_params);
+    magnet_centre_to_carrier_surface = key_lookup("magnet_centre_to_carrier_surface", swappable_params);
+    magnet_bottom_z = h - magnet_centre_to_carrier_surface - magnet_d/2;
+
+    disc_magnet_h = key_lookup("disc_magnet_h", swappable_params);
+    disc_magnet_d = key_lookup("disc_magnet_d", swappable_params);
+    disc_magnet_dist = key_lookup("disc_magnet_dist", swappable_params);
+    ball_bearing_protrusion = (magnet_d/2) - 1;
+    $fn=64;
+
+    difference(){
+        for(a = [0, 120, -120]){
+                for(b = [90, -90]){
+                    hull(){
+                        cylinder(r=objective_r, h=ball_bearing_protrusion, $fn=32);   // RMS mount (x1)
+                        rotate(a){
+                            translate([0, magnet_r, 0]){
+                                cylinder(d=magnet_d+2*2, h=ball_bearing_protrusion);  // Ball mount (x3)
+                            }
+                        }
+
+                        // Extra cylinders for disc magnets. TODO see if distance parameters want to change here? disc_magnet_dist is currently a bit handwavy
+                        rotate(b){
+                            translate([0, disc_magnet_dist, 0]){
+                                cylinder(d=1.2*disc_magnet_d, h=ball_bearing_protrusion);  // Disc magnet cylinders - make slightly larger than diameter of disc magnets so they are enclosed
+                            }
+                        }
+                    }
+                }
+        }
+        
+        // cut out cylinders for ball bearings, add tiny() here for clearance
+        for(c = [0, 120, -120]){
+            rotate(c){
+                translate([0, magnet_r,0]){
+                    cylinder(d = magnet_d + tiny(), h = ball_bearing_protrusion);
+                }
+            }    
         }
     }
 }
