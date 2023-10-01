@@ -100,6 +100,13 @@ def write_ninja_file(build_dir):
                         "accessories/upright_z_actuator_mount_5mm_sample.scad")
         writer.openscad("accessories/upright_z_actuator_mount_10mm_sample.stl",
                         "accessories/upright_z_actuator_mount_10mm_sample.scad")
+        
+        # Swappable upright microscope components
+        writer.openscad("swappable_rms_optics_module.stl", "swappable_rms_optics_module.scad")
+        writer.openscad("swappable_rms_mount.stl", "swappable_rms_mount.scad")
+        writer.openscad("swappable_rms_carrier_thin_jig.stl", "swappable_rms_carrier_thin_jig.scad")
+        writer.openscad("swappable_rms_carrier.stl", "swappable_rms_carrier.scad")
+
 
         # Misc components
         writer.openscad("thumbwheels.stl", "thumbwheels.scad")

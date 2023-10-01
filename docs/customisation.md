@@ -10,7 +10,7 @@ Here are some of the most common customisations. This page may not be as detaile
 
 ### No access to the Sangaboard
 
-Our custom motor board, the Sangaboard can be hard to get hold of. We are working on this. A workaround is to build a [Sangaboard-compatible motor controller](workaround_motor_electronics/workaround_motor_electronics.md) using an Arudino nano, and the driver boards that come with each stepper motor.  This uses the standard `electronics_drawer` STL for the electronics drawer but adds printed adapters to fit in the alternative boards.  If you are not using a Sangaboard, you may need to [wire the LED to the Raspberry Pi](./workaround_raspberry_pi_gpio_led.md) for power.
+Our custom motor board, the Sangaboard can be hard to get hold of. We are working on this. A workaround is to build a [Sangaboard-compatible motor controller](workaround_motor_electronics/workaround_motor_electronics.md) using an Arduino Nano, and the driver boards that come with each stepper motor.  This uses the standard `electronics_drawer` STL for the electronics drawer but adds printed adapters to fit in the alternative boards.  If you are not using a Sangaboard, you may need to [wire the LED to the Raspberry Pi](./workaround_raspberry_pi_gpio_led.md) for power.
 
 ### Using a Raspberry Pi version 3, or a Sangaboard v0.3
 
@@ -38,6 +38,18 @@ You will also need to print:
 * [reflection_illuminator.stl](models/reflection_illuminator.stl){previewpage}
 
 These instruction need completing. For now please consult the [OpenFlexure Delta Stage Instructions](https://build.openflexure.org/openflexure-delta-stage/v1.2.0/pages/reflection_illumination.html)
+
+### Swappable objective lens mount for the upright microscope
+
+The [high-resolution upright microscope](https://build.openflexure.org/openflexure-microscope/v7.0.0-beta1/upright-microscope.html) has a variation of its optics module allowing for swappable objective lenses through a simple Maxwell mount allowing lenses to lock into place. This requires some extra non-printed parts and assembly. See [swappable objective lenses for upright microscope](./upright_swappable_optics_module.md) for assembly instructions.
+
+Instead of the standard high-resolution optics module, you will need to print:
+
+* [swappable_rms_optics_module.stl](models/swappable_rms_optics_module.stl){previewpage}
+* [swappable_rms_mount.stl](models/swappable_rms_mount.stl){previewpage}
+* [swappable_rms_carrier_thin_jig.stl](models/swappable_rms_carrier_thin_jig.stl){previewpage}
+* One per objective intended to be used: [swappable_rms_carrier.stl](models/swappable_rms_carrier.stl){previewpage}
+
 
 ### Using an infinity corrected objective
 

@@ -18,6 +18,10 @@ This configuration of the microscope uses the original lens from a Raspberry Pi 
 
 This configuration of the microscope has the objective above the sample rather than below. It is newer and less well tested than other versions of the microscope. If you have problems building it, please let us know on [GitLab](https://gitlab.com/openflexure/openflexure-microscope/-/issues) or on [our forum](https://openflexure.discourse.group/).
 
+#### Swappable objectives
+
+This optional optical configuration of the upright microscope includes a Maxwell mount mechanism for each objective lens to enable quick swapping. See [customisations and alternatives](customisation.md) for details.
+
 ## Customising your microscope
 
 The OpenFlexure Microscope is designed to be customisable. There are a number of customisation options already available as discussed on our [customisations and alternatives page](customisation.md).
