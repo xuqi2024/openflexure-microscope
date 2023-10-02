@@ -106,7 +106,7 @@ def write_ninja_file(build_dir):
         writer.openscad("swappable_rms_mount.stl", "swappable_rms_mount.scad")
         writer.openscad("swappable_rms_carrier_thin_jig.stl", "swappable_rms_carrier_thin_jig.scad")
         writer.openscad("swappable_rms_carrier.stl", "swappable_rms_carrier.scad")
-
+        writer.openscad("upright_z_actuator_mount_16mm_sample.stl", "upright_z_actuator_mount_16mm_sample.scad")
 
         # Misc components
         writer.openscad("thumbwheels.stl", "thumbwheels.scad")

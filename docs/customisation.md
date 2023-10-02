@@ -45,6 +45,7 @@ The [high-resolution upright microscope](https://build.openflexure.org/openflexu
 
 Instead of the standard high-resolution optics module, you will need to print:
 
+* [upright_z_actuator_mount_16mm_sample.stl](models/upright_z_actuator_16mm_mount.stl){previewpage}
 * [swappable_rms_optics_module.stl](models/swappable_rms_optics_module.stl){previewpage}
 * [swappable_rms_mount.stl](models/swappable_rms_mount.stl){previewpage}
 * [swappable_rms_carrier_thin_jig.stl](models/swappable_rms_carrier_thin_jig.stl){previewpage}
