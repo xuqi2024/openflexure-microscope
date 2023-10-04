@@ -1,4 +1,4 @@
-# Assemble the high-resolution optics module
+# Assemble the high-resolution upright swappable optics module
 
 The imaging optics for this version of the microscope consist of an RMS objective, a tube lens[i](info_pages/imaging_optics_explanation.md) and the Raspberry pi camera arranged as shown below (with the illumination optics)
 
@@ -18,7 +18,7 @@ The imaging optics for this version of the microscope consist of an RMS objectiv
 
 ## Visually inspect the optics module {pagestep}
 
-Take the [optics module][Optics module](fromstep){qty:1, cat:printedpart} and confirm that:
+Take the [swappable optics module][swappable optics module](fromstep){qty:1, cat:printedpart} and confirm that:
 
 * It has been printed in black [i](info_pages/why_optics_black.md)
 * It is dust free (You can blow air through to clean it)
@@ -27,7 +27,7 @@ Take the [optics module][Optics module](fromstep){qty:1, cat:printedpart} and co
 
 ## Insert the tube lens {pagestep}
 
-* Place the [lens tool][Lens tool](fromstep){qty:1, cat:printedtool} on a steady surface
+* Place the [lens tool][lens tool](fromstep){qty:1, cat:printedtool} on a steady surface
 * Place the [12.7 mm achromatic lens](parts/optics/tube_lens.md){qty:1, cat:optical} on the lens tool
 * Check the lens has the more curved side facing down
 * Take the optics module and place carefully over lens
@@ -42,7 +42,7 @@ Take the [optics module][Optics module](fromstep){qty:1, cat:printedpart} and co
 >!
 >! The camera board is static sensitive.
 
-* Before touching the Pi Camera touch a metal earthed object. If you own one, consider wearing and anti-static strap.
+* Before touching the Pi Camera touch a metal earthed object. If you own one, consider wearing an anti-static strap.
 * Take the [Pi Camera][Raspberry Pi Camera Module v2]{Qty:1} out of the package. Make sure to **hold it only by the sides of the board**.
 * Take the protective film off the lens.
 * Take the [Pi Camera lens tool]{qty: 1} and place it over the lens
@@ -55,29 +55,58 @@ Take the [optics module][Optics module](fromstep){qty:1, cat:printedpart} and co
 
 ## Attach the Pi Camera {pagestep}
 
-* Take the Pi Camera and place it on the back of the optics module
+* Take the Pi Camera and place it on the back of the swappable optics module.
 * Place the [pi camera cover](fromstep){qty:1, cat:printedpart} over the back of the Pi Camera.
-* Use two [No 2 6.5mm self tapping screws]{qty:2, cat:mech} to secure the camera using a [#1 pozidrive screwdriver]{qty:1, cat:tool}
-* Take care to not over torque the screws.
+* Use two [No 2 6.5mm self tapping screws]{qty:6, cat:mech} to secure the camera using a [#1 pozidrive screwdriver]{qty:1, cat:tool}
+* Take care to not over-torque the screws.
 
 ![Attach pi camera](renders/optics_assembly_camera.png)
 
+## Assemble objective lens mount and optics module {pagestep}
 
-## Attach the objective {pagestep}
+* Turning the [objective lens mount]{qty:1, cat:printedpart} on each side, insert one [3x20mm stainless steel dowel]{qty:6, cat:mech} into each of the exterior six holes on the mount, being careful not to allow the dowels to protrude into the interior of the mount as this will block the objective lens. Each pair of dowels should be visible through the three surface holes on the mount.
 
-* Take your [microscope objective](parts/optics/microscope-objective.md){qty:1, note:"This page provides more information on choosing an objective.", cat:optical} and the partially assembled optics module
-* Place objective on top of optics module
+>i  **Note**
+>i 
+>i Tolerances on the mount are deliberately tight so that the dowels are secured. It is recommended to use a [rubber mallet]{qty:1, cat:tool} or similar to drive the dowels into place without warping or damaging the part. 
+
+* Take the [objective lens mount] and insert one [5x2.5mm disc magnet]{qty:2, cat:mech} into each of the two sockets so that they lie flush with the mount surface.
+* Place the [swappable optics module] lens-up, such that the Pi Camera is on a flat surface. 
+* Place the assembled [objective lens mount] magnet-side down over the optics module. The four screw-holes should align.
+* Use four [No 2 6.5mm self tapping screws] to secure the mount to the optics module using a  [#1 pozidrive screwdriver].
+* Take care not to over-torque the screws.
+
+## Assemble the objective lens carrier {pagestep}
+
+**One objective lens carrier should be assembled per objective lens to be used**.
+
+* Place the [carrier jig]{qty:1, cat:printedtool} on a hard surface with three [5mm diameter stainless steel ball bearings]{qty:3, cat:mech}, each sitting on a hole in the jig.
+* Take an [objective lens carrier]{qty:1, cat:printedpart, note: "One carrier should be printed and assembled per objective lens to be used."} and place it facing down atop the jig, with each ball bearing aligning with its socket on the carrier.
+* Using a [rubber mallet] or similar, gently hammer the back of the [objective lens carrier] such that the ball bearings are evenly seated into their sockets in the carrier.
+* Turning the carrier over, insert a [5x2.5mm disc magnet]{qty:2, cat:mech} into each of the remaining holes on the carrier so that they lie flush with the carrier surface.
+>! **Caution**
+>!
+>! Check that the polarity of the carrier magnets matches that of the surface of the magnets on the mount such that they are attracted.
+>! If the carrier does not seat evenly when inserted into the assembled optics module while facing the mount, the magnets can be ejected via a thin object (like a paperclip) inserted through the small hole in the back of the magnet insertion points, flipped, and reinserted.
+
+* Repeat the above steps for each additional objective lens carrier.
+
+
+## Attach objective lenses to carrier {pagestep}
+
+* Take a [microscope objective](parts/optics/microscope-objective.md){qty:1, note:"This page provides more information on choosing an objective.", cat:optical} and an assembled objective lens carrier.
+* Place objective on top of objective lens carrier, magnets facing upwards.
 * **Check that the objective is not tilted!**
-* Carefully and slowly screw the objective into the optics module, taking care to ensure it does not tilt.
+* Carefully and slowly screw the objective into the carrier, taking care to ensure it does not tilt.
 
 ![Attach the objective](renders/optics_assembly_objective.png)
 
 
 ## Attach the mounting screw {pagestep}
 
-* Take an [M3 nut]{qty:1, cat:mech} and push it into the nut trap from the top
+* Take an [M3 nut]{qty:1, cat:mech} and push it into the optics module's nut trap from the top.
 * Take an [M3x10 cap head screws](parts/mechanical.yml#CapScrew_M3x10mm_SS){qty: 1, cat:mech} and screw it into the nut.
-* Only screw it in a couple of turns. About 5 mm of thread should still be visible
+* Only screw it in a couple of turns. About 5 mm of thread should still be visible.
 
 ![Attach mounting screw](renders/optics_assembly_screw.png)
 
