@@ -834,3 +834,31 @@ module fillet_2d(r=3)
         }
     }
 }
+
+// Module: cylinder_to_square_column()
+// Usage: cylinder_to_square_column(d=20, h=15, transition=5)
+//    
+// Arguments:
+//   d = The diameter of the base cylinder / side length of the square top. d takes precedence if both d and r are defined
+//   r = The diameter of the base cylinder / half-side length of the square top. d takes precedence if both d and r are defined 
+//   h = Overall height of the column
+//   transition = Height of the transition from circle at the base to square. The rest of the column is square. If undefined the transition takes place over the entire height
+// Description:
+//   A column that smoothly changes from a circular base into a square column. 
+//   This is used to allow circular shape on the print bed for better adhesion without brim
+//   The transition length can be set independently of the column height. 
+//   Optionally define size by radius or diemater.
+module cylinder_to_square_column(d=undef, r=undef, h=undef, transition=undef){
+    _r = if_undefined_set_default(r, 0.5);
+    _d = if_undefined_set_default(d, 2*_r);
+    _h = if_undefined_set_default(h, 1);
+    _transition = if_undefined_set_default(transition, _h-0.01);
+    assert(_transition<_h,"Transition length must be shorter than the column height");
+    _thin = _h - _transition ;
+    hull(){
+        cylinder(d=_d,h=_thin);
+        translate([-_d/2,-_d/2,_h-_thin]){
+            cube([_d,_d,_thin]);
+        }
+    }
+}
