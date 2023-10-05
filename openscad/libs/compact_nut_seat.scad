@@ -446,9 +446,11 @@ module screw_seat(params, h, travel, tilt=0, extra_entry_h=7, include_motor_lugs
 
         //allow the actuator to poke in
         edge_y = actuator_housing_xy_size().y/2;
-        sparse_matrix_transform(zy=sin(tilt)){
-            translate_y(-edge_y){
-                cube([actuator_entry_width(), edge_y, entry_h*2], center=true);
+        translate_y(-edge_y){
+            rotate_x(tilt){
+                sparse_matrix_transform(zy=sin(-tilt)){
+                    cube([actuator_entry_width(), edge_y, entry_h*2], center=true);
+                }
             }
         }
 
