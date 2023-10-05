@@ -327,7 +327,7 @@ module z_axis_casing(params, condenser_mount=false, cable_housing = true, rectan
             reflect_x(){
                 z_bridge_wall_vertex(params);
             }
-            translate([-99,z_anchor_y(),0]){
+            translate([-999/2,z_anchor_y(),0]){
                 cube([999,4,upper_z_flex_z(params)+2]);
             }
             translate_y(z_nut_y(params)){
