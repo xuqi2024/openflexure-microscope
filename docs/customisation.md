@@ -41,7 +41,7 @@ These instruction need completing. For now please consult the [OpenFlexure Delta
 
 ### Swappable objective lens mount for the upright microscope
 
-The [high-resolution upright microscope](https://build.openflexure.org/openflexure-microscope/v7.0.0-beta1/upright-microscope.html) has a variation of its optics module allowing for swappable objective lenses through a simple Maxwell mount allowing lenses to lock into place. This requires some extra non-printed parts and assembly. See [swappable objective lenses for upright microscope](./upright_swappable_optics_module.md) for assembly instructions.
+The [high-resolution upright microscope](https://build.openflexure.org/openflexure-microscope/v7.0.0-beta1/upright-microscope.html) has a variation of its optics module allowing for swappable objective lenses through a simple Maxwell mount allowing lenses to lock into place. This requires some extra non-printed parts and assembly. See [swappable objective lenses for upright microscope](./upright_swappable_optics_module.md) for assembly instructions for the optics module. Otherwise, follow the upright microscope instructions, substituting upright_z_actuator_16mm_sample.stl for the standard upright actuator mount.
 
 Instead of the standard high-resolution optics module, you will need to print:
 
