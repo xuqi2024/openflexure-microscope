@@ -160,3 +160,38 @@ O-Ring_30x2_Viton:
     Simply Bearings:
       Link: https://simplybearings.co.uk/shop/p513396/2mm-Section-30mm-Bore-VITON-Rubber-O-Rings/product_info.html
       PartNo: 513396
+3x20mm_Stainless_Steel_Dowel:
+  Description: Dowels used as part of the Maxwell kinematic mount in the swappable objectives high-resolution optics module.
+  Name: 3mm Diameter Plain Steel Parallel Dowel Pin 20mm Long
+  Specs:
+    Pin Type: Parallel
+    Diameter: 3mm
+    Length: 20mm
+    Material: Steel
+    Standards Met: DIN 6325
+    Finish: Plain
+  Suppliers:
+    RS:
+      Link: https://uk.rs-online.com/web/p/dowel-pins/0270568
+      PartNo: 270568
+5x2mm_Disc_Magnet:
+  Description: Disc-shaped magnet used as part of the Maxwell kinematic mount in the swappable objectives high-resolution optics module.
+  Name:  Neodymium Magnet, Disc Shape, Dia 5mm,Thickness 2mm
+  Specs:
+    Pin Type: Parallel
+    Diameter: 5mm
+    Thickness: 2mm
+    Coating: NiCuNi
+    Magnetization Direction: Same with Thickness
+    Units/Tube: 10
+  Suppliers:
+    RS:
+      Link: https://uk.rs-online.com/web/p/neodymium-magnets/2192234
+      PartNo: 2192248
+5mm_Diameter_Stainless_Steel_Ball_Bearings:
+  Description: Ball bearings used in objective lens carriers for the swappable objective optics module Maxwell mount.
+  Name:  5mm diameter stainless steel ball bearings
+  Specs:
+    Diameter: 5mm
+    Material: Stainless steel
+  

@@ -1,0 +1,1 @@
+A rubber mallet or similar soft-faced hammer tool is recommended to allow for driving dowels into the swappable objective mount without deforming or splitting either the mount or dowels. 
