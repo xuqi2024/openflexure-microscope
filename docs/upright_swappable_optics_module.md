@@ -7,7 +7,7 @@ This version of the optics module consists of a modified optics module with a ma
 
 {{BOM}}
 
-[M3 nut]: parts/mechanical.yml#Nut_M3_S
+[M3 nut]: parts/mechanical.yml#Nut_M3_SS
 [No 2 6.5mm self tapping screws]: parts/mechanical.yml#SelfTap_PoziPan_No2x6.5_SS
 [3x20mm stainless steel dowel]: parts/mechanical.yml#3x20mm_Stainless_Steel_Dowel
 [5x2mm disc magnet]:parts/mechanical.yml#5x2mm_Disc_Magnet
@@ -16,7 +16,7 @@ This version of the optics module consists of a modified optics module with a ma
 [Pi Camera lens tool]: parts/tools/pi_camera_lens_tool.md "{cat:tool, note: 'This should come with the [Raspberry Pi Camera Module v2].  If it is missing, you can 3D print a [workaround lens remover].'}"
 [workaround lens remover]: workaround_lens_remover.md
 [rubber mallet]: parts/tools/rubber_mallet.md "{cat:tool}"
-[lens tool]: [lens_tool.stl](models/lens_tool.stl){previewpage} "{cat:printedtool}"
+[lens tool]: [lens_tool.stl](models/lens_tool.stl){previewpage}"{cat:printedtool}"
 [Raspberry Pi Camera Module v2]: parts/electronics.yml#PiCamera_2 "{cat:electronic}"
 [300mm Pi Camera ribbon cable]: parts/electronics.yml#PiCamera_RibbonCable_300mm "{cat:electronic, note: 'This is longer than the standard ribbon cable the Pi Camera is sold with!'}"
 
@@ -31,7 +31,7 @@ Take the [swappable optics module](models/swappable_rms_optics_module.stl){qty:1
 
 ## Insert the tube lens {pagestep}
 
-* Place the [lens tool]{qty:1, cat:printedtool}(models/lens_tool.stl) on a steady surface
+* Place the [lens tool](models/lens_tool.stl){qty:1, cat:printedtool} on a steady surface
 * Place the [12.7 mm achromatic lens](parts/optics/tube_lens.md){qty:1, cat:optical} on the lens tool
 * Check the lens has the more curved side facing down
 * Take the optics module and place carefully over lens
@@ -60,7 +60,7 @@ Take the [swappable optics module](models/swappable_rms_optics_module.stl){qty:1
 ## Attach the Pi Camera {pagestep}
 
 * Take the Pi Camera and place it on the back of the swappable optics module.
-* Place the [pi camera cover](models/picammera_2_cover.stl){qty:1, cat:printedpart} over the back of the Pi Camera.
+* Place the [pi camera cover](models/picamera_2_cover.stl){qty:1, cat:printedpart} over the back of the Pi Camera.
 * Use two [No 2 6.5mm self tapping screws]{qty:6, cat:mech} to secure the camera using a [#1 pozidrive screwdriver]{qty:1, cat:tool}
 * Take care to not over-torque the screws.
 
