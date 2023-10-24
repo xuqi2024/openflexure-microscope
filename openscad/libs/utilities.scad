@@ -300,18 +300,23 @@ module nut_from_bottom(d,h=undef,fudge=1.2,shaft=true,chamfer_r=0.75,chamfer_h=0
     }
 }
 
-module nut_y(d,h=undef,center=false,fudge=1.15,extra_height=0.7,shaft_length=0){
+module nut_y(d, h=undef, center=false, fudge=1.1, extra_height=0.7, shaft_length=0, nut_angle=0){
     //make a nut, for metric bolt of nominal diameter d
     //d: nominal bolt diameter (e.g. 3 for M3)
     //h: height of nut
     //center: works as for cylinder
-    //fudge: multiply the diameter by this number (1.22 works when vertical)
+    //fudge: multiply the diameter by this number for a looser fit
     //shaft: include a long cylinder representing the bolt shaft, diameter=d*1.05
+    //nut_angle: allows the nut angle to be changed while still having the printable horizontal hole, 0 is flat side down
     height = if_undefined_set_default(h, d*0.8);
-    r=0.9*d*fudge;
+    // Radius of a circle circumscribing the points of a nut for thread diameter D
+    // 1.06 matches the nut for M3, will be a little too large for M4 and M6
+    r=1.06*d*fudge;
     union(){
         rotate([-90, 0, 0]){
-            cylinder(h=height,center=center,r=r,$fn=6);
+            rotate_z(nut_angle){
+                cylinder(h=height,center=center,r=r,$fn=6);
+            }
         }
 
         if(shaft_length > 0){
@@ -324,15 +329,16 @@ module nut_y(d,h=undef,center=false,fudge=1.15,extra_height=0.7,shaft_length=0){
             //Center could be used instead of reflect
         }
 
-        // extra space on top 
-        center_y = center ? -height/2 : 0;
-        flat_length = 2*r*sin(30);
-        center_to_flat = r*cos(30);
+        if (nut_angle==0){
+            // extra space on top of nut, only makes sense if the nut is flat down/up
+            center_y = center ? -height/2 : 0;
+            flat_length = 2*r*sin(30);
+            center_to_flat = r*cos(30);
 
-        translate([-flat_length/2, center_y ,0]){
-            cube([flat_length, height, center_to_flat+extra_height]);
+            translate([-flat_length/2, center_y ,0]){
+                cube([flat_length, height, center_to_flat+extra_height]);
+            }
         }
-
     }
 }
 
