@@ -35,7 +35,7 @@ scad-lib-tests:
       - tags
       - merge_requests
       - web
-      - master
+      - build-and-deploy-on-master
 
 # Code quality runs SCA2D to do static analysis of the .scad code 
 code_quality:
@@ -58,7 +58,7 @@ code_quality:
       - merge_requests
       - web
       - branches
-      - master
+      - build-and-deploy-on-master
 
 lint_build_system:
     stage: test
@@ -70,7 +70,7 @@ lint_build_system:
       - tags
       - merge_requests
       - web
-      - master
+      - build-and-deploy-on-master
 
 # Build STL files
 build:
@@ -107,7 +107,7 @@ build:
       - tags
       - merge_requests
       - web
-      - master
+      - build-and-deploy-on-master
 
 archive-source:
     stage: build
@@ -129,7 +129,7 @@ archive-source:
       - tags
       - merge_requests
       - web
-      - master
+      - build-and-deploy-on-master
 
 check_stls:
     stage: analyse
@@ -152,7 +152,7 @@ check_stls:
       - tags
       - merge_requests
       - web
-      - master
+      - build-and-deploy-on-master
     artifacts:
       when: always
       reports:
@@ -185,7 +185,7 @@ render:
       - tags
       - merge_requests
       - web
-      - master
+      - build-and-deploy-on-master
 
 
 # Build docs- this is at a later stage so it has access to the models
@@ -230,7 +230,7 @@ build-docs:
       - tags
       - merge_requests
       - web
-      - master
+      - build-and-deploy-on-master
 
 
 # Deploy to builds.openflexure.org
@@ -273,7 +273,7 @@ deploy:
   only:
     - tags
     - web
-    - master
+    - build-and-deploy-on-master
 
 zenodo:
   stage: zenodo
