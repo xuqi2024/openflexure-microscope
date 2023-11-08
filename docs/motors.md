@@ -20,7 +20,8 @@
 * Place the motor on the work surface with the shaft pointing up
 * Align the flat sides of the motor shaft with the flat sides of the hole in the gear.
 * Push the gear onto the motor with the flanged side downwards (motor side).
-* Take two [self tapping screws][No 2 6.5mm self tapping screws]{qty: 6, cat:mech} and drive them fully into the holes on either side of the shaft. [#1 pozidrive screwdriver]{qty:1, cat:tool}
+* Take two [self tapping screws][No 2 6.5mm self tapping screws]{qty: 6, cat:mech} and drive them fully into the holes on either side of the shaft using the [#1 pozidrive screwdriver]{qty:1, cat:tool}
+* **These screws should be fully flush with the gear. If they stick out, they may catch on the body, affecting movement**
 * Repeat for the other two motors
 
 >i It's important to keep track of which motor cable corresponds to which axis. You may find it helpful to mark each cable connector with a marker or different-coloured tape before continuing.
@@ -36,7 +37,7 @@ Note that each motor has a cable tidy cap that is different. Which cap to use sh
 * Feed the cable from the motor through the rectangular wall in the outer wall by the x-actuator.
 * Place the motor on the motor lugs with the small gear towards the outside of the microscope
 * Check that the small gear and the large gear are meshed correctly
-* Take the x [cable tidy cap][cable tidy caps](fromstep){qty:3, cat:printedpart, note: "- Each cap is a different shape"} and place it over the motor
+* Take the x [cable tidy cap][cable tidy caps](fromstep){qty:3, cat:printedpart, note: "Each cap is a different shape"} and place it over the motor
 * Check that the motor cable is running through the cable tidy rather than pinched underneath.
 * Fasten the motor and cable tidy caps to the motor lugs with two [M4x6mm button head screws]{qty:6, cat:mech}
 * Repeat for y-actuator

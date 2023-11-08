@@ -285,7 +285,7 @@ module z_motor_clearance(params, motor_h=999){
         rotate_x(z_actuator_tilt(params)){
             translate_z(actuator_h+z_actuator_travel(params)+2-1){
                 rotate(180){
-                    motor_and_gear_clearance(gear_h=11, h=motor_h);
+                    motor_and_gear_clearance(gear_h=11+2, h=motor_h);
                     linear_extrude(1, center=true){
                         translate([0,15]){
                             text("Z", size=10, font="Sans", halign="center", valign="baseline");
