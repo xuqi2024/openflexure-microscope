@@ -347,8 +347,8 @@ module band_tool_holder(params){
                         sphere(r = holder_offset-0.8);
                     }
                 }
-                translate ([-999/2,-999/2,holder_height()]){
-                    cube([999,999,999], center = false);
+                translate ([-50/2,-50/2,holder_height()]){
+                    cube([50,50,100], center = false);
                 }
             }
         }
