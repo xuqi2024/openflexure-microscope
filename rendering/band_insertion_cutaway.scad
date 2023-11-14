@@ -67,6 +67,13 @@ module render_band_insertion(frame_dict){
             }
         }
     }
+    color(extras_colour(), 1){
+        translate([0,0,-45 - 2]+tool_tr){
+            rotate_z(90){
+                band_tool_holder(params);
+            }
+        }
+    }
     color(extras_colour(), foot_alpha){
         translate(foot_tr){
             render(6){
@@ -145,5 +152,5 @@ function band_insertion_frame_parameters(frame_number) = let(
     frames = [frame1, frame2, frame3, frame4, frame5]
 ) frames[frame_number-1];
 
-FRAME = 2;
+FRAME = 5;
 render_band_insertion(band_insertion_frame_parameters(FRAME));
