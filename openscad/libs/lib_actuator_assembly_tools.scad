@@ -347,8 +347,9 @@ module band_tool_holder(params){
                         sphere(r = holder_offset-0.8);
                     }
                 }
-                translate ([-50/2,-50/2,holder_height()]){
-                    cube([50,50,100], center = false);
+                // This cube can't be so large that the render camera is inside it, so we can't use 999 as default
+                translate ([-99/2,-99/2,holder_height()]){
+                    cube([99,99,99], center = false);
                 }
             }
         }
