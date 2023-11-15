@@ -67,6 +67,13 @@ module render_band_insertion(frame_dict){
             }
         }
     }
+    color(tools_colour(), 1){
+        translate([0,0,-45 - 2]+tool_tr){
+            rotate_z(90){
+                band_tool_holder(params);
+            }
+        }
+    }
     color(extras_colour(), foot_alpha){
         translate(foot_tr){
             render(6){
