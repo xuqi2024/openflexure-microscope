@@ -152,5 +152,5 @@ function band_insertion_frame_parameters(frame_number) = let(
     frames = [frame1, frame2, frame3, frame4, frame5]
 ) frames[frame_number-1];
 
-FRAME = 5;
+FRAME = 2;
 render_band_insertion(band_insertion_frame_parameters(FRAME));
