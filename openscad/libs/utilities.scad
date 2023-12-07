@@ -234,7 +234,10 @@ module m3_cap_counterbore(bore_h=999, hole_h=999, flip_z=false){
 
 module generic_counterbore(bore_d, bore_h, hole_d, hole_h, flip_z=false){
     if (flip_z){
-        hole_from_bottom(r=hole_d/2, h=hole_h, big_bottom=false);
+        intersection(){
+            hole_from_bottom(r=hole_d/2, h=hole_h, base_w=bore_d*2, big_bottom=false);
+            cylinder(d=bore_d, h=3*hole_h, center=true);
+        }
         translate_z(-(bore_h-tiny())){
             cylinder(d=bore_d, h=bore_h+tiny());
         }
