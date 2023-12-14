@@ -55,13 +55,17 @@ If you have built a custom microscope without a rasberry Raspberry Pi, you can p
 
 ## Manual Microscope
 
-For a microscope without motors there is a version of the main body without the channels for motor cables.  
+For a microscope without motors there is a version of the main body without the channels for motor cables. This will fit any of the optics versions.   
 There are thumbwheels to fit that body which are nicer to turn by hand than the large gears.
 
 * [main_body_manual.stl](models/main_body_manual.stl){previewpage}
 * [thumbwheels.stl](models/thumbwheels.stl){previewpage}
 
-For a manual microscope with webcam-based optics, use the full stand without the electronics drawer, or a simple leg stand.
+For a manual upright version of the microscope there is also a version of the separate z actuator with more space for access when turning a thumbwheel.  
+
+* [separate_z_actuator_manual.stl](models/separate_z_actuator_manual.stl){previewpage}
+
+For a manual microscope with webcam-based optics, use the full stand without the electronics drawer, or a simple post stand under the stage.
 
 * [microscope_stand_no_pi.stl](models/microscope_stand_no_pi.stl){previewpage}
 * [simple_post_stand.stl](models/simple_post_stand.stl){previewpage}
