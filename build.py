@@ -47,12 +47,14 @@ def write_ninja_file(build_dir):
 
         # The main body
         writer.openscad("main_body.stl", "main_body.scad", {"VERSION_STRING": version_str})
+        writer.openscad("main_body_manual.stl", "main_body_manual.scad", {"VERSION_STRING": version_str})
 
         # Bases and electronics adapters
         generate_stand_with_pi(writer)
         writer.openscad("microscope_stand_no_pi.stl", "microscope_stand_no_pi.scad")
         generate_nano_converter_plate(writer)
         writer.openscad("nano_converter_plate_gripper.stl", "nano_converter_plate_gripper.scad")
+        writer.openscad("simple_post_stand.stl","simple_post_stand.scad")
 
         # Standard components
         writer.openscad("feet.stl", "feet.scad")
@@ -93,6 +95,7 @@ def write_ninja_file(build_dir):
 
         # Upright microscope components
         writer.openscad("separate_z_actuator.stl", "separate_z_actuator.scad")
+        writer.openscad("separate_z_actuator_manual.stl", "separate_z_actuator_manual.scad")
         writer.openscad("upright_condenser.stl", "upright_condenser.scad")
         writer.openscad("upright_condenser_platform.stl", "upright_condenser_platform.scad")
         writer.openscad("upright_large_gears.stl", "upright_large_gears.scad")

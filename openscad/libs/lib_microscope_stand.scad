@@ -154,7 +154,7 @@ module stand_lugs(params, stand_params){
     hole_pos = base_mounting_holes(params);
     for (n = [0:len(hole_pos)-1]){
         hole = hole_pos[n];
-        angle = lug_angles()[n];
+        angle = lug_angles(params)[n];
         translate_z(lug_z){
             difference(){
                 hull(){
