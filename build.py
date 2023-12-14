@@ -52,7 +52,7 @@ def write_ninja_file(build_dir):
         # Bases and electronics adapters
         generate_stand_with_pi(writer)
         writer.openscad("microscope_stand_no_pi.stl", "microscope_stand_no_pi.scad")
-        writer.openscad("nano_converter_plate.stl", "nano_converter_plate.scad")
+        generate_nano_converter_plate(writer)
         writer.openscad("nano_converter_plate_gripper.stl", "nano_converter_plate_gripper.scad")
         writer.openscad("simple_post_stand.stl","simple_post_stand.scad")
 
@@ -160,18 +160,25 @@ def generate_stand_with_pi(writer):
 
     # Also generate the tray for the pi itself
     for pi in [3,4]:
-        for sanga in ["v0.3", "v0.4"]:
-            if (pi==4) and (sanga=="v0.4"):
-                output = "electronics_drawer.stl"
-            else:
-                output = f"electronics_drawer-pi{pi}_sanga{sanga}.stl"
+        for sanga in ["v0.3", "stack_8.5mm", "stack_11mm"]:
+            output = f"electronics_drawer-pi{pi}_sanga_{sanga}.stl"
 
             parameters = {"PI_VERSION": pi,
                           "SANGA_VERSION": sanga}
 
             writer.openscad(output, "electronics_drawer.scad", parameters)
 
+def generate_nano_converter_plate(writer):
+    """
+    Add nano converter plates to go over Pi3 or Pi4 to the ninja build
+    """
+    for pi in [3,4]:
+        output = f"nano_converter_plate-pi{pi}.stl"
 
+        parameters = {"PI_VERSION": pi}
+
+        writer.openscad(output, "nano_converter_plate.scad", parameters)
+        
 def copy_extra_stls(build_dir, extras_dir):
     """
     Copy extra STLs to output directory
