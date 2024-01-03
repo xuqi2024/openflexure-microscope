@@ -11,7 +11,7 @@ MICROCONTROLLER_TYPE = "ArduinoNano";
 // Define the type of Stepper Motor Driver Boards
 // Options include "zc_a0591" (Default), "inland"
 STEPPER_DRIVER_TYPE = "zc_a0591";
-STEPPER_DRIVER_TYPE = "inland";
+//STEPPER_DRIVER_TYPE = "inland";
 
 // Specify if the smart brim should be generated
 INCLUDE_BRIM = false;
