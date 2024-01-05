@@ -22,7 +22,7 @@ printable_small_gears(ratio=RATIO);
 
 module printable_small_gears(ratio=2){
     // check the ratio gives an integer number of teeth
-    assert(floor(n_teeth_small_gear(ratio))==n_teeth_small_gear(ratio),"The number of teeth on the large gear is not integer");
+    assert(floor(n_teeth_small_gear(ratio))==n_teeth_small_gear(ratio),"The number of teeth on the small gear is not integer");
     // Calculate the spacing from the gear pitch radius.
     // Add 4mm of clearance
     spacing = 2*small_gear_pitch_radius(ratio) + 4;
