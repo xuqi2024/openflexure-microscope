@@ -16,7 +16,12 @@
 use <./libs/gears.scad>
 use <./libs/utilities.scad>
 
-RATIO = 0.8;
+// The ratio is the ratio between the 'large' gear on the actuator and the 'small' gear on the motor.
+// This means that it is a gearing down ratio.
+// The standard ratio is 2. The total number of teeth on both gears is 36, which is defined by the distance between the rotation axes.
+// For an integer number of teeth, allowed ratios are of the form n/(36-n). Ratios from 0.8 (16/20, 1:1.25) to 2 (24/12, 1:0.5) are expected to fit in the body
+
+RATIO = 2;
 
 printable_small_gears(ratio=RATIO);
 

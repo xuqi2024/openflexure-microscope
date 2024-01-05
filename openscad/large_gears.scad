@@ -16,7 +16,7 @@
 use <./libs/gears.scad>
 use <./libs/utilities.scad>
 
-RATIO = 0.8;
+RATIO = 2;
 
 printable_large_gears(ratio=RATIO);
 
