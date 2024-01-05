@@ -16,11 +16,24 @@ use <./MCAD/involute_gears.scad> // forward slash - for platform independence
 use <./microscope_parameters.scad>
 use <./utilities.scad>
 
-
-// /*
-// * Gearing ratio between the large and small gears
-// */
-// function gear_ratio() = 2;
+/******************************************************************
+* Two gears join the motor to the actuator of the Openflexure     *
+* microscope. This provides a gearing ratio between the motor and *
+* the driven motion of the stage                                  *
+*                                                                 *
+* The ratio is the ratio between the 'large' gear on the actuator *
+* and the 'small' gear on the motor.                              *
+* This means that it is a gearing down ratio.                     *
+*                                                                 *
+* The standard ratio is 2. The standard total number of teeth on  *
+* both gears is 36, which is defined by the distance between the  *
+* rotation axes.                                                  *
+* For an integer number of teeth, allowed ratios are of the form  *
+*                      n/(36-n).                                  *
+*                                                                 *
+* Ratios from 0.8 (16/20, 1:1.25) to 2 (24/12, 1:0.5) are         * 
+* expected to fit in the body.                                    *
+*******************************************************************/
 
 /**
 * Total number of teeth on the large and small gears
