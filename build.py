@@ -58,6 +58,7 @@ def write_ninja_file(build_dir):
         writer.openscad("feet.stl", "feet.scad")
         writer.openscad("sample_clips.stl", "sample_clips.scad")
         writer.openscad("cable_tidies.stl", "cable_tidies.scad")
+        generate_gears(writer)
 
         # Optics modules and associated components
         generate_rms_optics_modules(writer)
@@ -171,8 +172,8 @@ def generate_gears(writer):
             output_small = "small_gears.stl"
             output_large = "large_gears.stl"
         else:
-            output_small = f"small_gears_{ratio:.2f}.stl"
-            output_large = f"large_gears_{ratio:.2f}.stl"
+            output_small = f"small_gears_ratio_{ratio:.2d}.stl"
+            output_large = f"large_gears_ratio_{ratio:.2d}.stl"
            
         writer.openscad(output_small, "small_gears.scad", {"RATIO": ratio})
         writer.openscad(output_large, "large_gears.scad", {"RATIO": ratio})
