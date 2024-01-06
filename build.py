@@ -202,8 +202,8 @@ def generate_gears(writer):
             output_small = "small_gears.stl"
             output_large = "large_gears.stl"
         else:
-            output_small = f"small_gears_ratio_{ratio:.2d}.stl"
-            output_large = f"large_gears_ratio_{ratio:.2d}.stl"
+            output_small = f"small_gears_ratio_{ratio:.2f}.stl"
+            output_large = f"large_gears_ratio_{ratio:.2f}.stl"
            
         writer.openscad(output_small, "small_gears.scad", {"RATIO": ratio})
         writer.openscad(output_large, "large_gears.scad", {"RATIO": ratio})
