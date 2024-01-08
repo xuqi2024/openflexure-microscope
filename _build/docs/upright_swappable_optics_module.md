@@ -13,7 +13,7 @@ The imaging optics for this version of the microscope consist of an RMS objectiv
 * 1 [200mm Pi Camera ribbon cable]{: Class="bom"}    - This is longer than the standard ribbon cable the Pi Camera is sold with!
 * 6 [3x20mm stainless steel dowel]{: Class="missing"} 
 * 3 [5mm diameter stainless steel ball bearings]{: Class="missing"} 
-* 4 [5x2.5mm disc magnet]{: Class="missing"} 
+* 4 [5x2mm disc magnet]{: Class="missing"} 
 * 1 [carrier jig]{: Class="missing"} 
 * 1 [lens tool]{: Class="missing"} 
 * 1 [M3 nut]{: Class="bom"} 
@@ -103,7 +103,7 @@ The camera board is static sensitive.
 Tolerances on the mount are deliberately tight so that the dowels are secured. It is recommended to use a [rubber mallet]{: Class="missing"} or similar to drive the dowels into place without warping or damaging the part. 
 </div>
 
-* Take the [objective lens mount] and insert one [5x2.5mm disc magnet]{: Class="missing"} into each of the two sockets so that they lie flush with the mount surface.
+* Take the [objective lens mount] and insert one [5x2mm disc magnet]{: Class="missing"} into each of the two sockets so that they lie flush with the mount surface.
 * Place the [swappable optics module] lens-up, such that the Pi Camera is on a flat surface. 
 * Place the assembled [objective lens mount] magnet-side down over the optics module. The four screw-holes should align.
 * Use four [No 2 6.5mm self tapping screws] to secure the mount to the optics module using a  [#1 pozidrive screwdriver].
@@ -116,7 +116,7 @@ Tolerances on the mount are deliberately tight so that the dowels are secured. I
 * Place the [carrier jig]{: Class="missing"} on a hard surface with three [5mm diameter stainless steel ball bearings]{: Class="missing"}, each sitting on a hole in the jig.
 * Take an [objective lens carrier]{: Class="missing"} and place it facing down atop the jig, with each ball bearing aligning with its socket on the carrier.
 * Using a [rubber mallet] or similar, gently hammer the back of the [objective lens carrier] such that the ball bearings are evenly seated into their sockets in the carrier.
-* Turning the carrier over, insert a [5x2.5mm disc magnet]{: Class="missing"} into each of the remaining holes on the carrier so that they lie flush with the carrier surface.
+* Turning the carrier over, insert a [5x2mm disc magnet]{: Class="missing"} into each of the remaining holes on the carrier so that they lie flush with the carrier surface.
 <div markdown="1" class="caution-block">
 **Caution**
 
@@ -164,7 +164,7 @@ Set the <a name="output__complete-optics-module"></a>complete optics module asid
 [objective lens mount]:missing.md ""
 [3x20mm stainless steel dowel]:missing.md ""
 [rubber mallet]:missing.md ""
-[5x2.5mm disc magnet]:missing.md ""
+[5x2mm disc magnet]:missing.md ""
 [carrier jig]:missing.md ""
 [5mm diameter stainless steel ball bearings]:missing.md ""
 [objective lens carrier]:missing.md ""

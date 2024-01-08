@@ -29,7 +29,7 @@ function swappable_rms_params(params) = let(
     ["magnet_r", (objective_r + magnet_d/2 + 2) * 2/sqrt(3)],  // distance of magnets from the origin
     ["magnet_centre_to_carrier_surface", 0.2*magnet_d],           // how far the magnet is embedded into the carrier (should be >0)
     ["dowel_centre_to_mount_surface", dowel_d/2 + 0.75],        // dowel holes should be recessed enough to avoid plastic deformation when dowels are inserted
-    ["disc_magnet_h", 2.5],     // height of disc magnet
+    ["disc_magnet_h", 2.5],     // height of disc magnet, with clearance (disc magnet is 5mm diameter x 2mm height)
     ["disc_magnet_d", 5],       // diameter of disc magnet
     ["disc_magnet_dist", objective_r+(magnet_d/2)], // distance from origin of disc magnets
 ];
