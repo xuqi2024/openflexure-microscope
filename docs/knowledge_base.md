@@ -4,6 +4,4 @@ The OpenFlexure Microscope instructions aim to explain not only how to assemble 
 
 Available pages in the knowledge base.
 
-* [The OpenFlexure Microscope Imaging Optics](info_pages/imaging_optics_explanation.md)
-* [Why does the LED need a resistor?](info_pages/why_led_resistor.md)
-* [Why print the optics module or lens spacer in black?](info_pages/why_optics_black.md)
+{{listpages, tag:knowledge}}

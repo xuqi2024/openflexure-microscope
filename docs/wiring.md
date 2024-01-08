@@ -1,10 +1,10 @@
 # Complete the wiring
 
-The microscope must be completed by mounting the motor driver electronics and the Raspberry Pi, connecting the motors to the motor driver, and connecting the illumination to a power source.  These instructions assume you are using a Raspberry Pi v4 and a Sangaboard v4 or v5.  See the box below if you are not using these electronics.
+The microscope must be completed by mounting the motor driver electronics and the Raspberry Pi, connecting the motors to the motor driver, and connecting the illumination to a power source.  These instructions assume you are using a Raspberry Pi v4 and a Sangaboard v0.4 or v0.5.  See the box below if you are not using these electronics.
 
 >i **Alternative electronics options**
 >i
->i If you are using a version of the Raspberry Pi other than v4, you will need a different electronics drawer.  The options are described in the [customisation] page.
+>i If you are using a version of the Raspberry Pi other than v4, or Sangaboard other than version 0.4 or 0.5, you will need a different electronics drawer.  The options are described in the [customisation] page.
 >i If you do not have a Sangaboard, you can make up a compatible solution from a microcontroller and separate driver boards.  This is described in the [motor electronics workaround] page.
 
 [customisation]: customisation.md "Customisation and work-around options for the microscope."
@@ -14,8 +14,7 @@ The microscope must be completed by mounting the motor driver electronics and th
 
 
 [Raspberry Pi]: parts/electronics.yml#RaspberryPi "{cat:electronic}"
-[Sangaboard]: parts/electronics/sangaboard.md "{cat:electronic, note: 'If you cannot get a Sangaboard, you can put together [workaround motor electronics] instead.'}"
-[workaround motor electronics]: workaround_motor_electronics/workaround_motor_electronics.md
+[Sangaboard]: parts/electronics/sangaboard.md "{cat:electronic, note: 'If you cannot get a Sangaboard, you can put together [workaround motor electronics](workaround_motor_electronics/workaround_motor_electronics.md) instead.'}"
 
 [No 2 6.5mm self tapping screws]: parts/mechanical.yml#SelfTap_PoziPan_No2x6.5_SS "{cat:mech}"
 [M3 nut]: parts/mechanical.yml#Nut_M3_SS "{cat:mech}"
@@ -25,6 +24,11 @@ The microscope must be completed by mounting the motor driver electronics and th
 ## Assembly video
 
 ![](https://www.youtube.com/watch?v=1YZMbfL6M7E)
+
+## Prepare the electronics drawer {pagestep}
+
+* Place an [M3 nut]{qty:1, cat:mech} into the slot just inside the hole in the front of the microscope base.
+* Place another [M3 nut]{qty:1} into the slot above the Sangaboard power connector on the [electronics drawer].
 
 ## Connect the Raspberry Pi {pagestep}
 
@@ -57,8 +61,6 @@ You will need to ensure the Sangaboard has the correct firmware and bootloader b
 
 ## Mount the electronics drawer {pagestep}
 
-* Place an [M3 nut]{qty:1, cat:mech} into the slot just inside the hole in the front of the microscope base.
-* Place another [M3 nut]{qty:1} into the slot above the Sangaboard power connector on the [electronics drawer].
 * Slide the [electronics drawer] into the microscope base making sure not to pinch any wires.
 * Hold the [electronics drawer] in place with two [M3x10 cap head screws]{qty: 2} which should screw into the two nuts.
 

@@ -11,7 +11,7 @@ In this section we are assembling the transmission illuminator.  This mounts the
 [No 2 6.5mm self tapping screws]: parts/mechanical.yml#SelfTap_PoziPan_No2x6.5_SS "{cat:mech}"
 [2.5mm Ball-end Allen key]: parts/tools/2.5mmBallEndAllenKey.md "{cat:tool}"
 [#1 pozidrive screwdriver]: parts/tools/pozidrive_1_screwdriver.md "{cat:tool}"
-[illumination PCB]: ./parts/electronics/illumination_pcb.md "{cat:electronic, note: 'A 5mm LED can be used instead, if you follow the [LED workaround].'}"
+[illumination PCB]: ./parts/electronics/illumination_pcb.md "{cat:electronic, note: 'A 5mm LED can be used instead, if you follow the [LED workaround](./workaround_5mm_led/workaround_5mm_led.md).'}"
 
 [LED workaround]: ./workaround_5mm_led/workaround_5mm_led.md
 
@@ -33,6 +33,7 @@ In this section we are assembling the transmission illuminator.  This mounts the
 * Place the [condenser lens](parts/optics/condenser_lens.md){qty:1, cat:optical} on the [lens tool][Lens tool](fromstep){qty:1, cat:printedtool} flat side down
 * Take the [condenser arm][Condenser arm](fromstep){qty:1, cat:printedpart} and align the opening over the lens
 * Push down until the lens clicks into place.
+* Visually inspect the positioning of the lens. It should be flat, not seated at an angle. If necessary, push against the [lens tool][Lens tool](fromstep){qty:1, cat:printedtool} to align properly.
 
 ![](renders/optics_assembly_condenser_lens.png)
 
@@ -70,13 +71,13 @@ In this section we are assembling the transmission illuminator.  This mounts the
 * Fix in place with two [No 2 6.5mm self tapping screws]{qty:2} using a [#1 pozidrive screwdriver]{qty:1}.
 
 ## Assemble the illumination wiring harness {pagestep}
-* Take a [Red pre-crimped Female-Female jumper cable (30 cm)] and a [Black pre-crimped Female-Female jumper cable (30 cm)].
+* Take a [red pre-crimped female-female jumper cable (30 cm)][Pre-crimped Female-Female jumper cable (30 cm), Red]{qty:1} and a [black pre-crimped female-female jumper cable (30 cm)][Pre-crimped Female-Female jumper cable (30 cm), Black]{qty:1}.
 * Attach a [2 pin Du Pont connector female housing]{qty:2} to each end.
 * This is the illumination wiring harness.
 
 [2 pin Du Pont connector female housing]: parts/electronics.yml#DuPont_Housing_1x2 "{cat:electronic}"
-[Red pre-crimped Female-Female jumper cable (30 cm)]: parts/electronics.yml#JumperCable_FF_300mm_Red "{cat:electronic}"
-[Black pre-crimped Female-Female jumper cable (30 cm)]: parts/electronics.yml#JumperCable_FF_300mm_Black "{cat:electronic}"
+[Pre-crimped Female-Female jumper cable (30 cm), Red]: parts/electronics.yml#JumperCable_FF_300mm_Red "{cat:electronic}"
+[Pre-crimped Female-Female jumper cable (30 cm), Black]: parts/electronics.yml#JumperCable_FF_300mm_Black "{cat:electronic}"
 
 ## Attach the illumination cable {pagestep}
 

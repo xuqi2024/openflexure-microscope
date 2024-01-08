@@ -10,8 +10,7 @@ The imaging optics for this version of the microscope consist of an RMS objectiv
 [M3 nut]: parts/mechanical.yml#Nut_M3_SS
 [No 2 6.5mm self tapping screws]: parts/mechanical.yml#SelfTap_PoziPan_No2x6.5_SS
 [#1 pozidrive screwdriver]: parts/tools/pozidrive_1_screwdriver.md "{cat:tool}"
-[Pi Camera lens tool]: parts/tools/pi_camera_lens_tool.md "{cat:tool, note: 'This should come with the [Raspberry Pi Camera Module v2].  If it is missing, you can 3D print a [workaround lens remover].'}"
-[workaround lens remover]: workaround_lens_remover.md
+[Pi Camera lens tool]: parts/tools/pi_camera_lens_tool.md "{cat:tool, note: 'This should come with the [Raspberry Pi Camera Module v2](parts/electronics.yml#PiCamera_2).  If it is missing, you can 3D print a [workaround lens remover](workaround_lens_remover.md).'}"
 
 [Raspberry Pi Camera Module v2]: parts/electronics.yml#PiCamera_2 "{cat:electronic}"
 [200mm Pi Camera ribbon cable]: parts/electronics.yml#PiCamera_RibbonCable_200mm "{cat:electronic, note: 'This is longer than the standard ribbon cable the Pi Camera is sold with!'}"
@@ -22,7 +21,7 @@ Take the [optics module][Optics module](fromstep){qty:1, cat:printedpart} and co
 
 * It has been printed in black [i](info_pages/why_optics_black.md)
 * It is dust free (You can blow air through to clean it)
-* The central shaft is not obstructed by strings of plastic.
+* The central shaft is not obstructed by strings of plastic
 
 
 ## Insert the tube lens {pagestep}
@@ -32,6 +31,7 @@ Take the [optics module][Optics module](fromstep){qty:1, cat:printedpart} and co
 * Check the lens has the more curved side facing down
 * Take the optics module and place carefully over lens
 * Push down hard to seat the lens in the optics module
+* Visually inspect the positioning of the lens. It should be flat, not seated at an angle. If necessary, push against the [lens tool][Lens tool](fromstep){qty:1, cat:printedtool} to align properly
 
 ![Insert tube lens](renders/optics_assembly_tube_lens.png)
 
