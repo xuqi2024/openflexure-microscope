@@ -87,7 +87,7 @@ build:
       - mkdir -p /root/.local/share
       - ./build.py --include-extra-files --force-clean
       - python3 -m build_system.hash_csg_files docs/models -o docs/models/dependency_hashes.yaml
-      - python3 -c "import shutil; shutil.make_archive('docs/all-stls', 'zip', 'docs/models')"
+      - ./archive_stls.py
     
     cache:
       - key: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
