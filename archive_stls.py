@@ -14,7 +14,7 @@ def main():
     """
     model_dir = os.path.join("docs","models")
     zipfilename = os.path.join("docs","all-stls.zip")
-    with zipfile.ZipFile(zipfilename, 'w') as zipfile_obj:
+    with zipfile.ZipFile(zipfilename, 'w', zipfile.ZIP_DEFLATED) as zipfile_obj:
         for root, _, files in os.walk(model_dir):
             for filename in files:
                 rel_root = os.path.relpath(root, model_dir)
