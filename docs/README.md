@@ -29,7 +29,7 @@ Similarly the STL file are directly generated from OpenSCAD so you can run our b
 
 
 [CI-pipelines]: https://gitlab.com/openflexure/openflexure-microscope/-/pipelines/
-[built_docs]: https://www.openflexure.org/projects/microscope/docs/
+[built_docs]: https://build.openflexure.org/openflexure-microscope/latest
 [Git LFS]: https://git-lfs.github.com/
 [GitBuilding]: https://gitbuilding.io
 [raise an issue]: https://gitlab.com/openflexure/openflexure-microscope/issues/new
