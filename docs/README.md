@@ -1,7 +1,7 @@
 # OpenFlexure Microscope Documentation
 The documentation is best viewed [on openflexure.org][built_docs].  If you have problems or want to suggest improvements, please [raise an issue] or even better edit the markdown file in this folder and send us a merge request.
 
-The assembly instructions are contained in this folder, in BuildUp-markdown files. BuildUp is a version of markdown that contains metadata about part use. This allows [GitBuilding] to automatically generate the bill of materials. The markdown files themselves will make some sense if you view them directly, but certain things like the bill of materials will have not been counted yet. You're better off using the processed versions of the [latest release][built_docs] on openflexure.org, or the [version built from the latest merge to the `master` branch][master_buit_docs].
+The assembly instructions are contained in this folder, in BuildUp-markdown files. BuildUp is a version of markdown that contains metadata about part use. This allows [GitBuilding] to automatically generate the bill of materials. The markdown files themselves will make some sense if you view them directly, but certain things like the bill of materials will have not been counted yet. You're better off using the processed versions of the [latest release][built_docs] on openflexure.org, or the [version built from the latest merge to the `master` branch][master_built_docs].
 
 
 ## Improving the documentation
