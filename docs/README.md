@@ -1,7 +1,8 @@
 # OpenFlexure Microscope Documentation
 The documentation is best viewed [on openflexure.org][built_docs].  If you have problems or want to suggest improvements, please [raise an issue] or even better edit the markdown file in this folder and send us a merge request.
 
-The assembly instructions are contained in this folder, in BuildUp-markdown files. BuildUp is a version of markdown that contains metadata about part use. This allows [GitBuilding] to automatically generate the bill of materials. The markdown files themselves will make some sense if you view them directly, but certain things like the bill of materials will have not been counted yet. You're better off using the [processed versions][built_docs] on openflexure.org.
+The assembly instructions are contained in this folder, in BuildUp-markdown files. BuildUp is a version of markdown that contains metadata about part use. This allows [GitBuilding] to automatically generate the bill of materials. The markdown files themselves will make some sense if you view them directly, but certain things like the bill of materials will have not been counted yet. You're better off using the processed versions of the [latest release][built_docs] on openflexure.org, or the [version built from the latest merge to the `master` branch][master_built_docs].
+
 
 ## Improving the documentation
 If you would like to improve the documentation, the easiest way is to use the "edit" or "web IDE" features on GitLab.  Good instructions are super important, so it's really helpful to have suggestions and improvements from people who have built the microscope.  You can fork the repository and work on it locally if you prefer.
@@ -29,7 +30,8 @@ Similarly the STL file are directly generated from OpenSCAD so you can run our b
 
 
 [CI-pipelines]: https://gitlab.com/openflexure/openflexure-microscope/-/pipelines/
-[built_docs]: https://www.openflexure.org/projects/microscope/docs/
+[built_docs]: https://build.openflexure.org/openflexure-microscope/latest
+[master_built_docs]: https://build.openflexure.org/openflexure-microscope/master
 [Git LFS]: https://git-lfs.github.com/
 [GitBuilding]: https://gitbuilding.io
 [raise an issue]: https://gitlab.com/openflexure/openflexure-microscope/issues/new
