@@ -397,7 +397,7 @@ module motor_lugs(h, tilt=0, angle=0){
                     }
                     //hollow inside of the structure
                     rotate(-angle){
-                        nut_seat_void(h=h, tilt=tilt);
+                        nut_seat_void(h=h, tilt=0);
                     }
                     //mounting screws
                     translate(screw_pos){
