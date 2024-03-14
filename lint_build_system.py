@@ -16,7 +16,7 @@ def main():
     This means that TODOs are to warn you that is something is unfinished, if
     something needs doing in the future and you want to push to master then make an issue.
     """
-    output = Run(['build.py', 'render.py', 'build_system/', '--rcfile=.pylintrc'], do_exit=False)
+    output = Run(['build.py', 'render.py', 'build_system/', '--rcfile=.pylintrc'], exit=False)
 
     clean_exit = True
     linter_threshold = 9.75
