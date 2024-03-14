@@ -8,7 +8,7 @@ stages:
 
 ## Template for all OpenSCAD jobs to ensure they run the same
 .scad-job:
-    image: ubuntu:20.04
+    image: ubuntu:22.04
 
     variables:
       # prevents config waiting for user input, e.g. for tzdata
@@ -40,7 +40,7 @@ scad-lib-tests:
 # Code quality runs SCA2D to do static analysis of the .scad code 
 code_quality:
     stage: test
-    image: python:3.7
+    image: python:3.12
     allow_failure: true
     script:
       - pip install sca2d
@@ -62,7 +62,7 @@ code_quality:
 
 lint_build_system:
     stage: test
-    image: python:3.7
+    image: python:3.12
     script:
       - pip install -r requirements.txt
       - ./lint_build_system.py
@@ -111,7 +111,7 @@ build:
 
 archive-source:
     stage: build
-    image: python:3.7
+    image: python:3.12
 
     script:
       - git clean -dfX
@@ -133,7 +133,7 @@ archive-source:
 
 check_stls:
     stage: analyse
-    image: python:3.7
+    image: python:3.12
     needs: ["build"]
     dependencies: ["build"]
     allow_failure: true
@@ -196,7 +196,7 @@ build-docs:
       - render
       - archive-source
     needs: ["build", "render", "archive-source"]
-    image: "python:3.7"
+    image: "python:3.12"
 
     before_script:
       - python --version
