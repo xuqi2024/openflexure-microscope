@@ -159,7 +159,7 @@ class RenderSystem():
             renders = [render for render in self._renders if render.imgsize==size]
             while len(renders) > 0:
                 scad = _create_scad_for_renders(renders)
-                with open(tmpscad, 'w') as scadfile:
+                with open(tmpscad, 'w', encoding='utf-8') as scadfile:
                     scadfile.write(scad)
 
                 rerender = run_openscad_animation(tmpscad, renders, size)

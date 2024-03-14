@@ -61,7 +61,7 @@ def parse_dependencies(output_files):
     for fname in output_files:
         depfname = fname + ".d"
         if fname not in graph and os.path.exists(depfname):
-            with open(depfname, "r") as depfile:
+            with open(depfname, "r", encoding='utf-8') as depfile:
                 first_line = depfile.readline()
                 assert first_line.endswith(": \\\n")
                 dependencies = [line.strip("\t \\\n") for line in depfile]
@@ -100,7 +100,7 @@ if __name__ == "__main__":
     depgraph = add_hashes_to_graph(depgraph)
 
     if args.output:
-        with open(args.output, "w") as outfile:
+        with open(args.output, "w", encoding='utf-8') as outfile:
             yaml.dump(depgraph, outfile)
     else:
         yaml.dump(depgraph, sys.stdout)
