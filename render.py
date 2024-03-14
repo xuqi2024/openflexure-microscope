@@ -197,7 +197,7 @@ def register_upright_condenser_assembly(rendersystem):
 
     ## No thumbscrew for upright. Frames [4,5,6] not used so
     ## frame numbers match in upright and inverted condenser instructions
-    
+
     camera = Camera(position=[0, 8, 30], angle=[62, 0, 130], distance=137)
     imgsize = [2400, 2000]
     for frame in [7, 8, 9, 10]:

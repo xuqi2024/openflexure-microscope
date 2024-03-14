@@ -21,27 +21,27 @@ def main():
     clean_exit = True
     linter_threshold = 9.75
 
-    if output.linter.stats['fatal'] > 0:
+    if output.linter.stats.fatal > 0:
         print(Fore.RED
-              +f"There are {output.linter.stats['fatal']} fatal errors!"
+              +f"There are {output.linter.stats.fatal} fatal errors!"
               +Style.RESET_ALL)
         clean_exit = False
 
-    if output.linter.stats['error'] > 0:
+    if output.linter.stats.error > 0:
         print(Fore.RED
-              +f"There are {output.linter.stats['error']} errors!"
+              +f"There are {output.linter.stats.error} errors!"
               +Style.RESET_ALL)
         clean_exit = False
 
-    if output.linter.stats['warning'] > 0:
+    if output.linter.stats.warning > 0:
         print(Fore.RED
-              +f"There are {output.linter.stats['warning']} warning!"
+              +f"There are {output.linter.stats.warning} warning!"
               +Style.RESET_ALL)
         clean_exit = False
 
-    if output.linter.stats['global_note'] < linter_threshold:
+    if output.linter.stats.global_note < linter_threshold:
         print(Fore.RED
-              +f"The linter score of {output.linter.stats['global_note']:.2f}"
+              +f"The linter score of {output.linter.stats.global_note:.2f}"
               +f" is less than {linter_threshold:.2f}"
               +Style.RESET_ALL)
         clean_exit = False

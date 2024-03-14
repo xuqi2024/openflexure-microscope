@@ -47,9 +47,9 @@ def parameters_to_string(parameters):
             # Nested single/double quotes were being stripped out on Windows, so we use
             # double quotes for both, and escape the inner ones (see above) for strings.
             # The inner double quotes appear in `value` for strings
-            strings.append("-D \"{}={}\"".format(name, value))
+            strings.append(f"-D \"{name}={value}\"")
         else:
-            strings.append("-D '{}={}'".format(name, value))
+            strings.append(f"-D '{name}={value}'")
 
     return " ".join(strings)
 

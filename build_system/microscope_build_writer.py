@@ -19,7 +19,7 @@ class NinjaWriter():
 
     def __enter__(self):
         # Create the ninja build file
-        self._build_file = open(self._build_filename, "w")
+        self._build_file = open(self._build_filename, "w", encoding='utf-8')
         self._ninja = Writer(self._build_file, width=120)
         return self
 

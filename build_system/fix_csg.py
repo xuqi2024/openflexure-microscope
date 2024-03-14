@@ -14,7 +14,7 @@ def fix_csg(input_fname, output_fname):
     Currently this performs only one operation:
     * Strip `timestamp` arguments (which occur in `import` module calls)
     """
-    with open(input_fname, "r") as infile, open(output_fname, "w") as outfile:
+    with open(input_fname, "r", encoding='utf-8') as infile, open(output_fname, "w", encoding='utf-8') as outfile:
         for line in infile:
             outfile.write(
                 re.sub(r", timestamp = [\d]+", "", line)
