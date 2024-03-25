@@ -11,7 +11,7 @@ from .hash_csg_files import generate_hash, normalise_path
 
 def load_hash_file(hash_file_path):
     """Load the hash file and return a dictionary"""
-    with open(hash_file_path, "r") as hashfile:
+    with open(hash_file_path, "r", encoding='utf-8') as hashfile:
         return yaml.safe_load(hashfile)
 
 def needs_recompile(output_path, hashes, ignore_unchanged=False):

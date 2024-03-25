@@ -175,7 +175,7 @@ def generate_nano_converter_plate(writer):
         parameters = {"PI_VERSION": pi}
 
         writer.openscad(output, "nano_converter_plate.scad", parameters)
-        
+
 def copy_extra_stls(build_dir, extras_dir):
     """
     Copy extra STLs to output directory
