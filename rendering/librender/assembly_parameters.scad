@@ -118,7 +118,7 @@ function z_foot_placement() = create_placement_dict(z_actuator_pos(PARAMS));
 function z_oring_placement() = create_placement_dict(z_actuator_pos(PARAMS)+[0, .5, 1.5],
                                                      z_actuator_rot());
 
-// an extra 1mm tolerance added for teh low cost optics module to allow for use cases
+// an extra 1mm tolerance added for the low cost optics module to allow for use cases
 // of the low cost optics when the slide is placed with the sample on top the
 // working distance is enough to focus and the extra 1mm in nut position allows
 // the mechanics to reach that point. 
@@ -173,7 +173,7 @@ function lens_spacer_pos_on_tool(params, optics_config) = let(
     z_tr = pi_lens_z_pos(params, optics_config)
 ) create_placement_dict([0, 0, z_tr], [0, 180, 0], [0, 0, 180]);
 
-// an extra 1mm tolerance added for teh low cost optics module to allow for use cases
+// an extra 1mm tolerance added for the low cost optics module to allow for use cases
 // of the low cost optics when the slide is placed with the sample on top the
 // working distance is enough to focus and the extra 1mm in nut position allows
 // the mechanics to reach that point. 
