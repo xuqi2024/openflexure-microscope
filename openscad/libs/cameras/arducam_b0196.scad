@@ -43,11 +43,7 @@ module b0196(beam_h=9){
     // This module is designed to be subtracted from the bottom of a shape.
     // The z=0 plane should be the print bed.
     // It includes cut-outs for the components on the PCB and also a push-fit hole
-    // for the camera module.  This uses flexible "fingers" to grip the camera firmly
-    // but gently.  Just push to insert, and wiggle to remove.  You may find popping
-    // off the brown ribbon cable and removing the PCB first helps when extracting
-    // the camera module again.
-
+    // for the camera module.  
     // mirror([0,0,1]){ //parts cut out of the mount are z<0
 
     mount_height = key_lookup("mount_height", arducam_b0196_camera_dict());
