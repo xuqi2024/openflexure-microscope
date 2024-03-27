@@ -185,9 +185,7 @@ module arducam_b0196_camera_mount(screwhole=true){
                         reflect_x(){
                             reflect_y(){
                                 translate([mounting_hole_xy, mounting_hole_xy,0]){
-                                    rotate_x(180){
-                                        mounting_hole();
-                                    }
+                                    mounting_hole();
                                 }
                             }
                         }
