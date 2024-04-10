@@ -23,7 +23,7 @@ function lens_aperture(lens_r) = lens_r - 1.5;
 
 // This function is used because the C270 camera needs to be rotated when used with a lens spacer
 // in order to fit in between the xy stage legs
-function c270_spacer_yes(optics_config) = (key_lookup("optics_type", optics_config) == "spacer")
+function is_c270_spacer(optics_config) = (key_lookup("optics_type", optics_config) == "spacer")
                                             && (key_lookup("camera_type", optics_config) == "logitech_c270");
 
 // This function is used because the Arducam B0196 camera needs a cut-out in the 
@@ -40,7 +40,7 @@ module optical_path(optics_config, lens_z, camera_mount_top_z){
     lens_r = rms ?
         key_lookup("tube_lens_r", optics_config):
         key_lookup("lens_r", optics_config);
-    aperture_r = c270_spacer_yes(optics_config)?
+    aperture_r = is_c270_spacer(optics_config)?
         lens_aperture(lens_r)-2:
         lens_aperture(lens_r);
 
@@ -367,7 +367,7 @@ module lens_spacer(params, optics_config){
 
     //This is the height of the block the camera mounts into.
     camera_mount_height = camera_mount_height(optics_config);
-    lens_spacer_rotate = c270_spacer_yes(optics_config)? -135: 0;
+    lens_spacer_rotate = is_c270_spacer(optics_config)? -135: 0;
 
     rotate_z(lens_spacer_rotate){
         translate_z(lens_spacer_z(params, optics_config)){
@@ -380,7 +380,7 @@ module lens_spacer(params, optics_config){
                                 camera_mount_top_slice(optics_config);
                                 // the C270 board is too long, 
                                 // the long hull above the body gets in the way of the spacer getting close to the slide
-                                if(c270_spacer_yes(optics_config)){
+                                if(is_c270_spacer(optics_config)){
                                     rotate_z(lens_spacer_rotate){
                                         translate_x(-99/2-15){
                                             cube(99, center = true);
@@ -405,7 +405,7 @@ module lens_spacer(params, optics_config){
                             camera_mount(optics_config, screwhole=false, counterbore=false);
                             // the C270 board is too long, 
                             // the long body gets in the way of the spacer getting close to the slide
-                            if(c270_spacer_yes(optics_config)){
+                            if(is_c270_spacer(optics_config)){
                                 rotate_z(lens_spacer_rotate){
                                     translate_x(-99/2-15){
                                         cube(99, center = true);
@@ -417,7 +417,7 @@ module lens_spacer(params, optics_config){
                 }
                 union(){
                     // cut out the optical path
-                    z_offset_lens_spacer_optical_path = c270_spacer_yes(optics_config) ?
+                    z_offset_lens_spacer_optical_path = is_c270_spacer(optics_config) ?
                                                                     2.8: // to match the light trap to the mount aperture, C270
                                                                     0; // to match the light trap to the mount aperture, Picam 2 and B0196
                     optical_path(optics_config, lens_assembly_z, camera_mount_top_z=z_offset_lens_spacer_optical_path);
@@ -451,7 +451,7 @@ module camera_platform(params, optics_config, base_r){
     platform_h = lens_spacer_z(params, optics_config) - camera_mounting_post_height(optics_config) - camera_board_thickness(optics_config);
     assert(platform_h > upper_z_flex_z(params), "Platform height too low for z-axis mounting");
 
-    camera_mounting_posts_rotate  = c270_spacer_yes(optics_config)? -135: 0;
+    camera_mounting_posts_rotate  = is_c270_spacer(optics_config)? -135: 0;
 
     // Make a camera platform with a fitting wedge on the side and a platform on the top
     difference(){
