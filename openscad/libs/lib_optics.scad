@@ -28,7 +28,7 @@ function is_c270_spacer(optics_config) = (key_lookup("optics_type", optics_confi
 
 // This function is used because the Arducam B0196 camera needs a cut-out in the 
 // camera platform for the USB cable
-function b0196_spacer_yes(optics_config) = (key_lookup("optics_type", optics_config) == "spacer")
+function is_b0196_spacer(optics_config) = (key_lookup("optics_type", optics_config) == "spacer")
                                             && (key_lookup("camera_type", optics_config) == "arducam_b0196") ;
 
 module optical_path(optics_config, lens_z, camera_mount_top_z){
@@ -503,7 +503,7 @@ module camera_platform(params, optics_config, base_r){
             cylinder(r=1, h=2, center = true);
         }
         // cut-out for Arducam b0196 cable
-        if(b0196_spacer_yes(optics_config)){
+        if(is_b0196_spacer(optics_config)){
             rotate_z(45){
                 translate([9,-11.5,10]){
                  cube([7,12,99]);
