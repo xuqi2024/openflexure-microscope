@@ -31,6 +31,12 @@ function c270_spacer_yes(optics_config) = (key_lookup("optics_type", optics_conf
 function b0196_spacer_yes(optics_config) = (key_lookup("optics_type", optics_config) == "spacer")
                                             && (key_lookup("camera_type", optics_config) == "arducam_b0196") ;
 
+// This function gives extra 1mm lift in z for the low cost optics modules to allow for use cases
+// of the low cost optics when the slide is placed with the sample on top. The
+// working distance is enough to focus through a slide, and the extra 1mm in mounting screw and nut 
+// position allows the mechanics to reach that point. 
+function camera_platform_extra_lift() = 1;
+
 module optical_path(optics_config, lens_z, camera_mount_top_z){
     // The cut-out part of a camera mount, consisting of
     // a feathered cylindrical beam path.  Camera mount is now cut out
@@ -481,12 +487,9 @@ module camera_platform(params, optics_config, base_r){
             }
         }
 
-        // Mount for the nut that holds it on
-        // An extra 1mm z tolerance added for the low cost optics module to allow for use cases
-        // of the low cost optics when the slide is placed with the sample on top the
-        // working distance is enough to focus and the extra 1mm in nut position allows
-        // the mechanics to reach that point.  
-        translate_z(-1){
+        // Mount for the nut that holds it on 
+        // The hole translated in -z from the nominal position lifts the platform up.
+        translate_z(-camera_platform_extra_lift()){
             objective_fitting_cutout(params, y_stop=true);
         }
 
