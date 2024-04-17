@@ -166,7 +166,7 @@ module optics_module_beamsplitter_cutout(params, optics_config){
 
     rotate(bs_rotation){
         translate_y(-2.5){
-            fl_screw_holes(params, optics_config, d = 2, h = 6);
+            fl_screw_holes(params, optics_config, d = 1.5, h = 6);
         }
         hull(){
             translate([0, -fl_cube_w(), cube_centre_z+3.5]){
