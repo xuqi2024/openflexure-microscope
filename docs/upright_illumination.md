@@ -73,7 +73,7 @@ In this section we are assembling the transmission illuminator for an upright mi
 ![](renders/upright_mount_condenser_lid4.png)
 
 * Place the assembled condenser on the [upright condenser platform][upright condenser platform](fromstep){qty:1, cat:printedpart}.
->i Checkthat the illumination wiring and the small slot in the condenser body are both pointing away from the mounting dovetail.
+>i Check that the illumination wiring and the small slot in the condenser body are both pointing away from the mounting dovetail.
 * Secure in place with two [No 2 6.5mm self tapping screws]{qty:2} using a [#1 pozidrive screwdriver]{qty:1}.
 
 ## Add the condenser mounting screw {pagestep}
@@ -84,7 +84,7 @@ In this section we are assembling the transmission illuminator for an upright mi
 
 ## Mount the upright condenser onto the main body {pagestep}
 
-* Take the complete upright condenser and pass is through the bottom of the main body until the top of the condenser is a little below the stage.
+* Take the complete upright condenser and pass it through the bottom of the main body until the top of the condenser is a little below the stage.
 * Insert the exposed mounting screw into the screw hole in the z-actuator of the main body.
 * Insert the [2.5mm Ball-end Allen key]{qty:1, cat:tool} through the teardrop shaped hole on the front of the microscope. Until it engages with the mounting screw.
 * Slide the upright condenser up the keyhole until the top of the condenser is 2-4mm below the top of the stage while keeping the Allen key engaged with the screw. 
