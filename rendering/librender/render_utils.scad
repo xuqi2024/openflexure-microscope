@@ -2,7 +2,7 @@ use <../../openscad/libs/microscope_parameters.scad>
 use <../../openscad/libs/libdict.scad>
 use <../../openscad/libs/utilities.scad>
 
-module construction_line(p1, p2, width=0.1, line_color="Black"){
+module construction_line(p1, p2, width=0.1, line_color="Black", arrow=false){
     //draws a construction line between two points. Inputs can be x,y,z list or placement dictionary
 
     //If placment dictionaries are used then recall using vector
@@ -16,6 +16,11 @@ module construction_line(p1, p2, width=0.1, line_color="Black"){
             }
             place_part(p2){
                 cube([width, width, width], center=true);
+            }
+        }
+        if (arrow){
+            place_part(p2){
+                cylinder(r1=3*width, r2=tiny(), h=6*width, center=true);
             }
         }
     }
