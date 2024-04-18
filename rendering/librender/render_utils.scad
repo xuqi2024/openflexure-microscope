@@ -20,7 +20,7 @@ module construction_line(p1, p2, width=0.1, line_color="Black", arrow=false){
         }
         if (arrow){
             place_part(p2){
-                cylinder(r1=3*width, r2=tiny(), h=6*width, center=true);
+                cylinder(d1=11*width, d2=tiny(), h=16*width, center=true);
             }
         }
     }
