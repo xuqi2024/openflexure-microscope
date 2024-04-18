@@ -44,7 +44,7 @@ module mount_illumination(frame, low_cost=false){
         line_offset = [0 ,35, 55];
         line_pos1 = translate_pos(condenser_pos_exp(), line_offset);
         line_pos2 = translate_pos(condenser_pos(), line_offset);
-        construction_line(line_pos1, line_pos2, .4);
+        construction_line(line_pos1, line_pos2, .4, arrow=true);
         mounted_microscope(low_cost=low_cost);
     }
     else if (frame == 5){
