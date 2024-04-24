@@ -11,4 +11,4 @@ brightness control feature, can be purchased as part of the illumination kit at 
 [labmaker]: https://www.labmaker.org/
 [instructions for the LED workaround]:  ../../workaround_5mm_led/workaround_5mm_led.md
 [sangaboard v0.5]: ./sangaboard5.md
-[taulab.eu]: https://taulab.eu/product/openflexure-microscope-illumination-kit
+[taulab.eu]: https://taulab.eu/openflexure/4-ofmv7-illumination-kit.html
