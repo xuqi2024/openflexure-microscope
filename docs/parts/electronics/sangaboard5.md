@@ -4,7 +4,7 @@ PartData:
     Version: 0.5.x
   Suppliers:
     Taulab:
-      Link: https://taulab.eu/product/sangaboard-v5
+      Link: https://taulab.eu/openflexure/5-sangaboard-v5.html
       PartNo: Sangaboard v5
 ---
 
