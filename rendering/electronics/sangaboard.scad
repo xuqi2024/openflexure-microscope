@@ -1,7 +1,7 @@
 // NB this file has been edited from the auto-generated version
 // to wrap it in a module, for ease of re-use
 
-module sangaboard_v0_5() {
+module sangaboard_v0_5_kicad_export() {
     color("#D2D1C7") import("./sangaboard_colors/D2D1C7.stl");
     color("#614537") import("./sangaboard_colors/614537.stl");
     color("#262525") import("./sangaboard_colors/262525.stl");
@@ -19,3 +19,16 @@ module sangaboard_v0_5() {
     color("#200235D4") import("./sangaboard_colors/200235D4.stl");
     color("#F5F5F5") import("./sangaboard_colors/F5F5F5.stl");
 }
+
+module sangaboard_v0_5() {
+    translate([26.5, 33.8, 1.6]) {
+        rotate(90) {
+            scale(2.54) {
+                sangaboard_v0_5_kicad_export();
+            }
+        }
+    }
+}
+
+function sangaboard_v0_5_dims() = [65, 57, 1.6];
+
