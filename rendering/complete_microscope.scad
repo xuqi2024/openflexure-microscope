@@ -10,6 +10,7 @@ use <librender/render_utils.scad>
 use <librender/render_settings.scad>
 use <librender/hardware.scad>
 use <librender/electronics.scad>
+use <./electronics/sangaboard.scad>
 use <mount_motors.scad>
 use <mount_sample_clips.scad>
 use <mount_microscope.scad>
@@ -33,7 +34,7 @@ module render_microscope(low_cost=false){
         }
 
         translate(electronics_drawer_board_inset() + [0, 0, sanga_stand_height("stack_8.5mm")]){
-            sangaboard_v0_4();
+            sangaboard_v0_5();
         }
     }
 }
