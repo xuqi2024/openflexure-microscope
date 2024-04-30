@@ -10,14 +10,7 @@ module tools_for_printing(){
         band_tool(params, bent=false);
     }
     
-    difference(){
-        band_tool_holder(params);
-        translate_z(4.3){
-            scale(1.1){
-                band_tool(params, bent = true);
-            }
-        }
-    }
+    band_tool_holder(params);
 
     translate_y(40){
         nut_tool();
