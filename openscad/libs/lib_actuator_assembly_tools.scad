@@ -1,5 +1,3 @@
-
-
 use <./utilities.scad>
 use <./libdict.scad>
 use <./compact_nut_seat.scad>
@@ -178,17 +176,27 @@ module band_tool_end(params, h){
 * Create just the arm of the band tool. This does not yet had the end
 */
 module band_tool_arm(params, h){
-    hull(){
-        reflect_x(){
-            prong_frame(params){
-                translate(blade_anchor_pos()){
-                    repeat([0,10,0], 2){
-                        cylinder(d=band_tool_blade_w(),h=h);
+    union(){
+        hull(){
+            reflect_x(){
+                prong_frame(params){
+                    translate(blade_anchor_pos()){
+                        translate([0,10,0]){
+                            cylinder(d=band_tool_blade_w(),h=h);
+                        }
+                        translate([0,0,0]){
+                            cylinder(d=band_tool_blade_w(),h=h-1.5);
+                        }
                     }
                 }
             }
+            scale([0.8,0.8,1]) {
+            tool_handle_end_cross_section();
+            }
         }
-        tool_handle_end_cross_section();
+        translate_z(1){
+            cube([1,40,3]);
+        }
     }
 }
 
@@ -252,7 +260,6 @@ module band_tool_centre_block(roc, flex_t, middle_w){
 * as printed.
 */
 module _bent_band_tool(params, h, roc, flex_t, flex_l, middle_w){
-
     // We make two tools, spaced out by a flexible joiner
     reflect_y(){
         translate([0, middle_w/2+flex_l+roc-3, roc]){
@@ -315,11 +322,6 @@ module band_tool(params, bent=false){
                 band_tool_arm_with_end(params, h);
             }
         }
-        //flexible links between the two tools and the middle part
-        translate_z(flex_t/2){
-            cube([actuator_nut_slot_size().x,middle_w+2*flex_l+2*tiny(),flex_t],center=true);
-        }
-        band_tool_centre_block(roc, flex_t, middle_w);
     }
 }
 
@@ -328,28 +330,30 @@ module band_tool(params, bent=false){
 module band_tool_holder(params){
     holder_offset = 1.7;
     //the holder is built from the difference between two minkowski sums of the band insertion tool
-    translate ([0,0,holder_offset]){
-        difference(){
-            minkowski(){
-                hull(){
-                    band_tool(params, bent=true);
-                }
-                scale ([0.7,1,1]){
-                    sphere(r = holder_offset);
-                }
-            }
-            union(){
+    hull() {
+        translate ([0,0,1.5]){
+            difference(){
                 minkowski(){
                     hull(){
                         band_tool(params, bent=true);
                     }
                     scale ([0.7,1,1]){
-                        sphere(r = holder_offset-0.8);
+                        sphere(r = holder_offset);
                     }
                 }
-                // This cube can't be so large that the render camera is inside it, so we can't use 999 as default
-                translate ([-99/2,-99/2,holder_height()]){
-                    cube([99,99,99], center = false);
+                union(){
+                    minkowski(){
+                        hull(){
+                            band_tool(params, bent=true);
+                        }
+                        scale ([0.7,1,1]){
+                            sphere(r = holder_offset-1.5);
+                        }
+                    }
+                    // This cube can't be so large that the render camera is inside it, so we can't use 999 as default
+                    translate ([-99/2,-99/2,holder_height()]){
+                        cube([99,99,99], center = false);
+                    }
                 }
             }
         }
