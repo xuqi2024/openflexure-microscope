@@ -2,51 +2,14 @@
 use <../../openscad/libs/utilities.scad>
 use <../../openscad/libs/logo.scad>
 use <../../openscad/libs/lib_microscope_stand.scad>
+use <../electronics/led_board.scad>
 use <render_utils.scad>
 
 $fn = 12;
 
 
 module illumination_board(){
-    board_t = 1.5;
-    coloured_render("green"){
-        difference(){
-            translate_z(-board_t){
-                cylinder(d=15, h=board_t, $fn=24);
-            }
-            for (x_tr = [5, -5]){
-                translate_x(x_tr){
-                    cylinder(d=2.2, h=99, center=true);
-                }
-            }
-        }
-    }
-    translate([-1.27, 2.7, 0]){
-        single_angled_header_pins(2);
-    }
-    coloured_render("white"){
-        translate([-4.4,-3, 0]){
-            openflexure_emblem(h=tiny(), scale_factor=.04);
-        }
-        translate([-5,-4.3, 0]){
-            linear_extrude(tiny()){
-                text("openflexure.org", size=1.1, font="Calibri", halign="left");
-            }
-        }
-        translate_z(-board_t){
-            cube([2.8, 3.5, 1.5], center=true);
-        }
-    }
-    translate_z(-board_t){
-        coloured_render("orange"){
-            cube([2.5, 3.2, 1.6], center=true);
-        }
-        reflect_z(){
-            chip(0,-3,2.6, 1.5, 1);
-            chip(.5,-4.8,2, 1.25, 1.2, "darkkhaki");
-            chip(2.2,-3.5,.8,,1.75,.7, "darkkhaki");
-        }
-    }
+    rotate([180, 0, -90]) sangaboard_v0_5_cc_led_board();
 }
 
 function illumination_board_connector_offset() = [0, 2.7 + 4.84, 3.5/2];
