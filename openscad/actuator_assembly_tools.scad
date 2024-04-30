@@ -18,6 +18,11 @@ module tools_for_printing(){
             }
         }
     }
+
+    translate_y(40){
+        nut_tool();
+    }
+
 }
 
 tools_for_printing();
