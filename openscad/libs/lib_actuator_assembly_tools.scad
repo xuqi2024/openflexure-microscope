@@ -297,35 +297,23 @@ module band_tool(params, bent=false){
 module band_tool_holder_body(params){
     holder_offset = 1.7;
     //the holder is built from the difference between two minkowski sums of the band insertion tool
-    translate ([0,0,holder_offset]){
-        difference(){
-            // The basic shape is formed by the band tool, enlarged by holder_offset
-            minkowski(){
+    intersection(){
+        // The basic shape is formed by the band tool, enlarged by holder_offset
+        minkowski(){
+            translate ([0,0,holder_offset]){
                 hull(){
                     band_tool(params, bent=true);
-                    // For now (to avoid more STL changes), we add in some extra
-                    // material to guarantee the band tool starts at z=0.
-                    // band_tool used to sit on z=0 when it was one piece, but
-                    // the arms stayed the same size and the bottom was removed.
-                    // In the future, it may be redefined to remove this requirement.
-                    linear_extrude(tiny()) {
-                        projection(cut=true) {
-                            translate_z(-3) {
-                                band_tool(params, bent=true);
-                            }
-                        }
-                    }
-                }
-                scale ([0.7,1,1]){
-                    sphere(r = holder_offset);
                 }
             }
-            // We cut it off above holder_height() so the arms protrude upwards
-            translate ([-99/2,-99/2,holder_height()]){
-                // We use a "big" cube but not so huge the render camera is inside it, to
-                // avoid OpenSCAD rendering glitches.
-                cube([99,99,99], center = false);
+            scale ([0.7,1,1]){
+                sphere(r = holder_offset);
             }
+        }
+        // We cut it off above holder_height() so the arms protrude upwards
+        translate ([-99/2,-99/2,-99]){
+            // We use a "big" cube but not so huge the render camera is inside it, to
+            // avoid OpenSCAD rendering glitches.
+            cube([99,99,99 + holder_height()], center = false);
         }
     }
 }

@@ -10,7 +10,11 @@ module tools_for_printing(){
         band_tool(params, bent=false);
     }
     
-    band_tool_holder(params);
+    translate_z(holder_height()) {
+        rotate_x(180) {
+            band_tool_holder(params);
+        }
+    }
 
     translate_y(40){
         nut_tool();
