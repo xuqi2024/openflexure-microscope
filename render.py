@@ -253,6 +253,19 @@ def register_band(rendersystem):
         rendersystem.register_scad_render(render)
     rendersystem.register_imagemagick_sequence("docs/renders/band_instruction.png", png_files)
 
+def register_band_tool_assembly(rendersystem):
+    input_file = "rendering/band_tool_assembly.scad"
+    camera = Camera(position=[-13, 13, 30], angle=[76, 0, 216], distance=445)
+    imgsize = [1200, 2400]
+    png_files = []
+
+    for frame in [1, 2]:
+        output_file = f"docs/renders/band_tool_assembly{frame}.png"
+        scad = f"render_band_tool_assembly({frame});"
+        png_files.append(output_file)
+        render = ScadRender(output_file, input_file, scad, imgsize, camera)
+        rendersystem.register_scad_render(render)
+
 
 def register_brim_and_ties(rendersystem):
     input_file = "rendering/brim_and_ties.scad"
@@ -471,6 +484,7 @@ def main():
     register_prepare_main_body(rendersystem)
     register_prepare_stand(rendersystem)
     register_actuator_assembly(rendersystem)
+    register_band_tool_assembly(rendersystem)
     register_picam(rendersystem)
     register_mount_optics(rendersystem)
     register_mount_microscope(rendersystem)
