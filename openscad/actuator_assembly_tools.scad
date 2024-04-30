@@ -9,12 +9,13 @@ module tools_for_printing(){
     translate_x(12){
         band_tool(params, bent=false);
     }
-
+    
     band_tool_holder(params);
 
     translate_y(40){
         nut_tool();
     }
+
 }
 
 tools_for_printing();
