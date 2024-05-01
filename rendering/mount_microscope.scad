@@ -25,20 +25,24 @@ module render_mount_microscope(frame, low_cost){
 module mounted_microscope(low_cost=false, exploded=false){
     params = render_params();
     stand_params = default_stand_params();
-    stand_prepared(params, stand_params);
-    for (i = [0, 1, 2, 3]){
-        stand_lug_screw(params, stand_params, i, exploded=exploded);
-    }
+    //stand_prepared(params, stand_params);
+    //for (i = [0, 1, 2, 3]){
+    //    stand_lug_screw(params, stand_params, i, exploded=exploded);
+    //}
     mounted_microscope_frame(exploded=exploded){
         body_with_optics(low_cost=low_cost);
     }
 }
 
 module mounted_microscope_frame(exploded=false){
-    stand_params = default_stand_params();
-    place_part(microscope_on_stand_pos(stand_params, exploded=exploded)){
-        children();
-    }
+    //stand_params = default_stand_params();
+    //place_part(microscope_on_stand_pos(stand_params, exploded=exploded)){
+        
+    //}
+
+            children();
+
+
 }
 
 module stand_lug_screw(params, stand_params, screw_num=0, turn=false, exploded=false){
