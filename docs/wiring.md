@@ -35,17 +35,9 @@ The microscope must be completed by mounting the motor driver electronics and th
 * Secure the Raspberry Pi in place with two [self tapping screws][No 2 6.5mm self tapping screws]{qty:2}
 * Insert the ribbon cable from the optics module into the camera port of the Rasberry Pi, ensuring the contacts are on the opposite side from the clasp. There are [detailed instructions on the Rasbperry Pi website](https://projects.raspberrypi.org/en/projects/getting-started-with-picamera/2).
 
-## Upload the Sangaboard firmware {pagestep}
-
-You will need to ensure the Sangaboard has the correct firmware and bootloader before it can be used. This is often easier to do before mounting it. 
-
->i Sangaboard v0.3 and v0.4 have two micro-USB ports.  One is for power only, the other is for data only.  You must upload the firmware using the "data" port.
-
-* Plug the Sangaboard into a computer, using the "data" micro-USB port.  If it shows up as a Sangaboard (or as a USB serial port) when plugged into a computer, this means you already have a bootloader and can skip the next bullet point and go straight to uploading the firmware.
-* For home-made Sangaboard v0.3 and v0.4 you need to follow the [instructions in the repository to burn the bootloader](https://gitlab.com/bath_open_instrumentation_group/sangaboard/-/tree/master/Bootloader).
-* Once you have the correct bootloader, you must follow the [instructions in the repository to upload the firmware](https://gitlab.com/bath_open_instrumentation_group/sangaboard/-/tree/master/arduino_code).
-
 ## Connect the Sangaboard {pagestep}
+
+>i Your Sangaboard requires firmware in order to work. If you have purchased the board pre-flashed with firmware, it will already be installed. If you have made the board yourself, you may need to obtain and upload the firmware. Details of how to do this are given in the [Sangaboard] page.
 
 * Mount the [Sangaboard]{qty:1} onto the Raspberry Pi GPIO pins, ensuring that the ribbon cable from the optics module passes through the slot.
 * Secure the Sangaboard in place with two [self tapping screws][No 2 6.5mm self tapping screws]{qty:2}
