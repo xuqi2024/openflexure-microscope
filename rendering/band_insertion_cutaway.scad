@@ -20,6 +20,9 @@ use <librender/assembly_parameters.scad>
 use <librender/render_utils.scad>
 use <actuator_assembly.scad>
 
+
+FRAME = 2;
+
 module cut_actuator_housing(params, cut=true){
     difference(){
         xy_screw_seat(params, label="");
@@ -61,9 +64,9 @@ module render_band_insertion(frame_dict){
     }
 
     color(tools_colour(), 1){
-        translate([0,0,-45]+tool_tr){
+        translate([0,0,-43]+tool_tr){
             rotate_z(90){
-                band_tool(params, bent=true);
+                band_tool_arms(params, vertical=true);
             }
         }
     }
@@ -152,5 +155,4 @@ function band_insertion_frame_parameters(frame_number) = let(
     frames = [frame1, frame2, frame3, frame4, frame5]
 ) frames[frame_number-1];
 
-FRAME = 2;
 render_band_insertion(band_insertion_frame_parameters(FRAME));
