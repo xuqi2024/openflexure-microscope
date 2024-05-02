@@ -98,7 +98,7 @@ module what_you_need(){
     color(tools_colour()){
         render(6){
             translate_x(52){
-                band_tool(params, bent=false);
+                band_tool_arms(params, vertical=false);
             }
         }
     }
