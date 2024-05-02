@@ -7,7 +7,7 @@ module tools_for_printing(){
     params = default_params();
 
     translate_x(12){
-        band_tool(params, bent=false);
+        band_tool_arms(params, vertical=false);
     }
     
     translate_z(holder_height()) {

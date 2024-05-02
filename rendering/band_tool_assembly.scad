@@ -17,7 +17,7 @@ module render_band_tool_assembly(frame){
         color(tools_colour()){
             render(6){
                 translate_z(frame == 1 ? holder_height() + 5 : 0){
-                    band_tool(params, bent=true);
+                    band_tool_arms(params, vertical=true);
                 }
             }
         }
