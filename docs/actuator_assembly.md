@@ -43,10 +43,10 @@ There is one "actuator column" for each of the three axes of the OpenFlexure Mic
 
 ## Assemble the band insertion tool {pagestep}
 
-* Insert the two arms of the [band tool](fromstep){qty:1, cat:printedtool} into the [band tool cover](fromstep){qty:1, cat:printedtool}.
-
 ![The band tool arms and holder](renders/band_tool_assembly1.png)
 ![The assembled band tool](renders/band_tool_assembly2.png)
+
+* Insert the two arms of the [band tool](fromstep){qty:1, cat:printedtool} into the [band tool cover](fromstep){qty:1, cat:printedtool}.
 
 ## Prepare the actuator {pagestep}
 
