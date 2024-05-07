@@ -41,6 +41,13 @@ There is one "actuator column" for each of the three axes of the OpenFlexure Mic
 
 ![oil lead screw](renders/actuator_assembly_oil.png)
 
+## Assemble the band insertion tool {pagestep}
+
+![The band tool arms and holder](renders/band_tool_assembly1.png)
+![The assembled band tool](renders/band_tool_assembly2.png)
+
+* Insert the two arms of the [band tool](fromstep){qty:1, cat:printedtool} into the [band tool cover](fromstep){qty:1, cat:printedtool}.
+
 ## Prepare the actuator {pagestep}
 
 ![Check actuator position](diagrams/ActuatorPosition.png)
@@ -57,8 +64,7 @@ This is the trickiest part of the microscope build. In this step we will clip ba
 
 * Take the [foot][feet](fromstep){qty:{{var_n_actuators, default:3}}, note:"Each actuator has its own labelled foot.", cat:printedpart} for the x actuator
 * Loop a [viton band][Viton O-ring (30mmx2mm)]{qty:{{var_n_actuators, default:3}}, note: '"Viton band"', cat:mech} through the foot
-* Push the [band tool](fromstep){qty:1, cat:printedtool} through the foot hook the band onto the tool on each side.
-* Push the [band tool cover](fromstep){qty:1, cat:printedtool} onto the bottom of the band tool
+* Push the assembled [band tool](fromstep){qty:1, cat:printedtool} through the foot and hook the band onto the tool on each side.
 * Align the foot under the microscope so that the letter faces outwards
 * Check that the nut tool is still blocking the actuator column.
 * Push the band tool into the microscope until it clicks
