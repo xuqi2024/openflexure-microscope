@@ -63,7 +63,7 @@ module render_band_insertion(frame_dict){
     }
 
     color(tools_colour(), 1){
-        translate([0,0,-43]+tool_tr){
+        translate([0,0,-40]+tool_tr){
             rotate_z(90){
                 band_tool_arms(params, vertical=true);
             }
@@ -113,7 +113,7 @@ module render_band_insertion(frame_dict){
 function band_insertion_frame_parameters(frame_number) = let(
     frame1 = [["foot_tr", [0,0,-40]],
               ["band_tr", [0,0,-40]],
-              ["tool_tr", [0,0,-37]],
+              ["tool_tr", [0,0,-40]],
               ["casing_cut", false],
               ["casing_alpha", 1],
               ["foot_alpha", 1],
@@ -121,7 +121,7 @@ function band_insertion_frame_parameters(frame_number) = let(
 
     frame2 = [["foot_tr", [0,0,-40]],
               ["band_tr", [0,0,-40]],
-              ["tool_tr", [0,0,-37]],
+              ["tool_tr", [0,0,-40]],
               ["casing_cut", true],
               ["casing_alpha", .5],
               ["foot_alpha", .5],
