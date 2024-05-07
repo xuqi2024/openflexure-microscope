@@ -476,6 +476,52 @@ module mini_hdmi_shape(depth=8){
     }
 }
 
+module hdmi_socket(){
+    color("Silver"){
+        translate_y(-1.8){
+            difference(){
+                minkowski(){
+                    hdmi_shape();
+                    rotate_x(-90){
+                        cylinder(r=.5, h=tiny());
+                    }
+                }
+                translate_y(-1){
+                    hdmi_shape();
+                }
+                for(x_tr = [2.5, -2.5]){
+                    translate_x(x_tr){
+                        cube([1, 2, 99], center=true);
+                    }
+                }
+            }
+        }
+    }
+    color("DimGray"){
+        translate([-5, 0, 3]){
+            cube([10, 6 , 1]);
+        }
+        translate_y(6){
+            hdmi_shape(1);
+        }
+    }
+}
+
+module hdmi_shape(depth=12){
+    hull(){
+        for(x_tr = [5, -5]){
+            translate([x_tr, 0, 1]){
+                rotate_x(-90){
+                    cylinder(d=1, h=depth);
+                }
+            }
+        }
+        translate([-7.5, 0, 2.5]){
+            cube([15, depth, 4]);
+        }
+    }
+}
+
 module usb_c_socket(){
     color("Silver"){
         translate_y(-1.8){
@@ -910,6 +956,121 @@ module picamera_cable_connector(){
         for (i = [-7 : 7]){
             translate([-7.5, i, -0.25]){
                 cube([5, 0.7, 0.1], center=true);
+            }
+        }
+    }
+}
+
+
+// The 7 inch diplay is used in the field dissection microscope
+// It is inculded in the main repo as it might be useful down the line
+// for creating an OFM with an integrated screen
+module display_7inch_lcd(){
+    $fn=16;
+    board_dims = [165, 107, 1.5];
+
+    display_7inch_lcd_board(board_dims);
+    display_7inch_lcd_screen(board_dims);
+    display_7inch_lcd_components(board_dims);
+}
+
+module display_7inch_lcd_board(board_dims){
+    coloured_render("SteelBlue"){
+        difference(){
+            union(){
+                cube(board_dims);
+                for (i=[-0.5, 0.5]*157){
+                    hull(){
+                        for(j = [-0.5, 0.5]*116){
+                            translate([i+board_dims.x/2, j+board_dims.y/2]){
+                                cylinder(h= board_dims.z, d=8);
+                            }
+                        }
+                    }
+                }
+            }
+            for (i=[-0.5, 0.5]*157, j = [-0.5, 0.5]*116){
+                translate([i+board_dims.x/2, j+board_dims.y/2]){
+                    cylinder(h= 3*board_dims.z, d=3, center=true);
+                }
+            }
+        }
+    }
+}
+
+module display_7inch_lcd_screen(board_dims){
+    translate([board_dims.x/2, board_dims.y/2]){
+        translate_z(board_dims.z+4/2){
+            coloured_render("#404040"){
+                difference(){
+                    cube([158, 93, 4], center=true);
+                    cube([138, 95, 5], center=true);
+                }
+            }
+        }
+        translate_z(board_dims.z+4+5.5/2){
+            coloured_render("silver"){
+                cube([164, 99, 5.5], center=true);
+            }
+        }
+        translate_z(board_dims.z+4+5.5+3/2){
+            coloured_render("#404040"){
+                cube([164, 99, 3], center=true);
+            }
+        }
+    }
+}
+
+module display_7inch_lcd_components(board_dims){
+    rotate_y(180){
+
+        chip(-160, 53, 3, 8, 3, "Silver");
+        chip(-160, 53, 3.1, 7, 2.5);
+        chip(-160, 54, 1.5, 1.5, 5);
+
+        chip(-140, 80, 8, 4, 2, "WhiteSmoke");
+        chip(-140, 78, 8, 1, 2.2);
+        chip(-140, 73, 4, 12, 1);
+
+        chip(-120, 48, 6.5, 3, 1.5);
+        chip(-120, 60, 6.5, 3, 1.5);
+
+        chip(-114, 26, 7, 7, 1.5);
+
+        chip(-128, 29, 3.5, 10, 4, "Silver");
+
+        chip(-95, 74, 20, 14, 1);
+
+        chip(-61, 66, 3.5, 4.5, 1.5);
+        chip(-60, 74, 3.5, 4.5, 1.5);
+
+        chip(-48, 79, 2, 4, 2);
+
+        chip(-42, 80, 4, 4, 1.5);
+        chip(-32, 80, 4, 4, 1.5);
+
+        chip(-32, 65, 4, 2, 2);
+        chip(-32, 68, 4, 2, 2);
+        chip(-32, 71, 4, 2, 2);
+
+        chip(-82, 32, 25, 23, 1, "DarkGoldenrod");
+        chip(-82, 45, 29, 4, 2, "WhiteSmoke");
+
+        translate([-board_dims.x, board_dims.y]){
+            translate_y(-30){
+                rotate_z(-90){
+                    micro_usb_socket();
+                }
+            }
+            translate_y(-43){
+                rotate_z(-90){
+                    micro_usb_socket();
+                }
+            }
+            translate_y(-12){
+                rotate_z(-90){
+                    hdmi_socket();
+                }
             }
         }
     }
