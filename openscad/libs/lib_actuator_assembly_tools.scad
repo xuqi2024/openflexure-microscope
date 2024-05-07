@@ -1,5 +1,3 @@
-
-
 use <./utilities.scad>
 use <./libdict.scad>
 use <./compact_nut_seat.scad>
@@ -175,20 +173,28 @@ module band_tool_end(params, h){
 }
 
 /**
-* Create just the arm of the band tool. This does not yet had the end
+* Create just the arm of the band tool. This does not yet have the end
 */
 module band_tool_arm(params, h){
     hull(){
         reflect_x(){
             prong_frame(params){
                 translate(blade_anchor_pos()){
-                    repeat([0,10,0], 2){
+                    translate([0,10,0]){
                         cylinder(d=band_tool_blade_w(),h=h);
+                    }
+                    translate([0,0,0]){
+                        cylinder(d=band_tool_blade_w(),h=h-1.5);
                     }
                 }
             }
         }
-        tool_handle_end_cross_section();
+        scale([0.8,0.8,1]) {
+            tool_handle_end_cross_section();
+        }
+    }
+    translate_z(1){
+        cube([1,40,3]);
     }
 }
 
@@ -227,131 +233,67 @@ module band_tool_arm_with_end(params, h){
 }
 
 /**
-* Create the centre block in the middle of the band tool
-*/
-module band_tool_centre_block(roc, flex_t, middle_w){
-    //thicker middle part to support the two ends
-
-    bottom_size = [actuator_nut_slot_size().x, middle_w, tiny()];
-    top_size = [actuator_nut_slot_size().x, middle_w+2*(roc-0.5), tiny()];
-
-    hull(){
-        translate_z(flex_t-tiny()){
-            cube(bottom_size, center=true);
-        }
-        translate_z(roc){
-            cube(top_size, center=true);
-        }
-    }
-}
-
-/**
-* Create the band tool already bent into shape.
-* Instead of callin this module you can call band_tool(params, bent=true); to
-* for all the parameters to be calculated the same way as for the tool
-* as printed.
-*/
-module _bent_band_tool(params, h, roc, flex_t, flex_l, middle_w){
-
-    // We make two tools, spaced out by a flexible joiner
-    reflect_y(){
-        translate([0, middle_w/2+flex_l+roc-3, roc]){
-            rotate_x(90){
-                band_tool_arm_with_end(params, h);
-            }
-        }
-    }
-    //Bent section of the links
-    reflect_y(){
-        translate([0,middle_w/2,roc]){
-            difference(){
-                rotate_y(90){
-                    cylinder(r=roc,h=actuator_nut_slot_size().x,center=true);
-                }
-                rotate_y(90){
-                    cylinder(r=roc-flex_t,h=99,center=true);
-                }
-                translate([-99,-99,0]){
-                    cube(999);
-                }
-                translate([-99,-999,-99]){
-                    cube(999);
-                }
-            }
-        }
-    }
-    //bottom of the link.
-    translate_z(flex_t/2){
-        cube([actuator_nut_slot_size().x,middle_w+2*tiny(),flex_t],center=true);
-    }
-    band_tool_centre_block(roc, flex_t, middle_w);
-}
-
-
-/**
 * Create the band tool for inserting the viton o-ring.
+* 
+* if in_situ=true, the arms are vertical and in-situ.
+* otherwise, the arms lie flat (for printing).
+* This does not include the holder.
 */
-module band_tool(params, bent=false){
-
-    //overall height of the band insertion tool
-    h = 4;
-    //Radius of curvature of the flexible linkers when bent
-    roc=2;
-    // Thickness of the flexible linkers
-    flex_t = 0.5;
-    //length of the flexible linkers
-    flex_l = roc*PI/2;
-    //width of the band anchor on the foot
-    middle_w = 2*column_base_radius()+1.5+2*(h-roc)+flex_t;
-
-    if (bent){
-        _bent_band_tool(params, h, roc, flex_t, flex_l, middle_w);
+module band_tool_arms(params, vertical=false){
+    h = 4; //overall height of the band insertion tool
+    if (vertical){
+        reflect_y(){
+            translate_y(column_base_radius() + 1.14 + h){
+                rotate_x(90){
+                    band_tool_arm_with_end(params, h);
+                }
+            }
+        }
     }
     else{
-
-        // We make two tools, spaced out by a flexible joiner
+        // We make two tools, spaced out by 2mm
         reflect_y(){
-            translate_y(middle_w/2+flex_l){
+            translate_y(1){
                 band_tool_arm_with_end(params, h);
             }
         }
-        //flexible links between the two tools and the middle part
-        translate_z(flex_t/2){
-            cube([actuator_nut_slot_size().x,middle_w+2*flex_l+2*tiny(),flex_t],center=true);
-        }
-        band_tool_centre_block(roc, flex_t, middle_w);
     }
 }
 
 
+/* The band tool holder is the base, into which the arms fit.
+ * 
+ * Its top is at z=holder_height(), and the bottom of the arms
+ * is at z=0. This means the bottom of the tool is at about z=-4.5.
+ * It should be printed upside down.
+ */
+module band_tool_holder_body(params){
+    intersection(){
+        // The basic shape is formed by the band tool, enlarged by holder_offset
+        minkowski(){
+            translate ([0,0,-3.8]){
+                hull(){
+                    band_tool_arms(params, vertical=true);
+                }
+            }
+            scale ([0.7,1,1]){
+                sphere(r = 1.7);
+            }
+        }
+        // We cut it off above holder_height() so the arms protrude upwards
+        translate ([-99/2,-99/2,-99]){
+            // We use a "big" cube but not so huge the render camera is inside it, to
+            // avoid OpenSCAD rendering glitches.
+            cube([99,99,99 + holder_height()], center = false);
+        }
+    }
+}
 
 module band_tool_holder(params){
-    holder_offset = 1.7;
-    //the holder is built from the difference between two minkowski sums of the band insertion tool
-    translate ([0,0,holder_offset]){
-        difference(){
-            minkowski(){
-                hull(){
-                    band_tool(params, bent=true);
-                }
-                scale ([0.7,1,1]){
-                    sphere(r = holder_offset);
-                }
-            }
-            union(){
-                minkowski(){
-                    hull(){
-                        band_tool(params, bent=true);
-                    }
-                    scale ([0.7,1,1]){
-                        sphere(r = holder_offset-0.8);
-                    }
-                }
-                // This cube can't be so large that the render camera is inside it, so we can't use 999 as default
-                translate ([-99/2,-99/2,holder_height()]){
-                    cube([99,99,99], center = false);
-                }
-            }
+    difference(){
+        band_tool_holder_body(params);
+        scale(1.1){
+            band_tool_arms(params, vertical=true);
         }
     }
 }
