@@ -3,7 +3,10 @@ use <./libs/main_body_structure.scad>
 use <./libs/microscope_parameters.scad>
 use <./libs/utilities.scad>
 
-    
+//scanner_case();
+//scanner_case_top();
+rotate_x(180)scanner_case_lid();
+
 module scanner_case(){
     params = default_params();
     dims = [158,180,110];
