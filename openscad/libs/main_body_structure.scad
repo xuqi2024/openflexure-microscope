@@ -401,7 +401,11 @@ module xy_stage_with_nut_traps(params)
 }
 
 module xy_flexures(params){
+    xy_bottom_flexures(params);
+    xy_top_flexures(params);
+}
 
+module xy_bottom_flexures(params){
     //Bottom flexures: flexures between legs and inner walls
     w=flex_dims().x;
     //The flexure length, increased for some overlap
@@ -418,7 +422,9 @@ module xy_flexures(params){
             }
         }
     }
+}
 
+module xy_top_flexures(params){
     // Top flexures: flexures between legs and stage
     // NOTE: these connect the legs together, and pass all the way under the stage.
     // This is important! If they get cut then the bridges will fail!
