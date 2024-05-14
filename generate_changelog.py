@@ -165,9 +165,11 @@ if __name__ == "__main__":
             if "HEAD" in changelog_releases:
                 # Remove the "HEAD" section
                 del changelog[changelog_releases['HEAD']:changelog_releases[latest_release_in_changelog]]
-                changelog.insert(changelog_releases['HEAD'], new_text)
             with open(changelog_fname, "w") as f:
+                f.write(new_text)
                 f.writelines(changelog)
+            print(f"Changelog file `{changelog_fname}` updated.")
+
             
 
         
