@@ -1,3 +1,46 @@
+## [v7.0.0-beta2](https://gitlab.com/openflexure/openflexure-microscope/compare/v7.0.0-beta1..v7.0.0-beta2/) (2024-05-07)
+
+* [!362](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/362): Band tool with push fit instead of flexing
+* [!350](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/350): Adding the 7inch LCD screen to the electronics components we render
+* [!361](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/361): Make construction arrow for renders and use for the Illumination instructions
+* [!360](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/360): Fix typo in upright_illumination
+* [!356](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/356): Correct double tilt in motor_lugs()
+* [!355](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/355): Update file README.md
+* [!358](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/358): Move to python 3.12 for build scripts
+* [!353](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/353): Archive only the stls into all-stls.zip
+* [!349](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/349): Make flipped counterbore print correctly by adding base_w term
+* [!347](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/347): Band tool holder in renders
+* [!346](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/346): Combined Allen keys to have same name
+* [!345](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/345): Build and deploy on master
+* [!341](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/341): Splitting out the shape of the male dovetail in locking_dovetail
+* [!334](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/334): Optics fitting wedge nut hole
+* [!339](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/339): Modify feet to locate with four prongs instead of two tabs
+* [!338](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/338): Attend to small shape bugs in the z-axis structure
+* [!335](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/335): Z axis printability enhancements
+* [!340](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/340): Adding a comment to explain pitch meaning in gears.scad
+* [!336](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/336): Centre text below OSHW logo on body
+* [!319](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/319): Re-shape nano-convertor-plate to fit a Raspberry Pi Pico as an option, update electronics drawer for Sangaboard v0.5
+* [!331](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/331): Update for gitbuilding v0.12
+* [!324](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/324): Clarified lens mounting, printing settings and other tips
+* [!316](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/316): New condenser for upright to use LED PCB
+* [!328](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/328): Swap reference for inline links in BOM notes and other instructions fixes
+* [!330](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/330): Update license to CERN-OHL-S
+* [!327](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/327): rename parts which are designed to fit sanga v0.4 and v0.5 with labels for header height not board version
+* [!320](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/320): Knock out plates to cover the reflection optics holes when not used
+* [!325](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/325): Rotate illumination PCB spacer in renders
+* [!326](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/326): Add qty to jumper cables in illumination
+* [!321](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/321): Correct depth of condenser_lid cut-out
+* [!322](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/322): Lens spacer gripper pedestal correct
+* [!308](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/308): Build CSG files as intermediate steps
+* [!318](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/318): Include interactive 3D views in docs
+* [!317](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/317): additions to upright instructions and tidying up
+* [!315](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/315): make nut trap accessible in upright condenser
+* [!314](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/314): Make dovetail clamp nut trap orientation flip - able
+
+## [v7.0.0-beta1](https://gitlab.com/openflexure/openflexure-microscope/compare/v7.0.0-alpha3..v7.0.0-beta1/) (2022-11-17)
+
+* [!313](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/313): Generate a changelog
+
 ## [v7.0.0-alpha3](https://gitlab.com/openflexure/openflexure-microscope/compare/v7.0.0-alpha2..v7.0.0-alpha3/) (2022-11-11)
 
 * [!293](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/293): Draft: experimental light trap
