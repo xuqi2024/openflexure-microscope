@@ -273,7 +273,7 @@ module z_motor_clearance(params, motor_h=999){
     translate_y(z_nut_y(params)){
         rotate_x(z_actuator_tilt(params)){
             translate_z(actuator_h+z_actuator_travel(params)+2-1){
-                rotate(180){
+                rotate(180*0){
                     motor_and_gear_clearance(gear_h=11, h=motor_h);
                     linear_extrude(1, center=true){
                         translate([0,15]){
@@ -481,10 +481,10 @@ module z_actuator_housing(params, include_motor_lugs=undef){
                    tilt=z_actuator_tilt(params),
                    travel=z_actuator_travel(params),
                    include_motor_lugs=inc_motor_lugs,
-                   lug_angle=180);
+                   lug_angle=180*0);
     }
 }
-
+z_actuator_housing(params=default_params(),include_motor_lugs=true);
 module z_actuator_cutout(params){
     // This chops out a void for the actuator column
     translate_y(z_nut_y(params)){

@@ -9,7 +9,7 @@ An attempt at an alternative to my ageing "nut_seat_with_flex" design...
 use <./utilities.scad>
 use <./libdict.scad>
 use <./microscope_parameters.scad>
-
+use <./gears.scad>
 
 
 
@@ -371,7 +371,10 @@ module screw_seat_shell(h=1, tilt=0){
 }
 
 module motor_lugs(h, tilt=0, angle=0){
+    actuator_gear_clearance = large_gear_radius(ratio=2) + 1.5;
+    motor_gear_clearance = small_gear_flange_radius(ratio=0.5) + 1.5;
     screw_pos = motor_screw_pos(h);
+    motor_screw_pillar_r = 4;
     // lugs to mount a micro geared stepper motor on a screw_seat.
     screw_r = sqrt(pow(screw_pos.x,2)+pow(screw_pos.y,2));
     rotate_x(tilt){
@@ -381,7 +384,7 @@ module motor_lugs(h, tilt=0, angle=0){
                     union(){
                         hull(){
                             translate(screw_pos-[0,0,motor_lug_h()]){
-                                cylinder(r=4,h=motor_lug_h());
+                                cylinder(r=motor_screw_pillar_r,h=motor_lug_h());
                             }
                             translate_z(screw_pos.z-screw_r-motor_lug_h()){
                                 cylinder(r=5,h=screw_r-5);
@@ -390,14 +393,24 @@ module motor_lugs(h, tilt=0, angle=0){
                     }
                     //space for gears
                     translate_z(h){
-                        cylinder(r1=8,r2=17,h=2+tiny());
+                        cylinder(r1=8,r2=actuator_gear_clearance,h=2+tiny());
                     }
                     translate_z(h+2){
-                        cylinder(h=999,r=17);
+                        // space for actuator gear
+                        cylinder(h=999,r=actuator_gear_clearance);
+                        // space for motor gear, but not cutting into the motor mount screw pillars
+                        difference(){
+                            translate_y(-gear_c2c_distance()){
+                                cylinder(h=999,r=motor_gear_clearance);
+                            }
+                            translate(screw_pos-[0,0,screw_pos.z]){
+                                cylinder(r=motor_screw_pillar_r,h=motor_lug_h());
+                            }
+                        }
                     }
                     //hollow inside of the structure
                     rotate(-angle){
-                        nut_seat_void(h=h, tilt=tilt);
+                        nut_seat_void(h=h, tilt=0);
                     }
                     //mounting screws
                     translate(screw_pos){

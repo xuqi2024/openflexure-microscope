@@ -277,12 +277,12 @@ module motor_and_gear_clearance(gear_h=10, h=999){
 
     linear_extrude(h){
         offset(1.5){
-            hull(){
-                circle(r=large_gear_radius(), $fn=n_teeth_large_gear()*4);
+            //hull(){
+                circle(r=large_gear_radius(ratio=2), $fn=n_teeth_large_gear(ratio=2)*4);
                 translate([0,gear_c2c_distance()]){
-                    circle(r=small_gear_flange_radius(), $fn=small_gear_fn());
+                    circle(r=small_gear_flange_radius(ratio=0.5)-0.5, $fn=small_gear_fn());
                 }
-            }
+            //}
         }
     }
     translate([0,gear_c2c_distance()-7.8,gear_h]){
