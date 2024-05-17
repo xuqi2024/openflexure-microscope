@@ -18,6 +18,7 @@ from build_system.microscope_build_writer import MicroscopeBuildWriter
 from build_system.util import version_string
 
 BUILD_DIR = "docs/models"
+OUTPUT_DIR = "build/"
 
 #Some constants used in generating lists of parts
 
@@ -91,6 +92,20 @@ def write_ninja_file(build_dir):
         writer.openscad("reflection_illuminator.stl", "reflection_illuminator.scad")
         writer.openscad("led_array_holder.stl", "led_array_holder.scad")
 
+        # Additional illumination components
+        writer.openscad("condenser_with_inbuilt_annulus.stl", "additional_illumination/condenser_with_inbuilt_annulus.scad")
+        writer.openscad("condenser_annulus_standalone.stl", "additional_illumination/condenser_annulus_standalone.scad")
+        writer.openscad("condenser_body_dovemount.stl", "additional_illumination/condenser_body_dovemount.scad")
+        writer.openscad("condenser_lens_gripper.stl", "additional_illumination/condenser_lens_gripper.scad")
+
+        # 8 mm LED illumination components
+        writer.openscad("condenser_8mm.stl", "additional_illumination/8mm_led/condenser_8mm.scad")
+        writer.openscad("condenser_8mm_with_inbuilt_annulus.stl", "additional_illumination/8mm_led/condenser_8mm_with_inbuilt_annulus.scad")
+        writer.openscad("condenser_lid_8mm.stl", "additional_illumination/8mm_led/condenser_lid_8mm.scad")
+        writer.openscad("condenser_led_holder_8mm.stl", "additional_illumination/8mm_led/condenser_led_holder_8mm.scad")
+        writer.openscad("condenser_8mm_body_dovemount.stl", "additional_illumination/8mm_led/condenser_8mm_body_dovemount.scad")
+        writer.openscad("condenser_aperture_8mm.stl", "additional_illumination/8mm_led/condenser_aperture_8mm.scad")
+
         # Upright microscope components
         writer.openscad("separate_z_actuator.stl", "separate_z_actuator.scad")
         writer.openscad("upright_condenser.stl", "upright_condenser.scad")
@@ -114,7 +129,6 @@ def write_ninja_file(build_dir):
             "accessories/actuator_drilling_jig.stl",
             "accessories/actuator_drilling_jig.scad"
         )
-
 
 def generate_rms_optics_modules(writer):
     """
@@ -216,6 +230,23 @@ def copy_included_logos(build_dir):
             os.path.join(output_dir, fname)
         )
 
+def copy_build_files_to_output(build_dir, output_dir):
+    """Copy the build files to the output directory
+
+    This is so that the build directory can be deleted without losing the
+    output files.
+    """
+    for root, dirs, files in os.walk(build_dir):
+        hidden_dirs = [subdir for subdir in dirs if subdir.startswith('.')]
+        for hidden_dir in hidden_dirs:
+            dirs.remove(hidden_dir)
+        for name in files:
+            if name.endswith('.stl'):
+                stl_file = os.path.join(root, name)
+                rel_path = os.path.relpath(stl_file, build_dir)
+                desitination = os.path.join(output_dir, rel_path)
+                os.makedirs(os.path.dirname(desitination), exist_ok=True)
+                shutil.copyfile(stl_file, desitination)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -231,6 +262,11 @@ if __name__ == "__main__":
         help="Ensures that the repo is clean before compiling",
         action="store_true",
     )
+    parser.add_argument(
+        "--output-dir",
+        help="Output directory for STL files",
+        default="builds"
+    )
 
     # we get the flags above and will pass the rest to ninja
     args, ninja_args = parser.parse_known_args()
@@ -242,3 +278,5 @@ if __name__ == "__main__":
     copy_included_logos(BUILD_DIR)
     # Run the "ninja.build" file we just created, to generate STLs
     subprocess.run([os.path.join(BIN_DIR, "ninja")] + ninja_args, check=True)
+    # Copy the build files to the output directory
+    copy_build_files_to_output(BUILD_DIR, args.output_dir)
