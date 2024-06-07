@@ -43,9 +43,15 @@ module render_microscope(low_cost=false){
             }
         }
     }
+
     coloured_render("DimGrey"){
     //cutaway("+x", "DimGrey"){
-        scanner_case();
+        scanner_case_base();
+    }
+
+    coloured_render("DimGrey"){
+    //cutaway("+x", "DimGrey"){
+        scanner_case_rim();
     }
 
     coloured_render("DodgerBlue"){

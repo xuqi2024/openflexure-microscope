@@ -3,14 +3,85 @@ use <./libs/main_body_structure.scad>
 use <./libs/microscope_parameters.scad>
 use <./libs/utilities.scad>
 
-//scanner_case();
+//scanner_case_base();
+scanner_case_rim();
 //scanner_case_top();
-rotate_x(180)scanner_case_lid();
+//rotate_x(180)scanner_case_lid();
 
-module scanner_case(){
+function scanner_case_dims() = [158,180,110];
+function scanner_case_y_offset() = 131.9;
+function scanner_case_conection_points() = let(
+    dims = scanner_case_dims(),
+    offset = scanner_case_y_offset()
+) [[-dims.x/2+7, 0],
+   [dims.x/2-7, 0],
+   [-dims.x/4, -dims.y+offset+7],
+   [dims.x/4, -dims.y+offset+7],
+   [dims.x/4, offset-7]];
+function scanner_case_conection_point_angles() = [-90, 90, 0, 0, 180];
+
+module scanner_case_base(){
+    difference(){
+        scanner_case_full();
+        translate_z(200+51){
+            cube([400, 400, 400], center=true);
+        }
+    }
+    conection_points = scanner_case_conection_points();
+    for (n = [0:len(conection_points)-1]){
+        conection_point = conection_points[n];
+        angle = scanner_case_conection_point_angles()[n];
+        translate(conection_point){
+            difference(){
+                cylinder(d1=10, d2=10, h=51);
+                translate_z(41){
+                    m3_nut_trap_with_shaft(angle,0);
+                }
+                translate_z(54){
+                    cylinder(h=99, d=6.5);
+                }
+            }
+        }
+    }
+
+}
+
+module scanner_case_rim(){
+    dims = scanner_case_dims();
+    conection_points = scanner_case_conection_points();
+    difference(){
+        union(){
+            scanner_case_full();
+            for (n = [0:len(conection_points)-1]){
+                conection_point = conection_points[n];
+                translate(conection_point){
+                    translate_z(51){
+                        cylinder(d1=10, d2=10, h=dims.z-51-6);
+                    }
+                }
+            }
+        }
+        translate_z(-200+51){
+            cube([400, 400, 400], center=true);
+        }
+        for (n = [0:len(conection_points)-1]){
+            conection_point = conection_points[n];
+            translate(conection_point){
+                translate_z(54){
+                    m3_cap_counterbore(99, 10);
+                }
+            }
+        }
+    }
+   
+    
+    
+}
+
+module scanner_case_full(){
     params = default_params();
-    dims = [158,180,110];
-    offset = 131.9;
+    dims = scanner_case_dims();
+    offset = scanner_case_y_offset();
     translate([-dims.x/2, -dims.y+offset]){
         difference(){
             cube(dims);
@@ -31,7 +102,14 @@ module scanner_case(){
             }
         }
         translate([13.35,104.8]){
-            cube([10,9.5,20]);
+            difference(){
+                cube([10,9.5,20]);
+                translate([9, 4, 8]){
+                    rotate_y(-90){
+                        m3_nut_trap_with_shaft(-90,0);
+                    }
+                }
+            }
         }
         translate([3,3,dims.z-20]){
             difference(){
@@ -74,8 +152,9 @@ module scanner_case(){
         translate(hole){
             difference(){
                 cylinder(d1=14, d2=8, h=40);
-                translate_z(34)
-                no2_selftap_hole(h=7);
+                translate_z(30){
+                    m3_nut_trap_with_shaft(0,0);
+                }
             }
         }
     }
@@ -83,8 +162,11 @@ module scanner_case(){
 
 
 module scanner_case_top(){
-    offset = 131.9-3.25;
-    dims = [158-6.5,180-6.5,5];
+
+    inset = 3.25;
+    offset = scanner_case_y_offset()-inset;
+    
+    dims = [scanner_case_dims().x-2*inset, scanner_case_dims().y-2*inset, 5];
     z_pos=105;
     translate([-dims.x/2, -dims.y+offset, z_pos]){
         difference(){
