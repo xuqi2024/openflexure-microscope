@@ -357,13 +357,13 @@ module lens_spacer(params, optics_config){
 
     assert(key_lookup("optics_type", optics_config)=="spacer", "Use spacer optics configuration to create a lens spacer.");
 
-    //unpack lens spacer parameters
+    // unpack lens spacer parameters
     lens_r = key_lookup("lens_r", optics_config);
     lens_h = key_lookup("lens_h", optics_config);
     lens_spacing = key_lookup("lens_spacing", optics_config);
 
     // z_position of the lens for this piece.
-    //This is the height of the camera_sensor above the circuit board plus the spacing between the lens and the sensor
+    // This is the height of the camera_sensor above the circuit board plus the spacing between the lens and the sensor
     lens_z = camera_sensor_height(optics_config)+lens_spacing;
 
     pedestal_h = 4; // extra height on the gripper, to allow it to flex
@@ -371,7 +371,7 @@ module lens_spacer(params, optics_config){
 
     lens_assembly_base_r = lens_r+1; //outer size of the lens grippers
 
-    //This is the height of the block the camera mounts into.
+    // This is the height of the block the camera mounts into.
     camera_mount_height = camera_mount_height(optics_config);
     lens_spacer_rotate = is_c270_spacer(optics_config)? -135: 0;
 
@@ -384,13 +384,12 @@ module lens_spacer(params, optics_config){
                         translate_z(camera_mount_height){
                             difference(){
                                 camera_mount_top_slice(optics_config);
-                                // the C270 board is too long, 
+                                // The C270 board is too long, 
                                 // the long hull above the body gets in the way of the spacer getting close to the slide
-                                if(is_c270_spacer(optics_config)){
-                                    rotate_z(lens_spacer_rotate){
-                                        translate_x(-99/2-15){
-                                            cube(99, center = true);
-                                        }
+                                // This cut will miss the PiCamera 2 and Arducam B0196 lens spacers
+                                rotate_z(45){
+                                    translate_x(99/2+15){
+                                        cube(99, center = true);
                                     }
                                 }
                             }
@@ -409,13 +408,12 @@ module lens_spacer(params, optics_config){
                     translate_z(camera_mount_height){
                         difference(){
                             camera_mount(optics_config, screwhole=false, counterbore=false);
-                            // the C270 board is too long, 
+                            // The C270 board is too long, 
                             // the long body gets in the way of the spacer getting close to the slide
-                            if(is_c270_spacer(optics_config)){
-                                rotate_z(lens_spacer_rotate){
-                                    translate_x(-99/2-15){
-                                        cube(99, center = true);
-                                    }
+                            // This cut will miss the PiCamera 2 and Arducam B0196 lens spacers
+                            rotate_z(45){
+                                translate_x(99/2+15){
+                                    cube(99, center = true);
                                 }
                             }
                         }
@@ -427,7 +425,7 @@ module lens_spacer(params, optics_config){
                                                                     2.8: // to match the light trap to the mount aperture, C270
                                                                     0; // to match the light trap to the mount aperture, Picam 2 and B0196
                     optical_path(optics_config, lens_assembly_z, camera_mount_top_z=z_offset_lens_spacer_optical_path);
-                    //cut out counterbores
+                    // cut out counterbores
                     translate_z(camera_mount_height){
                         camera_mount_counterbore(optics_config);
                     }
