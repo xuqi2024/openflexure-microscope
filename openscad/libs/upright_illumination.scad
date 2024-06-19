@@ -3,6 +3,7 @@ use <./microscope_parameters.scad>
 use <./illumination.scad>
 use <./libdict.scad>
 use <./utilities.scad>
+use <./lib_optics.scad>
 use <./z_axis.scad>
 
 
@@ -79,6 +80,8 @@ module upright_condenser_platform_separate(params, base_r){
                 }
             }
         }
+        // Undercut on build plate 
+        undercut_objective_fitting_wedge(undercut_height=1.5);
     }
 }
 
