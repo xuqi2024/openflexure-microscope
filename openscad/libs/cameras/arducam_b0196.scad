@@ -21,7 +21,6 @@
 
 use <../utilities.scad>
 use <../libdict.scad>
-use <./logitech_c270.scad>
 use <./picamera_2.scad>
 
 $fn=48;
@@ -179,15 +178,17 @@ module arducam_b0196_camera_mount(screwhole=true){
             }
             translate_z(-mount_height){
                 b0196();
-                //mounting holes at the four corners
+                // mounting holes at the four corners
                 if(screwhole){
                     translate_y(-arducam_offset_y()){
                         reflect_x(){
                             reflect_y(){
                                 translate([mounting_hole_xy, mounting_hole_xy,0]){
-                                    rotate_x(180){
-                                        mounting_hole();
-                                    }
+                                    no2_selftap_hole(h=6);
+                                    // chamfer in base to overcome overextrusion
+                                    translate_z(-0.5){
+                                        cylinder(r1=2,h=2,r2=0,$fn=12);
+                                    };
                                 }
                             }
                         }

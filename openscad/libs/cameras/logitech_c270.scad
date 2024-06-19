@@ -35,15 +35,6 @@ function c270_near_third_hole_pos() = [5,-9.5,0];
 // position of camera board hole at the cable end 
 function c270_far_third_hole_pos() = [-6,42.3,0];
 
-// Countersunk hole. countersink from the top
-module mounting_hole(){
-    translate_z(-5){
-        cylinder(r=0.8*1.2,h=999,$fn=12);
-    }
-    translate_z(-0.5){
-        cylinder(r1=0.8*1.2,h=1,r2=0.8*1.2+1,$fn=12);
-    }
-}
 
 module c270(beam_r=4.3, beam_h=4.5){
     //cut-out to fit Logitech C270 webcam
@@ -143,18 +134,22 @@ module c270_camera_mount(screwhole=true){
             translate_z(-mount_height){
                 c270();
                 if(screwhole){
-                    //mounting holes
+                    // mounting holes
                     reflect_x(){
                         translate_x(mounting_hole_x){
-                            rotate_x(180){
-                                mounting_hole();
-                            }
+                            no1_selftap_hole(h=6);
+                            // chamfer in base to overcome overextrusion
+                            translate_z(-0.5){
+                                cylinder(r1=2,h=2,r2=0,$fn=12);
+                            };
                         }
                     }
                     // third mounting hole, cable end
                     translate(c270_far_third_hole_pos()){
-                        rotate_x(180){
-                            mounting_hole();
+                        no1_selftap_hole(h=6);
+                        // chamfer in base to overcome overextrusion
+                        translate_z(-0.5){
+                            cylinder(r1=2,h=2,r2=0,$fn=12);
                         }
                     }
                 }
