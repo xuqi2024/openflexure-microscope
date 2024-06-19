@@ -21,7 +21,7 @@
 
 use <../utilities.scad>
 use <../libdict.scad>
-use <./picamera_2.scad>
+use <./picamera_2.scad> // to use the sensor cutout, as it is the same sensor
 
 $fn=48;
 
