@@ -160,17 +160,50 @@ module c270_camera_mount(screwhole=true){
 
 module c270_counterbore(){
     translate_z(c270_camera_bottom_z()-1){
-        c270_camera_bottom_mounting_posts(height=9, radius=1.1, cutouts=false);
+        at_c270_hole_pattern(){
+            cylinder(r=1.1, h=9, $fn=12);
+        }
     }
     translate_z(c270_camera_bottom_z()+1){
-        c270_camera_bottom_mounting_posts(height=9, radius=2.1, cutouts=false);
+        at_c270_hole_pattern(){
+            cylinder(r=2.1, h=9, $fn=12);
+        }
     }
 }
 
-module c270_camera_bottom_mounting_posts(height=-1, radius=-1, outers=true, cutouts=true){
+module c270_camera_bottom_mounting_posts(optics_config, outers=true, cutouts=true, bottom_slice=false){
+    if (bottom_slice){
+        //if we want the bottom slice intersect with the bottom of the whole
+        //post found by recalling the function
+        intersection(){
+            cylinder(h=tiny(), r=99);
+            c270_camera_bottom_mounting_posts(optics_config, outers=outers, cutouts=cutouts);
+        }
+    }
+    else{
+        // posts to mount to Logitech C270 camera from below
+        r1=3;
+        r2=2.5;
+        h = key_lookup("mounting_post_height", optics_config);
+        at_c270_hole_pattern(){
+            difference(){
+                if(outers){
+                    cylinder(r1=r1, r2=r2, h=h, $fn=12);
+                }
+                if(cutouts){
+                    translate_z(h-6+tiny()){
+                        // The C270 board holes are smaller than #2 screws
+                        no1_selftap_hole(h=6);
+                    }
+                }
+            }
+        }
+    }
+}
+
+module at_c270_hole_pattern(){
     // posts to mount to Logitech C270 camera from below
-    r = radius > 0 ? radius : 2.5;
-    h = height > 0 ? height : 4;
+
     screw_x = c270_camera_hole_spacing();
     // Third hole position at the far end of the board [-6,42.3,0] is too far away and makes 
     // the camera platform too big for mounting from above.
@@ -178,31 +211,11 @@ module c270_camera_bottom_mounting_posts(height=-1, radius=-1, outers=true, cuto
     rotate_z(-45){
         reflect_x(){
             translate([screw_x, 0, 0]){
-                difference(){
-                    if(outers){
-                        cylinder(r=r, h=h, $fn=12);
-                    }
-                    if(cutouts){
-                        translate_z(h-6+tiny()){
-                            // The C270 board holes are smaller than #2 screws
-                            no1_selftap_hole(h=6);
-                        }
-                    }
-                }
+                children();
             }
         }
         translate(c270_near_third_hole_pos()){
-                difference(){
-                    if(outers){
-                        cylinder(r=r, h=h, $fn=12);
-                    }
-                    if(cutouts){
-                        translate_z(h-6+tiny()){
-                            // The C270 board holes are smaller than #2 screws
-                            no1_selftap_hole(h=6);
-                        }
-                    }
-                }
+                children();
         }
     }
 }
