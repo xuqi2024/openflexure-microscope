@@ -212,32 +212,55 @@ module picamera_2_screwholes(){
 
 module picamera_2_counterbore(){
     translate_z(picamera_2_bottom_z()-1){
-        picamera_2_bottom_mounting_posts(height=999, radius=1.25, cutouts=false);
+        at_picamera_2_hole_pattern(){
+            cylinder(r=1.25, h=99, $fn=12);
+        }
     }
     translate_z(picamera_2_bottom_z()+1){
-        picamera_2_bottom_mounting_posts(height=999, radius=2.8, cutouts=false);
+        at_picamera_2_hole_pattern(){
+            cylinder(r=2.8, h=99, $fn=12);
+        }
     }
 }
 
-module picamera_2_bottom_mounting_posts(height=-1, radius=-1, outers=true, cutouts=true){
+module picamera_2_bottom_mounting_posts(outers=true, cutouts=true, bottom_slice=false){
     // posts to mount to pi camera from below
-    r = radius > 0 ? radius : 2;
-    h = height > 0 ? height : 4;
+    
+    if (bottom_slice){
+        //if we want the bottom slice intersect with the bottom of the whole
+        //post found by recalling the function
+        intersection(){
+            cylinder(h=tiny(), r=99);
+            picamera_2_bottom_mounting_posts(outers=outers, cutouts=cutouts);
+        }
+    }
+    else{
+        h=4;
+        r1=3;
+        r2=2;
+        at_picamera_2_hole_pattern(){
+            difference(){
+                if(outers){
+                    cylinder(r1=r1, r2=r2, h=h, $fn=12);
+                }
+                if(cutouts){
+                    translate_z(h-6+tiny()){
+                        no2_selftap_hole(h=6);
+                    }
+                }
+            }
+        }
+    }
+}
+
+module at_picamera_2_hole_pattern(){
+    // posts to mount to pi camera from below
     screw_x = picamera_2_hole_spacing()/2;
     rotate(45){
         reflect_x(){
             for(y=[0,12.5]){
                 translate([screw_x, y, 0]){
-                    difference(){
-                        if(outers){
-                            cylinder(r=r, h=h, $fn=12);
-                        }
-                        if(cutouts){
-                            translate_z(h-6+tiny()){
-                                no2_selftap_hole(h=6);
-                            }
-                        }
-                    }
+                    children();
                 }
             }
         }

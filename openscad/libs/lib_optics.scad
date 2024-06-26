@@ -419,7 +419,7 @@ module camera_platform(params, optics_config, base_r){
                     hull(){
                         cylinder(r=base_r,h=tiny());
                         objective_fitting_wedge(h=tiny());
-                        camera_bottom_mounting_posts(optics_config, h=tiny());
+                        camera_bottom_mounting_posts(optics_config, bottom_slice=true);
                     }
                 }
             }
@@ -432,7 +432,7 @@ module camera_platform(params, optics_config, base_r){
 
         // Mount for the nut that holds it on
         translate_z(-4){
-            objective_fitting_cutout(params, y_stop=true);
+            objective_fitting_cutout(params, y_stop=true, face_stops=true);
         }
         // add the camera mount holes
         translate_z(platform_h){
