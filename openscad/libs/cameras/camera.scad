@@ -77,7 +77,7 @@ module camera_mount(optics_config, screwhole=true, counterbore=false){
     }
 }
 
-module camera_bottom_mounting_posts(optics_config, h=-1, r=-1, outers=true, cutouts=true){
+module camera_bottom_mounting_posts(optics_config, outers=true, cutouts=true, bottom_slice=false){
     camera_type = get_camera_type(optics_config);
     if(camera_type=="logitech_c270"){
         assert(false, "This camera option does not have mounting posts set.");
@@ -86,10 +86,10 @@ module camera_bottom_mounting_posts(optics_config, h=-1, r=-1, outers=true, cuto
         assert(false, "This camera option does not have mounting posts set.");
     }
     else if(camera_type=="6led"){
-        6led_bottom_mounting_posts(height=h, radius=r, outers=outers, cutouts=cutouts);
+        6led_bottom_mounting_posts(outers=outers, cutouts=cutouts, bottom_slice=bottom_slice);
     }
     else if(camera_type=="picamera_2"){
-        picamera_2_bottom_mounting_posts(height=h, radius=r, outers=outers, cutouts=cutouts);
+        picamera_2_bottom_mounting_posts(outers=outers, cutouts=cutouts, bottom_slice=bottom_slice);
     }
     else{
         assert(false, "This camera option does not have mounting posts set.");
