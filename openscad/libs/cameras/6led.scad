@@ -20,6 +20,7 @@
 
 
 use <../utilities.scad>
+use <../libdict.scad>
 use <./m12.scad>
 
 
