@@ -71,7 +71,7 @@ module fitting_wedge_cutout(z_pos, y_stop=false, face_stops=false, nose_shift=0.
             cube([20,20,199]);
         }
     }
-    if(face_stops){ 
+    if(face_stops){
         reflect_x(){
             translate_y(nose_width/2){
                 rotate_z(45){

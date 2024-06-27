@@ -188,7 +188,7 @@ module arducam_b0196_camera_mount(screwhole=true){
                                     // chamfer in base to overcome overextrusion
                                     translate_z(-0.5){
                                         cylinder(r1=2,h=2,r2=0,$fn=12);
-                                    };
+                                    }
                                 }
                             }
                         }
