@@ -1,15 +1,15 @@
-[150 Ohm Resistor]: parts/electronics.yml#Resistor_150R
-[Warm white 5mm LED]: parts/electronics.yml#LED_WarmWhite
-[2 pin Du Pont connector female housing]: parts/electronics.yml#DuPont_Housing_1x2
-[Red pre-crimped Female-Female jumper cable (30 cm)]: parts/electronics.yml#JumperCable_FF_300mm_Red
-[Black pre-crimped Female-Female jumper cable (30 cm)]: parts/electronics.yml#JumperCable_FF_300mm_Black
-[Black heatshrink - 4.8mm ID]: parts/electronics.yml#Heatshrink_4.8mm_Black
-[Red heatshrink - 2.4mm ID]: parts/electronics.yml#Heatshrink_2.4mm_Red
-[solder]: parts/consumables/solder.md
-[soldering iron]: parts/tools/soldering_iron.md "{cat:tool}"
-[wire strippers]: parts/tools/wire_strippers.md "{cat:tool}"
-[precision wire cutters]: parts/tools/precision-wire-cutters.md "{cat:tool}"
-[heatgun]: parts/tools/heatgun.md "{cat:tool, note: 'If a heatgun is not available, the soldering iron can be used.'}"
+[150 Ohm Resistor]: ../parts/electronics.yml#Resistor_150R
+[Warm white 5mm LED]: ../parts/electronics.yml#LED_WarmWhite
+[2 pin Du Pont connector female housing]: ../parts/electronics.yml#DuPont_Housing_1x2
+[Red pre-crimped Female-Female jumper cable (30 cm)]: ../parts/electronics.yml#JumperCable_FF_300mm_Red
+[Black pre-crimped Female-Female jumper cable (30 cm)]: ../parts/electronics.yml#JumperCable_FF_300mm_Black
+[Black heatshrink - 4.8mm ID]: ../parts/electronics.yml#Heatshrink_4.8mm_Black
+[Red heatshrink - 2.4mm ID]: ../parts/electronics.yml#Heatshrink_2.4mm_Red
+[solder]: ../parts/consumables/solder.md
+[soldering iron]: ../parts/tools/soldering_iron.md "{cat:tool}"
+[wire strippers]: ../parts/tools/wire_strippers.md "{cat:tool}"
+[precision wire cutters]: ../parts/tools/precision-wire-cutters.md "{cat:tool}"
+[heatgun]: ../parts/tools/heatgun.md "{cat:tool, note: 'If a heatgun is not available, the soldering iron can be used.'}"
 
 # Solder the LED
 
@@ -23,7 +23,7 @@
 * Take the [LED][Warm white 5mm LED]{qty:1, cat:electronic}
 * Cut the longest leg down to about 5mm long using [precision wire cutters]{qty:1}
 * Tin this leg with [solder]{qty: a little, cat:consumable}
-* Take a [150 Ohm Resistor]{qty:1, note:"The exact value will depend on the current rating of your LED.", cat:electronic} and cut each leg down to about 5mm long. [i](info_pages/why_led_resistor.md)
+* Take a [150 Ohm Resistor]{qty:1, note:"The exact value will depend on the current rating of your LED.", cat:electronic} and cut each leg down to about 5mm long. [i](../info_pages/why_led_resistor.md)
 * Tin both legs with [solder]
 * Solder one side of the resistor to the cut leg of the LED.
 * Cut the other leg of the LED to be the same height as the end of the resistor.
