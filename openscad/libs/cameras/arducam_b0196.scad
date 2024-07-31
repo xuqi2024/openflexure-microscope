@@ -188,7 +188,7 @@ module arducam_b0196_camera_mount(screwhole=true){
                                     // chamfer in base to overcome overextrusion
                                     translate_z(-0.5){
                                         cylinder(r1=2,h=2,r2=0,$fn=12);
-                                    };
+                                    }
                                 }
                             }
                         }
@@ -203,22 +203,55 @@ module arducam_b0196_camera_mount(screwhole=true){
 module b0196_counterbore(){
     // clearance holes
     translate_z(arducam_b0196_camera_bottom_z()-1){
-        b0196_camera_bottom_mounting_posts(height=9, radius=1.25, cutouts=false);
+        at_b0196_hole_pattern(){
+            cylinder(r=1.25, h=9, $fn=12);
+        }
     }
     // counterbore holes, nomminally diameter 4.5, print at 4 to fit screw heads
     translate_z(arducam_b0196_camera_bottom_z()+1.5){
-        b0196_camera_bottom_mounting_posts(height=9, radius=2.25, cutouts=false);
+        at_b0196_hole_pattern(){
+            cylinder(r=2.25, h=9, $fn=12);
+        }
     }
     // Enlarged countebore for screwdriver, nominally diameter 5.5
     translate_z(arducam_b0196_camera_bottom_z()+4){
-        b0196_camera_bottom_mounting_posts(height=9, radius=2.75, cutouts=false);
+        at_b0196_hole_pattern(){
+            cylinder(r=2.75, h=9, $fn=12);
+        }
     }
 }
 
-module b0196_camera_bottom_mounting_posts(height=-1, radius=-1, outers=true, cutouts=true){
-    // posts to mount to arduino B0196 camera from below
-    r = radius > 0 ? radius : 2.5;
-    h = height > 0 ? height : 4;
+module b0196_camera_bottom_mounting_posts(optics_config, outers=true, cutouts=true, bottom_slice=false){
+    if (bottom_slice){
+        //if we want the bottom slice intersect with the bottom of the whole
+        //post found by recalling the function
+        intersection(){
+            cylinder(h=tiny(), r=99);
+            b0196_camera_bottom_mounting_posts(optics_config, outers=outers, cutouts=cutouts);
+        }
+    }
+    else{
+        // posts to mount to arduino B0196 camera from below
+        r1=3;
+        r2=2.5;
+        h = key_lookup("mounting_post_height", optics_config);
+        at_b0196_hole_pattern(){
+            difference(){
+                if(outers){
+                    cylinder(r1=r1, r2=r2, h=h, $fn=12);
+                }
+                if(cutouts){
+                    translate_z(h-6+tiny()){
+                        no2_selftap_hole(h=6);
+                    }
+                }
+            }
+        }
+    }
+}
+
+module at_b0196_hole_pattern(){
+
     screw_xy = arducam_b0196_corner_hole_spacing();
     close_screw_xy = arducam_b0196_sensor_hole_spacing();
     mount_holes = [[screw_xy,screw_xy,0],
@@ -229,16 +262,7 @@ module b0196_camera_bottom_mounting_posts(height=-1, radius=-1, outers=true, cut
         translate_y(-arducam_offset_y()){
             for(pos=mount_holes){
                 translate(pos){
-                    difference(){
-                        if(outers){
-                            cylinder(r=r, h=h, $fn=12);
-                        }
-                        if(cutouts){
-                            translate_z(h-6+tiny()){
-                                no2_selftap_hole(h=6);
-                            }
-                        }
-                    }
+                    children();
                 }
             }
         }
