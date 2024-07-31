@@ -1,1 +1,1 @@
-A rubber mallet or similar soft-faced hammer tool is recommended to allow for driving dowels into the swappable objective mount without deforming or splitting either the mount or dowels. 
+A small nylon faced hammer is required for driving dowels into the swappable objective mount without deforming the dowels or splitting the mount. For example a "12-708N Thorex Nylon Hammer" is perfect for this task.
