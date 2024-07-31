@@ -11,5 +11,5 @@ If you are unable to get hold of the PCB, it is possible to mount a 5mm LED into
 [repository]: https://gitlab.com/openflexure/openflexure-constant-current-illumination
 [kitspace]: https://kitspace.org/boards/gitlab.com/openflexure/openflexure-constant-current-illumination/ofm_cc_illumination_single/
 [instructions for the LED workaround]:  ../../workaround_5mm_led/workaround_5mm_led.md
-[sangaboard v0.5]: ./sangaboard5.md
+[sangaboard v0.5]: ./sangaboard.md
 [taulab.eu]: https://taulab.eu/openflexure/4-ofmv7-illumination-kit.html
