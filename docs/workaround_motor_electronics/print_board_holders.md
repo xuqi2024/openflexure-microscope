@@ -14,9 +14,16 @@ Using a [RepRap-style printer]{qty:1}, print the following parts using [PLA fila
 * [nano_converter_plate-pi4.stl](../models/nano_converter_plate-pi4.stl){previewpage}  
 * [nano_converter_plate_gripper.stl](../models/nano_converter_plate_gripper.stl){previewpage} (print in the side-on orientation as in the STL to avoid unsupported overhang)
 
->i The parts here fit a Raspberry Pi version 4. For parts to fit a version 3 see [customisations].
+As long as you are using a Raspberry Pi v4 you can use the standard electronics drawer.
 
-[customisations]: ../customisation.md
+>! **Attention Raspberry Pi version 3 users**
+>!
+>! For a Raspberry Pi version 3, you will need a different electronics drawer and adapter plate  
+>! 
+>! * [electronics_drawer-pi3_sanga_stack_11mm.stl](../models/electronics_drawer-pi3_sanga_stack_11mm.stl){previewpage}
+>! * [nano_converter_plate-pi3.stl](../models/nano_converter_plate-pi3.stl){previewpage}
+>!
+>! You also need the same [nano_converter_plate_gripper.stl](../models/nano_converter_plate_gripper.stl){previewpage}
 
 [nano converter plate]{output, qty:1, hidden}
 [nano converter plate gripper]{output, qty:1, hidden}
