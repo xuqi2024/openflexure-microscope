@@ -15,7 +15,7 @@ This version of the optics module consists of a modified optics module with a ma
 [#1 pozidrive screwdriver]: parts/tools/pozidrive_1_screwdriver.md "{cat:tool}"
 [Pi Camera lens tool]: parts/tools/pi_camera_lens_tool.md "{cat:tool, note: 'This should come with the [Raspberry Pi Camera Module v2].  If it is missing, you can 3D print a [workaround lens remover].'}"
 [workaround lens remover]: workaround_lens_remover.md
-[rubber mallet]: parts/tools/rubber_mallet.md "{cat:tool}"
+[nylon hammer]: parts/tools/nylon_hammer.md "{cat:tool}"
 [lens tool]: [lens_tool.stl](models/lens_tool.stl){previewpage}"{cat:printedtool}"
 [Raspberry Pi Camera Module v2]: parts/electronics.yml#PiCamera_2 "{cat:electronic}"
 [300mm Pi Camera ribbon cable]: parts/electronics.yml#PiCamera_RibbonCable_300mm "{cat:electronic, note: 'This is longer than the standard ribbon cable the Pi Camera is sold with!'}"
@@ -73,7 +73,7 @@ Take the [swappable optics module](models/swappable_rms_optics_module.stl){qty:1
 
 >i  **Note**
 >i 
->i Tolerances on the mount are deliberately tight so that the dowels are secured. It is recommended to use a [rubber mallet]{qty:1, cat:tool} or similar to drive the dowels into place without warping or damaging the part. 
+>i Tolerances on the mount are deliberately tight so that the dowels are secured. It is recommended to use a [nylon hammer]{qty:1, cat:tool} or similar to drive the dowels into place without warping or damaging the part. 
 
 ![](swappablephotos/mountprepare.jpg)
 ![](swappablephotos/mounthammer.jpg)
@@ -97,7 +97,7 @@ Take the [swappable optics module](models/swappable_rms_optics_module.stl){qty:1
 
 * Place the [carrier jig](models/swappable_rms_mount.stl){qty:1, cat:printedtool} on a hard surface with three [5mm diameter stainless steel ball bearings]{qty:3, cat:mech}, each sitting on a hole in the jig.
 * Take an [objective lens carrier](models/swappable_rms_carrier.stl){qty:1, cat:printedpart, note: "One carrier should be printed and assembled per objective lens to be used."} and place it facing down atop the jig, with each ball bearing aligning with its socket on the carrier.
-* Using a [rubber mallet] or similar, gently hammer the back of the [objective lens carrier] such that the ball bearings are evenly seated into their sockets in the carrier.
+* Using a [nylon hammer] or similar, gently hammer the back of the [objective lens carrier] such that the ball bearings are evenly seated into their sockets in the carrier.
 * Turning the carrier over, insert a [5x2mm disc magnet]{qty:2, cat:mech} into each of the remaining holes on the carrier so that they lie flush with the carrier surface.
 >! **Caution**
 >!

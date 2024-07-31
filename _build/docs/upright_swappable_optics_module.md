@@ -31,7 +31,7 @@ The imaging optics for this version of the microscope consist of an RMS objectiv
 
 * 1 [#1 pozidrive screwdriver]{: Class="bom"} 
 * 1 [Pi Camera lens tool]{: Class="bom"}    - This should come with the [Raspberry Pi Camera Module v2].  If it is missing, you can 3D print a [workaround lens remover].
-* 1 [rubber mallet]{: Class="missing"} 
+* 1 [nylon hammer]{: Class="missing"} 
 
 
 </div>
@@ -100,7 +100,7 @@ The camera board is static sensitive.
 <div markdown="1" class="info-block">
 **Note**
 
-Tolerances on the mount are deliberately tight so that the dowels are secured. It is recommended to use a [rubber mallet]{: Class="missing"} or similar to drive the dowels into place without warping or damaging the part. 
+Tolerances on the mount are deliberately tight so that the dowels are secured. It is recommended to use a [nylon hammer]{: Class="missing"} or similar to drive the dowels into place without warping or damaging the part. 
 </div>
 
 * Take the [objective lens mount] and insert one [5x2mm disc magnet]{: Class="missing"} into each of the two sockets so that they lie flush with the mount surface.
@@ -115,7 +115,7 @@ Tolerances on the mount are deliberately tight so that the dowels are secured. I
 
 * Place the [carrier jig]{: Class="missing"} on a hard surface with three [5mm diameter stainless steel ball bearings]{: Class="missing"}, each sitting on a hole in the jig.
 * Take an [objective lens carrier]{: Class="missing"} and place it facing down atop the jig, with each ball bearing aligning with its socket on the carrier.
-* Using a [rubber mallet] or similar, gently hammer the back of the [objective lens carrier] such that the ball bearings are evenly seated into their sockets in the carrier.
+* Using a [nylon hammer] or similar, gently hammer the back of the [objective lens carrier] such that the ball bearings are evenly seated into their sockets in the carrier.
 * Turning the carrier over, insert a [5x2mm disc magnet]{: Class="missing"} into each of the remaining holes on the carrier so that they lie flush with the carrier surface.
 <div markdown="1" class="caution-block">
 **Caution**
@@ -163,7 +163,7 @@ Set the <a name="output__complete-optics-module"></a>complete optics module asid
 [pi camera cover]:missing.md ""
 [objective lens mount]:missing.md ""
 [3x20mm stainless steel dowel]:missing.md ""
-[rubber mallet]:missing.md ""
+[nylon hammer]:missing.md ""
 [5x2mm disc magnet]:missing.md ""
 [carrier jig]:missing.md ""
 [5mm diameter stainless steel ball bearings]:missing.md ""
