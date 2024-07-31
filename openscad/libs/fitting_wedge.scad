@@ -35,11 +35,14 @@ module fitting_wedge(h, nose_width, nose_shift=0.2, y_depth=5, center=false){
     }
 }
 
-module fitting_wedge_cutout(z_pos, y_stop=false, nose_shift=0.2, max_screw=11){
+module fitting_wedge_cutout(z_pos, y_stop=false, face_stops=false, nose_shift=0.2, max_screw=11, nose_width=undef, y_depth_max=10){
     // Subtract this from a fitting wedge, to cut out a hole for the nut
     // so that it can be anchored to a mount
     // y_stop if set true will also cut flush the faces of the mount in case something is
     // protruding.
+    // face_stops if set true will cut flush the 45 degree faces in case something is
+    // protruding. nose_width must  be set. if the y_dapth is greater than 10 y_depth_max
+    // must be set to greater than the ydepth of the wedge
 
     module fitting_wedge_nut(shaft=false, nut_angle=0){
         // For convenience, this is the nut for the fitting wedge
@@ -66,6 +69,18 @@ module fitting_wedge_cutout(z_pos, y_stop=false, nose_shift=0.2, max_screw=11){
     if(y_stop){
         translate([-10, -nose_shift, -99]){
             cube([20,20,199]);
+        }
+    }
+    if(face_stops){
+        reflect_x(){
+            translate_y(nose_width/2){
+                rotate_z(45){
+                    cut_width = y_depth_max*2^.5;
+                    translate([-cut_width, 0, -99]){
+                        cube([2*cut_width,20,199]);
+                    }
+                }
+            }
         }
     }
 }
