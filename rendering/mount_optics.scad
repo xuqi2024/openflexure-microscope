@@ -19,9 +19,9 @@ render_mount_optics(FRAME, LOW_COST);
 module render_mount_optics(frame, low_cost){
     if (frame==1){
         om_pos = translate_pos(optics_module_pos(low_cost), [0, -10, -100]);
-        line_start = translate_pos(om_pos, [0, -14, 40]);
-        line_end = translate_pos(om_pos, [0, -14, 100]);
-        construction_line(line_start, line_end,.4, arrow=true);
+        line_start = translate_pos(om_pos, [0, 0, 40]);
+        line_end = translate_pos(om_pos, [0, 0, 97]);
+        construction_line(line_start, line_end,.3, arrow=true);
         render_optics(low_cost, om_pos, screw_tight=false);
         body_with_assembled_actuators();
     }

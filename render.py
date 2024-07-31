@@ -362,7 +362,7 @@ def register_picam(rendersystem):
 def register_mount_optics(rendersystem):
     input_file = "rendering/mount_optics.scad"
     cameras = [
-        Camera(position=[7.75, 37, -3], angle=[135.5, 0, 32.5], distance=495),
+        Camera(position=[9.6, 7, -14.5], angle=[103.5, 0, 66], distance=495),
         Camera(position=[7.75, 37, -3], angle=[135.5, 0, 32.5], distance=495),
         Camera(position=[7.75, 37, -3], angle=[135.5, 0, 32.5], distance=495),
         Camera(position=[7.75, 37, -3], angle=[135.5, 0, 32.5], distance=495),
