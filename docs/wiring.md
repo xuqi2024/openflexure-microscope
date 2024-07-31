@@ -47,12 +47,12 @@ The microscope must be completed by mounting the motor driver electronics and th
 
 ![Connect the LED to the Sangaboard](diagrams/illumination_to_sangaboard_wiring.png)
 
-The LED needs to be connected to Ground and 5V. You will find this in different places for different motor controllers.
+Connect the wires to the Sangaboard v0.5
 
-* For Sangaboard v0.5, plug the 2-pin female connector onto the 2 way male header labelled `5V GND`. Do not use the header labelled `LED`, it has functions that are not yet available in the Microscope software 
-* For Sangaboard v0.3, plug the 2-pin female connector onto one of the male headers with pins labelled `5V` and `GROUND` or `G`.
-* If you are using the [workaround motor electronics] you can attach the LED to the motor 5V supply.
-* Alternatively you can [connect the LED to the Raspberry Pi](workaround_raspberry_pi_gpio_led.md)
+* Plug the 2-pin female connector onto the 2 way male header labelled "**CC**".
+
+>i "CC" stands for Constant Current, it is the best way to reliably drive the LED.
+
 
 ## Mount the electronics drawer {pagestep}
 
