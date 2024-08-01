@@ -260,18 +260,40 @@ module generic_counterbore(bore_d, bore_h, hole_d, hole_h, flip_z=false){
     }
 }
 
-module nut(d,h=undef,center=false,fudge=1.18,shaft=false){
-    //make a nut, for metric bolt of nominal diameter d
-    //d: nominal bolt diameter (e.g. 3 for M3)
-    //h: height of nut
+module m3_nut_hole(h=undef,center=false, tight=false ,shaft=false){
+    // make shape that when subtracted from an object creates a hole for
+    // an m3 nut.
+    //
+    //h: height of nut trap (default is 2.6mm)
     //center: works as for cylinder
-    //fudge: multiply the diameter by this number (1.22 works when vertical)
-    //shaft: include a long cylinder representing the bolt shaft, diameter=d*1.05
-    height = if_undefined_set_default(h, d*0.8);
+    //tight: set `true` for a tighter nut trap (default `false`)
+    //shaft: set `true` to include a long cylinder for the bolt shaft (default `false`)
+
+    // Note 2.6mm is the standard height giving 0.2mm clearance over the maximum
+    // m3 nut height (2.4mm) as specified in ISO 4032
+    height = if_undefined_set_default(h, 2.6);
+
+    // According too ISO 4032 maximum flat-to-flat distance of an m3 nut is
+    // 5.5mm (minimum is 5.32mm). As the corners are rounder the minimum with
+    // accross corners is 6.01mm.
+    //
+    // As 3D printers slightly undersize small holes 5.7mm is chosen as the standard
+    // nut trap width. giving 0.2mm clearance and still 0.31mm interference.
+    //
+    // Tight traps are 0.1mm smaller. They are used in locations where it is easy
+    // to pull the nut (or hex bolt head) into the trap (such as on the gears)
+    width = tight ? 5.6 : 5.7;
+
+    // diameter of  circumcribed circule
+    trap_diameter = width/sin(60);
+
+    // clearance factor determined empirically over many years
+    shaft_diameter = 3*1.16;
+
     union(){
-        cylinder(h=height,center=center,r=0.9*d*fudge,$fn=6);
+        cylinder(d=trap_diameter, h=height, center=center, $fn=6);
         if(shaft){
-            cylinder(r=d/2*1.05*(fudge+1)/2,h=999,$fn=16,center=true);
+            cylinder(d=shaft_diameter, h=999, center=true, $fn=16);
         }
     }
 }
