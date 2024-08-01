@@ -2,7 +2,9 @@
 
 As standard use a Raspberry Pi v4 and a Sangaboard v0.5. If you have a different Raspberry Pi or Sangaboard you will need a different electronics tray.
 
->! Note that some early productions runs of the Sangaboard v0.5 used 8.5mm header sockets rather than 11mm sockets.
+>! **Note on Sangaboard v0.5**
+>!
+>! The Sangaboard v0.5 from our preferred supplier has 11mm tall header connectors. If you purchase a board from another supplier and they use standard 8.5mm headers you will need to print a different electronics drawer.
 
 ## Drawer options:
 

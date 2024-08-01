@@ -28,9 +28,9 @@ If you are unable to use the illumination PCB, you can substitute a 5mm LED, wir
 
 ___
 
-## Using alternative electronics versions
+## Electronics drawers for alternative electronics versions
 
-As standard the OpenFlexure microscope uses a Raspberry Pi v4 and a Sangaboard v0.5 For those using older versions may need to print an alternative electronics drawer.
+As standard the OpenFlexure microscope uses a Raspberry Pi v4 and a Sangaboard v0.5. For those using older versions may need to print an alternative electronics drawer.
 
 **[See this explanation of the electronics drawer options.](customisations/drawer_options.md)**
 

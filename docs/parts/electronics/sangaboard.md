@@ -10,11 +10,17 @@ PartData:
 
 # Sangaboard v0.5
 
+![](../../diagrams/sangaboard_v0.5.png)
+
 We use a custom open source motor board called the Sangaboard. The latest version is based on the RP2040 chip from raspberry pi and works as a hat for the Pi, eliminating the need for additional wiring. The board provides power to the pi so that only one USB-C power supply is required for the microscope (capable of at least 3A). Any version starting with `0.5` should work with this version of the microscope, most testing has been done with `v0.5.3`. Sangaboards are currently available from [Taulab], see the part link at the bottom of this page.
 
 >i The Sangaboard uses surface mount components and custom boards, this makes it hard to solder your own. While the [board design and schematics] are available openly, we do not recommend making your own unless you have the appropriate tools and experience. If you cannot get a Sangaboard, you can [build your own Sangaboard-compatible motor controller](../../workaround_motor_electronics/workaround_motor_electronics.md). 
 
 There are also various [older sangaboard versions] that are **not recommended** for the current version of the microscope. Most of them are still capable of running the latest firmware and controlling the motors, but result in messier wiring and don't fit as neatly in the microscope case.
+
+>! **Note on Sangaboard v0.5**
+>!
+>! The Sangaboard v0.5 from our preferred supplier has 11mm tall header connectors. If you purchase a board from another supplier and they use standard 8.5mm headers you will need to print a [different electronics drawer](../../customisations/drawer_options.md)
 
 ## Features
 Sangaboard v0.5 introduces some important new features
@@ -52,9 +58,9 @@ frequencies (32 steps at 1MHz). In testing no flicker was visible even at much l
 frequencies. For extended use of the PWM system at high powers a heatsink is highly recommended.
 
 ### One-click firmware upgrades
-The Sangaboard extensions allows the application of firware upgrades with a single button 
+The Sangaboard extensions allows the application of firmware upgrades with a single button 
 via the UI. Internally, this is handled by an SWD connection to the Raspberry Pi. If you
-wish to use the pi's SWD for a different device, cut the cuttable traces between JP3 and JP4.
+wish to use the Pi's SWD for a different device, cut the cuttable traces between JP3 and JP4.
 Cutting JP2 will disconnect the RP2040 reset pin from the Pi's GPIO23.
 
 ### Expansion header
