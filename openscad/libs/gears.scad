@@ -114,7 +114,7 @@ module large_gear(){
             cylinder(r1=pitch_r-2,r2=pitch_r+18,h=20);
         }
         translate(large_gear_screw_pos()){
-            nut(3,shaft=true,fudge=1.2,h=999);
+            m3_nut_hole(h=99, shaft=true, tight=true);
         }
     }
 }
@@ -199,7 +199,7 @@ module thumbwheel(){
             }
         }
         translate_z(1.5){
-            nut(3,shaft=true,fudge=1.2,h=999);
+            m3_nut_hole(h=99, shaft=true, tight=true);
         }
     }
 }
@@ -232,7 +232,7 @@ module illumination_thumbscrew(){
             }
         }
         translate_z(12){
-            nut(3, shaft=true, fudge=1.2, h=999);
+            m3_nut_hole(h=99, shaft=true, tight=true);
         }
     }
 }
