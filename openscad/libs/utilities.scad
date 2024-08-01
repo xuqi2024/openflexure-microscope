@@ -276,43 +276,6 @@ module nut(d,h=undef,center=false,fudge=1.18,shaft=false){
     }
 }
 
-module nut_from_bottom(d,h=undef,fudge=1.2,shaft=true,chamfer_r=0.75,chamfer_h=0.75){
-    //make a nut, for metric bolt of nominal diameter d
-    //d: nominal bolt diameter (e.g. 3 for M3)
-    //h: height of nut
-    //center: works as for cylinder
-    //fudge: multiply the diameter by this number (1.22 works when vertical)
-    //shaft: include a long cylinder representing the bolt shaft, diameter=d*1.05
-    height = if_undefined_set_default(h, d*0.8);
-    union(){
-        cylinder(h=height,r=0.9*d*fudge,$fn=6);
-        translate_z(-0.05){
-            cylinder(h=chamfer_h,r1=0.9*d*fudge+chamfer_r,r2=0.9*d*fudge,$fn=6);
-        }
-        mirror([0,0,1]){
-            cylinder(h=999,r=0.9*d*fudge+chamfer_r,$fn=6);
-        }
-        if(shaft){
-            sr=d/2*1.05*(fudge+1)/2; //radius of shaft
-            translate_z(height/2){
-                cylinder(r=sr,h=999,$fn=16,center=true);
-            }
-            //add a little cut to the roof of the surface so the initial bridges don't have to span the hole.
-            intersection(){
-                union(){
-                    translate_z(height){
-                        cube([999,sr*2,0.5],center=true);
-                    }
-                    translate_z(height+0.25){
-                        cube([sr*2,sr*2,0.5],center=true);
-                    }
-                }
-                cylinder(h=height+1,r=0.9*d*fudge,$fn=6);
-            }
-        }
-    }
-}
-
 module nut_y(d, h=undef, center=false, fudge=1.1, extra_height=0.7, shaft_length=0, nut_angle=0){
     //make a nut, for metric bolt of nominal diameter d
     //d: nominal bolt diameter (e.g. 3 for M3)
