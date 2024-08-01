@@ -274,8 +274,8 @@ module m3_nut_hole(h=undef,center=false, tight=false ,shaft=false){
     height = if_undefined_set_default(h, 2.6);
 
     // According too ISO 4032 maximum flat-to-flat distance of an m3 nut is
-    // 5.5mm (minimum is 5.32mm). As the corners are rounder the minimum with
-    // accross corners is 6.01mm.
+    // 5.5mm (minimum is 5.32mm). As the corners are rounder the minimum width
+    // across corners is specified as 6.01mm.
     //
     // As 3D printers slightly undersize small holes 5.7mm is chosen as the standard
     // nut trap width. giving 0.2mm clearance and still 0.31mm interference.
@@ -298,43 +298,52 @@ module m3_nut_hole(h=undef,center=false, tight=false ,shaft=false){
     }
 }
 
-module nut_y(d, h=undef, center=false, fudge=1.1, extra_height=0.7, shaft_length=0, nut_angle=0){
-    //make a nut, for metric bolt of nominal diameter d
-    //d: nominal bolt diameter (e.g. 3 for M3)
-    //h: height of nut
+module m3_nut_hole_y(h=undef, center=false, extra_height=0.1, shaft_length=0, nut_angle=0){
+    // make shape that when subtracted from an object creates a hole for
+    // an m3 nut that is in the vertical plane. This differs from `nut` as
+    // it not just in the nut rotation. It also creates extra space over the
+    // nut to account for drooping in the print. This is not needed if the nut
+    // is inserted from the top.
+    //
+    //h: height of nut (default is 2.6)
     //center: works as for cylinder
-    //fudge: multiply the diameter by this number for a looser fit
-    //shaft: include a long cylinder representing the bolt shaft, diameter=d*1.05
-    //nut_angle: allows the nut angle to be changed while still having the printable horizontal hole, 0 is flat side down
-    height = if_undefined_set_default(h, d*0.8);
-    // Radius of a circle circumscribing the points of a nut for thread diameter D
-    // 1.06 matches the nut for M3, will be a little too large for M4 and M6
-    r=1.06*d*fudge;
+    //shaft_length: length of the shaft (default is 0)
+    //nut_angle: allows the nut angle to be changed while still having the printable
+    //       horizontal hole, 0 is flat side down. (default is 0)
+
+
+    // Set function `m3_nut_hole` for explanation of these sizes
+    height = if_undefined_set_default(h, 2.6);
+    width = 5.7;
+    // diameter of  circumcribed circule
+    trap_diameter = width/sin(60);
+    // clearance factor determined empirically over many years
+    shaft_diameter = 3*1.16;
+
     union(){
         rotate([-90, 0, 0]){
             rotate_z(nut_angle){
-                cylinder(h=height,center=center,r=r,$fn=6);
+                cylinder(d=trap_diameter, h=height, center=center, $fn=6);
             }
         }
 
         if(shaft_length > 0){
-            sl = shaft_length>0 ? shaft_length : 999;
             translate_y(height/2){
-                reflect_y(){
-                    printable_horizontal_hole(h=sl,r=d/2*1.05*fudge,$fn=16,extra_height=extra_height);
-                }
+                printable_horizontal_hole(h=2*shaft_length,
+                                          r=shaft_diameter/2,
+                                          extra_height=extra_height,
+                                          center=true,
+                                          $fn=16);
             }
-            //Center could be used instead of reflect
         }
 
         if (nut_angle==0){
             // extra space on top of nut, only makes sense if the nut is flat down/up
             center_y = center ? -height/2 : 0;
-            flat_length = 2*r*sin(30);
-            center_to_flat = r*cos(30);
 
-            translate([-flat_length/2, center_y ,0]){
-                cube([flat_length, height, center_to_flat+extra_height]);
+            //Note: The cirumscribed radius of a hexagon is the same as the face length.
+            translate([-trap_diameter/4, center_y ,0]){
+                cube([trap_diameter/2, height, width/2+extra_height]);
             }
         }
     }
