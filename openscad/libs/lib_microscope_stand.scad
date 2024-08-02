@@ -337,7 +337,7 @@ module pi_drawer_runner_and_mount(params){
                     for(z_tr = [0, 20]){
                         translate_z(z_tr){
                             rotate_y(90){
-                                nut(3, 2.6);
+                                m3_nut_hole();
                             }
                         }
                     }
@@ -632,7 +632,7 @@ module electronics_drawer_nut_trap(){
                     translate([0, 0.1, z_tr]){
                         rotate_z(-90){
                             rotate_y(90){
-                                nut(3, 2.6);
+                                m3_nut_hole();
                             }
                         }
                     }
