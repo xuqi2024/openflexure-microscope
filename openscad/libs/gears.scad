@@ -15,6 +15,8 @@
 use <./MCAD/involute_gears.scad> // forward slash - for platform independence
 use <./microscope_parameters.scad>
 use <./utilities.scad>
+use <./compact_nut_seat.scad>
+
 
 /*
 * Gearing ratio between the large and small gears
@@ -99,22 +101,25 @@ module large_gear(){
     $fn=32;
 
     pitch_r = large_gear_pitch_radius();
-
+    height = 6;
     difference(){
         // intersection used to chamfer the bottom of the gear
         intersection(){
             gear(number_of_teeth=n_teeth_large_gear(),
                  circular_pitch=gear_pitch(),
                  circles=0,
-                 gear_thickness=6,
-                 hub_thickness=6,
+                 gear_thickness=height,
+                 hub_thickness=height,
                  hub_diameter=20,
-                 rim_thickness=6,
+                 rim_thickness=height,
                  bore_diameter=1);
             cylinder(r1=pitch_r-2,r2=pitch_r+18,h=20);
         }
-        translate(large_gear_screw_pos()){
-            m3_nut_hole(h=99, shaft=true, tight=true);
+        translate(large_gear_screw_pos()+[0,0,height+1]){
+            mirror([0,0,1]){
+                nut_trap_and_slot(actuator_nut_size(), actuator_nut_slot_size(), slot_length=0, include_top=false);
+            }
+            cylinder(r=actuator_shaft_radius(), h=99, center=true, $fn=16);
         }
     }
 }
