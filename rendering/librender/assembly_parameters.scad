@@ -140,13 +140,19 @@ function default_ribbon_pos(low_cost=false, params=undef, optics_config=undef) =
    create_placement_dict([50, -50, 100+z_start], [0, 0, 135], [0, 180, 0])];
 
 function curled_ribbon_pos(low_cost=false, params=undef, optics_config=undef) = let(
-    z_start = low_cost ? lens_spacer_z(params, optics_config) +17.5 : 0
-) [create_placement_dict([17, -17, -18.75+z_start], [0, 0, 135], [0, 180, 0]),
-   create_placement_dict([18, -18, -20+z_start], [0, 0, 135], [0, 180, 0]),
-   create_placement_dict([19, -19, -22+z_start], [0, 0, 135], [0, 180, 0]),
-   create_placement_dict([16, -16, -50], [0, 0, 135]),
-   create_placement_dict([14, -14, -52], [0, 0, 135]),
-   create_placement_dict([-10, 10, -53], [0, 0, 135])];
+    z_start = low_cost ? lens_spacer_z(params, optics_config) + 17.5 : 0 ,
+    pos1 = [create_placement_dict([12, -12, -18.75+z_start], [0, 0, 135], [0, 180, 0]),
+            create_placement_dict([13.5, -13.5, -20+z_start], [0, 0, 135], [0, 180, 0]),
+            create_placement_dict([14.5, -14.5, -22+z_start], [0, 0, 135], [0, 180, 0])] ,
+    pos2 = [create_placement_dict([14, -14, -26+z_start], [0, 0, 135], [0, 180, 0]),
+            create_placement_dict([9, -9, -36+z_start], [0, 0, 135], [0, 180, 0]),
+            create_placement_dict([8, -8, -40+z_start], [0, 0, 135], [0, 180, 0]),
+            create_placement_dict([8, -8, -60+z_start], [0, 0, 135], [0, 180, 0]),
+            create_placement_dict([10, -10, -20], [0, 0, 135], [0, 180, 0])],
+    pos3 = [create_placement_dict([12, -12, -50], [0, 0, 135]),
+            create_placement_dict([11, -11, -52], [0, 0, 135]),
+            create_placement_dict([-10, 10, -53], [0, 0, 135])]
+) low_cost ? concat(pos1, pos2, pos3) : concat(pos1, pos3);
 
 function optics_module_nut_pos() = create_placement_dict(optics_module_mount_pos() - [0, 3.25, 1], [90, 0, 0], [0, 0, 30]);
 function optics_module_screw_pos() = create_placement_dict(optics_module_mount_pos() - [0, 0, 1], [-90, 0, 0], [0, 0, 30]);
