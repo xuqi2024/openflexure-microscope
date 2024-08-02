@@ -312,7 +312,7 @@ module m3_nut_hole_y(h=undef, center=false, extra_height=0.1, shaft_length=0, nu
     //       horizontal hole, 0 is flat side down. (default is 0)
 
 
-    // Set function `m3_nut_hole` for explanation of these sizes
+    // See module `m3_nut_hole` for explanation of these sizes
     height = if_undefined_set_default(h, 2.6);
     width = 5.7;
     // diameter of  circumcribed circule

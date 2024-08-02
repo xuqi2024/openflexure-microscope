@@ -46,13 +46,13 @@ function actuator_dims(params) = let(
 function actuator_nut_slot_size() = let(
     //maximum width of the m3 nut nut (flat to flat) specified by ISO 4032
     nut_w = 5.5,
-    // Multiplying by a clearnce factor of 1.091 that has been tested epirically
+    // Multiplying by a clearance factor of 1.091 that has been tested empirically
     // for many years, to provide good grip on the nuts when in the top of the
     // trap which is 90% of this slot size.
-    nut_w_wt = nut_w*1.091,
+    nut_w_clear = nut_w*1.091,
     // ISO 4032 specifies a maximum height for the m3 nut of of 2.4mm
     nut_h = 2.4
-) [nut_w_wt, nut_w_wt/sin(60), nut_h+0.6];
+) [nut_w_clear, nut_w_clear/sin(60), nut_h+0.6];
 
 
 function column_core_size() = let(
