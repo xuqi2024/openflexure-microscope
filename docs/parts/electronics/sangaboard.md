@@ -48,7 +48,7 @@ in the range of 0-100 mA.
 For higher power LEDs, there are 2 PWM based channels driven by MOSFETs on the board
 and these are designed to provide up to 1A of current to the LEDs.
 To protect the board from potential damage, there is 1.5 Ohm current limiting resisor
-on in series with the PWM LEDs. For advanced users wishing to experiment with different
+in series with the PWM LEDs. For advanced users wishing to experiment with different
 currents/LEDs, this resistor can be bypassed using a solder jumper on the bottom of
 of board.
 The PWM frequency and duty cycle (brightness) can be adjusted in the Sangaboard extension.

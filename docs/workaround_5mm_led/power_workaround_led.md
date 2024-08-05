@@ -3,7 +3,7 @@
 
 You can carry on assembling your microscope until the assembly instructions asks you to connect the illumination PCB.
 
->! As our LED has a resistor you have access to a Sangaboard v0.5 you shouldn't use the same pins as the illumination PCB
+>! As our LED has a resistor, if you have access to a Sangaboard v0.5 you shouldn't use the same pins as are used for the illumination PCB
 
 ## Locate +5v and ground on your electronics {pagestep}
 
