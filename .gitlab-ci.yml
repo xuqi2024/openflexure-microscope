@@ -133,7 +133,8 @@ archive-source:
 
 check_stls:
     stage: analyse
-    image: python:3.12
+    # This is Python 3.7 still as admesh is not compiled for newer python
+    image: python:3.7
     needs: ["build"]
     dependencies: ["build"]
     allow_failure: true
@@ -145,7 +146,7 @@ check_stls:
       - apt-get update -qq
       - apt-get -o DPkg::Options::=--force-confdef -y -qq install admesh
     script:
-      - pip install -r requirements.txt
+      - pip install colorama==0.4.3
       - pip install admesh==0.98.9
       - ./check_stls.py docs/models/
     only:
