@@ -7,4 +7,4 @@ The new condenser assembly is designed for use with an illumination PCB, contain
 * [Solder the LED](./solder_led.md){step}
 * [Print the LED holder](./print_led_holder.md){step}
 * [Mount the LED into the condenser lid](./mount_5mm_led.md){step}
-* [Power the LED](./power_workaround_led.md)
+* [Power the LED](./power_workaround_led.md){step}

@@ -13,7 +13,7 @@ as part of the illumination kit at [taulab.eu]. The illumination PCB contains on
 
 If you are unable to get hold of the PCB, it is possible to mount a 5mm LED into the condenser instead, using the [instructions for the LED workaround].
 
->i There is an older version of the illumination PCB that includes a constant-current driver on board. The older board is usually green, and is circular. The newer boards supplied with Sangaboard v0.5 are usually purple, and have a flat edge. The older PCB can be previewed and ordered via [kitspace], and all design files are available in its [repository][old repo].  More information, and comparison data between the 5v board and the old LED, is in the [illumination optics explanation]. 
+>i There is an older version of the illumination PCB that includes a constant-current driver on board. The older board is usually green, and is circular. The newer boards supplied with Sangaboard v0.5 are usually purple, and have a flat edge. The older PCB can be previewed and ordered via [kitspace], and all design files are available in its [repository][old_repo].  More information, and comparison data between the 5v board and the old LED, is in the [illumination optics explanation]. 
 
 [illumination optics explanation]: ../../info_pages/illumination_optics_explanation.md
 [old_repo]: https://gitlab.com/openflexure/openflexure-constant-current-illumination
