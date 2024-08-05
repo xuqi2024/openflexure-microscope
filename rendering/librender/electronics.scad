@@ -9,7 +9,9 @@ $fn = 12;
 
 
 module illumination_board(){
-    rotate([180, 0, -90]) sangaboard_v0_5_cc_led_board();
+    rotate([180, 0, -90]){
+        sangaboard_v0_5_cc_led_board();
+    }
 }
 
 function illumination_board_connector_offset() = [0, 2.7 + 4.84, 3.5/2];
