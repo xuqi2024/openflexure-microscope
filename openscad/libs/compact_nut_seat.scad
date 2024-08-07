@@ -91,7 +91,7 @@ module nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=undef){
     r1 = w/2/cos(30); //bottom of nut trap is large
     r2 = r*squeeze; //top of nut trap is very tight
     sequential_hull(){
-        translate([-w/2,999,0]){
+        translate([-w/2,w*10,0]){
             cube([w,tiny(),h]);
         }
         union(){
