@@ -429,10 +429,9 @@ module clamping_bolt_and_nut(p){
                     // carefully for strength.
                     rotate_z(nut_rotation){
                         sequential_hull(){
-                            // TODO: replace this with a proper parametric nut trap!
-                            cylinder(r=3*1.1, h=3.2, $fn=6);
+                            m3_nut_hole(h=3.2, shaft=false);
                             translate_x(99){
-                                cylinder(r=3*1.1, h=3.2, $fn=6);
+                                m3_nut_hole(h=3.2, shaft=false);
                             }
                         }
                     }
