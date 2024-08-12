@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   inkscape:export-ydpi="300"
-   inkscape:export-xdpi="300"
-   inkscape:export-filename="illumination_to_sangaboard_wiring.png"
-   sodipodi:docname="illumination_to_sangaboard_wiring.svg"
-   inkscape:version="1.3.2 (1:1.3.2+202311252150+091e20ef0f)"
-   id="svg20902"
-   version="1.1"
-   viewBox="0 0 41.08688 42.083988"
-   height="42.083988mm"
    width="41.08688mm"
+   height="42.083988mm"
+   viewBox="0 0 41.08688 42.083988"
+   version="1.1"
+   id="svg20902"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   sodipodi:docname="illumination_to_sangaboard_wiring(1).svg"
+   inkscape:export-filename="illumination_to_sangaboard_wiring.png"
+   inkscape:export-xdpi="300"
+   inkscape:export-ydpi="300"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -51,16 +51,16 @@
      fit-margin-left="1"
      fit-margin-top="1"
      inkscape:window-maximized="0"
-     inkscape:window-y="279"
-     inkscape:window-x="1529"
-     inkscape:window-height="1228"
-     inkscape:window-width="1741"
+     inkscape:window-y="0"
+     inkscape:window-x="1312"
+     inkscape:window-height="868"
+     inkscape:window-width="1440"
      showgrid="false"
      inkscape:document-rotation="0"
      inkscape:current-layer="layer1"
      inkscape:document-units="mm"
-     inkscape:cy="127.69113"
-     inkscape:cx="135.12907"
+     inkscape:cy="83.463853"
+     inkscape:cx="77.402938"
      inkscape:zoom="3.959798"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
@@ -70,7 +70,8 @@
      id="base"
      inkscape:showpageshadow="2"
      inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1" />
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:snap-center="false" />
   <metadata
      id="metadata20899">
     <rdf:RDF>
@@ -88,10 +89,18 @@
      inkscape:groupmode="layer"
      inkscape:label="Layer 1">
     <image
+       width="40.647129"
+       height="35.48077"
+       preserveAspectRatio="none"
        xlink:href="sangaboard_v0.5.png"
-       y="80.767181"
-       x="43.091591"
-       width="66.284552"
+       id="image959"
+       x="56.002815"
+       y="95.224968" />
+    <image
+       xlink:href="sangaboard_v0.5.png"
+       y="98"
+       x="12"
+       width="-60"
        height="64.305908"
        preserveAspectRatio="none"
        id="image21475"
@@ -137,19 +146,19 @@
     </g>
     <text
        id="text20741"
-       y="133.18095"
-       x="69.127609"
+       y="133.02318"
+       x="67.392036"
        style="font-size:2.82223px;line-height:100%;font-family:sans-serif;clip-rule:evenodd;fill-rule:evenodd;stroke-width:0.264583;stroke-linejoin:round"
        xml:space="preserve"><tspan
          style="font-size:2.82223px;stroke-width:0.264583"
-         y="133.18095"
-         x="69.127609"
+         y="133.02318"
+         x="67.392036"
          id="tspan20739"
          sodipodi:role="line">GND to LED</tspan><tspan
          style="font-size:2.82223px;stroke-width:0.264583"
          id="tspan20743"
-         y="136.00319"
-         x="69.127609"
+         y="135.84541"
+         x="67.392036"
          sodipodi:role="line">+ve to LED</tspan></text>
   </g>
 </svg>
