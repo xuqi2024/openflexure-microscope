@@ -5,9 +5,7 @@ In this section we are preparing an Arducam B0196 USB camera module to use with 
 {{BOM}}
 
 [pliers]: parts/tools/pliers.md "{cat:tool}"
-[Pi Camera lens tool]: parts/tools/pi_camera_lens_tool.md "{cat:tool, note: 'This will come with the [Raspberry Pi Camera Module v2], if you have one. Otherwise you can 3D print a [workaround lens remover].'}"
-[workaround lens remover]: workaround_lens_remover.md
-[Raspberry Pi Camera Module v2]: parts/electronics.yml#PiCamera_2 "{cat:electronic}"
+[Pi Camera lens tool]: parts/tools/pi_camera_lens_tool.md "{cat:tool, note: 'This should come with the [Raspberry Pi Camera Module v2](parts/electronics.yml#PiCamera_2).  If it is missing, you can 3D print a [workaround lens remover](workaround_lens_remover.md).'}"
 
 ## Remove the outer board surround {pagestep}
 
