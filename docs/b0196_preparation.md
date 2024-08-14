@@ -1,11 +1,11 @@
 # Prepare the Arducam B0196 USB webcam for mounting 
 
-In this section we are preparing an Arducam B0196 USB camera module to use with versions of Openflexure optics modules. The Arducam B0196 module uses the same Sony IMX219 sensor as the Picamera V2.1, but gives a USB interface instaead of the Raspberry Pi camera interface. It is not supported in the Openflexure software, but it can be used with many simple webcam programs.
+This section describes how to prepare an Arducam B0196 USB camera module to use with versions of Openflexure optics modules. The Arducam B0196 module uses the same Sony IMX219 sensor as the Picamera V2.1, but gives a USB interface instaead of the Raspberry Pi camera interface. It is not supported in the Openflexure software, but it can be used with many simple webcam programs.
 
 {{BOM}}
 
 [pliers]: parts/tools/pliers.md "{cat:tool}"
-[Pi Camera lens tool]: parts/tools/pi_camera_lens_tool.md "{cat:tool, note: 'This should come with the [Raspberry Pi Camera Module v2](parts/electronics.yml#PiCamera_2).  If it is missing, you can 3D print a [workaround lens remover](workaround_lens_remover.md).'}"
+[Pi Camera lens tool]: parts/tools/pi_camera_lens_tool.md "{cat:tool, note: 'This would come with the [Raspberry Pi Camera Module v2](parts/electronics.yml#PiCamera_2).  If you have not got one, you can 3D print a [workaround lens remover](workaround_lens_remover.md).'}"
 
 ## Remove the outer board surround {pagestep}
 
