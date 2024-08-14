@@ -37,7 +37,7 @@ Take the lens spacer and confirm that:
 ![](images/b0196/IMG_4071_2.jpg)
 ![](images/b0196/IMG_4076_2.jpg)
 
-* Work out which side of the Arducam B0196 camera lens used to be facing the camera sensor (This is the side with more lens visible).
+* Work out which side of the [Arducam B0196 camera][prepared Arducam B0196 camera](fromstep){qty:1} lens used to be facing the camera sensor (This is the side with more lens visible).
 * Place the lens on a clean surface with the side that was next to the camera sensor on the bottom.
 * Push the lens spacer down onto the lens until the lens clicks into place. The lens should be flat in the holder and sticking out a little.
 
@@ -64,7 +64,7 @@ Take the lens spacer and confirm that:
 ![](images/b0196/IMG_4087_2.jpg)
 ![](images/b0196/IMG_4090_2.jpg)
 
-(see <a href="low_cost_microscope/mount_optics_and_microscope.html">mounting the basic optics module</a>) for more details of this method) 
+(see <a href="low_cost_microscope/mount_optics_and_microscope.html">mounting the basic optics module</a> for more details of this method) 
 
 * Insert the complete optics module into the microscope body from below. It is a close fit and will need to be angled to get it through the gap between the body and the z-actuator.
 * Fit the M3 screw head into the keyhole slot in the z-actuator .
