@@ -1,15 +1,18 @@
 # Prepare the Logitech C270 HD webcam for mounting 
 
-In this section we are disassembling a Logitech C270 HD webcam to use with C270 versions of Openflexure optics modules. It is not supported in the Openflexure software, but it can be used with many simple webcam programs.
+This section describes how to disassemble a Logitech C270 HD webcam and prepare it to use with C270 versions of Openflexure optics modules. The Logitech C270 HD webcam is not supported in the Openflexure software, but it can be used with many simple webcam programs.
 
 {{BOM}}
 
-[flat blade screwdriver]: parts/tools/2.5mmBallEndAllenKey.md "{cat:tool}"
+[flat blade screwdriver]: parts/tools/flat_blade_screwdriver.md "{cat:tool}"
 [#0 Phillips screwdriver]: parts/tools/phillips_0_screwdriver.md "{cat:tool}"
 [side cutters]: parts/tools/precision-wire-cutters.md "{cat:tool}"
 [pliers]: parts/tools/pliers.md "{cat:tool}"
 
->i You will need to break the case of the camera, and you will need to take care not to damage the camera board and sensor. Do this at your own risk
+>! **Warning**
+>! 
+>! You will need to break the case of the camera, and you will need to take care not to damage the camera board and sensor.   
+>! Do this at your own risk
 
 ## Open the C270 case {pagestep}
 
@@ -45,7 +48,7 @@ In this section we are disassembling a Logitech C270 HD webcam to use with C270 
 * Save the screws as spares
 * Release the board from the case. It is still attached to the case by the cable
 * Remove the E-clip from the cable retainer with a [flat blade screwdriver]{qty:1}
-* Release the cable holder from the case
+* Release the cable retainer from the case
 * Cut the case to make a slot from the cable hole to the edge, using [side cutters]{qty: 1}. Take care not to cut the cable
 * Remove the board cable from the case and discard the case.
 
