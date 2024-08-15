@@ -4,10 +4,10 @@ This section describes how to disassemble a Logitech C270 HD webcam and prepare 
 
 {{BOM}}
 
-[flat blade screwdriver]: parts/tools/flat_blade_screwdriver.md "{cat:tool}"
-[#0 Phillips screwdriver]: parts/tools/phillips_0_screwdriver.md "{cat:tool}"
-[side cutters]: parts/tools/precision-wire-cutters.md "{cat:tool}"
-[pliers]: parts/tools/pliers.md "{cat:tool}"
+[flat blade screwdriver]: ../parts/tools/flat_blade_screwdriver.md "{cat:tool}"
+[#0 Phillips screwdriver]: ../parts/tools/phillips_0_screwdriver.md "{cat:tool}"
+[side cutters]: ../parts/tools/precision-wire-cutters.md "{cat:tool}"
+[pliers]: ../parts/tools/pliers.md "{cat:tool}"
 
 >! **Warning**
 >! 
