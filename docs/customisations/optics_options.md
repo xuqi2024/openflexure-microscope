@@ -80,16 +80,14 @@ You can use our **[interactive optics module chooser](interactive_optics_module_
 ___
 
 ## List of basic optics modules
-The standard version of the [basic optics module](../basic_optics_module.md) uses the lens from a Raspberry Pi camera v2 and a spacer to make it into a microscope with a field of view similar to a x20 microscope objective. The same principle can be used for other small camera modules with removeable lenses. Assembly is similar to the standard [basic optics module](../basic_optics_module.md), you will need to remove the camera lens and reverse it when it is put into the lens spacer. **USB cameras are not supported in the standard software**.  
- 
-**[Follow this guide for assembling the basic optics module with the Logitech C270][basic optics c270]**  
-**[Follow this guide for assembling the basic optics module with the Arducam b0196 board][basic optics b0196].**
+The standard version of the [basic optics module][basic optics pi] uses a Raspberry Pi camera v2 and a spacer for the lens to make it into a microscope with a field of view similar to a x20 microscope objective. The same principle can be used for other small camera modules with removeable lenses. Assembly is similar to the standard [basic optics module](../basic_optics_module.md), you will need to remove the camera lens and reverse it when it is put into the lens spacer. **USB cameras are not supported in the standard software**.  
 
+The basic optics modules contain two printed parts; a lens spacer (printed in black [i](../info_pages/why_optics_black.md)) and camera platform:
+
+* **Raspberry Pi camera v2**: [Assembly Guide][basic optics pi] - [lens spacer STL](../models/lens_spacer_picamera_2_pilens.stl){previewpage} & [camera platform STL](../models/camera_platform_picamera_2_pilens.stl){previewpage}
+* **Arducam B0196**: [Assembly Guide][basic optics c270] - [lens spacer STL](../models/lens_spacer_arducam_b0196.stl){previewpage} & [camera platform STL](../models/camera_platform_arducam_b0196.stl){previewpage}
+* **Logitech C270**: [Assembly Guide][basic optics b0196] - [lens spacer STL](../models/lens_spacer_c270.stl){previewpage} & [camera platform STL](../models/camera_platform_c270.stl){previewpage}
+
+[basic optics pi]: ../basic_optics_module.md
 [basic optics c270]: ../usb_cameras/basic_optics_c270_index.md
 [basic optics b0196]: ../usb_cameras/basic_optics_b0196_index.md
-
-
-You will need to print a lens spacer and camera platform.
-
-* Arducam B0196: [camera_platform_arducam_b0196.stl](../models/camera_platform_arducam_b0196.stl){previewpage}, [lens_spacer_arducam_b0196.stl](../models/lens_spacer_arducam_b0196.stl){previewpage}(printed in black [i](../info_pages/why_optics_black.md)).  
-* Logitech C270: [camera_platform_c270.stl](../models/camera_platform_c270.stl){previewpage}, [lens_spacer_c270.stl](../models/lens_spacer_c270.stl){previewpage}(printed in black [i](../info_pages/why_optics_black.md)).
