@@ -53,9 +53,10 @@ This is by far the most well tested optics module
 
 Other optics modules are available. We only regularly test the standard optics module. As the microscope design changes alternative objectives *should* update, but the updated versions may not have been printed and tested.
 
-**The Logitech C270 will need to be prepared for mounting to RMS optics modules. [Follow this guide for preparing the Logitech C270][c270 preparation]**
+**The Logitech C270 will need to be prepared for mounting to RMS optics modules.**  
+**[Follow this guide for preparing the Logitech C270][c270 preparation]**
 
-[c270 preparation]: ./c270_preparation.md
+[c270 preparation]: ../usb_cameras/c270_preparation.md
 
 You can use our **[interactive optics module chooser](interactive_optics_module_picker.md)** or check the full list of possibilities below.
 
@@ -81,11 +82,11 @@ ___
 ## List of basic optics modules
 The standard version of the [basic optics module](../basic_optics_module.md) uses the lens from a Raspberry Pi camera v2 and a spacer to make it into a microscope with a field of view similar to a x20 microscope objective. The same principle can be used for other small camera modules with removeable lenses. Assembly is similar to the standard [basic optics module](../basic_optics_module.md), you will need to remove the camera lens and reverse it when it is put into the lens spacer. **USB cameras are not supported in the standard software**.  
  
-**[Follow this guide for assembling the basic optics module with the Logitech C270][basic optics c270]**
+**[Follow this guide for assembling the basic optics module with the Logitech C270][basic optics c270]**  
 **[Follow this guide for assembling the basic optics module with the Arducam b0196 board][basic optics b0196].**
 
-[basic optics c270]: ./c270_preparation.md
-[basic optics b0196]: ./basic_optics_b0196_index.md
+[basic optics c270]: ../usb_cameras/basic_optics_c270_index.md
+[basic optics b0196]: ../usb_cameras/basic_optics_b0196_index.md
 
 
 You will need to print a lens spacer and camera platform.

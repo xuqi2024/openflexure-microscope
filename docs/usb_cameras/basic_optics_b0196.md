@@ -4,30 +4,30 @@ This section describes how to assemble an optics module consisting of an Arducam
 
 {{BOM}}
 
-[M3 nut]: parts/mechanical.yml#Nut_M3_SS
-[No 2 6.5mm self tapping screws]: parts/mechanical.yml#SelfTap_PoziPan_No2x6.5_SS
-[#1 pozidrive screwdriver]: parts/tools/pozidrive_1_screwdriver.md "{cat:tool}"
+[M3 nut]: ../parts/mechanical.yml#Nut_M3_SS
+[No 2 6.5mm self tapping screws]: ../parts/mechanical.yml#SelfTap_PoziPan_No2x6.5_SS
+[#1 pozidrive screwdriver]: ../parts/tools/pozidrive_1_screwdriver.md "{cat:tool}"
 
-[PLA filament]: ./parts/materials/pla_filament.md "{cat:material}"
-[Black PLA filament]: parts/materials/black_pla_filament.md "{cat:material}"
-[RepRap-style printer]: ./parts/tools/rep-rap.md "{cat:tool}"
-[2.5mm Ball-end Allen key]: parts/tools/2.5mmBallEndAllenKey.md
+[PLA filament]: ../parts/materials/pla_filament.md "{cat:material}"
+[Black PLA filament]: ../parts/materials/black_pla_filament.md "{cat:material}"
+[RepRap-style printer]: ../parts/tools/rep-rap.md "{cat:tool}"
+[2.5mm Ball-end Allen key]: ../parts/tools/2.5mmBallEndAllenKey.md
 
-[custom print settings]: ./set_slice_gap_closing_radius.md
+[custom print settings]: ../set_slice_gap_closing_radius.md
 
 ## Print the lens spacer and camera platform {pagestep}
 
 Using a [RepRap-style printer]{qty:1}, print the following parts using [PLA filament]{qty: 20g}.
 
-* [lens_spacer_arducam_b0196.stl](./models/lens_spacer_arducam_b0196.stl){previewpage} - The lens gripper may require [custom print settings] - **This must be printed in [black][Black PLA filament]{Qty: 20g}!** [i](info_pages/why_optics_black.md)
-* [camera_platform_arducam_b0196.stl](./models/camera_platform_arducam_b0196.stl){previewpage} 
+* [lens_spacer_arducam_b0196.stl](../models/lens_spacer_arducam_b0196.stl){previewpage} - The lens gripper may require [custom print settings] - **This must be printed in [black][Black PLA filament]{Qty: 20g}!** [i](../info_pages/why_optics_black.md)
+* [camera_platform_arducam_b0196.stl](../models/camera_platform_arducam_b0196.stl){previewpage} 
 
 
 ## Visually inspect the lens spacer {pagestep}
 
 Take the lens spacer and confirm that:
 
-* It has been printed in black [i](info_pages/why_optics_black.md)
+* It has been printed in black [i](../info_pages/why_optics_black.md)
 * It is dust free (You can blow air through to clean it)
 * The central shaft is not obstructed by strings of plastic.
 
@@ -56,7 +56,7 @@ Take the lens spacer and confirm that:
 ![](images/b0196/IMG_4086_2.jpg)
 
 * Take an [M3 nut]{qty:1, cat:mech} and push it into the nut trap from the top
-* Take an [M3x10 cap head screws](parts/mechanical.yml#CapScrew_M3x10mm_SS){qty: 1, cat:mech} and screw it into the nut.
+* Take an [M3x10 cap head screws](../parts/mechanical.yml#CapScrew_M3x10mm_SS){qty: 1, cat:mech} and screw it into the nut.
 * Only screw it in a couple of turns. About 5 mm of thread should still be visible.
 * Attach the USB cable supplied with the camera.
 
