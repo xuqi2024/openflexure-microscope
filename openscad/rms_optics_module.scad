@@ -14,7 +14,7 @@ use <./libs/optics_configurations.scad>
 //These parameters can be overwritten here or from command line with -D
 OPTICS = "rms_f50d13";
 BEAMSPLITTER = false;
-CAMERA = "picamera_2";
+CAMERA = "PIHQCamera";
 PARFOCAL_DISTANCE = 45;
 
 configurable_optics_module(OPTICS, CAMERA, BEAMSPLITTER, PARFOCAL_DISTANCE);
@@ -56,3 +56,4 @@ module configurable_optics_module(optics, camera_type, beamsplitter, parfocal_di
     }
 
 }
+

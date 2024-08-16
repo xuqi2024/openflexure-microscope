@@ -136,7 +136,7 @@ module picam2_cutout( beam_length=15){
         cylinder(r=hole_r, h=beam_length);
 
     }
-}
+} 
 
 
 module picam2_board(h=tiny()){
@@ -190,7 +190,7 @@ module picamera_2_camera_mount(screwhole=true, counterbore=false){
             picamera_2_screwholes();
         }
     }
-}
+} 
 
 module picamera_2_screwholes(){
     //chamfered screw holes for mounting
@@ -226,7 +226,7 @@ module picamera_2_bottom_mounting_posts(height=-1, radius=-1, outers=true, cutou
     screw_x = picamera_2_hole_spacing()/2;
     rotate(45){
         reflect_x(){
-            for(y=[0,12.5]){
+            for(y=[0,12.5]){ 
                 translate([screw_x, y, 0]){
                     difference(){
                         if(outers){
@@ -299,7 +299,7 @@ module picamera_2_cover(){
             }
         }
     }
-}
+} 
 
 
 module generous_camera_bits(){
@@ -311,7 +311,7 @@ module generous_camera_bits(){
         sequential_hull(){
             cube([camera_width-1,tiny(),4],center=true);
             translate_y(9.4-(4.4/1)/2){
-                cube([camera_width-1,1,4],center=true);
+            cube([camera_width-1,1,4],center=true);
             }
         }
         //flex connector
@@ -357,7 +357,7 @@ module picamera_2_gripper(){
             cube(pcb_dims + [0,0,pcb_dims.z],center=true);
         }
     }
-}
+} 
 
 module picamera_2_lens_gripper(){
     //a tool to unscrew the lens from the pi camera
