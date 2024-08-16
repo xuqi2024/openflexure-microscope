@@ -10,6 +10,7 @@ use <librender/render_utils.scad>
 use <librender/render_settings.scad>
 use <librender/hardware.scad>
 use <librender/electronics.scad>
+use <./electronics/sangaboard.scad>
 use <mount_motors.scad>
 use <mount_sample_clips.scad>
 use <mount_microscope.scad>
@@ -25,15 +26,15 @@ module render_microscope(low_cost=false){
     }
     electronics_drawer_frame_xy(render_params()){
         coloured_render(body_colour()){
-            electronics_drawer_stl();
+            electronics_drawer_stl(pi_version=4, sanga_version="stack_11mm");
         }
 
         translate(electronics_drawer_board_inset() + [0, 0, electronics_drawer_standoff_h()]){
             rpi_4b();
         }
 
-        translate(electronics_drawer_board_inset() + [0, 0, sanga_stand_height("stack_8.5mm")]){
-            sangaboard_v0_4();
+        translate(electronics_drawer_board_inset() + [0, 0, sanga_stand_height("stack_11mm")]){
+            sangaboard_v0_5();
         }
     }
 }

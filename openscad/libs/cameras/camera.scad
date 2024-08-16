@@ -23,6 +23,7 @@ use <./logitech_c270.scad>
 use <./picamera_2.scad>
 use <./m12.scad>
 use <./6led.scad>
+use <./arducam_b0196.scad>
 use <./PIHQCamera.scad>
 
 // If I was able to selectively include different files, this wouldn't be needed.
@@ -41,7 +42,9 @@ function get_camera_dictionary(optics_config) = let(
                     ["m12", m12_camera_dict()],
                     ["6led", 6led_camera_dict()],
                     ["PIHQCamera", PIHQCamera_dict()],
-                    ["picamera_2", picamera_2_camera_dict()]]
+                    ["picamera_2", picamera_2_camera_dict()],
+                    ["arducam_b0196",arducam_b0196_camera_dict()]
+                    ]
 ) key_lookup(camera_type, camera_dicts);
 
 /**
@@ -63,7 +66,7 @@ function camera_sensor_height(optics_config) = let(
 module camera_mount(optics_config, screwhole=true, counterbore=false){
     camera_type = get_camera_type(optics_config);
     if(camera_type=="logitech_c270"){
-        c270_camera_mount();
+        c270_camera_mount(screwhole=screwhole);
     }
     else if(camera_type=="m12"){
         m12_camera_mount();
@@ -74,6 +77,9 @@ module camera_mount(optics_config, screwhole=true, counterbore=false){
     else if(camera_type=="picamera_2"){
         picamera_2_camera_mount(screwhole=screwhole, counterbore=counterbore);
     }
+    else if(camera_type=="arducam_b0196"){
+        arducam_b0196_camera_mount(screwhole=screwhole);
+    }
     else if(camera_type=="PIHQCamera"){
         PIHQCamera_mount(screwhole=screwhole, counterbore=counterbore);
     }
@@ -82,19 +88,25 @@ module camera_mount(optics_config, screwhole=true, counterbore=false){
     }
 }
 
-module camera_bottom_mounting_posts(optics_config, h=-1, r=-1, outers=true, cutouts=true){
+module camera_bottom_mounting_posts(optics_config, outers=true, cutouts=true, bottom_slice=false){
     camera_type = get_camera_type(optics_config);
     if(camera_type=="logitech_c270"){
-        assert(false, "This camera option does not have mounting posts set.");
+        c270_camera_bottom_mounting_posts(optics_config, outers=outers, cutouts=cutouts, bottom_slice=bottom_slice);
     }
     else if(camera_type=="m12"){
         assert(false, "This camera option does not have mounting posts set.");
     }
     else if(camera_type=="6led"){
-        6led_bottom_mounting_posts(height=h, radius=r, outers=outers, cutouts=cutouts);
+        6led_bottom_mounting_posts(optics_config, outers=outers, cutouts=cutouts, bottom_slice=bottom_slice);
     }
     else if(camera_type=="picamera_2"){
-        picamera_2_bottom_mounting_posts(height=h, radius=r, outers=outers, cutouts=cutouts);
+        picamera_2_bottom_mounting_posts(optics_config, outers=outers, cutouts=cutouts, bottom_slice=bottom_slice);
+    }
+    else if(camera_type=="arducam_b0196"){
+        b0196_camera_bottom_mounting_posts(optics_config, outers=outers, cutouts=cutouts, bottom_slice=bottom_slice);
+    }
+    else if(camera_type=="PIHQCamera"){
+        PIHQCamera_bottom_mounting_posts(height=h, radius=r, outers=outers, cutouts=cutouts);
     }
     else if(camera_type=="PIHQCamera"){
         PIHQCamera_bottom_mounting_posts(height=h, radius=r, outers=outers, cutouts=cutouts);
@@ -108,6 +120,12 @@ module camera_mount_counterbore(optics_config){
     camera_type = get_camera_type(optics_config);
     if(camera_type=="picamera_2"){
         picamera_2_counterbore();
+    }
+    else if(camera_type=="logitech_c270"){
+        c270_counterbore();
+    }
+    else if(camera_type=="arducam_b0196"){
+        b0196_counterbore();
     }
     else if(camera_type == "PIHQCamera"){
         PIHQCamera_counterbore();

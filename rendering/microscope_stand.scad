@@ -4,6 +4,7 @@ use <../openscad/libs/microscope_parameters.scad>
 use <../openscad/libs/lib_microscope_stand.scad>
 use <../openscad/nano_converter_plate.scad>
 use <./librender/electronics.scad>
+use <./electronics/sangaboard.scad>
 use <./librender/assembly_parameters.scad>
 use <./librender/render_utils.scad>
 use <./librender/render_settings.scad>
@@ -77,11 +78,11 @@ module rendered_electronics_drawer(params, use_nano=false, slide_dist=0){
                 }
             }
             else{
-                sangaboard_v0_4();
+                sangaboard_v0_5();
             }
         }
 
-        translate_z(sangaboard_v0_4_dims().z){
+        translate_z(sangaboard_v0_5_dims().z){
             translate(sanga_pos + pi_hole_pos()[0]){
                 no2_x6_5_selftap();
             }
