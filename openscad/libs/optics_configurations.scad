@@ -19,7 +19,7 @@ function rms_f50d13_config(camera_type = "picamera_2", beamsplitter=false, parfo
     config_dict = [["optics_type", "RMS"],
                    ["camera_type", camera_type],
                    ["tube_lens_ffd", 47],
-                   ["tube_lens_f", 101], //me changing this to 101 will likely effect the way the pi2_camera renders
+                   ["tube_lens_f", 50], //me changing this to 101 will likely effect the way the pi2_camera renders
                    ["tube_lens_r", 12.7/2+0.1],
                    ["objective_parfocal_distance", parfocal_distance_validated],
                    ["beamsplitter", beamsplitter],
