@@ -28,6 +28,7 @@ Maximum resolution testing is performed on the USAF high resolution target. For 
 |Pi camera 2	            |	        |	        |      	|x  	    |x          | 
 |High quality camera (75mm)	|	        |	        |x	        |x	        |x          |
 |High quality camera (135mm)|	        |	        |	        |	        |x          |
+
 Graphs and images in their folders in this directory
 
 Given the formula for Resolution $\left(r\right)=\frac{1\cdot{10}^-3}{lp}\ast\frac{1}{2}$ that gives the equivalent resolution for a line pairs per millimetre value, then the resolution value for each configuration based on the high-resolution target are:
