@@ -142,7 +142,7 @@ module PIHQCamera_board(h=tiny()){
 
 
 module PIHQCamera_mount(screwhole=true, counterbore=false){
-
+    //Defines the mount for the PIHQ camera uses a similar logic to the picamera2 modules but its designed from the ground up instead of from a cutout
    
     outer_mount_height = 12;
     body_height = 12.04-outer_mount_height;
@@ -200,11 +200,10 @@ module PIHQCamera_mount(screwhole=true, counterbore=false){
 }
 
 module PIHQCamera_cutout() {
+    //an attempt at using the 
     pcb_base();
     ribbon_cable();
     housing();
-
-
 }
 
 module PIHQCamera_screwholes(){
@@ -272,4 +271,7 @@ module build(){
     }
 }
 
+rotate(45)
+translate_z(-26)  
+PIHQ_cover();
 PIHQCamera_mount();
