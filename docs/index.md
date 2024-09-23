@@ -8,7 +8,7 @@ There are interactive 3D views of the [RMS](interactive_3d_view_rms.md) and [low
 ## Microscope Configurations:
 
 #### [High-resolution motorised microscope](high_res_microscope.md)
-[![](images/MicroscopeBlenderTrio.png)](high_res_microscope.md)  
+[![](images/microscopes_wide.jpg)](high_res_microscope.md)  
 This configuration of the microscope uses a traditional microscope objective for highest image quality.
 
 #### [Motorised microscope with low-cost optics](low_cost_microscope.md)
