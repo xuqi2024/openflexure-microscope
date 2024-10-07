@@ -82,8 +82,8 @@ You can use our **[interactive optics module chooser](interactive_optics_module_
 
 ___
 
-#### List of basic optics modules
-The standard version of the [basic optics module][basic optics pi] uses a Raspberry Pi camera v2 and a spacer for the lens to make it into a microscope with a field of view similar to a x20 microscope objective. The same principle can be used for other small camera modules with removeable lenses. Assembly is similar to the standard [basic optics module](../basic_optics_module.md), you will need to remove the camera lens and reverse it when it is put into the lens spacer. **USB cameras are not supported in the standard software**.  
+## List of basic optics modules
+The standard version of the [basic optics module][basic optics pi] uses a Raspberry Pi camera v2 and a spacer for the lens to make it into a microscope with a field of view similar to a x20 microscope objective. The same principle can be used for other small camera modules with removeable lenses. Assembly is similar to the standard [basic optics module][basic optics pi], you will need to remove the camera lens and reverse it when it is put into the lens spacer. **USB cameras are not supported in the standard software**.  
 
 The basic optics modules contain two printed parts; a lens spacer (printed in black [i](../info_pages/why_optics_black.md)) and camera platform:
 
