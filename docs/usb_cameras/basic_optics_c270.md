@@ -19,8 +19,8 @@ This section describes how to assemble an optics module consisting of a Logitech
 
 Using a [RepRap-style printer]{qty:1}, print the following parts using [PLA filament]{qty: 20g}.
 
-* [lens_spacer_logitech_c270.stl](../models/lens_spacer_logitech_c270.stl){previewpage} - The lens gripper may require [custom print settings] - **This must be printed in [black][Black PLA filament]{Qty: 20g}!** [i](../info_pages/why_optics_black.md)
-* [camera_platform_logitech_c270.stl](../models/camera_platform_logitech_c270.stl){previewpage} 
+* [lens_spacer_logitech_c270.stl](../models/lens_spacer_c270.stl){previewpage} - The lens gripper may require [custom print settings] - **This must be printed in [black][Black PLA filament]{Qty: 20g}!** [i](../info_pages/why_optics_black.md)
+* [camera_platform_logitech_c270.stl](../models/camera_platform_c270.stl){previewpage} 
 
 
 ## Visually inspect the lens spacer {pagestep}
