@@ -38,12 +38,19 @@ The recommended camera is the Raspberry Pi camera. The 3D printed parts work wit
 
 For the RMS objective optics we also generate optics modules for an M12 camera, or a Logitech C270 webcam, both of which connect to a computer via USB. The available parts are listed below. These optics modules are not extensively tested. **USB cameras are not supported in the standard software**. 
 
-For the basic optics module we also generate lens spacers and camera platforms for a Logitech C270 webcam or an Arduino B0196 USB webcam (which is based on the same Sony IMX219 camera module as the Raspberry Pi camera v2). The available parts are listed below. These camera configurations are not extensively tested. **USB cameras are not supported in the standard software**.
+For the basic optics module we also generate lens spacers and camera platforms for a Logitech C270 webcam or an Arducam B0196 USB webcam (which is based on the same Sony IMX219 camera module as the Raspberry Pi camera v2). The available parts are listed below. These camera configurations are not extensively tested. **USB cameras are not supported in the standard software**.
+
+**The Logitech C270 or Arducam B0196 will need to be prepared for mounting to RMS optics modules or for making basic optics modules.**  
+[Follow this guide for preparing the Logitech C270][c270 preparation]  
+[Follow this guide for preparing the Arducam B0196][b0196 preparation]  
+
+[c270 preparation]: ../usb_cameras/c270_preparation.md
+[b0196 preparation]: ../usb_cameras/b0196_preparation.md
 ___
 
 ## RMS optics modules
 
-The standard OpenFlexure optics modules is the is [optics_picamera_2_rms_f50d13.stl](../models/optics_picamera_2_rms_f50d13.stl){previewpage}. This uses:
+The standard OpenFlexure optics module is the is [optics_picamera_2_rms_f50d13.stl](../models/optics_picamera_2_rms_f50d13.stl){previewpage}. This uses:
 
 * a 45mm parfocal, 160mm tube length, RMS-threaded objective
 * a 50mm achromatic lens
@@ -53,10 +60,6 @@ This is by far the most well tested optics module
 
 Other optics modules are available. We only regularly test the standard optics module. As the microscope design changes alternative objectives *should* update, but the updated versions may not have been printed and tested.
 
-**The Logitech C270 will need to be prepared for mounting to RMS optics modules.**  
-**[Follow this guide for preparing the Logitech C270][c270 preparation]**
-
-[c270 preparation]: ../usb_cameras/c270_preparation.md
 
 You can use our **[interactive optics module chooser](interactive_optics_module_picker.md)** or check the full list of possibilities below.
 
@@ -85,8 +88,8 @@ The standard version of the [basic optics module][basic optics pi] uses a Raspbe
 The basic optics modules contain two printed parts; a lens spacer (printed in black [i](../info_pages/why_optics_black.md)) and camera platform:
 
 * **Raspberry Pi camera v2**: [Assembly Guide][basic optics pi] - [lens spacer STL](../models/lens_spacer_picamera_2_pilens.stl){previewpage} & [camera platform STL](../models/camera_platform_picamera_2_pilens.stl){previewpage}
-* **Arducam B0196**: [Assembly Guide][basic optics c270] - [lens spacer STL](../models/lens_spacer_arducam_b0196.stl){previewpage} & [camera platform STL](../models/camera_platform_arducam_b0196.stl){previewpage}
-* **Logitech C270**: [Assembly Guide][basic optics b0196] - [lens spacer STL](../models/lens_spacer_c270.stl){previewpage} & [camera platform STL](../models/camera_platform_c270.stl){previewpage}
+* **Arducam B0196**: [Assembly Guide][basic optics b0196] - [lens spacer STL](../models/lens_spacer_arducam_b0196.stl){previewpage} & [camera platform STL](../models/camera_platform_arducam_b0196.stl){previewpage}
+* **Logitech C270**: [Assembly Guide][basic optics c270] - [lens spacer STL](../models/lens_spacer_c270.stl){previewpage} & [camera platform STL](../models/camera_platform_c270.stl){previewpage}
 
 [basic optics pi]: ../basic_optics_module.md
 [basic optics c270]: ../usb_cameras/basic_optics_c270_index.md
