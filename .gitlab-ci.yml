@@ -248,7 +248,7 @@ deploy:
   before_script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
     - eval $(ssh-agent -s)
-    - chmod 400 "$SSH_PRIVATE_KEY"
+    - chmod 400 "$OPENFLEXURE_BUILD_SERVER_SSH_KEY"
     - ssh-add "$OPENFLEXURE_BUILD_SERVER_SSH_KEY"
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
