@@ -248,24 +248,25 @@ deploy:
   before_script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
     - eval $(ssh-agent -s)
-    - ssh-add <(echo "$SSH_PRIVATE_KEY_BATH_OPENFLEXURE_BASE64" | base64 --decode)
+    - ssh-add "$OPENFLEXURE_BUILD_SERVER_SSH_KEY"
     - mkdir -p ~/.ssh
-    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    - chmod 700 ~/.ssh
+    - echo -e "Host buildserver\n\tHostname build.openflexure.org\n\tUser gitlab-ci-user\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
 
   script:
     # Install rsync if not already installed
     - 'which rsync || ( apt-get update -y && apt-get install rsync -y )'
 
     # Upload the builds folder to openflexure-microscope builds
-    - rsync -hrvz -e ssh builds/ ci-user@openflexure.bath.ac.uk:/var/www/build/openflexure-microscope/${CI_COMMIT_REF_NAME} --delete
+    - rsync -hrvz -e ssh builds/ buildserver:builds/openflexure-microscope/${CI_COMMIT_REF_NAME} --delete
 
     # Zip the builds folder and upload it to the openflexure-microscope build root
     - 'which zip || ( apt-get update -y && apt-get install zip -y )'
     - (cd builds && zip -r "../${CI_PROJECT_NAME}-${CI_COMMIT_REF_NAME}.zip" .)
-    - rsync -hrvz -e ssh "${CI_PROJECT_NAME}-${CI_COMMIT_REF_NAME}.zip" ci-user@openflexure.bath.ac.uk:/var/www/build/openflexure-microscope/
+    - rsync -hrvz -e ssh "${CI_PROJECT_NAME}-${CI_COMMIT_REF_NAME}.zip" buildserver:builds/openflexure-microscope/
 
     # Run update-latest.py on the build server
-    - ssh -t ci-user@openflexure.bath.ac.uk "/var/www/build/update-latest.py"
+    - ssh -t buildserver "~/update-latest.sh"
 
   artifacts:
     expire_in: 1 week
