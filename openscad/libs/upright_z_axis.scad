@@ -81,7 +81,7 @@ module upright_z_spacer(params, upright_sample_thickness){
         // Counterbore for back corner, 3mm above the base
         translate_z(3){
             translate(illumination_back_corner_pos(params)){
-                cylinder(r = 4, h = 70);
+                cylinder(r = 4, h = upright_z_spacer_height(params, upright_sample_thickness));
             }
         }
         // Inserting the nut traps at the top of the spacer
@@ -91,8 +91,9 @@ module upright_z_spacer(params, upright_sample_thickness){
             upright_z_spacer_top_screw_holes(params);
         }
         // Cut-out for motor
-        translate([0,66,illumination_dovetail_z(params)-tiny()]){
-            cylinder(r = 12.5, h = 70);
+        z_spacer_front_wall_pos = [0, right_illumination_screw_pos(params).y+8, right_illumination_screw_pos(params).z-tiny()];
+        translate(z_spacer_front_wall_pos){
+            cylinder(r = 12.5, h = upright_z_spacer_height(params, upright_sample_thickness)+10);
         }
     }
 }
