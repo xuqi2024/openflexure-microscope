@@ -46,50 +46,55 @@ function upright_z_spacer_top_thickness() = 3;
 // Overall height of the upright z-spacer 
 function upright_z_spacer_height(params, upright_sample_thickness) = (key_lookup("sample_z", params) - illumination_dovetail_z(params)) *2 + upright_sample_thickness;
 
+upright_z_spacer(params=default_params(), upright_sample_thickness=1);
+translate_z(illumination_dovetail_z(params=default_params())){
+    #cube([10,100,25]);
+}
+
 module upright_z_spacer(params, upright_sample_thickness){
     $fn=32;
     difference(){
         // Spacer main body
         upright_z_spacer_body(params, upright_sample_thickness);
         // Screw clearance holes
-        translate([0,0,-illumination_dovetail_z(params)-tiny()]){
+        translate([0,0,-0-tiny()]){
             translate(right_illumination_screw_pos(params)){
                 cylinder(r = 2, h = 4);
             }
         }
-        translate([0,0,-illumination_dovetail_z(params)-tiny()]){
+        translate([0,0,-0-tiny()]){
             translate(left_illumination_screw_pos(params)){
                 cylinder(r = 2, h = 4);
             }
         }
-        translate([0,0,-illumination_dovetail_z(params)-tiny()]){
+        translate([0,0,-0-tiny()]){
             translate(illumination_back_corner_pos(params)){
                 cylinder(r = 2, h = 4);
             }
         }
         // Screw head boring holes
-        translate([0,0,-illumination_dovetail_z(params)]){
+        translate([0,0,-0]){
             translate(right_illumination_screw_pos(params)){
                 rotate_z(90-25){
                     z_axis_boring_holes(boring_radius = 5.1, taper=0.5);
                 }
             }
         }
-        translate([0,0,-illumination_dovetail_z(params)]){
+        translate([0,0,-0]){
             translate(left_illumination_screw_pos(params)){
                 rotate_z(180+25){
                     z_axis_boring_holes(boring_radius = 5.1, taper=0.5);
                 }
             }
         }
-        translate([0,0,3-illumination_dovetail_z(params)]){
+        translate([0,0,3-0]){
             translate(illumination_back_corner_pos(params)){
                 cylinder(r = 4, h = 70);
             }
         }
         // Inserting the nut traps at the top of the spacer
         // (note nut trap module base sits 9mm below mounting face to give a 1.5mm thick top plate)
-        spacer_nut_trap_base = upright_z_spacer_height(params, upright_sample_thickness) - illumination_dovetail_z(params) - 9 ; 
+        spacer_nut_trap_base = upright_z_spacer_height(params, upright_sample_thickness) - 0 - 9 ; 
         translate([0,0,spacer_nut_trap_base]){
             upright_z_spacer_top_screw_holes(params);
         }
@@ -103,7 +108,7 @@ module upright_z_spacer(params, upright_sample_thickness){
 module upright_z_spacer_body(params, upright_sample_thickness){
     hull(){
         // The translation needed for height of the spacer, including the fact that the spacer top part has thickness
-        top_translate_z = upright_z_spacer_height(params, upright_sample_thickness)-illumination_dovetail_z(params)-upright_z_spacer_top_thickness();
+        top_translate_z = upright_z_spacer_height(params, upright_sample_thickness)-0-upright_z_spacer_top_thickness();
         translate([0,0,top_translate_z]){
             upright_z_spacer_top(params);
         }
@@ -131,7 +136,7 @@ module upright_z_spacer_top(params){
 }
 
 module upright_z_spacer_base(params){
-    translate([0,0,-illumination_dovetail_z(params)]){
+    translate([0,0,-0]){
         hull(){
             // Creating the triangular bottom of the spacer using the position of the corners as previously defined
             each_illumination_corner(params){
