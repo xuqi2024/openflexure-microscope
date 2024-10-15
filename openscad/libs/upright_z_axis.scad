@@ -154,3 +154,10 @@ module upright_z_spacer_top_screw_holes(params){
     }
 }
 
+// The upright spacer is built in place. 
+// This module is to place the spacer on z=0 for creating STLs
+module upright_z_spacer_stl(params, upright_sample_thickness){
+    translate_z(-illumination_dovetail_z(params)){
+        upright_z_spacer(default_params(), upright_sample_thickness);
+    }
+}
