@@ -102,7 +102,7 @@ PiCamera_RibbonCable:
     Pitch: 1mm
     Pins: 15
 PiCamera_RibbonCable_200mm:
-  Name: Raspberry Pi Camera Ribbon Cable (30cm)
+  Name: Raspberry Pi Camera Ribbon Cable (20cm)
   Description: 20 cm Ribbon cable for Raspberry Pi Camera Module V2.1. This is a 15 pin FPC cable with 1mm pitch. This is longer than the standard ribbon cable the Pi Camera is sold with!
   Specs:
     Length: 20cm
