@@ -7,27 +7,30 @@ use <../openscad/libs/microscope_parameters.scad>
 use <librender/render_settings.scad>
 use <librender/rendered_main_body.scad>
 
+FRAME = 1;
 
-render_brim_and_ties();
+render_brim_and_ties(FRAME);
 
-module render_brim_and_ties(){
+module render_brim_and_ties(frame){
     params = default_params();
     smart_brim_r = key_lookup("smart_brim_r", params);
 
-    color(remove_colour()){
-        render(6){
-            exterior_brim(r=smart_brim_r, brim_only=true){
-                main_body(params);
+    if (frame==1){
+        color(remove_colour()){
+            render(6){
+                exterior_brim(r=smart_brim_r, brim_only=true){
+                    main_body(params);
+                }
             }
         }
     }
-    color(remove_colour()){
+    color((frame==3)? remove_colour() : body_colour()){
         xy_leg_ties(params);
     }
-    color(remove_colour()){
+    color((frame==2)? remove_colour() : body_colour()){
         xy_actuators(params, ties_only=true);
     }
-    color(remove_colour()){
+    color((frame==2)? remove_colour() : body_colour()){
         z_actuator_column(params, ties_only=true);
     }
     color(body_colour()){
