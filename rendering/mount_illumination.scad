@@ -8,6 +8,7 @@ use <librender/electronics.scad>
 use <mount_microscope.scad>
 use <condenser_assembly.scad>
 use <../openscad/libs/z_axis.scad>
+use <../openscad/libs/upright_z_axis.scad>
 
 FRAME = 5;
 OPTICS_VERSION = "rms";
@@ -17,21 +18,37 @@ module mount_illumination(frame, optics_version="rms"){
     
     if (frame == 1){
         mounted_microscope_frame(){
-            rendered_illumination_dovetail_assembly(exploded=true);
+            if (optics_version=="upright"){
+                rendered_upright_z_spacer_assembly(exploded=true);
+            }
+            else {
+                rendered_illumination_dovetail_assembly(exploded=true);
+            }
         }
         mounted_microscope(optics_version=optics_version);
     }
     else if (frame == 2){
         mounted_microscope_frame(){
-            rendered_illumination_dovetail_assembly();
+            if (optics_version=="upright"){
+                rendered_upright_z_spacer_assembly();
+            }
+            else {
+                rendered_illumination_dovetail_assembly();
+            }
         }
         mounted_microscope(optics_version=optics_version);
     }
     else if (frame == 3){
         mounted_microscope_frame(){
-            rendered_illumination_dovetail_assembly();
-            rendered_condenser_assembly(pos=condenser_pos_exp(), include_led=false);
-            illumination_wiring(exploded=true);
+            if (optics_version=="upright"){
+                rendered_upright_z_spacer_assembly();
+                rendered_upright_z_axis(exploded=true);
+            }
+            else {
+                rendered_illumination_dovetail_assembly();
+                rendered_condenser_assembly(pos=condenser_pos_exp(), include_led=false);
+                illumination_wiring(exploded=true);                
+            }
         }
         mounted_microscope(optics_version=optics_version);
     }
@@ -49,9 +66,15 @@ module mount_illumination(frame, optics_version="rms"){
     }
     else if (frame == 5){
         mounted_microscope_frame(){
-            rendered_illumination_dovetail_assembly();
-            rendered_condenser_assembly(tighten_arrow=true);
-            illumination_wiring();
+            if (optics_version=="upright"){
+                rendered_upright_z_spacer_assembly();
+                rendered_upright_z_axis();
+            }
+            else {
+                rendered_illumination_dovetail_assembly();
+                rendered_condenser_assembly(tighten_arrow=true);
+                illumination_wiring();
+            }
         }
         mounted_microscope(optics_version=optics_version);
     }
@@ -62,11 +85,32 @@ module mount_illumination(frame, optics_version="rms"){
 
 module mounted_microscope_with_illumination(optics_version="rms"){
     mounted_microscope_frame(){
-        rendered_illumination_dovetail_assembly();
-        rendered_condenser_assembly();
-        illumination_wiring();
+        if (optics_version=="upright"){
+            rendered_upright_z_spacer_assembly();
+            rendered_upright_z_axis();
+        }
+        else{
+            rendered_illumination_dovetail_assembly();
+            rendered_condenser_assembly();
+            illumination_wiring();
+        }
     }
     mounted_microscope(optics_version=optics_version);
+}
+
+module rendered_upright_z_spacer_assembly(exploded=false){
+    params = render_params();
+    dovetail_lift = exploded ? 10 : 0;
+    coloured_render(body_colour()){
+        translate_z(dovetail_lift){
+            translate_z(illumination_dovetail_z(params)){
+                upright_z_spacer(params, 1);
+            }
+        }
+    }
+    upright_z_spacer_screw(params, right=true, exploded=exploded);
+    upright_z_spacer_screw(params, right=false, exploded=exploded);
+    upright_z_spacer_back_screw(params, exploded=exploded);
 }
 
 module rendered_illumination_dovetail_assembly(exploded=false){
@@ -80,7 +124,6 @@ module rendered_illumination_dovetail_assembly(exploded=false){
     illumination_dovetail_screw(params, right=true, exploded=exploded);
     illumination_dovetail_screw(params, right=false, exploded=exploded);
 }
-
 
 module illumination_dovetail_screw(params, right=true, turn=false, exploded=false){
     screw_pos = exploded ? illum_dovetail_screw_pos_exp(params, right=right) : illum_dovetail_screw_pos(params, right=right);
@@ -129,4 +172,86 @@ module illumination_wiring(params=render_params(), exploded=false){
             points=flat_wire_points(d=1, points=points, n=2, index=1)
         );
     }
+}
+
+module rendered_upright_z_axis(exploded=false){
+    params=render_params();
+    lift = (exploded ? 10 : 0);
+    $fn=32;
+    z_translate = illumination_dovetail_z(params)*2 + upright_z_spacer_height(params,1) + lift;
+    coloured_render(body_colour()){
+        translate_z(z_translate){
+            rotate_y(180){
+                separate_z_actuator(params, cable_guides = false, cable_housing = false, rectangular = true);
+            }
+        }
+    }
+    z_mount_screw(exploded, right=true, front=true);
+    z_mount_screw(exploded, right=false, front=true);
+    z_mount_screw(exploded, right=true, front=false);
+    z_mount_screw(exploded, right=false, front=false);
+}
+
+module upright_z_spacer_screw(params, right=true, turn=false, exploded=false){
+    screw_pos = exploded ? illum_dovetail_screw_pos_exp_short(params, right=right) : illum_dovetail_screw_pos(params, right=right);
+    washer_pos = exploded ? illum_dovetail_washer_pos_exp_short(params, right=right) : illum_dovetail_washer_pos(params, right=right);
+    if (exploded){
+        construction_line(translate_pos(illum_dovetail_screw_pos(params, right=right), [0, 0, -10]),
+                          illum_dovetail_screw_pos_exp(params, right=right),
+                          .2);
+    }
+    place_part(screw_pos){
+        m3_cap_x10();
+        if (turn){
+            translate_z(4){
+                turn_clockwise(5);
+            }
+        }
+    }
+    place_part(washer_pos){
+        m3_washer();
+    }
+}
+
+module upright_z_spacer_back_screw(params, turn=false, exploded=false){
+    screw_pos = exploded ? illum_dovetail_back_screw_pos_exp(params) : illum_dovetail_back_screw_pos(params);
+    washer_pos = exploded ? illum_dovetail_back_washer_pos_exp(params) : illum_dovetail_back_washer_pos(params);
+    if (exploded){
+        construction_line(translate_pos(illum_dovetail_back_screw_pos(params), [0, 0, -10]),
+                          illum_dovetail_back_screw_pos_exp(params),
+                          .2);
+    }
+    place_part(screw_pos){
+        m3_cap_x10();
+        if (turn){
+            translate_z(4){
+                turn_clockwise(5);
+            }
+        }
+    }
+    place_part(washer_pos){
+        m3_washer();
+    }
+}
+
+module z_mount_screw(exploded=false, right=true, front=true){
+    params=render_params();
+    screw_pos = exploded ? z_mount_screw_pos_exp(params, right, front) : z_mount_screw_pos(params, right, front);
+    washer_pos = exploded ? z_mount_washer_pos_exp(params, right, front) : z_mount_washer_pos(params, right, front);
+
+    // screw
+    place_part(screw_pos){
+        m3_cap_x10();
+    }
+    // washer
+    place_part(washer_pos){
+        m3_washer();
+    }
+    // construction line
+    if (exploded){
+        construction_line(translate_pos(z_mount_screw_pos(params, right, front), [0, 0, -10]),
+                          z_mount_screw_pos_exp(params, right, front),
+                          .2);
+    }
+
 }
