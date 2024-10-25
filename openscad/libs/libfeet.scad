@@ -297,3 +297,40 @@ module outer_foot(params, lie_flat=false,letter=""){
          lie_flat=lie_flat,
          letter=letter);
 }
+
+
+module foot_cap(){
+    $fn=32;
+    radius = actuator_housing_xy_size().y/2;
+    sep = actuator_housing_xy_size().x - 2*radius - 0.1;
+    clip_radius = radius-actuator_wall_t()-0.05;
+
+    // Body of the cap
+    hull(){
+        for (x_tr = [-sep/2, sep/2]){
+            translate_x(x_tr){
+                cylinder(r=radius, h=1);
+                cylinder(r=radius-2, h=3);
+            }
+        }
+    }
+    // Clips
+    reflect_x(){
+        translate([-sep/2, 0, -3]){
+            difference(){
+                // Create a cylinder
+                cylinder(r=clip_radius, h=4);
+                // Cut cylinder into a pie wedge shape
+                reflect_y(){
+                    rotate_z(-16){
+                        translate_y(25){
+                            cube([50, 50, 50], center=true);
+                        }
+                    }
+                }
+                // Cut point off pie wedge
+                cube([10, 10, 50], center=true);
+            }
+        }
+    }
+}
