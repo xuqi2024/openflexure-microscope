@@ -322,14 +322,15 @@ module foot_cap(){
                 cylinder(r=clip_radius, h=4);
                 // Cut cylinder into a pie wedge shape
                 reflect_y(){
-                    rotate_z(-16){
+                    rotate_z(-60){
                         translate_y(25){
                             cube([50, 50, 50], center=true);
                         }
                     }
                 }
-                // Cut point off pie wedge
-                cube([10, 10, 50], center=true);
+                // Cut pie wedge into a pie crust
+                cylinder(r=clip_radius-1, h=10, center=true);
+                cube([50,5,10], center=true);
             }
         }
     }
