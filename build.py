@@ -97,6 +97,7 @@ def write_ninja_file(build_dir):
         writer.openscad("upright_condenser_platform.stl", "upright_condenser_platform.scad")
         writer.openscad("upright_large_gears.stl", "upright_large_gears.scad")
         writer.openscad("upright_feet.stl", "upright_feet.scad")
+        writer.openscad("foot_cap.stl", "foot_cap.scad")
         writer.openscad("upright_z_actuator_mount.stl", "upright_z_actuator_mount.scad")
         writer.openscad("accessories/upright_z_actuator_mount_5mm_sample.stl",
                         "accessories/upright_z_actuator_mount_5mm_sample.scad")
