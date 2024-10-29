@@ -1,5 +1,6 @@
 use <../openscad/libs/illumination.scad>
 use <../openscad/libs/utilities.scad>
+use <../openscad/libs/libdict.scad>
 use <librender/render_settings.scad>
 use <librender/render_utils.scad>
 use <librender/assembly_parameters.scad>
@@ -7,11 +8,12 @@ use <librender/hardware.scad>
 use <librender/electronics.scad>
 use <mount_microscope.scad>
 use <condenser_assembly.scad>
+use <mount_optics.scad>
 use <../openscad/libs/z_axis.scad>
 use <../openscad/libs/upright_z_axis.scad>
 
 FRAME = 5;
-OPTICS_VERSION = "rms";
+OPTICS_VERSION = "upright";
 mount_illumination(FRAME, OPTICS_VERSION);
 
 module mount_illumination(frame, optics_version="rms"){
@@ -53,15 +55,23 @@ module mount_illumination(frame, optics_version="rms"){
         mounted_microscope(optics_version=optics_version);
     }
     else if (frame == 4){
-        mounted_microscope_frame(){
-            rendered_illumination_dovetail_assembly();
-            rendered_condenser_assembly(pos=condenser_pos_exp(), include_led=false);
-            illumination_wiring(exploded=true);
+        if (optics_version=="upright"){
+            mounted_microscope_frame(){
+                rendered_upright_z_spacer_assembly();
+                rendered_upright_z_axis();
+            }
         }
-        line_offset = [0 ,35, 55];
-        line_pos1 = translate_pos(condenser_pos_exp(), line_offset);
-        line_pos2 = translate_pos(condenser_pos(), line_offset);
-        construction_line(line_pos1, line_pos2, .4);
+        else{
+            mounted_microscope_frame(){
+                rendered_illumination_dovetail_assembly();
+                rendered_condenser_assembly(pos=condenser_pos_exp(), include_led=false);
+                illumination_wiring(exploded=true);
+            }
+            line_offset = [0 ,35, 55];
+            line_pos1 = translate_pos(condenser_pos_exp(), line_offset);
+            line_pos2 = translate_pos(condenser_pos(), line_offset);
+            construction_line(line_pos1, line_pos2, .4);
+        }
         mounted_microscope(optics_version=optics_version);
     }
     else if (frame == 5){
@@ -69,6 +79,10 @@ module mount_illumination(frame, optics_version="rms"){
             if (optics_version=="upright"){
                 rendered_upright_z_spacer_assembly();
                 rendered_upright_z_axis();
+                place_part(locate_on_upright()){
+                    om_pos = translate_pos(optics_module_pos(low_cost=true), [0, -10, -6.5]);
+                    render_optics("low_cost", om_pos, screw_tight=false);
+                }
             }
             else {
                 rendered_illumination_dovetail_assembly();
@@ -253,5 +267,13 @@ module z_mount_screw(exploded=false, right=true, front=true){
                           z_mount_screw_pos_exp(params, right, front),
                           .2);
     }
-
 }
+
+function locate_on_upright() = let(
+    z_offset = key_lookup("sample_z",render_params()),
+    init_translation = [0, 0, -z_offset],
+    rotation1 = [0, 180, 0],
+    rotation2 = [0, 0, 0],
+    rotation3 = [0, 0, 0],
+    translation = [0, 0, z_offset + 1] // +1mm for the standard nominal sample thickness
+) create_placement_dict(translation, rotation3, rotation2, rotation1, init_translation);
