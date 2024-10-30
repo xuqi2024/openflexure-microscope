@@ -272,11 +272,12 @@ def register_brim_and_ties(rendersystem):
     cameras = [
         Camera(position=[9.7, 33, 6], angle=[45.2, 0, 315.2], distance=361),
         Camera(position=[-4, 21, 29], angle=[206, 0, 177], distance=450),
-    ]
+        Camera(position=[-2, 48, -12], angle=[60, 0, 4], distance=320),
+    ] 
     imgsize = [2400, 2400]
     for i, camera in enumerate(cameras):
         output_file = f"docs/renders/brim_and_ties{i+1}.png"
-        scad = "render_brim_and_ties();"
+        scad = f"render_brim_and_ties({i+1});"
         render = ScadRender(output_file, input_file, scad, imgsize, camera)
         rendersystem.register_scad_render(render)
 
