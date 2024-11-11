@@ -46,6 +46,13 @@ function upright_z_spacer_top_thickness() = 3;
 // Overall height of the upright z-spacer 
 function upright_z_spacer_height(params, upright_sample_thickness) = (key_lookup("sample_z", params) - illumination_dovetail_z(params)) *2 + upright_sample_thickness;
 
+module upright_z_spacer_labelled(params, upright_sample_thickness){
+    difference(){
+        upright_z_spacer(params, upright_sample_thickness);
+        upright_z_spacer_label(params, upright_sample_thickness);
+    }
+}
+
 module upright_z_spacer(params, upright_sample_thickness){
     $fn=32;
     difference(){
@@ -154,10 +161,41 @@ module upright_z_spacer_top_screw_holes(params){
     }
 }
 
+module upright_z_spacer_label(params, upright_sample_thickness){
+    // The flat face is slightly tilted because the base shape is made of
+    // r=5mm circles, but the top shape is made from r=6mm circles
+    indent = 0.5;
+    h = upright_z_spacer_height(params, upright_sample_thickness);
+    angle = atan((6-5)/(h - upright_z_spacer_top_thickness()));
+    // side text
+    translate(illumination_back_corner_pos(params)+[0, -5.5+indent, h/2]){
+        rotate([90+angle, 0, 0]){
+            linear_extrude(1){
+                text(str(upright_sample_thickness,"mm"),size=4,font="sans",halign="center",valign="centre");
+            }
+        }
+    }
+    // Top text
+    top_pos = illumination_back_corner_pos(params) + [0, 4, h-indent];
+    translate(top_pos){
+        linear_extrude(1){
+            translate_y(0.5){
+                text("Sample height",size=4,font="sans",halign="center",valign="bottom",$fn=32);
+            }
+            translate([-6, -0.5, 0]){
+                text(str(upright_sample_thickness),size=4,font="sans",halign="right",valign="top");
+            }
+            translate([6, -0.5, 0]){
+                text("mm",size=4,font="sans",halign="left",valign="top");
+            }
+        }
+    }
+}
+
 // The upright spacer is built in place. 
 // This module is to place the spacer on z=0 for creating STLs
 module upright_z_spacer_stl(params, upright_sample_thickness){
     translate_z(-illumination_dovetail_z(params)){
-        upright_z_spacer(default_params(), upright_sample_thickness);
+        upright_z_spacer_labelled(default_params(), upright_sample_thickness);
     }
 }
