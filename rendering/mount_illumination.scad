@@ -117,9 +117,7 @@ module rendered_upright_z_spacer_assembly(exploded=false){
     dovetail_lift = exploded ? 10 : 0;
     coloured_render(body_colour()){
         translate_z(dovetail_lift){
-            translate_z(illumination_dovetail_z(params)){
-                upright_z_spacer(params, 1);
-            }
+            upright_z_spacer_labelled(params, 1);
         }
     }
     upright_z_spacer_screw(params, right=true, exploded=exploded);
