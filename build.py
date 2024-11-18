@@ -115,6 +115,10 @@ def write_ninja_file(build_dir):
             "accessories/actuator_drilling_jig.stl",
             "accessories/actuator_drilling_jig.scad"
         )
+        writer.openscad(
+            "accessories/slide_box.stl",
+            "accessories/slide_box.scad"
+        )
 
         # extra platform optics **TODO make this build automatically with the generate_platform_optics_modules below
         writer.openscad("camera_platform_c270.stl", "camera_platform_c270.scad")
