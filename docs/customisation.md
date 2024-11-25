@@ -30,7 +30,7 @@ ___
 
 ## Electronics drawers for alternative electronics versions
 
-As standard the OpenFlexure microscope uses a Raspberry Pi v4 and a Sangaboard v0.5. For those using older versions may need to print an alternative electronics drawer.
+As standard the OpenFlexure microscope uses a Raspberry Pi v4 and a Sangaboard v0.5. If you have a different Raspberry Pi or Sangaboard you will need a different electronics drawer.
 
 **[See this explanation of the electronics drawer options.](customisations/drawer_options.md)**
 
