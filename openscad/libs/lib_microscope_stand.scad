@@ -27,7 +27,7 @@ function default_stand_params(tall=false, no_pi=false, pi_version=4, sanga_versi
     [["electronics_drawer_h", 47], //The height of the tray the pi sits in.
      ["include_pi_tray_hole", !no_pi], //Whether the stand has a hole for the raspberry pi tray
      ["extra_height", tall ? 17 : 0], //extra height above the raspberry pi_tray
-     ["block_usbc", true],
+     ["block_usb", true],
      ["sanga_version", sanga_version],
      ["pi_version", pi_version],
     ];
@@ -470,7 +470,7 @@ module electronics_drawer_base(stand_params){
 
 module electronics_drawer_walls(stand_params){
     electronics_drawer_h = key_lookup("electronics_drawer_h", stand_params);
-    block_usbc = key_lookup("block_usbc", stand_params);
+    block_usb = key_lookup("block_usb", stand_params);
     pi_version = key_lookup("pi_version", stand_params);
     sanga_version = key_lookup("sanga_version", stand_params);
     base_size = electronics_drawer_base_size();
@@ -511,8 +511,11 @@ module electronics_drawer_walls(stand_params){
         }
 
     }
-    if (pi_version==4 && block_usbc){
+    if (pi_version==4 && block_usb){
         usb_c_blocker();
+    }
+    if (pi_version==3 && block_usb){
+        micro_usb_blocker();
     }
 }
 
@@ -701,9 +704,11 @@ module pi_side_connectors(pi_version){
         }
     }
     else{
+        // Micro USB power
         translate_x(10.6-9/2){
             cube([9, 200, 4.5]);
         }
+        // Full size HDMI
         translate_x(32-17/2){
             cube([17, 200, 7]);
         }
@@ -729,6 +734,23 @@ module usb_c_blocker(){
     translate([usb_c_x_pos, 0, standoff_h+1]){
         translate([-8/2, 0, .75]){
             cube([8, 1, 3]);
+        }
+        translate([-12/2, 0, .75]){
+            cube([12, 1, 1]);
+        }
+        translate([-12/2, 0, 2.75]){
+            cube([12, 1, 1]);
+        }
+    }
+}
+
+module micro_usb_blocker(){
+    standoff_h = electronics_drawer_standoff_h();
+    micro_usb_x_pos = 10.6 + electronics_drawer_board_inset().x;
+    //Translate to bottom centre of hole
+    translate([micro_usb_x_pos, 0, standoff_h+1]){
+        translate([-7/2, 0, .75]){
+            cube([7, 1, 3]);
         }
         translate([-12/2, 0, .75]){
             cube([12, 1, 1]);
