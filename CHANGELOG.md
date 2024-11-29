@@ -1,3 +1,24 @@
+## [v7.0.0-beta3](https://gitlab.com/openflexure/openflexure-microscope/compare/v7.0.0-beta2..v7.0.0-beta3/) (2024-11-25)
+
+* [!388](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/388): Block Pi 3 USB connector in electronics drawer
+* [!381](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/381): Upright z-spacer labelling
+* [!383](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/383): Update instructions and renders for remove brim and ties when preparing the main body
+* [!380](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/380): fix height of upright z spacer and tidy code
+* [!384](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/384): Added a cap for the upright foot based on @rootboi's (from forum) CAD diagram
+* [!382](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/382): docs: Fix inconsistent camera cable length in name attribute
+* [!379](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/379): Switch to new build server
+* [!378](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/378): Bump heading style in optics customisations
+* [!377](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/377): Replace microscope trio image with v7
+* [!375](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/375): Fix lfs images
+* [!374](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/374): Docs: update Sangaboard renders
+* [!363](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/363): Implement new electronics defaults
+* [!371](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/371): Basing all  m3 nut trap sizes off ISO 4032
+* [!373](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/373): Fix admesh CI job
+* [!367](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/367): Change the position of the low-cost optics camera cable, add optics module insertion construction arrow
+* [!369](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/369): Conical wedge for camera posts. Other lower level changes ...
+* [!370](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/370): remove solder_led.md from upright instructions
+* [!309](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/309): Lens spacers for C270 and Arducam B0196 and parameterise camera platform height
+
 ## [v7.0.0-beta2](https://gitlab.com/openflexure/openflexure-microscope/compare/v7.0.0-beta1..v7.0.0-beta2/) (2024-05-07)
 
 * [!362](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/362): Band tool with push fit instead of flexing
