@@ -16,7 +16,7 @@ For up-to-date build instructions, STL files, and pre-built Raspberry Pi SD imag
 [build a microscope page]: https://openflexure.org/projects/microscope/build
 
 ## Instructions
-The latest release of our assembly documentation can be found from the [build a microscope page] on our website. The editable instructions are Markdown format, in the [docs folder](./docs/) of this repository. If you have a problem accessing the images after cloning the repository see the section on LFS files below.
+The latest release of our assembly documentation can be found from the [build a microscope page] on our website. The editable instructions are Markdown format (built using [GitBuilding](https://gitbuilding.io)), in the [docs folder](./docs/) of this repository. If you have a problem accessing the images after cloning the repository see the section on LFS files below.
 
 ## Printing it yourself
 Configure your microscope hardware and download the STL files through the [microscope STL configurator] page.  The [assembly instructions](https://build.openflexure.org/openflexure-microscope/latest/docs) contain instructions on print settings and putting it together.

@@ -2,7 +2,6 @@
 
 import argparse
 import os
-import sys
 import re
 import requests
 import subprocess
@@ -116,7 +115,7 @@ def find_releases_in_changelog():
     changelog_releases = {}
     with open(changelog_fname, "r") as f:
         for i, l in enumerate(f):
-            m = re.match("^## \[(HEAD|v[^\]]+)\]", l)
+            m = re.match(r"^## \[(HEAD|v[^\]]+)\]", l)
             if m:
                 changelog_releases[m.group(1)] = i
     return changelog_releases
@@ -169,7 +168,3 @@ if __name__ == "__main__":
                 f.write(new_text)
                 f.writelines(changelog)
             print(f"Changelog file `{changelog_fname}` updated.")
-
-            
-
-        
