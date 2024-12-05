@@ -1,7 +1,7 @@
 # OpenFlexure Microscope
 The OpenFlexure Microscope is a  3D printable microscope, including a precise mechanical stage to move the sample and focus the optics.  There are many different options for the optics, ranging from a webcam lens to a 100x, oil immersion objective.
 
-![A trio of microscopes](https://openflexure.org/assets/MicroscopeBlenderTrio.png)
+![3 views of the microscope](docs/images/microscopes_wide.jpg)
 
 The trick of making a microscope out of a webcam has been around for a little while, and produces good results.  However, getting a nice mechanical stage to focus the microscope and move around on the sample is tricky.  This project is a 3D printable design that enables very fine (sub-micron) mechanical positioning of the sample and the lens, with surprisingly good mechanical stability.  It's discussed in various [media articles](https://gitlab.com/openflexure/openflexure-microscope/wikis/Media-Articles).
 
@@ -26,18 +26,17 @@ If you've built one, let us know. You can let us know on [our forum](https://ope
 [microscope STL configurator]: https://microscope-stls.openflexure.org
 
 ## Come join us!
-Most of the development of this design has been done as part of various [research projects](http://www.bath.ac.uk/physics/contacts/academics/richard-bowman/index.html) - if you would like to join our research group at Bath, and you have funding or are interested in applying for it, do get in touch.  Check the University of Bath jobs site, or findaphd.com, to see if we are currently advertising any vacancies.  The team is bigger than Bath, though, and there are contributors in Cambridge, Dar es Salaam, and beyond.
+Most of the development of this design has been done as part of various [research projects](https://www.gla.ac.uk/schools/physics/staff/richardbowman/) - if you would like to join our research group in Glasgow, and you have funding or are interested in applying for it, do get in touch.  Check the University of Glasgow's jobs site, or findaphd.com, to see if we are currently advertising any vacancies.  The team is bigger than Glasgow, though, and there are contributors in Bath, Cambridge, Dar es Salaam, and beyond.
 
 ## Kits and License
-This project is open-source and is Released under the CERN Open Hardware License, strongly reciprocal, v2.0 or later (CERN-OHL-S-2.0) (CERN-OHL-S, see the License file).  Several companies are currently selling kits, including [Labmaker](https://www.labmaker.org/) and [Foxhill Engineering (formerly OpenFlexure Industries)](https://openflexure.com).
+This project is open-source and is Released under the CERN Open Hardware License, strongly reciprocal, v2.0 or later (CERN-OHL-S-2.0) (CERN-OHL-S, see the License file).  The OpenFlexure Project doesn't sell micrscopes, but several companies do, you can find a [list on our website](https://openflexure.org/about/vendors).
 
 ## Get Involved!
 This project is open so that anyone can get involved, and you don't have to learn OpenSCAD to help (although that would be great).  Ways you can contribute include:
 
 * [Join our forum](https://openflexure.discourse.group/)
-* Get involved in [discussions on gitter](https://gitter.im/OpenFlexure-Microscope/Lobby) [![Join the chat at https://gitter.im/OpenFlexure-Microscope/Lobby](https://badges.gitter.im/OpenFlexure-Microscope/Lobby.svg)](https://gitter.im/OpenFlexure-Microscope/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) (We use this less than the forum)
-* Share your microscope images (of both microscopes and what you've seen with them) on social media - you can mention @openflexure on Twitter.
-* [Raise an issue on the helpdesk](https://gitlab.com/openflexure/openflexure-helpdesk/-/issues) if you spot something that's wrong, or something that could be improved.  Helpdesk issues can be about anything to do with the project including the instructions/documentation, the software, etc.
+* Share your microscope images (of both microscopes and what you've seen with them) on social media - you can mention @openflexure on Twitter, @openflexure.bsky.social on BlueSky, or have us add you to [our map](https://openflexure.discourse.group/t/where-are-you-ofm-location-survey/771/last).
+![](https://canada1.discourse-cdn.com/free1/uploads/openflexure/optimized/2X/1/170f0e188fed108e467e25203d93ea08a0483d55_2_690x479.jpeg)
 * Suggest better text or images for the instructions.
 * Improve the design of parts - even if you don't use OpenSCAD, STL files or descriptions of changes are helpful.
 * Fork it, and make merge requests - again, documentation improvements are every bit as useful as revised OpenSCAD files.
@@ -97,8 +96,8 @@ Other repositories relating to the Openflexure Microscope are in the [OpenFlexur
 * [OpenFlexure Block Stage](https://gitlab.com/openflexure/openflexure-block-stage). A higher precision 3-axis stage with a smaller range.
 
 Repositories for compatible motor controllers:
-* The ["sangaboard" motor controller](https://gitlab.com/bath_open_instrumentation_group/sangaboard). The standard motor controller for the microscope. Developed collaboratively with [STICLab](http://www.sticlab.co.tz)
-* The ["fergboard" motor controller](https://github.com/fr293/motor_board) by Fergus Riche.
+* The ["sangaboard" motor controller](https://gitlab.com/filipayazi/sangaboard-firmware). The standard motor controller for the microscope. Developed collaboratively with Filip Ayazi, and [BTech in Tanzania](https://btech.co.tz/)
+
 
 A number of other related projects include:
 
@@ -106,7 +105,7 @@ A number of other related projects include:
 * [PiCamera CRA Compensation](https://gitlab.com/bath_open_instrumentation_group/picamera_cra_compensation/) Contains hardware and software for colour calibration of a Raspberry Pi camera.
 * Some [characterisation scripts for analysing images of the USAF resolution test target](https://github.com/rwb27/usaf_analysis/)
 
-Some open flexure repositories still remain on [Richard's Github](https://github.com/rwb27/).
+Some OpenFlexure repositories still remain on [Richard's Github](https://github.com/rwb27/).
 
 ## Compiling from source
 If you want to print the current development version, you can compile the STL from the OpenSCAD files - but please still consult the documentation for quantities and tips on print settings, etc.  You can use Ninja build to generate all the STL files (run ``pip3 install -r requirements.txt`` and then ``./build.py`` in the root directory of the repository).  More instructions are available in [COMPILE.md](COMPILE.md).
