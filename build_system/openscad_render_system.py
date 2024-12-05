@@ -140,7 +140,7 @@ class RenderSystem():
             # new file is created
             if os.path.exists(outfile):
                 os.remove(outfile)
-            command = ["inkscape", "--without-gui", f"--export-png={outfile}", svg_file]
+            command = ["inkscape", f"--export-filename={outfile}", svg_file]
             ret = subprocess.run(command, check=True, capture_output=True)
             if not os.path.exists(outfile):
                 std_err = ret.stderr.decode('UTF-8')
