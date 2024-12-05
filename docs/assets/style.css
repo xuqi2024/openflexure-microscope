@@ -35,3 +35,46 @@
 	margin-bottom: 0;
 	display: flex;
 }
+
+ 
+.qaqc {
+  border-radius: 25px;
+  border: 2px solid #ccc;
+  padding: 20px;
+  margin: 30px 0px;
+  background: #dff;
+}
+
+
+.qaqc label{
+  font-weight: bold;
+}
+
+.qaqc h3{
+  text-decoration: underline;
+}
+
+.qaqc p{
+  font-style: italic;
+  margin: 5px;
+  font-size: 90%;
+}
+
+.checkbox {
+ width: 36px;
+ height: 36px;
+ margin: 10px;
+}
+
+.qaqc-complete {
+  background-color: #04AA6D; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 16px;
+  margin: 30px 0px 0px 0px;
+}

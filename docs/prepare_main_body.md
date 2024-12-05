@@ -19,6 +19,17 @@ The [main body][Main body](fromstep){cat: PrintedPart, qty:1} has some custom su
 * Cut the ties inside actuator columns (6 total) with the [precision wire cutters]{qty:1}
 * Cut the ties for the rear legs (4 total) with the [precision wire cutters]{qty:1}
 
+<form class="qaqc">
+<h3>QA/QC check</h3>
+<label for="hash">Enter the tag or hash written under the gear logo.</label><br>
+<input type="text" id="hash" name="hash"><br><br>
+<label for="body-stringing-check">Confirm that there isn't excessive stringing under the main stage.</label><br>
+<input type="checkbox" class="checkbox" id="body-stringing-check" name="body-stringing-check"><br><br>
+<label for="body-stringing-pic">Take a photo of the microscope side to show there isn't excessive stringing.</label>
+<input type="file" id="body-stringing-pic" accept="image/*" ><br>
+<button class="qaqc-complete">Checks complete</button>
+</form>
+
 ## Embed mounting nuts in the stage {pagestep}
 
 ![](renders/prepare_main_body1.png)
@@ -45,3 +56,13 @@ The [main body][Main body](fromstep){cat: PrintedPart, qty:1} has some custom su
 * Repeat the steps used above to add {{var_illum_nuts_words, default:two}} [M3 nuts][M3 nut]{qty:{{var_illum_nuts, default:2}}, cat:mech} into the platform above the z-axis
 
 The [prepared main body]{output, qty:1} is now ready for assembly.
+
+
+<form class="qaqc">
+<h3>QA/QC check</h3>
+<label for="body-nut-check">Using the Allen key tap the plastic lightly above all nuts. Confirm that no nuts come loose.</label><br>
+<input type="checkbox" class="checkbox" id="body-nut-check" name="body-nut-check"><br><br>
+<label for="body-nut-check2">Inspect the plastic around the nut trap for any signs of cracking. Confirm there is no cracking.</label><br>
+<input type="checkbox" class="checkbox" id="body-nut-check2" name="body-nut-check2"><br><br>
+<button class="qaqc-complete">Checks complete</button>
+</form>
