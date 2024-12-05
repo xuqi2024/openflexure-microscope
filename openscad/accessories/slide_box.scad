@@ -1,6 +1,9 @@
 use <../libs/utilities.scad>
 use <../libs/logo.scad>
 
+N_SLIDES = 16;
+slide_box(N_SLIDES);
+
 function slide_dims() = [25.4*3, 25.4*1, 1.3];
 
 function slide_clearance() = [1, 1, .5];
@@ -28,9 +31,7 @@ function slide_box_dims(n_slides) = let(
 function hinge_d() = 5;
 function hinge_space() = hinge_d()+1;
 
-slide_box();
-
-module slide_box(n_slides = 15){
+module slide_box(n_slides = 16){
     dims = slide_box_dims(n_slides);
 
     difference(){
