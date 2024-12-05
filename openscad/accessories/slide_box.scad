@@ -67,7 +67,6 @@ module slide_box(n_slides = 16){
             }
         }
     }
-    
 }
 
 module bottom_rounded_cube(dims, r=2){
