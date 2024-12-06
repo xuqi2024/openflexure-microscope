@@ -49,10 +49,10 @@ In this section we are assembling the transmission illuminator for an upright mi
 * Place the [illumination PCB]{qty:1} with the pins towards the slot.
 * Fix in place with two [No 2 6.5mm self tapping screws]{qty:2} using a [#1 pozidrive screwdriver]{qty:1}.
 
-## Assemble the illumination wiring harness {pagestep}
+## Assemble the illumination cable {pagestep}
 * Take a [Red pre-crimped Female-Female jumper cable (30 cm)] and a [Black pre-crimped Female-Female jumper cable (30 cm)].
 * Attach a [2 pin Du Pont connector female housing]{qty:2} to each end.
-* This is the illumination wiring harness.
+* This is the illumination cable.
 
 [2 pin Du Pont connector female housing]: parts/electronics.yml#DuPont_Housing_1x2 "{cat:electronic}"
 [Red pre-crimped Female-Female jumper cable (30 cm)]: parts/electronics.yml#JumperCable_FF_300mm_Red "{cat:electronic}"
@@ -63,7 +63,7 @@ In this section we are assembling the transmission illuminator for an upright mi
 ![](renders/upright_mount_led_cable1.png)
 ![](renders/upright_mount_led_cable2.png)
 
-* Attach the illumination wiring harness to the [illumination PCB]
+* Attach the illumination cable to the [illumination PCB]
 
 ## Attach the condenser to the condenser platform {pagestep}
 
