@@ -26,7 +26,7 @@ If you've built one, let us know. You can let us know on [our forum](https://ope
 [microscope STL configurator]: https://microscope-stls.openflexure.org
 
 ## Come join us!
-Most of the development of this design has been done as part of various [research projects](https://www.gla.ac.uk/schools/physics/staff/richardbowman/) - if you would like to join our research groups in Glasgow or Bath, and you have funding or are interested in applying for it, do get in touch.  Check the University of Glasgow's jobs site, or findaphd.com, to see if we are currently advertising any vacancies.  The team is bigger than Glasgow, though, and there are contributors in Bath, Cambridge, Dar es Salaam, and beyond.
+Most of the development of this design has been done as part of various research projects - if you would like to join our research groups in [Glasgow](https://www.gla.ac.uk/schools/physics/staff/richardbowman/) or [Bath](https://researchportal.bath.ac.uk/en/persons/william-wadsworth), and you have funding or are interested in applying for it, do get in touch.  Check the jobs sites for the Universities of Glasgow and Bath, or findaphd.com, to see if we are currently advertising any vacancies.  The team is bigger than Glasgow and Bath, there are contributors in Cambridge, Dar es Salaam, and beyond.
 
 ## Kits and License
 This project is open-source and is Released under the CERN Open Hardware License, strongly reciprocal, v2.0 or later (CERN-OHL-S-2.0) (CERN-OHL-S, see the License file).  The OpenFlexure Project doesn't sell micrscopes, but several companies do, you can find a [list on our website](https://openflexure.org/about/vendors).
@@ -96,8 +96,8 @@ Other repositories relating to the Openflexure Microscope are in the [OpenFlexur
 * [OpenFlexure Block Stage](https://gitlab.com/openflexure/openflexure-block-stage). A higher precision 3-axis stage with a smaller range.
 
 Repositories for compatible motor controllers:
-* The ["sangaboard" motor controller](https://gitlab.com/filipayazi/sangaboard-firmware). The standard motor controller for the microscope. Developed collaboratively with Filip Ayazi, and [BTech in Tanzania](https://btech.co.tz/)
-* Legacy ["sangaboard" motor controller](https://gitlab.com/bath_open_instrumentation_group/sangaboard). Arduino IDE compatible code for a workaround motor controller using an Arduino Nano. Developed collaboratively with [STICLab](http://www.sticlab.co.tz)
+* The ["sangaboard" motor controller](https://gitlab.com/filipayazi/sangaboard-rp2040) (and its [firmware](https://gitlab.com/filipayazi/sangaboard-firmware)). This is the standard motor controller for the microscope. It was developed collaboratively with Filip Ayazi and based on the legacy controller that was developed in collaboration with [BTech in Tanzania](https://btech.co.tz/), see below.
+* The legacy ["sangaboard" motor controller](https://gitlab.com/bath_open_instrumentation_group/sangaboard). This containts Arduino IDE compatible firmware for the a [workaround motor controller using an Arduino Nano](https://build.openflexure.org/openflexure-microscope/latest/workaround_motor_electronics/workaround_motor_electronics.html).
 
 
 A number of other related projects include:
