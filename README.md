@@ -3,9 +3,9 @@ The OpenFlexure Microscope is a  3D printable microscope, including a precise me
 
 ![3 views of the microscope](docs/images/microscopes_wide.jpg)
 
-The trick of making a microscope out of a webcam has been around for a little while, and produces good results.  However, getting a nice mechanical stage to focus the microscope and move around on the sample is tricky.  This project is a 3D printable design that enables very fine (sub-micron) mechanical positioning of the sample and the lens, with surprisingly good mechanical stability.  It's discussed in various [media articles](https://gitlab.com/openflexure/openflexure-microscope/wikis/Media-Articles).
+The trick of making a microscope out of a webcam has been around for a little while, and produces good results.  However, getting a nice mechanical stage to focus the microscope and move around on the sample is very difficult.  This project is a 3D printable design that enables very fine (sub-micron) mechanical positioning of the sample and the lens, with surprisingly good mechanical stability.  It's discussed in various [media articles](https://openflexure.org/about/media-publications).
 
-If you use the OpenFlexure microscope in you work please consider citing one of our papers:
+If you use the OpenFlexure microscope in your work please consider citing one of our papers:
 
 * *Robotic microscopy for everyone: the OpenFlexure microscope*, [Biomedical Optics Express **11** 2447 (2020)](https://doi.org/10.1364/BOE.385729) (open access).
 * *A one-piece 3D printed flexure translation stage for open-source microscopy*, [Review of Scientific Instruments **87**, 025104 (2016)](http://dx.doi.org/10.1063/1.4941068) (open access).
@@ -35,7 +35,7 @@ This project is open-source and is Released under the CERN Open Hardware License
 This project is open so that anyone can get involved, and you don't have to learn OpenSCAD to help (although that would be great).  Ways you can contribute include:
 
 * [Join our forum](https://openflexure.discourse.group/)
-* Share your microscope images (of both microscopes and what you've seen with them) on social media - you can mention @openflexure on Twitter, @openflexure.bsky.social on BlueSky, or have us add you to [our map](https://openflexure.discourse.group/t/where-are-you-ofm-location-survey/771/last).
+* Share your microscope images (of both microscopes and what you've seen with them) on social media - you can mention @openflexure on Twitter, @openflexure.bsky.social on BlueSky, or have us add you to [our map](https://openflexure.discourse.group/t/where-are-you-ofm-location-survey/771/last).  
 ![](https://canada1.discourse-cdn.com/free1/uploads/openflexure/optimized/2X/1/170f0e188fed108e467e25203d93ea08a0483d55_2_690x479.jpeg)
 * Suggest better text or images for the instructions.
 * Improve the design of parts - even if you don't use OpenSCAD, STL files or descriptions of changes are helpful.
@@ -97,7 +97,7 @@ Other repositories relating to the Openflexure Microscope are in the [OpenFlexur
 
 Repositories for compatible motor controllers:
 * The ["sangaboard" motor controller](https://gitlab.com/filipayazi/sangaboard-rp2040) (and its [firmware](https://gitlab.com/filipayazi/sangaboard-firmware)). This is the standard motor controller for the microscope. It was developed collaboratively with Filip Ayazi and based on the legacy controller that was developed in collaboration with [BTech in Tanzania](https://btech.co.tz/), see below.
-* The legacy ["sangaboard" motor controller](https://gitlab.com/bath_open_instrumentation_group/sangaboard). This containts Arduino IDE compatible firmware for the a [workaround motor controller using an Arduino Nano](https://build.openflexure.org/openflexure-microscope/latest/workaround_motor_electronics/workaround_motor_electronics.html).
+* The legacy ["sangaboard" motor controller](https://gitlab.com/bath_open_instrumentation_group/sangaboard). This containts Arduino IDE compatible firmware for the [workaround motor controller using an Arduino Nano](https://build.openflexure.org/openflexure-microscope/latest/workaround_motor_electronics/workaround_motor_electronics.html).
 
 
 A number of other related projects include:
