@@ -25,10 +25,17 @@
 
 >i It's important to keep track of which motor cable corresponds to which axis. You may find it helpful to mark each cable connector with a marker or different-coloured tape before continuing.
 
+<form class="qaqc">
+<h3>QA/QC check</h3>
+<label for="body-stringing-check">Confirm that for each motor the top of the screws does not prodtrude above the top face of the gear</label><br>
+<input type="checkbox" class="checkbox" id="body-stringing-check" name="body-stringing-check"><br>
+<button class="qaqc-complete">Checks complete</button>
+</form>
+
+
 ## Attach the x and y motors {pagestep}
 
 ![](renders/mount_motors_{{var_optics, default:rms}}1.png)
-
 
 Note that each motor has a cable tidy cap that is different. Which cap to use should be apparent from the shape.
 

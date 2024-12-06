@@ -14,6 +14,15 @@ There is one "actuator column" for each of the three axes of the OpenFlexure Mic
 
 ![Parts required for actuator assembly](renders/actuator_assembly_parts.png)
 
+<form class="qaqc">
+<h3>QA/QC check</h3>
+<label for="brass-nuts-not-magnetic">Brass nuts should not be magnetic. Using any magnet confirm that the nuts are not magnetic.</label>
+<p>If the nut is magnetic then it is brass coated steel. You should stop assembly and purchase solid brass nuts.</p>
+<input type="checkbox" class="checkbox" id="brass-nuts-not-magnetic" name="brass-nuts-not-magnetic"><br><br>
+<button class="qaqc-complete">Checks complete</button>
+</form>
+
+
 ## Insert the nut {pagestep}
 
 ![Inset the nut the actuator column](renders/actuator_assembly_nut.png)
@@ -88,3 +97,18 @@ Follow the same procedure for the Y and Z axes. Once complete the [microscope wi
 ![Actuators assembled](renders/actuators_assembled.png)
 
 {{include: upright_actuator_assembly.md, if: var_type is upright}}
+
+<form class="qaqc">
+<h3>QA/QC check</h3>
+<label for="gear-washer-count">How many washers did you add under each gear.</label>
+<p>It really should be two!</p>
+<input type="number" id="gear-washer-count" name="gear-washer-count" min="0" max="100" step="1"><br><br>
+<label for="viton-o-ring-count">How many viton O-rings did you use in total (including any that broke).</label>
+<p>The allows us to monitor success of band assembly.</p>
+<input type="number" id="viton-o-ring-count" name="viton-o-ring-count" min="0" max="100" step="1"><br><br>
+<label for="actuator-comment">(Optional) Please provide any extra feedback on the actuator assembly.</label><br>
+<textarea id="actuator-comment" name="actuator-comment" rows="4" cols="50"></textarea><br><br>
+<button class="qaqc-complete">Checks complete</button>
+</form>
+
+
