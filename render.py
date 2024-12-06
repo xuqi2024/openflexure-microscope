@@ -277,11 +277,13 @@ def register_brim_and_ties(rendersystem):
         Camera(position=[-2, 48, -12], angle=[60, 0, 4], distance=320),
     ]
     imgsize = [2400, 2400]
-    for i, camera in enumerate(cameras):
-        output_file = f"docs/renders/brim_and_ties{i+1}.png"
-        scad = f"render_brim_and_ties({i+1});"
-        render = ScadRender(output_file, input_file, scad, imgsize, camera)
-        rendersystem.register_scad_render(render)
+    for body in ["", "_manual"]:
+        manual = str(body == "_manual").lower()
+        for i, camera in enumerate(cameras):
+            output_file = f"docs/renders/brim_and_ties{body}{i+1}.png"
+            scad = f"render_brim_and_ties({i+1}, {manual});"
+            render = ScadRender(output_file, input_file, scad, imgsize, camera)
+            rendersystem.register_scad_render(render)
 
 def register_brim_and_ties_separate_z_actuator(rendersystem):
     input_file = "rendering/brim_and_ties_separate_z_actuator.scad"
