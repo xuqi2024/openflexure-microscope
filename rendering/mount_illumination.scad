@@ -1,6 +1,6 @@
 use <../openscad/libs/illumination.scad>
 use <../openscad/libs/utilities.scad>
-use <../openscad/libs/libdict.scad>
+use <../openscad/libs/lib_microscope_stand.scad>
 use <librender/render_settings.scad>
 use <librender/render_utils.scad>
 use <librender/assembly_parameters.scad>
@@ -15,12 +15,15 @@ use <../openscad/libs/upright_z_axis.scad>
 
 FRAME = 5;
 OPTICS_VERSION = "rms";
-mount_illumination(FRAME, OPTICS_VERSION);
+MANUAL = false;
+mount_illumination(FRAME, OPTICS_VERSION, MANUAL);
 
-module mount_illumination(frame, optics_version="rms"){
-    
+module mount_illumination(frame, optics_version="rms", manual=false){
+
+    stand_params = render_stand_params(manual=manual);
+    z_actual = microscope_stand_height(stand_params)-microscope_depth();
     if (frame == 1){
-        mounted_microscope_frame(){
+        mounted_microscope_frame(stand_params=stand_params){
             if (optics_version=="upright"){
                 rendered_upright_z_spacer_assembly(exploded=true);
             }
@@ -28,10 +31,10 @@ module mount_illumination(frame, optics_version="rms"){
                 rendered_illumination_dovetail_assembly(exploded=true);
             }
         }
-        mounted_microscope(optics_version=optics_version);
+        mounted_microscope(stand_params=stand_params, optics_version=optics_version, manual=manual);
     }
     else if (frame == 2){
-        mounted_microscope_frame(){
+        mounted_microscope_frame(stand_params=stand_params){
             if (optics_version=="upright"){
                 rendered_upright_z_spacer_assembly();
             }
@@ -39,10 +42,10 @@ module mount_illumination(frame, optics_version="rms"){
                 rendered_illumination_dovetail_assembly();
             }
         }
-        mounted_microscope(optics_version=optics_version);
+        mounted_microscope(stand_params=stand_params, optics_version=optics_version, manual=manual);
     }
     else if (frame == 3){
-        mounted_microscope_frame(){
+        mounted_microscope_frame(stand_params=stand_params){
             if (optics_version=="upright"){
                 rendered_upright_z_spacer_assembly();
                 rendered_upright_z_axis(exploded=true);
@@ -53,7 +56,7 @@ module mount_illumination(frame, optics_version="rms"){
                 illumination_wiring(exploded=true);                
             }
         }
-        mounted_microscope(optics_version=optics_version);
+        mounted_microscope(stand_params=stand_params, optics_version=optics_version, manual=manual);
     }
     else if (frame == 4){
         if (optics_version=="upright"){
@@ -63,17 +66,17 @@ module mount_illumination(frame, optics_version="rms"){
             }
         }
         else{
-            mounted_microscope_frame(){
+            mounted_microscope_frame(stand_params=stand_params){
                 rendered_illumination_dovetail_assembly();
                 rendered_condenser_assembly(pos=condenser_pos_exp(), include_led=false);
                 illumination_wiring(exploded=true);
             }
-            line_offset = [0 ,35, 55];
+            line_offset = [0 ,35, z_actual-20];
             line_pos1 = translate_pos(condenser_pos_exp(), line_offset);
             line_pos2 = translate_pos(condenser_pos(), line_offset);
             construction_line(line_pos1, line_pos2, .4, arrow=true);
         }
-        mounted_microscope(optics_version=optics_version);
+        mounted_microscope(stand_params=stand_params, optics_version=optics_version, manual=manual);
     }
     else if (frame == 5){
         if (optics_version=="upright"){
@@ -81,21 +84,21 @@ module mount_illumination(frame, optics_version="rms"){
             mounted_microscope_with_illumination(optics_version=optics_version);
         }
         else {
-            mounted_microscope_frame(){
+            mounted_microscope_frame(stand_params=stand_params){
                 rendered_illumination_dovetail_assembly();
                 rendered_condenser_assembly(tighten_arrow=true);
                 illumination_wiring();
             }
         }
-        mounted_microscope(optics_version=optics_version);
+        mounted_microscope(stand_params=stand_params, optics_version=optics_version, manual=manual);
     }
     else if (frame == 6){
-        mounted_microscope_with_illumination(optics_version=optics_version);
+        mounted_microscope_with_illumination(stand_params=stand_params, optics_version=optics_version, manual=manual);
     }
 }
 
-module mounted_microscope_with_illumination(optics_version="rms"){
-    mounted_microscope_frame(){
+module mounted_microscope_with_illumination(stand_params, optics_version="rms", manual=false){
+    mounted_microscope_frame(stand_params=stand_params){
         if (optics_version=="upright"){
             rendered_upright_z_spacer_assembly();
             rendered_upright_z_axis();
@@ -106,7 +109,7 @@ module mounted_microscope_with_illumination(optics_version="rms"){
             illumination_wiring();
         }
     }
-    mounted_microscope(optics_version=optics_version);
+    mounted_microscope(stand_params, optics_version="rms", manual=false);
 }
 
 module rendered_upright_z_spacer_assembly(exploded=false){

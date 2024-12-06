@@ -259,7 +259,7 @@ module lead_screw_assembly(exploded=false, construction_offset=[0, 0, 0]){
             m3_hex_x25();
         }
         color(extras_colour()){
-            large_gear();
+            thumbwheel();
         }
         translate(tr_wash1){
             m3_washer();
