@@ -86,6 +86,13 @@ In this section we are assembling the transmission illuminator.  This mounts the
 
 * Attach the illumination wiring harness to the [illumination PCB]
 
+<form class="qaqc">
+<h3>QA/QC check</h3>
+<label for="condenser-board-pic">Before attaching the cover. Take a photo of the illumination board and cable mounted to the condenser.</label><br>
+<input type="file" id="condenser-board-pic" accept="image/*" ><br>
+<button class="qaqc-complete">Checks complete</button>
+</form>
+
 ## Attach the illumination cover {pagestep}
 
 ![](renders/mount_condenser_lid1.png)
@@ -113,3 +120,9 @@ In this section we are assembling the transmission illuminator.  This mounts the
 * Tighten the thumbscrew by hand to lock the arm in place.
 * Do not worry about the exact position, this will be adjusted on first use.
 
+<form class="qaqc">
+<h3>QA/QC check</h3>
+<label for="mount-illumination-comment">(Optional) Please provide any extra feedback on mounting the illumination.</label><br><br>
+<textarea id="mount-illumination-comment" name="mount-illumination-comment" rows="4" cols="50"></textarea><br>
+<button class="qaqc-complete">Checks complete</button>
+</form>

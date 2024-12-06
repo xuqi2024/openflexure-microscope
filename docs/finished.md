@@ -12,6 +12,15 @@ Congratulations, you have now assembled your OpenFlexure Microscope.
 Your completed microscope should now look like these pictures.  
 There is also an [interactive 3D view](interactive_3d_view_{{var_optics, default:rms}}.md) of the finished microscope.
 
+<form class="qaqc">
+<h3>QA/QC check</h3>
+<label for="final-pic">Upload an image of your finished microscope.</label><br>
+<input type="file" id="final-pic" accept="image/*" ><br><br>
+<label for="wiring-comment">(Optional) Please provide any final feedback or comments on the microscope assembly.</label><br><br>
+<textarea id="wiring-comment" name="wiring-comment" rows="4" cols="50"></textarea><br>
+<button class="qaqc-complete">Checks complete</button>
+</form>
+
 ## Software set-up {pagestep}
 
 Setting up the software is not yet included in these instructions.  It is detailed on the website, in the ["install" page].  Using the software is described in the ["control" page].

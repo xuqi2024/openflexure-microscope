@@ -26,3 +26,16 @@ Repeat the above process for the other three mounting lugs
 
 [prepared microscope stand]{output, qty:1, hidden}
 
+<form class="qaqc">
+<h3>QA/QC check</h3>
+<label for="stand-stringing-check">Confirm that there isn't excessive stringing under the main stage.</label><br>
+<input type="checkbox" class="checkbox" id="stand-stringing-check" name="stand-stringing-check"><br><br>
+<label for="stand-stringing-pic">Take a photo of the microscope side to show there isn't excessive stringing.</label>
+<input type="file" id="stand-stringing-pic" accept="image/*" ><br><br>
+<label for="stand-nut-check">Using the Allen key tap the plastic lightly above all nuts. Confirm that no nuts come loose.</label><br>
+<input type="checkbox" class="checkbox" id="stand-nut-check" name="stand-nut-check"><br><br>
+<label for="stand-nut-check2">Inspect the plastic around the nut trap for any signs of cracking. Confirm there is no cracking.</label><br>
+<input type="checkbox" class="checkbox" id="stand-nut-check2" name="stand-nut-check2"><br><br>
+<button class="qaqc-complete">Checks complete</button>
+</form>
+
