@@ -12,7 +12,7 @@ use <actuator_assembly.scad>
 
 
 FRAME = 8;
-LOW_COST = false;
+LOW_COST = true;
 
 render_mount_optics(FRAME, LOW_COST);
 
