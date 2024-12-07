@@ -261,11 +261,13 @@ def register_brim_and_ties(rendersystem):
         Camera(position=[-4, 21, 29], angle=[206, 0, 177], distance=450),
     ]
     imgsize = [2400, 2400]
-    for i, camera in enumerate(cameras):
-        output_file = f"docs/renders/brim_and_ties{i+1}.png"
-        scad = "render_brim_and_ties();"
-        render = ScadRender(output_file, input_file, scad, imgsize, camera)
-        rendersystem.register_scad_render(render)
+    for body in ["", "_manual"]:
+        manual = str(body == "_manual").lower()
+        for i, camera in enumerate(cameras):
+            output_file = f"docs/renders/brim_and_ties{body}{i+1}.png"
+            scad = f"render_brim_and_ties({manual});"
+            render = ScadRender(output_file, input_file, scad, imgsize, camera)
+            rendersystem.register_scad_render(render)
 
 def register_prepare_main_body(rendersystem):
     input_file = "rendering/prepare_main_body.scad"
@@ -281,11 +283,13 @@ def register_prepare_main_body(rendersystem):
         Camera(position=[-2, 57, 64], angle=[76, 0, 176.5], distance=179),
     ]
     imgsize = [2400, 2000]
-    for i, camera in enumerate(cameras):
-        output_file = f"docs/renders/prepare_main_body{i+1}.png"
-        scad = f"render_prepare_main_body({i+1});"
-        render = ScadRender(output_file, input_file, scad, imgsize, camera)
-        rendersystem.register_scad_render(render)
+    for body in ["", "_manual"]:
+        manual = str(body == "_manual").lower()
+        for i, camera in enumerate(cameras):
+            output_file = f"docs/renders/prepare_main_body{body}{i+1}.png"
+            scad = f"render_prepare_main_body({i+1}, {manual});"
+            render = ScadRender(output_file, input_file, scad, imgsize, camera)
+            rendersystem.register_scad_render(render)
 
 def register_prepare_stand(rendersystem):
     input_file = "rendering/prepare_stand.scad"
@@ -459,6 +463,7 @@ def main():
     rendersystem = RenderSystem()
     rendersystem.register_zip_assets('rendering/librender/hardware.zip')
     rendersystem.register_render_stl('rendering/librender/rendered_main_body.scad')
+    rendersystem.register_render_stl('rendering/librender/rendered_main_body_manual.scad')
     #Register all openscad renders (and associated post processing)
     register_rms_optics_assembly(rendersystem)
     register_low_cost_optics_assembly(rendersystem)

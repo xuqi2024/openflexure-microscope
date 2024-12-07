@@ -16,13 +16,14 @@ use <../openscad/sample_clips.scad>
 
 FRAME=2;
 LOW_COST = false;
+MANUAL = false;
 render_mount_sample_clips(FRAME, LOW_COST);
 
-module render_mount_sample_clips(frame, low_cost=false){
+module render_mount_sample_clips(frame, low_cost=false, manual=false){
     if(frame > 2){
         assembled_microscope_without_electronics(low_cost=low_cost);
     }
-    mounted_microscope_frame(){
+    mounted_microscope_frame(manual=manual){
         render_sample_clips(
             exploded=(frame<=3), 
             screws_exploded=(frame==1),

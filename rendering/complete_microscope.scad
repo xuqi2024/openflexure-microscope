@@ -16,11 +16,12 @@ use <mount_microscope.scad>
 
 
 LOW_COST = false;
-render_microscope(LOW_COST);
+MANUAL = false;
+render_microscope(LOW_COST, MANUAL);
 
-module render_microscope(low_cost=false){
+module render_microscope(low_cost=false, manual=false){
     assembled_microscope_without_electronics(low_cost=low_cost);
-    mounted_microscope_frame(){
+    mounted_microscope_frame(manual=manual){
         render_sample_clips();
     }
     electronics_drawer_frame_xy(render_params()){
