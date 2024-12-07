@@ -21,21 +21,23 @@ MANUAL = false;
 render_microscope(LOW_COST, MANUAL);
 
 module render_microscope(low_cost=false, manual=false){
-    assembled_microscope_without_electronics(low_cost=low_cost);
+    assembled_microscope_without_electronics(low_cost=low_cost, manual=manual);
     mounted_microscope_frame(manual=manual){
         render_sample_clips();
     }
-    electronics_drawer_frame_xy(render_params()){
-        coloured_render(body_colour()){
-            electronics_drawer_stl(pi_version=4, sanga_version="stack_11mm");
-        }
+    if (!manual){
+        electronics_drawer_frame_xy(render_params()){
+            coloured_render(body_colour()){
+                electronics_drawer_stl(pi_version=4, sanga_version="stack_11mm");
+            }
 
-        translate(electronics_drawer_board_inset() + [0, 0, electronics_drawer_standoff_h()]){
-            rpi_4b();
-        }
+            translate(electronics_drawer_board_inset() + [0, 0, electronics_drawer_standoff_h()]){
+                rpi_4b();
+            }
 
-        translate(electronics_drawer_board_inset() + [0, 0, sanga_stand_height("stack_11mm")]){
-            sangaboard_v0_5();
+            translate(electronics_drawer_board_inset() + [0, 0, sanga_stand_height("stack_11mm")]){
+                sangaboard_v0_5();
+            }
         }
     }
 }

@@ -158,5 +158,5 @@ function band_insertion_frame_parameters(frame_number) = let(
 ) frames[frame_number-1];
 
 FRAME = 2;
-MANUAL = true;
+MANUAL = false;
 render_band_insertion(band_insertion_frame_parameters(FRAME), manual=MANUAL);
