@@ -13,8 +13,8 @@ use <condenser_assembly.scad>
 use <../openscad/libs/z_axis.scad>
 
 FRAME = 5;
-LOW_COST = true;
-MANUAL = true;
+LOW_COST = false;
+MANUAL = false;
 mount_illumination(FRAME, LOW_COST, MANUAL);
 
 module mount_illumination(frame, low_cost=false, manual=false){
