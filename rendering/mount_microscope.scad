@@ -43,13 +43,13 @@ module mounted_microscope(stand_params=default_stand_params(), optics_version="r
             stand_lug_screw(params, stand_params, i, exploded=exploded);
         }
     }
-    mounted_microscope_frame(stand_params, exploded=exploded){
+    mounted_microscope_frame(manual=manual, exploded=exploded){
         body_with_optics(optics_version=optics_version);
     }
 }
 
-module mounted_microscope_frame(stand_params=default_stand_params(),exploded=false){
-    //stand_params = default_stand_params();
+module mounted_microscope_frame(manual=false, exploded=false){
+    stand_params = render_stand_params(manual=manual);
     place_part(microscope_on_stand_pos(stand_params, exploded=exploded)){
         children();
     }
