@@ -366,23 +366,17 @@ def register_mount_optics(rendersystem):
         Camera(position=[-18.5, 42.75, 23.75], angle=[57, 0, 143], distance=495),
     ]
     imgsize = [2400, 2000]
-    for optics in ["rms", "low_cost"]:
-        low_cost = str(optics == "low_cost").lower()
-        for i, camera in enumerate(cameras):
-            frame = i + 1
-            output_file = f"docs/renders/mount_optics_{optics}{frame}.png"
-            scad = f"render_mount_optics({frame}, {low_cost}, {manual});"
-            render = ScadRender(output_file, input_file, scad, imgsize, camera)
-            rendersystem.register_scad_render(render)
-    # Render manual for low-cost optics only 
-    for i, camera in enumerate(cameras):
-        low_cost = True
-        manual = True
-        frame = i + 1
-        output_file = f"docs/renders/mount_optics_{optics}_manual{frame}.png"
-        scad = f"render_mount_optics({frame}, {low_cost}, {manual});"
-        render = ScadRender(output_file, input_file, scad, imgsize, camera)
-        rendersystem.register_scad_render(render)
+    for body in ["", "_manual"]:
+        manual = str(body == "_manual").lower()
+        for optics in ["rms", "low_cost"]:
+            low_cost = str(optics == "low_cost").lower()
+            if not ((body == "_manual") and (optics == "low_cost")): # no renders for manual rms
+                for i, camera in enumerate(cameras):
+                    frame = i + 1
+                    output_file = f"docs/renders/mount_optics_{optics}{body}{frame}.png"
+                    scad = f"render_mount_optics({frame}, {low_cost}, {manual});"
+                    render = ScadRender(output_file, input_file, scad, imgsize, camera)
+                    rendersystem.register_scad_render(render) 
 
 def register_mount_microscope(rendersystem):
     input_file = "rendering/mount_microscope.scad"
