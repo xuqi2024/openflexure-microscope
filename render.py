@@ -246,13 +246,14 @@ def register_band(rendersystem):
     camera = Camera(position=[-13, 13, -30], angle=[76, 0, 216], distance=445)
     imgsize = [1200, 2400]
     png_files = []
-
-    for frame in [1, 2, 3, 4, 5]:
-        output_file = f"docs/renders/band{frame}.png"
-        scad = f"render_band_insertion(band_insertion_frame_parameters({frame}));"
-        png_files.append(output_file)
-        render = ScadRender(output_file, input_file, scad, imgsize, camera)
-        rendersystem.register_scad_render(render)
+    for body in ["", "_manual"]:
+        manual = str(body == "_manual").lower()
+        for frame in [1, 2, 3, 4, 5]:
+            output_file = f"docs/renders/band{body}{frame}.png"
+            scad = f"render_band_insertion(band_insertion_frame_parameters({frame},{manual}));"
+            png_files.append(output_file)
+            render = ScadRender(output_file, input_file, scad, imgsize, camera)
+            rendersystem.register_scad_render(render)
     rendersystem.register_imagemagick_sequence("docs/renders/band_instruction.png", png_files)
 
 def register_band_tool_assembly(rendersystem):
@@ -357,23 +358,25 @@ def register_actuator_assembly(rendersystem):
     ]
     imgsize = [2400, 2000]
     pngs = [
-        "actuator_assembly_parts.png",
-        "actuator_assembly_lead_screw_exploded.png",
-        "actuator_assembly_lead_screw_tight.png",
-        "actuator_assembly_lead_screw_only.png",
-        "actuator_assembly_nut.png",
-        "actuator_assembly_gear.png",
-        "actuator_assembly_gear2.png",
-        "actuator_assembly_oil.png",
-        "actuator_assembly_x.png",
-        "actuators_assembled.png",
-        "separate_z_actuator_assembled.png",
+        "actuator_assembly_parts",
+        "actuator_assembly_lead_screw_exploded",
+        "actuator_assembly_lead_screw_tight",
+        "actuator_assembly_lead_screw_only",
+        "actuator_assembly_nut",
+        "actuator_assembly_gear",
+        "actuator_assembly_gear2",
+        "actuator_assembly_oil",
+        "actuator_assembly_x",
+        "actuators_assembled",
+        "separate_z_actuator_assembled",
     ]
-    for i, camera in enumerate(cameras):
-        output_file = os.path.join("docs/renders/", pngs[i])
-        scad = f"render_actuator_assembly({i+1});"
-        render = ScadRender(output_file, input_file, scad, imgsize, camera)
-        rendersystem.register_scad_render(render)
+    for body in ["", "_manual"]:
+        manual = str(body == "_manual").lower()
+        for i, camera in enumerate(cameras):
+            output_file = os.path.join("docs/renders/", pngs[i], body, ".png")
+            scad = f"render_actuator_assembly({i+1},{manual});"
+            render = ScadRender(output_file, input_file, scad, imgsize, camera)
+            rendersystem.register_scad_render(render)
     cameras = [
         Camera(position=[2, 5, 14], angle=[33, 0, 242], distance=390),
         Camera(position=[2, 5, 14], angle=[33, 0, 242], distance=390),
@@ -427,6 +430,15 @@ def register_mount_optics(rendersystem):
             scad = f"render_mount_optics({frame}, \"{optics_version}\");"
             render = ScadRender(output_file, input_file, scad, imgsize, camera)
             rendersystem.register_scad_render(render)
+    # Render manual for low-cost optics only 
+    for i, camera in enumerate(cameras):
+        low_cost = True
+        manual = True
+        frame = i + 1
+        output_file = f"docs/renders/mount_optics_low_cost_manual{frame}.png"
+        scad = f"render_mount_optics({frame}, {low_cost}, {manual});"
+        render = ScadRender(output_file, input_file, scad, imgsize, camera)
+        rendersystem.register_scad_render(render)
 
 def register_mount_upright_optics(rendersystem):
     input_file = "rendering/mount_upright_optics.scad"
