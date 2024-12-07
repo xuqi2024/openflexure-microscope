@@ -248,7 +248,7 @@ def register_band(rendersystem):
         manual = str(body == "_manual").lower()
         for frame in [1, 2, 3, 4, 5]:
             output_file = f"docs/renders/band{body}{frame}.png"
-            scad = f"render_band_insertion(band_insertion_frame_parameters({frame},{manual}));"
+            scad = f"render_band_insertion(band_insertion_frame_parameters({frame}),{manual});"
             png_files.append(output_file)
             render = ScadRender(output_file, input_file, scad, imgsize, camera)
             rendersystem.register_scad_render(render)
