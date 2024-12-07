@@ -283,11 +283,13 @@ def register_prepare_main_body(rendersystem):
         Camera(position=[-2, 57, 64], angle=[76, 0, 176.5], distance=179),
     ]
     imgsize = [2400, 2000]
-    for i, camera in enumerate(cameras):
-        output_file = f"docs/renders/prepare_main_body{i+1}.png"
-        scad = f"render_prepare_main_body({i+1});"
-        render = ScadRender(output_file, input_file, scad, imgsize, camera)
-        rendersystem.register_scad_render(render)
+    for body in ["", "_manual"]:
+        manual = str(body == "_manual").lower()
+        for i, camera in enumerate(cameras):
+            output_file = f"docs/renders/prepare_main_body{body}{i+1}.png"
+            scad = f"render_prepare_main_body({i+1}, {manual});"
+            render = ScadRender(output_file, input_file, scad, imgsize, camera)
+            rendersystem.register_scad_render(render)
 
 def register_prepare_stand(rendersystem):
     input_file = "rendering/prepare_stand.scad"

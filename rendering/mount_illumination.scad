@@ -14,7 +14,7 @@ use <../openscad/libs/z_axis.scad>
 
 FRAME = 5;
 LOW_COST = true;
-MANUAL = false;
+MANUAL = true;
 mount_illumination(FRAME, LOW_COST, MANUAL);
 
 module mount_illumination(frame, low_cost=false, manual=false){
@@ -22,19 +22,19 @@ module mount_illumination(frame, low_cost=false, manual=false){
     stand_params = render_stand_params(manual=manual);
     z_actual = microscope_stand_height(stand_params)-microscope_depth();
     if (frame == 1){
-        mounted_microscope_frame(stand_params=stand_params){
+        mounted_microscope_frame(manual=manual){
             rendered_illumination_dovetail_assembly(exploded=true);
         }
         mounted_microscope(stand_params=stand_params, low_cost=low_cost, manual=manual);
     }
     else if (frame == 2){
-        mounted_microscope_frame(stand_params=stand_params){
+        mounted_microscope_frame(manual=manual){
             rendered_illumination_dovetail_assembly();
         }
         mounted_microscope(stand_params=stand_params, low_cost=low_cost, manual=manual);
     }
     else if (frame == 3){
-        mounted_microscope_frame(stand_params=stand_params){
+        mounted_microscope_frame(manual=manual){
             rendered_illumination_dovetail_assembly();
             rendered_condenser_assembly(pos=condenser_pos_exp(), include_led=false);
             illumination_wiring(exploded=true);
@@ -42,7 +42,7 @@ module mount_illumination(frame, low_cost=false, manual=false){
         mounted_microscope(stand_params=stand_params, low_cost=low_cost, manual=manual);
     }
     else if (frame == 4){
-        mounted_microscope_frame(stand_params=stand_params){
+        mounted_microscope_frame(manual=manual){
             rendered_illumination_dovetail_assembly();
             rendered_condenser_assembly(pos=condenser_pos_exp(), include_led=false);
             illumination_wiring(exploded=true);
@@ -54,7 +54,7 @@ module mount_illumination(frame, low_cost=false, manual=false){
         mounted_microscope(stand_params=stand_params, low_cost=low_cost, manual=manual);
     }
     else if (frame == 5){
-        mounted_microscope_frame(stand_params=stand_params){
+        mounted_microscope_frame(manual=manual){
             rendered_illumination_dovetail_assembly();
             rendered_condenser_assembly(tighten_arrow=true);
             illumination_wiring();
@@ -66,8 +66,8 @@ module mount_illumination(frame, low_cost=false, manual=false){
     }
 }
 
-module mounted_microscope_with_illumination(stand_params, low_cost=false, manual=false){
-    mounted_microscope_frame(stand_params=stand_params){
+module mounted_microscope_with_illumination(stand_params=default_stand_params(), low_cost=false, manual=false){
+    mounted_microscope_frame(manual=manual){
         rendered_illumination_dovetail_assembly();
         rendered_condenser_assembly();
         illumination_wiring();

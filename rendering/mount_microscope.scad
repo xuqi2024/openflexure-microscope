@@ -14,7 +14,7 @@ use <prepare_stand.scad>
 
 FRAME = 1;
 LOW_COST = true;
-MANUAL = false;
+MANUAL = true;
 render_mount_microscope(FRAME, LOW_COST, MANUAL);
 
 module render_mount_microscope(frame, low_cost, manual){
@@ -43,13 +43,13 @@ module mounted_microscope(stand_params=default_stand_params(), low_cost=false, m
             stand_lug_screw(params, stand_params, i, exploded=exploded);
         }
     }
-    mounted_microscope_frame(stand_params, exploded=exploded){
+    mounted_microscope_frame(manual=manual, exploded=exploded){
         body_with_optics(low_cost=low_cost);
     }
 }
 
-module mounted_microscope_frame(stand_params=default_stand_params(),exploded=false){
-    //stand_params = default_stand_params();
+module mounted_microscope_frame(manual=false, exploded=false){
+    stand_params = render_stand_params(manual=manual);
     place_part(microscope_on_stand_pos(stand_params, exploded=exploded)){
         children();
     }
