@@ -17,7 +17,7 @@ use <mount_microscope.scad>
 use <mount_upright_optics.scad>
 use <motor_assembly.scad>
 
-FRAME=3;
+FRAME = 3;
 OPTICS_VERSION = "upright";
 render_mount_motors(FRAME, OPTICS_VERSION);
 
@@ -44,31 +44,32 @@ module render_mount_motors(frame, optics_version="rms"){
 
 
 module assembled_microscope_without_electronics(optics_version="rms",
+                                                manual=false,
                                                 xy_motor=true,
                                                 z_motor=true,
                                                 explode=undef,
                                                 connector_positions=[undef, undef, undef],
                                                 cable_positions=[undef, undef, undef]){
     params = render_params();
-
-    mounted_microscope_frame(){
-        if (xy_motor){
-            exploded = explode == "xy";
-            mirror([1, 0, 0]){
+    if (!manual){
+        mounted_microscope_frame(){
+            if (xy_motor){
+                exploded = explode == "xy";
+                mirror([1, 0, 0]){
+                    y_motor_and_cap(params,
+                                    exploded=exploded,
+                                    connector_pos=connector_positions.x,
+                                    cable_pos=cable_positions.x,
+                                    mirror_connector=true);
+                }
                 y_motor_and_cap(params,
                                 exploded=exploded,
-                                connector_pos=connector_positions.x,
-                                cable_pos=cable_positions.x,
-                                mirror_connector=true);
+                                connector_pos=connector_positions.y,
+                                cable_pos=cable_positions.y);
             }
-            y_motor_and_cap(params,
-                            exploded=exploded,
-                            connector_pos=connector_positions.y,
-                            cable_pos=cable_positions.y);
-        }
 
-        if (z_motor){
-            exploded = explode == "z";
+            if (z_motor){
+                exploded = explode == "z";
             if (optics_version == "upright"){
                 z_motor_and_cap(params,
                                 optics_version=optics_version,
@@ -78,20 +79,20 @@ module assembled_microscope_without_electronics(optics_version="rms",
                                 cap=false);
             }
             else{
-                z_motor_and_cap(params,
+                    z_motor_and_cap(params,
                                 optics_version=optics_version,
-                                exploded=exploded,
-                                connector_pos=connector_positions.z,
-                                cable_pos=cable_positions.z,
+                                    exploded=exploded,
+                                    connector_pos=connector_positions.z,
+                                    cable_pos=cable_positions.z,
                                 cap=true);
             }
+            }
         }
-    }
     if (optics_version == "upright"){
-        mounted_microscope_upright_with_optics(optics_version=optics_version);
+        mounted_microscope_upright_with_optics(optics_version=optics_version, manual=manual);
     }
     else{
-        mounted_microscope_with_illumination(optics_version=optics_version);
+        mounted_microscope_with_illumination(optics_version=optics_version, manual=manual);
     }
 }
 

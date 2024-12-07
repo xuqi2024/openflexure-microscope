@@ -461,40 +461,46 @@ def register_mount_microscope(rendersystem):
         Camera(position=[24, 43.5, 84], angle=[65.5, 0, 103], distance=550),
     ]
     imgsize = [2400, 2000]
-    for optics_version in ["rms", "low_cost", "upright"]:
-        for i, camera in enumerate(cameras):
-            frame = i + 1
-            output_file = f"docs/renders/mount_microscope_{optics_version}{frame}.png"
-            scad = f"render_mount_microscope({frame}, \"{optics_version}\");"
-            render = ScadRender(output_file, input_file, scad, imgsize, camera)
-            rendersystem.register_scad_render(render)
+    for body in ["", "_manual"]:
+        manual = str(body == "_manual").lower()
+        for optics_version in ["rms", "low_cost", "upright"]:
+            if not ((body == "_manual") and (optics_version == "low_cost")): # no renders for manual rms
+                for i, camera in enumerate(cameras):
+                    frame = i + 1
+                    output_file = f"docs/renders/mount_microscope_{optics_version}{body}{frame}.png"
+                    scad = f"render_mount_microscope({frame}, \"{optics_version}\", {manual});"
+                    render = ScadRender(output_file, input_file, scad, imgsize, camera)
+                    rendersystem.register_scad_render(render)
 
 def register_mount_illumination(rendersystem):
     input_file = "rendering/mount_illumination.scad"
     imgsize = [2400, 2000]
-    for optics_version in ["rms", "low_cost", "upright"]:
-        if optics_version == "upright":
-            cameras = [
-                Camera(position=[0, 50, 180], angle=[68, 0, 133], distance=360),
-                Camera(position=[0, 50, 180], angle=[68, 0, 133], distance=360),
-                Camera(position=[0, 50, 180], angle=[60, 0, 133], distance=460),
-                Camera(position=[0, 50, 180], angle=[60, 0, 133], distance=460),
-            ]
-        else:
-            cameras = [
-                Camera(position=[-6, 49, 178], angle=[68, 0, 133], distance=360),
-                Camera(position=[-6, 49, 178], angle=[68, 0, 133], distance=360),
-                Camera(position=[-6, 49, 178], angle=[60, 0, 308], distance=460),
-                Camera(position=[-6, 49, 178], angle=[82, 0, 308], distance=360),
-                Camera(position=[-6, 49, 178], angle=[82, 0, 308], distance=360),
-                Camera(position=[-6, 49, 178], angle=[82, 0, 308], distance=360)
-            ]
-        for i, camera in enumerate(cameras):
-            frame = i + 1
-            output_file = f"docs/renders/mount_illumination_{optics_version}{frame}.png"
-            scad = f"mount_illumination({frame}, \"{optics_version}\");"
-            render = ScadRender(output_file, input_file, scad, imgsize, camera)
-            rendersystem.register_scad_render(render)
+    for body in ["", "_manual"]:
+        manual = str(body == "_manual").lower()
+        for optics_version in ["rms", "low_cost", "upright"]:
+            if optics_version == "upright":
+                cameras = [
+                    Camera(position=[0, 50, 180], angle=[68, 0, 133], distance=360),
+                    Camera(position=[0, 50, 180], angle=[68, 0, 133], distance=360),
+                    Camera(position=[0, 50, 180], angle=[60, 0, 133], distance=460),
+                    Camera(position=[0, 50, 180], angle=[60, 0, 133], distance=460),
+                ]
+            else:
+                cameras = [
+                    Camera(position=[-6, 49, 178], angle=[68, 0, 133], distance=360),
+                    Camera(position=[-6, 49, 178], angle=[68, 0, 133], distance=360),
+                    Camera(position=[-6, 49, 178], angle=[60, 0, 308], distance=460),
+                    Camera(position=[-6, 49, 178], angle=[82, 0, 308], distance=360),
+                    Camera(position=[-6, 49, 178], angle=[82, 0, 308], distance=360),
+                    Camera(position=[-6, 49, 178], angle=[82, 0, 308], distance=360)
+                ]
+            if not ((body == "_manual") and (optics_version == "low_cost")): # no renders for manual rms
+                for i, camera in enumerate(cameras):
+                    frame = i + 1
+                    output_file = f"docs/renders/mount_illumination_{optics_version}{body}{frame}.png"
+                    scad = f"mount_illumination({frame}, \"{optics_version}\", {manual});"
+                    render = ScadRender(output_file, input_file, scad, imgsize, camera)
+                    rendersystem.register_scad_render(render)
 
 def register_motor_assembly(rendersystem):
     input_file = "rendering/motor_assembly.scad"

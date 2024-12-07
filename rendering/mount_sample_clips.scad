@@ -14,14 +14,14 @@ use <motor_assembly.scad>
 use <mount_motors.scad>
 use <../openscad/sample_clips.scad>
 
-FRAME=2;
+FRAME = 2;
 OPTICS_VERSION = "rms";
 MANUAL = false;
-render_mount_sample_clips(FRAME, OPTICS_VERSION);
+render_mount_sample_clips(FRAME, OPTICS_VERSION, MANUAL);
 
 module render_mount_sample_clips(frame, optics_version="rms", manual=false){
     if(frame > 2){
-        assembled_microscope_without_electronics(optics_version=optics_version);
+        assembled_microscope_without_electronics(optics_version=optics_version, manual=manual);
     }
     mounted_microscope_frame(manual=manual){
         render_sample_clips(

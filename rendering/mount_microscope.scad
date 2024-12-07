@@ -44,7 +44,7 @@ module mounted_microscope(stand_params=default_stand_params(), optics_version="r
         }
     }
     mounted_microscope_frame(manual=manual, exploded=exploded){
-        body_with_optics(optics_version=optics_version);
+        body_with_optics(optics_version=optics_version, manual=manual);
     }
 }
 
