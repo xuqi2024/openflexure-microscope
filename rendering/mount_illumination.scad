@@ -1,20 +1,20 @@
 use <../openscad/libs/illumination.scad>
 use <../openscad/libs/utilities.scad>
 use <../openscad/libs/lib_microscope_stand.scad>
-// use <../openscad/libs/libdict.scad>
-// use <../openscad/libs/microscope_parameters.scad>
 use <librender/render_settings.scad>
 use <librender/render_utils.scad>
 use <librender/assembly_parameters.scad>
 use <librender/hardware.scad>
 use <librender/electronics.scad>
 use <mount_microscope.scad>
+use <prepare_stand.scad>
 use <condenser_assembly.scad>
 use <../openscad/libs/z_axis.scad>
 
 FRAME = 5;
 LOW_COST = false;
-MANUAL = false;
+MANUAL = true;
+
 mount_illumination(FRAME, LOW_COST, MANUAL);
 
 module mount_illumination(frame, low_cost=false, manual=false){
