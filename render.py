@@ -536,12 +536,15 @@ def register_mount_sample_clips(rendersystem):
     input_file = "rendering/mount_sample_clips.scad"
     camera = Camera(position=[0, 0, 178], angle=[68, 0, 308], distance=250)
     imgsize = [2400, 2000]
-    for optics_version in ["rms", "low_cost", "upright"]:
-        for i in [1, 2, 3, 4]:
-            output_file = f"docs/renders/mount_sample_clips_{optics_version}{i}.png"
-            scad = f"render_mount_sample_clips({i}, \"{optics_version}\");"
-            render = ScadRender(output_file, input_file, scad, imgsize, camera)
-            rendersystem.register_scad_render(render)
+    for body in ["", "_manual"]:
+        manual = str(body == "_manual").lower()
+        for optics_version in ["rms", "low_cost"]:
+            if not ((body == "_manual") and (optics_version == "rms")): # no renders for manual rms
+                for i in [1, 2, 3, 4]:
+                    output_file = f"docs/renders/mount_sample_clips_{optics_version}{body}{i}.png"
+                    scad = f"render_mount_sample_clips({i}, \"{optics_version}\", {manual});"
+                    render = ScadRender(output_file, input_file, scad, imgsize, camera)
+                    rendersystem.register_scad_render(render)
 
 def register_prepare_pi_and_sangaboard(rendersystem):
     input_file = "rendering/prepare_pi_and_sangaboard.scad"
@@ -587,19 +590,22 @@ def register_mount_electronics(rendersystem):
 def register_complete_microscope(rendersystem):
     input_file = "rendering/complete_microscope.scad"
     imgsize = [2400, 2000]
-    for optics_version in ["rms", "low_cost", "upright"]:
-        dist = 700 if optics_version != "upright" else 780
-        cameras = [
-            Camera(position=[0, 48, 98], angle=[65, 0, 133], distance=dist),
-            Camera(position=[0, 48, 98], angle=[65, 0, 308], distance=dist),
-            Camera(position=[0, 48, 98], angle=[90, 0, 90], distance=dist),
-            Camera(position=[0, 48, 98], angle=[90, 0, 0], distance=dist),
-        ]
-        for i, camera in enumerate(cameras):
-            output_file = f"docs/renders/complete_microscope_{optics_version}{i}.png"
-            scad = f"render_complete_microscope(\"{optics_version}\");"
-            render = ScadRender(output_file, input_file, scad, imgsize, camera)
-            rendersystem.register_scad_render(render)
+    for body in ["", "_manual"]:
+        manual = str(body == "_manual").lower()
+        for optics_version in ["rms", "low_cost", "upright"]:
+            if not ((body == "_manual") and (optics_version == "rms")): # no renders for manual rms
+                dist = 700 if optics_version != "upright" else 780
+                cameras = [
+                    Camera(position=[0, 48, 98], angle=[65, 0, 133], distance=dist),
+                    Camera(position=[0, 48, 98], angle=[65, 0, 308], distance=dist),
+                    Camera(position=[0, 48, 98], angle=[90, 0, 90], distance=dist),
+                    Camera(position=[0, 48, 98], angle=[90, 0, 0], distance=dist),
+                ]
+                for i, camera in enumerate(cameras):
+                    output_file = f"docs/renders/complete_microscope_{optics_version}{body}{i}.png"
+                    scad = f"render_complete_microscope(\"{optics_version}\", {manual});"
+                    render = ScadRender(output_file, input_file, scad, imgsize, camera)
+                    rendersystem.register_scad_render(render)
 
 def register_rendered_microscope_stl(rendersystem, force_clean):
     input_file = "rendering/librender/rendered_main_body.scad"
