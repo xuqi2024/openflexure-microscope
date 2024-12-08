@@ -25,3 +25,5 @@ The assembly is broken up into several steps:
 1. [.](wiring.md){step}
 
 {{include: upright_optics_note.md}}
+
+There is also an [interactive 3D view](interactive_3d_view_upright.md) of the finished microscope.
