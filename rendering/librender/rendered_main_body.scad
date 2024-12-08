@@ -5,10 +5,16 @@ use <../../openscad/libs/main_body_structure.scad>
 
 main_body(render_params());
 
-module rendered_main_body(colour=undef, alpha=1.0){
+module rendered_main_body(colour=undef, alpha=1.0, manual=false){
     //If this is failing to import you need to run this same file first to create the STL
+    //You will also need to run rendered_main_body_manual to create the STL for the manual main body
     render_colour = is_undef(colour) ? body_colour() : colour;
     color(render_colour, alpha){
-        import("rendered_main_body.stl");
+        if (manual){
+            import("rendered_main_body_manual.stl");
+        }
+        else{
+            import("rendered_main_body.stl");
+        }
     }
 }
