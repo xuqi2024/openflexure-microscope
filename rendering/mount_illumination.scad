@@ -8,6 +8,7 @@ use <librender/hardware.scad>
 use <librender/electronics.scad>
 use <actuator_assembly.scad>
 use <mount_microscope.scad>
+use <prepare_stand.scad>
 use <condenser_assembly.scad>
 use <mount_optics.scad>
 use <../openscad/libs/z_axis.scad>
