@@ -166,6 +166,7 @@ render:
       - cd rendering
       - scad2gltf complete_microscope_rms.scad
       - scad2gltf complete_microscope_low_cost.scad
+      - scad2gltf complete_microscope_manual.scad
       - cp complete_microscope_*.glb ../docs/gltf/
 
     artifacts:
@@ -189,11 +190,13 @@ build-docs:
       - render
       - archive-source
     needs: ["build", "render", "archive-source"]
-    image: "python:3.7"
+    image: "python:3.12"
 
     before_script:
       - python --version
-      - pip install "gitbuilding>=0.11.0"
+      #This can be removed onece we update to GitBuilding 0.15
+      - pip install setuptools
+      - pip install "gitbuilding>=0.14.0"
 
     script:
       - cd docs

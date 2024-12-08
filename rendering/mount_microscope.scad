@@ -11,31 +11,33 @@ use <prepare_stand.scad>
 
 FRAME = 1;
 LOW_COST = false;
-render_mount_microscope(FRAME, LOW_COST);
+MANUAL = false;
+render_mount_microscope(FRAME, LOW_COST, MANUAL);
 
-module render_mount_microscope(frame, low_cost){
+module render_mount_microscope(frame, low_cost, manual){
     if (frame==1){
-        mounted_microscope(low_cost=low_cost, exploded=true);
+        mounted_microscope(low_cost=low_cost, manual=manual, exploded=true);
     }
     else if (frame==2){
-        mounted_microscope(low_cost=low_cost);
+        mounted_microscope(low_cost=low_cost, manual=manual);
     }
 }
 
-module mounted_microscope(low_cost=false, exploded=false){
+module mounted_microscope(stand_params=default_stand_params(), low_cost=false, manual=false, exploded=false){
     params = render_params();
-    stand_params = default_stand_params();
-    stand_prepared(params, stand_params);
-    for (i = [0, 1, 2, 3]){
+    stand_params = render_stand_params(manual=manual);
+    stand_prepared(params, stand_params, manual=manual);
+    screws = (manual) ? [0, 1] : [0, 1, 2, 3] ;
+    for (i = screws){
         stand_lug_screw(params, stand_params, i, exploded=exploded);
     }
-    mounted_microscope_frame(exploded=exploded){
-        body_with_optics(low_cost=low_cost);
+    mounted_microscope_frame(manual=manual, exploded=exploded){
+        body_with_optics(low_cost=low_cost, manual=manual);
     }
 }
 
-module mounted_microscope_frame(exploded=false){
-    stand_params = default_stand_params();
+module mounted_microscope_frame(manual=false, exploded=false){
+    stand_params = render_stand_params(manual=manual);
     place_part(microscope_on_stand_pos(stand_params, exploded=exploded)){
         children();
     }
