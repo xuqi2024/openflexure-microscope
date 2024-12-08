@@ -333,7 +333,7 @@ def register_actuator_assembly(rendersystem):
     for body in ["", "_manual"]:
         manual = str(body == "_manual").lower()
         for i, camera in enumerate(cameras):
-            output_file = os.path.join("docs/renders/", pngs[i], body, ".png")
+            output_file = f"docs/renders/{pngs[i]}{body}.png"
             scad = f"render_actuator_assembly({i+1},{manual});"
             render = ScadRender(output_file, input_file, scad, imgsize, camera)
             rendersystem.register_scad_render(render)
