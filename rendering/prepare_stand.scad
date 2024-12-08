@@ -3,12 +3,13 @@ use <librender/render_utils.scad>
 use <librender/assembly_parameters.scad>
 use <librender/render_settings.scad>
 use <../openscad/libs/utilities.scad>
+use <../openscad/libs/libdict.scad>
+use <../openscad/libs/microscope_parameters.scad>
 use <../openscad/libs/lib_microscope_stand.scad>
 use <../openscad/libs/simple_post_stand_lib.scad>
-use <mount_microscope.scad>
 
 FRAME = 1;
-MANUAL = false;
+MANUAL = true;
 
 render_prepare_stand(FRAME, MANUAL);
 
@@ -51,6 +52,14 @@ module render_prepare_stand(frame, manual=false){
         stand_prepared(params, stand_params, manual=manual);
     }
 }
+
+function render_stand_params(manual=false) = let(
+        params_dummy = default_stand_params(tall=false, no_pi=true),
+        z_nominal = microscope_stand_height(params_dummy)-microscope_depth(),
+        post_mount_height = key_lookup("foot_height", default_params()),
+        st_params_manual = replace_value("extra_height", post_mount_height-z_nominal, params_dummy),
+        st_params_normal = default_stand_params(tall=false, no_pi=false)
+    ) manual? st_params_manual : st_params_normal;
 
 module stand_prepared(params, stand_params, manual=false){
     render_stand(params, stand_params, manual=manual);
