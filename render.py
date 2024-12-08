@@ -7,7 +7,6 @@ This is the main script to create the renderings used in the documentation.
 # Function docstrings are fairly redundant in this file
 # pylint: disable=missing-function-docstring
 
-import os
 from build_system.openscad_render_system import RenderSystem, ScadRender, Camera
 
 def register_rms_optics_assembly(rendersystem):
