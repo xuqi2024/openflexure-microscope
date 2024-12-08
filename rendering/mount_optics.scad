@@ -13,33 +13,34 @@ use <actuator_assembly.scad>
 
 FRAME = 8;
 LOW_COST = false;
+MANUAL = false;
 
-render_mount_optics(FRAME, LOW_COST);
+render_mount_optics(FRAME, LOW_COST, MANUAL);
 
-module render_mount_optics(frame, low_cost){
+module render_mount_optics(frame, low_cost, manual=false){
     if (frame==1){
         om_pos = translate_pos(optics_module_pos(low_cost), [0, -10, -100]);
         line_end = translate_pos(optics_module_pos(low_cost), [0, -10, 50]);
         construction_line(om_pos, line_end,.2);
         render_optics(low_cost, om_pos, screw_tight=false);
-        body_with_assembled_actuators();
+        body_with_assembled_actuators(manual=manual);
     }
     else if (frame==2){
         om_pos = translate_pos(optics_module_pos(low_cost), [0, -10, -6.5]);
         render_optics(low_cost, om_pos, screw_tight=false);
-        body_with_assembled_actuators();
+        body_with_assembled_actuators(manual=manual);
     }
     else if (frame==3){
         om_pos = translate_pos(optics_module_pos(low_cost), [0, -10, -6.5]);
         rendered_z_mount();
         render_optics(low_cost, om_pos, screw_tight=false);
-        body_with_assembled_actuators(translucent_body=true);
+        body_with_assembled_actuators(manual=manual, translucent_body=true);
     }
     else if (frame==4){
         om_pos = translate_pos(optics_module_pos(low_cost), [0, -4, -6.5]);
         rendered_z_mount();
         render_optics(low_cost, om_pos, screw_tight=false);
-        body_with_assembled_actuators(translucent_body=true);
+        body_with_assembled_actuators(manual=manual, translucent_body=true);
     }
     else if (frame==5){
         om_pos = translate_pos(optics_module_pos(low_cost), [0, -4, -6.5]);
@@ -49,7 +50,7 @@ module render_mount_optics(frame, low_cost){
         }
         rendered_z_mount();
         render_optics(low_cost, om_pos, screw_tight=false);
-        body_with_assembled_actuators(translucent_body=true);
+        body_with_assembled_actuators(manual=manual, translucent_body=true);
     }
     else if (frame==6){
         om_pos = translate_pos(optics_module_pos(low_cost), [0, -4, 0]);
@@ -58,7 +59,7 @@ module render_mount_optics(frame, low_cost){
         }
         rendered_z_mount();
         render_optics(low_cost, om_pos, screw_tight=false);
-        body_with_assembled_actuators(translucent_body=true);
+        body_with_assembled_actuators(manual=manual, translucent_body=true);
     }
     else if (frame==7){
         place_part(optics_module_allen_key_pos()){
@@ -66,10 +67,10 @@ module render_mount_optics(frame, low_cost){
         }
         rendered_z_mount();
         render_optics(low_cost, optics_module_pos(low_cost), screw_tight=true);
-        body_with_assembled_actuators(translucent_body=true);
+        body_with_assembled_actuators(manual=manual, translucent_body=true);
     }
     else if (frame==8){
-        body_with_optics(low_cost);
+        body_with_optics(low_cost, manual=manual);
     }
 }
 
@@ -88,13 +89,17 @@ module render_optics(low_cost=false, om_pos=undef, screw_tight=false,  cable_pos
     }
 }
 
-module body_with_optics(low_cost=false, translucent_body=false){
+module body_with_optics(low_cost=false, manual=false, translucent_body=false){
     render_optics(low_cost, optics_module_pos(low_cost), screw_tight=true);
-    body_with_assembled_actuators(translucent_body=translucent_body);
+    body_with_assembled_actuators(manual=manual, translucent_body=translucent_body);
 }
 
-module rendered_z_mount(){
-    params = render_params();
+module rendered_z_mount(manual=false){
+    function no_lug_params() = let(
+        params = render_params()
+    ) replace_value("include_motor_lugs", false, params);    
+    params = !manual ? render_params() : no_lug_params();
+
     coloured_render(body_colour()){
         z_axis_flexures(params);
         z_axis_struts(params);
