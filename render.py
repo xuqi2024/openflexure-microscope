@@ -369,7 +369,7 @@ def register_mount_optics(rendersystem):
         manual = str(body == "_manual").lower()
         for optics in ["rms", "low_cost"]:
             low_cost = str(optics == "low_cost").lower()
-            if not ((body == "_manual") and (optics == "low_cost")): # no renders for manual rms
+            if not ((body == "_manual") and (optics == "rms")): # no renders for manual rms
                 for i, camera in enumerate(cameras):
                     frame = i + 1
                     output_file = f"docs/renders/mount_optics_{optics}{body}{frame}.png"
@@ -388,7 +388,7 @@ def register_mount_microscope(rendersystem):
         manual = str(body == "_manual").lower()
         for optics in ["rms", "low_cost"]:
             low_cost = str(optics == "low_cost").lower()
-            if not ((body == "_manual") and (optics == "low_cost")): # no renders for manual rms
+            if not ((body == "_manual") and (optics == "rms")): # no renders for manual rms
                 for i, camera in enumerate(cameras):
                     frame = i + 1
                     output_file = f"docs/renders/mount_microscope_{optics}{body}{frame}.png"
@@ -411,7 +411,7 @@ def register_mount_illumination(rendersystem):
         manual = str(body == "_manual").lower()
         for optics in ["rms", "low_cost"]:
             low_cost = str(optics == "low_cost").lower()
-            if not ((body == "_manual") and (optics == "low_cost")): # no renders for manual rms
+            if not ((body == "_manual") and (optics == "rms")): # no renders for manual rms
                 for i, camera in enumerate(cameras):
                     frame = i + 1
                     output_file = f"docs/renders/mount_illumination_{optics}{body}{frame}.png"
