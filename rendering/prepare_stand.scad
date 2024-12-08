@@ -4,40 +4,44 @@ use <librender/assembly_parameters.scad>
 use <librender/render_settings.scad>
 use <../openscad/libs/utilities.scad>
 use <../openscad/libs/lib_microscope_stand.scad>
+use <../openscad/libs/simple_post_stand_lib.scad>
+use <mount_microscope.scad>
 
-FRAME=2;
+FRAME = 1;
+MANUAL = false;
 
-render_prepare_stand(FRAME);
+render_prepare_stand(FRAME, MANUAL);
 
-module render_prepare_stand(frame){
+module render_prepare_stand(frame, manual=false){
     params = render_params();
-    stand_params = default_stand_params();
+    stand_params = render_stand_params(manual=manual);
     if (frame==1){
         render_stand(params, stand_params);
         coloured_render(remove_colour()){
             stand_supports(params, stand_params);
         }
-    }
-    if (frame==2){
-        render_stand(params, stand_params);
+    }else if (frame==2){
+        render_stand(params, stand_params, manual=manual);
         stand_nut(params, stand_params, exploded=true);
     }else if (frame==3){
-        render_stand(params, stand_params);
+        render_stand(params, stand_params, manual=manual);
         stand_nut(params, stand_params, low=true);
         stand_nut_temp_screw(params, stand_params, exploded=true);
     }else if (frame==4){
-        render_stand(params, stand_params);
+        render_stand(params, stand_params, manual=manual);
         stand_nut(params, stand_params);
         stand_nut_temp_screw(params, stand_params, turn=true);
     }else if (frame==5){
-        render_stand(params, stand_params);
+        render_stand(params, stand_params, manual=manual);
         stand_nut(params, stand_params);
         stand_nut(params, stand_params, nut_num=1, exploded=true);
-        stand_nut(params, stand_params, nut_num=2, exploded=true);
-        stand_nut(params, stand_params, nut_num=3, exploded=true);
+        if (!manual){
+            stand_nut(params, stand_params, nut_num=2, exploded=true);
+            stand_nut(params, stand_params, nut_num=3, exploded=true);
+        }
     }
     else if (frame==6){
-        render_stand(params, stand_params);
+        render_stand(params, stand_params, manual=manual);
         stand_nut(params, stand_params);
         stand_nut(params, stand_params, nut_num=1);
         stand_nut_temp_screw(params, stand_params, nut_num=1, turn=true);
@@ -47,7 +51,7 @@ module render_prepare_stand(frame){
         stand_nut_temp_screw(params, stand_params, nut_num=3, turn=true);
     }
     else if (frame==7){
-        stand_prepared(params, stand_params);
+        stand_prepared(params, stand_params, manual=manual);
     }
     // last frames used when putting in the nut for fitting
     // the electronics drawer, wiring.md
@@ -61,17 +65,24 @@ module render_prepare_stand(frame){
     }
 }
 
-module stand_prepared(params, stand_params){
-    render_stand(params, stand_params);
+module stand_prepared(params, stand_params, manual=false){
+    render_stand(params, stand_params, manual=manual);
     stand_nut(params, stand_params);
     stand_nut(params, stand_params, nut_num=1);
-    stand_nut(params, stand_params, nut_num=2);
-    stand_nut(params, stand_params, nut_num=3);
+    if (!manual){
+        stand_nut(params, stand_params, nut_num=2);
+        stand_nut(params, stand_params, nut_num=3);
+    }
 }
 
-module render_stand(params, stand_params){
+module render_stand(params, stand_params, manual=false){
     coloured_render(stand_colour()){
-        microscope_stand(params, stand_params, supports=false);
+        if (manual){
+            simple_post_stand(params, type="back", wall_height=10, screws=true);
+        }
+        else{
+            microscope_stand(params, stand_params, supports=false);
+        }
     }
 }
 
