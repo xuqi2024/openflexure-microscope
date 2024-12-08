@@ -243,16 +243,16 @@ def register_band(rendersystem):
     input_file = "rendering/band_insertion_cutaway.scad"
     camera = Camera(position=[-13, 13, -30], angle=[76, 0, 216], distance=445)
     imgsize = [1200, 2400]
-    png_files = []
     for body in ["", "_manual"]:
         manual = str(body == "_manual").lower()
+        png_files = []
         for frame in [1, 2, 3, 4, 5]:
             output_file = f"docs/renders/band{body}{frame}.png"
             scad = f"render_band_insertion(band_insertion_frame_parameters({frame}),{manual});"
             png_files.append(output_file)
             render = ScadRender(output_file, input_file, scad, imgsize, camera)
             rendersystem.register_scad_render(render)
-    rendersystem.register_imagemagick_sequence("docs/renders/band_instruction.png", png_files)
+        rendersystem.register_imagemagick_sequence(f"docs/renders/band_instruction{body}.png", png_files)
 
 
 def register_brim_and_ties(rendersystem):
