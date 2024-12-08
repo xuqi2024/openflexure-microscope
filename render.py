@@ -480,14 +480,23 @@ def register_mount_illumination(rendersystem):
     for body in ["", "_manual"]:
         manual = str(body == "_manual").lower()
         for optics_version in ["rms", "low_cost", "upright"]:
-            if optics_version == "upright":
+            if (body == "_manual") :
+                cameras = [
+                    Camera(position=[-6, 49, 138], angle=[68, 0, 133], distance=360),
+                    Camera(position=[-6, 49, 138], angle=[68, 0, 133], distance=360),
+                    Camera(position=[-6, 49, 138], angle=[60, 0, 308], distance=460),
+                    Camera(position=[-6, 49, 138], angle=[82, 0, 308], distance=360),
+                    Camera(position=[-6, 49, 138], angle=[82, 0, 308], distance=360),
+                    Camera(position=[-6, 49, 138], angle=[82, 0, 308], distance=360)
+                ]
+            elif (optics_version == "upright") :
                 cameras = [
                     Camera(position=[0, 50, 180], angle=[68, 0, 133], distance=360),
                     Camera(position=[0, 50, 180], angle=[68, 0, 133], distance=360),
                     Camera(position=[0, 50, 180], angle=[60, 0, 133], distance=460),
                     Camera(position=[0, 50, 180], angle=[60, 0, 133], distance=460),
                 ]
-            else:
+            else :
                 cameras = [
                     Camera(position=[-6, 49, 178], angle=[68, 0, 133], distance=360),
                     Camera(position=[-6, 49, 178], angle=[68, 0, 133], distance=360),
@@ -539,9 +548,9 @@ def register_mount_sample_clips(rendersystem):
     imgsize = [2400, 2000]
     for body in ["", "_manual"]:
         manual = str(body == "_manual").lower()
-        if manual:
+        if (body == "_manual") :
             camera = Camera(position=[0, 0, 138], angle=[68, 0, 308], distance=250)
-        else:
+        else :
             camera = Camera(position=[0, 0, 178], angle=[68, 0, 308], distance=250)
         for optics_version in ["rms", "low_cost"]:
             if not ((body == "_manual") and (optics_version == "rms")): # no renders for manual rms
