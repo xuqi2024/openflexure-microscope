@@ -8,6 +8,7 @@ use <../../openscad/libs/lib_microscope_stand.scad>
 use <../../openscad/libs/lib_optics.scad>
 use <../../openscad/libs/wall.scad>
 use <../../openscad/libs/gears.scad>
+use <../../openscad/libs/upright_z_axis.scad>
 use <render_utils.scad>
 
 function render_params() =  let(
@@ -42,6 +43,10 @@ function illum_platform_nut_placement(params, right=true) = let(
     l_rot = left_illumination_screw_rotation()+30,
     pos = right ? r_pos : l_pos,
     rot = right ? r_rot : l_rot
+) create_placement_dict(pos, rot);
+function illum_platform_back_nut_placement(params) = let(
+    pos = illumination_back_corner_pos(params) - [0,0,4.75],
+    rot = 0
 ) create_placement_dict(pos, rot);
 
 function illum_platform_nut_placement_low(params, right=true) = translate_pos(illum_platform_nut_placement(params, right), [0,0,-2.5]);
@@ -213,10 +218,39 @@ function stand_lug_pos(params, stand_params, screw_num) = translate_pos(stand_nu
 function stand_lug_pos_exp(params, stand_params, screw_num) = translate_pos(stand_nut_placement(params, stand_params, screw_num), [0, 0, 35]);
 
 function illum_dovetail_screw_pos(params, right=true) = translate_pos(illum_platform_nut_placement(params, right), [0, 0, 8.1]);
-function illum_dovetail_screw_pos_exp(params, right=true) = translate_pos(illum_platform_nut_placement(params, right), [0,0,40]);
+function illum_dovetail_screw_pos_exp(params, right=true) = translate_pos(illum_dovetail_screw_pos(params, right), [0,0,32]);
+function illum_dovetail_screw_pos_exp_short(params, right=true) = translate_pos(illum_dovetail_screw_pos(params, right), [0,0,10.5]);
+
+function illum_dovetail_back_screw_pos(params) = translate_pos(illum_platform_back_nut_placement(params), [0, 0, 8.1]);
+function illum_dovetail_back_screw_pos_exp(params) = translate_pos(illum_dovetail_back_screw_pos(params), [0, 0, upright_z_spacer_height(params,1)+30]);
 
 function illum_dovetail_washer_pos(params, right=true) = translate_pos(illum_platform_nut_placement(params, right), [0, 0, 7.7]);
-function illum_dovetail_washer_pos_exp(params, right=true) = translate_pos(illum_platform_nut_placement(params, right), [0,0,25]);
+function illum_dovetail_washer_pos_exp(params, right=true) = translate_pos(illum_dovetail_washer_pos(params, right), [0, 0, 17]);
+function illum_dovetail_washer_pos_exp_short(params, right=true) = translate_pos(illum_dovetail_washer_pos(params, right), [0, 0, 10.5]);
+
+function illum_dovetail_back_washer_pos(params) = translate_pos(illum_platform_back_nut_placement(params), [0, 0, 7.7]);
+function illum_dovetail_back_washer_pos_exp(params) = translate_pos(illum_dovetail_back_washer_pos(params), [0, 0, upright_z_spacer_height(params,1)+17]);
+
+function z_mount_screw_pos(params, right=true, front=true) = let(
+    lift = upright_z_spacer_height(params,1),
+    pos_f = translate_pos(illum_dovetail_screw_pos(params, right), [0, 0, lift]),
+    diff = right_back_sq_illum_corner_pos(params) - right_illumination_screw_pos(params),
+    pos = front ? pos_f : translate_pos(pos_f, diff)
+) pos;
+function z_mount_screw_pos_exp(params, right=true, front=true) = let(
+    up = front ? 14 : 40
+) translate_pos(z_mount_screw_pos(params, right, front), [0,0,up]);
+
+function z_mount_washer_pos(params, right=true, front=true) = let(
+    lift = upright_z_spacer_height(params,1),
+    pos_f = translate_pos(illum_dovetail_washer_pos(params, right), [0, 0, lift]),
+    diff = right_back_sq_illum_corner_pos(params) - right_illumination_screw_pos(params),
+    pos = front ? pos_f : translate_pos(pos_f, diff)
+) pos;
+function z_mount_washer_pos_exp(params, right=true, front=true) = let(
+    up = front ? 14 : 27
+) translate_pos(z_mount_screw_pos(params, right, front), [0,0,up]);
+
 
 function small_gear_pos() = create_placement_dict([0, 0, -2], [180, 0, 0], [0, 0, 15]);
 function small_gear_pos_exp() = translate_pos(small_gear_pos(), [0, 0, -20]);

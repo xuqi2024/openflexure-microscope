@@ -10,19 +10,19 @@ use <prepare_stand.scad>
 
 
 FRAME = 1;
-LOW_COST = false;
-render_mount_microscope(FRAME, LOW_COST);
+OPTICS_VERSION = "rms";
+render_mount_microscope(FRAME, OPTICS_VERSION);
 
-module render_mount_microscope(frame, low_cost){
+module render_mount_microscope(frame, optics_version){
     if (frame==1){
-        mounted_microscope(low_cost=low_cost, exploded=true);
+        mounted_microscope(optics_version=optics_version, exploded=true);
     }
     else if (frame==2){
-        mounted_microscope(low_cost=low_cost);
+        mounted_microscope(optics_version=optics_version);
     }
 }
 
-module mounted_microscope(low_cost=false, exploded=false){
+module mounted_microscope(optics_version="rms", exploded=false){
     params = render_params();
     stand_params = default_stand_params();
     stand_prepared(params, stand_params);
@@ -30,7 +30,7 @@ module mounted_microscope(low_cost=false, exploded=false){
         stand_lug_screw(params, stand_params, i, exploded=exploded);
     }
     mounted_microscope_frame(exploded=exploded){
-        body_with_optics(low_cost=low_cost);
+        body_with_optics(optics_version=optics_version);
     }
 }
 

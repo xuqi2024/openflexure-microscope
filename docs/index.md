@@ -14,7 +14,7 @@ This configuration of the microscope uses a traditional microscope objective for
 #### [Motorised microscope with low-cost optics](low_cost_microscope.md)
 This configuration of the microscope uses the original lens from a Raspberry Pi camera module.
 
-#### [Upright microscope](upright-microscope.md)
+#### [Upright microscope](upright_microscope.md)
 
 This configuration of the microscope has the objective above the sample rather than below. It is newer and less well tested than other versions of the microscope. If you have problems building it, please let us know on [GitLab](https://gitlab.com/openflexure/openflexure-microscope/-/issues) or on [our forum](https://openflexure.discourse.group/).
 
