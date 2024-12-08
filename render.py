@@ -335,11 +335,13 @@ def register_prepare_stand(rendersystem):
         Camera(position=[75, 52, 32], angle=[65, 0, 115], distance=240),
     ]
     imgsize = [2400, 2000]
-    for i, camera in enumerate(cameras):
-        output_file = f"docs/renders/prepare_stand{i+1}.png"
-        scad = f"render_prepare_stand({i+1});"
-        render = ScadRender(output_file, input_file, scad, imgsize, camera)
-        rendersystem.register_scad_render(render)
+    for body in ["", "_manual"]:
+        manual = str(body == "_manual").lower()
+        for i, camera in enumerate(cameras):
+            output_file = f"docs/renders/prepare_stand{body}{i+1}.png"
+            scad = f"render_prepare_stand({i+1},{manual});"
+            render = ScadRender(output_file, input_file, scad, imgsize, camera)
+            rendersystem.register_scad_render(render)
 
 def register_actuator_assembly(rendersystem):
     input_file = "rendering/actuator_assembly.scad"
