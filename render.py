@@ -445,10 +445,13 @@ def register_mount_motors(rendersystem):
 
 def register_mount_sample_clips(rendersystem):
     input_file = "rendering/mount_sample_clips.scad"
-    camera = Camera(position=[0, 0, 178], angle=[68, 0, 308], distance=250)
     imgsize = [2400, 2000]
     for body in ["", "_manual"]:
         manual = str(body == "_manual").lower()
+        if manual:
+            camera = Camera(position=[0, 0, 138], angle=[68, 0, 308], distance=250)
+        else:
+            camera = Camera(position=[0, 0, 178], angle=[68, 0, 308], distance=250)
         for optics in ["rms", "low_cost"]:
             low_cost = str(optics == "low_cost").lower()
             if not ((body == "_manual") and (optics == "rms")): # no renders for manual rms
