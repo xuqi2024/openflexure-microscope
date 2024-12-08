@@ -40,8 +40,11 @@ module cut_actuator_housing(params, cut=true){
     }
 }
 
-module render_band_insertion(frame_dict){
-    params = default_params();
+module render_band_insertion(frame_dict, manual=false){
+    function no_lug_params() = let(
+        params = default_params()
+    ) replace_value("include_motor_lugs", false, params);    
+    params = !manual ? default_params() : no_lug_params();
 
     foot_tr = key_lookup("foot_tr", frame_dict);
     band_tr = key_lookup("band_tr", frame_dict);
@@ -75,7 +78,7 @@ module render_band_insertion(frame_dict){
         }
     }
     translate_z(xy_lead_assembly_height()){
-        lead_screw_assembly();
+        lead_screw_assembly(manual=manual);
     }
     translate_z(xy_nut_height()){
         rotate_z(30){
@@ -146,4 +149,5 @@ function band_insertion_frame_parameters(frame_number) = let(
 ) frames[frame_number-1];
 
 FRAME = 2;
-render_band_insertion(band_insertion_frame_parameters(FRAME));
+MANUAL = false;
+render_band_insertion(band_insertion_frame_parameters(FRAME), manual=MANUAL);

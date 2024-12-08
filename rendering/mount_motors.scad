@@ -16,7 +16,7 @@ use <mount_illumination.scad>
 use <mount_microscope.scad>
 use <motor_assembly.scad>
 
-FRAME=3;
+FRAME = 3;
 LOW_COST = false;
 render_mount_motors(FRAME, LOW_COST);
 
@@ -37,38 +37,40 @@ module render_mount_motors(frame, low_cost=false){
 
 
 module assembled_microscope_without_electronics(low_cost=false,
+                                                manual=false,
                                                 xy_motor=true,
                                                 z_motor=true,
                                                 explode=undef,
                                                 connector_positions=[undef, undef, undef],
                                                 cable_positions=[undef, undef, undef]){
     params = render_params();
-
-    mounted_microscope_frame(){
-        if (xy_motor){
-            exploded = explode == "xy";
-            mirror([1, 0, 0]){
+    if (!manual){
+        mounted_microscope_frame(){
+            if (xy_motor){
+                exploded = explode == "xy";
+                mirror([1, 0, 0]){
+                    y_motor_and_cap(params,
+                                    exploded=exploded,
+                                    connector_pos=connector_positions.x,
+                                    cable_pos=cable_positions.x,
+                                    mirror_connector=true);
+                }
                 y_motor_and_cap(params,
                                 exploded=exploded,
-                                connector_pos=connector_positions.x,
-                                cable_pos=cable_positions.x,
-                                mirror_connector=true);
+                                connector_pos=connector_positions.y,
+                                cable_pos=cable_positions.y);
             }
-            y_motor_and_cap(params,
-                            exploded=exploded,
-                            connector_pos=connector_positions.y,
-                            cable_pos=cable_positions.y);
-        }
 
-        if (z_motor){
-            exploded = explode == "z";
-            z_motor_and_cap(params,
-                            exploded=exploded,
-                            connector_pos=connector_positions.z,
-                            cable_pos=cable_positions.z);
+            if (z_motor){
+                exploded = explode == "z";
+                z_motor_and_cap(params,
+                                exploded=exploded,
+                                connector_pos=connector_positions.z,
+                                cable_pos=cable_positions.z);
+            }
         }
     }
-    mounted_microscope_with_illumination(low_cost=low_cost);
+    mounted_microscope_with_illumination(low_cost=low_cost, manual=manual);
 }
 
 module y_motor_and_cap(params, exploded=false, connector_pos=undef, cable_pos=undef, mirror_connector=false){
