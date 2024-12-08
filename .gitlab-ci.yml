@@ -166,6 +166,7 @@ render:
       - cd rendering
       - scad2gltf complete_microscope_rms.scad
       - scad2gltf complete_microscope_low_cost.scad
+      - scad2gltf complete_microscope_manual.scad
       - cp complete_microscope_*.glb ../docs/gltf/
 
     artifacts:
