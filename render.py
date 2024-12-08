@@ -459,13 +459,16 @@ def register_mount_sample_clips(rendersystem):
     input_file = "rendering/mount_sample_clips.scad"
     camera = Camera(position=[0, 0, 178], angle=[68, 0, 308], distance=250)
     imgsize = [2400, 2000]
-    for optics in ["rms", "low_cost"]:
-        low_cost = str(optics == "low_cost").lower()
-        for i in [1, 2, 3, 4]:
-            output_file = f"docs/renders/mount_sample_clips_{optics}{i}.png"
-            scad = f"render_mount_sample_clips({i}, {low_cost});"
-            render = ScadRender(output_file, input_file, scad, imgsize, camera)
-            rendersystem.register_scad_render(render)
+    for body in ["", "_manual"]:
+        manual = str(body == "_manual").lower()
+        for optics in ["rms", "low_cost"]:
+            low_cost = str(optics == "low_cost").lower()
+            if not ((body == "_manual") and (optics == "rms")): # no renders for manual rms
+                for i in [1, 2, 3, 4]:
+                    output_file = f"docs/renders/mount_sample_clips_{optics}{body}{i}.png"
+                    scad = f"render_mount_sample_clips({i}, {low_cost}, {manual});"
+                    render = ScadRender(output_file, input_file, scad, imgsize, camera)
+                    rendersystem.register_scad_render(render)
 
 def register_complete_microscope(rendersystem):
     input_file = "rendering/complete_microscope.scad"
@@ -476,13 +479,16 @@ def register_complete_microscope(rendersystem):
         Camera(position=[0, 48, 98], angle=[90, 0, 0], distance=700),
     ]
     imgsize = [2400, 2000]
-    for optics in ["rms", "low_cost"]:
-        low_cost = str(optics == "low_cost").lower()
-        for i, camera in enumerate(cameras):
-            output_file = f"docs/renders/complete_microscope_{optics}{i}.png"
-            scad = f"render_microscope({low_cost});"
-            render = ScadRender(output_file, input_file, scad, imgsize, camera)
-            rendersystem.register_scad_render(render)
+    for body in ["", "_manual"]:
+        manual = str(body == "_manual").lower()
+        for optics in ["rms", "low_cost"]:
+            low_cost = str(optics == "low_cost").lower()
+            if not ((body == "_manual") and (optics == "rms")): # no renders for manual rms
+                for i, camera in enumerate(cameras):
+                    output_file = f"docs/renders/complete_microscope_{optics}{body}{i}.png"
+                    scad = f"render_microscope({low_cost}, {manual});"
+                    render = ScadRender(output_file, input_file, scad, imgsize, camera)
+                    rendersystem.register_scad_render(render)
 
 def main():
     rendersystem = RenderSystem()
