@@ -25,12 +25,8 @@ Now you have tested your [printer][RepRap-style printer]{qty:1,cat:tool} and [fi
 
 * Actuator assembly tools ([nut tool]{output,qty:1}, [band tool]{output,qty:1}, and [band tool cover]{output,qty:1}):  [actuator_assembly_tools.stl](models/actuator_assembly_tools.stl){previewpage}
 * [Lens tool]{output,qty:1}: [lens_tool.stl](models/lens_tool.stl){previewpage}
-* [Main body]{output,qty:1}: [main_body.stl](models/main_body.stl){previewpage} - The smart brim may require [custom print settings].
-* 3 [cable tidy caps]{output,qty:3}: [cable_tidies.stl](models/cable_tidies.stl){previewpage}
 * [Sample clips]{output,qty:2}: [sample_clips.stl](models/sample_clips.stl){previewpage}
-* [Microscope stand]{output, qty:1}: [microscope_stand.stl](models/microscope_stand.stl){previewpage}
-* [Electronics drawer]{output, qty:1}: [electronics_drawer-pi4_sanga_stack_11mm.stl](models/electronics_drawer-pi4_sanga_stack_11mm.stl){previewpage} - **This electronics drawer is for a Pi 4 and HAT-style Sangaboard with 11mm tall headers. For all other combinations of electronics, refer to the [customisation page](customisation.md)**
-* 3 [small gears]{output,qty:3}: [small_gears.stl](models/small_gears.stl){previewpage}
+{{include: printing{{var_body, default:_motorised}}_only.md}}
 {{include: {{var_type}}_only_printing.md}}
 
 
