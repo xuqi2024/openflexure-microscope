@@ -13,7 +13,7 @@ use <../openscad/libs/z_axis.scad>
 
 FRAME = 5;
 LOW_COST = false;
-MANUAL = true;
+MANUAL = false;
 
 mount_illumination(FRAME, LOW_COST, MANUAL);
 
@@ -37,7 +37,7 @@ module mount_illumination(frame, low_cost=false, manual=false){
         mounted_microscope_frame(manual=manual){
             rendered_illumination_dovetail_assembly();
             rendered_condenser_assembly(pos=condenser_pos_exp(), include_led=false);
-            illumination_wiring(exploded=true);
+            illumination_wiring(manual=manual, exploded=true);
         }
         mounted_microscope(stand_params=stand_params, low_cost=low_cost, manual=manual);
     }
@@ -45,7 +45,7 @@ module mount_illumination(frame, low_cost=false, manual=false){
         mounted_microscope_frame(manual=manual){
             rendered_illumination_dovetail_assembly();
             rendered_condenser_assembly(pos=condenser_pos_exp(), include_led=false);
-            illumination_wiring(exploded=true);
+            illumination_wiring(manual=manual, exploded=true);
         }
         line_offset = [0 ,35, z_actual-20];
         line_pos1 = translate_pos(condenser_pos_exp(), line_offset);
@@ -57,7 +57,7 @@ module mount_illumination(frame, low_cost=false, manual=false){
         mounted_microscope_frame(manual=manual){
             rendered_illumination_dovetail_assembly();
             rendered_condenser_assembly(tighten_arrow=true);
-            illumination_wiring();
+            illumination_wiring(manual=manual);
         }
         mounted_microscope(stand_params=stand_params, low_cost=low_cost, manual=manual);
     }
@@ -70,7 +70,7 @@ module mounted_microscope_with_illumination(stand_params=default_stand_params(),
     mounted_microscope_frame(manual=manual){
         rendered_illumination_dovetail_assembly();
         rendered_condenser_assembly();
-        illumination_wiring();
+        illumination_wiring(manual=manual);
     }
     mounted_microscope(stand_params=stand_params, low_cost=low_cost, manual=manual);
 }
@@ -110,18 +110,20 @@ module illumination_dovetail_screw(params, right=true, turn=false, exploded=fals
 }
 
 // The two wires powering the illumination PCB
-module illumination_wiring(params=render_params(), exploded=false){
+module illumination_wiring(params=render_params(), exploded=false, manual=false){
     top_z = condenser_z()+2 + (exploded ? 30 : 0); //NB should match `condenser_pos_exp()`
     housing_top = illumination_cable_housing_top_pos(params, z_extra=2);
     drop = illumination_dovetail_z(params) - housing_top.z;
+    base_point_1 = (manual) ? left_illumination_screw_pos(params) + [0, -5, -65] : housing_top ;
+    base_point_2 = (manual) ? base_point_1 + [-5, -5, -5] : illumination_cable_housing_bottom_pos(params) ;
     points=[
         [0,10,top_z],
         [0,illumination_dovetail_y()-2,top_z],
         illumination_cable_channel_xypos() + [0,0,top_z],
         illumination_cable_channel_xypos() + [0,0,illumination_dovetail_z(params)],
         left_illumination_screw_pos(params) + [-5, -5, -drop/2],
-        housing_top,
-        illumination_cable_housing_bottom_pos(params)
+        base_point_1,
+        base_point_2
     ];
     coloured_render("DimGray"){
         wire(
