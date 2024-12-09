@@ -3,7 +3,6 @@
 The microscope illumination must be connected to power and the camera must be connected to a computer.  These instructions assume you are using a webcam. 
 
 
-
 ## Connect the camera {pagestep}
 
 * For a USB webcam, plug the USB cable into a USB port on a PC or a Reaspberry Pi. Open a camera app to view the camera preview and capture pictures.
@@ -11,6 +10,8 @@ The microscope illumination must be connected to power and the camera must be co
 
 ## Connect the LED power {pagestep}
 
-* The [LED workaround](./workaround_5mm_led/workaround_5mm_led.md) needs to be connected to Ground and 5V from any source. USB cables with bare ends or breakout boards with USB connectors are available. 
-* The illumination PCB needs to be connected to a constant current power supply (20-50mA), or a resistor can be added in the cable, as in the [LED workaround](./workaround_5mm_led/workaround_5mm_led.md), and then connected to Ground and 5V. 
+* The [LED workaround] needs to be connected to Ground and 5V from any source. USB cables with bare ends or breakout boards with USB connectors are available. 
+* The [illumination PCB] needs to be connected to a constant current power supply (20-50mA). Alternatively a resistor can be added in the cable, as in the [LED workaround], and then connected to Ground and 5V. 
 
+[LED workaround]: ./workaround_5mm_led/workaround_5mm_led.md
+[illumination PCB]: ./parts/electronics/illumination_pcb.md
