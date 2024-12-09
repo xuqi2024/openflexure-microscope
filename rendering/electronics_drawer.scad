@@ -15,8 +15,9 @@ use <mount_motors.scad>
 use <mount_sample_clips.scad>
 use <mount_microscope.scad>
 
-FRAME = 4;
+FRAME = 7;
 LOW_COST = false;
+
 render_mount_electronics(FRAME, LOW_COST);
 
 module render_mount_electronics(frame, low_cost=false){
@@ -48,11 +49,21 @@ module render_mount_electronics(frame, low_cost=false){
         render_sangaboard_v0_5(slide=true, exploded=false);
         render_sangaboard_screws(slide=true, exploded=false);
     }
-
-
-    if (frame == 14){
+    if (frame == 6){
         microscope_with_clips(low_cost=low_cost);
         render_electronics_drawer(slide=true);
+        render_rpi_4b(slide=true);
+        render_rpi_4b_screws(slide=true);
+        render_sangaboard_v0_5(slide=true);
+        render_sangaboard_screws(slide=true);
+    }
+    if (frame == 7){
+        microscope_with_clips(low_cost=low_cost);
+        render_electronics_drawer(slide=false);
+        render_rpi_4b(slide=false);
+        render_rpi_4b_screws(slide=false);
+        render_sangaboard_v0_5(slide=false);
+        render_sangaboard_screws(slide=false);
     }
 }
 
