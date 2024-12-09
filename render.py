@@ -460,6 +460,8 @@ def register_mount_electronics(rendersystem):
         Camera(position=[40, 90, 36], angle=[75, 0, 230], distance=125),
         Camera(position=[40, 90, 36], angle=[75, 0, 230], distance=125),
         Camera(position=[40, 90, 36], angle=[75, 0, 230], distance=125),
+        Camera(position=[40, 90, 36], angle=[75, 0, 230], distance=125),
+        Camera(position=[40, 90, 36], angle=[75, 0, 230], distance=125),
         Camera(position=[35, 80, 95], angle=[70, 0, 70], distance=400),
         Camera(position=[35, 80, 95], angle=[70, 0, 70], distance=400),
         Camera(position=[35, 80, 95], angle=[70, 0, 70], distance=400),
@@ -467,8 +469,8 @@ def register_mount_electronics(rendersystem):
     ]
     imgsize = [2000, 2000]
     for i, camera in enumerate(cameras):
-        output_file = f"docs/renders/mount_electronics{i}.png"
-        scad = f"render_mount_electronics({i},low_cost=false);"
+        output_file = f"docs/renders/mount_electronics{i+1}.png"
+        scad = f"render_mount_electronics({i+1},low_cost=false);"
         render = ScadRender(output_file, input_file, scad, imgsize, camera)
         rendersystem.register_scad_render(render)
 

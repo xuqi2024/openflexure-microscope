@@ -15,68 +15,56 @@ use <mount_motors.scad>
 use <mount_sample_clips.scad>
 use <mount_microscope.scad>
 
-FRAME = 9;
+FRAME = 8;
 LOW_COST = false;
 
-$vpt = [35, 80, 95];
-$vpr = [65, 0, 110];
-$vpd = 800;
-//$vpf = 11;
+
 render_mount_electronics(FRAME, LOW_COST);
 
 module render_mount_electronics(frame, low_cost=false){
     if (frame == 1){
         render_electronics_drawer(slide=true);
-        render_rpi_4b(slide=true, exploded=true);
+        render_drawer_nut(slide=true, exploded=true);
     }
     if (frame == 2){
+        render_electronics_drawer(slide=true);
+        render_drawer_nut(slide=true, exploded=false);
+    }
+    if (frame == 3){
+        render_electronics_drawer(slide=true);
+        render_rpi_4b(slide=true, exploded=true);
+    }
+    if (frame == 4){
         render_electronics_drawer(slide=true);
         render_rpi_4b(slide=true, exploded=true);
         render_rpi_4b_screws(slide=true, exploded=true);
     }
-    if (frame == 3){
+    if (frame == 5){
         render_electronics_drawer(slide=true);
         render_rpi_4b(slide=true, exploded=false);
         render_rpi_4b_screws(slide=true, exploded=false);
     }
-    if (frame == 4){
+    if (frame == 6){
         render_electronics_drawer(slide=true);
         render_rpi_4b(slide=true, exploded=false);
         render_rpi_4b_screws(slide=true, exploded=false);
         render_sangaboard_v0_5(slide=true, exploded=true);
         render_sangaboard_screws(slide=true, exploded=true);
     }
-    if (frame == 5){
+    if (frame == 7){
         render_electronics_drawer(slide=true);
         render_rpi_4b(slide=true, exploded=false);
         render_rpi_4b_screws(slide=true, exploded=false);
         render_sangaboard_v0_5(slide=true, exploded=false);
         render_sangaboard_screws(slide=true, exploded=false);
     }
-    if (frame == 6){
+    if (frame == 8){
         microscope_with_clips(low_cost=low_cost);
         render_electronics_drawer(slide=true);
         render_rpi_4b(slide=true);
         render_rpi_4b_screws(slide=true);
         render_sangaboard_v0_5(slide=true);
         render_sangaboard_screws(slide=true);
-    }
-    if (frame == 7){
-        microscope_with_clips(low_cost=low_cost);
-        render_electronics_drawer(slide=false);
-        render_rpi_4b(slide=false);
-        render_rpi_4b_screws(slide=false);
-        render_sangaboard_v0_5(slide=false);
-        render_sangaboard_screws(slide=false);
-    }
-    if (frame == 8){
-        microscope_with_clips(low_cost=low_cost);
-        render_electronics_drawer(slide=false);
-        render_rpi_4b(slide=false);
-        render_rpi_4b_screws(slide=false);
-        render_sangaboard_v0_5(slide=false);
-        render_sangaboard_screws(slide=false);
-        render_electronics_drawer_screw(exploded=true);
     }
     if (frame == 9){
         microscope_with_clips(low_cost=low_cost);
@@ -85,9 +73,25 @@ module render_mount_electronics(frame, low_cost=false){
         render_rpi_4b_screws(slide=false);
         render_sangaboard_v0_5(slide=false);
         render_sangaboard_screws(slide=false);
+    }
+    if (frame == 10){
+        microscope_with_clips(low_cost=low_cost);
+        render_electronics_drawer(slide=false);
+        render_rpi_4b(slide=false);
+        render_rpi_4b_screws(slide=false);
+        render_sangaboard_v0_5(slide=false);
+        render_sangaboard_screws(slide=false);
+        render_electronics_drawer_screw(exploded=true);
+    }
+    if (frame == 11){
+        microscope_with_clips(low_cost=low_cost);
+        render_electronics_drawer(slide=false);
+        render_rpi_4b(slide=false);
+        render_rpi_4b_screws(slide=false);
+        render_sangaboard_v0_5(slide=false);
+        render_sangaboard_screws(slide=false);
         render_electronics_drawer_screw(exploded=false);
     }
-
 }
 
 module microscope_with_clips(low_cost=false){
@@ -103,6 +107,27 @@ module render_electronics_drawer(slide=false){
         translate(slide_out){
             coloured_render(body_colour()){
                 electronics_drawer_stl(pi_version=4, sanga_version="stack_11mm");
+            }
+        }
+    }
+}
+
+module render_drawer_nut(slide=false, exploded=false){
+    slide_out = slide? [100,0,0] : [0,0,0] ; 
+    explode = exploded ? [0,6.9,15] : [0,6.9,0] ;
+    electronics_drawer_frame_xy(render_params()){
+        translate(slide_out){
+            translate(explode){
+                translate(electronics_drawer_side_screw_pos()){
+                    if (exploded){
+                        construction_line([0,0,-3], [0,0,-explode.z]);
+                    }                
+                    rotate_x(90){
+                        rotate_z(30){
+                            m3_nut(center=true);
+                        }
+                    }
+                }
             }
         }
     }
