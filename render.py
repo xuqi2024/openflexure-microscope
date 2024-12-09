@@ -465,7 +465,7 @@ def register_mount_electronics(rendersystem):
         Camera(position=[35, 80, 95], angle=[70, 0, 70], distance=400),
         Camera(position=[35, 80, 95], angle=[70, 0, 70], distance=400),
         Camera(position=[35, 80, 95], angle=[70, 0, 70], distance=400),
-        Camera(position=[35, 80, 95], angle=[70, 0, 70], distance=400),
+        #Camera(position=[35, 80, 95], angle=[70, 0, 70], distance=400)
     ]
     imgsize = [2000, 2000]
     for i, camera in enumerate(cameras):

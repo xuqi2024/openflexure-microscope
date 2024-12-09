@@ -15,7 +15,7 @@ use <mount_motors.scad>
 use <mount_sample_clips.scad>
 use <mount_microscope.scad>
 
-FRAME = 8;
+FRAME = 5;
 LOW_COST = false;
 
 
@@ -43,6 +43,7 @@ module render_mount_electronics(frame, low_cost=false){
         render_electronics_drawer(slide=true);
         render_rpi_4b(slide=true, exploded=false);
         render_rpi_4b_screws(slide=true, exploded=false);
+        render_rpi_ribbon(slide=true, exploded=false);
     }
     if (frame == 6){
         render_electronics_drawer(slide=true);
@@ -160,6 +161,20 @@ module render_rpi_4b_screws(slide=false, exploded=false){
                         construction_line(hole_pos[i], hole_pos[i]-[0,0,20]);
                     }
                 }
+            }
+        }
+    }
+}
+
+module render_rpi_ribbon(slide=false, exploded=false){
+    ribbon_pos = [create_placement_dict([45.7, 11, 12.5], [0, 0, 180], [0, 270, 0]),
+                create_placement_dict([50, 11, 300], [0, 0, 180], [0, 270, 0])];
+    slide_out = slide ? [100,0,0] : [0,0,0] ;
+    explode = exploded ? [0,0,15] : [0,0,0] ;
+    electronics_drawer_frame_xy(render_params()){
+        translate(slide_out + explode){
+            translate(electronics_drawer_board_inset() + [0, 0, electronics_drawer_standoff_h()]){
+                picamera_cable(ribbon_pos);
             }
         }
     }
