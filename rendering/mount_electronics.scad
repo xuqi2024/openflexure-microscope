@@ -15,9 +15,13 @@ use <mount_motors.scad>
 use <mount_sample_clips.scad>
 use <mount_microscope.scad>
 
-FRAME = 7;
+FRAME = 9;
 LOW_COST = false;
 
+$vpt = [35, 80, 95];
+$vpr = [65, 0, 110];
+$vpd = 800;
+//$vpf = 11;
 render_mount_electronics(FRAME, LOW_COST);
 
 module render_mount_electronics(frame, low_cost=false){
@@ -65,6 +69,25 @@ module render_mount_electronics(frame, low_cost=false){
         render_sangaboard_v0_5(slide=false);
         render_sangaboard_screws(slide=false);
     }
+    if (frame == 8){
+        microscope_with_clips(low_cost=low_cost);
+        render_electronics_drawer(slide=false);
+        render_rpi_4b(slide=false);
+        render_rpi_4b_screws(slide=false);
+        render_sangaboard_v0_5(slide=false);
+        render_sangaboard_screws(slide=false);
+        render_electronics_drawer_screw(exploded=true);
+    }
+    if (frame == 9){
+        microscope_with_clips(low_cost=low_cost);
+        render_electronics_drawer(slide=false);
+        render_rpi_4b(slide=false);
+        render_rpi_4b_screws(slide=false);
+        render_sangaboard_v0_5(slide=false);
+        render_sangaboard_screws(slide=false);
+        render_electronics_drawer_screw(exploded=false);
+    }
+
 }
 
 module microscope_with_clips(low_cost=false){
@@ -151,23 +174,39 @@ module render_sangaboard_screws(slide=false, exploded=false){
     }
 }
 
+module render_electronics_drawer_screw(exploded=false){
+    explode_side = exploded ? [0,-15,0] : [0,0,0] ;
+    explode_front = exploded ? [25,0,0] : [0,0,0] ;
+    electronics_drawer_frame_xy(render_params()){
+        translate(explode_side){
+            translate(electronics_drawer_side_screw_pos()){
+                if (exploded){
+                    construction_line([0,0,0], -explode_side);
+                }
+                rotate_x(90){
+                    m3_cap_x10();
+                }
+            }
+        }
+        translate(explode_front){
+            translate(electronics_drawer_front_screw_pos()){
+                if (exploded){
+                    construction_line([0,0,0], -explode_front);
+                }
+                rotate([90,0,90]){
+                    m3_cap_x10();
+                }
+            }
+        }
+    }
+}
 
 module render_microscope(low_cost=false){
-    assembled_microscope_without_electronics(low_cost=low_cost);
-    mounted_microscope_frame(){
-        render_sample_clips();
-    }
-    electronics_drawer_frame_xy(render_params()){
-        coloured_render(body_colour()){
-            electronics_drawer_stl(pi_version=4, sanga_version="stack_11mm");
-        }
-
-        translate(electronics_drawer_board_inset() + [0, 0, electronics_drawer_standoff_h()]){
-            rpi_4b();
-        }
-
-        translate(electronics_drawer_board_inset() + [0, 0, sanga_stand_height("stack_11mm")]){
-            sangaboard_v0_5();
-        }
-    }
+        microscope_with_clips(low_cost=low_cost);
+        render_electronics_drawer(slide=false);
+        render_rpi_4b(slide=false);
+        render_rpi_4b_screws(slide=false);
+        render_sangaboard_v0_5(slide=false);
+        render_sangaboard_screws(slide=false);
+        render_electronics_drawer_screw(exploded=false);
 }
