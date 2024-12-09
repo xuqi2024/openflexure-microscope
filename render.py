@@ -508,6 +508,7 @@ def main():
     register_motor_assembly(rendersystem)
     register_mount_motors(rendersystem)
     register_mount_sample_clips(rendersystem)
+    register_mount_electronics(rendersystem)
     register_complete_microscope(rendersystem)
 
     rendersystem.render()
