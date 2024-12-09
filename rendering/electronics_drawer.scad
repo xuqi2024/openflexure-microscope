@@ -15,7 +15,7 @@ use <mount_motors.scad>
 use <mount_sample_clips.scad>
 use <mount_microscope.scad>
 
-FRAME = 5;
+FRAME = 4;
 LOW_COST = false;
 render_mount_electronics(FRAME, LOW_COST);
 
@@ -108,7 +108,7 @@ module render_rpi_4b_screws(slide=false, exploded=false){
 
 module render_sangaboard_v0_5(slide=false, exploded=false){
     slide_out = slide ? [100,0,0] : [0,0,0] ;
-    explode = exploded ? [0,0,5] : [0,0,0] ;
+    explode = exploded ? [0,0,12] : [0,0,0] ;
     hole_pos = pi_hole_pos(true);
     electronics_drawer_frame_xy(render_params()){
         translate(slide_out + explode){
@@ -122,7 +122,7 @@ module render_sangaboard_v0_5(slide=false, exploded=false){
 module render_sangaboard_screws(slide=false, exploded=false){
     slide_out = slide ? [100,0,0] : [0,0,0] ;
     stack = 11.5 + 5; // stack height 11.5mm, plus two board thicknesses, plus header base thickness
-    explode = exploded ? [0,0,20] : [0,0,0] ;
+    explode = exploded ? [0,0,25] : [0,0,0] ;
     hole_pos = pi_hole_pos(true);
     electronics_drawer_frame_xy(render_params()){
         translate(slide_out + explode){
@@ -132,7 +132,7 @@ module render_sangaboard_screws(slide=false, exploded=false){
                         no2_x6_5_selftap();
                     }
                     if (exploded){
-                        construction_line(hole_pos[i], hole_pos[i]-[0,0,25]);
+                        construction_line(hole_pos[i], hole_pos[i]-[0,0,30]);
                     }
                 }
             }
