@@ -14,7 +14,7 @@
 // use <mount_motors.scad>
 // use <mount_sample_clips.scad>
 // use <mount_microscope.scad>
-use <mount_electronics>
+use <./mount_electronics.scad>
 
 
 LOW_COST = false;
