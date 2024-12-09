@@ -452,6 +452,24 @@ def register_mount_sample_clips(rendersystem):
             render = ScadRender(output_file, input_file, scad, imgsize, camera)
             rendersystem.register_scad_render(render)
 
+def register_mount_electronics(rendersystem):
+    input_file = "rendering/electronics_drawer.scad"
+    cameras = [
+        Camera(position=[40, 90, 36], angle=[75, 0, 230], distance=125),
+        Camera(position=[40, 90, 36], angle=[75, 0, 230], distance=125),
+        Camera(position=[40, 90, 36], angle=[75, 0, 230], distance=125),
+        Camera(position=[40, 90, 36], angle=[75, 0, 230], distance=125),
+        Camera(position=[40, 90, 36], angle=[75, 0, 230], distance=125),
+        Camera(position=[35, 80, 95], angle=[70, 0, 70], distance=400),
+        Camera(position=[35, 80, 95], angle=[70, 0, 70], distance=400),
+    ]
+    imgsize = [2000, 2000]
+    for i, camera in enumerate(cameras):
+        output_file = f"docs/renders/mount_electronics_drawer{i}.png"
+        scad = f"render_mount_electronics({i},low_cost=false);"
+        render = ScadRender(output_file, input_file, scad, imgsize, camera)
+        rendersystem.register_scad_render(render)
+
 def register_complete_microscope(rendersystem):
     input_file = "rendering/complete_microscope.scad"
     cameras = [
@@ -493,6 +511,7 @@ def main():
     register_motor_assembly(rendersystem)
     register_mount_motors(rendersystem)
     register_mount_sample_clips(rendersystem)
+    register_mount_electronics(rendersystem)
     register_complete_microscope(rendersystem)
 
     rendersystem.render()
