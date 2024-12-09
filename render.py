@@ -465,7 +465,7 @@ def register_mount_electronics(rendersystem):
         Camera(position=[35, 80, 95], angle=[70, 0, 70], distance=400),
         Camera(position=[35, 80, 95], angle=[70, 0, 70], distance=400),
         Camera(position=[35, 80, 95], angle=[70, 0, 70], distance=400),
-        #Camera(position=[35, 80, 95], angle=[70, 0, 70], distance=400)
+        Camera(position=[35, 80, 95], angle=[70, 0, 70], distance=400)
     ]
     imgsize = [2000, 2000]
     for i, camera in enumerate(cameras):
@@ -487,7 +487,7 @@ def register_complete_microscope(rendersystem):
         low_cost = str(optics == "low_cost").lower()
         for i, camera in enumerate(cameras):
             output_file = f"docs/renders/complete_microscope_{optics}{i}.png"
-            scad = f"render_microscope({low_cost});"
+            scad = f"render_complete_microscope({low_cost});"
             render = ScadRender(output_file, input_file, scad, imgsize, camera)
             rendersystem.register_scad_render(render)
 

@@ -17,8 +17,12 @@
 use <./mount_electronics.scad>
 
 
-LOW_COST = false;
-render_microscope(LOW_COST);
+LOW_COST = true;
+render_complete_microscope(LOW_COST);
+
+module render_complete_microscope(low_cost=false){
+    render_microscope(low_cost);
+}
 
 // module render_microscope(low_cost=false){
 //     assembled_microscope_without_electronics(low_cost=low_cost);
