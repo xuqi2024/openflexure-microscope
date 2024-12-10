@@ -15,7 +15,7 @@ use <./mount_motors.scad>
 use <./mount_sample_clips.scad>
 use <./mount_microscope.scad>
 
-FRAME = 12;
+FRAME = 9;
 LOW_COST = false;
 
 render_mount_electronics(FRAME, LOW_COST);

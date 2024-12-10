@@ -457,22 +457,22 @@ def register_mount_sample_clips(rendersystem):
 def register_mount_electronics(rendersystem):
     input_file = "rendering/mount_electronics.scad"
     cameras = [
+        Camera(position=[35, 110, 36], angle=[70, 0, 270], distance=250),
+        Camera(position=[35, 110, 36], angle=[70, 0, 270], distance=250),
+        Camera(position=[35, 110, 36], angle=[70, 0, 270], distance=250),
+        Camera(position=[35, 110, 36], angle=[70, 0, 270], distance=250),
+        Camera(position=[35, 110, 36], angle=[70, 0, 270], distance=250),
+        Camera(position=[35, 110, 36], angle=[70, 0, 270], distance=250),
+        Camera(position=[35, 110, 36], angle=[70, 0, 270], distance=250),
         Camera(position=[40, 90, 36], angle=[70, 0, 270], distance=250),
         Camera(position=[40, 90, 36], angle=[70, 0, 270], distance=250),
         Camera(position=[40, 90, 36], angle=[70, 0, 270], distance=250),
         Camera(position=[40, 90, 36], angle=[70, 0, 270], distance=250),
         Camera(position=[40, 90, 36], angle=[70, 0, 270], distance=250),
-        Camera(position=[40, 90, 36], angle=[70, 0, 270], distance=250),
-        Camera(position=[40, 90, 36], angle=[70, 0, 270], distance=250),
-        Camera(position=[40, 90, 36], angle=[70, 0, 270], distance=250),
-        Camera(position=[40, 90, 36], angle=[70, 0, 270], distance=250),
-        Camera(position=[40, 90, 36], angle=[70, 0, 270], distance=250),
-        Camera(position=[40, 90, 36], angle=[70, 0, 270], distance=250),
-        Camera(position=[40, 90, 36], angle=[70, 0, 270], distance=250),
-        Camera(position=[65, 80, 33], angle=[65, 0, 115], distance=550),
-        Camera(position=[65, 80, 33], angle=[65, 0, 115], distance=550),
-        Camera(position=[65, 80, 33], angle=[65, 0, 115], distance=550),
-        Camera(position=[65, 80, 33], angle=[65, 0, 115], distance=550),
+        Camera(position=[65, 80, 33], angle=[65, 0, 115], distance=470),
+        Camera(position=[65, 80, 33], angle=[65, 0, 115], distance=470),
+        Camera(position=[65, 80, 33], angle=[65, 0, 115], distance=470),
+        Camera(position=[65, 80, 33], angle=[65, 0, 115], distance=470),
     ]
     imgsize = [2000, 2000]
     for i, camera in enumerate(cameras):
