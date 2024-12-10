@@ -97,5 +97,5 @@ Connect the wires to the Sangaboard v0.5
 
 ## Wiring Complete {pagestep}
 
-To power up your microscope you will need a [power supply][Raspberry Pi Power Supply](parts/electronics.yml#RaspberryPi_PowerSupply){qty:1, cat:electronic}. The microscope is powered through the Sangaboard v0.5 UCB-C socket.
+To power up your microscope you will need a [power supply][Raspberry Pi Power Supply](parts/electronics.yml#RaspberryPi_PowerSupply){qty:1, cat:electronic}. The microscope is powered through the Sangaboard v0.5 USB-C socket.
 

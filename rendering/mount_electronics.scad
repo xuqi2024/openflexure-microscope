@@ -31,32 +31,38 @@ module render_mount_electronics(frame, low_cost=false){
     }
     if (frame == 3){
         render_electronics_drawer(slide=true);
+        render_drawer_nut(slide=true);
         render_rpi_4b(slide=true, exploded=true);
     }
     if (frame == 4){
         render_electronics_drawer(slide=true);
+        render_drawer_nut(slide=true);
         render_rpi_4b(slide=true, exploded=true);
         render_rpi_4b_screws(slide=true, exploded=true);
     }
     if (frame == 5){
         render_electronics_drawer(slide=true);
+        render_drawer_nut(slide=true);
         render_rpi_4b(slide=true, exploded=false);
         render_rpi_4b_screws(slide=true, exploded=false);
     }
     if (frame == 6){
         render_electronics_drawer(slide=true);
+        render_drawer_nut(slide=true);
         render_rpi_4b(slide=true, exploded=false);
         render_rpi_4b_screws(slide=true, exploded=false);
         render_rpi_ribbon(slide=true, exploded=true);
     }
     if (frame == 7){
         render_electronics_drawer(slide=true);
+        render_drawer_nut(slide=true);
         render_rpi_4b(slide=true, exploded=false);
         render_rpi_4b_screws(slide=true, exploded=false);
         render_rpi_ribbon(slide=true, exploded=false);
     }
     if (frame == 8){
         render_electronics_drawer(slide=true);
+        render_drawer_nut(slide=true);
         render_rpi_4b(slide=true, exploded=false);
         render_rpi_4b_screws(slide=true, exploded=false);
         render_rpi_ribbon(slide=true, exploded=false);
@@ -65,6 +71,7 @@ module render_mount_electronics(frame, low_cost=false){
     }
     if (frame == 9){
         render_electronics_drawer(slide=true);
+        render_drawer_nut(slide=true);
         render_rpi_4b(slide=true, exploded=false);
         render_rpi_4b_screws(slide=true, exploded=false);
         render_rpi_ribbon(slide=true, exploded=false);
@@ -73,6 +80,7 @@ module render_mount_electronics(frame, low_cost=false){
     }
     if (frame == 10){
         render_electronics_drawer(slide=true);
+        render_drawer_nut(slide=true);
         render_rpi_4b(slide=true, exploded=false);
         render_rpi_4b_screws(slide=true, exploded=false);
         render_rpi_ribbon(slide=true, exploded=false);
@@ -82,6 +90,7 @@ module render_mount_electronics(frame, low_cost=false){
     }
     if (frame == 11){
         render_electronics_drawer(slide=true);
+        render_drawer_nut(slide=true);
         render_rpi_4b(slide=true, exploded=false);
         render_rpi_4b_screws(slide=true, exploded=false);
         render_rpi_ribbon(slide=true, exploded=false);
@@ -91,6 +100,7 @@ module render_mount_electronics(frame, low_cost=false){
     }
     if (frame == 12){
         render_electronics_drawer(slide=true);
+        render_drawer_nut(slide=true);
         render_rpi_4b(slide=true, exploded=false);
         render_rpi_4b_screws(slide=true, exploded=false);
         render_rpi_ribbon(slide=true, exploded=false);
@@ -103,6 +113,7 @@ module render_mount_electronics(frame, low_cost=false){
     if (frame == 13){
         microscope_with_clips(low_cost=low_cost);
         render_electronics_drawer(slide=true);
+        render_drawer_nut(slide=true);
         render_rpi_4b(slide=true);
         render_rpi_4b_screws(slide=true);
         render_rpi_ribbon(bent=true, slide=true, exploded=false);
@@ -115,6 +126,7 @@ module render_mount_electronics(frame, low_cost=false){
     if (frame == 14){
         microscope_with_clips(low_cost=low_cost);
         render_electronics_drawer(slide=false);
+        render_drawer_nut(slide=false);
         render_rpi_4b(slide=false);
         render_rpi_4b_screws(slide=false);
         render_sangaboard_v0_5(slide=false);
@@ -123,6 +135,7 @@ module render_mount_electronics(frame, low_cost=false){
     if (frame == 15){
         microscope_with_clips(low_cost=low_cost);
         render_electronics_drawer(slide=false);
+        render_drawer_nut(slide=false);
         render_rpi_4b(slide=false);
         render_rpi_4b_screws(slide=false);
         render_sangaboard_v0_5(slide=false);
@@ -132,6 +145,7 @@ module render_mount_electronics(frame, low_cost=false){
     if (frame == 16){
         microscope_with_clips(low_cost=low_cost);
         render_electronics_drawer(slide=false);
+        render_drawer_nut(slide=false);
         render_rpi_4b(slide=false);
         render_rpi_4b_screws(slide=false);
         render_sangaboard_v0_5(slide=false);
