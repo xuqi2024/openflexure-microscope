@@ -310,6 +310,8 @@ def register_prepare_stand(rendersystem):
         Camera(position=[-9, 20, 37.5], angle=[34, 0, 235], distance=450),
         Camera(position=[-9, 20, 37.5], angle=[34, 0, 235], distance=450),
         Camera(position=[-9, 20, 37.5], angle=[34, 0, 235], distance=450),
+        Camera(position=[72, 60, 33], angle=[65, 0, 115], distance=400),
+        Camera(position=[72, 60, 33], angle=[65, 0, 115], distance=400),
     ]
     imgsize = [2400, 2000]
     for i, camera in enumerate(cameras):
@@ -452,6 +454,33 @@ def register_mount_sample_clips(rendersystem):
             render = ScadRender(output_file, input_file, scad, imgsize, camera)
             rendersystem.register_scad_render(render)
 
+def register_mount_electronics(rendersystem):
+    input_file = "rendering/mount_electronics.scad"
+    cameras = [
+        Camera(position=[35, 110, 36], angle=[70, 0, 270], distance=250),
+        Camera(position=[35, 110, 36], angle=[70, 0, 270], distance=250),
+        Camera(position=[35, 110, 36], angle=[70, 0, 270], distance=250),
+        Camera(position=[35, 110, 36], angle=[70, 0, 270], distance=250),
+        Camera(position=[35, 110, 36], angle=[70, 0, 270], distance=250),
+        Camera(position=[35, 110, 36], angle=[70, 0, 270], distance=250),
+        Camera(position=[35, 110, 36], angle=[70, 0, 270], distance=250),
+        Camera(position=[40, 90, 36], angle=[70, 0, 270], distance=250),
+        Camera(position=[40, 90, 36], angle=[70, 0, 270], distance=250),
+        Camera(position=[40, 90, 36], angle=[70, 0, 270], distance=250),
+        Camera(position=[40, 90, 36], angle=[70, 0, 270], distance=250),
+        Camera(position=[40, 90, 36], angle=[70, 0, 270], distance=250),
+        Camera(position=[65, 80, 33], angle=[65, 0, 115], distance=470),
+        Camera(position=[65, 80, 33], angle=[65, 0, 115], distance=470),
+        Camera(position=[65, 80, 33], angle=[65, 0, 115], distance=470),
+        Camera(position=[65, 80, 33], angle=[65, 0, 115], distance=470),
+    ]
+    imgsize = [2000, 2000]
+    for i, camera in enumerate(cameras):
+        output_file = f"docs/renders/mount_electronics{i+1}.png"
+        scad = f"render_mount_electronics({i+1},low_cost=false);"
+        render = ScadRender(output_file, input_file, scad, imgsize, camera)
+        rendersystem.register_scad_render(render)
+
 def register_complete_microscope(rendersystem):
     input_file = "rendering/complete_microscope.scad"
     cameras = [
@@ -465,7 +494,7 @@ def register_complete_microscope(rendersystem):
         low_cost = str(optics == "low_cost").lower()
         for i, camera in enumerate(cameras):
             output_file = f"docs/renders/complete_microscope_{optics}{i}.png"
-            scad = f"render_microscope({low_cost});"
+            scad = f"render_complete_microscope({low_cost});"
             render = ScadRender(output_file, input_file, scad, imgsize, camera)
             rendersystem.register_scad_render(render)
 
@@ -493,6 +522,7 @@ def main():
     register_motor_assembly(rendersystem)
     register_mount_motors(rendersystem)
     register_mount_sample_clips(rendersystem)
+    register_mount_electronics(rendersystem)
     register_complete_microscope(rendersystem)
 
     rendersystem.render()
