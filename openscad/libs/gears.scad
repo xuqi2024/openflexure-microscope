@@ -97,6 +97,19 @@ function small_gear_flange_radius() = let(
 * Large gears that are attached to the actuator lead screw and sit ontop
 * of the actuator housing. These are driven by the small gear (see `small_gear()`).
 */
+
+module large_gear_profile(height, tweak_pitch){
+    pitch = tweak_pitch ? gear_pitch()*1.03 : gear_pitch();
+    gear(number_of_teeth=n_teeth_large_gear(),
+         circular_pitch=pitch,
+         circles=0,
+         gear_thickness=height,
+         hub_thickness=height,
+         hub_diameter=20,
+         rim_thickness=height,
+         bore_diameter=0);
+}
+
 module large_gear(){
     $fn=32;
 
@@ -105,14 +118,7 @@ module large_gear(){
     difference(){
         // intersection used to chamfer the bottom of the gear
         intersection(){
-            gear(number_of_teeth=n_teeth_large_gear(),
-                 circular_pitch=gear_pitch(),
-                 circles=0,
-                 gear_thickness=height,
-                 hub_thickness=height,
-                 hub_diameter=20,
-                 rim_thickness=height,
-                 bore_diameter=1);
+            large_gear_profile(height);
             cylinder(r1=pitch_r-2,r2=pitch_r+18,h=20);
         }
         translate(large_gear_screw_pos()+[0,0,height+1]){
