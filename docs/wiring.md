@@ -37,7 +37,7 @@
 ![](renders/mount_electronics1.png)
 ![](renders/mount_electronics2.png)
 
-* Place an [M3 nut]{qty:1, cat:mech} into the slot just inside the hole in the front of the microscope base.
+* Place an [M3 nut]{qty:1, cat:mech} into the slot just inside the hole in the front of the microscope stand.
 * Place another [M3 nut]{qty:1} into the slot above the Sangaboard power connector on the [electronics drawer][Electronics drawer](fromstep){qty:1, cat:printedpart} you printed earlier .
 
 ## Fit the Raspberry Pi {pagestep}

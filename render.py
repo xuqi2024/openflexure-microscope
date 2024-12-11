@@ -310,8 +310,8 @@ def register_prepare_stand(rendersystem):
         Camera(position=[-9, 20, 37.5], angle=[34, 0, 235], distance=450),
         Camera(position=[-9, 20, 37.5], angle=[34, 0, 235], distance=450),
         Camera(position=[-9, 20, 37.5], angle=[34, 0, 235], distance=450),
-        Camera(position=[72, 60, 33], angle=[65, 0, 115], distance=400),
-        Camera(position=[72, 60, 33], angle=[65, 0, 115], distance=400),
+        Camera(position=[75, 52, 32], angle=[65, 0, 115], distance=240),
+        Camera(position=[75, 52, 32], angle=[65, 0, 115], distance=240),
     ]
     imgsize = [2400, 2000]
     for i, camera in enumerate(cameras):
