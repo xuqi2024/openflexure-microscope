@@ -38,14 +38,14 @@
 ![](renders/mount_electronics2.png)
 
 * Place an [M3 nut]{qty:1, cat:mech} into the slot just inside the hole in the front of the microscope stand.
-* Place another [M3 nut]{qty:1} into the slot above the Sangaboard power connector on the [electronics drawer][Electronics drawer](fromstep){qty:1, cat:printedpart} you printed earlier .
+* Place another [M3 nut]{qty:1} into the slot near the Sangaboard power connector on the [electronics drawer][Electronics drawer](fromstep){qty:1, cat:printedpart} you printed earlier .
 
 ## Fit the Raspberry Pi {pagestep}
 ![](renders/mount_electronics3.png)
 ![](renders/mount_electronics4.png)
 ![](renders/mount_electronics5.png)
 
-* Take the [electronics drawer] and push the [Raspberry Pi v4]{qty:1} into place so the connectors show through the holes.
+* Take the [electronics drawer] and push the [Raspberry Pi v4]{qty:1} into place so the connectors show through the holes. The connectors are recessed into both walls of the drawer, so a little force is required for this step. 
 * Secure the Raspberry Pi in place with two [No 2 self tapping screws][No 2 6.5mm self tapping screws]{qty:2}, using a [screwdriver][#1 pozidrive screwdriver].
 
 ## Attach the camera ribbon cable {pagestep}
@@ -63,7 +63,7 @@
 
 * Mount the [Sangaboard v0.5]{qty:1} onto the Raspberry Pi GPIO pins, ensuring that the ribbon cable from the optics module passes through the slot.
 * Check that the connector is aligned so that it covers all of the pins on the 40-pin connector on the Raspberry Pi, and that the Sangaboard mounting holes line up with the mounting points.
-* Secure the Sangaboard in place with two  [No 2 self tapping screws][No 2 6.5mm self tapping screws]{qty:2}, using a [screwdriver][#1 pozidrive screwdriver]
+* Secure the Sangaboard in place with two [No 2 self tapping screws][No 2 6.5mm self tapping screws]{qty:2}, using a [screwdriver][#1 pozidrive screwdriver].
 
 ## Connect the motors to the Sangaboard {pagestep}
 
@@ -71,7 +71,7 @@
 ![](renders/mount_electronics11.png)
 ![](renders/mount_electronics12.png)
 
-* Push the x motor cable into its labelled connector
+* Push the x motor cable into its labelled connector.
 * Push the y and z motor cables into their labelled connectors. Make sure the motor from the correct axis on the microscope goes to the correct port.
 
 ## Connect the LED to the Sangaboard {pagestep}
