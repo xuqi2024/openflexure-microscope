@@ -28,13 +28,24 @@ module nut_spinner(){
 
 module gear_holder(){
     dims = [40, 14, 10];
+    corner_r = 3;
     translate_z(dims.z/2){
         difference(){
-            cube(dims, center=true);
-                large_gear_profile(10, tweak_pitch=true);
+            //cube with rounded sides
+            hull(){
+                x_shift = (dims.x/2-corner_r);
+                y_shift = (dims.y/2-corner_r);
+                for (x_tr = [-1, 1]*x_shift, y_tr  = [-1, 1]*y_shift){
+                    translate([x_tr, y_tr]){
+                        cylinder(r=corner_r, h=dims.z, center=true, $fn=12);
+                    }
+                }
+            }
+            //cube(dims, center=true);
+            large_gear_profile(10, tweak_pitch=true);
             reflect_x(){
-                translate_x(dims.x/2+15-2){
-                    cylinder(h=dims.z+1, r=15, center=true, $fn=20);
+                translate_x(dims.x/2+15-.5){
+                    cylinder(h=dims.z+1, r=15, center=true, $fn=36);
                 }
             }
         }
