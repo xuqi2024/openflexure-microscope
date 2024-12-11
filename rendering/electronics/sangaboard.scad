@@ -28,17 +28,15 @@ module sangaboard_v0_5() {
             }
         }
     }
-    translate([0,0,-3]){
-        fudge_extra_sanga_connector_height();
-    }
+    fudge_extra_sanga_connector_height();
 }
 
 function sangaboard_v0_5_dims() = [65, 57, 1.6];
 
 // The kicad import has an 8.5mm connector height
-// This module adds a simple block to increase teh height to 11mm
+// This module adds a simple block to increase the height to 11mm
 module fudge_extra_sanga_connector_height(){
-    translate([7.2,50,-8.1]){
+    translate([7.2,50,-11]){
         color("#262525"){
             cube([20*2.54,2*2.54,10],center=false);
         }
