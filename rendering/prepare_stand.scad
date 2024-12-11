@@ -43,6 +43,16 @@ module render_prepare_stand(frame){
     else if (frame==6){
         stand_prepared(params, stand_params);
     }
+    // last frames used when putting in the nut for fitting
+    // the electronics drawer, wiring.md
+    else if (frame==7){
+        stand_prepared(params, stand_params);
+        render_electronics_drawer_nut(exploded=true);
+    }
+    else if (frame==8){
+        stand_prepared(params, stand_params);
+        render_electronics_drawer_nut(exploded=false);
+    }
 }
 
 module stand_prepared(params, stand_params){
@@ -82,5 +92,23 @@ module stand_nut(params, stand_params, nut_num=0, low=false, exploded=false){
     }
     place_part(nut_pos){
         m3_nut(center=true);
+    }
+}
+
+module render_electronics_drawer_nut(exploded=false){
+    explode = exploded ? [0,0,15] : [0,0,0] ;
+    electronics_drawer_frame_xy(render_params()){
+        translate(explode + [-6.9,0,0]){
+            translate(electronics_drawer_front_screw_pos()){
+                if (exploded){
+                    translate_x(1){
+                        construction_line([0,0,-1.5], -explode);
+                    }
+                }
+                rotate([90,30,90]){
+                    m3_nut();
+                }
+            }
+        }
     }
 }
