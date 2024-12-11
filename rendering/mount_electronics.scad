@@ -212,8 +212,7 @@ function insert_pi_rotation_pos() = let(
     x = pi_board_dims().x,
     y = pi_board_dims().y,
     angle = (8/80)*180/3.14
-    )create_placement_dict(translation=[x,y,0],
-                                                        rotation1=[0,0,-angle], init_translation=[-x,-y,0]);
+    )create_placement_dict(translation=[x,y,0], rotation1=[0,0,-angle], init_translation=[-x,-y,0]);
 
 module render_rpi_4b_screws(slide=false, exploded=false){
     slide_out = slide ? [100,0,0] : [0,0,0] ;
