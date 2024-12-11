@@ -14,8 +14,7 @@ use <./electronics/sangaboard.scad>
 use <./mount_motors.scad>
 use <./mount_sample_clips.scad>
 use <./mount_microscope.scad>
-
-FRAME = 9;
+FRAME = 15;
 LOW_COST = false;
 
 render_mount_electronics(FRAME, LOW_COST);
