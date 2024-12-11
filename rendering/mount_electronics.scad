@@ -14,7 +14,8 @@ use <./electronics/sangaboard.scad>
 use <./mount_motors.scad>
 use <./mount_sample_clips.scad>
 use <./mount_microscope.scad>
-FRAME = 15;
+
+FRAME = 5;
 LOW_COST = false;
 
 render_mount_electronics(FRAME, LOW_COST);
@@ -31,7 +32,7 @@ module render_mount_electronics(frame, low_cost=false){
     if (frame == 3){
         render_electronics_drawer(slide=true);
         render_drawer_nut(slide=true);
-        render_rpi_4b(slide=true, exploded=true);
+        render_rpi_4b(slide=true, exploded=true, pi_rotated=true);
     }
     if (frame == 4){
         render_electronics_drawer(slide=true);
@@ -192,17 +193,27 @@ module render_drawer_nut(slide=false, exploded=false){
     }
 }
 
-module render_rpi_4b(slide=false, exploded=false){
+module render_rpi_4b(slide=false, exploded=false, pi_rotated=false){
     slide_out = slide ? [100,0,0] : [0,0,0] ;
     explode = exploded ? [0,0,0.5] : [0,0,0] ;
+    place = pi_rotated ? insert_pi_rotation_pos() : create_placement_dict([0,0,0]);
     electronics_drawer_frame_xy(render_params()){
         translate(slide_out + explode){
             translate(electronics_drawer_board_inset() + [0, 0, electronics_drawer_standoff_h()]){
-                rpi_4b();
+                place_part(place){
+                    rpi_4b();
+                }
             }
         }
     }
 }
+
+function insert_pi_rotation_pos() = let(
+    x = pi_board_dims().x,
+    y = pi_board_dims().y,
+    angle = (8/80)*180/3.14
+    )create_placement_dict(translation=[x,y,0],
+                                                        rotation1=[0,0,-angle], init_translation=[-x,-y,0]);
 
 module render_rpi_4b_screws(slide=false, exploded=false){
     slide_out = slide ? [100,0,0] : [0,0,0] ;

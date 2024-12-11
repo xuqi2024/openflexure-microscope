@@ -45,14 +45,18 @@
 ![](renders/mount_electronics4.png)
 ![](renders/mount_electronics5.png)
 
-* Take the [electronics drawer] and push the [Raspberry Pi v4]{qty:1} into place so the connectors show through the holes. The connectors are recessed into both walls of the drawer, so a little force is required for this step. 
+>i Your Raspberry Pi requires the OpenFlexure Server software in order to work. This is installed as an operating system image on an SD card, which must be inserted into the Pi before it is installed in the microscope stand. Installation details are on the web site [install page](https://openflexure.org/projects/microscope/install).
+
+* Take the [electronics drawer] and push the [Raspberry Pi v4]{qty:1} into place so the connectors show through the holes. The connectors are recessed into both walls of the drawer, so a small rotation and a little force is required for this step. 
 * Secure the Raspberry Pi in place with two [No 2 self tapping screws][No 2 6.5mm self tapping screws]{qty:2}, using a [screwdriver][#1 pozidrive screwdriver].
 
 ## Attach the camera ribbon cable {pagestep}
 ![](renders/mount_electronics6.png)
 ![](renders/mount_electronics7.png)
 
-* Insert the ribbon cable from the optics module into the camera port of the Rasberry Pi, ensuring the contacts are on the opposite side from the clasp. There are [detailed instructions on the Rasbperry Pi website](https://projects.raspberrypi.org/en/projects/getting-started-with-picamera/2).
+* Identify the 'camera' port of the Raspberry Pi, between the micro-HDMI connector and the Headphone jack.
+* Insert the ribbon cable from the optics module into the camera port of the Rasberry Pi. Ensure that the contacts are on the opposite side from the clasp.
+*{info} There are [detailed instructions on the Rasbperry Pi website](https://projects.raspberrypi.org/en/projects/getting-started-with-picamera/2). 
 
 ## Fit the Sangaboard {pagestep}
 
