@@ -11,32 +11,33 @@ use <librender/render_settings.scad>
 use <prepare_main_body.scad>
 
 
-FRAME=6;
+FRAME = 7;
+MANUAL = false;
 
-render_actuator_assembly(FRAME);
+render_actuator_assembly(FRAME, MANUAL);
 
-module render_actuator_assembly(frame){
+module render_actuator_assembly(frame, manual=false){
     if (frame==1){
-        what_you_need();
+        what_you_need(manual=manual);
     }else if (frame==2){
-        body_with_x_nut(exploded=true);
+        body_with_x_nut(manual=manual, exploded=true);
     }else if (frame==3){
-        body_with_x_gear(exploded=true);
+        body_with_x_gear(manual=manual, exploded=true);
     }
     else if (frame==4){
-        body_with_x_gear(exploded=false);
+        body_with_x_gear(manual=manual, exploded=false);
     }
     else if (frame==5){
-        body_with_x_gear(exploded=false, lifted=true);
+        body_with_x_gear(manual=manual, exploded=false, lifted=true);
         place_part(x_lead_oil_placement()){
             oil_bottle();
         }
     }
     else if (frame==6){
-        body_with_assembled_actuators(x_only=true);
+        body_with_assembled_actuators(manual=manual, x_only=true);
     }
     else if (frame==7){
-        body_with_assembled_actuators(x_only=false);
+        body_with_assembled_actuators(manual=manual, x_only=false);
     }
 }
 
@@ -53,11 +54,16 @@ module render_foot(foot, lie_flat=false){
     }
 }
 
-module what_you_need(){
+module what_you_need(manual=false){
     params = render_params();
     repeat([0, 40, 0],3,center=true){
         color(extras_colour()){
-            large_gear();
+            if (manual) {
+                thumbwheel();
+            }
+            else {
+                large_gear();
+            }
         }
         translate_x(-21){
             rotate_y(90){
@@ -128,28 +134,28 @@ module x_nut(exploded=false){
     }
 }
 
-module x_lead_screw_assembly(exploded=false){
+module x_lead_screw_assembly(manual=false, exploded=false){
     lead_assembly_pos = exploded ? x_lead_assembly_placement_exp() : x_lead_assembly_placement();
     place_part(lead_assembly_pos){
-        lead_screw_assembly(exploded=exploded, construction_offset=[0, 0, -25]);
+        lead_screw_assembly(manual=manual, exploded=exploded, construction_offset=[0, 0, -25]);
     }
 }
 
-module x_actuator_assembly(){
+module x_actuator_assembly(manual=false){
     x_nut();
-    x_lead_screw_assembly();
+    x_lead_screw_assembly(manual=manual);
     place_part(x_foot_placement()){
             render_foot("X", lie_flat=false);
             viton_band_in_situ_vertical();
     }
 }
 
-module y_actuator_assembly(){
+module y_actuator_assembly(manual=false){
     place_part(y_nut_placement()){
         m3_nut(brass=true, center=true);
     }
     place_part(y_lead_assembly_placement()){
-        lead_screw_assembly();
+        lead_screw_assembly(manual=manual);
     }
     place_part(y_foot_placement()){
             render_foot("Y", lie_flat=false);
@@ -157,12 +163,12 @@ module y_actuator_assembly(){
     }
 }
 
-module z_actuator_assembly(){
+module z_actuator_assembly(manual=false){
     place_part(z_nut_placement()){
         m3_nut(brass=true, center=true);
     }
     place_part(z_lead_assembly_placement()){
-        lead_screw_assembly();
+        lead_screw_assembly(manual=manual);
     }
     place_part(z_foot_placement()){
             render_foot("Z", lie_flat=false);
@@ -172,29 +178,29 @@ module z_actuator_assembly(){
     }
 }
 
-module body_with_x_nut(exploded=false){
-    main_body_prepared();
+module body_with_x_nut(manual=false, exploded=false){
+    main_body_prepared(manual=manual);
     x_nut(exploded=exploded);
 }
 
-module body_with_x_gear(exploded=false, lifted=false){
-    body_with_x_nut();
+module body_with_x_gear(manual=false, exploded=false, lifted=false){
+    body_with_x_nut(manual=manual);
     z_tr = lifted ? 5 : 0;
     translate_z(z_tr){
-        x_lead_screw_assembly(exploded=exploded);
+        x_lead_screw_assembly(manual=manual, exploded=exploded);
     }
 }
 
-module body_with_assembled_actuators(x_only=false, translucent_body=false){
-    x_actuator_assembly();
+module body_with_assembled_actuators(manual=false, x_only=false, translucent_body=false){
+    x_actuator_assembly(manual=manual);
     if (!x_only){
-        y_actuator_assembly();
-        z_actuator_assembly();
+        y_actuator_assembly(manual=manual);
+        z_actuator_assembly(manual=manual);
     }
-    main_body_prepared(translucent_body=translucent_body);
+    main_body_prepared(manual=manual, translucent_body=translucent_body);
 }
 
-module lead_screw_assembly(exploded=false, construction_offset=[0, 0, 0]){
+module lead_screw_assembly(manual=false, exploded=false, construction_offset=[0, 0, 0]){
     //The assembly of the gear the M3x25 lead screw and the two washers
 
     //exploded translatiosn for the parts
@@ -207,7 +213,12 @@ module lead_screw_assembly(exploded=false, construction_offset=[0, 0, 0]){
             m3_hex_x25();
         }
         color(extras_colour()){
-            large_gear();
+            if (manual) {
+                thumbwheel();
+            }
+            else {
+                large_gear();
+            }
         }
         translate(tr_wash1){
             m3_washer();

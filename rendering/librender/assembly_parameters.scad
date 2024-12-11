@@ -58,12 +58,12 @@ function stand_nut_placement(params, stand_params, nut_num) =  let(
     xy_pos = base_mounting_holes(params)[nut_num],
     z_pos = microscope_stand_lug_z(stand_params) + microscope_stand_lug_height()-4.5,
     pos = xy_pos + [0,0,1]*z_pos,
-    rot = [0, 0, 30 + lug_angles()[nut_num]]
+    rot = [0, 0, 30 + lug_angles(params)[nut_num]]
 ) create_placement_dict(pos, rot);
 
 function stand_nut_placement_low(params, stand_params, nut_num) = translate_pos(stand_nut_placement(params, stand_params, nut_num), [0,0,-2.5]);
 function stand_nut_placement_exp(params, stand_params, nut_num) = let(
-    angle = lug_angles()[nut_num],
+    angle = lug_angles(params)[nut_num],
     explode_distance = [30*sin(angle), -30*cos(angle), -2.5]
 )translate_pos(stand_nut_placement(params, stand_params, nut_num), explode_distance);
 
