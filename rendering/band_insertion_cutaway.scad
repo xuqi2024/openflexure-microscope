@@ -21,6 +21,9 @@ use <librender/render_utils.scad>
 use <actuator_assembly.scad>
 
 FRAME = 2;
+MANUAL = false;
+
+render_band_insertion(band_insertion_frame_parameters(FRAME), manual=MANUAL);
 
 module cut_actuator_housing(params, cut=true){
     difference(){
@@ -156,7 +159,3 @@ function band_insertion_frame_parameters(frame_number) = let(
 
     frames = [frame1, frame2, frame3, frame4, frame5]
 ) frames[frame_number-1];
-
-FRAME = 2;
-MANUAL = false;
-render_band_insertion(band_insertion_frame_parameters(FRAME), manual=MANUAL);
