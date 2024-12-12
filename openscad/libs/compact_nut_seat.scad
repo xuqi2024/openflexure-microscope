@@ -79,7 +79,9 @@ function actuator_housing_xy_size() = let(
 
 function actuator_entry_width() = 2*column_base_radius()+3;
 
-module nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=undef){
+
+
+module nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=undef, slot_length=999, include_top=true){
     // A cut-out that will hold a nut.  The nut slots in horizontally
     // along the +y axis, and is pulled up and into the tight part of the
     // nut seat when a screw is inserted.
@@ -91,12 +93,16 @@ module nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=undef){
     r1 = w/2/cos(30); //bottom of nut trap is large
     r2 = r*squeeze; //top of nut trap is very tight
     sequential_hull(){
-        translate([-w/2,999,0]){
-            cube([w,tiny(),h]);
+        if (slot_length>0){
+            translate([-w/2, slot_length, 0]){
+                cube([w,tiny(),h]);
+            }
         }
         union(){
-            translate([-w/2,l/2-tiny(),0]){
-                cube([w,tiny(),h]);
+            if (slot_length>0){
+                translate([-w/2,l/2-tiny(),0]){
+                    cube([w,tiny(),h]);
+                }
             }
             rotate(30){
                 cylinder(d=w/sin(60), h=h, $fn=6);
@@ -111,12 +117,14 @@ module nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=undef){
         }
     }
     // ensure the hole in the top can be made nicely
-    intersection(){
-        translate([-999, -hole_r,0]){
-            cube([999, 2*hole_r, h + trap_height + 0.5]);
-        }
-        rotate(30){
-            cylinder(r=r2, h=999, $fn=6);
+    if (include_top) {
+        intersection(){
+            translate([-999/2, -hole_r,0]){
+                cube([999, 2*hole_r, h + trap_height + 0.5]);
+            }
+            rotate(30){
+                cylinder(r=r2, h=999, $fn=6);
+            }
         }
     }
 
@@ -135,7 +143,7 @@ module m3_nut_trap_with_shaft(slot_angle=0,tilt=0)
             translate_z(1){
                 union(){
                     nut_trap_and_slot(actuator_nut_size(), actuator_nut_slot_size());
-                    cylinder(r=actuator_shaft_radius(), h=999, $fn=16);
+                    cylinder(r=actuator_shaft_radius(), h=99, $fn=16);
                 }
             }
         }

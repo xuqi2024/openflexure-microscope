@@ -103,7 +103,7 @@ function y_lead_assembly_pos() = y_actuator_pos(PARAMS) + [0, 0, xy_lead_assembl
 function z_lead_assembly_pos() = z_actuator_pos(PARAMS) + tr_along_z_act(actuator_height()+5);
 
 function x_lead_assembly_placement() = create_placement_dict(x_lead_assembly_pos());
-function x_lead_assembly_placement_exp() = create_placement_dict(x_lead_assembly_pos() + [0, 0, 30]);
+function x_lead_assembly_placement_exp() = create_placement_dict(x_lead_assembly_pos() + [0, 0, 40]);
 function y_lead_assembly_placement() = create_placement_dict(y_lead_assembly_pos());
 function z_lead_assembly_placement() = create_placement_dict(z_lead_assembly_pos(), z_actuator_rot());
 
