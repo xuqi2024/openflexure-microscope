@@ -3,6 +3,7 @@ use <../openscad/libs/gears.scad>
 use <../openscad/libs/utilities.scad>
 use <../openscad/libs/lib_actuator_assembly_tools.scad>
 use <../openscad/libs/libfeet.scad>
+use <../openscad/gear_tools.scad>
 use <librender/hardware.scad>
 use <librender/tools.scad>
 use <librender/render_utils.scad>
@@ -19,23 +20,29 @@ module render_actuator_assembly(frame){
     if (frame==1){
         what_you_need();
     }else if (frame==2){
-        body_with_x_nut(exploded=true);
+        mount_lead_screw(exploded=true, tools=true);
     }else if (frame==3){
+        mount_lead_screw(exploded=false, tools=true);
+    }else if (frame==4){
+        mount_lead_screw(exploded=false, tools=false);
+    }else if (frame==5){
+        body_with_x_nut(exploded=true);
+    }else if (frame==6){
         body_with_x_gear(exploded=true);
     }
-    else if (frame==4){
+    else if (frame==7){
         body_with_x_gear(exploded=false);
     }
-    else if (frame==5){
+    else if (frame==8){
         body_with_x_gear(exploded=false, lifted=true);
         place_part(x_lead_oil_placement()){
             oil_bottle();
         }
     }
-    else if (frame==6){
+    else if (frame==9){
         body_with_assembled_actuators(x_only=true);
     }
-    else if (frame==7){
+    else if (frame==10){
         body_with_assembled_actuators(x_only=false);
     }
 }
@@ -104,15 +111,29 @@ module what_you_need(){
     }
     color(tools_colour()){
         render(6){
-            translate([65, 0, 1.7]){
+            translate([65+3, 12, 1.7]){
                 band_tool_holder(params);
             }
         }
     }
     color(tools_colour()){
         render(6){
-            translate([65, 40, 0]){
+            translate([65, 50, 0]){
                 nut_tool();
+            }
+        }
+    }
+    coloured_render(tools_colour()){
+        translate([65, -60, 0]){
+            rotate_z(90){
+                nut_spinner();
+            }
+        }
+    }
+    coloured_render(tools_colour()){
+        translate([66, -23, 0]){
+            rotate_z(90){
+                gear_holder();
             }
         }
     }
@@ -198,12 +219,12 @@ module lead_screw_assembly(exploded=false, construction_offset=[0, 0, 0]){
     //The assembly of the gear the M3x25 lead screw and the two washers
 
     //exploded translatiosn for the parts
-    tr_screw = exploded ? [0 ,0, 35] : large_gear_screw_pos();
-    tr_wash1 = exploded ? [0 ,0, -5] : [0, 0, -.5];
-    tr_wash2 = exploded ? [0 ,0, -10] : [0, 0, -1];
+
+    tr_wash1 = exploded ? [0 ,0, -27] : [0, 0, -.5];
+    tr_wash2 = exploded ? [0 ,0, -32] : [0, 0, -1];
     //translate everything so the gear is in place at the bottom.
     translate_z(1){
-        translate(tr_screw){
+        translate(large_gear_screw_pos()){
             m3_hex_x25();
         }
         color(extras_colour()){
@@ -216,9 +237,49 @@ module lead_screw_assembly(exploded=false, construction_offset=[0, 0, 0]){
             m3_washer();
         }
         if (exploded){
-            construction_line(tr_screw, tr_wash2+construction_offset);
+            construction_line([0,0,0], tr_wash2+construction_offset);
         }
     }
 }
 
+module mount_lead_screw(exploded=false, tools=false){
+    tr_screw = exploded ? [0 ,0, 35] : large_gear_screw_pos();
+    tr_nut_spinner = exploded ? [0 ,0, -7] : [0 ,0, 0];
+    tr_gear_holder = exploded ? [0 ,0, 50] : [0 ,0, 11];
+    tr_nut = exploded ? [0 ,0, -30] : [0 ,0, -16];
+
+    translate(tr_screw){
+        m3_hex_x25();
+    }
+    color(extras_colour()){
+        large_gear();
+    }
+    if (tools){
+        coloured_render(tools_colour()){
+            translate(tr_nut_spinner){
+                rotate_x(180){
+                    nut_spinner();
+                }
+            }
+        }
+        coloured_render(tools_colour()){
+            translate(tr_gear_holder){
+                rotate_x(180){
+                    gear_holder();
+                }
+            }
+        }
+        translate(tr_nut){
+            m3_nut(brass=true);
+        }
+        if (!exploded){
+            translate_z(-18){
+                turn_anticlockwise(8);
+            }
+        }
+    }
+    if (exploded){
+        construction_line(tr_gear_holder, tr_nut);
+    }
+}
 
