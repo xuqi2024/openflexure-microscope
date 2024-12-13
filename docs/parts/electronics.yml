@@ -135,7 +135,7 @@ RaspberryPi_PowerSupply:
       PartNo: 187-3416
 SD_Card:
   Name: Micro SD card for Raspberry Pi
-  Description: Micro SD card to use with the Raspberry Pi and the OpenFlexure operating system. A1 or A2 class are recommended for the many small reads ad writes needed.
+  Description: Micro SD card to use with the Raspberry Pi and the OpenFlexure operating system. A1 or A2 class are recommended for the many small reads and writes needed.
   Specs:
     Type: microSD
     Capacity: 16GB or more
