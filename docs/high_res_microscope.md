@@ -4,7 +4,7 @@ This is the standard research version of the OpenFlexure Microscope. It supports
 
 If you use this microscope for research please consider citing this paper.
 
-Before you start building the microscope you will need to source all the components listed our [bill of materials]{bom}.
+Before you start building the microscope you will need to source all of the components listed in the [bill of materials]{bom}.
 
 
 The assembly is broken up into several steps:
