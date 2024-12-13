@@ -265,7 +265,6 @@ module render_motor_wire_placed(motor_number=0, long=false, slide=false, explode
 module render_motor_wire(motor_number=0, long=false){
     end_x = long ? -110 : -10 ;
     motor_connector_pos = [[28,11.5,23.5],[35.5,11.5,23.5],[43,11.5,23.5]];
-    //electronics_drawer_stl(pi_version=4, sanga_version="stack_11mm");
     motor_wire_offset = 1.5;
     wire_run = [[0,0,1.1],[0,0,8],[-2,0,10],[-20,2,10],[end_x,2,10]];
     colours = ["blue", "pink", "yellow", "orange", "red"];
