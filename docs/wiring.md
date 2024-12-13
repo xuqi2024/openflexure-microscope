@@ -16,10 +16,6 @@
 >i
 >i If you do not have a Sangaboard, you can make up a compatible solution from a microcontroller and separate driver boards.  This is described in the [motor electronics workaround] page.
 
-
-[Raspberry Pi v4]: parts/electronics.yml#RaspberryPi "{cat:electronic}"
-[Sangaboard v0.5]: parts/electronics/sangaboard.md "{cat:electronic, note: 'If you cannot get a Sangaboard, you can put together [workaround motor electronics](workaround_motor_electronics/workaround_motor_electronics.md) instead.'}"
-
 [No 2 6.5mm self tapping screws]: parts/mechanical.yml#SelfTap_PoziPan_No2x6.5_SS "{cat:mech}"
 [M3 nut]: parts/mechanical.yml#Nut_M3_SS "{cat:mech}"
 [M3x10 cap head screws]: parts/mechanical.yml#CapScrew_M3x10mm_SS "{cat:mech}"
@@ -41,14 +37,15 @@
 * Place another [M3 nut]{qty:1} into the slot near the Sangaboard power connector on the [electronics drawer][Electronics drawer](fromstep){qty:1, cat:printedpart} you printed earlier .
 
 ## Fit the Raspberry Pi {pagestep}
+
+>i Your Raspberry Pi requires the OpenFlexure Server software in order to work. This is installed as an operating system image on an SD card, which must be inserted into the Pi before it is fitted in the microscope stand. Refer to [this step](prepare_pi_and_sangaboard.md#load-the-openflexure-operating-system-onto-the-sd-card).
+
 ![](renders/mount_electronics3.png)
 ![](renders/mount_electronics4.png)
 ![](renders/mount_electronics5.png)
 
->i Your Raspberry Pi requires the OpenFlexure Server software in order to work. This is installed as an operating system image on an SD card, which must be inserted into the Pi before it is installed in the microscope stand. Installation details are on the web site [install page](https://openflexure.org/projects/microscope/install).
-
-* Take the [electronics drawer] and push the [Raspberry Pi v4]{qty:1} into place so the connectors show through the holes. The connectors are recessed into both walls of the drawer, so a small rotation and a little force is required for this step. 
-* Secure the Raspberry Pi in place with two [No 2 self tapping screws][No 2 6.5mm self tapping screws]{qty:2}, using a [screwdriver][#1 pozidrive screwdriver].
+* Take the [electronics drawer] and push the [Raspberry Pi (with SD card and software installed)][Pi with software](fromstep){qty:1, cat:electronic} into place so the connectors show through the holes. The connectors are recessed into both walls of the drawer, so a small rotation and a little force is required for this step. 
+* Secure the Raspberry Pi in place with two [No 2 self tapping screws][No 2 6.5mm self tapping screws]{qty:2}, using a [screwdriver][#1 pozidrive screwdriver]{qty: 1}.
 
 ## Attach the camera ribbon cable {pagestep}
 ![](renders/mount_electronics6.png)
@@ -60,14 +57,14 @@
 
 ## Fit the Sangaboard {pagestep}
 
->i Your Sangaboard requires firmware in order to work. If you have purchased the board pre-flashed with firmware, it will already be installed. If you have made the board yourself, you may need to obtain and upload the firmware. Details of how to do this are given in the [Sangaboard v0.5] page.
+>i Your Sangaboard requires firmware in order to work. If you have purchased the board pre-flashed with firmware, it will already be installed. If you have made the board yourself, refer to [this step](prepare_pi_and_sangaboard.md#prepare-the-sangaboard).
 
 ![](renders/mount_electronics8.png)
 ![](renders/mount_electronics9.png)
 
-* Mount the [Sangaboard v0.5]{qty:1} onto the Raspberry Pi GPIO pins, ensuring that the ribbon cable from the optics module passes through the slot.
+* Mount the [Sangaboard (with firmware installed)][Sangaboard with firmware](fromstep){qty:1, cat:electronic} onto the Raspberry Pi GPIO pins, ensuring that the ribbon cable from the optics module passes through the slot.
 * Check that the connector is aligned so that it covers all of the pins on the 40-pin connector on the Raspberry Pi, and that the Sangaboard mounting holes line up with the mounting points.
-* Secure the Sangaboard in place with two [No 2 self tapping screws][No 2 6.5mm self tapping screws]{qty:2}, using a [screwdriver][#1 pozidrive screwdriver].
+* Secure the Sangaboard in place with two [No 2 self tapping screws][No 2 6.5mm self tapping screws]{qty:2}, using a [screwdriver][#1 pozidrive screwdriver]{qty: 1}.
 
 ## Connect the motors to the Sangaboard {pagestep}
 
@@ -97,7 +94,7 @@ Connect the wires to the Sangaboard v0.5
 ![](renders/mount_electronics16.png)
 
 * Slide the [electronics drawer] into the microscope base, making sure not to pinch any wires.
-* Hold the [electronics drawer] in place with two [M3x10 cap head screws]{qty: 2} using a [2.5mm Allen key][2.5mm Ball-end Allen key]. The screws should screw into the two nuts inserted in Step 1.
+* Hold the [electronics drawer] in place with two [M3x10 cap head screws]{qty: 2} using a [2.5mm Allen key][2.5mm Ball-end Allen key]{qty: 1}. The screws should screw into the two nuts inserted in Step 1.
 
 ## Wiring Complete {pagestep}
 
