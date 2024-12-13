@@ -6,7 +6,7 @@ If you use this microscope for research please consider citing [our paper in Opt
 
 >? If you have problems building this, please let us know on [GitLab](https://gitlab.com/openflexure/openflexure-microscope/-/issues) or on our [forum](https://openflexure.discourse.group/).
 
-Before you start building the microscope you will need to source all the components listed in the [bill of materials]{bom}.
+Before you start building the microscope you will need to source all of the components listed in the [bill of materials]{bom}.
 
 The assembly is broken up into several steps:
 
