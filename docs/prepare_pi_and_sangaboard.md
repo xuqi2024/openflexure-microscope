@@ -19,12 +19,20 @@ Your Sangaboard requires firmware in order to work. If you have purchased the bo
 * When the install process is complete, remove the SD card from your computer.
 
 ## Install the SD card in the Raspberry Pi{pagestep}
+
+![](renders/prepare_pi_and_sangaboard1.png)
+![](renders/prepare_pi_and_sangaboard2.png)
+
 * Take the [Raspberry Pi V4]{qty: 1} and insert the micro SD card into the slot on the underside of the board at the end opposite the USB ports.
 * If you are using the 'Full' version of the operating system, you can test the installation by plugging in a keyboard, mouse and screen at this point and powering it up. You should see the main Desktop. Shut down the Pi afterwards and remove the power.
 
 ## Prepare the Sangaboard{pagestep}
+
 >i If you have purchased the board pre-flashed with firmware, it will already be installed.
 >! The  Sangaboard v0.5 has small surface mount components, they are not suitable for making by hand! 
+
+![](renders/prepare_pi_and_sangaboard3.png)
+
 * If you have had the board made by a PCB foundry, you will need to obtain the Sangaboard firmware.
 * The [Sangaboard v0.5]{qty: 1} page has links to where to obtain the firmware.
 * Alternatively you can use the [workaround motor electronics](workaround_motor_electronics/workaround_motor_electronics.md) instead.

@@ -454,6 +454,20 @@ def register_mount_sample_clips(rendersystem):
             render = ScadRender(output_file, input_file, scad, imgsize, camera)
             rendersystem.register_scad_render(render)
 
+def register_prepare_pi_and_sangaboard(rendersystem):
+    input_file = "rendering/prepare_pi_and_sangaboard.scad"
+    cameras = [
+        Camera(position=[18.5, 20, 7], angle=[80, 0, 300], distance=190),
+        Camera(position=[18.5, 20, 7], angle=[80, 0, 300], distance=190),
+        Camera(position=[30, 18, 9], angle=[35, 0, 340], distance=190),
+    ]
+    imgsize = [2400, 2000]
+    for i, camera in enumerate(cameras):
+        output_file = f"docs/renders/prepare_pi_and_sangaboard{i+1}.png"
+        scad = f"prepare_pi_and_sangaboard({i+1});"
+        render = ScadRender(output_file, input_file, scad, imgsize, camera)
+        rendersystem.register_scad_render(render)
+
 def register_mount_electronics(rendersystem):
     input_file = "rendering/mount_electronics.scad"
     cameras = [
@@ -522,6 +536,7 @@ def main():
     register_motor_assembly(rendersystem)
     register_mount_motors(rendersystem)
     register_mount_sample_clips(rendersystem)
+    register_prepare_pi_and_sangaboard(rendersystem)
     register_mount_electronics(rendersystem)
     register_complete_microscope(rendersystem)
 
