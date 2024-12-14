@@ -133,6 +133,21 @@ RaspberryPi_PowerSupply:
     RS Components:
       Link: https://uk.rs-online.com/web/p/raspberry-pi-power-supplies/1873416/
       PartNo: 187-3416
+SD_Card:
+  Name: Micro SD card for Raspberry Pi
+  Description: Micro SD card to use with the Raspberry Pi and the OpenFlexure operating system. A1 or A2 class are recommended for the many small reads and writes needed.
+  Specs:
+    Type: microSD
+    Capacity: 16GB or more
+    Speed rating: A1 or more
+  Suppliers:
+  Suppliers:
+    RS Components:
+      Link: https://uk.rs-online.com/web/p/sd-cards/1873617
+      PartNo: 187-3617
+    RS Components:
+      Link: https://uk.rs-online.com/web/p/sd-cards/1747338
+      PartNo: 174-7338
 ArduinoNano:
   Name: Arduino Nano
   Description: The Arduino Nano 3.0 is a compact board featuring the ATmega328 microcontroller. It’s a complete, bread-board friendly development board which measures just 45 x 18 mm.
