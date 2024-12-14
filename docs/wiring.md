@@ -77,11 +77,12 @@
 
 ## Connect the LED to the Sangaboard {pagestep}
 
+>i If you have used the [5mm LED workaround](workaround_5mm_led/workaround_5mm_led.md), or you have an older illumination PCB with a constant current driver installed you will need to follow the [alternative connection instructions](workaround_5mm_led/power_workaround_led.md).
+
 ![Connect the LED to the Sangaboard](diagrams/illumination_to_sangaboard_wiring.png)
 
-Connect the wires to the Sangaboard v0.5
-
-* Plug the 2-pin female connector onto the 2 way male header labelled "**CC**".
+* Locate the LED cable from the microscope.
+* Plug the 2-pin female connector onto the 2 way male header labelled "**CC**" on the Sangaboard v0.5.
 
 >i "CC" stands for Constant Current, it is the best way to reliably drive the LED.
 

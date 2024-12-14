@@ -85,6 +85,7 @@ In this section we are assembling the transmission illuminator.  This mounts the
 ![](renders/mount_led_cable2.png)
 
 * Attach the illumination wiring harness to the [illumination PCB]
+* Make sure that the red wire is attached to the terminal labelled '+'
 
 ## Attach the illumination cover {pagestep}
 
