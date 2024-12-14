@@ -19,6 +19,7 @@ The assembly is broken up into several steps:
 1. [.](illumination.md){step, var_optics: low_cost}
 1. [.](motors.md){step, var_optics: low_cost}
 1. [.](attach_clips.md){step, var_optics: low_cost}
+1. [.](prepare_pi_and_sangaboard.md){step}
 1. [.](wiring.md){step, var_optics: low_cost}
 1. [.](finished.md){step, var_optics: low_cost}
 
