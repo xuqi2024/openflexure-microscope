@@ -83,4 +83,4 @@ We can now calculate the effective field number of the diagonal of the Raspberry
 ```
 This falls well within the range of standard eyepiece field numbers (14-26 mm).
 
-If you wish to use modify the microscope to use a different tube lens or a different camera sensor, then these calculations should be repeated for your setup.
+If you wish to modify the microscope to use a different tube lens or a different camera sensor, then these calculations should be repeated for your setup.

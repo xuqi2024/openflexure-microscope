@@ -14,16 +14,17 @@
 
 ![](renders/motor_assembly1.png)
 ![](renders/motor_assembly2.png)
+![](renders/motor_assembly3.png)
 
-
-* Take a [stepper motor][28BYJ-48 micro geared stepper motors]{qty:3, cat:electronic} and a [small gear][small gears](fromstep){qty:3, cat:printedpart}
-* Place the motor on the work surface with the shaft pointing up
+* Take a [stepper motor][28BYJ-48 micro geared stepper motors]{qty:3, cat:electronic} and a [small gear][small gears](fromstep){qty:3, cat:printedpart}.
+* Place the motor on the work surface with the shaft pointing up.
 * Align the flat sides of the motor shaft with the flat sides of the hole in the gear.
 * Push the gear onto the motor with the flanged side downwards (motor side).
 * Take two [self tapping screws][No 2 6.5mm self tapping screws]{qty: 6, cat:mech} and drive them fully into the holes on either side of the shaft. [#1 pozidrive screwdriver]{qty:1, cat:tool}
+* Check that the gear is fully pushed on to the motor and the screws are fully in, so that the screw heads almost sit on the end of the motor shaft and the top of the heads are barely protruding from the gear. 
 * Repeat for the other two motors
 
->i It's important to keep track of which motor cable corresponds to which axis. You may find it helpful to mark each cable connector with a marker or different-coloured tape before continuing.
+>i It is important to keep track of which motor cable corresponds to which axis. You may find it helpful to mark each cable connector with a marker or different-coloured tape before continuing.
 
 ## Attach the x and y motors {pagestep}
 
