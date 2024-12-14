@@ -427,6 +427,13 @@ def register_motor_assembly(rendersystem):
         scad = f"motor_assembly({i});"
         render = ScadRender(output_file, input_file, scad, imgsize, camera)
         rendersystem.register_scad_render(render)
+    ## close up view of frame 2
+    camera = Camera(position=[3,1.5,-3], angle=[230,0,120], distance=60)
+    imgsize = [1200, 1200]
+    output_file = f"docs/renders/motor_assembly3.png"
+    scad = f"motor_assembly(2);"
+    render = ScadRender(output_file, input_file, scad, imgsize, camera)
+    rendersystem.register_scad_render(render)
 
 def register_mount_motors(rendersystem):
     input_file = "rendering/mount_motors.scad"
