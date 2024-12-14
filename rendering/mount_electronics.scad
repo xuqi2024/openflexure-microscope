@@ -14,6 +14,7 @@ use <./electronics/sangaboard.scad>
 use <./mount_motors.scad>
 use <./mount_sample_clips.scad>
 use <./mount_microscope.scad>
+use <./prepare_pi_and_sangaboard.scad>
 
 FRAME = 5;
 LOW_COST = false;
@@ -201,7 +202,7 @@ module render_rpi_4b(slide=false, exploded=false, pi_rotated=false){
         translate(slide_out + explode){
             translate(electronics_drawer_board_inset() + [0, 0, electronics_drawer_standoff_h()]){
                 place_part(place){
-                    rpi_4b();
+                    pi_and_sd_card();
                 }
             }
         }
