@@ -21,6 +21,7 @@ The assembly is broken up into several steps:
 1. [.](upright_mount_optics_and_microscope.md){step}
 1. [.](motors.md){step, var_type: upright}
 1. [.](attach_clips.md){step}
+1. [.](prepare_pi_and_sangaboard.md){step}
 1. [.](wiring.md){step}
 
 {{include: upright_optics_note.md}}
