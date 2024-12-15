@@ -6,9 +6,6 @@ use <./librender/electronics.scad>
 FRAME = 3;
 
 prepare_pi_and_sangaboard(FRAME);
-// $vpt=[18.5,20,7];
-// $vpr=[80,0,300];
-// $vpd=190;
  $vpt=[30,18,9];
  $vpr=[35,0,340];
  $vpd=190;

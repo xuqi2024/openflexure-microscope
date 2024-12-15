@@ -1,6 +1,8 @@
 # Prepare the Raspberry Pi and Sangaboard
 
-Your Raspberry Pi needs the OpenFlexure Server software in order to work. This is installed as an operating system image on an SD card, which must be inserted into the Pi before it is installed in the microscope stand. You may have a Pi that you used in a different project. You will need to overwrite that software, or keep that SD card to use again and use a new one for the microscope.
+Your Raspberry Pi needs the OpenFlexure Server software in order to work. This is installed as an operating system image on an SD card. The SD card with the custom operating system must be inserted into the Pi before the pi is fitted into the microscope stand.
+
+You may have a Pi that you used in a different project. You will need to overwrite that operating system, or keep that SD card to use again and use a new one for the microscope.
 
 Your Sangaboard requires firmware in order to work. If you have purchased the board pre-flashed with firmware, it will already be installed. 
 
