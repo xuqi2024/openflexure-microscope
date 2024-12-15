@@ -12,12 +12,12 @@ Congratulations, you have now assembled your OpenFlexure Microscope.
 Your completed microscope should now look like these pictures.  
 There is also an [interactive 3D view](interactive_3d_view_{{var_optics, default:rms}}.md) of the finished microscope.
 
-## Software set-up {pagestep}
+## Getting started with your microscope {pagestep}
 
-Setting up the software is not yet included in these instructions.  It is detailed on the website, in the ["install" page].  Using the software is described in the ["control" page].
+Using the software on your microscope is detailed on the website, in the ['control' page].  If you access your microscope from another computer it may be helpful to install [OpenFlexure Connect] on your computer to identify your microscope on your local network. 
 
-["install" page]: https://openflexure.org/projects/microscope/install
-["control" page]: https://openflexure.org/projects/microscope/control
+[OpenFlexure Connect]: https://openflexure.org/software/openflexure-connect
+['control' page]: https://openflexure.org/projects/microscope/control
 
 ## Join the community {pagestep}
 
