@@ -1436,3 +1436,93 @@ module dupont_connector_housing(columns=1, rows=1, center=true){
         }
     }
 }
+
+//Micro SD card
+module micro_sd_card(){
+    coloured_render("DimGray"){
+        micro_sd_card_profile();
+        //add ridge
+        intersection(){
+            translate_z(0.3){
+                micro_sd_card_profile();
+            }
+            translate_y(-(30-1.84)){
+                cylinder(r=30, h=2, $fn=64);
+            }
+        }
+    }
+    coloured_render("WhiteSmoke"){
+        translate([2, 3, 0.61]){
+            rotate_z(90){
+                linear_extrude(.1){
+                    resize([10,0],auto=true){
+                        import("logos/MicroSD-Logo.dxf");
+                    }
+                }
+            }
+        }
+    }
+    //contacts
+    coloured_render("Gold"){
+        translate([-0.7/2, 11, -tiny()]){
+            for( i = [0:7]){
+                translate_x(1.1*(i-3.5)){
+                    y_size = (i==2 || i==4) ? 3.2 : 2.9;
+                    cube([0.7, y_size, .1]);
+                }
+            }
+        }
+    }
+}
+
+//Outer profile of the micro_sd card without the raised rodge at the back
+module micro_sd_card_profile(){
+    corner_r = 0.8;
+    sm_corner_r = 0.2;
+    t = 0.7;
+    length = 15;
+    full_width = 11;
+    front_width = 9.7;
+    //main rectangle
+    hull(){
+        for (x_tr = [-.5, .5]*(front_width-2*corner_r)){
+            for (y_tr = [corner_r, length-corner_r]){
+                translate([x_tr, y_tr]){
+                    cylinder(r=corner_r, h=t, $fn=16);
+                }
+            }
+        }
+    }
+    //bump on side
+    difference(){
+        hull(){
+            translate([0, corner_r]){
+                cylinder(r=corner_r, h=t, $fn=8);
+            }
+            translate([full_width-front_width/2-corner_r, corner_r]){
+                cylinder(r=corner_r, h=t, $fn=16);
+            }
+            translate([full_width-front_width/2-sm_corner_r, 8.6]){
+                cylinder(r=sm_corner_r, h=t, $fn=8);
+                translate([-3, 3]){
+                cylinder(r=sm_corner_r, h=t, $fn=8);
+                } 
+            }
+        }
+        // bump cutout
+        hull(){
+            translate([full_width-front_width/2+sm_corner_r, 7.1-sm_corner_r, -tiny()]){
+                cylinder(r=sm_corner_r, h=2*t, $fn=8);
+                translate_x(-0.7){
+                    cylinder(r=sm_corner_r, h=2*t, $fn=8);
+                }
+                translate([-0.7, -1.2]){
+                    cylinder(r=sm_corner_r, h=2*t, $fn=8);
+                    translate([3, -3]){
+                        cylinder(r=sm_corner_r, h=2*t, $fn=8);
+                    }
+                }
+            }
+        }
+    }
+}

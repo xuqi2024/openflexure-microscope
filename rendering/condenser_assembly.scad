@@ -184,10 +184,10 @@ module rendered_illumination_connector(explode=false, straight_cable=false){
 
 // Straight red and black wires, up along the Z axis
 module illumination_wires(){
-    coloured_render("red"){
+    coloured_render("DimGray"){
         wire(d=1, points=[[2.54/2,0,8], [1/2,0,15], [1/2,0,99]]);
     }
-    coloured_render("DimGray"){
+    coloured_render("red"){
         wire(d=1, points=[[-2.54/2,0,8], [-1/2,0,15], [-1/2,0,99]]);
     }
 }
