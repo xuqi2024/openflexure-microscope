@@ -72,7 +72,7 @@ This is the trickiest part of the microscope build. In this step we will clip ba
 
 ![attach actuator foot](renders/actuator_assembly_x.png)
 
-If you had problems with this step see our [troubleshooting page](troubleshooting.md).
+>? If you had problems with this step see our [troubleshooting page](troubleshooting.md#actuator-assembly-issues).
 
 ## Seat the foot {pagestep}
 
