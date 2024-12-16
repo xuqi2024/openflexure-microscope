@@ -24,7 +24,7 @@ Take the [optics module][Optics module](fromstep){qty:1, cat:printedpart} and co
 * The central shaft is not obstructed by strings of plastic
 
 
-## Insert the tube lens {pagestep}
+## Insert the tube lens[i](info_pages/imaging_optics_explanation.md) {pagestep}
 
 * Place the [lens tool][Lens tool](fromstep){qty:1, cat:printedtool} on a steady surface
 * Place the [12.7 mm achromatic lens](parts/optics/tube_lens.md){qty:1, cat:optical} on the lens tool
