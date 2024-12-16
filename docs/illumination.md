@@ -70,10 +70,9 @@ In this section we are assembling the transmission illuminator.  This mounts the
 * Place the diffuser on the condenser, then the [condenser board spacer][Condenser board spacer](fromstep){qty:1, cat:printedpart}, then the [illumination PCB]{qty:1}.
 * Fix in place with two [No 2 6.5mm self tapping screws]{qty:2} using a [#1 pozidrive screwdriver]{qty:1}.
 
-## Assemble the illumination wiring harness {pagestep}
+## Assemble the illumination cable {pagestep}
 * Take a [red pre-crimped female-female jumper cable (30 cm)][Pre-crimped Female-Female jumper cable (30 cm), Red]{qty:1} and a [black pre-crimped female-female jumper cable (30 cm)][Pre-crimped Female-Female jumper cable (30 cm), Black]{qty:1}.
 * Attach a [2 pin Du Pont connector female housing]{qty:2} to each end.
-* This is the illumination wiring harness.
 
 [2 pin Du Pont connector female housing]: parts/electronics.yml#DuPont_Housing_1x2 "{cat:electronic}"
 [Pre-crimped Female-Female jumper cable (30 cm), Red]: parts/electronics.yml#JumperCable_FF_300mm_Red "{cat:electronic}"
@@ -84,7 +83,7 @@ In this section we are assembling the transmission illuminator.  This mounts the
 ![](renders/mount_led_cable1.png)
 ![](renders/mount_led_cable2.png)
 
-* Attach the illumination wiring harness to the [illumination PCB]
+* Attach the illumination cable to the [illumination PCB]
 * Make sure that the red wire is attached to the terminal labelled '+'
 
 ## Attach the illumination cover {pagestep}
@@ -101,8 +100,8 @@ In this section we are assembling the transmission illuminator.  This mounts the
 
 ![](renders/mount_illumination_{{var_optics, default:rms}}3.png)
 
-* Pass the illumination wiring harness from the top to the bottom of the cable guide in the illumination dovetail.
-* Pass the illumination wiring harness from the top to the bottom of the cable guide in the main body, between the Z gear and the Y gear.
+* Pass the illumination cable from the top to the bottom of the cable guide in the illumination dovetail.
+* Pass the illumination cable from the top to the bottom of the cable guide in the main body, between the Z gear and the Y gear.
 
 ## Mount the condenser arm {pagestep}
 
