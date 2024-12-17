@@ -145,19 +145,20 @@ module upright_z_spacer_base(params){
 }
 
 module upright_z_spacer_top_screw_holes(params){
+    extra_bore=3;
     // Inserting the nut traps and screw holes into the spacer
     translate(right_illumination_screw_pos(params)){
-        m3_nut_trap_with_shaft(0,0);
+        m3_nut_trap_with_shaft(slot_angle=0,tilt=0,deep_shaft=extra_bore);
     }
     translate(left_illumination_screw_pos(params)){
-        m3_nut_trap_with_shaft(0,0);
+        m3_nut_trap_with_shaft(slot_angle=0,tilt=0,deep_shaft=extra_bore);
     }
     // Rotating the back nut traps to minimise "threading" 
     translate(right_back_sq_illum_corner_pos(params)){
-        m3_nut_trap_with_shaft(225,0);
+        m3_nut_trap_with_shaft(slot_angle=225,tilt=0,deep_shaft=extra_bore);
     }
     translate(left_back_sq_illum_corner_pos(params)){
-        m3_nut_trap_with_shaft(135,0);
+        m3_nut_trap_with_shaft(slot_angle=135,tilt=0,deep_shaft=extra_bore);
     }
 }
 
