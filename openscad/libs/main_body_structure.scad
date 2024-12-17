@@ -394,7 +394,8 @@ module xy_stage_with_nut_traps(params)
         }
         each_leg(params){
             translate([0, -stage_hole_inset(), leg_height(params)]){
-                m3_nut_trap_with_shaft(0,0); //mounting holes
+                extra_bore = 3;
+                m3_nut_trap_with_shaft(slot_angle=0,tilt=0,deep_shaft=extra_bore); //mounting holes
             }
         }
     }

@@ -173,8 +173,9 @@ module stand_lugs(params, stand_params){
                         cylinder(r=5, h=lug_body_h);
                     }
                 }
+                extra_bore = 2.2; // maximum depth before breaking out from the lugs
                 translate(hole+[0,0,lug_h-9]){
-                    m3_nut_trap_with_shaft(angle+180);
+                    m3_nut_trap_with_shaft(slot_angle=(angle+180),tilt=0,deep_shaft=extra_bore);
                 }
             }
         }
