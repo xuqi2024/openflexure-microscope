@@ -425,7 +425,7 @@ module z_axis_rect_top_counterbores(params){
 module z_axis_tri_top_counterbores(params){
     // Nut traps for standard triangular top on the z_axis
     z_offset = -9;
-    extra_bore = 3; 
+    extra_bore = 3;
     // Nut trap for back corner
     translate(illumination_back_corner_pos(params)){
         rotate_z(180){
