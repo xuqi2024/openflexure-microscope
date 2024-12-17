@@ -294,19 +294,65 @@ module pi_drawer_cutout(params, stand_params){
     front_wall_cutout_size = front_wall_space + extra_space + [99, 0, 0];
     electronics_drawer_frame_xy(params){
         translate(tr_for_extra_space){
-            cube(pi_cutout_size);
-            translate(electronics_drawer_front_pos()){
-                cube(front_wall_cutout_size);
+            difference(){
+                union(){
+                    cube(pi_cutout_size);
+                    translate(electronics_drawer_front_pos()){
+                        cube(front_wall_cutout_size);
+                    }
+                }
+                hole_top_supporter_yz(w=front_wall_cutout_size.y, h=front_wall_cutout_size.z);
             }
         }
         //Cutout for the side connectors
         translate([5, -50, 2]){
-            cube([60, 100, 40]);
+            difference(){
+                cube([60, 100, 40]);
+                hole_top_supporter_xz(w=60, h=40);
+            }
         }
         translate(electronics_drawer_side_screw_pos()){
             rotate_x(90){
                 m3_cap_counterbore(10, 10);
             }
+        }
+    }
+}
+
+// To support the top bridging across a wide hole in the x-z plane
+module hole_top_supporter_xz(w=100, h=50, support_h=10, support_spacing=12){
+    gap = 1;
+    t = 1;
+    translate([-10, 0, h-support_h]){
+        cube([w+20, 999, t]);
+    }
+    translate([gap, 0, h-support_h]){
+        cube([w-2*gap, 999, support_h-gap]);
+    }
+    n = floor(w / support_spacing);
+    spacing = w / n;
+    for (i = [0:n-1]){
+        translate([spacing*(i+0.5), 0, h-2*gap]){
+            cube([t, 999, 999]);
+        }
+    }
+}
+
+// To support the top bridging across a wide hole in the y-z plane
+module hole_top_supporter_yz(w=100, h=50, support_h=10, support_spacing=12){
+    gap = 1;
+    t = 1;
+    translate([0, -10, h-support_h]){
+        cube([999, w+20, t]);
+    }
+    translate([0, gap, h-support_h]){
+        cube([999, w-2*gap, support_h-gap]);
+    }
+    n = floor(w / support_spacing);
+    spacing = w / n;
+    for (i = [0:n-1]){
+        translate([0, spacing*(i+0.5), h-2*gap]){
+            cube([999, t, 999]);
         }
     }
 }
