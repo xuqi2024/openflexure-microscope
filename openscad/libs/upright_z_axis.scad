@@ -145,7 +145,7 @@ module upright_z_spacer_base(params){
 }
 
 module upright_z_spacer_top_screw_holes(params){
-    extra_bore = 3;
+    extra_bore = 2.5;
     chamfer_offset = 5;
     // Inserting the nut traps and screw holes into the spacer
     translate(right_illumination_screw_pos(params)){
