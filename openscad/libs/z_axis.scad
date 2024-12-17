@@ -430,7 +430,7 @@ module z_axis_tri_top_counterbores(params){
     translate(illumination_back_corner_pos(params)){
         rotate_z(180){
             translate_z(z_offset){
-                m3_nut_trap_with_shaft(slot_angle=0,tilt=0,deep_shaft=extra_bore);
+                m3_nut_trap_with_shaft(slot_angle=0,tilt=0,deep_shaft=extra_bore,chamfer_offset=4);
             }
         }
     }
@@ -438,7 +438,7 @@ module z_axis_tri_top_counterbores(params){
         translate(right_illumination_screw_pos(params)){
             rotate_z(right_illumination_screw_rotation()){
                 translate_z(z_offset){
-                    m3_nut_trap_with_shaft(slot_angle=0,tilt=0,deep_shaft=extra_bore);
+                    m3_nut_trap_with_shaft(slot_angle=0,tilt=0,deep_shaft=extra_bore,chamfer_offset=4);
                 }
             }
         }
@@ -459,7 +459,7 @@ module z_axis_casing_cutouts(params, rectangular = false){
             translate(illumination_back_corner_pos(params)){
                 extra_bore = 3;
                 rotate([0,0,180]){
-                    m3_nut_trap_with_shaft(slot_angle=0,tilt=0,deep_shaft=extra_bore);
+                    m3_nut_trap_with_shaft(slot_angle=0,tilt=0,deep_shaft=extra_bore,chamfer_offset=5);
                 }
             }
         }

@@ -15,6 +15,6 @@ module nut_trap_test_object(){
         translate_z(cube_h/2){
             cube([12,12,cube_h], center=true);
         }
-        m3_nut_trap_with_shaft(slot_angle=0,tilt=0,deep_shaft=extra_bore);
+        m3_nut_trap_with_shaft(slot_angle=0,tilt=0,deep_shaft=extra_bore,chamfer_offset=4);
     }
 }

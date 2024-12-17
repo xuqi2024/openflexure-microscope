@@ -42,7 +42,7 @@ module separate_z_actuator(params, cable_guides = false, cable_housing = false, 
 }
 
 // Thickness of the vertical straight top section of the upright z spacerpart
-function upright_z_spacer_top_thickness() = 3;
+function upright_z_spacer_top_thickness() = 5;
 // Overall height of the upright z-spacer 
 function upright_z_spacer_height(params, upright_sample_thickness) = (key_lookup("sample_z", params) - illumination_dovetail_z(params)) *2 + upright_sample_thickness;
 
@@ -145,20 +145,21 @@ module upright_z_spacer_base(params){
 }
 
 module upright_z_spacer_top_screw_holes(params){
-    extra_bore=3;
+    extra_bore = 3;
+    chamfer_offset = 5;
     // Inserting the nut traps and screw holes into the spacer
     translate(right_illumination_screw_pos(params)){
-        m3_nut_trap_with_shaft(slot_angle=0,tilt=0,deep_shaft=extra_bore);
+        m3_nut_trap_with_shaft(slot_angle=0,tilt=0,deep_shaft=extra_bore,chamfer_offset=chamfer_offset);
     }
     translate(left_illumination_screw_pos(params)){
-        m3_nut_trap_with_shaft(slot_angle=0,tilt=0,deep_shaft=extra_bore);
+        m3_nut_trap_with_shaft(slot_angle=0,tilt=0,deep_shaft=extra_bore,chamfer_offset=chamfer_offset);
     }
     // Rotating the back nut traps to minimise "threading" 
     translate(right_back_sq_illum_corner_pos(params)){
-        m3_nut_trap_with_shaft(slot_angle=225,tilt=0,deep_shaft=extra_bore);
+        m3_nut_trap_with_shaft(slot_angle=225,tilt=0,deep_shaft=extra_bore,chamfer_offset=chamfer_offset);
     }
     translate(left_back_sq_illum_corner_pos(params)){
-        m3_nut_trap_with_shaft(slot_angle=135,tilt=0,deep_shaft=extra_bore);
+        m3_nut_trap_with_shaft(slot_angle=135,tilt=0,deep_shaft=extra_bore,chamfer_offset=chamfer_offset);
     }
 }
 
