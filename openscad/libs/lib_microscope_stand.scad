@@ -320,9 +320,9 @@ module pi_drawer_cutout(params, stand_params){
 }
 
 // To support the top bridging across a wide hole in the x-z plane
-module hole_top_supporter_xz(w=100, h=50, support_h=10, support_spacing=12){
+module hole_top_supporter_xz(w=100, h=50, support_h=6, support_spacing=15){
     gap = 1;
-    t = 1;
+    t = 0.6;
     translate([-10, 0, h-support_h]){
         cube([w+20, 999, t]);
     }
@@ -339,9 +339,9 @@ module hole_top_supporter_xz(w=100, h=50, support_h=10, support_spacing=12){
 }
 
 // To support the top bridging across a wide hole in the y-z plane
-module hole_top_supporter_yz(w=100, h=50, support_h=10, support_spacing=12){
+module hole_top_supporter_yz(w=100, h=50, support_h=6, support_spacing=15){
     gap = 1;
-    t = 1;
+    t = 0.6;
     translate([0, -10, h-support_h]){
         cube([999, w+20, t]);
     }
