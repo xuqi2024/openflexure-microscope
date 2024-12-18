@@ -275,11 +275,16 @@ module microscope_stand(params, stand_params){
 
         }
         pi_drawer_runner_and_mount(params);
+        
+        support_points(params, stand_params);
     }
     else{
         base_microscope_stand(params, stand_params);
     }
 }
+
+function side_connector_cutout_pos() = [5, -50, 2];
+function side_connector_cutout_dims() = [60, 100, 40];
 
 module pi_drawer_cutout(params, stand_params){
     electronics_drawer_h = key_lookup("electronics_drawer_h", stand_params);
@@ -299,8 +304,8 @@ module pi_drawer_cutout(params, stand_params){
             }
         }
         //Cutout for the side connectors
-        translate([5, -50, 2]){
-            cube([60, 100, 40]);
+        translate(side_connector_cutout_pos()){
+            cube(side_connector_cutout_dims());
         }
         translate(electronics_drawer_side_screw_pos()){
             rotate_x(90){
@@ -309,6 +314,61 @@ module pi_drawer_cutout(params, stand_params){
         }
     }
 }
+
+module support_points(params, stand_params){
+    electronics_drawer_h = key_lookup("electronics_drawer_h", stand_params);
+    for (i=[1,2,3]){
+        hull(){
+            intersection(){
+                base_microscope_stand(params, stand_params);
+                electronics_drawer_frame_xy(params){
+                    translate_y(electronics_drawer_front_width()*.25*i){
+                        translate(electronics_drawer_front_pos()){
+                            translate_z(electronics_drawer_h){
+                                cube([99,1,1.5]);
+                            }
+                        }
+                    }
+                }
+            }
+            electronics_drawer_frame_xy(params, for_base_section=true){
+                translate_y(electronics_drawer_front_width()*.25*i){
+                    translate_x(105){
+                        cylinder(r=5, h=1);
+                    }
+                }
+            }
+        }
+    }
+    for (i=[1,2,3]){
+        cut_pos = side_connector_cutout_pos();
+        cut_dims = side_connector_cutout_dims();
+        hull(){
+            intersection(){
+                base_microscope_stand(params, stand_params);
+                electronics_drawer_frame_xy(params){
+                    translate_x(cut_dims.x*.25*i){
+                        translate(cut_pos){
+                            translate_z(cut_dims.z-1.5){
+                                cube([1, 99, 1.5]);
+                            }
+                        }
+                    }
+                }
+            }
+            electronics_drawer_frame_xy(params, for_base_section=true){
+                translate_x(cut_dims.x*.25*i){
+                    translate([cut_pos.x+5, cut_pos.y]){
+                        translate_y(38){
+                            cylinder(r=5, h=1);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 
 module pi_drawer_runner_and_mount(params){
     electronics_drawer_frame_xy(params){
