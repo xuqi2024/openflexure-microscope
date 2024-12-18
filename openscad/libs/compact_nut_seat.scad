@@ -112,11 +112,11 @@ module nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=undef){
     }
     // ensure the hole in the top can be made nicely
     intersection(){
-        translate([-999, -hole_r,0]){
-            cube([999, 2*hole_r, h + trap_height + 0.5]);
+        translate([-2*r2, -hole_r,0]){
+            cube([4*r2, 2*hole_r, h + trap_height + 0.5]);
         }
         rotate(30){
-            cylinder(r=r2, h=999, $fn=6);
+            cylinder(r=r2, h= h+trap_height + 1, $fn=6);
         }
     }
 
