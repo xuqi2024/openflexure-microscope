@@ -266,7 +266,7 @@ module base_microscope_stand(params, stand_params){
     }
 }
 
-module microscope_stand(params, stand_params){
+module microscope_stand(params, stand_params, supports=true){
     inc_drawer = key_lookup("include_pi_tray_hole", stand_params);
     if (inc_drawer){
         difference(){
@@ -275,8 +275,9 @@ module microscope_stand(params, stand_params){
 
         }
         pi_drawer_runner_and_mount(params);
-        
-        support_points(params, stand_params);
+        if (supports){
+            stand_support_points(params, stand_params);
+        }
     }
     else{
         base_microscope_stand(params, stand_params);
@@ -315,7 +316,7 @@ module pi_drawer_cutout(params, stand_params){
     }
 }
 
-module support_points(params, stand_params){
+module stand_support_points(params, stand_params){
     electronics_drawer_h = key_lookup("electronics_drawer_h", stand_params);
     // x translates to the front of the drawer
     x_sup_pos = electronics_drawer_base_size().x + electronics_drawer_wall_t()+3.5;
