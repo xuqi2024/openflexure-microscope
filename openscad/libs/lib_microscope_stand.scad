@@ -317,37 +317,46 @@ module pi_drawer_cutout(params, stand_params){
 
 module support_points(params, stand_params){
     electronics_drawer_h = key_lookup("electronics_drawer_h", stand_params);
-    for (i=[1,2,3]){
+    // x translates to the front of the drawer
+    x_sup_pos = electronics_drawer_base_size().x + electronics_drawer_wall_t()+3.5;
+    y_sup_pos = -4;
+    sup_rad = 5;
+    sup_squeeze = 0.7;
+    n_sup = 2;
+    fraction = 1/(n_sup+1);
+    for (i=[1:n_sup]){
         hull(){
             intersection(){
                 base_microscope_stand(params, stand_params);
                 electronics_drawer_frame_xy(params){
-                    translate_y(electronics_drawer_front_width()*.25*i){
+                    translate_y(electronics_drawer_front_width()*fraction*i){
                         translate(electronics_drawer_front_pos()){
                             translate_z(electronics_drawer_h){
-                                cube([99,1,1.5]);
+                                cube([x_sup_pos,1,1.5]);
                             }
                         }
                     }
                 }
             }
             electronics_drawer_frame_xy(params, for_base_section=true){
-                translate_y(electronics_drawer_front_width()*.25*i){
-                    translate_x(105){
-                        cylinder(r=5, h=1);
+                translate_y(electronics_drawer_front_width()*fraction*i){
+                    translate_x(x_sup_pos+sup_rad*sup_squeeze+1){
+                        scale([sup_squeeze, 1, 1]){
+                            cylinder(r=sup_rad, h=1);
+                        }
                     }
                 }
             }
         }
     }
-    for (i=[1,2,3]){
+    for (i=[1:n_sup]){
         cut_pos = side_connector_cutout_pos();
         cut_dims = side_connector_cutout_dims();
         hull(){
             intersection(){
                 base_microscope_stand(params, stand_params);
                 electronics_drawer_frame_xy(params){
-                    translate_x(cut_dims.x*.25*i){
+                    translate_x(cut_dims.x*fraction*i){
                         translate(cut_pos){
                             translate_z(cut_dims.z-1.5){
                                 cube([1, 99, 1.5]);
@@ -357,10 +366,10 @@ module support_points(params, stand_params){
                 }
             }
             electronics_drawer_frame_xy(params, for_base_section=true){
-                translate_x(cut_dims.x*.25*i){
-                    translate([cut_pos.x+5, cut_pos.y]){
-                        translate_y(38){
-                            cylinder(r=5, h=1);
+                translate_x(cut_dims.x*fraction*i){
+                    translate([cut_pos.x+5, y_sup_pos-sup_rad*sup_squeeze-1]){
+                        scale([1, sup_squeeze, 1]){
+                            cylinder(r=sup_rad, h=1);
                         }
                     }
                 }
