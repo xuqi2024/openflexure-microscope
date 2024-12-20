@@ -304,6 +304,7 @@ def register_prepare_main_body(rendersystem):
 def register_prepare_stand(rendersystem):
     input_file = "rendering/prepare_stand.scad"
     cameras = [
+        Camera(position=[15, 26, 41.5], angle=[47, 0, 111], distance=450),
         Camera(position=[-9, 20, 37.5], angle=[34, 0, 235], distance=450),
         Camera(position=[-9, 20, 37.5], angle=[34, 0, 235], distance=450),
         Camera(position=[-9, 20, 37.5], angle=[34, 0, 235], distance=450),
