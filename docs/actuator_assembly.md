@@ -15,12 +15,25 @@ There is one "actuator column" for each of the three axes of the OpenFlexure Mic
 {{includetext: "![Parts required for actuator assembly](renders/actuator_assembly_parts.png)", if: var_n_actuators is 3}}
 {{includetext: "![Parts required for actuator assembly](renders/actuator_assembly_parts_upright.png)", if: var_n_actuators is 4}}
 
+## Mount the leadscrew {pagestep}
+
+![](renders/actuator_assembly_lead_screw_exploded.png)
+![](renders/actuator_assembly_lead_screw_tight.png)
+![](renders/actuator_assembly_lead_screw_only.png)
+
+* Take one of the [hex bolts][M3x25mm stainless steel hex bolt]{qty:{{var_n_actuators, default:3}}, cat:mech}.
+* Push it through one of the [large gears](fromstep){qty:{{var_n_actuators, default:3}}, cat:printedpart}, the [nut spinner](fromstep){qty:1, cat:printedtool}.
+* Start to screw on a [brass nut][M3 brass nut]{qty:{{var_n_actuators, default:3}}, cat:mech}, this should fit into the end of the nut spinner.
+* Place the [gear holder](fromstep){qty:1, cat:printedtool} over the large gear.
+* Tighten, but turning the gear holder and nut spinner in opposite directions. This should bed the screw into the gear.
+* Remove the tools, and the nut from the gear and screw. The screw should now be firmly mounted in the gear.
+
 ## Insert the nut {pagestep}
 
 ![Inset the nut the actuator column](renders/actuator_assembly_nut.png)
 ![Check nut seated flat](diagrams/NutSitFlat.png)
 
-* Insert a [brass nut][M3 brass nut]{qty:{{var_n_actuators, default:3}}, cat:mech} into the x actuator through the hole in the front of the [main body][prepared main body](fromstep){qty:1, cat:subassembly}.
+* Insert the brass nut from before into the x actuator through the hole in the front of the [main body][prepared main body](fromstep){qty:1, cat:subassembly}.
 * Looking through the hole you should see the side of the nut. If it is tilted so you can see the top can tap the microscope until it sits flat.
 
 ## Attach the gear {pagestep}
@@ -30,8 +43,7 @@ There is one "actuator column" for each of the three axes of the OpenFlexure Mic
 ![Gear attachment](renders/actuator_assembly_gear2.png)
 
 * Line up two [washers][M3 stainless steel washers]{qty:{{var_n_washers, default:6}}, cat:mech} so that the slightly curved sides are facing each other.
-* Take one of the [hex bolts][M3x25mm stainless steel hex bolt]{qty:{{var_n_actuators, default:3}}, cat:mech}
-* Push it through one of the [large gears](fromstep){qty:{{var_n_actuators, default:3}}, cat:printedpart} and then the two washers.
+* Take gear with the screw mounted into it, and push it through the two washers.
 * Push the screw through the hole at the top of the x actuator until it reaches the nut
 * Screw the bolt into the nut until the nut is completely lifted up. (If the nut turns hold it in place with the [nut tool](fromstep){qty:1, cat:printedtool})
 
