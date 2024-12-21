@@ -425,23 +425,24 @@ module z_axis_rect_top_counterbores(params){
 module z_axis_tri_top_counterbores(params){
     // Nut traps for standard triangular top on the z_axis
     z_offset = -9;
+    extra_bore = 3;
     // Nut trap for back corner
-        translate(illumination_back_corner_pos(params)){
-            rotate_z(180){
+    translate(illumination_back_corner_pos(params)){
+        rotate_z(180){
+            translate_z(z_offset){
+                m3_nut_trap_with_shaft(slot_angle=0,tilt=0,deep_shaft=extra_bore,chamfer_offset=4);
+            }
+        }
+    }
+    reflect_x(){
+        translate(right_illumination_screw_pos(params)){
+            rotate_z(right_illumination_screw_rotation()){
                 translate_z(z_offset){
-                    m3_nut_trap_with_shaft(0,0);
+                    m3_nut_trap_with_shaft(slot_angle=0,tilt=0,deep_shaft=extra_bore,chamfer_offset=4);
                 }
             }
         }
-        reflect_x(){
-            translate(right_illumination_screw_pos(params)){
-                rotate_z(right_illumination_screw_rotation()){
-                    translate_z(z_offset){
-                        m3_nut_trap_with_shaft(0,0);
-                    }
-                }
-            }
-        }
+    }
 }
 
 module z_axis_casing_cutouts(params, rectangular = false){
@@ -453,17 +454,18 @@ module z_axis_casing_cutouts(params, rectangular = false){
     z_motor_clearance(params);
     if (rectangular){
         z_axis_rect_top_counterbores(params);
+        // Adding the central screw hole and nut trap
+        translate_z(-9){
+            translate(illumination_back_corner_pos(params)){
+                extra_bore = 3;
+                rotate([0,0,180]){
+                    m3_nut_trap_with_shaft(slot_angle=0,tilt=0,deep_shaft=extra_bore,chamfer_offset=5);
+                }
+            }
+        }
     }
     else{
         z_axis_tri_top_counterbores(params);
-    }
-    // Adding the central screw hole and nut trap
-    translate_z(-9){
-        translate(illumination_back_corner_pos(params)){
-            rotate([0,0,180]){
-                m3_nut_trap_with_shaft(0,0);
-            }
-        }
     }
 }
 
