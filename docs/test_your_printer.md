@@ -51,6 +51,8 @@ Now we will test whether your printer can print the bridges in the microscope. D
 
 ![leg_test.stl](models/leg_test.stl)
 
-The result should look like this (this has been printed with a brim):
+The result should look like this:
 
 ![](images/just_leg_test.jpg)
+
+The brim should have printed as a separate object around the leg, and should be easy to remove. If it is difficult to remove, [check that it has not been joined to the leg when sliced](./set_slice_gap_closing_radius.md#checking-the-bottom-layer).
