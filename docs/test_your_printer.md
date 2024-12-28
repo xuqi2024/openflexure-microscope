@@ -32,7 +32,7 @@ We recommend the following printer settings:
 |Layer height   |0.2mm or less  |
 |Supports       |None           |
 |Infill         |Printer default|
-|Brim           |Recommended for all parts except main body.|
+|Brim           |Recommended for all parts except main body|
 |[Slice gap closing radius] |0.001mm |
 
 >! **Do not print with supports**.
@@ -47,10 +47,13 @@ As a general rule, strength is more important than surface finish, so very thin 
 
 ## Testing your printer {pagestep}
 
-Now we will test whether your printer can print the bridges in the microscope. Download and print the leg test file this will only use about [5 grams of PLA][PLA filament]{qty: 5g}:
+Now test whether your printer can print the bridges in the microscope and the custom brim on the main body.  
+Download and print the leg test file, do not add brim in your slicer. This will only use about [5 grams of PLA][PLA filament]{qty: 5g}:
 
 ![leg_test.stl](models/leg_test.stl)
 
-The result should look like this (this has been printed with a brim):
+The result should look like this:
 
 ![](images/just_leg_test.jpg)
+
+The brim should have printed as a separate object around the leg, and should be easy to remove. If it is difficult to remove, [check that it has not been joined to the leg when sliced](./set_slice_gap_closing_radius.md#checking-the-bottom-layer).
