@@ -9,6 +9,7 @@ This is the main script to create the renderings used in the documentation.
 
 import os
 from build_system.openscad_render_system import RenderSystem, ScadRender, Camera
+from build_system.util import version_string, get_commit_tag, is_release
 
 def register_rms_optics_assembly(rendersystem):
     input_file = "rendering/rms_optics_assembly.scad"
@@ -519,10 +520,17 @@ def register_complete_microscope(rendersystem):
             render = ScadRender(output_file, input_file, scad, imgsize, camera)
             rendersystem.register_scad_render(render)
 
+def register_rendered_microscope_stl(rendersystem):
+    input_file = "rendering/librender/rendered_main_body.scad"
+    version_str = version_string(True)
+    parameters = {"VERSION_STRING": version_str}
+    rendersystem.register_render_stl(input_file, parameters)
+
+
 def main():
     rendersystem = RenderSystem()
     rendersystem.register_zip_assets('rendering/librender/hardware.zip')
-    rendersystem.register_render_stl('rendering/librender/rendered_main_body.scad')
+    register_rendered_microscope_stl(rendersystem)
     #Register all openscad renders (and associated post processing)
     register_rms_optics_assembly(rendersystem)
     register_low_cost_optics_assembly(rendersystem)

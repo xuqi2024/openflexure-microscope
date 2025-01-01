@@ -26,7 +26,7 @@ import os
 import uuid
 from dataclasses import dataclass
 from tempfile import gettempdir
-from .util import get_openscad_exe
+from .util import parameters_to_string, get_openscad_exe
 
 
 @dataclass
@@ -210,13 +210,14 @@ def run_openscad_animation(filename, renders, size):
     check_openscad_warnings(std_err)
     return copy_renders(renders, hash_name)
 
-def create_render_stl(filename):
+def create_render_stl(filename, scad_parameters):
     """
     Create STLs needed for the rendering from a list of filenames
     """
+    parameters = parameters_to_string(scad_parameters)
     executable = get_openscad_exe()
     stl_name = filename[:-3]+'tl'
-    scad_args = ['--hardwarnings', filename, '-o', stl_name]
+    scad_args = ['--hardwarnings', parameters, filename, '-o', stl_name]
     subprocess.run([executable] + scad_args, check=True)
 
 def check_openscad_warnings(std_err):
