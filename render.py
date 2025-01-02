@@ -9,7 +9,7 @@ This is the main script to create the renderings used in the documentation.
 
 import os
 from build_system.openscad_render_system import RenderSystem, ScadRender, Camera
-from build_system.util import version_string, get_commit_tag, is_release
+from build_system.util import version_string
 
 def register_rms_optics_assembly(rendersystem):
     input_file = "rendering/rms_optics_assembly.scad"
