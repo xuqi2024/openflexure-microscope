@@ -20,9 +20,7 @@ version:
       - ./ci_version_string.py
     artifacts:
       reports:
-        dotenv:
-          - build.env
-          - render.env
+        dotenv: build.env
     only:
       - tags
       - merge_requests
@@ -99,6 +97,8 @@ lint_build_system:
 build:
     extends: .scad-job
     stage: build
+    dependencies: ["version"]
+    needs: ["version"]
 
     script:
       - git clone --depth=1 https://gitlab.com/openflexure/openflexure-microscope-extra
@@ -182,8 +182,8 @@ check_stls:
 render:
     extends: .scad-job
     stage: build
-    dependencies: ["build"]
-    needs: ["build"]
+    dependencies: ["build", "version"]
+    needs: ["build", "version"]
 
     script:
       - xvfb-run --auto-servernum --server-args "-screen 0 1024x768x24" ./render.py --force-clean

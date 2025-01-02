@@ -6,7 +6,7 @@
 
 # ignore dynamic <job>.env that is used for the version string
 build.env
-rednder.env
+render.env
 
 # Or gLTF files
 *.gltf
