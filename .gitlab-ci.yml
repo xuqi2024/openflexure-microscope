@@ -6,6 +6,27 @@ stages:
     - deploy
     - zenodo
 
+version:
+    stage: .pre
+    image: python:3.12
+    script:
+      # show any files that claim to be modified for debugging purposes
+      - git status
+      # Some files seem to appear changed even though they shouldn't be which
+      # messes up our auto version-string embeddeding, so we do a hard git reset
+      # see https://gitlab.com/gitlab-org/gitlab/-/issues/325299
+      - git reset --hard
+      # Write the version string into build.env
+      - ./ci_version_string.py
+    artifacts:
+      reports:
+        dotenv: build.env
+    only:
+      - tags
+      - merge_requests
+      - web
+      - master
+
 ## Template for all OpenSCAD jobs to ensure they run the same
 .scad-job:
     image: ubuntu:22.04
@@ -79,10 +100,6 @@ build:
 
     script:
       - git clone --depth=1 https://gitlab.com/openflexure/openflexure-microscope-extra
-      # Some files seem to appear changed even though they shouldn't be which
-      # messes up our auto version-string embeddeding, so we do a hard git reset
-      # see https://gitlab.com/gitlab-org/gitlab/-/issues/325299
-      - git reset --hard
       # Build STL files with OpenSCAD
       - mkdir -p /root/.local/share
       - ./build.py --include-extra-files --force-clean
