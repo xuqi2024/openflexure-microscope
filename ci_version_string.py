@@ -6,5 +6,7 @@ https://gitlab.com/gitlab-org/gitlab/-/issues/325299
 """
 from build_system.util import version_string
 version_string = version_string(force_clean=True, check_env=False)
-with open('build.env', 'w', encoding="utf-8") as file_obj:
-    file_obj.write("CI_VERSION_STRING="+version_string)
+
+for env in ['build.env', 'render.env']:
+    with open(env, 'w', encoding="utf-8") as file_obj:
+        file_obj.write("CI_VERSION_STRING="+version_string)

@@ -20,7 +20,9 @@ version:
       - ./ci_version_string.py
     artifacts:
       reports:
-        dotenv: build.env
+        dotenv:
+          - build.env
+          - render.env
     only:
       - tags
       - merge_requests
@@ -184,7 +186,6 @@ render:
     needs: ["build"]
 
     script:
-      - git status
       - xvfb-run --auto-servernum --server-args "-screen 0 1024x768x24" ./render.py --force-clean
       - mkdir -p docs/gltf
       - pip install scad2gltf
