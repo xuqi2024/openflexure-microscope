@@ -194,13 +194,10 @@ render:
       - cp complete_microscope_*.glb ../docs/gltf/
 
     artifacts:
-      # Also saving artifacts on failed builds
-      when: always
       expire_in: 1 week
       name: "${CI_PROJECT_NAME}-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}-renders"
       # saving any rendering csg files. Only remaining files should be when scad2gltf fails
       paths:
-        - rendering/*.csg
         - docs/renders/*.png
         - docs/gltf/*
 
