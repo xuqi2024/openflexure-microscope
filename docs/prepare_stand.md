@@ -11,7 +11,7 @@
 
 ![](renders/prepare_stand1.png)
 
-* Take each of the supports (highlighted in red) and twist until they detach from the stand.
+* Take each of the supports (highlighted in red) and rock them backward and forward until they detach from the stand.
 * Remove any remaining bumps from the support connection with a [utility knife]{qty:1,cat:tool} or [precision wire cutters]{qty:1}.
 
 ## Embed mounting nut in the stand {pagestep}

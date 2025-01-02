@@ -15,7 +15,7 @@ module render_prepare_stand(frame){
     if (frame==1){
         render_stand(params, stand_params);
         coloured_render(remove_colour()){
-            stand_support_points(params, stand_params);
+            stand_supports(params, stand_params);
         }
     }
     if (frame==2){

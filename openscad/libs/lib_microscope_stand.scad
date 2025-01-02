@@ -276,7 +276,7 @@ module microscope_stand(params, stand_params, supports=true){
         }
         pi_drawer_runner_and_mount(params);
         if (supports){
-            stand_support_points(params, stand_params);
+            stand_supports(params, stand_params);
         }
     }
     else{
@@ -316,64 +316,143 @@ module pi_drawer_cutout(params, stand_params){
     }
 }
 
-module stand_support_points(params, stand_params){
+module stand_supports(params, stand_params){
+    front_stand_supports(params, stand_params);
+    side_stand_supports(params, stand_params);
+}
+
+function stand_support_base_radius() = 5;
+function stand_support_base_squeeze() = 0.7;
+
+//given i (suport number) and j (sub suport number) return the fraction
+//along the span to place the top of the support
+function support_fraction_for_top(i, j, n_sup, n_sub_sup) = let(
+    base_fraction = 1/(n_sup*n_sub_sup+1)
+) base_fraction*((i-1)*n_sub_sup+j);
+
+//given i (suport number) return the fraction
+//along the span to place the base of the support
+function support_fraction_base(i, n_sup, n_sub_sup) = let(
+    base_fraction = 1/(n_sup*n_sub_sup+1)
+) base_fraction*((i-1)*n_sub_sup+(n_sub_sup+1)/2);
+
+module front_stand_supports(params, stand_params, n_sup=2, n_sub_sup=2){
     electronics_drawer_h = key_lookup("electronics_drawer_h", stand_params);
     // x translates to the front of the drawer
     x_sup_pos = electronics_drawer_base_size().x + electronics_drawer_wall_t()+3.5;
-    y_sup_pos = -4;
-    sup_rad = 5;
-    sup_squeeze = 0.7;
-    n_sup = 2;
-    fraction = 1/(n_sup+1);
-    for (i=[1:n_sup]){
-        hull(){
-            intersection(){
-                base_microscope_stand(params, stand_params);
-                electronics_drawer_frame_xy(params){
-                    translate_y(electronics_drawer_front_width()*fraction*i){
-                        translate(electronics_drawer_front_pos()){
-                            translate_z(electronics_drawer_h){
-                                cube([x_sup_pos,1,1.5]);
-                            }
-                        }
-                    }
-                }
-            }
-            electronics_drawer_frame_xy(params, for_base_section=true){
-                translate_y(electronics_drawer_front_width()*fraction*i){
-                    translate_x(x_sup_pos+sup_rad*sup_squeeze+1){
-                        scale([sup_squeeze, 1, 1]){
-                            cylinder(r=sup_rad, h=1);
+
+    sup_rad = stand_support_base_radius();
+    sup_squeeze = stand_support_base_squeeze();
+
+    module top_of_support(i,j){
+        fraction = support_fraction_for_top(i, j, n_sup, n_sub_sup);
+        intersection(){
+            base_microscope_stand(params, stand_params);
+            electronics_drawer_frame_xy(params){
+                translate_y(electronics_drawer_front_width()*fraction-0.5){
+                    translate(electronics_drawer_front_pos()){
+                        translate_z(electronics_drawer_h){
+                            cube([x_sup_pos,1,1.5]);
                         }
                     }
                 }
             }
         }
     }
+    module center_of_support(i){
+        fraction = support_fraction_base(i, n_sup, n_sub_sup);
+        electronics_drawer_frame_xy(params, for_base_section=true){
+            translate_y(electronics_drawer_front_width()*fraction){
+                translate_x(x_sup_pos){
+                    translate_z(.7*electronics_drawer_h){
+                        cylinder(r=sup_rad*.4, h=1);
+                    }
+                }
+            }
+        }
+    }
+    module base_of_support(i){
+        fraction = support_fraction_base(i, n_sup, n_sub_sup);
+        electronics_drawer_frame_xy(params, for_base_section=true){
+            translate_y(electronics_drawer_front_width()*fraction){
+                translate_x(x_sup_pos+sup_rad*sup_squeeze+1){
+                    scale([sup_squeeze, 1, 1]){
+                        cylinder(r=sup_rad, h=1);
+                    }
+                }
+            }
+        }
+    }
     for (i=[1:n_sup]){
-        cut_pos = side_connector_cutout_pos();
-        cut_dims = side_connector_cutout_dims();
         hull(){
-            intersection(){
-                base_microscope_stand(params, stand_params);
-                electronics_drawer_frame_xy(params){
-                    translate_x(cut_dims.x*fraction*i){
-                        translate(cut_pos){
-                            translate_z(cut_dims.z-1.5){
-                                cube([1, 99, 1.5]);
-                            }
+            center_of_support(i);
+            base_of_support(i);
+        }
+        for (j=[1:n_sub_sup]){
+            hull(){
+                center_of_support(i);
+                top_of_support(i,j);
+            }
+        }
+    }
+}
+
+module side_stand_supports(params, stand_params, n_sup=2, n_sub_sup=2){
+    electronics_drawer_h = key_lookup("electronics_drawer_h", stand_params);
+    y_sup_pos = -4;
+    sup_rad = stand_support_base_radius();
+    sup_squeeze = stand_support_base_squeeze();
+    cut_pos = side_connector_cutout_pos();
+    cut_dims = side_connector_cutout_dims();
+
+    module top_of_support(i,j){
+        fraction = support_fraction_for_top(i, j, n_sup, n_sub_sup);
+        intersection(){
+            base_microscope_stand(params, stand_params);
+            electronics_drawer_frame_xy(params){
+                translate_x(cut_dims.x*fraction-0.5){
+                    translate(cut_pos){
+                        translate_z(cut_dims.z-1.5){
+                            cube([1, 99, 1.5]);
                         }
                     }
                 }
             }
-            electronics_drawer_frame_xy(params, for_base_section=true){
-                translate_x(cut_dims.x*fraction*i){
-                    translate([cut_pos.x+5, y_sup_pos-sup_rad*sup_squeeze-1]){
-                        scale([1, sup_squeeze, 1]){
-                            cylinder(r=sup_rad, h=1);
-                        }
+        }
+    }
+
+    module center_of_support(i){
+        fraction = support_fraction_base(i, n_sup, n_sub_sup);
+        electronics_drawer_frame_xy(params, for_base_section=true){
+            translate_x(cut_dims.x*fraction){
+                translate([cut_pos.x+5, y_sup_pos, .7*cut_dims.z]){
+                    cylinder(r=.4*sup_rad, h=1);
+                }
+            }
+        }
+    }
+
+    module base_of_support(i){
+        fraction = support_fraction_base(i, n_sup, n_sub_sup);
+        electronics_drawer_frame_xy(params, for_base_section=true){
+            translate_x(cut_dims.x*fraction){
+                translate([cut_pos.x+5, y_sup_pos-sup_rad*sup_squeeze-1]){
+                    scale([1, sup_squeeze, 1]){
+                        cylinder(r=sup_rad, h=1);
                     }
                 }
+            }
+        }
+    }
+    for (i=[1:n_sup]){
+        hull(){
+            center_of_support(i);
+            base_of_support(i);
+        }
+        for (j=[1:n_sub_sup]){
+            hull(){
+                center_of_support(i);
+                top_of_support(i,j);
             }
         }
     }
