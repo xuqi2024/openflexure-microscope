@@ -2,6 +2,7 @@
 This module has a range of misc utilities for the build system.
 """
 import sys
+import os
 import subprocess
 from copy import copy
 import re
@@ -53,23 +54,27 @@ def parameters_to_string(parameters):
 
     return " ".join(strings)
 
-def version_string(force_clean):
+def version_string(force_clean, check_env=True):
     """
     The version string for the microscope.
     """
-    if not repo_is_clean():
+    if check_env:
+        ci_version_string = os.getenv("CI_VERSION_STRING", None)
+        if ci_version_string is not None:
+            return ci_version_string
+    if not _repo_is_clean():
         if force_clean:
             print("Warning! Git repository is not clean:")
-            ret = run_git(["status", "--porcelain"])
+            ret = _run_git(["status", "--porcelain"])
             print(ret)
             sys.exit(1)
         return "Custom"
 
-    tag = get_commit_tag()
-    if is_release(tag):
+    tag = _get_commit_tag()
+    if _is_release(tag):
         return tag
 
-    commit_hash = get_commit_hash()
+    commit_hash = _get_commit_hash()
     if commit_hash is None:
         if force_clean:
             sys.exit(1)
@@ -77,12 +82,12 @@ def version_string(force_clean):
     return commit_hash[0:7]
 
 
-def repo_is_clean():
+def _repo_is_clean():
     """
     Returns True if the repo is has no changes.
     Returns False if there are changes in the repo or if Git fails to check.
     """
-    ret = run_git(["status", "--porcelain"])
+    ret = _run_git(["status", "--porcelain"])
     if ret is None:
         return False
     # With `--porcelain` the output of `git status` should be empty is repo is clean
@@ -91,30 +96,33 @@ def repo_is_clean():
 
     return False
 
-def is_release(tag):
+def _is_release(tag):
     """
     Returns true if the the tag is of the form: v1.3.5
     else returns false
     """
     if tag is None:
         return False
-    match = re.match(r"^v[0-9]+\.[0-9]+\.[0-9]+$", tag)
+    full_version = re.match(r"^v[0-9]+\.[0-9]+\.[0-9]+$", tag)
+    beta_version = re.match(r"^v[0-9]+\.[0-9]+\.[0-9]+-beta[0-9]+$", tag)
+    release_candidate = re.match(r"^v[0-9]+\.[0-9]+\.[0-9]+-rc[0-9]+$", tag)
+    match = full_version or beta_version or release_candidate
     return match is not None
 
-def get_commit_tag():
+def _get_commit_tag():
     """
     Returns the git tag of the current commit.
     If current commit is not tagged returns None
     """
-    return run_git(["desribe", "--tags", "--exact-match"], warn_on_error=False)
+    return _run_git(["desribe", "--tags", "--exact-match"], warn_on_error=False)
 
-def get_commit_hash():
+def _get_commit_hash():
     """
     Returns gomit hash. Will return None if has cannot be read.
     """
-    return run_git(["log", "-n1", "--format=format:%H"])
+    return _run_git(["log", "-n1", "--format=format:%H"])
 
-def run_git(git_args, warn_on_error=True):
+def _run_git(git_args, warn_on_error=True):
     """
     Runs git with the input list of arguments. It will return the stdout if
     the command succeeds. On a non-zero exit code it will return None

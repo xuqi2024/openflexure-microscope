@@ -6,6 +6,27 @@ stages:
     - deploy
     - zenodo
 
+version:
+    stage: .pre
+    image: python:3.12
+    script:
+      # show any files that claim to be modified for debugging purposes
+      - git status
+      # Some files seem to appear changed even though they shouldn't be which
+      # messes up our auto version-string embeddeding, so we do a hard git reset
+      # see https://gitlab.com/gitlab-org/gitlab/-/issues/325299
+      - git reset --hard
+      # Write the version string into build.env
+      - ./ci_version_string.py
+    artifacts:
+      reports:
+        dotenv: build.env
+    only:
+      - tags
+      - merge_requests
+      - web
+      - master
+
 ## Template for all OpenSCAD jobs to ensure they run the same
 .scad-job:
     image: ubuntu:22.04
@@ -76,13 +97,11 @@ lint_build_system:
 build:
     extends: .scad-job
     stage: build
+    dependencies: ["version"]
+    needs: ["version"]
 
     script:
       - git clone --depth=1 https://gitlab.com/openflexure/openflexure-microscope-extra
-      # Some files seem to appear changed even though they shouldn't be which
-      # messes up our auto version-string embeddeding, so we do a hard git reset
-      # see https://gitlab.com/gitlab-org/gitlab/-/issues/325299
-      - git reset --hard
       # Build STL files with OpenSCAD
       - mkdir -p /root/.local/share
       - ./build.py --include-extra-files --force-clean
@@ -163,11 +182,12 @@ check_stls:
 render:
     extends: .scad-job
     stage: build
-    dependencies: ["build"]
-    needs: ["build"]
+    dependencies: ["build", "version"]
+    needs: ["build", "version"]
 
     script:
-      - xvfb-run --auto-servernum --server-args "-screen 0 1024x768x24" ./render.py
+      - git status
+      - xvfb-run --auto-servernum --server-args "-screen 0 1024x768x24" ./render.py --force-clean
       - mkdir -p docs/gltf
       - pip install scad2gltf
       - cd rendering
@@ -178,6 +198,7 @@ render:
     artifacts:
       expire_in: 1 week
       name: "${CI_PROJECT_NAME}-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}-renders"
+      # saving any rendering csg files. Only remaining files should be when scad2gltf fails
       paths:
         - docs/renders/*.png
         - docs/gltf/*
