@@ -219,7 +219,7 @@ def create_render_stl(filename, scad_parameters):
     """
     parameters = parameters_to_string(scad_parameters)
     # As we use OpenSCAD via subprocess run, not ninja we need to split up
-    # the commands into a list of each argument  
+    # the commands into a list of each argument
     parameters = shlex.split(parameters)
     executable = get_openscad_exe()
     stl_name = filename[:-3]+'tl'

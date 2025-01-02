@@ -4,6 +4,10 @@
 # Ignore CSG files (OpenSCAD output)
 *.csg
 
+# ignore dynamic <job>.env that is used for the version string
+build.env
+render.env
+
 # Or gLTF files
 *.gltf
 *.glb
