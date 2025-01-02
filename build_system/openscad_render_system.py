@@ -225,7 +225,8 @@ def create_render_stl(filename, scad_parameters):
     stl_name = filename[:-3]+'tl'
     scad_args = ['--hardwarnings'] + parameters + [filename, '-o', stl_name]
     try:
-        subprocess.run([executable] + scad_args, check=True, capture_output=True)
+        ret = subprocess.run([executable] + scad_args, check=True, capture_output=True)
+        print(ret.stdout.decode("UTF-8"))
     except subprocess.CalledProcessError as e:
         print("OpenSCAD Error Message:")
         print(e.stderr)
