@@ -87,6 +87,9 @@ lint_build_system:
     script:
       - pip install -r requirements.txt
       - ./lint_build_system.py
+      - pip install pytest
+      - cd build_system
+      - pytest
     only:
       - tags
       - merge_requests
