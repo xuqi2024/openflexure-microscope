@@ -28,8 +28,8 @@
 
 ## Prepare nuts for the electronics drawer {pagestep}
 
-![](renders/prepare_stand7.png)
 ![](renders/prepare_stand8.png)
+![](renders/prepare_stand9.png)
 ![](renders/mount_electronics1.png)
 ![](renders/mount_electronics2.png)
 
