@@ -266,6 +266,11 @@ module base_microscope_stand(params, stand_params){
     }
 }
 
+
+// The microscope stand.
+// The boolean parameter `supports` can be used to turn on or off
+// the printing supports that support the long bridges over the
+// cutouts for accessing the electronics drawer.
 module microscope_stand(params, stand_params, supports=true){
     inc_drawer = key_lookup("include_pi_tray_hole", stand_params);
     if (inc_drawer){
@@ -316,12 +321,16 @@ module pi_drawer_cutout(params, stand_params){
     }
 }
 
+// These are the supports over the long bridges for access
+// to the electronics drawer
 module stand_supports(params, stand_params){
     front_stand_supports(params, stand_params);
     side_stand_supports(params, stand_params);
 }
 
+// The radius for the base of the stand
 function stand_support_base_radius() = 5;
+// This is then "squeezed" into an eliptical base.
 function stand_support_base_squeeze() = 0.7;
 
 //given i (suport number) and j (sub suport number) return the fraction
@@ -336,6 +345,9 @@ function support_fraction_base(i, n_sup, n_sub_sup) = let(
     base_fraction = 1/(n_sup*n_sub_sup+1)
 ) base_fraction*((i-1)*n_sub_sup+(n_sub_sup+1)/2);
 
+
+// Supports for the long bridge over the space where the electronics drawer
+// enters the stand
 module front_stand_supports(params, stand_params, n_sup=2, n_sub_sup=2){
     electronics_drawer_h = key_lookup("electronics_drawer_h", stand_params);
     // x translates to the front of the drawer
@@ -397,8 +409,9 @@ module front_stand_supports(params, stand_params, n_sup=2, n_sub_sup=2){
     }
 }
 
+// Supports for the long bridge over the space to access side connectors on
+// the electronics drawer (HDMI etc)
 module side_stand_supports(params, stand_params, n_sup=2, n_sub_sup=2){
-    electronics_drawer_h = key_lookup("electronics_drawer_h", stand_params);
     y_sup_pos = -4;
     sup_rad = stand_support_base_radius();
     sup_squeeze = stand_support_base_squeeze();
