@@ -14,23 +14,29 @@ module render_prepare_stand(frame){
     stand_params = default_stand_params();
     if (frame==1){
         render_stand(params, stand_params);
+        coloured_render(remove_colour()){
+            stand_supports(params, stand_params);
+        }
+    }
+    if (frame==2){
+        render_stand(params, stand_params);
         stand_nut(params, stand_params, exploded=true);
-    }else if (frame==2){
-         render_stand(params, stand_params);
+    }else if (frame==3){
+        render_stand(params, stand_params);
         stand_nut(params, stand_params, low=true);
         stand_nut_temp_screw(params, stand_params, exploded=true);
-    }else if (frame==3){
+    }else if (frame==4){
         render_stand(params, stand_params);
         stand_nut(params, stand_params);
         stand_nut_temp_screw(params, stand_params, turn=true);
-    }else if (frame==4){
+    }else if (frame==5){
         render_stand(params, stand_params);
         stand_nut(params, stand_params);
         stand_nut(params, stand_params, nut_num=1, exploded=true);
         stand_nut(params, stand_params, nut_num=2, exploded=true);
         stand_nut(params, stand_params, nut_num=3, exploded=true);
     }
-    else if (frame==5){
+    else if (frame==6){
         render_stand(params, stand_params);
         stand_nut(params, stand_params);
         stand_nut(params, stand_params, nut_num=1);
@@ -40,16 +46,16 @@ module render_prepare_stand(frame){
         stand_nut(params, stand_params, nut_num=3);
         stand_nut_temp_screw(params, stand_params, nut_num=3, turn=true);
     }
-    else if (frame==6){
+    else if (frame==7){
         stand_prepared(params, stand_params);
     }
     // last frames used when putting in the nut for fitting
     // the electronics drawer, wiring.md
-    else if (frame==7){
+    else if (frame==8){
         stand_prepared(params, stand_params);
         render_electronics_drawer_nut(exploded=true);
     }
-    else if (frame==8){
+    else if (frame==9){
         stand_prepared(params, stand_params);
         render_electronics_drawer_nut(exploded=false);
     }
@@ -65,7 +71,7 @@ module stand_prepared(params, stand_params){
 
 module render_stand(params, stand_params){
     coloured_render(stand_colour()){
-        microscope_stand(params, stand_params);
+        microscope_stand(params, stand_params, supports=false);
     }
 }
 

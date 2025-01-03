@@ -267,7 +267,12 @@ module base_microscope_stand(params, stand_params){
     }
 }
 
-module microscope_stand(params, stand_params){
+
+// The microscope stand.
+// The boolean parameter `supports` can be used to turn on or off
+// the printing supports that support the long bridges over the
+// cutouts for accessing the electronics drawer.
+module microscope_stand(params, stand_params, supports=true){
     inc_drawer = key_lookup("include_pi_tray_hole", stand_params);
     if (inc_drawer){
         difference(){
@@ -276,11 +281,17 @@ module microscope_stand(params, stand_params){
 
         }
         pi_drawer_runner_and_mount(params);
+        if (supports){
+            stand_supports(params, stand_params);
+        }
     }
     else{
         base_microscope_stand(params, stand_params);
     }
 }
+
+function side_connector_cutout_pos() = [5, -50, 2];
+function side_connector_cutout_dims() = [60, 100, 40];
 
 module pi_drawer_cutout(params, stand_params){
     electronics_drawer_h = key_lookup("electronics_drawer_h", stand_params);
@@ -300,8 +311,8 @@ module pi_drawer_cutout(params, stand_params){
             }
         }
         //Cutout for the side connectors
-        translate([5, -50, 2]){
-            cube([60, 100, 40]);
+        translate(side_connector_cutout_pos()){
+            cube(side_connector_cutout_dims());
         }
         translate(electronics_drawer_side_screw_pos()){
             rotate_x(90){
@@ -310,6 +321,157 @@ module pi_drawer_cutout(params, stand_params){
         }
     }
 }
+
+// These are the supports over the long bridges for access
+// to the electronics drawer
+module stand_supports(params, stand_params){
+    front_stand_supports(params, stand_params);
+    side_stand_supports(params, stand_params);
+}
+
+// The radius for the base of the stand
+function stand_support_base_radius() = 5;
+// This is then "squeezed" into an eliptical base.
+function stand_support_base_squeeze() = 0.7;
+
+//given i (suport number) and j (sub suport number) return the fraction
+//along the span to place the top of the support
+function support_fraction_for_top(i, j, n_sup, n_sub_sup) = let(
+    base_fraction = 1/(n_sup*n_sub_sup+1)
+) base_fraction*((i-1)*n_sub_sup+j);
+
+//given i (suport number) return the fraction
+//along the span to place the base of the support
+function support_fraction_base(i, n_sup, n_sub_sup) = let(
+    base_fraction = 1/(n_sup*n_sub_sup+1)
+) base_fraction*((i-1)*n_sub_sup+(n_sub_sup+1)/2);
+
+
+// Supports for the long bridge over the space where the electronics drawer
+// enters the stand
+module front_stand_supports(params, stand_params, n_sup=2, n_sub_sup=2){
+    electronics_drawer_h = key_lookup("electronics_drawer_h", stand_params);
+    // x translates to the front of the drawer
+    x_sup_pos = electronics_drawer_base_size().x + electronics_drawer_wall_t()+3.5;
+
+    sup_rad = stand_support_base_radius();
+    sup_squeeze = stand_support_base_squeeze();
+
+    module top_of_support(i,j){
+        fraction = support_fraction_for_top(i, j, n_sup, n_sub_sup);
+        intersection(){
+            base_microscope_stand(params, stand_params);
+            electronics_drawer_frame_xy(params){
+                translate_y(electronics_drawer_front_width()*fraction-0.5){
+                    translate(electronics_drawer_front_pos()){
+                        translate_z(electronics_drawer_h){
+                            cube([x_sup_pos,1,1.5]);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    module center_of_support(i){
+        fraction = support_fraction_base(i, n_sup, n_sub_sup);
+        electronics_drawer_frame_xy(params, for_base_section=true){
+            translate_y(electronics_drawer_front_width()*fraction){
+                translate_x(x_sup_pos){
+                    translate_z(.7*electronics_drawer_h){
+                        cylinder(r=sup_rad*.4, h=1);
+                    }
+                }
+            }
+        }
+    }
+    module base_of_support(i){
+        fraction = support_fraction_base(i, n_sup, n_sub_sup);
+        electronics_drawer_frame_xy(params, for_base_section=true){
+            translate_y(electronics_drawer_front_width()*fraction){
+                translate_x(x_sup_pos+sup_rad*sup_squeeze+1){
+                    scale([sup_squeeze, 1, 1]){
+                        cylinder(r=sup_rad, h=1);
+                    }
+                }
+            }
+        }
+    }
+    for (i=[1:n_sup]){
+        hull(){
+            center_of_support(i);
+            base_of_support(i);
+        }
+        for (j=[1:n_sub_sup]){
+            hull(){
+                center_of_support(i);
+                top_of_support(i,j);
+            }
+        }
+    }
+}
+
+// Supports for the long bridge over the space to access side connectors on
+// the electronics drawer (HDMI etc)
+module side_stand_supports(params, stand_params, n_sup=2, n_sub_sup=2){
+    y_sup_pos = -4;
+    sup_rad = stand_support_base_radius();
+    sup_squeeze = stand_support_base_squeeze();
+    cut_pos = side_connector_cutout_pos();
+    cut_dims = side_connector_cutout_dims();
+
+    module top_of_support(i,j){
+        fraction = support_fraction_for_top(i, j, n_sup, n_sub_sup);
+        intersection(){
+            base_microscope_stand(params, stand_params);
+            electronics_drawer_frame_xy(params){
+                translate_x(cut_dims.x*fraction-0.5){
+                    translate(cut_pos){
+                        translate_z(cut_dims.z-1.5){
+                            cube([1, 99, 1.5]);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    module center_of_support(i){
+        fraction = support_fraction_base(i, n_sup, n_sub_sup);
+        electronics_drawer_frame_xy(params, for_base_section=true){
+            translate_x(cut_dims.x*fraction){
+                translate([cut_pos.x+5, y_sup_pos, .7*cut_dims.z]){
+                    cylinder(r=.4*sup_rad, h=1);
+                }
+            }
+        }
+    }
+
+    module base_of_support(i){
+        fraction = support_fraction_base(i, n_sup, n_sub_sup);
+        electronics_drawer_frame_xy(params, for_base_section=true){
+            translate_x(cut_dims.x*fraction){
+                translate([cut_pos.x+5, y_sup_pos-sup_rad*sup_squeeze-1]){
+                    scale([1, sup_squeeze, 1]){
+                        cylinder(r=sup_rad, h=1);
+                    }
+                }
+            }
+        }
+    }
+    for (i=[1:n_sup]){
+        hull(){
+            center_of_support(i);
+            base_of_support(i);
+        }
+        for (j=[1:n_sub_sup]){
+            hull(){
+                center_of_support(i);
+                top_of_support(i,j);
+            }
+        }
+    }
+}
+
 
 module pi_drawer_runner_and_mount(params){
     electronics_drawer_frame_xy(params){
