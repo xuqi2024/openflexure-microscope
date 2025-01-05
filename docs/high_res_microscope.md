@@ -18,7 +18,8 @@ The assembly is broken up into several steps:
 1. [.](actuator_assembly.md){step}
 1. [.](high_res_optics_module.md){step}
 1. [.](mount_optics_and_microscope.md){step, var_optics: rms}
-1. [.](illumination.md){step, var_optics: rms}
+1. [.](illumination.md){step, var_type: high_res}
+1. [.](mount_illumination.md){step, var_type: high_res}
 1. [.](motors.md){step, var_optics: rms}
 1. [.](attach_clips.md){step, var_optics: rms}
 1. [.](prepare_pi_and_sangaboard.md){step}
