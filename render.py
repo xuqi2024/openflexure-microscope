@@ -462,10 +462,12 @@ def register_motor_assembly(rendersystem):
 
 def register_mount_motors(rendersystem):
     input_file = "rendering/mount_motors.scad"
-    camera = Camera(position=[13.5, 48, 98], angle=[53, 0, 115], distance=360)
+    camera = Camera(position=[22, 35, 98], angle=[53, 0, 115], distance=360)
     imgsize = [2400, 2000]
     for optics_version in ["rms", "low_cost", "upright"]:
-        for i in [1, 2, 3]:
+        for i in [1, 2, 3, 4]:
+            if optics_version == "upright" and i > 2 :
+                camera = Camera(position=[5, 30, 121], angle=[70, 0, 150], distance=360)
             output_file = f"docs/renders/mount_motors_{optics_version}{i}.png"
             scad = f"render_mount_motors({i}, \"{optics_version}\");"
             render = ScadRender(output_file, input_file, scad, imgsize, camera)
@@ -527,7 +529,7 @@ def register_complete_microscope(rendersystem):
     input_file = "rendering/complete_microscope.scad"
     imgsize = [2400, 2000]
     for optics_version in ["rms", "low_cost", "upright"]:
-        if optics_version=="upright":
+        if optics_version == "upright":
             cameras = [
                 Camera(position=[0, 48, 98], angle=[65, 0, 133], distance=780),
                 Camera(position=[0, 48, 98], angle=[65, 0, 308], distance=780),
