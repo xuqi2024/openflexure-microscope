@@ -173,7 +173,7 @@ module upright_z_spacer_label(params, upright_sample_thickness){
     translate(illumination_back_corner_pos(params)+[0, -5.5+indent, h/2]){
         rotate([90+angle, 0, 0]){
             linear_extrude(1){
-                text(str(upright_sample_thickness,"mm"),size=4,font="sans",halign="center",valign="centre");
+                text(str(upright_sample_thickness,"mm"),size=4,font="sans",halign="center",valign="center");
             }
         }
     }
