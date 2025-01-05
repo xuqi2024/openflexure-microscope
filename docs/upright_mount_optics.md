@@ -1,12 +1,10 @@
-# Mount the optics and the microscope
+# Mount the optics
 
 
 {{BOM}}
 
 [M3 nut]: parts/mechanical.yml#Nut_M3_SS
 [2.5mm Ball-end Allen key]: parts/tools/2.5mmBallEndAllenKey.md
-
-{{include: mount_microscope.md}}
 
 ## Mount the optics {pagestep}
 * Take the [complete optics module](fromstep){qty:1, cat:subassembly} and [complete separate z-actuator](fromstep){qty:1, cat:subassembly} holding each upside down, side by side.
