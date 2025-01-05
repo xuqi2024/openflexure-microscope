@@ -281,6 +281,19 @@ def register_brim_and_ties(rendersystem):
         render = ScadRender(output_file, input_file, scad, imgsize, camera)
         rendersystem.register_scad_render(render)
 
+def register_brim_and_ties_separate_z_actuator(rendersystem):
+    input_file = "rendering/brim_and_ties_separate_z_actuator.scad"
+    cameras = [
+        Camera(position=[-4, 37, 34], angle=[57, 0, 315], distance=264),
+        Camera(position=[0, 42, 17], angle=[206, 0, 180], distance=264),
+    ] 
+    imgsize = [2400, 2400]
+    for i, camera in enumerate(cameras):
+        output_file = f"docs/renders/brim_and_ties_separate_z{i+1}.png"
+        scad = f"render_brim_and_ties_separate_z_actuator({i+1});"
+        render = ScadRender(output_file, input_file, scad, imgsize, camera)
+        rendersystem.register_scad_render(render)
+
 def register_prepare_main_body(rendersystem):
     input_file = "rendering/prepare_main_body.scad"
     cameras = [
@@ -479,6 +492,7 @@ def main():
     register_optics_assembled(rendersystem)
     register_band(rendersystem)
     register_brim_and_ties(rendersystem)
+    register_brim_and_ties_separate_z_actuator(rendersystem)
     register_prepare_main_body(rendersystem)
     register_prepare_stand(rendersystem)
     register_actuator_assembly(rendersystem)
