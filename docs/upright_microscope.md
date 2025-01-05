@@ -4,7 +4,7 @@ This configuration of the microscope has the objective above the sample rather t
 
 If you use this microscope for research please consider citing [our paper in Optics Express](https://doi.org/10.1364/BOE.385729).
 
->? If you have problems building this, please let us know on [GitLab](https://gitlab.com/openflexure/openflexure-microscope/-/issues) or on our [forum](https://openflexure.discourse.group/).
+>? For known bugs, building tips, and advice, please use our [Forum](https://openflexure.discourse.group/). If you find any problems with the build, please let us know on [GitLab](https://gitlab.com/openflexure/openflexure-microscope/-/issues) or on the Forum.
 
 Before you start building the microscope you will need to source all of the components listed in the [bill of materials]{bom}.
 
