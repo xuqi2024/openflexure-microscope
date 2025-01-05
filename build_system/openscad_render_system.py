@@ -21,12 +21,13 @@ issue. A summary of the rendering strategy and the docker issue is given below:
 
 import subprocess
 import shutil
+import shlex
 import re
 import os
 import uuid
 from dataclasses import dataclass
 from tempfile import gettempdir
-from .util import get_openscad_exe
+from .util import parameters_to_string, get_openscad_exe
 
 
 @dataclass
@@ -84,11 +85,13 @@ class RenderSystem():
         """
         self._zip_assets.append(zip_file)
 
-    def register_render_stl(self, scad_filename):
+    def register_render_stl(self, scad_filename, parameters=None):
         """
         Register an stl to be created before when RenderSystem.render() is run
         """
-        self._required_stls.append(scad_filename)
+        if parameters is None:
+            parameters = {}
+        self._required_stls.append({"scad_filename": scad_filename, "parameters":parameters})
 
     def register_scad_render(self, render):
         """
@@ -126,8 +129,8 @@ class RenderSystem():
                 ["unzip", "-o", "-d", os.path.dirname(zipfile), zipfile],
                 check=True,
             )
-        for scad_filename in self._required_stls:
-            create_render_stl(scad_filename)
+        for stl_dict in self._required_stls:
+            create_render_stl(stl_dict['scad_filename'], stl_dict['parameters'])
         self._run_openscad()
         for outfile, input_files in self._imagemagick_sequences:
             subprocess.run(
@@ -210,14 +213,24 @@ def run_openscad_animation(filename, renders, size):
     check_openscad_warnings(std_err)
     return copy_renders(renders, hash_name)
 
-def create_render_stl(filename):
+def create_render_stl(filename, scad_parameters):
     """
     Create STLs needed for the rendering from a list of filenames
     """
+    parameters = parameters_to_string(scad_parameters)
+    # As we use OpenSCAD via subprocess run, not ninja we need to split up
+    # the commands into a list of each argument
+    parameters = shlex.split(parameters)
     executable = get_openscad_exe()
     stl_name = filename[:-3]+'tl'
-    scad_args = ['--hardwarnings', filename, '-o', stl_name]
-    subprocess.run([executable] + scad_args, check=True)
+    scad_args = ['--hardwarnings'] + parameters + [filename, '-o', stl_name]
+    try:
+        ret = subprocess.run([executable] + scad_args, check=True, capture_output=True)
+        print(ret.stdout.decode("UTF-8"))
+    except subprocess.CalledProcessError as e:
+        print("OpenSCAD Error Message:")
+        print(e.stderr)
+        raise e
 
 def check_openscad_warnings(std_err):
     """
