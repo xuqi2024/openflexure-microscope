@@ -8,7 +8,9 @@ This is the main script to create the renderings used in the documentation.
 # pylint: disable=missing-function-docstring
 
 import os
+import argparse
 from build_system.openscad_render_system import RenderSystem, ScadRender, Camera
+from build_system.util import version_string
 
 def register_rms_optics_assembly(rendersystem):
     input_file = "rendering/rms_optics_assembly.scad"
@@ -273,7 +275,7 @@ def register_brim_and_ties(rendersystem):
         Camera(position=[9.7, 33, 6], angle=[45.2, 0, 315.2], distance=361),
         Camera(position=[-4, 21, 29], angle=[206, 0, 177], distance=450),
         Camera(position=[-2, 48, -12], angle=[60, 0, 4], distance=320),
-    ] 
+    ]
     imgsize = [2400, 2400]
     for i, camera in enumerate(cameras):
         output_file = f"docs/renders/brim_and_ties{i+1}.png"
@@ -520,10 +522,27 @@ def register_complete_microscope(rendersystem):
             render = ScadRender(output_file, input_file, scad, imgsize, camera)
             rendersystem.register_scad_render(render)
 
+def register_rendered_microscope_stl(rendersystem, force_clean):
+    input_file = "rendering/librender/rendered_main_body.scad"
+    version_str = version_string(force_clean)
+    parameters = {"VERSION_STRING": version_str}
+    rendersystem.register_render_stl(input_file, parameters)
+
+
 def main():
+    parser = argparse.ArgumentParser(
+        description="Run OpenSCAD to create the assembly instruction renders."
+    )
+    parser.add_argument(
+        "--force-clean",
+        help="Ensures that the repo is clean before rendering",
+        action="store_true",
+    )
+    args  = parser.parse_args()
+
     rendersystem = RenderSystem()
     rendersystem.register_zip_assets('rendering/librender/hardware.zip')
-    rendersystem.register_render_stl('rendering/librender/rendered_main_body.scad')
+    register_rendered_microscope_stl(rendersystem, force_clean=args.force_clean)
     #Register all openscad renders (and associated post processing)
     register_rms_optics_assembly(rendersystem)
     register_low_cost_optics_assembly(rendersystem)
