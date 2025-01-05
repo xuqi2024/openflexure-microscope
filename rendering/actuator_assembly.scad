@@ -14,7 +14,7 @@ use <prepare_main_body.scad>
 use <librender/rendered_separate_z_actuator.scad>
 
 
-FRAME=6;
+FRAME=8;
 
 render_actuator_assembly(FRAME);
 
