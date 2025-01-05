@@ -6,6 +6,7 @@ use <librender/render_utils.scad>
 use <librender/assembly_parameters.scad>
 use <librender/hardware.scad>
 use <librender/electronics.scad>
+use <actuator_assembly.scad>
 use <mount_microscope.scad>
 use <condenser_assembly.scad>
 use <mount_optics.scad>
@@ -76,7 +77,7 @@ module mount_illumination(frame, optics_version="rms"){
     }
     else if (frame == 5){
         if (optics_version=="upright"){
-            // this is already complete, the same render as frame == 6
+            // frame 4 s is already complete, this is the same render as frame == 6
             mounted_microscope_with_illumination(optics_version=optics_version);
         }
         else {
@@ -185,13 +186,10 @@ module illumination_wiring(params=render_params(), exploded=false){
 module rendered_upright_z_axis(exploded=false){
     params=render_params();
     lift = (exploded ? 10 : 0);
-    $fn=32;
     z_translate = illumination_dovetail_z(params)*2 + upright_z_spacer_height(params,1) + lift;
-    coloured_render(body_colour()){
-        translate_z(z_translate){
-            rotate_y(180){
-                separate_z_actuator(params, cable_guides = false, cable_housing = false, rectangular = true);
-            }
+    translate_z(z_translate){
+        rotate_y(180){
+            separate_z_actuator_with_assembled_actuators();
         }
     }
     z_mount_screw(exploded, right=true, front=true);

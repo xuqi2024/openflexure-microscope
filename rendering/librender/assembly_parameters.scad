@@ -4,6 +4,7 @@ use <../../openscad/lens_tool.scad>
 use <../../openscad/libs/z_axis.scad>
 use <../../openscad/libs/illumination.scad>
 use <../../openscad/libs/main_body_structure.scad>
+use <../../openscad/libs/compact_nut_seat.scad>
 use <../../openscad/libs/lib_microscope_stand.scad>
 use <../../openscad/libs/lib_optics.scad>
 use <../../openscad/libs/wall.scad>
@@ -119,6 +120,11 @@ function x_lead_oil_placement() = create_placement_dict(x_lead_assembly_pos()+[2
 function x_foot_placement() = create_placement_dict(x_actuator_pos(PARAMS), [0, 0, -45]);
 function y_foot_placement() = create_placement_dict(y_actuator_pos(PARAMS), [0, 0, 45]);
 function z_foot_placement() = create_placement_dict(z_actuator_pos(PARAMS));
+
+function z_foot_cap_placement() = let(
+    actuator_housing_depth = 10,
+    foot_height = key_lookup("foot_height", PARAMS) - actuator_housing_depth*sin(-z_actuator_tilt(PARAMS))
+) create_placement_dict(z_actuator_pos(PARAMS), rotation1 = z_actuator_rot(), init_translation=[0,0,-foot_height]);
 
 function z_oring_placement() = create_placement_dict(z_actuator_pos(PARAMS)+[0, .5, 1.5],
                                                      z_actuator_rot());
