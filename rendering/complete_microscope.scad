@@ -16,11 +16,8 @@ use <mount_sample_clips.scad>
 use <mount_microscope.scad>
 
 
-OPTICS_VERSION = "upright";
+OPTICS_VERSION = "rms";
 render_microscope(OPTICS_VERSION);
-$vpt = [0, 48, 98];
-$vpr=[90, 0, 0];
-$vpd =780;
 
 module render_microscope(optics_version="rms"){
     assembled_microscope_without_electronics(optics_version=optics_version);
