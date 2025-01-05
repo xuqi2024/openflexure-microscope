@@ -45,7 +45,7 @@ module render_mount_optics(frame, optics_version){
     }
     else if (frame==5){
         om_pos = translate_pos(optics_module_pos(low_cost), [0, -4, -6.5]);
-        ak_pos = translate_pos(optics_module_allen_key_pos(), [0, 0, -6.5]);
+        ak_pos = translate_pos(optics_module_insertion_allen_key_pos(), [0, 0, -6.5]);
         place_part(ak_pos){
             allen_key_2_5(30);
         }

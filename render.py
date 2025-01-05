@@ -412,7 +412,7 @@ def register_mount_illumination(rendersystem):
         Camera(position=[-6, 49, 178], angle=[82, 0, 308], distance=360)
     ]
     imgsize = [2400, 2000]
-    for optics_version in ["rms", "low_cost"]:
+    for optics_version in ["rms", "low_cost", "upright"]:
         for i, camera in enumerate(cameras):
             frame = i + 1
             output_file = f"docs/renders/mount_illumination_{optics_version}{frame}.png"
