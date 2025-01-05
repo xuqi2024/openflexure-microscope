@@ -164,7 +164,17 @@ module illumination_dovetail(params, h=50){
         // channel for the illumination wiring
         translate(illumination_cable_channel_xypos()){
             translate_z(bottom_z){
-                cylinder(h=99, d=6, $fn=16);
+                sequential_hull(){
+                    translate([-1,-1, -tiny()]){
+                        cylinder(h=tiny(), d=7.5, $fn=16);
+                    }
+                    translate_z(start_z){
+                        cylinder(h=tiny(), d=6.5, $fn=16);
+                    }
+                    translate_z(99){
+                        cylinder(h=tiny(), d=6.5, $fn=16);
+                    }
+                }
             }
         }
         // cutout to make the dovetail
