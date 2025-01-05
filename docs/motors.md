@@ -38,11 +38,22 @@ Note that each motor has a cable tidy cap that is different. Which cap to use sh
 * Feed the cable from the motor through the rectangular wall in the outer wall by the x-actuator.
 * Place the motor on the motor lugs with the small gear towards the outside of the microscope
 * Check that the small gear and the large gear are meshed correctly
-* Take the x [cable tidy cap][cable tidy caps](fromstep){qty:3, cat:printedpart, note: "- Each cap is a different shape"} and place it over the motor
+* Take the x [cable tidy cap][cable tidy caps](fromstep){qty:3, cat:printedpart, note: "Each cap is a different shape"} and place it over the motor
 * Check that the motor cable is running through the cable tidy rather than pinched underneath.
 * Fasten the motor and cable tidy caps to the motor lugs with two [M4x6mm button head screws]{qty:6, cat:mech}
 * Repeat for y-actuator
 
-{{include: z_motor.md, if: var_type is not upright}}
-{{include: upright_z_motor.md, if: var_type is upright}}
+## Attach the z motor {pagestep}
+
+![](renders/mount_motors_{{var_optics, default:rms}}3.png)
+![](renders/mount_motors_{{var_optics, default:rms}}4.png)
+  
+
+{{includetext: " 
+>i There is no motor attached to the z-actuator on the main body
+", if: var_optics is upright}}  
+
+* Attach the motor to the z-actuator {{includetext: "of the separate z-actuator ", if: var_optics is upright}} in the same way as the x and y actuators
+* Feed the motor cable down the rectangular slot to the left of the z-actuator {{includetext: "on the main body", if: var_optics is upright}}
+
 
