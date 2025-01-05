@@ -4,6 +4,8 @@ This is a lower cost version of the OpenFlexure Microscope. It supports uses the
 
 If you use this microscope for research please consider citing [our paper in Optics Express](https://doi.org/10.1364/BOE.385729).
 
+>? For known bugs, building tips, and advice, please use our [Forum](https://openflexure.discourse.group/). If you find any problems with the build, please let us know on [GitLab](https://gitlab.com/openflexure/openflexure-microscope/-/issues) or on the Forum.
+
 Before you start building the microscope you will need to source all the components listed our [bill of materials]{bom}.
 
 

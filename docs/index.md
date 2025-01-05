@@ -1,22 +1,24 @@
 # Assembly Instructions
-The OpenFlexure Microscope is a 3D printable microscope, with a very precise mechanical translation stage. The microscope is highly customisable. Find about more about the microscope on the [OpenFlexure website](https://openflexure.org/projects/microscope).
+[![](images/microscopes_wide.jpg)](high_res_microscope.md)  
+The OpenFlexure Microscope is a 3D printable microscope, with a very precise mechanical translation stage. It is fully motorised, including autofocus, for robotic microscopy, slide scanning and time lapse imaging.  
+The microscope is highly [customisable](customisation.md). Find about more about the microscope on the [OpenFlexure website](https://openflexure.org/projects/microscope).
 
-These instructions will take you through how to assemble various configurations. They also describe how to make a [Sangaboard Compatible motor controller](workaround_motor_electronics/workaround_motor_electronics.md) if you can't get hold of an official one.
-
-There are interactive 3D views of the [RMS](interactive_3d_view_rms.md) and [low cost](interactive_3d_view_low_cost.md) versions of the microscope.
+These instructions will take you through how to assemble various configurations. 
+There are interactive 3D views of the [RMS](interactive_3d_view_rms.md), [low cost](interactive_3d_view_low_cost.md), and [upright](interactive_3d_view_upright.md) versions of the microscope.
 
 ## Microscope Configurations:
 
 #### [High-resolution motorised microscope](high_res_microscope.md)
-[![](images/microscopes_wide.jpg)](high_res_microscope.md)  
+[![](renders/complete_microscope_rms1.png)](high_res_microscope.md)  
 This configuration of the microscope uses a traditional microscope objective for highest image quality.
 
 #### [Motorised microscope with low-cost optics](low_cost_microscope.md)
+[![](renders/complete_microscope_low_cost1.png)](low_cost_microscope.md)  
 This configuration of the microscope uses the original lens from a Raspberry Pi camera module.
 
 #### [Upright microscope](upright_microscope.md)
-
-This configuration of the microscope has the objective above the sample rather than below. It is newer and less well tested than other versions of the microscope. If you have problems building it, please let us know on [GitLab](https://gitlab.com/openflexure/openflexure-microscope/-/issues) or on [our forum](https://openflexure.discourse.group/).
+[![](renders/complete_microscope_upright1.png)](upright_microscope.md)  
+This configuration of the microscope has the objective above the sample rather than below.
 
 ## Customising your microscope
 
