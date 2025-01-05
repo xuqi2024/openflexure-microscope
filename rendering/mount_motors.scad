@@ -28,10 +28,16 @@ module render_mount_motors(frame, optics_version="rms"){
                                                  z_motor=false,
                                                  explode="xy");
     }
-    else if(frame == 2){
-        assembled_microscope_without_electronics(optics_version=optics_version, explode="z");
+    else if (frame == 2){
+        assembled_microscope_without_electronics(optics_version=optics_version,
+                                                 xy_motor=true,
+                                                 z_motor=false,
+                                                 explode="none");
     }
     else if(frame == 3){
+        assembled_microscope_without_electronics(optics_version=optics_version, explode="z");
+    }
+    else if(frame == 4){
         assembled_microscope_without_electronics(optics_version=optics_version);
     }
 }
