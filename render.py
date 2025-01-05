@@ -520,6 +520,7 @@ def main():
     rendersystem = RenderSystem()
     rendersystem.register_zip_assets('rendering/librender/hardware.zip')
     rendersystem.register_render_stl('rendering/librender/rendered_main_body.scad')
+    rendersystem.register_render_stl('rendering/librender/rendered_separate_z_actuator.scad')
     #Register all openscad renders (and associated post processing)
     register_rms_optics_assembly(rendersystem)
     register_low_cost_optics_assembly(rendersystem)
