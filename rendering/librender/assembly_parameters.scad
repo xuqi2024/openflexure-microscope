@@ -167,6 +167,11 @@ function optics_module_allen_key_pos() = let(
     key_pos = optics_module_mount_pos() + [0, 2, -1]
 ) create_placement_dict(key_pos, key_angle);
 
+function optics_module_insertion_allen_key_pos() = let(
+    key_angle = objective_mounting_screw_access_angle() + [90, 0, 0],
+    key_pos = optics_module_mount_pos() + [0, 2, -1]
+) create_placement_dict(key_pos, [6, key_angle.y, key_angle.z]);
+
 function pi_lens_z_pos(params, optics_config) = let(
     lens_spacer_z = lens_spacer_z(params, optics_config),
     lens_spacing = key_lookup("lens_spacing", optics_config)
