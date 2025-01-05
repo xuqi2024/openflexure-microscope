@@ -403,6 +403,10 @@ module clamping_bolt_and_nut(p){
     // Place the clamping bolt relative to the female point
     clamp_y = key_lookup("lever", p) - key_lookup("pinch_bolt_inset", p);
     fillet_r = key_lookup("fillet_r", p);
+    clamp_t = key_lookup("clamp_t", p);
+    // Boolean, true of block is tapered to have a face perpendicular to the screw.
+    // if not it needs a counterbore.
+    tapered = key_lookup("taper_block", p);
     // The nut slot should slope up from the nut in use, so that the nut does not 
     // slip out when the screw is removed, nut_slot_slope set to 'up'. If the 
     // dovetail is inverted after printing for use set nut_slot_slope to 'down' 
@@ -413,13 +417,19 @@ module clamping_bolt_and_nut(p){
     clamp_frame(p){
         translate([0, clamp_y, h/2]){
             $fn = 16;
-            // Counterbored hole for screw (in solid block)
+            // Hole for screw (in solid block)
             rotate_y(90){
                 cylinder(d=3*1.2, h=99);
+                // Counterbore hole if not tapered
+                if (!tapered){
+                    translate([0,0,fillet_r + 4]){
+                        cylinder(d=3*1.3*2, h=99);
+                    }
+                }
             }
             // Nut trap, with angled entry (in the clamp)
             rotate_y(-90){
-                cylinder(d=3*1.2, h=key_lookup("clamp_t", p)); //shaft of the screw
+                cylinder(d=3*1.2, h=clamp_t); //shaft of the screw
                 translate_z( fillet_r + 2){
                     // The rotation below means the nut slides in at an angle, rather 
                     // than horizontally.  This is important: it ensures that the nut
