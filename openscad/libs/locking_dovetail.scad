@@ -420,10 +420,10 @@ module clamping_bolt_and_nut(p){
             // Hole for screw (in solid block)
             rotate_y(90){
                 cylinder(d=3*1.2, h=99);
-                // Counterbore hole if not tapered
+                // If not tapered, add counterbore large enough for an M3 washer
                 if (!tapered){
                     translate([0,0,fillet_r + 4]){
-                        cylinder(d=3*1.3*2, h=99);
+                        cylinder(d=7.5, h=99);
                     }
                 }
             }
