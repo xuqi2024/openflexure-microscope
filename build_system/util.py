@@ -103,8 +103,7 @@ def _is_release(tag):
     """
     if tag is None:
         return False
-    version = re.match(r"^v(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(?:-(?:beta|rc)[1-9]\d*)?$", tag)
-    match = version
+    match = re.match(r"^v(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(?:-(?:beta|rc)[1-9]\d*)?$", tag)
     return match is not None
 
 def _get_commit_tag():
