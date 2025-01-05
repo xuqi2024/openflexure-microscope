@@ -4,6 +4,8 @@ This is the standard research version of the OpenFlexure Microscope. It supports
 
 If you use this microscope for research please consider citing this paper.
 
+>? For known bugs, building tips, and advice, please use our [Forum](https://openflexure.discourse.group/). If you find any problems with the build, please let us know on [GitLab](https://gitlab.com/openflexure/openflexure-microscope/-/issues) or on the Forum.
+
 Before you start building the microscope you will need to source all of the components listed in the [bill of materials]{bom}.
 
 
