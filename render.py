@@ -328,6 +328,7 @@ def register_actuator_assembly(rendersystem):
         Camera(position=[20, 6, 35], angle=[82, 0, 166], distance=500),
         Camera(position=[4, 35, 35], angle=[71, 0, 186], distance=330),
         Camera(position=[4, 35, 35], angle=[71, 0, 186], distance=330),
+        Camera(position=[4, 35, 35], angle=[71, 0, 186], distance=330),
     ]
     imgsize = [2400, 2000]
     pngs = [
@@ -338,6 +339,7 @@ def register_actuator_assembly(rendersystem):
         "actuator_assembly_oil.png",
         "actuator_assembly_x.png",
         "actuators_assembled.png",
+        "separtate_z_actuator_assembled",
     ]
     for i, camera in enumerate(cameras):
         output_file = os.path.join("docs/renders/", pngs[i])
