@@ -18,7 +18,7 @@ use <mount_upright_optics.scad>
 use <motor_assembly.scad>
 
 FRAME=3;
-OPTICS_VERSION = "rms";
+OPTICS_VERSION = "upright";
 render_mount_motors(FRAME, OPTICS_VERSION);
 
 module render_mount_motors(frame, optics_version="rms"){
@@ -63,10 +63,22 @@ module assembled_microscope_without_electronics(optics_version="rms",
 
         if (z_motor){
             exploded = explode == "z";
-            z_motor_and_cap(params,
-                            exploded=exploded,
-                            connector_pos=connector_positions.z,
-                            cable_pos=cable_positions.z);
+            if (optics_version == "upright"){
+                z_motor_and_cap(params,
+                                optics_version=optics_version,
+                                exploded=exploded,
+                                connector_pos=connector_positions.z,
+                                cable_pos=cable_positions.z,
+                                cap=false);
+            }
+            else{
+                z_motor_and_cap(params,
+                                optics_version=optics_version,
+                                exploded=exploded,
+                                connector_pos=connector_positions.z,
+                                cable_pos=cable_positions.z,
+                                cap=true);
+            }
         }
     }
     if (optics_version == "upright"){
@@ -109,29 +121,33 @@ module y_motor_and_cap(params, exploded=false, connector_pos=undef, cable_pos=un
     
 }
 
-module z_motor_and_cap(params, exploded=false, connector_pos=undef, cable_pos=undef){
+module z_motor_and_cap(params, optics_version="rms", exploded=false, connector_pos=undef, cable_pos=undef, cap=false){
     z_connector_pos = is_undef(connector_pos) ? z_connector_pos() : connector_pos;
     z_cable_pos = is_undef(cable_pos) ? z_cable_verticies() : cable_pos;
     explode_unit = exploded ? 10 : 0;
 
-    coloured_render("DodgerBlue"){
-        if (exploded){
-            z_cable_tidy_frame(params, 2*explode_unit){
-                z_cable_tidy_frame_undo(params){
-                    front_cable_tidy(params);
+    if (cap){
+        coloured_render("DodgerBlue"){
+            if (exploded){
+                z_cable_tidy_frame(params, 2*explode_unit){
+                    z_cable_tidy_frame_undo(params){
+                        front_cable_tidy(params);
+                    }
                 }
             }
-        }
-        else{
-            front_cable_tidy(params);
+            else{
+                front_cable_tidy(params);
+            }
         }
     }
-    
+    motor_placement = (optics_version=="upright") ? locate_on_upright(): create_placement_dict([0,0,0]) ; 
+    place_part(motor_placement){
     z_cable_tidy_frame(params){
         translate_z(explode_unit){
             motor_with_gear(z_motor_pos(), z_connector_pos, z_cable_pos);
         }
-        translate_z(3*explode_unit){
+        tight_screw = cap ? 0 : -1.5 ;
+        translate_z(3*explode_unit + tight_screw){
             reflect_x(){
                 place_part(motor_screw_pos()){
                     m4_button_x6();
@@ -141,5 +157,6 @@ module z_motor_and_cap(params, exploded=false, connector_pos=undef, cable_pos=un
                 }
             }
         }
+    }
     }
 }
