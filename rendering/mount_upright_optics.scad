@@ -1,4 +1,7 @@
+use <../openscad/libs/libfeet.scad>
+use <../openscad/libs/utilities.scad>
 use <librender/render_utils.scad>
+use <librender/render_settings.scad>
 use <librender/assembly_parameters.scad>
 use <librender/tools.scad>
 use <mount_microscope.scad>
@@ -65,6 +68,25 @@ module mount_upright_optics(frame, optics_version="upright"){
         mounted_microscope_with_illumination(optics_version=optics_version);
     }
     else if (frame == 6){
+        mounted_microscope_frame(){
+            om_pos = optics_module_pos(low_cost=true);
+            place_part(locate_on_upright()){
+                place_part(z_foot_cap_placement()){
+                    explode=10;
+                    translate_z(-explode){
+                        rotate_x(180){
+                            color(extras_colour()){
+                                foot_cap();
+                            }
+                        }
+                    }
+                }
+            }
+            render_upright_optics(om_pos, screw_tight=true);
+        }
+        mounted_microscope_with_illumination(optics_version=optics_version);
+    }
+    else if (frame == 7){
         mounted_microscope_upright_with_optics(optics_version=optics_version);
     }
 }
@@ -75,6 +97,13 @@ module mounted_microscope_upright_with_optics(optics_version="upright"){
             place_part(locate_on_upright()){
                 om_pos = optics_module_pos(low_cost=true);
                 render_optics("low_cost", om_pos, screw_tight=true);
+                place_part(z_foot_cap_placement()){
+                    rotate_x(180){
+                        color(extras_colour()){
+                            foot_cap();
+                        }
+                    }
+                }
             }
     }
     mounted_microscope_with_illumination(optics_version=optics_version);
