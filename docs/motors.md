@@ -53,7 +53,7 @@ Note that each motor has a cable tidy cap that is different. Which cap to use sh
 >i There is no motor attached to the z-actuator on the main body
 ", if: var_optics is upright}}  
 
-* Attach the motor to the z-actuator {{includetext: "of the separate z-actuator ", if: var_optics is upright}} in the same way as the x and y actuators
+* Attach a motor to the z-actuator {{includetext: "of the separate z-actuator ", if: var_optics is upright}} in the same way as the x and y actuators
 * Feed the motor cable down the rectangular slot to the left of the z-actuator {{includetext: "on the main body", if: var_optics is upright}}
 
 
