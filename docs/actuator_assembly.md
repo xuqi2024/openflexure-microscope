@@ -83,8 +83,12 @@ If you had problems with this step see [troubleshooting actuator assembly].
 
 ## Repeat this process for Y and Z {pagestep}
 
-Follow the same procedure for the Y and Z axes. Once complete the [microscope with assembled actuators]{output, qty:1} should look like this:
+![Actuators assembled](renders/actuators_assembled.png)  
+{{includetext: "![separate z actuator assembled](renders/separate_z_actuator_assembled.png)", if: var_type is upright}}
 
-![Actuators assembled](renders/actuators_assembled.png)
+* Follow the same procedure for the Y and Z axes{{includetext: ", and the [separate Z actuator][prepared separate z actuator](fromstep){qty:1, cat:subassembly}", if: var_type is upright}}
 
-{{include: upright_actuator_assembly.md, if: var_type is upright}}
+[microscope with assembled actuators]{output, qty:1, hidden}
+{{includetext: "
+[complete separate z-actuator]{output, qty:1, hidden}
+", if: var_type is upright}}
