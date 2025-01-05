@@ -13,7 +13,7 @@ use <../openscad/libs/z_axis.scad>
 use <../openscad/libs/upright_z_axis.scad>
 
 FRAME = 5;
-OPTICS_VERSION = "upright";
+OPTICS_VERSION = "rms";
 mount_illumination(FRAME, OPTICS_VERSION);
 
 module mount_illumination(frame, optics_version="rms"){
@@ -75,16 +75,12 @@ module mount_illumination(frame, optics_version="rms"){
         mounted_microscope(optics_version=optics_version);
     }
     else if (frame == 5){
-        mounted_microscope_frame(){
-            if (optics_version=="upright"){
-                rendered_upright_z_spacer_assembly();
-                rendered_upright_z_axis();
-                place_part(locate_on_upright()){
-                    om_pos = translate_pos(optics_module_pos(low_cost=true), [0, -10, -6.5]);
-                    render_optics("low_cost", om_pos, screw_tight=false);
-                }
-            }
-            else {
+        if (optics_version=="upright"){
+            // this is already complete, the same render as frame == 6
+            mounted_microscope_with_illumination(optics_version=optics_version);
+        }
+        else {
+            mounted_microscope_frame(){
                 rendered_illumination_dovetail_assembly();
                 rendered_condenser_assembly(tighten_arrow=true);
                 illumination_wiring();
