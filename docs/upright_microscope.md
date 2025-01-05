@@ -22,7 +22,10 @@ The assembly is broken up into several steps:
 1. [.](motors.md){step, var_type: upright, var_optics: upright}
 1. [.](attach_clips.md){step, var_optics: upright}
 1. [.](wiring.md){step}
+1. [.](finished.md){step, var_optics: upright}
 
-{{include: upright_optics_note.md}}
+![A render of the completed upright microscope](renders/complete_microscope_upright1.png)
 
 There is also an [interactive 3D view](interactive_3d_view_upright.md) of the finished microscope.
+
+{{include: upright_optics_note.md}}
