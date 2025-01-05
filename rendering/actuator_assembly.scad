@@ -1,14 +1,17 @@
 
 use <../openscad/libs/gears.scad>
+use <../openscad/libs/microscope_parameters.scad>
 use <../openscad/libs/utilities.scad>
 use <../openscad/libs/lib_actuator_assembly_tools.scad>
 use <../openscad/libs/libfeet.scad>
+use <../openscad/libs/upright_z_axis.scad>
 use <librender/hardware.scad>
 use <librender/tools.scad>
 use <librender/render_utils.scad>
 use <librender/assembly_parameters.scad>
 use <librender/render_settings.scad>
 use <prepare_main_body.scad>
+use <librender/rendered_separate_z_actuator.scad>
 
 
 FRAME=6;
@@ -38,6 +41,10 @@ module render_actuator_assembly(frame){
     else if (frame==7){
         body_with_assembled_actuators(x_only=false);
     }
+    else if (frame==8){
+        separate_z_actuator_with_assembled_actuators();
+    }
+    
 }
 
 module render_foot(foot, lie_flat=false){
@@ -192,6 +199,11 @@ module body_with_assembled_actuators(x_only=false, translucent_body=false){
         z_actuator_assembly();
     }
     main_body_prepared(translucent_body=translucent_body);
+}
+
+module separate_z_actuator_with_assembled_actuators(){
+    z_actuator_assembly();
+    rendered_separate_z_actuator();
 }
 
 module lead_screw_assembly(exploded=false, construction_offset=[0, 0, 0]){

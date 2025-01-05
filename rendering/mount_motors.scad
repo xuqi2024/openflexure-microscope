@@ -14,6 +14,7 @@ use <librender/render_utils.scad>
 use <librender/hardware.scad>
 use <mount_illumination.scad>
 use <mount_microscope.scad>
+use <mount_upright_optics.scad>
 use <motor_assembly.scad>
 
 FRAME=3;
@@ -68,7 +69,12 @@ module assembled_microscope_without_electronics(optics_version="rms",
                             cable_pos=cable_positions.z);
         }
     }
-    mounted_microscope_with_illumination(optics_version=optics_version);
+    if (optics_version == "upright"){
+        mounted_microscope_upright_with_optics(optics_version=optics_version);
+    }
+    else{
+        mounted_microscope_with_illumination(optics_version=optics_version);
+    }
 }
 
 module y_motor_and_cap(params, exploded=false, connector_pos=undef, cable_pos=undef, mirror_connector=false){
