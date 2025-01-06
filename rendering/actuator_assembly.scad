@@ -14,13 +14,15 @@ use <prepare_main_body.scad>
 use <librender/rendered_separate_z_actuator.scad>
 
 
-FRAME=8;
+FRAME = 8;
+OPTICS_VERSION = "rms";
+MANUAL = false;
 
-render_actuator_assembly(FRAME);
+render_actuator_assembly(FRAME, MANUAL, OPTICS_VERSION);
 
-module render_actuator_assembly(frame){
+module render_actuator_assembly(frame, manual=false, optics_version="rms"){
     if (frame==1){
-        what_you_need();
+        what_you_need(manual=manual, optics_version=optics_version);
     }else if (frame==2){
         body_with_x_nut(exploded=true);
     }else if (frame==3){
@@ -60,11 +62,20 @@ module render_foot(foot, lie_flat=false){
     }
 }
 
-module what_you_need(){
+module what_you_need(manual=false, optics_version="rms"){
     params = render_params();
-    repeat([0, 40, 0],3,center=true){
+    spacing = manual ? 45 : 40;
+    offset_x = manual ? -8 : 0;
+    axes = (optics_version=="upright") ? 4 : 3;
+    translate_x(offset_x){
+    repeat([0, spacing, 0],axes,center=true){
         color(extras_colour()){
-            large_gear();
+            if (manual) {
+                thumbwheel();
+            }
+            else {
+                large_gear();
+            }
         }
         translate_x(-21){
             rotate_y(90){
@@ -87,17 +98,20 @@ module what_you_need(){
         }
 
     }
-    translate([28, 40, 0]){
+    }
+    translate([28, spacing*((axes-1)/2), 0]){
         rotate_z(90){
             render_foot("X", lie_flat=true);
         }
     }
-    translate_x(28){
-        rotate_z(90){
-            render_foot("Z", lie_flat=true);
+    repeat([0, spacing, 0],(axes-2),center=true){
+        translate_x(28){
+            rotate_z(90){
+                render_foot("Z", lie_flat=true);
+            }
         }
     }
-    translate([28, -40, 0]){
+    translate([28, -spacing*((axes-1)/2), 0]){
         rotate_z(90){
             render_foot("Y", lie_flat=true);
         }
