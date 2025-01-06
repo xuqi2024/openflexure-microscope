@@ -401,6 +401,25 @@ def register_mount_optics(rendersystem):
             render = ScadRender(output_file, input_file, scad, imgsize, camera)
             rendersystem.register_scad_render(render)
 
+def register_mount_upright_optics(rendersystem):
+    input_file = "rendering/mount_upright_optics.scad"
+    cameras = [
+        Camera(position=[-42, 76, 130], angle=[55, 0, 58], distance=495),
+        Camera(position=[-42, 76, 130], angle=[55, 0, 58], distance=495),
+        Camera(position=[-42, 76, 130], angle=[55, 0, 58], distance=495),
+        Camera(position=[-42, 76, 130], angle=[55, 0, 58], distance=495),
+        Camera(position=[-42, 76, 130], angle=[55, 0, 58], distance=495),
+        Camera(position=[-42, 76, 130], angle=[55, 0, 58], distance=495),
+        Camera(position=[-42, 76, 130], angle=[55, 0, 58], distance=495),
+    ]
+    imgsize = [2400, 2000]
+    for i, camera in enumerate(cameras):
+        frame = i + 1
+        output_file = f"docs/renders/mount_upright_optics{frame}.png"
+        scad = f"render_mount_upright_optics({frame}, optics_version=\"upright\");"
+        render = ScadRender(output_file, input_file, scad, imgsize, camera)
+        rendersystem.register_scad_render(render)
+
 def register_mount_microscope(rendersystem):
     input_file = "rendering/mount_microscope.scad"
     cameras = [
@@ -592,6 +611,7 @@ def main():
     register_band_tool_assembly(rendersystem)
     register_picam(rendersystem)
     register_mount_optics(rendersystem)
+    register_mount_upright_optics(rendersystem)
     register_mount_microscope(rendersystem)
     register_mount_illumination(rendersystem)
     register_motor_assembly(rendersystem)
