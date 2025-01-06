@@ -34,7 +34,7 @@
 * Take the [complete optics module](fromstep){qty:1, cat:subassembly} and holding upside down beside the separate z-actuator
 * Insert the exposed mounting screw on the optics module through the keyhole on the separate z-actuator
 
-## Secure the optics module
+## Secure the optics module {pagestep}
 ![](renders/mount_upright_optics3.png)
 ![](renders/mount_upright_optics4.png)
 ![](renders/mount_upright_optics5.png)
@@ -43,7 +43,7 @@
 * Slide optics module down the keyhole to the bottom, while keeping the Allen key engaged with the screw 
 * Tighten the screw with the Allen key to lock the optics in place
 
-## Add the foot cap
+## Add the foot cap {pagestep}
 ![](renders/mount_upright_optics6.png)
 ![](renders/mount_upright_optics7.png)
 
