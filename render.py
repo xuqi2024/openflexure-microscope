@@ -373,13 +373,13 @@ def register_actuator_assembly(rendersystem):
         "actuator_assembly_parts_manual.png",
     ]
     versions = [
-        "manual=false, optics_version=\"upright\"" ,
+        "manual=false, optics_version=\"upright\"",
         "manual=true, optics_version=\"rms\""
     ]
-    for i, version in enumerate(versions):
+    for i, camera in enumerate(cameras):
         output_file = os.path.join("docs/renders/", pngs[i])
-        scad = f"render_actuator_assembly(1, {version});"
-        render = ScadRender(output_file, input_file, scad, imgsize, camera[i])
+        scad = f"render_actuator_assembly(1, {versions[i]});"
+        render = ScadRender(output_file, input_file, scad, imgsize, camera)
         rendersystem.register_scad_render(render)
 
 def register_picam(rendersystem):
