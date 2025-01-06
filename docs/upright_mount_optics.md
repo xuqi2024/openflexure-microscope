@@ -3,19 +3,32 @@
 
 {{BOM}}
 
-[M3 nut]: parts/mechanical.yml#Nut_M3_SS
+[M3 nut]: parts/mechanical.yml#Nut_M3_SS "{cat:mech}"
+[M3 stainless steel washers]: parts/mechanical.yml#Washer_M3_SS "{cat:mech}"
+[M3x10 cap head screws]: parts/mechanical.yml#CapScrew_M3x10mm_SS "{cat:mech}"
 [2.5mm Ball-end Allen key]: parts/tools/2.5mmBallEndAllenKey.md
 
-## Mount the optics {pagestep}
-* Take the [complete optics module](fromstep){qty:1, cat:subassembly} and [complete separate z-actuator](fromstep){qty:1, cat:subassembly} holding each upside down, side by side.
-* Insert the exposed mounting screw on the optics module through the keyhole on the separate z-actuator.
-* Insert the [2.5mm Ball-end Allen key]{qty:1, cat:tool, note: " Must be a ball-ended key"}  through the teardrop shaped hole on the back of the separate z-actuator, until it engages with the mounting screw.
-* Slide optics module up the keyhole until it is **2-3mm** below the flat section of the bottom of the z-axis while keeping the Allen key engaged with the screw. 
-* Tighten the screw with the Allen key to lock the optics in place. If the optics module will not reach the required place with the Allen key inserted, tighten the mounting screw with the Allen key engaged before firmly pushing the optics module into the required position. 
+## Mounting the z-actuator mount onto the main body {pagestep}
+![](renders/mount_illumination_upright1.png)
+![](renders/mount_illumination_upright2.png)
 
-## Mounting the z-axis and z-actuator mount onto the main body {pagestep}
-* Place the [Upright z-actuator mount](fromstep){qty:1, cat:printedpart} on top of the main body, triangular face of each touching one another.
-* Place [M3x10 cap head screws](parts/mechanical.yml#CapScrew_M3x10mm_SS){qty: 3, cat:mech} into the two externally showing holes at the front of the main body and a third screw through the top of the vertical bored hole. Screw tightly into the nuts. 
-* Place a [M3 nut]{qty:4, cat:mech} into each of the 4 nut traps in the z-actuator mount.
-* Place the upside-down separate z-actuator with the optics module now attached onto the z-actuator mount. 
-* While holding these together, place 4 [M3x10 cap head screws](parts/mechanical.yml#CapScrew_M3x10mm_SS){qty: 4, cat:mech}  into the 4 bored holes in the separate z-actuator and screw tightly into place. 
+* Place the [Upright z-actuator mount](fromstep){qty:1, cat:printedpart} on top of the main body, triangular face of each touching one another
+* Place [M3x10 cap head screws]{qty: 3} and [M3 washers][M3 stainless steel washers]{qty: 3} into the two externally showing holes at the front of the main body and a third screw through the top of the vertical bored hole
+* Secure in place with using a [2.5mm Ball-end Allen key]{qty:1} 
+
+## Mounting the separate z-axis {pagestep}
+![](renders/mount_illumination_upright3.png)
+![](renders/mount_illumination_upright4.png)
+
+* Place a [M3 nut]{qty:1, cat:mech} into one of the four nut traps in the top of the z-actuator mount
+* Put an [M3x10 cap head screw][extra M3x10 cap screw](parts/mechanical.yml#CapScrew_M3x10mm_SS){qty: 1, cat:tool} into the hole above the nut and tighten the nuts into the nut traps using a 2.5mm Ball-end Allen key
+* Remove the screw and repeat the process for to embed [M3 nuts][M3 nut]{qty:3, cat:mech} in the other three nut traps
+* Place the [complete separate z-actuator](fromstep){qty:1, cat:subassembly} upside-down onto the z-actuator mount 
+* While holding these together, place 4 [M3x10 cap head screws](parts/mechanical.yml#CapScrew_M3x10mm_SS){qty: 4, cat:mech} with [M3 washers][M3 stainless steel washers]{qty: 4} into the 4 bored holes in the separate z-actuator and screw tightly into place 
+
+## Mount the optics {pagestep}
+* Take the [complete optics module](fromstep){qty:1, cat:subassembly} and holding upside down beside the separate z-actuator
+* Insert the exposed mounting screw on the optics module through the keyhole on the separate z-actuator
+* Insert the [2.5mm Ball-end Allen key]{qty:1, cat:tool, note: " Must be a ball-ended key"}  through the teardrop shaped hole on the back of the separate z-actuator, until it engages with the mounting screw
+* Slide optics module down the keyhole to the bottom, while keeping the Allen key engaged with the screw 
+* Tighten the screw with the Allen key to lock the optics in place
