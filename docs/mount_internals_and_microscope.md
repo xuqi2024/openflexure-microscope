@@ -3,7 +3,7 @@
 
 [2.5mm Ball-end Allen key]: parts/tools/2.5mmBallEndAllenKey.md
 
-## Mount the optics {pagestep}
+## Mount the {{includetext:"optics", if: var_optics is not upright}}{{includetext:"illumination module", if: var_optics is upright}} {pagestep}
 
 ![](renders/mount_optics_{{var_optics, default:rms}}1.png)
 ![](renders/mount_optics_{{var_optics, default:rms}}2.png)
