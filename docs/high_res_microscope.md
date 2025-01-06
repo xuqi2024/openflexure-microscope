@@ -15,7 +15,7 @@ The assembly is broken up into several steps:
 1. [.](printing.md){step, var_type: high_res}
 1. [.](prepare_main_body.md){step}
 1. [.](prepare_stand.md){step}
-1. [.](actuator_assembly.md){step}
+1. [.](actuator_assembly.md){step, var_n_actuators:3}
 1. [.](high_res_optics_module.md){step}
 1. [.](mount_optics_and_microscope.md){step, var_optics: rms}
 1. [.](illumination.md){step, var_type: high_res}
