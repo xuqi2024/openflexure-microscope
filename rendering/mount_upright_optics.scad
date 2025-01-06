@@ -10,9 +10,9 @@ use <mount_optics.scad>
 
 FRAME = 1;
 
-mount_upright_optics(FRAME, optics_version="upright");
+render_mount_upright_optics(FRAME, optics_version="upright");
 
-module mount_upright_optics(frame, optics_version="upright"){
+module render_mount_upright_optics(frame, optics_version="upright"){
     assert(optics_version=="upright","The upright optics mounting renders only apply to the upright optics version");
     if (frame == 1){
         mounted_microscope_frame(){

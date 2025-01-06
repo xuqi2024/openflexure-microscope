@@ -1,5 +1,5 @@
 # Assembly Instructions
-[![](images/microscopes_wide.jpg)](high_res_microscope.md)  
+[![](images/microscopes_less_wide.jpg)](high_res_microscope.md)  
 The OpenFlexure Microscope is a 3D printable microscope, with a very precise mechanical translation stage. It is fully motorised, including autofocus, for robotic microscopy, slide scanning and time lapse imaging.  
 The microscope is highly [customisable](customisation.md). Find about more about the microscope on the [OpenFlexure website](https://openflexure.org/projects/microscope).
 
