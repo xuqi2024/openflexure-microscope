@@ -496,8 +496,8 @@ def register_mount_sample_clips(rendersystem):
     imgsize = [2400, 2000]
     for optics_version in ["rms", "low_cost", "upright"]:
         for i in [1, 2, 3, 4]:
-            output_file = f"docs/renders/mount_sample_clips_{optics}{i}.png"
-            scad = f"render_mount_sample_clips({i}, {low_cost});"
+            output_file = f"docs/renders/mount_sample_clips_{optics_version}{i}.png"
+            scad = f"render_mount_sample_clips({i}, {optics_version});"
             render = ScadRender(output_file, input_file, scad, imgsize, camera)
             rendersystem.register_scad_render(render)
 
