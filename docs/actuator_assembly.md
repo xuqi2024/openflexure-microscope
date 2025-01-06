@@ -12,7 +12,8 @@ There is one "actuator column" for each of the three axes of the OpenFlexure Mic
 
 [light oil]: parts/consumables/light_oil.md
 
-![Parts required for actuator assembly](renders/actuator_assembly_parts.png)
+{{includetext: "![Parts required for actuator assembly](renders/actuator_assembly_parts.png)", if: var_n_actuators is 3}}
+{{includetext: "![Parts required for actuator assembly](renders/actuator_assembly_parts_upright.png)", if: var_n_actuators is 4}}
 
 ## Insert the nut {pagestep}
 
