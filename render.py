@@ -499,7 +499,7 @@ def register_mount_sample_clips(rendersystem):
     for optics_version in ["rms", "low_cost", "upright"]:
         for i in [1, 2, 3, 4]:
             output_file = f"docs/renders/mount_sample_clips_{optics_version}{i}.png"
-            scad = f"render_mount_sample_clips({i}, {optics_version});"
+            scad = f"render_mount_sample_clips({i}, \"{optics_version}\");"
             render = ScadRender(output_file, input_file, scad, imgsize, camera)
             rendersystem.register_scad_render(render)
 
@@ -540,7 +540,7 @@ def register_mount_electronics(rendersystem):
     imgsize = [2000, 2000]
     for i, camera in enumerate(cameras):
         output_file = f"docs/renders/mount_electronics{i+1}.png"
-        scad = f"render_mount_electronics({i+1},low_cost=false);"
+        scad = f"render_mount_electronics({i+1},optics_version=\"rms\");"
         render = ScadRender(output_file, input_file, scad, imgsize, camera)
         rendersystem.register_scad_render(render)
 
