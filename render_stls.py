@@ -18,11 +18,6 @@ def register_rendered_microscope_stl(rendersystem, force_clean):
     parameters = {"VERSION_STRING": version_str}
     rendersystem.register_render_stl(input_file, parameters)
 
-def register_rendered_separate_z_actuator_stl(rendersystem):
-    input_file = "rendering/librender/rendered_separate_z_actuator.scad"
-    parameters = {}
-    rendersystem.register_render_stl(input_file, parameters)
-
 
 def main():
     parser = argparse.ArgumentParser(
@@ -38,7 +33,6 @@ def main():
     rendersystem = RenderSystem()
     rendersystem.register_zip_assets('rendering/librender/hardware.zip')
     register_rendered_microscope_stl(rendersystem, force_clean=args.force_clean)
-    register_rendered_separate_z_actuator_stl(rendersystem)
 
     rendersystem.render()
 
