@@ -179,6 +179,9 @@ module illumination_dovetail(params, h=50){
                             cylinder(h=tiny(), d=7, $fn=8);
                         }
                     }
+                    translate_z(start_z+2){
+                        cylinder(h=tiny(), d=6.5, $fn=16);
+                    }
                     translate_z(99){
                         cylinder(h=tiny(), d=6.5, $fn=16);
                     }
