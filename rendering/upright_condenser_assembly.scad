@@ -13,7 +13,7 @@ use <librender/electronics.scad>
 use <mount_microscope.scad>
 use <./condenser_assembly.scad>
 
-USE_BUILT_STL = true;
+USE_BUILT_STL = false; // true will fail parallel ci builds
 FRAME = 1;
 upright_assemble_condenser(FRAME);
 

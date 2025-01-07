@@ -119,7 +119,7 @@ build:
 
     artifacts:
       expire_in: 1 week
-      name: "${CI_PROJECT_NAME}-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}"
+      name: "${CI_PROJECT_NAME}-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}-build"
       paths:
         - docs/models/**/*.stl
         - docs/all-stls.zip
@@ -185,12 +185,36 @@ check_stls:
 render:
     extends: .scad-job
     stage: build
-    dependencies: ["build", "version"]
-    needs: ["build", "version"]
+    dependencies: ["version"]
+    needs: ["version"]
 
     script:
       - git status
       - xvfb-run --auto-servernum --server-args "-screen 0 1024x768x24" ./render.py --force-clean
+
+    artifacts:
+      expire_in: 1 week
+      name: "${CI_PROJECT_NAME}-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}-render"
+      # saving any rendering csg files. Only remaining files should be when scad2gltf fails
+      paths:
+        - docs/renders/*.png
+
+    only:
+      - tags
+      - merge_requests
+      - web
+      - master
+
+# make GLTF 3D models
+gltf:
+    extends: .scad-job
+    stage: build
+    dependencies: ["version"]
+    needs: ["version"]
+
+    script:
+      - git status
+      - xvfb-run --auto-servernum --server-args "-screen 0 1024x768x24" ./render_stls.py --force-clean
       - mkdir -p docs/gltf
       - pip install scad2gltf
       - cd rendering
@@ -200,10 +224,9 @@ render:
 
     artifacts:
       expire_in: 1 week
-      name: "${CI_PROJECT_NAME}-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}-renders"
+      name: "${CI_PROJECT_NAME}-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}-gltf"
       # saving any rendering csg files. Only remaining files should be when scad2gltf fails
       paths:
-        - docs/renders/*.png
         - docs/gltf/*
 
     only:
@@ -212,15 +235,15 @@ render:
       - web
       - master
 
-
 # Build docs- this is at a later stage so it has access to the models
 build-docs:
     stage: build-docs
     dependencies:
       - build
       - render
+      - gltf
       - archive-source
-    needs: ["build", "render", "archive-source"]
+    needs: ["build", "render", "gltf", "archive-source"]
     image: "python:3.12"
 
     before_script:
