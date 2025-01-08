@@ -326,7 +326,10 @@ def register_prepare_stand(rendersystem):
 def register_actuator_assembly(rendersystem):
     input_file = "rendering/actuator_assembly.scad"
     cameras = [
-        Camera(position=[2, 5, 14], angle=[33, 0, 242], distance=360),
+        Camera(position=[2, 5, 14], angle=[33, 0, 242], distance=400),
+        Camera(position=[-4.4, 7, 17.5], angle=[142, 319, 10], distance=190),
+        Camera(position=[-4.4, 7, 17.5], angle=[142, 319, 10], distance=190),
+        Camera(position=[-4.4, 7, 17.5], angle=[142, 319, 10], distance=190),
         Camera(position=[4, 35, 35], angle=[71, 0, 186], distance=330),
         Camera(position=[4, 35, 35], angle=[71, 0, 186], distance=330),
         Camera(position=[4, 35, 35], angle=[71, 0, 186], distance=330),
@@ -337,6 +340,9 @@ def register_actuator_assembly(rendersystem):
     imgsize = [2400, 2000]
     pngs = [
         "actuator_assembly_parts.png",
+        "actuator_assembly_lead_screw_exploded.png",
+        "actuator_assembly_lead_screw_tight.png",
+        "actuator_assembly_lead_screw_only.png",
         "actuator_assembly_nut.png",
         "actuator_assembly_gear.png",
         "actuator_assembly_gear2.png",
