@@ -24,7 +24,7 @@ There is one "actuator column" for each of the three axes of the OpenFlexure Mic
 * Push it through one of the [large gears](fromstep){qty:{{var_n_actuators, default:3}}, cat:printedpart}, and the [nut spinner](fromstep){qty:1, cat:printedtool}.
 * Start to screw on a [brass nut][M3 brass nut]{qty:{{var_n_actuators, default:3}}, cat:mech}, this should fit into the end of the nut spinner.
 * Place the [gear holder](fromstep){qty:1, cat:printedtool} over the large gear.
-* Tighten, buy turning the gear holder and nut spinner in opposite directions. This should bed the screw into the gear.
+* Tighten, by turning the gear holder and nut spinner in opposite directions. This should bed the screw into the gear.
 * Remove the tools by unscrewing the nut with the nut spinner, and remove the nut from the spinner. The hex bolt should now be firmly mounted in the gear.
 
 ## Insert the nut {pagestep}
