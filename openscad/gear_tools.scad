@@ -6,11 +6,11 @@ translate_y(20){
 gear_holder();
 
 module nut_spinner(){
-    h=16;
+    h = 16;
     difference()
     {
         hull(){
-            cylinder(r = 5, h=h, $fn=6);
+            cylinder(r=5, h=h, $fn=6);
             reflect_x(){
                 translate([6,0,10]){
                     rotate_x(90){
@@ -35,14 +35,13 @@ module gear_holder(){
             hull(){
                 x_shift = (dims.x/2-corner_r);
                 y_shift = (dims.y/2-corner_r);
-                for (x_tr = [-1, 1]*x_shift, y_tr  = [-1, 1]*y_shift){
+                for (x_tr = [-1, 1]*x_shift, y_tr = [-1, 1]*y_shift){
                     translate([x_tr, y_tr]){
                         cylinder(r=corner_r, h=dims.z, center=true, $fn=12);
                     }
                 }
             }
-            //cube(dims, center=true);
-            large_gear_profile(10, tweak_pitch=true);
+            large_gear_profile(height=10, tweak_pitch=true);
             reflect_x(){
                 translate_x(dims.x/2+15-.5){
                     cylinder(h=dims.z+1, r=15, center=true, $fn=36);

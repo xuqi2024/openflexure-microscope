@@ -98,7 +98,7 @@ function small_gear_flange_radius() = let(
 * of the actuator housing. These are driven by the small gear (see `small_gear()`).
 */
 
-module large_gear_profile(height, tweak_pitch){
+module large_gear_profile(height, tweak_pitch=false){
     pitch = tweak_pitch ? gear_pitch()*1.03 : gear_pitch();
     gear(number_of_teeth=n_teeth_large_gear(),
          circular_pitch=pitch,
@@ -118,7 +118,7 @@ module large_gear(){
     difference(){
         // intersection used to chamfer the bottom of the gear
         intersection(){
-            large_gear_profile(height);
+            large_gear_profile(height=height);
             cylinder(r1=pitch_r-2,r2=pitch_r+18,h=20);
         }
         translate(large_gear_screw_pos()+[0,0,height+1]){
