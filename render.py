@@ -563,15 +563,15 @@ def register_mount_electronics(rendersystem):
 
 def register_complete_microscope(rendersystem):
     input_file = "rendering/complete_microscope.scad"
-    dist = 700 if optics_version != "upright" else 780
-    cameras = [
-        Camera(position=[0, 48, 98], angle=[65, 0, 133], distance=dist),
-        Camera(position=[0, 48, 98], angle=[65, 0, 308], distance=dist),
-        Camera(position=[0, 48, 98], angle=[90, 0, 90], distance=dist),
-        Camera(position=[0, 48, 98], angle=[90, 0, 0], distance=dist),
-    ]
     imgsize = [2400, 2000]
     for optics_version in ["rms", "low_cost", "upright"]:
+        dist = 700 if optics_version != "upright" else 780
+        cameras = [
+            Camera(position=[0, 48, 98], angle=[65, 0, 133], distance=dist),
+            Camera(position=[0, 48, 98], angle=[65, 0, 308], distance=dist),
+            Camera(position=[0, 48, 98], angle=[90, 0, 90], distance=dist),
+            Camera(position=[0, 48, 98], angle=[90, 0, 0], distance=dist),
+        ]
         for i, camera in enumerate(cameras):
             output_file = f"docs/renders/complete_microscope_{optics_version}{i}.png"
             scad = f"render_complete_microscope(\"{optics_version}\");"
