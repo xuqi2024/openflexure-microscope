@@ -257,7 +257,7 @@ def register_band(rendersystem):
 
 def register_band_tool_assembly(rendersystem):
     input_file = "rendering/band_tool_assembly.scad"
-    camera = Camera(position=[-13, 13, 30], angle=[76, 0, 216], distance=445)
+    camera = Camera(position=[-6, 6, 46], angle=[75, 0, 235], distance=250)
     imgsize = [1200, 2400]
     png_files = []
 
