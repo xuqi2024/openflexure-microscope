@@ -4,7 +4,7 @@ This configuration of the microscope has the objective above the sample rather t
 
 If you use this microscope for research please consider citing [our paper in Optics Express](https://doi.org/10.1364/BOE.385729).
 
->? If you have problems building this, please let us know on [GitLab](https://gitlab.com/openflexure/openflexure-microscope/-/issues) or on our [forum](https://openflexure.discourse.group/).
+>? For known bugs, building tips, and advice, please use our [Forum](https://openflexure.discourse.group/). If you find any problems with the build, please let us know on [GitLab](https://gitlab.com/openflexure/openflexure-microscope/-/issues) or on the Forum.
 
 Before you start building the microscope you will need to source all of the components listed in the [bill of materials]{bom}.
 
@@ -17,11 +17,17 @@ The assembly is broken up into several steps:
 1. [.](prepare_stand.md){step}
 1. [.](actuator_assembly.md){step, var_type: upright, var_n_actuators:4, var_n_washers:8}
 1. [.](basic_optics_module.md){step, var_ribbon_len: 300mm, var_upright: upright}
-1. [.](upright_illumination.md){step}
-1. [.](upright_mount_optics_and_microscope.md){step}
-1. [.](motors.md){step, var_type: upright}
-1. [.](attach_clips.md){step}
+1. [.](illumination.md){step, var_type: upright}
+1. [.](mount_illumination_and_microscope.md){step, var_optics: upright}
+1. [.](upright_mount_optics.md){step, var_optics: upright}
+1. [.](motors.md){step, var_type: upright, var_optics: upright}
+1. [.](attach_clips.md){step, var_optics: upright}
 1. [.](prepare_pi_and_sangaboard.md){step}
 1. [.](wiring.md){step}
+1. [.](finished.md){step, var_optics: upright}
+
+![A render of the completed upright microscope](renders/complete_microscope_upright1.png)
+
+There is also an [interactive 3D view](interactive_3d_view_upright.md) of the finished microscope.
 
 {{include: upright_optics_note.md}}
