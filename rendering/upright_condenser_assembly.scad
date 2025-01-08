@@ -232,3 +232,45 @@ module upright_rendered_condenser_assembly(pos=undef,
     }
 }
 
+module completed_upright_condenser(explode="none", nut=true, screw =true, screw_tight=true){
+    upright_rendered_condenser_assembly(
+        create_placement_dict([0, 0, 39.5], rotation1=[0,0,180]),//condenser_upside_down(),
+        include_led=false,
+        include_nut=false,
+        include_led_board=true,
+        include_led_board_screws=true,
+        include_lid=true,
+        include_lid_screws=true,
+        explode=false
+    ); 
+    
+    if (nut){
+        exploded = (explode == "nut" || explode =="both") ? true : false;
+        nut_pos_ex = translate_pos(optics_module_nut_pos(), [0, 5, 20]);
+        nut_pos = exploded ? nut_pos_ex : optics_module_nut_pos();
+        place_part(nut_pos){
+            m3_nut();
+        }
+        if (exploded){
+            translate([0, -1, -2]){
+                construction_line(nut_pos_ex,
+                                    translate_pos(optics_module_nut_pos(), [0,0,5]));
+            }
+        }
+    }
+    if (screw){
+        exploded = (explode == "screw" || explode =="both") ? true : false;
+        screw_pos_ex = translate_pos(optics_module_screw_pos(), [0, 12, 0]);
+        screw_pos_assembled = translate_pos(optics_module_screw_pos(), [0, 4, 0]);
+        screw_pos = exploded ? screw_pos_ex :
+            screw_tight ? optics_module_screw_pos() : screw_pos_assembled;
+        place_part(screw_pos){
+            m3_cap_x10();
+        }
+        if (exploded){
+            translate_y(-8){
+                construction_line(screw_pos_ex, screw_pos_assembled);
+            }
+        }
+    }
+}

@@ -1,3 +1,3 @@
-# Mount the optics and the microscope
+# Mount the illumination and the microscope
 
 {{include: mount_internals_and_microscope.md}}
