@@ -16,12 +16,12 @@ use <./mount_sample_clips.scad>
 use <./mount_microscope.scad>
 use <./prepare_pi_and_sangaboard.scad>
 
-FRAME = 5;
-LOW_COST = false;
+FRAME = 16;
+OPTICS_VERSION = "rms";
 
-render_mount_electronics(FRAME, LOW_COST);
+render_mount_electronics(FRAME, OPTICS_VERSION);
 
-module render_mount_electronics(frame, low_cost=false){
+module render_mount_electronics(frame, optics_version="rms"){
     if (frame == 1){
         render_electronics_drawer(slide=true);
         render_drawer_nut(slide=true, exploded=true);
@@ -112,7 +112,7 @@ module render_mount_electronics(frame, low_cost=false){
         render_motor_wire_placed(motor_number=2, long=true, slide=true);
     }
     if (frame == 13){
-        microscope_with_clips(low_cost=low_cost);
+        microscope_with_clips(optics_version=optics_version);
         render_electronics_drawer(slide=true);
         render_drawer_nut(slide=true);
         render_rpi_4b(slide=true);
@@ -125,7 +125,7 @@ module render_mount_electronics(frame, low_cost=false){
         render_motor_wire_placed(motor_number=2, long=true, slide=true);
     }
     if (frame == 14){
-        microscope_with_clips(low_cost=low_cost);
+        microscope_with_clips(optics_version=optics_version);
         render_electronics_drawer(slide=false);
         render_drawer_nut(slide=false);
         render_rpi_4b(slide=false);
@@ -134,7 +134,7 @@ module render_mount_electronics(frame, low_cost=false){
         render_sangaboard_screws(slide=false);
     }
     if (frame == 15){
-        microscope_with_clips(low_cost=low_cost);
+        microscope_with_clips(optics_version=optics_version);
         render_electronics_drawer(slide=false);
         render_drawer_nut(slide=false);
         render_rpi_4b(slide=false);
@@ -144,7 +144,7 @@ module render_mount_electronics(frame, low_cost=false){
         render_electronics_drawer_screw(exploded=true);
     }
     if (frame == 16){
-        microscope_with_clips(low_cost=low_cost);
+        microscope_with_clips(optics_version=optics_version);
         render_electronics_drawer(slide=false);
         render_drawer_nut(slide=false);
         render_rpi_4b(slide=false);
@@ -155,8 +155,8 @@ module render_mount_electronics(frame, low_cost=false){
     }
 }
 
-module microscope_with_clips(low_cost=false){
-    assembled_microscope_without_electronics(low_cost=low_cost);
+module microscope_with_clips(optics_version="rms"){
+    assembled_microscope_without_electronics(optics_version=optics_version);
     mounted_microscope_frame(){
         render_sample_clips();
     }
@@ -347,8 +347,8 @@ module render_electronics_drawer_screw(exploded=false){
     }
 }
 
-module render_microscope(low_cost=false){
-        microscope_with_clips(low_cost=low_cost);
+module render_microscope(optics_version="rms"){
+        microscope_with_clips(optics_version=optics_version);
         render_electronics_drawer(slide=false);
         render_rpi_4b(slide=false);
         render_rpi_4b_screws(slide=false);

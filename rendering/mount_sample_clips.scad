@@ -15,12 +15,12 @@ use <mount_motors.scad>
 use <../openscad/sample_clips.scad>
 
 FRAME=2;
-LOW_COST = false;
-render_mount_sample_clips(FRAME, LOW_COST);
+OPTICS_VERSION = "rms";
+render_mount_sample_clips(FRAME, OPTICS_VERSION);
 
-module render_mount_sample_clips(frame, low_cost=false){
+module render_mount_sample_clips(frame, optics_version="rms"){
     if(frame > 2){
-        assembled_microscope_without_electronics(low_cost=low_cost);
+        assembled_microscope_without_electronics(optics_version=optics_version);
     }
     mounted_microscope_frame(){
         render_sample_clips(

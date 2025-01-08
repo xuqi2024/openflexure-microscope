@@ -1,9 +1,9 @@
 use <./mount_electronics.scad>
 
 
-LOW_COST = true;
-render_complete_microscope(LOW_COST);
+OPTICS_VERSION = "rms";
+render_complete_microscope(OPTICS_VERSION);
 
-module render_complete_microscope(low_cost=false){
-    render_microscope(low_cost);
+module render_complete_microscope(optics_version="rms"){
+    render_microscope(optics_version=optics_version);
 }
