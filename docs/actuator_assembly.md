@@ -12,7 +12,8 @@ There is one "actuator column" for each of the three axes of the OpenFlexure Mic
 
 [light oil]: parts/consumables/light_oil.md
 
-![Parts required for actuator assembly](renders/actuator_assembly_parts.png)
+{{includetext: "![Parts required for actuator assembly](renders/actuator_assembly_parts.png)", if: var_n_actuators is 3}}
+{{includetext: "![Parts required for actuator assembly](renders/actuator_assembly_parts_upright.png)", if: var_n_actuators is 4}}
 
 ## Insert the nut {pagestep}
 
@@ -57,7 +58,7 @@ There is one "actuator column" for each of the three axes of the OpenFlexure Mic
 * Rotate the gear until the screw is clearly visible through this hole
 * Push the [nut tool]{qty:1} into the hole to hold the internal actuator in place
 
-## Attaching the viton bands and foot {pagestep}
+## Attach the viton bands and foot {pagestep}
 This is the trickiest part of the microscope build. In this step we will clip bands onto hooks inside each actuator.
 
 ![Actuator cutaway](renders/band_instruction.png)
@@ -83,8 +84,13 @@ This is the trickiest part of the microscope build. In this step we will clip ba
 
 ## Repeat this process for Y and Z {pagestep}
 
-Follow the same procedure for the Y and Z axes. Once complete the [microscope with assembled actuators]{output, qty:1} should look like this:
+![Actuators assembled](renders/actuators_assembled.png)  
 
-![Actuators assembled](renders/actuators_assembled.png)
+* Follow the same procedure  to install the gear, foot and Viton band for the Y and Z axes
+* Make sure that you have put a drop of light oil on both of the threads
+* Make sure that both feet are seated
+* Make sure that each axis has two washers
 
-{{include: upright_actuator_assembly.md, if: var_type is upright}}
+{{include: upright_separate_z_actuator_assembly.md, if: var_type is upright}}
+
+[microscope with assembled actuators]{output, qty:1, hidden}

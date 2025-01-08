@@ -9,47 +9,48 @@ use <librender/tools.scad>
 use <rms_optics_assembly.scad>
 use <low_cost_optics_assembly.scad>
 use <actuator_assembly.scad>
-
+use <upright_condenser_assembly.scad>
 
 FRAME = 8;
-LOW_COST = false;
+OPTICS_VERSION = "rms";
 
-render_mount_optics(FRAME, LOW_COST);
+render_mount_optics(FRAME, OPTICS_VERSION);
 
-module render_mount_optics(frame, low_cost){
+module render_mount_optics(frame, optics_version){
+    low_cost = (optics_version == "low_cost")? true : false ;
     if (frame==1){
         om_pos = translate_pos(optics_module_pos(low_cost), [0, -10, -100]);
         line_start = translate_pos(om_pos, [0, 0, 40]);
         line_end = translate_pos(om_pos, [0, 0, 97]);
         construction_line(line_start, line_end,.3, arrow=true);
-        render_optics(low_cost, om_pos, screw_tight=false);
+        render_optics(optics_version, om_pos, screw_tight=false);
         body_with_assembled_actuators();
     }
     else if (frame==2){
         om_pos = translate_pos(optics_module_pos(low_cost), [0, -10, -6.5]);
-        render_optics(low_cost, om_pos, screw_tight=false);
+        render_optics(optics_version, om_pos, screw_tight=false);
         body_with_assembled_actuators();
     }
     else if (frame==3){
         om_pos = translate_pos(optics_module_pos(low_cost), [0, -10, -6.5]);
         rendered_z_mount();
-        render_optics(low_cost, om_pos, screw_tight=false);
+        render_optics(optics_version, om_pos, screw_tight=false);
         body_with_assembled_actuators(translucent_body=true);
     }
     else if (frame==4){
         om_pos = translate_pos(optics_module_pos(low_cost), [0, -4, -6.5]);
         rendered_z_mount();
-        render_optics(low_cost, om_pos, screw_tight=false);
+        render_optics(optics_version, om_pos, screw_tight=false);
         body_with_assembled_actuators(translucent_body=true);
     }
     else if (frame==5){
         om_pos = translate_pos(optics_module_pos(low_cost), [0, -4, -6.5]);
-        ak_pos = translate_pos(optics_module_allen_key_pos(), [0, 0, -6.5]);
+        ak_pos = translate_pos(optics_module_insertion_allen_key_pos(), [0, 0, -6.5]);
         place_part(ak_pos){
             allen_key_2_5(30);
         }
         rendered_z_mount();
-        render_optics(low_cost, om_pos, screw_tight=false);
+        render_optics(optics_version, om_pos, screw_tight=false);
         body_with_assembled_actuators(translucent_body=true);
     }
     else if (frame==6){
@@ -58,7 +59,7 @@ module render_mount_optics(frame, low_cost){
             allen_key_2_5(30);
         }
         rendered_z_mount();
-        render_optics(low_cost, om_pos, screw_tight=false);
+        render_optics(optics_version, om_pos, screw_tight=false);
         body_with_assembled_actuators(translucent_body=true);
     }
     else if (frame==7){
@@ -66,31 +67,38 @@ module render_mount_optics(frame, low_cost){
             allen_key_2_5(-30, clockwise_arrow=true);
         }
         rendered_z_mount();
-        render_optics(low_cost, optics_module_pos(low_cost), screw_tight=true);
+        render_optics(optics_version, optics_module_pos(low_cost), screw_tight=true);
         body_with_assembled_actuators(translucent_body=true);
     }
     else if (frame==8){
-        body_with_optics(low_cost);
+        body_with_optics(optics_version);
     }
 }
 
-module render_optics(low_cost=false, om_pos=undef, screw_tight=false,  cable_positions=undef){
-    if (low_cost){
+module render_optics(optics_version="rms", om_pos=undef, screw_tight=false,  cable_positions=undef){
+    if (optics_version == "low_cost"){
         params = render_params();
         optics_config = pilens_config();
         cable_pos = is_undef(cable_positions) ?
-            curled_ribbon_pos(low_cost, params=params, optics_config=optics_config) :
+            curled_ribbon_pos(low_cost=true, params=params, optics_config=optics_config) :
             cable_positions;
         rendered_low_cost_optics(om_pos, screw_tight=screw_tight, cable_positions=cable_pos);
     }
-    else{
+    else if (optics_version == "rms"){
         cable_pos = is_undef(cable_positions) ? curled_ribbon_pos() : cable_positions;
-        rendered_optics_module(om_pos, screw_tight=screw_tight, cable_positions=cable_pos);
+        rendered_optics_module(om_pos, screw=true, screw_tight=screw_tight, cable_positions=cable_pos);
+    }
+    else if (optics_version == "upright"){
+        place_part(om_pos){
+            completed_upright_condenser(explode="none", nut=true, screw=true, screw_tight=screw_tight);
+        }
+
     }
 }
 
-module body_with_optics(low_cost=false, translucent_body=false){
-    render_optics(low_cost, optics_module_pos(low_cost), screw_tight=true);
+module body_with_optics(optics_version="rms", translucent_body=false){
+    low_cost = (optics_version == "low_cost")? true : false ;
+    render_optics(optics_version, optics_module_pos(low_cost), screw_tight=true);
     body_with_assembled_actuators(translucent_body=translucent_body);
 }
 

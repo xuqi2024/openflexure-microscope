@@ -283,6 +283,19 @@ def register_brim_and_ties(rendersystem):
         render = ScadRender(output_file, input_file, scad, imgsize, camera)
         rendersystem.register_scad_render(render)
 
+def register_brim_and_ties_separate_z_actuator(rendersystem):
+    input_file = "rendering/brim_and_ties_separate_z_actuator.scad"
+    cameras = [
+        Camera(position=[-4, 37, 34], angle=[57, 0, 315], distance=264),
+        Camera(position=[0, 42, 17], angle=[206, 0, 180], distance=264),
+    ] 
+    imgsize = [2400, 2400]
+    for i, camera in enumerate(cameras):
+        output_file = f"docs/renders/brim_and_ties_separate_z{i+1}.png"
+        scad = f"render_brim_and_ties_separate_z_actuator({i+1});"
+        render = ScadRender(output_file, input_file, scad, imgsize, camera)
+        rendersystem.register_scad_render(render)
+
 def register_prepare_main_body(rendersystem):
     input_file = "rendering/prepare_main_body.scad"
     cameras = [
@@ -333,6 +346,7 @@ def register_actuator_assembly(rendersystem):
         Camera(position=[20, 6, 35], angle=[82, 0, 166], distance=500),
         Camera(position=[4, 35, 35], angle=[71, 0, 186], distance=330),
         Camera(position=[4, 35, 35], angle=[71, 0, 186], distance=330),
+        Camera(position=[0, 50, 30], angle=[62, 0, 145], distance=260),
     ]
     imgsize = [2400, 2000]
     pngs = [
@@ -343,10 +357,28 @@ def register_actuator_assembly(rendersystem):
         "actuator_assembly_oil.png",
         "actuator_assembly_x.png",
         "actuators_assembled.png",
+        "separate_z_actuator_assembled.png",
     ]
     for i, camera in enumerate(cameras):
         output_file = os.path.join("docs/renders/", pngs[i])
         scad = f"render_actuator_assembly({i+1});"
+        render = ScadRender(output_file, input_file, scad, imgsize, camera)
+        rendersystem.register_scad_render(render)
+    cameras = [
+        Camera(position=[2, 5, 14], angle=[33, 0, 242], distance=390),
+        Camera(position=[2, 5, 14], angle=[33, 0, 242], distance=390),
+    ]
+    pngs = [
+        "actuator_assembly_parts_upright.png",
+        "actuator_assembly_parts_manual.png",
+    ]
+    versions = [
+        "manual=false, optics_version=\"upright\"",
+        "manual=true, optics_version=\"rms\""
+    ]
+    for i, camera in enumerate(cameras):
+        output_file = os.path.join("docs/renders/", pngs[i])
+        scad = f"render_actuator_assembly(1, {versions[i]});"
         render = ScadRender(output_file, input_file, scad, imgsize, camera)
         rendersystem.register_scad_render(render)
 
@@ -378,14 +410,32 @@ def register_mount_optics(rendersystem):
         Camera(position=[-18.5, 42.75, 23.75], angle=[57, 0, 143], distance=495),
     ]
     imgsize = [2400, 2000]
-    for optics in ["rms", "low_cost"]:
-        low_cost = str(optics == "low_cost").lower()
+    for optics_version in ["rms", "low_cost", "upright"]:
         for i, camera in enumerate(cameras):
             frame = i + 1
-            output_file = f"docs/renders/mount_optics_{optics}{frame}.png"
-            scad = f"render_mount_optics({frame}, {low_cost});"
+            output_file = f"docs/renders/mount_optics_{optics_version}{frame}.png"
+            scad = f"render_mount_optics({frame}, \"{optics_version}\");"
             render = ScadRender(output_file, input_file, scad, imgsize, camera)
             rendersystem.register_scad_render(render)
+
+def register_mount_upright_optics(rendersystem):
+    input_file = "rendering/mount_upright_optics.scad"
+    cameras = [
+        Camera(position=[-42, 76, 130], angle=[55, 0, 58], distance=495),
+        Camera(position=[-42, 76, 130], angle=[55, 0, 58], distance=495),
+        Camera(position=[-42, 76, 130], angle=[55, 0, 58], distance=495),
+        Camera(position=[-42, 76, 130], angle=[55, 0, 58], distance=495),
+        Camera(position=[-42, 76, 130], angle=[55, 0, 58], distance=495),
+        Camera(position=[-42, 76, 130], angle=[55, 0, 58], distance=495),
+        Camera(position=[-42, 76, 130], angle=[55, 0, 58], distance=495),
+    ]
+    imgsize = [2400, 2000]
+    for i, camera in enumerate(cameras):
+        frame = i + 1
+        output_file = f"docs/renders/mount_upright_optics{frame}.png"
+        scad = f"render_mount_upright_optics({frame}, optics_version=\"upright\");"
+        render = ScadRender(output_file, input_file, scad, imgsize, camera)
+        rendersystem.register_scad_render(render)
 
 def register_mount_microscope(rendersystem):
     input_file = "rendering/mount_microscope.scad"
@@ -394,32 +444,38 @@ def register_mount_microscope(rendersystem):
         Camera(position=[24, 43.5, 84], angle=[65.5, 0, 103], distance=550),
     ]
     imgsize = [2400, 2000]
-    for optics in ["rms", "low_cost"]:
-        low_cost = str(optics == "low_cost").lower()
+    for optics_version in ["rms", "low_cost", "upright"]:
         for i, camera in enumerate(cameras):
             frame = i + 1
-            output_file = f"docs/renders/mount_microscope_{optics}{frame}.png"
-            scad = f"render_mount_microscope({frame}, {low_cost});"
+            output_file = f"docs/renders/mount_microscope_{optics_version}{frame}.png"
+            scad = f"render_mount_microscope({frame}, \"{optics_version}\");"
             render = ScadRender(output_file, input_file, scad, imgsize, camera)
             rendersystem.register_scad_render(render)
 
 def register_mount_illumination(rendersystem):
     input_file = "rendering/mount_illumination.scad"
-    cameras = [
-        Camera(position=[-6, 49, 178], angle=[68, 0, 133], distance=360),
-        Camera(position=[-6, 49, 178], angle=[68, 0, 133], distance=360),
-        Camera(position=[-6, 49, 178], angle=[60, 0, 308], distance=460),
-        Camera(position=[-6, 49, 178], angle=[82, 0, 308], distance=360),
-        Camera(position=[-6, 49, 178], angle=[82, 0, 308], distance=360),
-        Camera(position=[-6, 49, 178], angle=[82, 0, 308], distance=360)
-    ]
     imgsize = [2400, 2000]
-    for optics in ["rms", "low_cost"]:
-        low_cost = str(optics == "low_cost").lower()
+    for optics_version in ["rms", "low_cost", "upright"]:
+        if optics_version == "upright":
+            cameras = [
+                Camera(position=[0, 50, 180], angle=[68, 0, 133], distance=360),
+                Camera(position=[0, 50, 180], angle=[68, 0, 133], distance=360),
+                Camera(position=[0, 50, 180], angle=[60, 0, 133], distance=460),
+                Camera(position=[0, 50, 180], angle=[60, 0, 133], distance=460),
+            ]
+        else:
+            cameras = [
+                Camera(position=[-6, 49, 178], angle=[68, 0, 133], distance=360),
+                Camera(position=[-6, 49, 178], angle=[68, 0, 133], distance=360),
+                Camera(position=[-6, 49, 178], angle=[60, 0, 308], distance=460),
+                Camera(position=[-6, 49, 178], angle=[82, 0, 308], distance=360),
+                Camera(position=[-6, 49, 178], angle=[82, 0, 308], distance=360),
+                Camera(position=[-6, 49, 178], angle=[82, 0, 308], distance=360)
+            ]
         for i, camera in enumerate(cameras):
             frame = i + 1
-            output_file = f"docs/renders/mount_illumination_{optics}{frame}.png"
-            scad = f"mount_illumination({frame}, {low_cost});"
+            output_file = f"docs/renders/mount_illumination_{optics_version}{frame}.png"
+            scad = f"mount_illumination({frame}, \"{optics_version}\");"
             render = ScadRender(output_file, input_file, scad, imgsize, camera)
             rendersystem.register_scad_render(render)
 
@@ -442,13 +498,14 @@ def register_motor_assembly(rendersystem):
 
 def register_mount_motors(rendersystem):
     input_file = "rendering/mount_motors.scad"
-    camera = Camera(position=[13.5, 48, 98], angle=[53, 0, 115], distance=360)
+    camera = Camera(position=[22, 35, 98], angle=[53, 0, 115], distance=360)
     imgsize = [2400, 2000]
-    for optics in ["rms", "low_cost"]:
-        low_cost = str(optics == "low_cost").lower()
-        for i in [1, 2, 3]:
-            output_file = f"docs/renders/mount_motors_{optics}{i}.png"
-            scad = f"render_mount_motors({i}, {low_cost});"
+    for optics_version in ["rms", "low_cost", "upright"]:
+        for i in [1, 2, 3, 4]:
+            if optics_version == "upright" and i > 2 :
+                camera = Camera(position=[5, 30, 121], angle=[70, 0, 150], distance=360)
+            output_file = f"docs/renders/mount_motors_{optics_version}{i}.png"
+            scad = f"render_mount_motors({i}, \"{optics_version}\");"
             render = ScadRender(output_file, input_file, scad, imgsize, camera)
             rendersystem.register_scad_render(render)
 
@@ -456,11 +513,10 @@ def register_mount_sample_clips(rendersystem):
     input_file = "rendering/mount_sample_clips.scad"
     camera = Camera(position=[0, 0, 178], angle=[68, 0, 308], distance=250)
     imgsize = [2400, 2000]
-    for optics in ["rms", "low_cost"]:
-        low_cost = str(optics == "low_cost").lower()
+    for optics_version in ["rms", "low_cost", "upright"]:
         for i in [1, 2, 3, 4]:
-            output_file = f"docs/renders/mount_sample_clips_{optics}{i}.png"
-            scad = f"render_mount_sample_clips({i}, {low_cost});"
+            output_file = f"docs/renders/mount_sample_clips_{optics_version}{i}.png"
+            scad = f"render_mount_sample_clips({i}, \"{optics_version}\");"
             render = ScadRender(output_file, input_file, scad, imgsize, camera)
             rendersystem.register_scad_render(render)
 
@@ -501,24 +557,24 @@ def register_mount_electronics(rendersystem):
     imgsize = [2000, 2000]
     for i, camera in enumerate(cameras):
         output_file = f"docs/renders/mount_electronics{i+1}.png"
-        scad = f"render_mount_electronics({i+1},low_cost=false);"
+        scad = f"render_mount_electronics({i+1},optics_version=\"rms\");"
         render = ScadRender(output_file, input_file, scad, imgsize, camera)
         rendersystem.register_scad_render(render)
 
 def register_complete_microscope(rendersystem):
     input_file = "rendering/complete_microscope.scad"
-    cameras = [
-        Camera(position=[0, 48, 98], angle=[65, 0, 133], distance=700),
-        Camera(position=[0, 48, 98], angle=[65, 0, 308], distance=700),
-        Camera(position=[0, 48, 98], angle=[90, 0, 90], distance=700),
-        Camera(position=[0, 48, 98], angle=[90, 0, 0], distance=700),
-    ]
     imgsize = [2400, 2000]
-    for optics in ["rms", "low_cost"]:
-        low_cost = str(optics == "low_cost").lower()
+    for optics_version in ["rms", "low_cost", "upright"]:
+        dist = 700 if optics_version != "upright" else 780
+        cameras = [
+            Camera(position=[0, 48, 98], angle=[65, 0, 133], distance=dist),
+            Camera(position=[0, 48, 98], angle=[65, 0, 308], distance=dist),
+            Camera(position=[0, 48, 98], angle=[90, 0, 90], distance=dist),
+            Camera(position=[0, 48, 98], angle=[90, 0, 0], distance=dist),
+        ]
         for i, camera in enumerate(cameras):
-            output_file = f"docs/renders/complete_microscope_{optics}{i}.png"
-            scad = f"render_complete_microscope({low_cost});"
+            output_file = f"docs/renders/complete_microscope_{optics_version}{i}.png"
+            scad = f"render_complete_microscope(\"{optics_version}\");"
             render = ScadRender(output_file, input_file, scad, imgsize, camera)
             rendersystem.register_scad_render(render)
 
@@ -526,6 +582,11 @@ def register_rendered_microscope_stl(rendersystem, force_clean):
     input_file = "rendering/librender/rendered_main_body.scad"
     version_str = version_string(force_clean)
     parameters = {"VERSION_STRING": version_str}
+    rendersystem.register_render_stl(input_file, parameters)
+
+def register_rendered_separate_z_actuator_stl(rendersystem):
+    input_file = "rendering/librender/rendered_separate_z_actuator.scad"
+    parameters = {}
     rendersystem.register_render_stl(input_file, parameters)
 
 
@@ -543,6 +604,7 @@ def main():
     rendersystem = RenderSystem()
     rendersystem.register_zip_assets('rendering/librender/hardware.zip')
     register_rendered_microscope_stl(rendersystem, force_clean=args.force_clean)
+    register_rendered_separate_z_actuator_stl(rendersystem)
     #Register all openscad renders (and associated post processing)
     register_rms_optics_assembly(rendersystem)
     register_low_cost_optics_assembly(rendersystem)
@@ -552,12 +614,14 @@ def main():
     register_optics_assembled(rendersystem)
     register_band(rendersystem)
     register_brim_and_ties(rendersystem)
+    register_brim_and_ties_separate_z_actuator(rendersystem)
     register_prepare_main_body(rendersystem)
     register_prepare_stand(rendersystem)
     register_actuator_assembly(rendersystem)
     register_band_tool_assembly(rendersystem)
     register_picam(rendersystem)
     register_mount_optics(rendersystem)
+    register_mount_upright_optics(rendersystem)
     register_mount_microscope(rendersystem)
     register_mount_illumination(rendersystem)
     register_motor_assembly(rendersystem)
