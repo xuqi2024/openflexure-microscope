@@ -160,11 +160,32 @@ module illumination_dovetail(params, h=50){
                 cyl_slot(r=6, h=999, dy=3, $fn=24);
             }
         }
-
-        // channel for the illumination wiring
+        // alpha is the rotation angle for the slices that make up the bottom of the
+        // channel. The number is picked to give a flat bridge that prints well.
+        alpha=-11.5;
+        // channel for the illumination wiring.
         translate(illumination_cable_channel_xypos()){
             translate_z(bottom_z){
-                cylinder(h=99, d=6, $fn=16);
+                sequential_hull(){
+                    // Octagonal base layers used to create better shape for bridging
+                    // as the channel meets the sloped face.
+                    translate([-3, 0, -tiny()]){
+                        rotate(alpha){
+                            cylinder(h=tiny(), d=7.5, $fn=8);
+                        }
+                    }
+                    translate_z(start_z){
+                        rotate(alpha){
+                            cylinder(h=tiny(), d=7, $fn=8);
+                        }
+                    }
+                    translate_z(start_z+2){
+                        cylinder(h=tiny(), d=6.5, $fn=16);
+                    }
+                    translate_z(99){
+                        cylinder(h=tiny(), d=6.5, $fn=16);
+                    }
+                }
             }
         }
         // cutout to make the dovetail
