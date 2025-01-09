@@ -15,6 +15,19 @@ There is one "actuator column" for each of the three axes of the OpenFlexure Mic
 {{includetext: "![Parts required for actuator assembly](renders/actuator_assembly_parts.png)", if: var_n_actuators is 3}}
 {{includetext: "![Parts required for actuator assembly](renders/actuator_assembly_parts_upright.png)", if: var_n_actuators is 4}}
 
+## Mount the leadscrew {pagestep}
+
+![](renders/actuator_assembly_lead_screw_exploded.png)
+![](renders/actuator_assembly_lead_screw_tight.png)
+![](renders/actuator_assembly_lead_screw_only.png)
+
+* Take one of the [hex bolts][M3x25mm stainless steel hex bolt]{qty:{{var_n_actuators, default:3}}, cat:mech}.
+* Push it through one of the [large gears](fromstep){qty:{{var_n_actuators, default:3}}, cat:printedpart}, and the [nut spinner](fromstep){qty:1, cat:printedtool}.
+* Start to screw on a [steel M3 nut][extra M3 nut](parts/mechanical.yml#Nut_M3_SS){qty: 1, cat:tool, note:"For mounting the hex bold in the gear."}, this should fit into the end of the nut spinner.
+* Place the [gear holder](fromstep){qty:1, cat:printedtool} over the large gear.
+* Tighten, by turning the gear holder and nut spinner in opposite directions. This should bed the screw into the gear.
+* Remove the tools by unscrewing the nut with the nut spinner. The hex bolt should now be mounted in the gear.
+
 ## Insert the nut {pagestep}
 
 ![Inset the nut the actuator column](renders/actuator_assembly_nut.png)
@@ -30,9 +43,8 @@ There is one "actuator column" for each of the three axes of the OpenFlexure Mic
 ![Gear attachment](renders/actuator_assembly_gear2.png)
 
 * Line up two [washers][M3 stainless steel washers]{qty:{{var_n_washers, default:6}}, cat:mech} so that the slightly curved sides are facing each other.
-* Take one of the [hex bolts][M3x25mm stainless steel hex bolt]{qty:{{var_n_actuators, default:3}}, cat:mech}
-* Push it through one of the [large gears](fromstep){qty:{{var_n_actuators, default:3}}, cat:printedpart} and then the two washers.
-* Push the screw through the hole at the top of the x actuator until it reaches the nut
+* Take gear with the hex bolt mounted into it, and push it through the two washers.
+* Push the bolt through the hole at the top of the x actuator until it reaches the nut
 * Screw the bolt into the nut until the nut is completely lifted up. (If the nut turns hold it in place with the [nut tool](fromstep){qty:1, cat:printedtool})
 
 ## Oil the lead screw {pagestep}
