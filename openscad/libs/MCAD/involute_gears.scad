@@ -119,9 +119,12 @@ module gear(number_of_teeth=15,
                 }
             }
         }
-        translate([0, 0, -1]){
-            linear_exturde_flat_option(flat =flat, height=2+max(rim_thickness,hub_thickness,gear_thickness)){
-                circle(r=bore_diameter/2);
+        if (bore_diameter>0){
+            translate([0, 0, -1]){
+                bore_h = 2+max(rim_thickness,hub_thickness,gear_thickness);
+                linear_exturde_flat_option(flat =flat, height=bore_h){
+                    circle(r=bore_diameter/2);
+                }
             }
         }
         if(circles>0){
