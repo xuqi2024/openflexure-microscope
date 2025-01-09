@@ -24,6 +24,7 @@ Check your printer is configured as suggested in the [Test your printer] page.
 Now you have tested your [printer][RepRap-style printer]{qty:1,cat:tool} and [filament][PLA filament]{Qty: 200g, note:"Of any colour you want. Two contrasting colours may look best."} you can print the following parts:
 
 * Actuator assembly tools ([nut tool]{output,qty:1}, [band tool]{output,qty:1}, and [band tool cover]{output,qty:1}):  [actuator_assembly_tools.stl](models/actuator_assembly_tools.stl){previewpage}
+* Gear tools ([gear holder]{output,qty:1} and [nut spinner]{output,qty:1}): [gear_tools.stl](models/gear_tools.stl){previewpage}
 * [Lens tool]{output,qty:1}: [lens_tool.stl](models/lens_tool.stl){previewpage}
 * [Main body]{output,qty:1}: [main_body.stl](models/main_body.stl){previewpage} - The smart brim may require [custom print settings].
 * 3 [cable tidy caps]{output,qty:3}: [cable_tidies.stl](models/cable_tidies.stl){previewpage}
