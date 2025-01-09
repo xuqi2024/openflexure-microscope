@@ -79,6 +79,7 @@ def write_ninja_file(build_dir):
         writer.openscad("lens_tool.stl", "lens_tool.scad")
         writer.openscad("picamera_2_gripper.stl", "accessories/picamera_2_gripper.scad")
         writer.openscad("picamera_2_lens_gripper.stl", "accessories/picamera_2_lens_gripper.scad")
+        writer.openscad("gear_tools.stl", "gear_tools.scad")
 
         # Test pieces
         writer.openscad("nut_trap_test.stl", "test_pieces/nut_trap_test.scad")
