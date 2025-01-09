@@ -80,11 +80,26 @@ function actuator_housing_xy_size() = let(
 function actuator_entry_width() = 2*column_base_radius()+3;
 
 
+//TODO: Why is the first term here r implying a radius when it is actually the
+// nominal diamter of the nut?
 
-module nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=undef, slot_length=999, include_top=true){
-    // A cut-out that will hold a nut.  The nut slots in horizontally
-    // along the +y axis, and is pulled up and into the tight part of the
-    // nut seat when a screw is inserted.
+// Module: nut_trap_and_slot()
+// Usage: nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=undef, slot_length=999, include_bridged_top=true)
+// Arguments:
+//   r = Nominal screw diameter size, 3 is for an m3 nut
+//   slot = Size of the slot. vector of nut dimensions (plus clearance) [flat-to-flat, corner-to-corner, height]. The
+//     clearance will set how tight the trap is.
+//   squeeze = Scaling factor for the tapering at the top of the trap. Default=0.9
+//   trap_h = height of the trap. Default is calculated from the dominal screw diameter
+//   slot_length = Length of the entrance slot for the nut. Default = 999
+//   include_bridged_top = Boolean property, sets whether to include briding on top of the trap.
+//     The bridging is needed if printing vertically (i.e. nut starts below trap and is pulled
+//     up). The bridging stops the top of the trap sagging. Default=True
+// Description:
+//   A cut-out that will hold a nut.  The nut slots in horizontally
+//   along the +y axis, and is pulled up and into the tight part of the
+//   nut seat when a screw is inserted.
+module nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=undef, slot_length=999, include_bridged_top=true){
     hole_r = r*1.15/2;
     trap_height = if_undefined_set_default(trap_h, r);
     w = slot.x; //width of the nut entry slot (should be slightly larger than the nut)
@@ -117,7 +132,7 @@ module nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=undef, slot_length=999, in
         }
     }
     // ensure the hole in the top can be made nicely
-    if (include_top) {
+    if (include_bridged_top) {
         intersection(){
             translate([-2*r2, -hole_r,0]){
                 cube([4*r2, 2*hole_r, h + trap_height + 0.5]);

@@ -123,7 +123,7 @@ module large_gear(){
         }
         translate(large_gear_screw_pos()+[0,0,height+1]){
             mirror([0,0,1]){
-                nut_trap_and_slot(actuator_nut_size(), actuator_nut_slot_size(), slot_length=0, include_top=false);
+                nut_trap_and_slot(actuator_nut_size(), actuator_nut_slot_size(), slot_length=0, include_bridged_top=false);
             }
             cylinder(r=actuator_shaft_radius(), h=99, center=true, $fn=16);
         }
