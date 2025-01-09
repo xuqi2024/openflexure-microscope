@@ -125,37 +125,42 @@ module what_you_need(manual=false, optics_version="rms"){
     }
     color(tools_colour()){
         render(6){
-            translate_x(52){
+            translate_x(50){
                 band_tool_arms(params, vertical=false);
             }
         }
     }
     color(tools_colour()){
         render(6){
-            translate([65+3, 12, 1.7]){
+            translate([70, 18, 1.7]){
                 band_tool_holder(params);
             }
         }
     }
     color(tools_colour()){
         render(6){
-            translate([65, 50, 0]){
+            translate([70, 56, 0]){
                 nut_tool();
             }
         }
     }
     coloured_render(tools_colour()){
-        translate([65, -60, 0]){
+        translate([70, -54, 0]){
             rotate_z(90){
                 nut_spinner();
             }
         }
     }
     coloured_render(tools_colour()){
-        translate([66, -23, 0]){
+        translate([68, -17, 0]){
             rotate_z(90){
                 gear_holder();
             }
+        }
+    }
+    translate([60, -55, 0]){
+        rotate_z(30){
+            m3_nut();
         }
     }
 }
@@ -296,7 +301,7 @@ module mount_lead_screw(exploded=false, tools=false){
             }
         }
         translate(tr_nut){
-            m3_nut(brass=true);
+            m3_nut();
         }
         if (!exploded){
             translate_z(-18){
