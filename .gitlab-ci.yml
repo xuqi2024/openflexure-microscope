@@ -29,6 +29,11 @@ version:
 
 ## Template for all OpenSCAD jobs to ensure they run the same
 .scad-job:
+    image: registry.gitlab.com/openflexure/openflexure-microscope/scad-job
+
+# Old template for all OpenSCAD jobs, this is kept in case we want to stop using the
+# container registry
+.legacy-scad-job:
     image: ubuntu:22.04
 
     variables:
