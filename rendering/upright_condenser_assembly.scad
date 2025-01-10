@@ -1,3 +1,4 @@
+use <../openscad/libs/microscope_parameters.scad>
 use <../openscad/libs/illumination.scad>
 use <../openscad/libs/upright_illumination.scad>
 use <../openscad/libs/utilities.scad>
@@ -118,7 +119,7 @@ module upright_rendered_condenser_lid(explode=false){
                 if (USE_BUILT_STL){
                     cached_stl("upright_condenser_platform");
                 }else{
-                    upright_condenser_platform_separate();
+                    upright_condenser_platform_separate(default_params());
                 }
             }
         }
