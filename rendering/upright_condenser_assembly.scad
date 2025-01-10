@@ -1,3 +1,4 @@
+use <../openscad/libs/microscope_parameters.scad>
 use <../openscad/libs/illumination.scad>
 use <../openscad/libs/upright_illumination.scad>
 use <../openscad/libs/utilities.scad>
@@ -13,7 +14,8 @@ use <librender/electronics.scad>
 use <mount_microscope.scad>
 use <./condenser_assembly.scad>
 
-USE_BUILT_STL = true;
+// False by default so we don't need to run build before render in ci
+USE_BUILT_STL = false;
 FRAME = 1;
 upright_assemble_condenser(FRAME);
 
@@ -117,7 +119,7 @@ module upright_rendered_condenser_lid(explode=false){
                 if (USE_BUILT_STL){
                     cached_stl("upright_condenser_platform");
                 }else{
-                    upright_condenser_platform_separate();
+                    upright_condenser_platform_separate(default_params());
                 }
             }
         }

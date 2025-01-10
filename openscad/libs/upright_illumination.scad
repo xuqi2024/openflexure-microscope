@@ -22,7 +22,7 @@ function  upright_condenser_platform_height() = let(
 // Module to create a platform with a fitting wedge for the z-axis
 // and a mounting face for the condenser and cut-out for a 5mm LED or LED PCB.
 // This has the cutouts that would be in the 'lid' of the condenser on the inverted microscope.
-module upright_condenser_platform_separate(params, base_r){
+module upright_condenser_platform_separate(params, base_r=5){
 
     platform_h = upright_condenser_platform_height();
     assert(platform_h > upper_z_flex_z(params), "Platform height too low for z-axis mounting");
