@@ -29,6 +29,11 @@ version:
 
 ## Template for all OpenSCAD jobs to ensure they run the same
 .scad-job:
+    image: registry.gitlab.com/openflexure/openflexure-microscope/scad-job
+
+# Old template for all OpenSCAD jobs, this is kept in case we want to stop using the
+# container registry
+.legacy-scad-job:
     image: ubuntu:22.04
 
     variables:
@@ -181,16 +186,59 @@ check_stls:
       reports:
         junit: admesh_report.xml
 
+prebuild-for-render:
+    extends: .scad-job
+    stage: build
+    dependencies: ["version"]
+    needs: ["version"]
+
+    script:
+      - ./render.py --force-clean --stl-only
+
+    artifacts:
+      expire_in: 1 week
+      name: "${CI_PROJECT_NAME}-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}-renders"
+      # saving any rendering csg files. Only remaining files should be when scad2gltf fails
+      paths:
+        - rendering/librender/*.stl
+
+    only:
+      - tags
+      - merge_requests
+      - web
+      - master
+
 # render assemblies - uses xvfb as a virtual x-server
 render:
     extends: .scad-job
     stage: build
-    dependencies: ["build", "version"]
-    needs: ["build", "version"]
+    dependencies: ["prebuild-for-render", "version"]
+    needs: ["prebuild-for-render", "version"]
 
     script:
-      - git status
-      - xvfb-run --auto-servernum --server-args "-screen 0 1024x768x24" ./render.py --force-clean
+      - xvfb-run --auto-servernum --server-args "-screen 0 1024x768x24" ./render.py --force-clean --png-only
+
+    artifacts:
+      expire_in: 1 week
+      name: "${CI_PROJECT_NAME}-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}-renders"
+      # saving any rendering csg files. Only remaining files should be when scad2gltf fails
+      paths:
+        - docs/renders/*.png
+        - docs/gltf/*
+
+    only:
+      - tags
+      - merge_requests
+      - web
+      - master
+
+gltf:
+    extends: .scad-job
+    stage: build
+    dependencies: ["prebuild-for-render", "version"]
+    needs: ["prebuild-for-render", "version"]
+
+    script:
       - mkdir -p docs/gltf
       - pip install scad2gltf
       - cd rendering
@@ -213,15 +261,15 @@ render:
       - web
       - master
 
-
 # Build docs- this is at a later stage so it has access to the models
 build-docs:
     stage: build-docs
     dependencies:
       - build
       - render
+      - gltf
       - archive-source
-    needs: ["build", "render", "archive-source"]
+    needs: ["build", "render", "gltf", "archive-source"]
     image: "python:3.12"
 
     before_script:

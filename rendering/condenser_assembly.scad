@@ -11,7 +11,8 @@ use <librender/optics.scad>
 use <librender/electronics.scad>
 use <mount_microscope.scad>
 
-USE_BUILT_STL = true;
+// False by default so we don't need to run build before render in ci
+USE_BUILT_STL = false;
 FRAME = 7;
 assemble_condenser(FRAME);
 

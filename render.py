@@ -288,7 +288,7 @@ def register_brim_and_ties_separate_z_actuator(rendersystem):
     cameras = [
         Camera(position=[-4, 37, 34], angle=[57, 0, 315], distance=264),
         Camera(position=[0, 42, 17], angle=[206, 0, 180], distance=264),
-    ] 
+    ]
     imgsize = [2400, 2400]
     for i, camera in enumerate(cameras):
         output_file = f"docs/renders/brim_and_ties_separate_z{i+1}.png"
@@ -605,37 +605,54 @@ def main():
         help="Ensures that the repo is clean before rendering",
         action="store_true",
     )
+    parser.add_argument(
+        "--stl-only",
+        help="Only creates the pre-built STLs ready for rendering",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--png-only",
+        help="Only renders the PNGs, STLs must already have been pre-built",
+        action="store_true",
+    )
     args  = parser.parse_args()
 
+    if args.png_only and args.stl_only:
+        raise RuntimeError("Can't set both png-only and stl-only parameters.")
+
+    run_all = not args.png_only and not args.stl_only
+
     rendersystem = RenderSystem()
-    rendersystem.register_zip_assets('rendering/librender/hardware.zip')
-    register_rendered_microscope_stl(rendersystem, force_clean=args.force_clean)
-    register_rendered_separate_z_actuator_stl(rendersystem)
-    #Register all openscad renders (and associated post processing)
-    register_rms_optics_assembly(rendersystem)
-    register_low_cost_optics_assembly(rendersystem)
-    register_condenser_assembly(rendersystem)
-    register_upright_condenser_assembly(rendersystem)
-    register_workaround_5mm_led(rendersystem)
-    register_optics_assembled(rendersystem)
-    register_band(rendersystem)
-    register_brim_and_ties(rendersystem)
-    register_brim_and_ties_separate_z_actuator(rendersystem)
-    register_prepare_main_body(rendersystem)
-    register_prepare_stand(rendersystem)
-    register_actuator_assembly(rendersystem)
-    register_band_tool_assembly(rendersystem)
-    register_picam(rendersystem)
-    register_mount_optics(rendersystem)
-    register_mount_upright_optics(rendersystem)
-    register_mount_microscope(rendersystem)
-    register_mount_illumination(rendersystem)
-    register_motor_assembly(rendersystem)
-    register_mount_motors(rendersystem)
-    register_mount_sample_clips(rendersystem)
-    register_prepare_pi_and_sangaboard(rendersystem)
-    register_mount_electronics(rendersystem)
-    register_complete_microscope(rendersystem)
+    if run_all or args.stl_only:
+        rendersystem.register_zip_assets('rendering/librender/hardware.zip')
+        register_rendered_microscope_stl(rendersystem, force_clean=args.force_clean)
+        register_rendered_separate_z_actuator_stl(rendersystem)
+    if run_all or args.png_only:
+        #Register all openscad renders (and associated post processing)
+        register_rms_optics_assembly(rendersystem)
+        register_low_cost_optics_assembly(rendersystem)
+        register_condenser_assembly(rendersystem)
+        register_upright_condenser_assembly(rendersystem)
+        register_workaround_5mm_led(rendersystem)
+        register_optics_assembled(rendersystem)
+        register_band(rendersystem)
+        register_brim_and_ties(rendersystem)
+        register_brim_and_ties_separate_z_actuator(rendersystem)
+        register_prepare_main_body(rendersystem)
+        register_prepare_stand(rendersystem)
+        register_actuator_assembly(rendersystem)
+        register_band_tool_assembly(rendersystem)
+        register_picam(rendersystem)
+        register_mount_optics(rendersystem)
+        register_mount_upright_optics(rendersystem)
+        register_mount_microscope(rendersystem)
+        register_mount_illumination(rendersystem)
+        register_motor_assembly(rendersystem)
+        register_mount_motors(rendersystem)
+        register_mount_sample_clips(rendersystem)
+        register_prepare_pi_and_sangaboard(rendersystem)
+        register_mount_electronics(rendersystem)
+        register_complete_microscope(rendersystem)
 
     rendersystem.render()
 
