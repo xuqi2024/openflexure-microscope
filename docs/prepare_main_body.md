@@ -19,6 +19,23 @@ The [main body][Main body](fromstep){cat: PrintedPart, qty:1} has some custom su
 * Cut the ties inside actuator columns (6 total) with the [precision wire cutters]{qty:1}
 * Cut the ties for the rear legs (4 total) with the [precision wire cutters]{qty:1}
 
+## Check the body printed correctly{pagestep}
+
+**xy-stage**
+
+![](renders/check_main_body_stage.png)
+
+* Check that top of the xy-stage is flat
+* Check the quality of the underside of the xy-stage. Slight drooping is normal and acceptable. Any loose filament strands should be trimmed off. Large numbers of loose filaments dangling beneath is a sign of low print quality.
+
+**Top Flexures**
+
+![](renders/check_main_body_top_flex.png)
+
+* Check that the top of each 4 legs are aligned correctly
+* Each leg should have 4 thin unsupported flexure (blue)
+* The tops of the legs (green), and the the central leg block (green) should be in line with a flexure in between.
+
 ## Embed mounting nuts in the stage {pagestep}
 
 ![](renders/prepare_main_body1.png)

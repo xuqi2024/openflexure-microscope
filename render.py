@@ -316,6 +316,28 @@ def register_prepare_main_body(rendersystem):
         render = ScadRender(output_file, input_file, scad, imgsize, camera)
         rendersystem.register_scad_render(render)
 
+def register_check_main_body(rendersystem):
+    input_file = "rendering/check_main_body.scad"
+    cameras = [
+        Camera(position=[-2, 32, 33], angle=[76, 0, 27], distance=325),
+        Camera(position=[-22.5, -27, 58], angle=[20.7, 0, 267], distance=100),
+    ]
+
+    outfiles = [
+        "docs/renders/check_main_body_stage.png",
+        "rendering/annotations/check_main_body_top_flex.png"
+    ]
+    imgsize = [2400, 2000]
+    for i, (output_file, camera) in enumerate(zip(outfiles, cameras)):
+        scad = f"render_check_main_body({i+1});"
+        render = ScadRender(output_file, input_file, scad, imgsize, camera)
+        rendersystem.register_scad_render(render)
+
+    rendersystem.register_inkscape_annotation(
+        "docs/renders/check_main_body_top_flex.png",
+        "rendering/annotations/annotate_check_main_body_top_flex.svg"
+    )
+
 def register_prepare_stand(rendersystem):
     input_file = "rendering/prepare_stand.scad"
     cameras = [
@@ -622,6 +644,7 @@ def main():
     register_brim_and_ties(rendersystem)
     register_brim_and_ties_separate_z_actuator(rendersystem)
     register_prepare_main_body(rendersystem)
+    register_check_main_body(rendersystem)
     register_prepare_stand(rendersystem)
     register_actuator_assembly(rendersystem)
     register_band_tool_assembly(rendersystem)

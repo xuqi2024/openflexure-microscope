@@ -502,22 +502,24 @@ module concave_fillet(r){
     }
 }
 
-module thick_section(h=tiny(), center=false, shift=true){
+module thick_section(h=tiny(), center=false, shift=true, z_pos=0){
     // A 3D object, corresponding to the linearly-extruded projection of another object.
     // The projection is at z=0 if shift=false, or a tiny distance above z=0 if shift=true.
-    offset_thick_section(h=h, center=center, shift=shift){
+    offset_thick_section(h=h, center=center, shift=shift, z_pos=z_pos){
         children();
     }
 }
-module offset_thick_section(h=tiny(), offset=0, center=false, shift=true){
+module offset_thick_section(h=tiny(), offset=0, center=false, shift=true, z_pos=0){
     // A 3D object, corresponding to the linearly-extruded projection of another object, where
     // the projection is offset before extrusion.
     // The projection is at z=0 if shift=false, or a tiny distance above z=0 if shift=true.
-    linear_extrude(h, center=center){
-        offset(r=offset){
-            projection(cut=true){
-                translate_z(shift ? -tiny() : 0){
-                    children();
+    translate_z(z_pos){
+        linear_extrude(h, center=center){
+            offset(r=offset){
+                projection(cut=true){
+                    translate_z(shift ? -z_pos-tiny() : -z_pos){
+                        children();
+                    }
                 }
             }
         }
