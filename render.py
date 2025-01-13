@@ -428,14 +428,13 @@ def register_mount_optics(rendersystem):
     for body in ["", "_manual"]:
         manual = str(body == "_manual").lower()
         for optics_version in ["rms", "low_cost", "upright"]:
-            low_cost = str(optics_version == "low_cost").lower()
             if not ((body == "_manual") and (optics_version == "rms")): # no renders for manual rms
                 for i, camera in enumerate(cameras):
                     frame = i + 1
                     output_file = f"docs/renders/mount_optics_{optics_version}{body}{frame}.png"
                     scad = f"render_mount_optics({frame}, \"{optics_version}\", {manual});"
                     render = ScadRender(output_file, input_file, scad, imgsize, camera)
-                    rendersystem.register_scad_render(render) 
+                    rendersystem.register_scad_render(render)
 
 def register_mount_upright_optics(rendersystem):
     input_file = "rendering/mount_upright_optics.scad"
@@ -480,7 +479,7 @@ def register_mount_illumination(rendersystem):
     for body in ["", "_manual"]:
         manual = str(body == "_manual").lower()
         for optics_version in ["rms", "low_cost", "upright"]:
-            if (body == "_manual") :
+            if body == "_manual" :
                 cameras = [
                     Camera(position=[-6, 49, 118], angle=[68, 0, 133], distance=360),
                     Camera(position=[-6, 49, 118], angle=[68, 0, 133], distance=360),
@@ -489,7 +488,7 @@ def register_mount_illumination(rendersystem):
                     Camera(position=[-6, 49, 118], angle=[82, 0, 308], distance=360),
                     Camera(position=[-6, 49, 118], angle=[82, 0, 308], distance=360)
                 ]
-            elif (optics_version == "upright") :
+            elif optics_version == "upright" :
                 cameras = [
                     Camera(position=[0, 50, 180], angle=[68, 0, 133], distance=360),
                     Camera(position=[0, 50, 180], angle=[68, 0, 133], distance=360),
@@ -548,7 +547,7 @@ def register_mount_sample_clips(rendersystem):
     imgsize = [2400, 2000]
     for body in ["", "_manual"]:
         manual = str(body == "_manual").lower()
-        if (body == "_manual") :
+        if body == "_manual" :
             camera = Camera(position=[0, 0, 118], angle=[68, 0, 308], distance=250)
         else :
             camera = Camera(position=[0, 0, 178], angle=[68, 0, 308], distance=250)
