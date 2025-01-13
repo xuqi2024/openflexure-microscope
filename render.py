@@ -551,8 +551,9 @@ def register_mount_sample_clips(rendersystem):
             camera = Camera(position=[0, 0, 118], angle=[68, 0, 308], distance=250)
         else :
             camera = Camera(position=[0, 0, 178], angle=[68, 0, 308], distance=250)
-        for optics_version in ["rms", "low_cost"]:
-            if not ((body == "_manual") and (optics_version == "rms")): # no renders for manual rms
+        for optics_version in ["rms", "low_cost", "upright"]:
+            # no renders for manual rms or manual upright
+            if not ((body == "_manual") and ((optics_version == "rms") or (optics_version == "upright)"))):
                 for i in [1, 2, 3, 4]:
                     output_file = f"docs/renders/mount_sample_clips_{optics_version}{body}{i}.png"
                     scad = f"render_mount_sample_clips({i}, \"{optics_version}\", {manual});"
