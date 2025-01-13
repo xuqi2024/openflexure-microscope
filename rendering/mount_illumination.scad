@@ -1,5 +1,6 @@
 use <../openscad/libs/illumination.scad>
 use <../openscad/libs/utilities.scad>
+use <../openscad/libs/libdict.scad>
 use <../openscad/libs/lib_microscope_stand.scad>
 use <librender/render_settings.scad>
 use <librender/render_utils.scad>
@@ -49,7 +50,7 @@ module mount_illumination(frame, optics_version="rms", manual=false){
         mounted_microscope_frame(manual=manual){
             if (optics_version=="upright"){
                 rendered_upright_z_spacer_assembly();
-                rendered_upright_z_axis(exploded=true);
+                rendered_upright_z_axis(exploded=true, manual=manual);
             }
             else {
                 rendered_illumination_dovetail_assembly();
@@ -63,7 +64,7 @@ module mount_illumination(frame, optics_version="rms", manual=false){
         if (optics_version=="upright"){
             mounted_microscope_frame(manual=manual){
                 rendered_upright_z_spacer_assembly();
-                rendered_upright_z_axis();
+                rendered_upright_z_axis(, manual=manual);
             }
         }
         else{
@@ -82,12 +83,12 @@ module mount_illumination(frame, optics_version="rms", manual=false){
     else if (frame == 5){
         if (optics_version=="upright"){
             // frame 4 s is already complete, this is the same render as frame == 6
-            mounted_microscope_with_illumination(optics_version=optics_version);
+            mounted_microscope_with_illumination(stand_params=stand_params, optics_version=optics_version, manual=manual);
         }
         else {
             mounted_microscope_frame(manual=manual){
                 rendered_illumination_dovetail_assembly();
-                rendered_condenser_assembly(tighten_arrow=true);
+                rendered_condenser_assembly(include_led=false, tighten_arrow=true);
                 illumination_wiring(manual=manual);
             }
         }
@@ -102,15 +103,15 @@ module mounted_microscope_with_illumination(stand_params=default_stand_params(),
     mounted_microscope_frame(manual=manual){
         if (optics_version=="upright"){
             rendered_upright_z_spacer_assembly();
-            rendered_upright_z_axis();
+            rendered_upright_z_axis(manual=manual);
         }
         else{
             rendered_illumination_dovetail_assembly();
-            rendered_condenser_assembly();
+            rendered_condenser_assembly(include_led=false);
             illumination_wiring(manual=manual);
         }
     }
-    mounted_microscope(stand_params, optics_version="rms", manual=false);
+    mounted_microscope(stand_params, optics_version=optics_version, manual=manual);
 }
 
 module rendered_upright_z_spacer_assembly(exploded=false){
@@ -189,13 +190,13 @@ module illumination_wiring(params=render_params(), exploded=false, manual=false)
     }
 }
 
-module rendered_upright_z_axis(exploded=false){
+module rendered_upright_z_axis(exploded=false, manual=false){
     params=render_params();
     lift = (exploded ? 10 : 0);
     z_translate = illumination_dovetail_z(params)*2 + upright_z_spacer_height(params,1) + lift;
     translate_z(z_translate){
         rotate_y(180){
-            separate_z_actuator_with_assembled_actuators();
+            separate_z_actuator_with_assembled_actuators(manual=manual);
         }
     }
     z_mount_screw(exploded, right=true, front=true);

@@ -1,7 +1,7 @@
 use <./mount_electronics.scad>
 
 OPTICS_VERSION = "rms";
-Manual = false
+Manual = false;
 
 render_complete_microscope(OPTICS_VERSION, MANUAL);
 

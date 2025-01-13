@@ -638,6 +638,10 @@ def register_rendered_separate_z_actuator_stl(rendersystem):
     parameters = {}
     rendersystem.register_render_stl(input_file, parameters)
 
+def register_rendered_separate_z_actuator_manual_stl(rendersystem):
+    input_file = "rendering/librender/rendered_separate_z_actuator_manual.scad"
+    parameters = {}
+    rendersystem.register_render_stl(input_file, parameters)
 
 def main():
     parser = argparse.ArgumentParser(
@@ -671,6 +675,7 @@ def main():
         register_rendered_microscope_stl(rendersystem, force_clean=args.force_clean)
         register_rendered_microscope_manual_stl(rendersystem, force_clean=args.force_clean)
         register_rendered_separate_z_actuator_stl(rendersystem)
+        register_rendered_separate_z_actuator_manual_stl(rendersystem)
     if run_all or args.png_only:
         #Register all openscad renders (and associated post processing)
         register_rms_optics_assembly(rendersystem)

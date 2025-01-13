@@ -241,11 +241,6 @@ module body_with_assembled_actuators(manual=false, x_only=false, translucent_bod
     main_body_prepared(manual=manual, translucent_body=translucent_body);
 }
 
-module separate_z_actuator_with_assembled_actuators(){
-    z_actuator_assembly();
-    rendered_separate_z_actuator();
-}
-
 module separate_z_actuator_with_assembled_actuators(manual=false){
     z_actuator_assembly(manual=manual);
     rendered_separate_z_actuator(manual=manual);

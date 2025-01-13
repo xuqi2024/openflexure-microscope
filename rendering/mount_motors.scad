@@ -17,7 +17,7 @@ use <mount_microscope.scad>
 use <mount_upright_optics.scad>
 use <motor_assembly.scad>
 
-FRAME = 3;
+FRAME = 28;
 OPTICS_VERSION = "upright";
 render_mount_motors(FRAME, OPTICS_VERSION);
 
@@ -42,7 +42,14 @@ module render_mount_motors(frame, optics_version="rms"){
     }
 }
 
+assembled_microscope_without_electronics(optics_version="upright",
+                                                manual=true,
+                                                xy_motor=false,
+                                                z_motor=false,
+                                                explode=false
+                                                );
 
+// This module will add motors for a motorised version, but will pass through a manual version unchanged 
 module assembled_microscope_without_electronics(optics_version="rms",
                                                 manual=false,
                                                 xy_motor=true,
@@ -81,13 +88,14 @@ module assembled_microscope_without_electronics(optics_version="rms",
             else{
                     z_motor_and_cap(params,
                                 optics_version=optics_version,
-                                    exploded=exploded,
-                                    connector_pos=connector_positions.z,
-                                    cable_pos=cable_positions.z,
+                                exploded=exploded,
+                                connector_pos=connector_positions.z,
+                                cable_pos=cable_positions.z,
                                 cap=true);
             }
             }
         }
+    }
     if (optics_version == "upright"){
         mounted_microscope_upright_with_optics(optics_version=optics_version, manual=manual);
     }
