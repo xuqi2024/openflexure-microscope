@@ -7,12 +7,14 @@
 [precision wire cutters]: parts/tools/precision-wire-cutters.md "{cat:tool}"
 [utility knife]: parts/tools/utility-knife.md "{cat:tool}"
 
+{{includetext: "
 ## Remove the supports {pagestep}
 
 ![](renders/prepare_stand1.png)
 
 * Take each of the supports (highlighted in red) and rock them backward and forward until they detach from the stand.
-* Remove any remaining bumps from the support connection with a [utility knife]{qty:1,cat:tool} or [precision wire cutters]{qty:1}.
+* Remove any remaining bumps from the support connection with a [utility knife]{qty:1,cat:tool} or [precision wire cutters]{qty:1}. 
+", if: var_body is not _manual}}
 
 ## Embed mounting nut in the stand {pagestep}
 
@@ -31,7 +33,7 @@
 ![](renders/prepare_stand{{var_body, default:}}6.png)
 ![](renders/prepare_stand{{var_body, default:}}7.png)
 
-Repeat the above process for the other three mounting lugs
+Repeat the above process for the other  {{includetext: "three mounting lugs", if: var_body is not _manual}}{{includetext: "mounting lug", if: var_body is _manual}}
 
 [prepared microscope stand]{output, qty:1, hidden}
 
