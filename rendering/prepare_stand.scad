@@ -9,7 +9,7 @@ use <../openscad/libs/lib_microscope_stand.scad>
 use <../openscad/libs/simple_post_stand_lib.scad>
 
 FRAME = 1;
-MANUAL = true;
+MANUAL = false;
 
 render_prepare_stand(FRAME, MANUAL);
 
@@ -17,6 +17,7 @@ module render_prepare_stand(frame, manual=false){
     params = render_params();
     stand_params = render_stand_params(manual=manual);
     if (frame==1){
+        assert(!manual, "There are no stand supports to remove for the manual stand");
         render_stand(params, stand_params);
         coloured_render(remove_colour()){
             stand_supports(params, stand_params);
@@ -46,10 +47,12 @@ module render_prepare_stand(frame, manual=false){
         stand_nut(params, stand_params);
         stand_nut(params, stand_params, nut_num=1);
         stand_nut_temp_screw(params, stand_params, nut_num=1, turn=true);
-        stand_nut(params, stand_params, nut_num=2);
-        stand_nut_temp_screw(params, stand_params, nut_num=2, turn=true);
-        stand_nut(params, stand_params, nut_num=3);
-        stand_nut_temp_screw(params, stand_params, nut_num=3, turn=true);
+        if (!manual){
+            stand_nut(params, stand_params, nut_num=2);
+            stand_nut_temp_screw(params, stand_params, nut_num=2, turn=true);
+            stand_nut(params, stand_params, nut_num=3);
+            stand_nut_temp_screw(params, stand_params, nut_num=3, turn=true);
+        }
     }
     else if (frame==7){
         stand_prepared(params, stand_params, manual=manual);
@@ -57,10 +60,12 @@ module render_prepare_stand(frame, manual=false){
     // last frames used when putting in the nut for fitting
     // the electronics drawer, wiring.md
     else if (frame==8){
+        assert(!manual, "There is no electronics drawer nut for the manual stand");
         stand_prepared(params, stand_params);
         render_electronics_drawer_nut(exploded=true);
     }
     else if (frame==9){
+        assert(!manual, "There is no electronics drawer nut for the manual stand");
         stand_prepared(params, stand_params);
         render_electronics_drawer_nut(exploded=false);
     }

@@ -323,25 +323,32 @@ def register_prepare_main_body(rendersystem):
 
 def register_prepare_stand(rendersystem):
     input_file = "rendering/prepare_stand.scad"
-    cameras = [
-        Camera(position=[15, 26, 41.5], angle=[47, 0, 111], distance=450),
-        Camera(position=[-9, 20, 37.5], angle=[34, 0, 235], distance=450),
-        Camera(position=[-9, 20, 37.5], angle=[34, 0, 235], distance=450),
-        Camera(position=[-9, 20, 37.5], angle=[34, 0, 235], distance=450),
-        Camera(position=[-9, 20, 37.5], angle=[34, 0, 235], distance=450),
-        Camera(position=[-9, 20, 37.5], angle=[34, 0, 235], distance=450),
-        Camera(position=[-9, 20, 37.5], angle=[34, 0, 235], distance=450),
-        Camera(position=[75, 52, 32], angle=[65, 0, 115], distance=240),
-        Camera(position=[75, 52, 32], angle=[65, 0, 115], distance=240),
-    ]
+    # remove supports for normal stand only
     imgsize = [2400, 2000]
-    for body in ["", "_manual"]:
+    camera = Camera(position=[15, 26, 41.5], angle=[47, 0, 111], distance=450)
+    output_file = f"docs/renders/prepare_stand1.png"
+    scad = f"render_prepare_stand(1, manual=false);"
+    render = ScadRender(output_file, input_file, scad, imgsize, camera)
+    rendersystem.register_scad_render(render)
+    # embed top nuts for normal or manual stand
+    for body in ["", "_manual"] :
         manual = str(body == "_manual").lower()
-        for i, camera in enumerate(cameras):
-            output_file = f"docs/renders/prepare_stand{body}{i+1}.png"
-            scad = f"render_prepare_stand({i+1},{manual});"
+        if manual :
+            camera = Camera(position=[-17, 13, 25], angle=[70, 0, 215], distance=195)
+        else :
+            camera = Camera(position=[-9, 20, 37.5], angle=[34, 0, 235], distance=450)
+        for frame in [2, 3, 4, 5, 6, 7] :
+            output_file = f"docs/renders/prepare_stand{body}{frame}.png"
+            scad = f"render_prepare_stand({frame},{manual});"
             render = ScadRender(output_file, input_file, scad, imgsize, camera)
             rendersystem.register_scad_render(render)
+    # add electronics drawer nut for normal stand only
+    camera = Camera(position=[75, 52, 32], angle=[65, 0, 115], distance=240)
+    for frame in [8, 9] :
+        output_file = f"docs/renders/prepare_stand{frame}.png"
+        scad = f"render_prepare_stand({frame}, manual=false);"
+        render = ScadRender(output_file, input_file, scad, imgsize, camera)
+        rendersystem.register_scad_render(render)
 
 def register_actuator_assembly(rendersystem):
     input_file = "rendering/actuator_assembly.scad"
