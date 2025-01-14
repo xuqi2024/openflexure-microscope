@@ -333,7 +333,7 @@ def register_prepare_stand(rendersystem):
     # embed top nuts for normal or manual stand
     for body in ["", "_manual"] :
         manual = str(body == "_manual").lower()
-        if manual :
+        if body == "_manual" :
             camera = Camera(position=[-17, 13, 25], angle=[70, 0, 215], distance=195)
         else :
             camera = Camera(position=[-9, 20, 37.5], angle=[34, 0, 235], distance=450)
