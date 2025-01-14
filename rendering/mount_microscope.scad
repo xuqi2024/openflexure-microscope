@@ -11,31 +11,33 @@ use <prepare_stand.scad>
 
 FRAME = 1;
 OPTICS_VERSION = "rms";
-render_mount_microscope(FRAME, OPTICS_VERSION);
+MANUAL = false;
+render_mount_microscope(FRAME, OPTICS_VERSION, MANUAL);
 
-module render_mount_microscope(frame, optics_version){
+module render_mount_microscope(frame, optics_version, manual){
     if (frame==1){
-        mounted_microscope(optics_version=optics_version, exploded=true);
+        mounted_microscope(optics_version=optics_version, manual=manual, exploded=true);
     }
     else if (frame==2){
-        mounted_microscope(optics_version=optics_version);
+        mounted_microscope(optics_version=optics_version, manual=manual);
     }
 }
 
-module mounted_microscope(optics_version="rms", exploded=false){
+module mounted_microscope(stand_params=default_stand_params(), optics_version="rms", manual=false, exploded=false){
     params = render_params();
-    stand_params = default_stand_params();
-    stand_prepared(params, stand_params);
-    for (i = [0, 1, 2, 3]){
+    stand_params = render_stand_params(manual=manual);
+    stand_prepared(params, stand_params, manual=manual);
+    screws = (manual) ? [0, 1] : [0, 1, 2, 3] ;
+    for (i = screws){
         stand_lug_screw(params, stand_params, i, exploded=exploded);
     }
-    mounted_microscope_frame(exploded=exploded){
-        body_with_optics(optics_version=optics_version);
+    mounted_microscope_frame(manual=manual, exploded=exploded){
+        body_with_optics(optics_version=optics_version, manual=manual);
     }
 }
 
-module mounted_microscope_frame(exploded=false){
-    stand_params = default_stand_params();
+module mounted_microscope_frame(manual=false, exploded=false){
+    stand_params = render_stand_params(manual=manual);
     place_part(microscope_on_stand_pos(stand_params, exploded=exploded)){
         children();
     }

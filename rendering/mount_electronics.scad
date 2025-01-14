@@ -155,9 +155,9 @@ module render_mount_electronics(frame, optics_version="rms"){
     }
 }
 
-module microscope_with_clips(optics_version="rms"){
-    assembled_microscope_without_electronics(optics_version=optics_version);
-    mounted_microscope_frame(){
+module microscope_with_clips(optics_version="rms", manual=false){
+    assembled_microscope_without_electronics(optics_version=optics_version, manual=manual);
+    mounted_microscope_frame(manual=manual){
         render_sample_clips();
     }
 }
@@ -347,12 +347,14 @@ module render_electronics_drawer_screw(exploded=false){
     }
 }
 
-module render_microscope(optics_version="rms"){
-        microscope_with_clips(optics_version=optics_version);
-        render_electronics_drawer(slide=false);
-        render_rpi_4b(slide=false);
-        render_rpi_4b_screws(slide=false);
-        render_sangaboard_v0_5(slide=false);
-        render_sangaboard_screws(slide=false);
-        render_electronics_drawer_screw(exploded=false);
+module render_microscope(optics_version="rms", manual=false){
+        microscope_with_clips(optics_version=optics_version, manual=manual);
+        if (!manual){
+            render_electronics_drawer(slide=false);
+            render_rpi_4b(slide=false);
+            render_rpi_4b_screws(slide=false);
+            render_sangaboard_v0_5(slide=false);
+            render_sangaboard_screws(slide=false);
+            render_electronics_drawer_screw(exploded=false);
+        }
 }

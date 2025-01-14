@@ -9,8 +9,8 @@
 
 ## Mount the dovetail {pagestep}
 
-![](renders/mount_illumination_{{var_optics, default:rms}}1.png)
-![](renders/mount_illumination_{{var_optics, default:rms}}2.png)
+![](renders/mount_illumination_{{var_optics, default:rms}}{{var_body, default:}}1.png)
+![](renders/mount_illumination_{{var_optics, default:rms}}{{var_body, default:}}2.png)
 
 
 * Place the [illumination dovetail][Illumination dovetail](fromstep){qty:1, cat:printedpart} onto the stage above the z-actuator of the main body.
@@ -18,7 +18,7 @@
 
 ## Insert the illumination wiring {pagestep}
 
-![](renders/mount_illumination_{{var_optics, default:rms}}3.png)
+![](renders/mount_illumination_{{var_optics, default:rms}}{{var_body, default:}}3.png)
 
 * Take the [assembled illumination module](fromstep){qty: 1, cat:subassembly}
 * Pass the illumination cable from the top to the bottom of the cable guide in the illumination dovetail.
@@ -26,9 +26,9 @@
 
 ## Mount the condenser arm {pagestep}
 
-![](renders/mount_illumination_{{var_optics, default:rms}}4.png)
-![](renders/mount_illumination_{{var_optics, default:rms}}5.png)
-![](renders/mount_illumination_{{var_optics, default:rms}}6.png)
+![](renders/mount_illumination_{{var_optics, default:rms}}{{var_body, default:}}4.png)
+![](renders/mount_illumination_{{var_optics, default:rms}}{{var_body, default:}}5.png)
+![](renders/mount_illumination_{{var_optics, default:rms}}{{var_body, default:}}6.png)
 
 * Slide the condenser arm into the illumination dovetail until it is approximately flush with the top
 * Tighten the thumbscrew by hand to lock the arm in place.
