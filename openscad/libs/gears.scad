@@ -114,7 +114,7 @@ module large_gear(){
     $fn=32;
 
     pitch_r = large_gear_pitch_radius();
-    height = 6;
+    height = 6; // height of nut trap
     difference(){
         // intersection used to chamfer the bottom of the gear
         intersection(){
@@ -195,6 +195,7 @@ module thumbwheel(){
     base_up_r = 12;
     base_h = 12.5;
     n_lobe = 6;
+    height = 6; // height of nut trap
 
     difference()
     {
@@ -209,8 +210,16 @@ module thumbwheel(){
                 }
             }
         }
-        translate_z(1.5){
-            m3_nut_hole(h=99, shaft=true, tight=true);
+        translate_z(height+1-tiny()){
+            rotate_z(30){
+                m3_nut_hole(h=99, shaft=false, tight=false);
+            }
+        }
+        translate([0,0,height+1.5]){
+            mirror([0,0,1]){
+                nut_trap_and_slot(actuator_nut_size(), actuator_nut_slot_size(), slot_length=0, include_bridged_top=false);
+            }
+            cylinder(r=actuator_shaft_radius(), h=99, center=true, $fn=16);
         }
     }
 }
