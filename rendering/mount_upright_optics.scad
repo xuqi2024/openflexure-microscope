@@ -91,9 +91,9 @@ module render_mount_upright_optics(frame, optics_version="upright"){
     }
 }
 
-module mounted_microscope_upright_with_optics(optics_version="upright"){
+module mounted_microscope_upright_with_optics(optics_version="upright", manual=false){
     assert(optics_version=="upright","The upright optics mounting renders only apply to the upright optics version");
-    mounted_microscope_frame(){
+    mounted_microscope_frame(manual=manual){
             place_part(locate_on_upright()){
                 om_pos = optics_module_pos(low_cost=true);
                 render_optics("low_cost", om_pos, screw_tight=true);
@@ -106,7 +106,7 @@ module mounted_microscope_upright_with_optics(optics_version="upright"){
                 }
             }
     }
-    mounted_microscope_with_illumination(optics_version=optics_version);
+    mounted_microscope_with_illumination(optics_version=optics_version, manual=manual);
 }
 
 module render_upright_optics(om_pos=undef, screw_tight=false){
