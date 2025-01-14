@@ -326,8 +326,8 @@ def register_prepare_stand(rendersystem):
     # remove supports for normal stand only
     imgsize = [2400, 2000]
     camera = Camera(position=[15, 26, 41.5], angle=[47, 0, 111], distance=450)
-    output_file = f"docs/renders/prepare_stand1.png"
-    scad = f"render_prepare_stand(1, manual=false);"
+    output_file = "docs/renders/prepare_stand1.png"
+    scad = "render_prepare_stand(1, manual=false);"
     render = ScadRender(output_file, input_file, scad, imgsize, camera)
     rendersystem.register_scad_render(render)
     # embed top nuts for normal or manual stand
