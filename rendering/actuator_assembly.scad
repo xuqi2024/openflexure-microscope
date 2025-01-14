@@ -15,9 +15,9 @@ use <prepare_main_body.scad>
 use <librender/rendered_separate_z_actuator.scad>
 
 
-FRAME = 11;
+FRAME = 2;
 OPTICS_VERSION = "rms";
-MANUAL = false;
+MANUAL = true;
 
 render_actuator_assembly(FRAME, MANUAL, OPTICS_VERSION);
 
@@ -25,11 +25,11 @@ module render_actuator_assembly(frame, manual=false, optics_version="rms"){
     if (frame==1){
         what_you_need(manual=manual, optics_version=optics_version);
     }else if (frame==2){
-        mount_lead_screw(exploded=true, tools=true);
+        mount_lead_screw(manual=manual, exploded=true, tools=true);
     }else if (frame==3){
-        mount_lead_screw(exploded=false, tools=true);
+        mount_lead_screw(manual=manual, exploded=false, tools=true);
     }else if (frame==4){
-        mount_lead_screw(exploded=false, tools=false);
+        mount_lead_screw(manual=manual, exploded=false, tools=false);
     }else if (frame==5){
         body_with_x_nut(manual=manual, exploded=true);
     }else if (frame==6){
@@ -278,7 +278,7 @@ module lead_screw_assembly(manual=false, exploded=false, construction_offset=[0,
     }
 }
 
-module mount_lead_screw(exploded=false, tools=false){
+module mount_lead_screw(manual=false, exploded=false, tools=false){
     tr_screw = exploded ? [0 ,0, 35] : large_gear_screw_pos();
     tr_nut_spinner = exploded ? [0 ,0, -7] : [0 ,0, 0];
     tr_gear_holder = exploded ? [0 ,0, 50] : [0 ,0, 11];
@@ -288,7 +288,12 @@ module mount_lead_screw(exploded=false, tools=false){
         m3_hex_x25();
     }
     color(extras_colour()){
-        large_gear();
+        if (manual){
+            thumbwheel();
+        }
+        else {
+            large_gear();
+        }
     }
     if (tools){
         coloured_render(tools_colour()){
@@ -298,10 +303,12 @@ module mount_lead_screw(exploded=false, tools=false){
                 }
             }
         }
-        coloured_render(tools_colour()){
-            translate(tr_gear_holder){
-                rotate_x(180){
-                    gear_holder();
+        if (!manual) {
+            coloured_render(tools_colour()){
+                translate(tr_gear_holder){
+                    rotate_x(180){
+                        gear_holder();
+                    }
                 }
             }
         }

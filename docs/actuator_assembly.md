@@ -17,16 +17,16 @@ There is one "actuator column" for each of the three axes of the OpenFlexure Mic
 
 ## Mount the leadscrew {pagestep}
 
-![](renders/actuator_assembly_lead_screw_exploded.png)
-![](renders/actuator_assembly_lead_screw_tight.png)
-![](renders/actuator_assembly_lead_screw_only.png)
+![](renders/actuator_assembly_lead_screw_exploded{{var_body, default:}}.png)
+![](renders/actuator_assembly_lead_screw_tight{{var_body, default:}}.png)
+![](renders/actuator_assembly_lead_screw_only{{var_body, default:}}.png)
 
 * Take one of the [hex bolts][M3x25mm stainless steel hex bolt]{qty:{{var_n_actuators, default:3}}, cat:mech}.
-* Push it through one of the [{{includetext: "thumbwheels", if: var_body is _manual}}{{includetext: "large gears", if: var_body is not _manual }}](fromstep){qty:{{var_n_actuators, default:3}}, cat:printedpart}, and the [nut spinner](fromstep){qty:1, cat:printedtool}.
-* Start to screw on a [steel M3 nut][extra M3 nut](parts/mechanical.yml#Nut_M3_SS){qty: 1, cat:tool, note:"For mounting the hex bolt in the large gear."}, this should fit into the end of the nut spinner.
-* Place the [gear holder](fromstep){qty:1, cat:printedtool} over the large gear.
-* Tighten, by turning the gear holder and nut spinner in opposite directions. This should bed the screw into the gear.
-* Remove the tools by unscrewing the nut with the nut spinner. The hex bolt should now be mounted in the gear.
+* Push it through one of the [{{includetext: "thumbwheels", if: var_body is _manual}}{{includetext: "large gears", if: var_body is not _manual}}](fromstep){qty:{{var_n_actuators, default:3}}, cat:printedpart}, and the [nut spinner](fromstep){qty:1, cat:printedtool}.
+* Start to screw on a [steel M3 nut][extra M3 nut](parts/mechanical.yml#Nut_M3_SS){qty: 1, cat:tool, note:"For mounting the hex bolt in the large gear."}, this should fit into the end of the nut spinner{{includetext: "
+* Place the [gear holder](fromstep){qty:1, cat:printedtool} over the large gear.", if: var_body is not _manual}}
+* Tighten, by turning the {{includetext: "thumbwheel", if: var_body is _manual}}{{includetext: "gear holder", if: var_body is not _manual}} and nut spinner in opposite directions. This should bed the screw into the {{includetext: "thumbwheel", if: var_body is _manual}}{{includetext: "gear", if: var_body is not _manual}}.
+* Remove the tools by unscrewing the nut with the nut spinner. The hex bolt should now be mounted in the {{includetext: "thumbwheel", if: var_body is _manual}}{{includetext: "gear", if: var_body is not _manual}}.
 
 ## Insert the nut {pagestep}
 
@@ -98,7 +98,7 @@ This is the trickiest part of the microscope build. In this step we will clip ba
 
 ![Actuators assembled](renders/actuators_assembled{{var_body, default:}}.png)
 
-* Follow the same procedure  to install the gear, foot and Viton band for the Y and Z axes
+* Follow the same procedure  to install the {{includetext: "thumbwheel", if: var_body is _manual}}{{includetext: "gear", if: var_body is not _manual}}, foot and Viton band for the Y and Z axes
 * Make sure that you have put a drop of light oil on both of the threads
 * Make sure that both feet are seated
 * Make sure that each axis has two washers
