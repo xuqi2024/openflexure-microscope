@@ -17,7 +17,7 @@ use <librender/rendered_separate_z_actuator.scad>
 
 FRAME = 2;
 OPTICS_VERSION = "rms";
-MANUAL = true;
+MANUAL = false;
 
 render_actuator_assembly(FRAME, MANUAL, OPTICS_VERSION);
 
@@ -151,10 +151,12 @@ module what_you_need(manual=false, optics_version="rms"){
             }
         }
     }
-    coloured_render(tools_colour()){
-        translate([68, -17, 0]){
-            rotate_z(90){
-                gear_holder();
+    if (!manual){
+        coloured_render(tools_colour()){
+            translate([68, -17, 0]){
+                rotate_z(90){
+                    gear_holder();
+                }
             }
         }
     }
