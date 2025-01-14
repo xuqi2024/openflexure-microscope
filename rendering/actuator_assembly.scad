@@ -15,7 +15,7 @@ use <prepare_main_body.scad>
 use <librender/rendered_separate_z_actuator.scad>
 
 
-FRAME = 2;
+FRAME = 10;
 OPTICS_VERSION = "rms";
 MANUAL = false;
 
@@ -258,7 +258,9 @@ module lead_screw_assembly(manual=false, exploded=false, construction_offset=[0,
     //translate everything so the gear is in place at the bottom.
     translate_z(1){
         translate(large_gear_screw_pos()){
-            m3_hex_x25();
+            rotate_z(30){
+                m3_hex_x25();
+            }
         }
         color(extras_colour()){
             if (manual) {
@@ -287,7 +289,9 @@ module mount_lead_screw(manual=false, exploded=false, tools=false){
     tr_nut = exploded ? [0 ,0, -30] : [0 ,0, -16];
 
     translate(tr_screw){
-        m3_hex_x25();
+        rotate_z(30){
+            m3_hex_x25();
+        }
     }
     color(extras_colour()){
         if (manual){
