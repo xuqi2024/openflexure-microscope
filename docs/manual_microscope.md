@@ -17,6 +17,7 @@ The assembly is broken up into several steps:
 1. [.](basic_optics_module.md){step}
 1. [.](mount_optics_and_microscope.md){step, var_optics: low_cost, var_body: _manual}
 1. [.](illumination.md){step, var_optics: low_cost, var_body: _manual}
+1. [.](mount_illumination.md){step, var_optics: low_cost, var_body: _manual}
 1. [.](attach_clips.md){step, var_optics: low_cost, var_body: _manual}
 1. [.](wiring_manual.md){step, var_optics: low_cost, var_body: _manual}
 1. [.](finished.md){step, var_optics: low_cost, var_body: _manual}
