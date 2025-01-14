@@ -1,6 +1,8 @@
 # Manual microscope
 
-This version of the OpenFlexure Microscope does not include motors. It is the simplest version of the microscope, and is suitable for manual operation using a web-cam like the Logitech C270, to produce a microscope with field of view about 750μm, similar to using a 20x objective. There is no autofocus or slide scanning.
+>! This version of the OpenFlexure Microscope does not include motors. There is no autofocus or slide scanning.
+
+It is the simplest version of the microscope, and is suitable for manual operation using a web-cam like the Logitech C270, to produce a microscope with field of view about 750μm, similar to using a 20x objective. 
 
 If you use this microscope for research please consider citing [our paper in Optics Express](https://doi.org/10.1364/BOE.385729).
 
