@@ -34,7 +34,7 @@ There is one "actuator column" for each of the three axes of the OpenFlexure Mic
 ![Check nut seated flat](diagrams/NutSitFlat.png)
 
 * Insert a [brass nut][M3 brass nut]{qty:{{var_n_actuators, default:3}}, cat:mech} into the x actuator through the hole in the front of the [main body][prepared main body](fromstep){qty:1, cat:subassembly}.
-* Looking through the hole you should see the side of the nut. If it is tilted so you can see the top can tap the microscope until it sits flat.
+* Looking through the hole you should see the side of the nut. If it is tilted so you can see the top, tap the microscope until it sits flat.
 
 ## Attach the {{includetext: "thumbwheel", if: var_body is _manual}}{{includetext: "gear", if: var_body is not _manual }}{pagestep}
 
