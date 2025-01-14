@@ -9,11 +9,11 @@
 
 ## Removing brim and supports {pagestep}
 
-The [main body][Main body](fromstep){cat: PrintedPart, qty:1} has some custom supports and a custom brim to remove. These are highlighted in red in the following images.
+The [main body][{{includetext: "manual ", if: var_body is _manual}}main body](fromstep){cat: PrintedPart, qty:1} has some custom supports and a custom brim to remove. These are highlighted in red in the following images.
 
-![](renders/brim_and_ties1.png)
-![](renders/brim_and_ties2.png)
-![](renders/brim_and_ties3.png)
+![](renders/brim_and_ties{{var_body, default:}}1.png)
+![](renders/brim_and_ties{{var_body, default:}}2.png)
+![](renders/brim_and_ties{{var_body, default:}}3.png)
 
 * Remove the brim with [utility knife]{qty:1,cat:tool} and [precision wire cutters]{qty:1}.
 * Cut the ties inside actuator columns (6 total) with the [precision wire cutters]{qty:1}
@@ -21,9 +21,9 @@ The [main body][Main body](fromstep){cat: PrintedPart, qty:1} has some custom su
 
 ## Embed mounting nuts in the stage {pagestep}
 
-![](renders/prepare_main_body1.png)
-![](renders/prepare_main_body2.png)
-![](renders/prepare_main_body3.png)
+![](renders/prepare_main_body{{var_body, default:}}1.png)
+![](renders/prepare_main_body{{var_body, default:}}2.png)
+![](renders/prepare_main_body{{var_body, default:}}3.png)
 
 
 * Place an [M3 nut]{qty:4} one of the slots at the side of the stage
@@ -32,15 +32,15 @@ The [main body][Main body](fromstep){cat: PrintedPart, qty:1} has some custom su
 * Unscrew and remove the screw. The nut should stay mounted.
 * Repeat for the other three holes in the stage.
 
-![](renders/prepare_main_body4.png)
-![](renders/prepare_main_body5.png)
-![](renders/prepare_main_body6.png)
+![](renders/prepare_main_body{{var_body, default:}}4.png)
+![](renders/prepare_main_body{{var_body, default:}}5.png)
+![](renders/prepare_main_body{{var_body, default:}}6.png)
 
 ## Embed mounting nuts illumination platform {pagestep}
 
-![](renders/prepare_main_body7.png)
-![](renders/prepare_main_body8.png)
-![](renders/prepare_main_body9.png)
+![](renders/prepare_main_body{{var_body, default:}}7.png)
+![](renders/prepare_main_body{{var_body, default:}}8.png)
+![](renders/prepare_main_body{{var_body, default:}}9.png)
 
 * Repeat the steps used above to add {{var_illum_nuts_words, default:two}} [M3 nuts][M3 nut]{qty:{{var_illum_nuts, default:2}}, cat:mech} into the platform above the z-axis
 
