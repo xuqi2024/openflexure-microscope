@@ -51,7 +51,7 @@ module render_actuator_assembly(frame, manual=false, optics_version="rms"){
         body_with_assembled_actuators(manual=manual, x_only=false);
     }
     else if (frame==11){
-        separate_z_actuator_with_assembled_actuators();
+        separate_z_actuator_with_assembled_actuators(manual=manual);
     }
     
 }
