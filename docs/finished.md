@@ -10,7 +10,7 @@ Congratulations, you have now assembled your OpenFlexure Microscope.
 ![A render of the completed microscope](renders/complete_microscope_{{var_optics, default:rms}}{{var_body, default:}}1.png)
 
 Your completed microscope should now look like these pictures.  
-There is also an [interactive 3D view](interactive_3d_view_{{var_optics, default:rms}}.md) of the finished microscope.
+There is also an [interactive 3D view](interactive_3d_view_{{var_optics, default:rms}}{{var_body, default:}}.md) of the finished microscope.
 
 {{includetext: "
 ## Getting started with your microscope {pagestep}

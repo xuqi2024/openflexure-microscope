@@ -24,4 +24,4 @@ The assembly is broken up into several steps:
 
 ![A render of the completed microscope using the Raspberry Pi camera module's lens.](renders/complete_microscope_low_cost_manual1.png)
 
-There is also an [interactive 3D view](interactive_3d_view_manual.md) of the finished microscope.
+There is also an [interactive 3D view](interactive_3d_view_low_cost_manual.md) of the finished microscope.
