@@ -5,7 +5,7 @@ The microscope illumination must be connected to power and the camera must be co
 
 ## Connect the camera {pagestep}
 
-* For a USB webcam, plug the USB cable into a USB port on a PC or a Reaspberry Pi. Open a camera app to view the camera preview and capture pictures.
+* For a USB webcam, plug the USB cable into a USB port on a PC or a Raspberry Pi. Open a camera app to view the camera preview and capture pictures.
 * For a Raspberry Pi camera, insert the ribbon cable from the optics module into the camera port of a Rasberry Pi, ensuring the contacts are on the opposite side from the clasp. There are [detailed instructions on the Rasbperry Pi website](https://projects.raspberrypi.org/en/projects/getting-started-with-picamera/2). Use the Raspberry Pi camera app or the Openflexure software to view the camera preview and capture pictures. 
 
 ## Connect the LED power {pagestep}

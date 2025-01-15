@@ -18,7 +18,7 @@ MANUAL = false;
 render_mount_optics(FRAME, OPTICS_VERSION, MANUAL);
 
 module render_mount_optics(frame, optics_version, manual=false){
-    low_cost = (optics_version == "low_cost, manual=false")? true : false ;
+    low_cost = (optics_version == "low_cost")? true : false ;
     if (frame==1){
         om_pos = translate_pos(optics_module_pos(low_cost), [0, -10, -100]);
         line_start = translate_pos(om_pos, [0, 0, 40]);
