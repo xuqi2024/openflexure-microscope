@@ -249,7 +249,7 @@ gltf:
 
     artifacts:
       expire_in: 1 week
-      name: "${CI_PROJECT_NAME}-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}-renders"
+      name: "${CI_PROJECT_NAME}-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}-gltf"
       # saving any rendering csg files. Only remaining files should be when scad2gltf fails
       paths:
         - docs/renders/*.png
@@ -308,6 +308,26 @@ build-docs:
       - web
       - master
 
+api-docs:
+    extends: .scad-job
+    stage: build-docs
+    script:
+      - pip install git+https://github.com/julianstirling/openscad_docsgen.git@mkdocs-compatibility
+      - pip install mkdocs
+      - openscad-docsgen -p mkdocs -P "OpenFlexure Microscope" -D openscad-docs -it -m openscad/libs/*.scad
+      - mkdocs build --no-directory-urls
+
+    artifacts:
+      expire_in: 1 week
+      name: "${CI_PROJECT_NAME}-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}-api-docs"
+      paths:
+        - site/
+
+    only:
+      - tags
+      - merge_requests
+      - web
+      - master
 
 # Deploy to builds.openflexure.org
 deploy:
