@@ -27,56 +27,69 @@ module simple_post_stand(params, type="back", wall_height=10, screws=false){
     for (n = [0:len(hole_pos)-1]){
         hole = hole_pos[n];
         angle = lug_angles(params)[n];
-        difference(){ // difference to cut off the leg parts from xy lugs
-            translate(hole){
-                cylinder(d1=base_d, d2=top_d, h=post_height+2, $fn=32);
-                if (hole.y<0) { // cable ties and screw mounts on back posts only
-                    tie_offset = -0.5 + (top_d + base_d)/4;
-                    cable_tie_point_x = (hole.x)>0? -tie_offset : tie_offset ;
-                    translate([cable_tie_point_x,0,-0.5+post_height/2]){
-                        rotate([90,0,0]){
-                            tube(ro=8.5/2, ri=6/2, h=3, $fn=32);
-                        }
+        mounting_post(params, post_height=post_height, base_d=base_d, top_d=top_d, hole_pos=hole, lug_angle=angle, screws=screws);
+    }
+
+    // wall around stage base to prevent toppling, joining the two "back" posts
+    curved_mount_back_wall(params, wall_height=wall_height, post_height=post_height);
+}
+
+module mounting_post(params, post_height=20, base_d=25, top_d=20, hole_pos=[0,0,0], lug_angle=0, screws=false){
+    difference(){ // difference to cut off the leg parts from xy lugs
+        translate(hole_pos){
+            cylinder(d1=base_d, d2=top_d, h=post_height+2, $fn=32);
+            if (hole_pos.y<0) { // cable ties and screw mounts on back posts only
+                tie_offset = -0.5 + (top_d + base_d)/4;
+                cable_tie_point_x = (hole_pos.x)>0? -tie_offset : tie_offset ;
+                translate([cable_tie_point_x,0,-0.5+post_height/2]){
+                    rotate([90,0,0]){
+                        tube(ro=8.5/2, ri=6/2, h=3, $fn=32);
                     }
-                    if (screws) {
-                        screw_offset = (base_d/2)+4;
-                        screw_translate = (hole.x)>0? -screw_offset : screw_offset ;
-                        screw_angle = 35;
-                        screw_rotate = (hole.x)>0? screw_angle : -screw_angle ;
-                        rotate_z(screw_rotate){
-                            difference(){
-                                hull(){
-                                    translate_x(screw_translate){
-                                        cylinder(r=4, h=1.5, $fn=32);
-                                    }
-                                    cylinder(r=4, h=1.5, $fn=32);
-                                }
-                                translate_x(screw_translate){
-                                    cylinder(r=4/2, h=1.5*2.5, center=true, $fn=32);
-                                }
-                            }
-                        }
-                    }
+                }
+                if (screws) {
+                    screw_offset = (base_d/2)+4;
+                    screw_translate = (hole_pos.x)>0? -screw_offset : screw_offset ;
+                    screw_angle = 35;
+                    screw_rotate = (hole_pos.x)>0? screw_angle : -screw_angle ;
+                    screw_mounting_plate(screw_rotate=screw_rotate, screw_translate=screw_translate);
                 }
             }
-            translate(hole){
-                translate_z(post_height){
-                    m3_lug([0,0,0], angle, holes=false);
-                }
-                translate_z(post_height-9){
-                    m3_nut_trap_with_shaft(angle+180);
-                }
+        }
+        translate(hole_pos){
+            translate_z(post_height){
+                m3_lug([0,0,0], lug_angle, holes=false);
             }
-            if (hole.y>0) { // cut out on front posts only
-                reflect_x(){
-                    y_actuator_frame(params){
-                        screw_seat_outline(h=999,adjustment=+tiny(),center=true);
-                    }
+            translate_z(post_height-9){
+                m3_nut_trap_with_shaft(lug_angle+180);
+            }
+        }
+        if (hole_pos.y>0) { // cut out on front posts only
+            reflect_x(){
+                y_actuator_frame(params){
+                    screw_seat_outline(h=999,adjustment=+tiny(),center=true);
                 }
             }
         }
     }
-    // wall around stage base to prevent toppling, joining the two "back" posts
+}
+
+module screw_mounting_plate(screw_rotate=0, screw_translate=[0,0,0]){
+    rotate_z(screw_rotate){
+        difference(){
+            hull(){
+                translate_x(screw_translate){
+                    cylinder(r=4, h=1.5, $fn=32);
+                }
+                cylinder(r=4, h=1.5, $fn=32);
+            }
+            translate_x(screw_translate){
+                cylinder(r=4/2, h=1.5*2.5, center=true, $fn=32);
+            }
+        }
+    }
+}
+
+module curved_mount_back_wall(params, wall_height=35, post_height=35){
     back_hole_pos = base_mounting_holes(params,type="back");
     difference(){
         wall_radius = sqrt((back_hole_pos[1].x)^2+(back_hole_pos[1].y)^2);
