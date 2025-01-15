@@ -245,8 +245,8 @@ def register_band(rendersystem):
     input_file = "rendering/band_insertion_cutaway.scad"
     camera = Camera(position=[-13, 13, -30], angle=[76, 0, 216], distance=445)
     imgsize = [1200, 2400]
-    for body in ["", "_manual"]:
-        manual = str(body == "_manual").lower()
+    for manual in ["false", "true"]:
+        body = "_manual" if manual=="true" else ""
         png_files = []
         for frame in [1, 2, 3, 4, 5]:
             output_file = f"docs/renders/band{body}{frame}.png"
@@ -278,8 +278,8 @@ def register_brim_and_ties(rendersystem):
         Camera(position=[-2, 48, -12], angle=[60, 0, 4], distance=320),
     ]
     imgsize = [2400, 2400]
-    for body in ["", "_manual"]:
-        manual = str(body == "_manual").lower()
+    for manual in ["false", "true"]:
+        body = "_manual" if manual=="true" else ""
         for i, camera in enumerate(cameras):
             output_file = f"docs/renders/brim_and_ties{body}{i+1}.png"
             scad = f"render_brim_and_ties({i+1}, {manual});"
@@ -313,8 +313,8 @@ def register_prepare_main_body(rendersystem):
         Camera(position=[-2, 57, 64], angle=[76, 0, 176.5], distance=179),
     ]
     imgsize = [2400, 2000]
-    for body in ["", "_manual"]:
-        manual = str(body == "_manual").lower()
+    for manual in ["false", "true"]:
+        body = "_manual" if manual=="true" else ""
         for i, camera in enumerate(cameras):
             output_file = f"docs/renders/prepare_main_body{body}{i+1}.png"
             scad = f"render_prepare_main_body({i+1}, {manual});"
@@ -331,20 +331,20 @@ def register_prepare_stand(rendersystem):
     render = ScadRender(output_file, input_file, scad, imgsize, camera)
     rendersystem.register_scad_render(render)
     # embed top nuts for normal or manual stand
-    for body in ["", "_manual"] :
-        manual = str(body == "_manual").lower()
-        if body == "_manual" :
+    for manual in ["false", "true"]:
+        body = "_manual" if manual=="true" else ""
+        if body == "_manual":
             camera = Camera(position=[-17, 13, 25], angle=[70, 0, 215], distance=195)
-        else :
+        else:
             camera = Camera(position=[-9, 20, 37.5], angle=[34, 0, 235], distance=450)
-        for frame in [2, 3, 4, 5, 6, 7] :
+        for frame in [2, 3, 4, 5, 6, 7]:
             output_file = f"docs/renders/prepare_stand{body}{frame}.png"
             scad = f"render_prepare_stand({frame},{manual});"
             render = ScadRender(output_file, input_file, scad, imgsize, camera)
             rendersystem.register_scad_render(render)
     # add electronics drawer nut for normal stand only
     camera = Camera(position=[75, 52, 32], angle=[65, 0, 115], distance=240)
-    for frame in [8, 9] :
+    for frame in [8, 9]:
         output_file = f"docs/renders/prepare_stand{frame}.png"
         scad = f"render_prepare_stand({frame}, manual=false);"
         render = ScadRender(output_file, input_file, scad, imgsize, camera)
@@ -379,8 +379,8 @@ def register_actuator_assembly(rendersystem):
         "actuators_assembled",
         "separate_z_actuator_assembled",
     ]
-    for body in ["", "_manual"]:
-        manual = str(body == "_manual").lower()
+    for manual in ["false", "true"]:
+        body = "_manual" if manual=="true" else ""
         for i, camera in enumerate(cameras):
             output_file = f"docs/renders/{pngs[i]}{body}.png"
             scad = f"render_actuator_assembly({i+1},{manual});"
@@ -432,8 +432,8 @@ def register_mount_optics(rendersystem):
         Camera(position=[-18.5, 42.75, 23.75], angle=[57, 0, 143], distance=495),
     ]
     imgsize = [2400, 2000]
-    for body in ["", "_manual"]:
-        manual = str(body == "_manual").lower()
+    for manual in ["false", "true"]:
+        body = "_manual" if manual=="true" else ""
         for optics_version in ["rms", "low_cost", "upright"]:
             if not ((body == "_manual") and (optics_version == "rms")): # no renders for manual rms
                 for i, camera in enumerate(cameras):
@@ -469,8 +469,8 @@ def register_mount_microscope(rendersystem):
         Camera(position=[24, 43.5, 84], angle=[65.5, 0, 103], distance=550),
     ]
     imgsize = [2400, 2000]
-    for body in ["", "_manual"]:
-        manual = str(body == "_manual").lower()
+    for manual in ["false", "true"]:
+        body = "_manual" if manual=="true" else ""
         for optics_version in ["rms", "low_cost", "upright"]:
             if not ((body == "_manual") and (optics_version == "rms")): # no renders for manual rms
                 for i, camera in enumerate(cameras):
@@ -483,10 +483,10 @@ def register_mount_microscope(rendersystem):
 def register_mount_illumination(rendersystem):
     input_file = "rendering/mount_illumination.scad"
     imgsize = [2400, 2000]
-    for body in ["", "_manual"]:
-        manual = str(body == "_manual").lower()
+    for manual in ["false", "true"]:
+        body = "_manual" if manual=="true" else ""
         for optics_version in ["rms", "low_cost", "upright"]:
-            if body == "_manual" :
+            if body == "_manual":
                 cameras = [
                     Camera(position=[-6, 49, 118], angle=[68, 0, 133], distance=360),
                     Camera(position=[-6, 49, 118], angle=[68, 0, 133], distance=360),
@@ -495,14 +495,14 @@ def register_mount_illumination(rendersystem):
                     Camera(position=[-6, 49, 118], angle=[82, 0, 308], distance=360),
                     Camera(position=[-6, 49, 118], angle=[82, 0, 308], distance=360)
                 ]
-            elif optics_version == "upright" :
+            elif optics_version == "upright":
                 cameras = [
                     Camera(position=[0, 50, 180], angle=[68, 0, 133], distance=360),
                     Camera(position=[0, 50, 180], angle=[68, 0, 133], distance=360),
                     Camera(position=[0, 50, 180], angle=[60, 0, 133], distance=460),
                     Camera(position=[0, 50, 180], angle=[60, 0, 133], distance=460),
                 ]
-            else :
+            else:
                 cameras = [
                     Camera(position=[-6, 49, 178], angle=[68, 0, 133], distance=360),
                     Camera(position=[-6, 49, 178], angle=[68, 0, 133], distance=360),
@@ -542,7 +542,7 @@ def register_mount_motors(rendersystem):
     imgsize = [2400, 2000]
     for optics_version in ["rms", "low_cost", "upright"]:
         for i in [1, 2, 3, 4]:
-            if optics_version == "upright" and i > 2 :
+            if optics_version == "upright" and i > 2:
                 camera = Camera(position=[5, 30, 121], angle=[70, 0, 150], distance=360)
             output_file = f"docs/renders/mount_motors_{optics_version}{i}.png"
             scad = f"render_mount_motors({i}, \"{optics_version}\");"
@@ -552,11 +552,11 @@ def register_mount_motors(rendersystem):
 def register_mount_sample_clips(rendersystem):
     input_file = "rendering/mount_sample_clips.scad"
     imgsize = [2400, 2000]
-    for body in ["", "_manual"]:
-        manual = str(body == "_manual").lower()
-        if body == "_manual" :
+    for manual in ["false", "true"]:
+        body = "_manual" if manual=="true" else ""
+        if body == "_manual":
             camera = Camera(position=[0, 0, 118], angle=[68, 0, 308], distance=250)
-        else :
+        else:
             camera = Camera(position=[0, 0, 178], angle=[68, 0, 308], distance=250)
         for optics_version in ["rms", "low_cost", "upright"]:
             # no renders for manual rms or manual upright
@@ -611,8 +611,8 @@ def register_mount_electronics(rendersystem):
 def register_complete_microscope(rendersystem):
     input_file = "rendering/complete_microscope.scad"
     imgsize = [2400, 2000]
-    for body in ["", "_manual"]:
-        manual = str(body == "_manual").lower()
+    for manual in ["false", "true"]:
+        body = "_manual" if manual=="true" else ""
         for optics_version in ["rms", "low_cost", "upright"]:
             if not ((body == "_manual") and (optics_version == "rms")): # no renders for manual rms
                 dist = 700 if optics_version != "upright" else 780
