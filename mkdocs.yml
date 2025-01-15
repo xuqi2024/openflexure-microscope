@@ -1,11 +1,13 @@
 site_name: OpenFlexure Microscope OpenScad Docs
 nav:
-  - Home: index.md
   - Alphabetical Index: alphaindex.md
 docs_dir: openscad-docs
+extra_css:
+  - css/style.css
 markdown_extensions:
   - markdown.extensions.extra
 theme:
   name: mkdocs
+  custom_dir: mkdocs_theme
   navigation_depth: 3
 
