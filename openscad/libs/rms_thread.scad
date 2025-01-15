@@ -134,7 +134,7 @@ function rms_thread_profile_section_points(d_offset=0, peak_points=5) = let(
 // a solid object to make an RMS thread, defined as per
 // ISO 8038-1.
 //
-// Parameters:
+// Arguments:
 // * `h` sets the height.  This is defined as the height from the
 //   centre of the lowest trough to the centre of the highest one.
 //   the height of the shape generated will exceed `h` by one pitch,
