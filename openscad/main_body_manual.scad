@@ -1,16 +1,8 @@
-/******************************************************************
-*                                                                 *
-* OpenFlexure Microscope: Microscope body                         *
-*                                                                 *
-* This is the chassis of the OpenFlexure microscope, an open      *
-* microscope and 3-axis translation stage.  It gets really good   *
-* precision over a ~10mm range, by using plastic flexure          *
-* mechanisms.                                                     *
-*                                                                 *
-* (c) Richard Bowman, January 2016                                *
-* Released under the CERN Open Hardware License                   *
-*                                                                 *
-******************************************************************/
+/**
+* This generates a version of the main body designed for manual operation
+* There are no cable tidy channels
+* There are no motor lugs
+*/
 
 use <./libs/utilities.scad>
 use <./libs/libdict.scad>

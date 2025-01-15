@@ -28,37 +28,37 @@ module simple_post_stand(params, type="back", wall_height=10, screws=false){
         hole = hole_pos[n];
         angle = lug_angles(params)[n];
         difference(){ // difference to cut off the leg parts from xy lugs
-                translate(hole){
-                    cylinder(d1=base_d, d2=top_d, h=post_height+2, $fn=32);
-                    if (hole.y<0) { // cable ties and screw mounts on back posts only
-                        tie_offset = -0.5 + (top_d + base_d)/4;
-                        cable_tie_point_x = (hole.x)>0? -tie_offset : tie_offset ;
-                        translate([cable_tie_point_x,0,-0.5+post_height/2]){
-                            rotate([90,0,0]){
-                                tube(ro=8.5/2, ri=6/2, h=3, $fn=32);
-                            }
+            translate(hole){
+                cylinder(d1=base_d, d2=top_d, h=post_height+2, $fn=32);
+                if (hole.y<0) { // cable ties and screw mounts on back posts only
+                    tie_offset = -0.5 + (top_d + base_d)/4;
+                    cable_tie_point_x = (hole.x)>0? -tie_offset : tie_offset ;
+                    translate([cable_tie_point_x,0,-0.5+post_height/2]){
+                        rotate([90,0,0]){
+                            tube(ro=8.5/2, ri=6/2, h=3, $fn=32);
                         }
-                        if (screws) {
-                            screw_offset = (base_d/2)+4;
-                            screw_translate = (hole.x)>0? -screw_offset : screw_offset ;
-                            screw_angle = 35;
-                            screw_rotate = (hole.x)>0? screw_angle : -screw_angle ;
-                            rotate_z(screw_rotate){
-                                difference(){
-                                    hull(){
-                                        translate_x(screw_translate){
-                                            cylinder(r=4, h=1.5, $fn=32);
-                                        }
+                    }
+                    if (screws) {
+                        screw_offset = (base_d/2)+4;
+                        screw_translate = (hole.x)>0? -screw_offset : screw_offset ;
+                        screw_angle = 35;
+                        screw_rotate = (hole.x)>0? screw_angle : -screw_angle ;
+                        rotate_z(screw_rotate){
+                            difference(){
+                                hull(){
+                                    translate_x(screw_translate){
                                         cylinder(r=4, h=1.5, $fn=32);
                                     }
-                                    translate_x(screw_translate){
-                                        cylinder(r=4/2, h=1.5*2.5, center=true, $fn=32);
-                                    }
+                                    cylinder(r=4, h=1.5, $fn=32);
+                                }
+                                translate_x(screw_translate){
+                                    cylinder(r=4/2, h=1.5*2.5, center=true, $fn=32);
                                 }
                             }
                         }
                     }
                 }
+            }
             translate(hole){
                 translate_z(post_height){
                     m3_lug([0,0,0], angle, holes=false);
@@ -76,7 +76,7 @@ module simple_post_stand(params, type="back", wall_height=10, screws=false){
             }
         }
     }
-    // wall around stage base to prevent toppling, joining teh two "back" posts
+    // wall around stage base to prevent toppling, joining the two "back" posts
     back_hole_pos = base_mounting_holes(params,type="back");
     difference(){
         wall_radius = sqrt((back_hole_pos[1].x)^2+(back_hole_pos[1].y)^2);
