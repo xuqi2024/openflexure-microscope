@@ -114,7 +114,7 @@ module large_gear(){
     $fn=32;
 
     pitch_r = large_gear_pitch_radius();
-    height = 6;
+    height = 6; // height of nut trap
     difference(){
         // intersection used to chamfer the bottom of the gear
         intersection(){
@@ -195,6 +195,7 @@ module thumbwheel(){
     base_up_r = 12;
     base_h = 12.5;
     n_lobe = 6;
+    height = 6; // height of nut trap
 
     difference()
     {
@@ -209,8 +210,16 @@ module thumbwheel(){
                 }
             }
         }
-        translate_z(1.5){
-            m3_nut_hole(h=99, shaft=true, tight=true);
+        translate_z(height+1-tiny()){
+            rotate_z(30){
+                m3_nut_hole(h=99, shaft=false, tight=false);
+            }
+        }
+        translate([0,0,height+1.5]){
+            mirror([0,0,1]){
+                nut_trap_and_slot(actuator_nut_size(), actuator_nut_slot_size(), slot_length=0, include_bridged_top=false);
+            }
+            cylinder(r=actuator_shaft_radius(), h=99, center=true, $fn=16);
         }
     }
 }
@@ -294,5 +303,40 @@ module motor_and_gear_clearance(gear_h=10, h=999){
     }
     translate([0,gear_c2c_distance()-7.8,gear_h]){
         motor_clearance(h=h-gear_h);
+    }
+}
+
+/**
+* Clearance for the thumbwheels, without motor.
+* It's positioned with the centre of the thumbwheel at the origin.
+* Note: gear_h should match the height of the motor lugs above the
+* flat surface for the large gear, in motor_lugs in compact_nut_seat.scad.
+*/
+module thumbwheel_clearance(gear_h=10, h=999){
+    thumbwheel_r = 20;
+    small_gear_nominal_r = 8.5;
+    linear_extrude(h){
+        offset(1.5){
+            hull(){
+                circle(r=thumbwheel_r, $fn=32);
+                translate([0,gear_c2c_distance()]){
+                    circle(r=small_gear_nominal_r, $fn=32);
+                }
+            }
+        }
+    }
+    // Motor lugs and screw cut-outs are not necessary for thumbwheels,
+    // but the motor lugs are useful in defining the illuminator mount shape,
+    // and the blank screw cut-outs make more space to hold the thumbwheel
+    translate([0,gear_c2c_distance()-7.8,gear_h]){
+        linear_extrude(h){
+            hull(){
+                reflect([1,0]){
+                    translate([motor_screw_separation()/2,0]){
+                        circle(r=4.5);
+                    }
+                }
+            }
+        }
     }
 }

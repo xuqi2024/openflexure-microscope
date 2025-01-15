@@ -48,4 +48,4 @@
 ![](renders/mount_upright_optics7.png)
 
 * Take the [foot cap](fromstep){qty:1, cat:printedpart} and locate it over the exposed foot at the top of the microscope
-* Push the cover in to place
+* Push the cap in to place

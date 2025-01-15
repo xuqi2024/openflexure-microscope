@@ -245,15 +245,16 @@ def register_band(rendersystem):
     input_file = "rendering/band_insertion_cutaway.scad"
     camera = Camera(position=[-13, 13, -30], angle=[76, 0, 216], distance=445)
     imgsize = [1200, 2400]
-    png_files = []
-
-    for frame in [1, 2, 3, 4, 5]:
-        output_file = f"docs/renders/band{frame}.png"
-        scad = f"render_band_insertion(band_insertion_frame_parameters({frame}));"
-        png_files.append(output_file)
-        render = ScadRender(output_file, input_file, scad, imgsize, camera)
-        rendersystem.register_scad_render(render)
-    rendersystem.register_imagemagick_sequence("docs/renders/band_instruction.png", png_files)
+    for manual in ["false", "true"]:
+        body = "_manual" if manual=="true" else ""
+        png_files = []
+        for frame in [1, 2, 3, 4, 5]:
+            output_file = f"docs/renders/band{body}{frame}.png"
+            scad = f"render_band_insertion(band_insertion_frame_parameters({frame}),{manual});"
+            png_files.append(output_file)
+            render = ScadRender(output_file, input_file, scad, imgsize, camera)
+            rendersystem.register_scad_render(render)
+        rendersystem.register_imagemagick_sequence(f"docs/renders/band_instruction{body}.png", png_files)
 
 def register_band_tool_assembly(rendersystem):
     input_file = "rendering/band_tool_assembly.scad"
@@ -277,11 +278,13 @@ def register_brim_and_ties(rendersystem):
         Camera(position=[-2, 48, -12], angle=[60, 0, 4], distance=320),
     ]
     imgsize = [2400, 2400]
-    for i, camera in enumerate(cameras):
-        output_file = f"docs/renders/brim_and_ties{i+1}.png"
-        scad = f"render_brim_and_ties({i+1});"
-        render = ScadRender(output_file, input_file, scad, imgsize, camera)
-        rendersystem.register_scad_render(render)
+    for manual in ["false", "true"]:
+        body = "_manual" if manual=="true" else ""
+        for i, camera in enumerate(cameras):
+            output_file = f"docs/renders/brim_and_ties{body}{i+1}.png"
+            scad = f"render_brim_and_ties({i+1}, {manual});"
+            render = ScadRender(output_file, input_file, scad, imgsize, camera)
+            rendersystem.register_scad_render(render)
 
 def register_brim_and_ties_separate_z_actuator(rendersystem):
     input_file = "rendering/brim_and_ties_separate_z_actuator.scad"
@@ -310,29 +313,40 @@ def register_prepare_main_body(rendersystem):
         Camera(position=[-2, 57, 64], angle=[76, 0, 176.5], distance=179),
     ]
     imgsize = [2400, 2000]
-    for i, camera in enumerate(cameras):
-        output_file = f"docs/renders/prepare_main_body{i+1}.png"
-        scad = f"render_prepare_main_body({i+1});"
-        render = ScadRender(output_file, input_file, scad, imgsize, camera)
-        rendersystem.register_scad_render(render)
+    for manual in ["false", "true"]:
+        body = "_manual" if manual=="true" else ""
+        for i, camera in enumerate(cameras):
+            output_file = f"docs/renders/prepare_main_body{body}{i+1}.png"
+            scad = f"render_prepare_main_body({i+1}, {manual});"
+            render = ScadRender(output_file, input_file, scad, imgsize, camera)
+            rendersystem.register_scad_render(render)
 
 def register_prepare_stand(rendersystem):
     input_file = "rendering/prepare_stand.scad"
-    cameras = [
-        Camera(position=[15, 26, 41.5], angle=[47, 0, 111], distance=450),
-        Camera(position=[-9, 20, 37.5], angle=[34, 0, 235], distance=450),
-        Camera(position=[-9, 20, 37.5], angle=[34, 0, 235], distance=450),
-        Camera(position=[-9, 20, 37.5], angle=[34, 0, 235], distance=450),
-        Camera(position=[-9, 20, 37.5], angle=[34, 0, 235], distance=450),
-        Camera(position=[-9, 20, 37.5], angle=[34, 0, 235], distance=450),
-        Camera(position=[-9, 20, 37.5], angle=[34, 0, 235], distance=450),
-        Camera(position=[75, 52, 32], angle=[65, 0, 115], distance=240),
-        Camera(position=[75, 52, 32], angle=[65, 0, 115], distance=240),
-    ]
+    # remove supports for normal stand only
     imgsize = [2400, 2000]
-    for i, camera in enumerate(cameras):
-        output_file = f"docs/renders/prepare_stand{i+1}.png"
-        scad = f"render_prepare_stand({i+1});"
+    camera = Camera(position=[15, 26, 41.5], angle=[47, 0, 111], distance=450)
+    output_file = "docs/renders/prepare_stand1.png"
+    scad = "render_prepare_stand(1, manual=false);"
+    render = ScadRender(output_file, input_file, scad, imgsize, camera)
+    rendersystem.register_scad_render(render)
+    # embed top nuts for normal or manual stand
+    for manual in ["false", "true"]:
+        body = "_manual" if manual=="true" else ""
+        if body == "_manual":
+            camera = Camera(position=[-17, 13, 25], angle=[70, 0, 215], distance=195)
+        else:
+            camera = Camera(position=[-9, 20, 37.5], angle=[34, 0, 235], distance=450)
+        for frame in [2, 3, 4, 5, 6, 7]:
+            output_file = f"docs/renders/prepare_stand{body}{frame}.png"
+            scad = f"render_prepare_stand({frame},{manual});"
+            render = ScadRender(output_file, input_file, scad, imgsize, camera)
+            rendersystem.register_scad_render(render)
+    # add electronics drawer nut for normal stand only
+    camera = Camera(position=[75, 52, 32], angle=[65, 0, 115], distance=240)
+    for frame in [8, 9]:
+        output_file = f"docs/renders/prepare_stand{frame}.png"
+        scad = f"render_prepare_stand({frame}, manual=false);"
         render = ScadRender(output_file, input_file, scad, imgsize, camera)
         rendersystem.register_scad_render(render)
 
@@ -353,23 +367,25 @@ def register_actuator_assembly(rendersystem):
     ]
     imgsize = [2400, 2000]
     pngs = [
-        "actuator_assembly_parts.png",
-        "actuator_assembly_lead_screw_exploded.png",
-        "actuator_assembly_lead_screw_tight.png",
-        "actuator_assembly_lead_screw_only.png",
-        "actuator_assembly_nut.png",
-        "actuator_assembly_gear.png",
-        "actuator_assembly_gear2.png",
-        "actuator_assembly_oil.png",
-        "actuator_assembly_x.png",
-        "actuators_assembled.png",
-        "separate_z_actuator_assembled.png",
+        "actuator_assembly_parts",
+        "actuator_assembly_lead_screw_exploded",
+        "actuator_assembly_lead_screw_tight",
+        "actuator_assembly_lead_screw_only",
+        "actuator_assembly_nut",
+        "actuator_assembly_gear",
+        "actuator_assembly_gear2",
+        "actuator_assembly_oil",
+        "actuator_assembly_x",
+        "actuators_assembled",
+        "separate_z_actuator_assembled",
     ]
-    for i, camera in enumerate(cameras):
-        output_file = os.path.join("docs/renders/", pngs[i])
-        scad = f"render_actuator_assembly({i+1});"
-        render = ScadRender(output_file, input_file, scad, imgsize, camera)
-        rendersystem.register_scad_render(render)
+    for manual in ["false", "true"]:
+        body = "_manual" if manual=="true" else ""
+        for i, camera in enumerate(cameras):
+            output_file = f"docs/renders/{pngs[i]}{body}.png"
+            scad = f"render_actuator_assembly({i+1},{manual});"
+            render = ScadRender(output_file, input_file, scad, imgsize, camera)
+            rendersystem.register_scad_render(render)
     cameras = [
         Camera(position=[2, 5, 14], angle=[33, 0, 242], distance=390),
         Camera(position=[2, 5, 14], angle=[33, 0, 242], distance=390),
@@ -416,13 +432,16 @@ def register_mount_optics(rendersystem):
         Camera(position=[-18.5, 42.75, 23.75], angle=[57, 0, 143], distance=495),
     ]
     imgsize = [2400, 2000]
-    for optics_version in ["rms", "low_cost", "upright"]:
-        for i, camera in enumerate(cameras):
-            frame = i + 1
-            output_file = f"docs/renders/mount_optics_{optics_version}{frame}.png"
-            scad = f"render_mount_optics({frame}, \"{optics_version}\");"
-            render = ScadRender(output_file, input_file, scad, imgsize, camera)
-            rendersystem.register_scad_render(render)
+    for manual in ["false", "true"]:
+        body = "_manual" if manual=="true" else ""
+        for optics_version in ["rms", "low_cost", "upright"]:
+            if not ((body == "_manual") and (optics_version == "rms")): # no renders for manual rms
+                for i, camera in enumerate(cameras):
+                    frame = i + 1
+                    output_file = f"docs/renders/mount_optics_{optics_version}{body}{frame}.png"
+                    scad = f"render_mount_optics({frame}, \"{optics_version}\", {manual});"
+                    render = ScadRender(output_file, input_file, scad, imgsize, camera)
+                    rendersystem.register_scad_render(render)
 
 def register_mount_upright_optics(rendersystem):
     input_file = "rendering/mount_upright_optics.scad"
@@ -450,40 +469,55 @@ def register_mount_microscope(rendersystem):
         Camera(position=[24, 43.5, 84], angle=[65.5, 0, 103], distance=550),
     ]
     imgsize = [2400, 2000]
-    for optics_version in ["rms", "low_cost", "upright"]:
-        for i, camera in enumerate(cameras):
-            frame = i + 1
-            output_file = f"docs/renders/mount_microscope_{optics_version}{frame}.png"
-            scad = f"render_mount_microscope({frame}, \"{optics_version}\");"
-            render = ScadRender(output_file, input_file, scad, imgsize, camera)
-            rendersystem.register_scad_render(render)
+    for manual in ["false", "true"]:
+        body = "_manual" if manual=="true" else ""
+        for optics_version in ["rms", "low_cost", "upright"]:
+            if not ((body == "_manual") and (optics_version == "rms")): # no renders for manual rms
+                for i, camera in enumerate(cameras):
+                    frame = i + 1
+                    output_file = f"docs/renders/mount_microscope_{optics_version}{body}{frame}.png"
+                    scad = f"render_mount_microscope({frame}, \"{optics_version}\", {manual});"
+                    render = ScadRender(output_file, input_file, scad, imgsize, camera)
+                    rendersystem.register_scad_render(render)
 
 def register_mount_illumination(rendersystem):
     input_file = "rendering/mount_illumination.scad"
     imgsize = [2400, 2000]
-    for optics_version in ["rms", "low_cost", "upright"]:
-        if optics_version == "upright":
-            cameras = [
-                Camera(position=[0, 50, 180], angle=[68, 0, 133], distance=360),
-                Camera(position=[0, 50, 180], angle=[68, 0, 133], distance=360),
-                Camera(position=[0, 50, 180], angle=[60, 0, 133], distance=460),
-                Camera(position=[0, 50, 180], angle=[60, 0, 133], distance=460),
-            ]
-        else:
-            cameras = [
-                Camera(position=[-6, 49, 178], angle=[68, 0, 133], distance=360),
-                Camera(position=[-6, 49, 178], angle=[68, 0, 133], distance=360),
-                Camera(position=[-6, 49, 178], angle=[60, 0, 308], distance=460),
-                Camera(position=[-6, 49, 178], angle=[82, 0, 308], distance=360),
-                Camera(position=[-6, 49, 178], angle=[82, 0, 308], distance=360),
-                Camera(position=[-6, 49, 178], angle=[82, 0, 308], distance=360)
-            ]
-        for i, camera in enumerate(cameras):
-            frame = i + 1
-            output_file = f"docs/renders/mount_illumination_{optics_version}{frame}.png"
-            scad = f"mount_illumination({frame}, \"{optics_version}\");"
-            render = ScadRender(output_file, input_file, scad, imgsize, camera)
-            rendersystem.register_scad_render(render)
+    for manual in ["false", "true"]:
+        body = "_manual" if manual=="true" else ""
+        for optics_version in ["rms", "low_cost", "upright"]:
+            if body == "_manual":
+                cameras = [
+                    Camera(position=[-6, 49, 118], angle=[68, 0, 133], distance=360),
+                    Camera(position=[-6, 49, 118], angle=[68, 0, 133], distance=360),
+                    Camera(position=[-6, 49, 118], angle=[60, 0, 308], distance=460),
+                    Camera(position=[-6, 49, 118], angle=[82, 0, 308], distance=360),
+                    Camera(position=[-6, 49, 118], angle=[82, 0, 308], distance=360),
+                    Camera(position=[-6, 49, 118], angle=[82, 0, 308], distance=360)
+                ]
+            elif optics_version == "upright":
+                cameras = [
+                    Camera(position=[0, 50, 180], angle=[68, 0, 133], distance=360),
+                    Camera(position=[0, 50, 180], angle=[68, 0, 133], distance=360),
+                    Camera(position=[0, 50, 180], angle=[60, 0, 133], distance=460),
+                    Camera(position=[0, 50, 180], angle=[60, 0, 133], distance=460),
+                ]
+            else:
+                cameras = [
+                    Camera(position=[-6, 49, 178], angle=[68, 0, 133], distance=360),
+                    Camera(position=[-6, 49, 178], angle=[68, 0, 133], distance=360),
+                    Camera(position=[-6, 49, 178], angle=[60, 0, 308], distance=460),
+                    Camera(position=[-6, 49, 178], angle=[82, 0, 308], distance=360),
+                    Camera(position=[-6, 49, 178], angle=[82, 0, 308], distance=360),
+                    Camera(position=[-6, 49, 178], angle=[82, 0, 308], distance=360)
+                ]
+            if not ((body == "_manual") and (optics_version == "rms")): # no renders for manual rms
+                for i, camera in enumerate(cameras):
+                    frame = i + 1
+                    output_file = f"docs/renders/mount_illumination_{optics_version}{body}{frame}.png"
+                    scad = f"mount_illumination({frame}, \"{optics_version}\", {manual});"
+                    render = ScadRender(output_file, input_file, scad, imgsize, camera)
+                    rendersystem.register_scad_render(render)
 
 def register_motor_assembly(rendersystem):
     input_file = "rendering/motor_assembly.scad"
@@ -508,7 +542,7 @@ def register_mount_motors(rendersystem):
     imgsize = [2400, 2000]
     for optics_version in ["rms", "low_cost", "upright"]:
         for i in [1, 2, 3, 4]:
-            if optics_version == "upright" and i > 2 :
+            if optics_version == "upright" and i > 2:
                 camera = Camera(position=[5, 30, 121], angle=[70, 0, 150], distance=360)
             output_file = f"docs/renders/mount_motors_{optics_version}{i}.png"
             scad = f"render_mount_motors({i}, \"{optics_version}\");"
@@ -517,14 +551,21 @@ def register_mount_motors(rendersystem):
 
 def register_mount_sample_clips(rendersystem):
     input_file = "rendering/mount_sample_clips.scad"
-    camera = Camera(position=[0, 0, 178], angle=[68, 0, 308], distance=250)
     imgsize = [2400, 2000]
-    for optics_version in ["rms", "low_cost", "upright"]:
-        for i in [1, 2, 3, 4]:
-            output_file = f"docs/renders/mount_sample_clips_{optics_version}{i}.png"
-            scad = f"render_mount_sample_clips({i}, \"{optics_version}\");"
-            render = ScadRender(output_file, input_file, scad, imgsize, camera)
-            rendersystem.register_scad_render(render)
+    for manual in ["false", "true"]:
+        body = "_manual" if manual=="true" else ""
+        if body == "_manual":
+            camera = Camera(position=[0, 0, 118], angle=[68, 0, 308], distance=250)
+        else:
+            camera = Camera(position=[0, 0, 178], angle=[68, 0, 308], distance=250)
+        for optics_version in ["rms", "low_cost", "upright"]:
+            # no renders for manual rms or manual upright
+            if not ((body == "_manual") and ((optics_version == "rms") or (optics_version == "upright)"))):
+                for i in [1, 2, 3, 4]:
+                    output_file = f"docs/renders/mount_sample_clips_{optics_version}{body}{i}.png"
+                    scad = f"render_mount_sample_clips({i}, \"{optics_version}\", {manual});"
+                    render = ScadRender(output_file, input_file, scad, imgsize, camera)
+                    rendersystem.register_scad_render(render)
 
 def register_prepare_pi_and_sangaboard(rendersystem):
     input_file = "rendering/prepare_pi_and_sangaboard.scad"
@@ -570,22 +611,31 @@ def register_mount_electronics(rendersystem):
 def register_complete_microscope(rendersystem):
     input_file = "rendering/complete_microscope.scad"
     imgsize = [2400, 2000]
-    for optics_version in ["rms", "low_cost", "upright"]:
-        dist = 700 if optics_version != "upright" else 780
-        cameras = [
-            Camera(position=[0, 48, 98], angle=[65, 0, 133], distance=dist),
-            Camera(position=[0, 48, 98], angle=[65, 0, 308], distance=dist),
-            Camera(position=[0, 48, 98], angle=[90, 0, 90], distance=dist),
-            Camera(position=[0, 48, 98], angle=[90, 0, 0], distance=dist),
-        ]
-        for i, camera in enumerate(cameras):
-            output_file = f"docs/renders/complete_microscope_{optics_version}{i}.png"
-            scad = f"render_complete_microscope(\"{optics_version}\");"
-            render = ScadRender(output_file, input_file, scad, imgsize, camera)
-            rendersystem.register_scad_render(render)
+    for manual in ["false", "true"]:
+        body = "_manual" if manual=="true" else ""
+        for optics_version in ["rms", "low_cost", "upright"]:
+            if not ((body == "_manual") and (optics_version == "rms")): # no renders for manual rms
+                dist = 700 if optics_version != "upright" else 780
+                cameras = [
+                    Camera(position=[0, 48, 98], angle=[65, 0, 133], distance=dist),
+                    Camera(position=[0, 48, 98], angle=[65, 0, 308], distance=dist),
+                    Camera(position=[0, 48, 98], angle=[90, 0, 90], distance=dist),
+                    Camera(position=[0, 48, 98], angle=[90, 0, 0], distance=dist),
+                ]
+                for i, camera in enumerate(cameras):
+                    output_file = f"docs/renders/complete_microscope_{optics_version}{body}{i}.png"
+                    scad = f"render_complete_microscope(\"{optics_version}\", {manual});"
+                    render = ScadRender(output_file, input_file, scad, imgsize, camera)
+                    rendersystem.register_scad_render(render)
 
 def register_rendered_microscope_stl(rendersystem, force_clean):
     input_file = "rendering/librender/rendered_main_body.scad"
+    version_str = version_string(force_clean)
+    parameters = {"VERSION_STRING": version_str}
+    rendersystem.register_render_stl(input_file, parameters)
+
+def register_rendered_microscope_manual_stl(rendersystem, force_clean):
+    input_file = "rendering/librender/rendered_main_body_manual.scad"
     version_str = version_string(force_clean)
     parameters = {"VERSION_STRING": version_str}
     rendersystem.register_render_stl(input_file, parameters)
@@ -595,6 +645,10 @@ def register_rendered_separate_z_actuator_stl(rendersystem):
     parameters = {}
     rendersystem.register_render_stl(input_file, parameters)
 
+def register_rendered_separate_z_actuator_manual_stl(rendersystem):
+    input_file = "rendering/librender/rendered_separate_z_actuator_manual.scad"
+    parameters = {}
+    rendersystem.register_render_stl(input_file, parameters)
 
 def main():
     parser = argparse.ArgumentParser(
@@ -626,7 +680,9 @@ def main():
     if run_all or args.stl_only:
         rendersystem.register_zip_assets('rendering/librender/hardware.zip')
         register_rendered_microscope_stl(rendersystem, force_clean=args.force_clean)
+        register_rendered_microscope_manual_stl(rendersystem, force_clean=args.force_clean)
         register_rendered_separate_z_actuator_stl(rendersystem)
+        register_rendered_separate_z_actuator_manual_stl(rendersystem)
     if run_all or args.png_only:
         #Register all openscad renders (and associated post processing)
         register_rms_optics_assembly(rendersystem)

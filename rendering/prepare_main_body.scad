@@ -7,32 +7,33 @@ use <../openscad/libs/main_body_structure.scad>
 use <../openscad/libs/utilities.scad>
 
 
-FRAME=9;
+FRAME = 9;
+MANUAL = false;
 
-render_prepare_main_body(FRAME);
+render_prepare_main_body(FRAME,MANUAL);
 
-module render_prepare_main_body(frame){
+module render_prepare_main_body(frame, manual=false){
     params = render_params();
     if (frame==1){
-        render_body();
+        render_body(manual=manual);
         stage_nut(params, exploded=true);
     }else if (frame==2){
-        render_body();
+        render_body(manual=manual);
         stage_nut(params, low=true);
         stage_nut_temp_screw(params, exploded=true);
     }else if (frame==3){
-        render_body();
+        render_body(manual=manual);
         stage_nut(params);
         stage_nut_temp_screw(params, turn=true);
     }else if (frame==4){
-        render_body();
+        render_body(manual=manual);
         stage_nut(params);
         stage_nut(params, nut_num=1, exploded=true);
         stage_nut(params, nut_num=2, exploded=true);
         stage_nut(params, nut_num=3, exploded=true);
     }
     else if (frame==5){
-        render_body();
+        render_body(manual=manual);
         stage_nut(params);
         stage_nut(params, nut_num=1);
         stage_nut_temp_screw(params, nut_num=1, turn=true);
@@ -42,22 +43,22 @@ module render_prepare_main_body(frame){
         stage_nut_temp_screw(params, nut_num=3, turn=true);
     }
     else if (frame==6){
-        main_body_stage_prepared(params);
+        main_body_stage_prepared(params, manual=manual);
     }
     else if (frame==7){
-        main_body_stage_prepared(params);
+        main_body_stage_prepared(params, manual=manual);
         illum_platform_nut(params, right=true, exploded=true);
         illum_platform_nut(params, right=false, exploded=true);
     }
     else if (frame==8){
-        main_body_stage_prepared(params);
+        main_body_stage_prepared(params, manual=manual);
         illum_platform_nut(params, right=true, low=true);
         illum_platform_nut_temp_screw(params, right=true, exploded=true);
         illum_platform_nut(params, right=false, low=true);
         illum_platform_nut_temp_screw(params, right=false, exploded=true);
     }
     else if (frame==9){
-        main_body_stage_prepared(params);
+        main_body_stage_prepared(params, manual=manual);
         illum_platform_nut(params, right=true);
         illum_platform_nut_temp_screw(params, right=true, turn=true);
         illum_platform_nut(params, right=false);
@@ -65,24 +66,24 @@ module render_prepare_main_body(frame){
     }
 }
 
-module main_body_stage_prepared(params, translucent_body=false){
+module main_body_stage_prepared(params, translucent_body=false, manual=false){
     stage_nut(params);
     stage_nut(params, nut_num=1);
     stage_nut(params, nut_num=2);
     stage_nut(params, nut_num=3);
-    render_body(translucent_body=translucent_body);
+    render_body(translucent_body=translucent_body, manual=manual);
 }
 
-module main_body_prepared(translucent_body=false){
+module main_body_prepared(translucent_body=false, manual=false){
     params = render_params();
     illum_platform_nut(params, right=false);
     illum_platform_nut(params, right=true);
-    main_body_stage_prepared(params, translucent_body=translucent_body);
+    main_body_stage_prepared(params, translucent_body=translucent_body, manual=manual);
 }
 
-module render_body(translucent_body=false){
+module render_body(translucent_body=false, manual=false){
     alpha = translucent_body ? 0.2 : 1.0;
-    rendered_main_body(body_colour(), alpha);
+    rendered_main_body(body_colour(), alpha, manual=manual);
 }
 
 module stage_nut_temp_screw(params, nut_num=0, turn=false, exploded=false){
