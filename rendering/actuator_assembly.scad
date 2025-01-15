@@ -15,9 +15,9 @@ use <prepare_main_body.scad>
 use <librender/rendered_separate_z_actuator.scad>
 
 
-FRAME = 10;
+FRAME = 2;
 OPTICS_VERSION = "rms";
-MANUAL = false;
+MANUAL = true;
 
 render_actuator_assembly(FRAME, MANUAL, OPTICS_VERSION);
 
@@ -283,7 +283,8 @@ module lead_screw_assembly(manual=false, exploded=false, construction_offset=[0,
 }
 
 module mount_lead_screw(manual=false, exploded=false, tools=false){
-    tr_screw = exploded ? [0 ,0, 35] : large_gear_screw_pos();
+    tr_screw_explode = manual ? 48 : 35 ;
+    tr_screw = exploded ? [0 ,0, tr_screw_explode] : large_gear_screw_pos();
     tr_nut_spinner = exploded ? [0 ,0, -7] : [0 ,0, 0];
     tr_gear_holder = exploded ? [0 ,0, 50] : [0 ,0, 11];
     tr_nut = exploded ? [0 ,0, -30] : [0 ,0, -16];
