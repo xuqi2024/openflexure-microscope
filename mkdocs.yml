@@ -1,6 +1,7 @@
 site_name: OpenFlexure Microscope OpenScad Docs
 nav:
   - Alphabetical Index: alphaindex.md
+  - Repository: https://gitlab.com/openflexure/openflexure-microscope/
 docs_dir: openscad-docs
 extra_css:
   - css/style.css
