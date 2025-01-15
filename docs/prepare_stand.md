@@ -28,7 +28,7 @@
 * Tighten with a [2.5mm Ball-end Allen key]{qty:1, cat:tool} until you feel reasonable resistance
 * Unscrew and remove the screw. The nut should stay mounted.
 
-## Embed remaining mounting nuts in the stand {pagestep}
+## Embed {{includetext: "the other mounting nut", if: var_body is _manual}}{{includetext: "remaining mounting nuts", if: var_body is not _manual }} in the stand {pagestep}
 
 ![](renders/prepare_stand{{var_body, default:}}5.png)
 ![](renders/prepare_stand{{var_body, default:}}6.png)
