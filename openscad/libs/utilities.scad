@@ -3,10 +3,6 @@
 //   OpenFlexure microscope.
 
 
-// Until we figure out a neater way to do this, I am using a commoncode
-// block to include this file for the examples.  Using the Include: block
-// will be confusing because we don't install it in the libraries folder
-// by default...
 // CommonCode:
 //    use <./openscad/libs/utilities.scad>;
 

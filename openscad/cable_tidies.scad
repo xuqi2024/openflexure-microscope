@@ -1,3 +1,7 @@
+// LibFile: cable_tidies.scad
+//   These modules create cable managment for the microscope.
+
+
 use <libs/microscope_parameters.scad>
 use <libs/main_body_transforms.scad>
 use <libs/utilities.scad>
@@ -157,7 +161,8 @@ module side_cable_tidy(params, h=6){
     }
 }
 
-// Module: front_cable_tidy(params, h=6)
+// Module: front_cable_tidy()
+// Usage: front_cable_tidy(params, h=6)
 // Description: 
 //   The cable tidy at the front of the microscope (i.e. for the Z motor)
 //   NB this renders in-place and will need to be transformed to put it

@@ -268,7 +268,7 @@ api-docs:
       - pip install --upgrade pip
       - pip install git+https://github.com/julianstirling/openscad_docsgen.git@mkdocs-compatibility
       - pip install mkdocs
-      - xvfb-run --auto-servernum --server-args "-screen 0 1024x768x24" openscad-docsgen -p mkdocs -P "OpenFlexure Microscope" -D openscad-docs -it -m openscad/libs/*.scad
+      - xvfb-run --auto-servernum --server-args "-screen 0 1024x768x24" openscad-docsgen -f -p mkdocs -P "OpenFlexure Microscope" -D openscad-docs -it -m openscad/*.scad openscad/**/*.scad
       - mkdocs build --no-directory-urls
 
     artifacts:
