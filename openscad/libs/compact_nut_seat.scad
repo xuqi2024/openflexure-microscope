@@ -1,4 +1,4 @@
-// LibFile: lightrap.scad
+// LibFile: compact_nut_seat.scad
 //   The library contains the modules that hold the nut in the actuator column
 //   as well as other modules for that define the actuator column.
 

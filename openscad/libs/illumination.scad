@@ -1,4 +1,4 @@
-// LibFile: main_body_structure.scad
+// LibFile: illumination.scad
 //   The illumination module includes the condenser lens mounts and
 //   the dovetail that it attaches to.
 

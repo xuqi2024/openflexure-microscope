@@ -148,9 +148,14 @@ function _vector_mirror_axis(vec, axis_index) = [
 //   center = The default, `false`, places the first copy at its original location and the last is displaced by `(N-1)*delta`.  Set to `true` to centre the copies on the original location.
 // Description:
 //   Create a linear arry of copies of a geometry.
-// Examples:
-//   repeat([10,0,0], 4) cube(5);
-//   repeat([10,0,0], 4, center=true) cube(5, center=true);
+// Example:
+//   repeat([10,0,0], 4){
+//       cube(5);
+//   }
+// Example:
+//   repeat([10,0,0], 4, center=true){
+//       cube(5, center=true);
+//   }
 module repeat(delta, N, center=false){
     //repeat children along a regular array
     center_tr = (center ?  -(N-1)/2 : 0) * delta;
@@ -351,7 +356,7 @@ module m3_nut_hole_y(h=undef, center=false, extra_height=0.1, shaft_length=0, nu
 //   h = the height
 //   dy = the length of the slot (centre to centre on circles) total length is dy+2*r
 //   center = if true the shape is centred on all axes.
-// Examples:
+// Example:
 //   cyl_slot(r=2, h=10, dy=20);
 module cyl_slot(r=1, h=1, dy=2, center=false){
 
@@ -375,7 +380,7 @@ keyhole(10, 6, 3, 25, center=false);
 // Description:
 //   Create a keyhole shaped prism. Main lobe centred at (x,y) = (0,0). Slot
 //   in the y-direction.
-// Examples:
+// Example:
 //   keyhole(10, 2.5, 1.6, 5, center=false);
 module keyhole(h, r_hole, r_slot, l_slot, center=false){
     translate_y(l_slot/2){
@@ -390,13 +395,21 @@ module keyhole(h, r_hole, r_slot, l_slot, center=false){
 //   Undoing a rotation is not as simple as `rotate(-rotation)` because
 //   `rotate()` applies three separate rotations in order.
 //   `unrotate()` reverses this, by applying the rotations in reverse order.
-// Example(3D):
+// Example:
 //   angles = [30, 60, 45];
-//   unrotate(angles) rotate(angles) cylinder(r=2, h=10);
-// Example(3D):
+//   unrotate(angles){
+//       rotate(angles){
+//           cylinder(r=2, h=10);
+//       }
+//   }
+// Example:
 //   // This doesn't undo the rotation as you might expect!
 //   angles = [30, 60, 45];
-//   rotate(-angles) rotate(angles) cylinder(r=2, h=10);
+//   rotate(-angles){
+//       rotate(angles){
+//           cylinder(r=2, h=10);
+//       }
+//   }
 module unrotate(rotation){
     //undo a previous rotation
     //Note: this is not the same as rotate(-rotation) due to ordering.
@@ -417,9 +430,14 @@ module unrotate(rotation){
 //   lots of useful transformations are quite close to the identity matrix.
 //   This module allows you to specify individual matrix elements.  Unspecified
 //   elements will default to the identity matrix.
-// Examples:
-//   sparse_matrix_transform(yz=0.5) cylinder(r=5, h=20);
-//   sparse_matrix_transform(zy=0.5) cylinder(r=5, h=20);
+// Example:
+//   sparse_matrix_transform(yz=0.5){
+//       cylinder(r=5, h=20);
+//   }
+// Example:
+//   sparse_matrix_transform(zy=0.5){
+//       cylinder(r=5, h=20);
+//   }
 module sparse_matrix_transform(xx=1, yy=1, zz=1, xy=0, xz=0, yx=0, yz=0, zx=0, zy=0, xt=0, yt=0, zt=0){
     //Apply a matrix transformation, specifying the matrix sparsely
     //This is useful because most helpful matrices are close to the identity.
@@ -457,18 +475,36 @@ module rightangle_prism(size,center=false){
 // Example:
 //   sequential_hull(){
 //   -- $fn=8;
-//       translate([0,0,0]) sphere(2);
-//       translate([0,0,15]) sphere(2);
-//       translate([15,0,15]) sphere(2);
-//       translate([0,15,15]) sphere(2);
+//       translate([0,0,0]){
+//           sphere(2);
+//       }
+//       translate([0,0,15]){
+//           sphere(2);
+//       }
+//       translate([15,0,15]){
+//           sphere(2);
+//       }
+//       translate([0,15,15]){
+//           sphere(2);
+//       }
 //   }
 // Example:
 //   sequential_hull(){
-//       translate([0,0,0]) cylinder(r=2, h=tiny());
-//       translate([0,0,5]) cylinder(r=4, h=tiny());
-//       translate([0,0,7]) cylinder(r=2, h=tiny());
-//       translate([0,0,10]) cylinder(r=6, h=3);
-//       translate([0,0,20]) cylinder(r=2, h=tiny());
+//       translate([0,0,0]){
+//           cylinder(r=2, h=tiny());
+//       }
+//       translate([0,0,5]){
+//           cylinder(r=4, h=tiny());
+//       }
+//       translate([0,0,7]){
+//           cylinder(r=2, h=tiny());
+//       }
+//       translate([0,0,10]){
+//           cylinder(r=6, h=3);
+//       }
+//       translate([0,0,20]){
+//           cylinder(r=2, h=tiny());
+//       }
 //   }
 module sequential_hull(){
     //given a sequence of >2 children, take the convex hull between each pair - a helpful, general extrusion technique.
@@ -606,37 +642,50 @@ module square_to_circle(r, h, layers=4, top_cylinder=0){
 //   big_bottom = If true (default), add a very large volume below z=0
 // Example(VPT=[0,0,10], VPR=[120, 0, 30], NoAxes):
 //   difference(){
-//        translate([-10, -10, 0]) cube(20); // The base structure
+//        translate([-10, -10, 0]){
+//            cube(20); // The base structure
+//        }
 //   
 //        intersection(){
 //            cylinder(r=8, h=999, center=true); // This is our void
 //   
 //            // We set the height of our void by the Z position of 
 //            // hole_from_bottom
-//            translate([0,0,10]) hole_from_bottom(r=2, h=999, base_w=999, big_bottom=true);
+//            translate([0,0,10]){
+//                hole_from_bottom(r=2, h=999, base_w=999, big_bottom=true);
+//            }
 //        }
-//      
+//   
 //        // Cut through the structure so we can see inside
 //        rotate(225) translate([-99, 0, -1]) cube(999);
 //    }
 // Example(2D, NoAxes):
 //    -- module example_1(){
 //    --     difference(){
-//    --         translate([-10, -10, 0]) cube(20); // The base structure
-//    --     
+//    --         translate([-10, -10, 0]){
+//    --             cube(20); // The base structure
+//    --         }
 //    --         intersection(){
 //    --             cylinder(r=8, h=999, center=true); // This is our void
 //    --     
 //    --             // We set the height of our void by the Z position of 
 //    --             // hole_from_bottom
-//    --             translate([0,0,10]) hole_from_bottom(r=2, h=999, base_w=999, big_bottom=true);
+//    --             translate([0,0,10]){
+//    --                 hole_from_bottom(r=2, h=999, base_w=999, big_bottom=true);
+//    --             }     
 //    --         }
 //    --     }
 //    -- }
 //    // This code renders some slices through the first example
 //    for(i = [0:3]){
 //        z = 9.75 + 0.5*i;
-//        translate([i*25, 0, 0]) projection(cut=true) translate([0,0,-z]) example_1();
+//        translate([i*25, 0, 0]){
+//            projection(cut=true){
+//                translate([0,0,-z]){
+//                    example_1();
+//                }
+//            }
+//        }
 //    }
 // Example(3D, VPD=50):
 //    hole_from_bottom(r=2, h=10, base_w=10, big_bottom=false);
