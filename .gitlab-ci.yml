@@ -312,6 +312,7 @@ api-docs:
     extends: .scad-job
     stage: build-docs
     script:
+      - pip install --upgrade pip
       - pip install git+https://github.com/julianstirling/openscad_docsgen.git@mkdocs-compatibility
       - pip install mkdocs
       - openscad-docsgen -p mkdocs -P "OpenFlexure Microscope" -D openscad-docs -it -m openscad/libs/*.scad
