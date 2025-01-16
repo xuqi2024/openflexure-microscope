@@ -261,6 +261,28 @@ gltf:
       - web
       - master
 
+api-docs:
+    extends: .scad-job
+    stage: build
+    script:
+      - pip install --upgrade pip
+      - pip install git+https://github.com/julianstirling/openscad_docsgen.git@mkdocs-compatibility
+      - pip install mkdocs
+      - xvfb-run --auto-servernum --server-args "-screen 0 1024x768x24" openscad-docsgen -p mkdocs -P "OpenFlexure Microscope" -D openscad-docs -it -m openscad/libs/*.scad
+      - mkdocs build --no-directory-urls
+
+    artifacts:
+      expire_in: 1 week
+      name: "${CI_PROJECT_NAME}-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}-api-docs"
+      paths:
+        - site/
+
+    only:
+      - tags
+      - merge_requests
+      - web
+      - master
+
 # Build docs- this is at a later stage so it has access to the models
 build-docs:
     stage: build-docs
@@ -268,8 +290,9 @@ build-docs:
       - build
       - render
       - gltf
+      - api-docs
       - archive-source
-    needs: ["build", "render", "gltf", "archive-source"]
+    needs: ["build", "render", "gltf", "api-docs", "archive-source"]
     image: "python:3.12"
 
     before_script:
@@ -285,6 +308,7 @@ build-docs:
       - gitbuilding build-html --hardwarnings
       - cd ..
       - mv docs/_site builds
+      - mv site builds/openscad-docs
       - echo "JOB_ID=$CI_JOB_ID" > build-docs.env
 
     artifacts:
@@ -301,28 +325,6 @@ build-docs:
     environment:
       name: review/$CI_COMMIT_REF_SLUG
       url: https://openflexure.gitlab.io/-/openflexure-microscope/-/jobs/$JOB_ID/artifacts/builds/index.html
-
-    only:
-      - tags
-      - merge_requests
-      - web
-      - master
-
-api-docs:
-    extends: .scad-job
-    stage: build-docs
-    script:
-      - pip install --upgrade pip
-      - pip install git+https://github.com/julianstirling/openscad_docsgen.git@mkdocs-compatibility
-      - pip install mkdocs
-      - xvfb-run --auto-servernum --server-args "-screen 0 1024x768x24" openscad-docsgen -p mkdocs -P "OpenFlexure Microscope" -D openscad-docs -it -m openscad/libs/*.scad
-      - mkdocs build --no-directory-urls
-
-    artifacts:
-      expire_in: 1 week
-      name: "${CI_PROJECT_NAME}-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}-api-docs"
-      paths:
-        - site/
 
     only:
       - tags
