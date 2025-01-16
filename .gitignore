@@ -26,6 +26,8 @@ gl-code-quality-report.json
 docs/*.zip
 
 # Ignore automatically built files
+openscad-docs/
+site/
 builds/
 docs/Output/
 *.d

@@ -1,16 +1,12 @@
-/******************************************************************
-*                                                                 *
-* OpenFlexure Microscope: Z axis                                  *
-*                                                                 *
-* This is the Z axis for the OpenFlexure Microscope.              *
-* It also contains the fitting for the optics module to attach    *
-* it to the objective mount, as the objective mount is part of    *
-* the Z axis assembly.                                            *
-*                                                                 *
-* (c) Richard Bowman, January 2018                                *
-* Released under the CERN Open Hardware License                   *
-*                                                                 *
-******************************************************************/
+// LibFile: z_axis.scad
+//   This is the Z axis for the OpenFlexure Microscope.
+//   OpenFlexure microscope.
+// This is the Z axis for the OpenFlexure Microscope.
+// It also contains the fitting for the optics module to attach
+// it to the objective mount, as the objective mount is part of
+// the Z axis assembly.
+
+
 /*
 
 The Z axis assembly is a 4-bar mechanism, kept as short as possible
@@ -527,7 +523,8 @@ module complete_z_actuator(params){
     }
 }
 
-// Function: z_housing_bottom_pos(params, y_actuator=false)
+// Function: z_housing_bottom_pos()
+// Usage: z_housing_bottom_pos(params, y_actuator=false)
 // Description:
 //   The position of the bottom of the cable housing on
 //   either side of the Z axis.  Which side is determined
@@ -536,13 +533,15 @@ function z_housing_bottom_pos(params, y_actuator=false) = let(
     x_tr = y_actuator ? -23 : 23
 ) [x_tr, z_nut_y(params), 0];
 
-// Function: z_housing_angle(params, y_actuator=false)
+// Function: z_housing_angle()
+// Usage: z_housing_angle(params, y_actuator=false)
 // Description:
 //   How far to rotate the cable housings around the 
 //   Z axis
 function z_housing_angle(params, y_actuator=false) = y_actuator ? 15 : -15;
 
-// Module: z_housing_frame(params, y_actuator=false)
+// Module: z_housing_frame()
+// Usage: z_housing_frame(params, y_actuator=false)
 // Description: 
 //   Transform into the frame of the Z cable housing.
 //   The origin will be in the z=0 plane, either to the
@@ -562,7 +561,8 @@ module z_housing_frame(params, y_actuator=false){
     }
 }
 
-// Module: z_cable_tidy_frame(params, z_extra=0)
+// Module: z_cable_tidy_frame()
+// Usage: z_cable_tidy_frame(params, z_extra=0)
 // Description: 
 //   Transform children into the frame of the Z cable tidy.
 //   This puts the origin at the centre of the Z motor shaft
@@ -612,7 +612,8 @@ module z_cable_tidy_frame_undo(params, z_extra=0){
     }
 }
 
-// Module: z_cable_housing(params)
+// Module: z_cable_housing()
+// Usage: z_cable_housing(params)
 // Description: 
 //   A solid block that is the right size to contain the cable channels
 //   either side of the Z axis.  Its bottom is the z=0 plane, and its top
@@ -634,7 +635,8 @@ module z_cable_housing(params){
     }
 }
 
-// Module: z_cable_housing_top(params, h)
+// Module: z_cable_housing_top()
+// Usage: z_cable_housing_top(params, h)
 // Description: 
 //   A block of height h that has the same shape as the top of the z
 //   cable housing.
@@ -650,7 +652,8 @@ module z_cable_housing_top(params, h){
 }
 
 
-// Module: z_cable_housing_x(params)
+// Module: z_cable_housing_x()
+// Usage: z_cable_housing_x(params)
 // Description: 
 //   A solid block big enough to contain the motor cable from the Z axis.
 //   Note that the z cable housing includes one of these on each side of
@@ -681,7 +684,8 @@ module z_cable_housing_x(params){
     }
 }
 
-// Module: z_cable_housing_cutout(params, h=99, top=false)
+// Module: z_cable_housing_cutout()
+// Usage: z_cable_housing_cutout(params, h=99, top=false)
 // Description: 
 //   A block that can be subtracted from the z_cable_housing
 //   to make the channel for the cable.  NB this module renders one

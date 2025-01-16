@@ -1,3 +1,10 @@
+// LibFile: lightrap.scad
+//   This adds the functionality to create a feather edge light trap used
+//   in the optical paths
+
+// CommonCode:
+//    use <./openscad/libs/lighttrap.scad>;
+
 use <utilities.scad>
 
 // A list of points describing the minkowski product of a square of side
@@ -91,8 +98,8 @@ module lighttrap_cylinder(r1, r2, h, ridge=1.5){
 // f1 is the flat section of the bottom of the bottom pyramid
 // r2 is radius of cuvature of the top of the top pyramid
 // f2 is the flat section of the to of the top pyramid
-// NOTE: to make a uniform width shaft set r2==r1-ridge and f1=f2
-// ALSO NOTE: Each truncated pyramid is made by varying r, not f. As such
+// *NOTE* to make a uniform width shaft set r2==r1-ridge and f1=f2
+// *ALSO NOTE* Each truncated pyramid is made by varying r, not f. As such
 //     r1 must be greater than or equal to ridge
 module lighttrap_sqylinder(r1, f1, r2, f2, h, ridge=1.5){
     // Set the number of ridges so that the height of each ridge is at least
