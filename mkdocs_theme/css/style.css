@@ -1,0 +1,46 @@
+:root {
+    --bs-link-color-rgb: 57, 57, 240;
+  }
+
+a {
+  font-weight: bold;
+  color: inherit;
+}
+
+.bs-sidebar .nav > li > a{
+  font-weight: bold;
+  text-decoration: underline;
+  color: inherit;
+  font-size: larger;
+  display: block;
+  padding: 5px 0px 5px 10px;
+  z-index: 1;
+}
+
+.bs-sidebar .nav .nav > li > a{
+  font-weight: bold;
+  text-decoration: none;
+  color: inherit;
+  background-color: transparent;
+  font-size: inherit;
+}
+
+.navbar-brand{
+    color: #fff;
+}
+
+.navbar-brand:hover{
+    color: #fff;
+}
+
+.navbar-nav .nav-link{
+    color: #fff;
+}
+
+.navbar-nav .nav-link.active{
+    color: #fff;
+}
+
+.navbar.navbar.bg-primary {
+  background-image: linear-gradient(#c5247f,#c5247f 60%,#c5247f);
+}
