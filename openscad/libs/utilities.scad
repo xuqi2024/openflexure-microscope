@@ -1,9 +1,7 @@
 // LibFile: utilities.scad
-//   A collection of utilities originally developed for the OpenFlexure
-//   microscope.
-//   
-//   (c) Richard Bowman, January 2016
-//   Released under the CERN Open Hardware License
+//   A collection of utilities functions and modules developed for the
+//   OpenFlexure microscope.
+
 
 // Until we figure out a neater way to do this, I am using a commoncode
 // block to include this file for the examples.  Using the Include: block
