@@ -50,7 +50,7 @@ ___
 
 ## RMS optics modules
 
-The standard OpenFlexure optics module is the is [optics_picamera_2_rms_f50d13.stl](../models/optics_picamera_2_rms_f50d13.stl){previewpage}. This uses:
+The standard OpenFlexure optics module is [optics_picamera_2_rms_f50d13.stl](../models/optics_picamera_2_rms_f50d13.stl){previewpage}. This uses:
 
 * a 45mm parfocal, 160mm tube length, RMS-threaded objective
 * a 50mm achromatic lens
