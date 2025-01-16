@@ -3,7 +3,7 @@
 //   in the optical paths
 
 // CommonCode:
-//    use <./openscad/libs/lightrap.scad>;
+//    use <./openscad/libs/lighttrap.scad>;
 
 use <utilities.scad>
 
