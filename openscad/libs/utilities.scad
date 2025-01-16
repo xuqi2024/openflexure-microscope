@@ -25,7 +25,7 @@ function zero_z(size) = [size.x, size.y, 0]; //set the Z component of a 3-vector
 
 function if_undefined_set_default(argument, default) = is_undef(argument) ? default : argument;
 
-// Function: translate_x()
+// Module: translate_x()
 // Usage: translate_x(dist)
 // Description: 
 //   Translate in the X direction.  Equivalent to `translate([dist, 0, 0])`.
@@ -35,7 +35,7 @@ module translate_x(x_tr){
     }
 }
 
-// Function: translate_y()
+// Module translate_y()
 // Usage: translate_y(dist)
 // Description: 
 //   Translate in the Y direction.  Equivalent to `translate([0, dist, 0])`.
@@ -45,7 +45,7 @@ module translate_y(y_tr){
     }
 }
 
-// Function: translate_z()
+// Module: translate_z()
 // Usage: translate_z(dist)
 // Description: 
 //   Translate in the Z direction.  Equivalent to `translate([0, 0, dist])`.
@@ -55,7 +55,7 @@ module translate_z(z_tr){
     }
 }
 
-// Function: rotate_x()
+// Module: rotate_x()
 // Usage: rotate_x(angle)
 // Description: Rotate about X axis. Equivalent to `rotate([angle, 0, 0])`.
 module rotate_x(x_angle){
@@ -64,7 +64,7 @@ module rotate_x(x_angle){
     }
 }
 
-// Function: rotate_y()
+// Module: rotate_y()
 // Usage: rotate_y(angle)
 // Description: Rotate about Y axis. Equivalent to `rotate([0, angle, 0])`.
 module rotate_y(y_angle){
@@ -73,7 +73,7 @@ module rotate_y(y_angle){
     }
 }
 
-// Function: rotate_z()
+// Module: rotate_z()
 // Usage: rotate_z(angle)
 // Description: Rotate about Z axis. Equivalent to `rotate([0, 0, angle])`.
 module rotate_z(z_angle){
@@ -82,7 +82,7 @@ module rotate_z(z_angle){
     }
 }
 
-// Function: reflect()
+// Module: reflect()
 // Usage: reflect(axis)
 // Arguments:
 //   axis = a 2- or 3D vector giving the axis to reflect in
