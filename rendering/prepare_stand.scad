@@ -92,7 +92,7 @@ module stand_prepared(params, stand_params, manual=false){
 module render_stand(params, stand_params, manual=false){
     coloured_render(stand_colour()){
         if (manual){
-            simple_post_stand(params, type="back", wall_height=10, screws=true);
+            simple_post_stand(params);
         }
         else{
             microscope_stand(params, stand_params, supports=false);
