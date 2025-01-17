@@ -324,7 +324,9 @@ function back_lug_x_pos(params) = let(
 * The angle which the four lugs face in the order that the hole positions
 * are listed in base_mounting_holes in microscope_structure.scad.
 */
-function lug_angles() = [-120, 120, 50, -50];
+function lug_angles(params) = let(
+    xy_cable_tidies = key_lookup("include_motor_lugs",params)
+) xy_cable_tidies? [-120, 120, 50, -50] : [-120, 120, 105, -105] ;
 
 /**
 * Height of walls between the actuators

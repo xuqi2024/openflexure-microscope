@@ -68,3 +68,17 @@ module oshw_logo_and_text(text=""){
         }
     }
 }
+
+ module oshw_logo_and_text_beside(text=""){
+    union(){
+        translate([25,8,0]){
+            oshw_logo();
+        }
+
+        mirror([1,0,0]){
+            linear_extrude(1){
+                text(text, size=14, font="Calibri", halign="left");
+            }
+        }
+    }
+}
