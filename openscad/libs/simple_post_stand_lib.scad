@@ -29,7 +29,7 @@ function simple_post_stand_pos_height(params) = key_lookup("foot_height",params)
 //       to stop tipping.
 //   screws = Boolean to add mounting lugs. Default=true
 module simple_post_stand(params, wall_height=10, screws=true){
-    //The post holes are for the back lugs of the microscope so we set type to "back"
+    //The posts are for the back lugs of the microscope so we set type to "back"
     hole_pos = base_mounting_holes(params,type="back");
     post_height = simple_post_stand_pos_height(params);
 
