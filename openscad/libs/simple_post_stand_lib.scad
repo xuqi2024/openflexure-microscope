@@ -27,8 +27,8 @@ function simple_post_stand_pos_height(params) = key_lookup("foot_height",params)
 //   ---
 //   wall_height = the height of a wall that runs between the "back" legs, around stage,
 //       to stop tipping.
-//   screws = Boolean to add mounting lugs. Default=false
-module simple_post_stand(params, wall_height=10, screws=false){
+//   screws = Boolean to add mounting lugs. Default=true
+module simple_post_stand(params, wall_height=10, screws=true){
     //The post holes are for the back lugs of the microscope so we set type to "back"
     hole_pos = base_mounting_holes(params,type="back");
     post_height = simple_post_stand_pos_height(params);
