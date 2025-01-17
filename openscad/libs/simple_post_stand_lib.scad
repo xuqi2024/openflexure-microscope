@@ -10,11 +10,11 @@ use <./main_body_transforms.scad>
 use <./main_body_structure.scad>
 use <./libdict.scad>
 
-// Function: simple_post_stand_pos_height()
-// Usage: simple_post_stand_pos_height(params)
+// Function: simple_post_stand_post_height()
+// Usage: simple_post_stand_post_height(params)
 // Descriprtion:
 //    Sets the post height to ensure the microscope sits level/
-function simple_post_stand_pos_height(params) = key_lookup("foot_height",params);
+function simple_post_stand_post_height(params) = key_lookup("foot_height",params);
 
 
 // Module: simple_post_stand()
@@ -31,7 +31,7 @@ function simple_post_stand_pos_height(params) = key_lookup("foot_height",params)
 module simple_post_stand(params, wall_height=10, fixing_lugs=true){
     //The posts are for the back lugs of the microscope so we set type to "back"
     hole_pos = base_mounting_holes(params,type="back");
-    post_height = simple_post_stand_pos_height(params);
+    post_height = simple_post_stand_post_height(params);
 
     // a post at each mounting foot position
     for (n = [0:len(hole_pos)-1]){
@@ -45,7 +45,7 @@ module simple_post_stand(params, wall_height=10, fixing_lugs=true){
 }
 
 module microscope_mounting_post(params, hole_pos, lug_angle, fixing_lugs=false){
-    post_height = simple_post_stand_pos_height(params);
+    post_height = simple_post_stand_post_height(params);
     base_d=20;
     top_d=10;
     difference(){ // difference to cut off the leg parts from xy lugs
@@ -103,7 +103,7 @@ module screw_mounting_plate(screw_rotate, screw_translate){
 }
 
 module curved_mount_back_wall(params, wall_height){
-    post_height = simple_post_stand_pos_height(params);
+    post_height = simple_post_stand_post_height(params);
     back_hole_pos = base_mounting_holes(params, type="back");
     difference(){
         wall_radius = sqrt((back_hole_pos[1].x)^2+(back_hole_pos[1].y)^2);
