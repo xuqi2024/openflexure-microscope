@@ -18,7 +18,7 @@ function simple_post_stand_pos_height(params) = key_lookup("foot_height",params)
 
 
 // Module: simple_post_stand()
-// Usage: simple_post_stand(params, type="back", wall_height=10);
+// Usage: simple_post_stand(params, wall_height=10, fixing_lugs=true);
 // Description: 
 //   Builds posts to fit under main body mointing points, to use instead of a complete base.
 //   Cable tie loops are included on the legs under the stage.
@@ -27,8 +27,8 @@ function simple_post_stand_pos_height(params) = key_lookup("foot_height",params)
 //   ---
 //   wall_height = the height of a wall that runs between the "back" legs, around stage,
 //       to stop tipping.
-//   screws = Boolean to add mounting lugs. Default=true
-module simple_post_stand(params, wall_height=10, screws=true){
+//   fixing_lugs = Boolean to add fixing lugs for attaching the stand to a base/table. Default=true
+module simple_post_stand(params, wall_height=10, fixing_lugs=true){
     //The posts are for the back lugs of the microscope so we set type to "back"
     hole_pos = base_mounting_holes(params,type="back");
     post_height = simple_post_stand_pos_height(params);
@@ -37,14 +37,14 @@ module simple_post_stand(params, wall_height=10, screws=true){
     for (n = [0:len(hole_pos)-1]){
         hole = hole_pos[n];
         angle = lug_angles(params)[n];
-        microscope_mounting_post(params, hole_pos=hole, lug_angle=angle, screws=screws);
+        microscope_mounting_post(params, hole_pos=hole, lug_angle=angle, fixing_lugs=fixing_lugs);
     }
 
     // wall around stage base to prevent toppling, joining the two "back" posts
     curved_mount_back_wall(params, wall_height=wall_height);
 }
 
-module microscope_mounting_post(params, hole_pos, lug_angle, screws=false){
+module microscope_mounting_post(params, hole_pos, lug_angle, fixing_lugs=false){
     post_height = simple_post_stand_pos_height(params);
     base_d=20;
     top_d=10;
@@ -59,7 +59,7 @@ module microscope_mounting_post(params, hole_pos, lug_angle, screws=false){
                         tube(ro=8.5/2, ri=6/2, h=3, $fn=32);
                     }
                 }
-                if (screws) {
+                if (fixing_lugs) {
                     screw_offset = (base_d/2)+4;
                     screw_translate = (hole_pos.x)>0? -screw_offset : screw_offset ;
                     screw_angle = 35;
