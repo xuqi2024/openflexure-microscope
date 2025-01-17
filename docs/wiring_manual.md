@@ -1,6 +1,10 @@
 # Complete the wiring
 
-The microscope illumination must be connected to power and the camera must be connected to a computer.  These instructions assume you are using a webcam. 
+The microscope illumination must be connected to power and the camera must be connected to a computer.
+
+In these instructions we have used a Raspberry Pi camera, but the manual microscope is also well suited to use with a webcam.
+
+How you wire your microscope will depend on the camera and computer you have used. 
 
 
 ## Connect the camera {pagestep}
