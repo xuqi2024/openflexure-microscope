@@ -1,3 +1,8 @@
+// LibFile: utilities.scad
+//   The functions to build the post stand that is used for mounting the manual microscope
+//   It is just two posts the height of the feet for the back microscope lugs, connected
+//   by a curved wall.
+
 use <./utilities.scad>
 use <./microscope_parameters.scad>
 use <./compact_nut_seat.scad>
@@ -5,36 +10,44 @@ use <./main_body_transforms.scad>
 use <./main_body_structure.scad>
 use <./libdict.scad>
 
+// Function: simple_post_stand_pos_height()
+// Usage: simple_post_stand_pos_height(params)
+// Descriprtion:
+//    Sets the post height to ensure the microscope sits level/
+function simple_post_stand_pos_height(params) = key_lookup("foot_height",params);
+
 
 // Module: simple_post_stand()
 // Usage: simple_post_stand(params, type="back", wall_height=10);
 // Description: 
 //   Builds posts to fit under main body mointing points, to use instead of a complete base.
 //   Cable tie loops are included on the legs under the stage.
-//
-//   optional parameters
-//   type: which of the mounting holes to make posts for. The posts are the same height as the actuator feet so
-//         it is recommended to build posts only for the feet under the stage (type="back") and rest on the actuator feet.
-//   wall_height: the height of a wall that runs between the "back" legs, around stage, to stop tipping.
-module simple_post_stand(params, type="back", wall_height=10, screws=false){
-    hole_pos = base_mounting_holes(params,type=type);
-    foot_height= key_lookup("foot_height",params);
-    post_height = foot_height;
-    base_d=20;
-    top_d=10;
+// Arguments:
+//   params = microscope parameters dictionary
+//   ---
+//   wall_height = the height of a wall that runs between the "back" legs, around stage,
+//       to stop tipping.
+//   screws = Boolean to add mounting lugs. Default=true
+module simple_post_stand(params, wall_height=10, screws=true){
+    //The post holes are for the back lugs of the microscope so we set type to "back"
+    hole_pos = base_mounting_holes(params,type="back");
+    post_height = simple_post_stand_pos_height(params);
 
     // a post at each mounting foot position
     for (n = [0:len(hole_pos)-1]){
         hole = hole_pos[n];
         angle = lug_angles(params)[n];
-        mounting_post(params, post_height=post_height, base_d=base_d, top_d=top_d, hole_pos=hole, lug_angle=angle, screws=screws);
+        microscope_mounting_post(params, hole_pos=hole, lug_angle=angle, screws=screws);
     }
 
     // wall around stage base to prevent toppling, joining the two "back" posts
-    curved_mount_back_wall(params, wall_height=wall_height, post_height=post_height);
+    curved_mount_back_wall(params, wall_height=wall_height);
 }
 
-module mounting_post(params, post_height=20, base_d=25, top_d=20, hole_pos=[0,0,0], lug_angle=0, screws=false){
+module microscope_mounting_post(params, hole_pos, lug_angle, screws=false){
+    post_height = simple_post_stand_pos_height(params);
+    base_d=20;
+    top_d=10;
     difference(){ // difference to cut off the leg parts from xy lugs
         translate(hole_pos){
             cylinder(d1=base_d, d2=top_d, h=post_height+2, $fn=32);
@@ -73,7 +86,7 @@ module mounting_post(params, post_height=20, base_d=25, top_d=20, hole_pos=[0,0,
     }
 }
 
-module screw_mounting_plate(screw_rotate=0, screw_translate=[0,0,0]){
+module screw_mounting_plate(screw_rotate, screw_translate){
     rotate_z(screw_rotate){
         difference(){
             hull(){
@@ -89,8 +102,9 @@ module screw_mounting_plate(screw_rotate=0, screw_translate=[0,0,0]){
     }
 }
 
-module curved_mount_back_wall(params, wall_height=35, post_height=35){
-    back_hole_pos = base_mounting_holes(params,type="back");
+module curved_mount_back_wall(params, wall_height){
+    post_height = simple_post_stand_pos_height(params);
+    back_hole_pos = base_mounting_holes(params, type="back");
     difference(){
         wall_radius = sqrt((back_hole_pos[1].x)^2+(back_hole_pos[1].y)^2);
         wall_d = wall_radius*2 + 3;
