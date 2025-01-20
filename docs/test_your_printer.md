@@ -22,9 +22,9 @@ Details:
 ## Set your printer settings {pagestep}
 
 
-All microscope parts can be printed out of [PLA filament] on most [RepRap-style printers][RepRap-style printer]{Qty:1,cat:tool}.
+* All microscope parts can be printed out of [PLA filament] on most [RepRap-style printers][RepRap-style printer]{Qty:1,cat:tool}.
 
-We recommend the following printer settings:
+* Set your slicer to the following printer settings:
 
 |Setting        |Value          |
 |------------   |--             |
@@ -45,15 +45,22 @@ We recommend the following printer settings:
 
 As a general rule, strength is more important than surface finish, so very thin layers (less than 0.15mm or so) are unlikely to result in a microscope that performs any better, though it may approve the appearance.
 
-## Testing your printer {pagestep}
-
-Now test whether your printer can print the bridges in the microscope and the custom brim on the main body.  
-Download and print the leg test file, do not add brim in your slicer. This will only use about [5 grams of PLA][PLA filament]{qty: 5g}:
+## Test your print settings {pagestep}
 
 ![leg_test.stl](models/leg_test.stl)
 
-The result should look like this:
+* Now test whether your printer can print the bridges in the microscope and the custom brim on the main body  
+* Download the leg test file
+* Slice and print the file. Do not add brim in your slicer. This will only use about [5 grams of PLA][PLA filament]{qty: 5g}
+
+
+
+## Check your print {pagestep}
 
 ![](images/just_leg_test.jpg)
+![](images/just_leg_test_brims_annotated.jpg)
 
-The brim should have printed as a separate object around the leg, and should be easy to remove. If it is difficult to remove, [check that it has not been joined to the leg when sliced](./set_slice_gap_closing_radius.md#checking-the-bottom-layer).
+* Check that the bridges at the top of the legs have crossed the gap cleanly 
+* The thinner support bridges in the middle of the legs do not need to be complete, but problems there can be an indicator of more hidden printing issues
+* Check that the brim has printed as a separate object around the leg
+* Check that the brim is easy to remove. If it is difficult to remove, [check that it has not been joined to the leg when sliced](./set_slice_gap_closing_radius.md#checking-the-bottom-layer)
