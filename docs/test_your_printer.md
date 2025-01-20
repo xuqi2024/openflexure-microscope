@@ -60,7 +60,7 @@ As a general rule, strength is more important than surface finish, so very thin 
 ![](images/just_leg_test.jpg)
 ![](images/just_leg_test_brims_annotated.jpg)
 
-* Check that the bridges at the top of the legs have crossed the gap cleanly 
+* Check that the bridge at the top of the leg test has crossed the gap cleanly 
 * The thinner support bridges in the middle of the legs do not need to be complete, but problems there can be an indicator of more hidden printing issues
 * Check that the brim has printed as a separate object around the leg
 * Check that the brim is easy to remove. If it is difficult to remove, [check that it has not been joined to the leg when sliced](./set_slice_gap_closing_radius.md#checking-the-bottom-layer)
