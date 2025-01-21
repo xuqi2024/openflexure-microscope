@@ -31,7 +31,6 @@ function simple_post_stand_post_height(params) = key_lookup("foot_height",params
 module simple_post_stand(params, wall_height=10, fixing_lugs=true){
     //The posts are for the back lugs of the microscope so we set type to "back"
     hole_pos = base_mounting_holes(params,type="back");
-    post_height = simple_post_stand_post_height(params);
 
     // a post at each mounting foot position
     for (n = [0:len(hole_pos)-1]){
