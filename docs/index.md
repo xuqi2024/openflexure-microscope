@@ -20,6 +20,10 @@ This configuration of the microscope uses the original lens from a Raspberry Pi 
 [![](renders/complete_microscope_upright1.png)](upright_microscope.md)  
 This configuration of the microscope has the objective above the sample rather than below.
 
+#### [Manual microscope](manual_microscope.md)
+[![](renders/complete_microscope_low_cost_manual1.png)](manual_microscope.md)  
+This configuration of the microscope has thumbwheels for manual motion control, instead of using motors. It does not give access to robotic microscopy, so does not take advantage of many of the key features of the motorised microscope like autofocus. However when built with a USB camera (see the [optics options](customisations/optics_options.md)) it is a compact and very low-cost digital manual microscope.
+
 ## Customising your microscope
 
 The OpenFlexure Microscope is designed to be customisable. There are a number of customisation options already available as discussed on our [customisations and alternatives page](customisation.md).

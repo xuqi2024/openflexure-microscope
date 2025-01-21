@@ -52,3 +52,4 @@ If using tall optics such as an infinity corrected objective you need a taller v
 If you have built a custom microscope without a rasberry Raspberry Pi, you can print a smaller stand to just hold the microscope.
 
 [microscope_stand_no_pi.stl](models/microscope_stand_no_pi.stl){previewpage}
+
