@@ -296,6 +296,16 @@ def register_brim_and_ties_separate_z_actuator(rendersystem):
         render = ScadRender(output_file, input_file, scad, imgsize, camera)
         rendersystem.register_scad_render(render)
 
+def register_prepare_nut_trap_test(rendersystem):
+    input_file = "rendering/prepare_nut_trap_test.scad"
+    camera = Camera(position=[0,7.5,12.5], angle=[77,0,185], distance=100)
+    imgsize = [2400, 2000]
+    for i in [1, 2, 3]:
+        output_file = f"docs/renders/prepare_nut_trap_test{i}.png"
+        scad = f"render_prepare_nut_trap_test({i});"
+        render = ScadRender(output_file, input_file, scad, imgsize, camera)
+        rendersystem.register_scad_render(render)
+
 def register_prepare_main_body(rendersystem):
     input_file = "rendering/prepare_main_body.scad"
     cameras = [
@@ -638,6 +648,7 @@ def main():
         register_band(rendersystem)
         register_brim_and_ties(rendersystem)
         register_brim_and_ties_separate_z_actuator(rendersystem)
+        register_prepare_nut_trap_test(rendersystem)
         register_prepare_main_body(rendersystem)
         register_prepare_stand(rendersystem)
         register_actuator_assembly(rendersystem)
