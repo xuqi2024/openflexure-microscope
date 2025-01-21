@@ -61,10 +61,11 @@ As a general rule, strength is more important than surface finish, so very thin 
 
 ## Test assembly of the nut trap {pagestep}
 
-![](renders/prepare_main_body1.png)
-![](renders/prepare_main_body2.png)
-![](renders/prepare_main_body3.png)
+![](renders/prepare_nut_trap_test1.png)
+![](renders/prepare_nut_trap_test2.png)
+![](renders/prepare_nut_trap_test3.png)
 
+* Check that the nut hole entrance is clear and free from dangling filament. If there are obstructions this indicates that there are printing issues
 * Place an [M3 nut]{qty:1} into the slot in the nut trap test object
 * Put an [M3x10 cap head screw][extra M3x10 cap screw](parts/mechanical.yml#CapScrew_M3x10mm_SS){qty: 1, cat:tool, note:"For mounting trapped nuts"} into the hole above the nut
 * Tighten with a [2.5mm Ball-end Allen key]{qty:1, cat:tool} until you feel reasonable resistance.
