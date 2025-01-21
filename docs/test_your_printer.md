@@ -1,12 +1,3 @@
----
-Details:
-    thumbnail: images/just_leg_test.jpg
-    time: 40 minutes
-    difficulty: Easy
-    skills:
-      - 3D printing
----
-
 
 # Configure and test your printer
 
@@ -17,6 +8,8 @@ Details:
 [PLA filament]: parts/materials/pla_filament.md "{cat:material}"
 [RepRap-style printer]: parts/tools/rep-rap.md
 [utility knife]: parts/tools/utility-knife.md
+[M3 nut]: parts/mechanical.yml#Nut_M3_SS "{cat:mech}"
+[2.5mm Ball-end Allen key]: parts/tools/2.5mmBallEndAllenKey.md
 
 
 ## Set your printer settings {pagestep}
@@ -48,14 +41,15 @@ As a general rule, strength is more important than surface finish, so very thin 
 ## Test your print settings {pagestep}
 
 ![leg_test.stl](models/leg_test.stl)
+![nut_trap_test.stl](models/nut_trap_test.stl)
 
-* Now test whether your printer can print the bridges in the microscope and the custom brim on the main body  
-* Download the leg test file
-* Slice and print the file. Do not add brim in your slicer. This will only use about [5 grams of PLA][PLA filament]{qty: 5g}
+* Now test whether your printer can print the bridges in the microscope and the custom brim on the main body, and test the assembly of nut traps
+* Download the [leg test](models/leg_test.stl){previewpage} and [nut trap](models/nut_trap_test.stl){previewpage} files
+* Slice and print the files. Do not add brim in your slicer. This will only use about [5 grams of PLA][PLA filament]{qty: 5g}
 
 
 
-## Check your print {pagestep}
+## Check your leg test print {pagestep}
 
 ![](images/just_leg_test.jpg)
 ![](images/just_leg_test_brims_annotated.jpg)
@@ -64,3 +58,15 @@ As a general rule, strength is more important than surface finish, so very thin 
 * The thinner support bridges in the middle of the legs do not need to be complete, but problems there can be an indicator of more hidden printing issues
 * Check that the brim has printed as a separate object around the leg
 * Check that the brim is easy to remove. If it is difficult to remove, [check that it has not been joined to the leg when sliced](./set_slice_gap_closing_radius.md#checking-the-bottom-layer)
+
+## Test assembly of the nut trap {pagestep}
+
+![](renders/prepare_main_body1.png)
+![](renders/prepare_main_body2.png)
+![](renders/prepare_main_body3.png)
+
+* Place an [M3 nut]{qty:1} into the slot in the nut trap test object
+* Put an [M3x10 cap head screw][extra M3x10 cap screw](parts/mechanical.yml#CapScrew_M3x10mm_SS){qty: 1, cat:tool, note:"For mounting trapped nuts"} into the hole above the nut
+* Tighten with a [2.5mm Ball-end Allen key]{qty:1, cat:tool} until you feel reasonable resistance.
+* Unscrew and remove the screw. The nut should stay mounted.
+* Check that you have not crushed the surface of the test object with the screw. If you have, reprint the test object and try using less force to embed the nut.
