@@ -19,7 +19,7 @@
 
 ## Solder the resistor to the LED {pagestep}
 
-* Tun on your [soldering iron]{qty:1} so it can heat up
+* Turn on your [soldering iron]{qty:1} so it can heat up
 * Take the [LED][Warm white 5mm LED]{qty:1, cat:electronic}
 * Cut the longest leg down to about 5mm long using [precision wire cutters]{qty:1}
 * Tin this leg with [solder]{qty: a little, cat:consumable}

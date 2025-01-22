@@ -42,6 +42,8 @@ Navigation:
     Title: Build the low-cost microscope
   - Link: upright_microscope.md
     Title: Build the upright microscope
+  - Link: manual_microscope.md
+    Title: Build the manual microscope
   - Link: customisation.md
     Title: Customisations and alternatives
   - Link: troubleshooting.md
