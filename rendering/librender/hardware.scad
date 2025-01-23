@@ -168,4 +168,10 @@ module no2_x6_5_selftap(){
     }
 }
 
-
+module no1_x5_0_selftap(){
+    color("#505050"){
+        scale([0.85,0.85,0.77]){
+            import("no2_x6_5_selftap.stl");
+        }
+    }
+}
