@@ -303,3 +303,10 @@ function z_connector_pos_board_out(params, slide_dist) = let(
     tr = slide_dist*[-cos(a), sin(a)*cos(az), -sin(az)],
     fiddle = [0, 0, -4.5]
 ) translate_pos(z_connector_pos_board(params), tr+fiddle);
+
+//Note this is within the leg frame
+function sample_clip_position(params, extra_z=0) = let(
+    sample_z = key_lookup("sample_z", params)
+)  create_placement_dict(translation=[0, -stage_hole_inset(), sample_z],
+                         rotation1=[0, 0, 120],
+                         init_translation = [0, 0, extra_z]);
