@@ -557,16 +557,20 @@ def register_mount_sample_clips(rendersystem):
     imgsize = [2400, 2000]
     for manual in ["false", "true"]:
         body = "_manual" if manual=="true" else ""
-        if manual == "true":
-            camera = Camera(position=[0, 0, 118], angle=[68, 0, 308], distance=250)
-        else:
-            camera = Camera(position=[0, 0, 178], angle=[68, 0, 308], distance=250)
+        cam_z = 118 if manual == "true" else 178
+        cameras = [
+            Camera(position=[0, 0, cam_z], angle=[68, 0, 308], distance=250),
+            Camera(position=[0, 0, cam_z], angle=[68, 0, 308], distance=250),
+            Camera(position=[0, 0, cam_z], angle=[68, 0, 308], distance=250),
+            Camera(position=[0, 0, cam_z], angle=[68, 0, 52], distance=250),
+            Camera(position=[0, 0, cam_z], angle=[68, 0, 52], distance=250),
+        ]
         for optics_version in ["rms", "low_cost", "upright"]:
             # no renders for manual rms or manual upright
             if not (manual == "true" and optics_version in ["rms", "upright"]):
-                for i in [1, 2, 3, 4]:
-                    output_file = f"docs/renders/mount_sample_clips_{optics_version}{body}{i}.png"
-                    scad = f"render_mount_sample_clips({i}, \"{optics_version}\", {manual});"
+                for i, camera in enumerate(cameras):
+                    output_file = f"docs/renders/mount_sample_clips_{optics_version}{body}{i+1}.png"
+                    scad = f"render_mount_sample_clips({i+1}, \"{optics_version}\", {manual});"
                     render = ScadRender(output_file, input_file, scad, imgsize, camera)
                     rendersystem.register_scad_render(render)
 
