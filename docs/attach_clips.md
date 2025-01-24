@@ -16,6 +16,7 @@
 
 ![](renders/mount_sample_clips_{{var_optics, default:rms}}{{var_body, default:}}3.png)
 ![](renders/mount_sample_clips_{{var_optics, default:rms}}{{var_body, default:}}4.png)
+![](renders/mount_sample_clips_{{var_optics, default:rms}}{{var_body, default:}}5.png)
 
 * Insert a [2.5mm Ball-end Allen key](parts/tools/2.5mmBallEndAllenKey.md){cat:tool, qty:1} through the hole in the curved part of a clip, and into the screw.
 * Screw the clip down onto the microscope stage.
