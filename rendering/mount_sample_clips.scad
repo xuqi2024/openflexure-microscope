@@ -14,7 +14,7 @@ use <motor_assembly.scad>
 use <mount_motors.scad>
 use <../openscad/sample_clips.scad>
 
-FRAME = 4;
+FRAME = 3;
 OPTICS_VERSION = "rms";
 MANUAL = false;
 render_mount_sample_clips(FRAME, OPTICS_VERSION, MANUAL);
@@ -34,14 +34,13 @@ module render_mount_sample_clips(frame, optics_version="rms", manual=false){
     else if (frame==3){
         assembled_microscope_without_electronics(optics_version=optics_version, manual=manual);
         mounted_microscope_frame(manual=manual){
-            render_sample_clips(clip="left", exploded=true, screws_exploded=false, allen_key=true);
+            render_sample_clips(clip="left", exploded=true, screws_exploded=false, allen_key=true, arrow="clock");
         }
     }
     else if (frame==4){
         assembled_microscope_without_electronics(optics_version=optics_version, manual=manual);
         mounted_microscope_frame(manual=manual){
             render_sample_clips(clip="left", exploded=false, screws_exploded=false, allen_key=false);
-            render_sample_clips(clip="right", exploded=true, screws_exploded=false, allen_key=true);
         }
     }
     else if (frame==5){
@@ -54,13 +53,17 @@ module render_mount_sample_clips(frame, optics_version="rms", manual=false){
 
 
 
-module render_sample_clips(clip="left", exploded=false, screws_exploded=false, allen_key=false){
+module render_sample_clips(clip="left", exploded=false, screws_exploded=false, allen_key=false, arrow="none"){
     if (clip=="right" || clip=="both"){
+        l_arrow = (arrow == "none") ?
+            "none" : (arrow == "clock") ?
+                "anti-clock" : "clock";
         mirror([1,0,0]){
             render_sample_clips(clip="left",
                                 exploded=exploded,
                                 screws_exploded=screws_exploded,
-                                allen_key=allen_key);
+                                allen_key=allen_key,
+                                arrow=l_arrow);
         }
     }
     // Another if statment without else as both should run for "both"
@@ -81,7 +84,9 @@ module render_sample_clips(clip="left", exploded=false, screws_exploded=false, a
                 place_part(sample_clip_position(params, extra_z=screw_z+1.5)){
                     // Align allen key to z-axis
                     rotate_x(90){
-                        allen_key_2_5();
+                        c_arrow = (arrow == "clock") ? true : false;
+                        ac_arrow = (arrow == "anti-clock") ? true : false;
+                        allen_key_2_5(180, clockwise_arrow=c_arrow, anticlockwise_arrow=ac_arrow);
                     }
                 }
             }
