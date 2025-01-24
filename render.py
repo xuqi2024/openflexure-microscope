@@ -333,7 +333,7 @@ def register_prepare_stand(rendersystem):
     # embed top nuts for normal or manual stand
     for manual in ["false", "true"]:
         body = "_manual" if manual=="true" else ""
-        if body == "_manual":
+        if manual == "true":
             camera = Camera(position=[-17, 13, 25], angle=[70, 0, 215], distance=195)
         else:
             camera = Camera(position=[-9, 20, 37.5], angle=[34, 0, 235], distance=450)
@@ -435,7 +435,8 @@ def register_mount_optics(rendersystem):
     for manual in ["false", "true"]:
         body = "_manual" if manual=="true" else ""
         for optics_version in ["rms", "low_cost", "upright"]:
-            if not ((body == "_manual") and (optics_version == "rms")): # no renders for manual rms
+            # no renders for manual rms or manual upright
+            if not (manual == "true" and optics_version in ["rms", "upright"]):
                 for i, camera in enumerate(cameras):
                     frame = i + 1
                     output_file = f"docs/renders/mount_optics_{optics_version}{body}{frame}.png"
@@ -472,7 +473,8 @@ def register_mount_microscope(rendersystem):
     for manual in ["false", "true"]:
         body = "_manual" if manual=="true" else ""
         for optics_version in ["rms", "low_cost", "upright"]:
-            if not ((body == "_manual") and (optics_version == "rms")): # no renders for manual rms
+            # no renders for manual rms or manual upright
+            if not (manual == "true" and optics_version in ["rms", "upright"]):
                 for i, camera in enumerate(cameras):
                     frame = i + 1
                     output_file = f"docs/renders/mount_microscope_{optics_version}{body}{frame}.png"
@@ -486,7 +488,7 @@ def register_mount_illumination(rendersystem):
     for manual in ["false", "true"]:
         body = "_manual" if manual=="true" else ""
         for optics_version in ["rms", "low_cost", "upright"]:
-            if body == "_manual":
+            if manual == "true":
                 cameras = [
                     Camera(position=[-6, 49, 118], angle=[68, 0, 133], distance=360),
                     Camera(position=[-6, 49, 118], angle=[68, 0, 133], distance=360),
@@ -511,7 +513,8 @@ def register_mount_illumination(rendersystem):
                     Camera(position=[-6, 49, 178], angle=[82, 0, 308], distance=360),
                     Camera(position=[-6, 49, 178], angle=[82, 0, 308], distance=360)
                 ]
-            if not ((body == "_manual") and (optics_version == "rms")): # no renders for manual rms
+            # no renders for manual rms or manual upright
+            if not (manual == "true" and optics_version in ["rms", "upright"]):
                 for i, camera in enumerate(cameras):
                     frame = i + 1
                     output_file = f"docs/renders/mount_illumination_{optics_version}{body}{frame}.png"
@@ -554,13 +557,13 @@ def register_mount_sample_clips(rendersystem):
     imgsize = [2400, 2000]
     for manual in ["false", "true"]:
         body = "_manual" if manual=="true" else ""
-        if body == "_manual":
+        if manual == "true":
             camera = Camera(position=[0, 0, 118], angle=[68, 0, 308], distance=250)
         else:
             camera = Camera(position=[0, 0, 178], angle=[68, 0, 308], distance=250)
         for optics_version in ["rms", "low_cost", "upright"]:
             # no renders for manual rms or manual upright
-            if not ((body == "_manual") and ((optics_version == "rms") or (optics_version == "upright)"))):
+            if not (manual == "true" and optics_version in ["rms", "upright"]):
                 for i in [1, 2, 3, 4]:
                     output_file = f"docs/renders/mount_sample_clips_{optics_version}{body}{i}.png"
                     scad = f"render_mount_sample_clips({i}, \"{optics_version}\", {manual});"
@@ -614,7 +617,8 @@ def register_complete_microscope(rendersystem):
     for manual in ["false", "true"]:
         body = "_manual" if manual=="true" else ""
         for optics_version in ["rms", "low_cost", "upright"]:
-            if not ((body == "_manual") and (optics_version == "rms")): # no renders for manual rms
+            # no renders for manual rms or manual upright
+            if not (manual == "true" and optics_version in ["rms", "upright"]):
                 dist = 700 if optics_version != "upright" else 780
                 cameras = [
                     Camera(position=[0, 48, 98], angle=[65, 0, 133], distance=dist),
