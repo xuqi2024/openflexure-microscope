@@ -53,41 +53,48 @@ module render_mount_sample_clips(frame, optics_version="rms", manual=false){
 
 
 
-module render_sample_clips(clip="left", exploded=false, screws_exploded=false, allen_key=false, arrow="none"){
+module render_sample_clips(clip="both", exploded=false, screws_exploded=false, allen_key=false, arrow="none"){
     if (clip=="right" || clip=="both"){
-        l_arrow = (arrow == "none") ?
+        rev_arrow = (arrow == "none") ?
             "none" : (arrow == "clock") ?
                 "anti-clock" : "clock";
         mirror([1,0,0]){
-            render_sample_clips(clip="left",
-                                exploded=exploded,
-                                screws_exploded=screws_exploded,
-                                allen_key=allen_key,
-                                arrow=l_arrow);
+            render_left_sample_clip(exploded=exploded,
+                                    screws_exploded=screws_exploded,
+                                    allen_key=allen_key,
+                                    arrow=rev_arrow);
         }
     }
     // Another if statment without else as both should run for "both"
     if (clip=="left" || clip=="both"){
-        clip_z = exploded ? 10 : 0;
-        screw_z = clip_z + (screws_exploded ? 12.5 : 2.5);
-        params = render_params();
-        leg_frame(params,45){
-            place_part(sample_clip_position(params, extra_z=clip_z)){
-                coloured_render(extras_colour()){
-                    default_sample_clip();
-                }
+        render_left_sample_clip(exploded=exploded,
+                                screws_exploded=screws_exploded,
+                                allen_key=allen_key,
+                                arrow=arrow);
+    }
+}
+
+
+module render_left_sample_clip(exploded=false, screws_exploded=false, allen_key=false, arrow="none"){
+    clip_z = exploded ? 10 : 0;
+    screw_z = clip_z + (screws_exploded ? 12.5 : 2.5);
+    params = render_params();
+    leg_frame(params,45){
+        place_part(sample_clip_position(params, extra_z=clip_z)){
+            coloured_render(extras_colour()){
+                default_sample_clip();
             }
-            place_part(sample_clip_position(params, extra_z=screw_z)){
-                m3_cap_x10();
-            }
-            if(allen_key){
-                place_part(sample_clip_position(params, extra_z=screw_z+1.5)){
-                    // Align allen key to z-axis
-                    rotate_x(90){
-                        c_arrow = (arrow == "clock") ? true : false;
-                        ac_arrow = (arrow == "anti-clock") ? true : false;
-                        allen_key_2_5(180, clockwise_arrow=c_arrow, anticlockwise_arrow=ac_arrow);
-                    }
+        }
+        place_part(sample_clip_position(params, extra_z=screw_z)){
+            m3_cap_x10();
+        }
+        if(allen_key){
+            place_part(sample_clip_position(params, extra_z=screw_z+1.5)){
+                // Align allen key to z-axis
+                rotate_x(90){
+                    c_arrow = (arrow == "clock") ? true : false;
+                    ac_arrow = (arrow == "anti-clock") ? true : false;
+                    allen_key_2_5(180, clockwise_arrow=c_arrow, anticlockwise_arrow=ac_arrow);
                 }
             }
         }
