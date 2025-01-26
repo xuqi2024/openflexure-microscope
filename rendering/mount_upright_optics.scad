@@ -8,7 +8,7 @@ use <mount_microscope.scad>
 use <mount_illumination.scad>
 use <mount_optics.scad>
 
-FRAME = 1;
+FRAME = 7;
 
 render_mount_upright_optics(FRAME, optics_version="upright");
 
