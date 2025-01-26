@@ -5,6 +5,8 @@
     <select name="camera" id="cameraSelector" oninput="updateOpticsModuleLink()" >
         <option value="picamera_2">Raspberry Pi camera module, version 2</option>
         <option value="m12">Board camera with M12 lens</option>
+        <option value="omv_m12">OpenMV camera with M12 lens</option>
+        <option value="omv_m12_45">OpenMV camera with M12 lens, 45 degree</option>
         <option value="logitech_c270">Logitech C270 webcam</option>
     </select>
     <br /><br />

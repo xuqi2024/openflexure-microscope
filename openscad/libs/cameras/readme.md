@@ -4,6 +4,7 @@ Curently, the OpenFlexure microscope will work with:
 * Raspberry Pi camera module v2 (v1 is possible but deprecated, as it's discontinued)
 * Logitech C270 webcam (you need to dissassemble it and remove the microphone)
 * USB camera with standard M12 lens (WaterScope source these from China)
+* OpenMV Camera
 
 The way this is done is that ``optics.scad`` includes ``camera.scad``, which defines the important functions/modules for interfacing with the camera.  These are then used to make the optics module accordingly.  The variable ``camera`` (defined in ``microscope_parameters.scad`` or on the command line). Those functions are:
 
@@ -15,6 +16,8 @@ There are 3 options for the camera:
 * picamera_2: mount for Raspberry Pi camera v2
 * logitech_c270: for Logitech C270 webcam
 * m12: this replaces the M12 lens holder on a USB camera.  It should work with most cameras that have an M12 lens held onto the board by two screws.
+* omv_m12: for OpenMV camera
+* omv_m12: for OpenMV camera 45 degree
 
 The ``picamera_2.scad`` file also defines the cover for the bottom of the camera PCB and the tools for removing the lens (see below).  There's no cover for the Logitech PCB, I often use a bit of extra-large heatshrink (it's thinner than a printed cover would be, which is helpful).
 
