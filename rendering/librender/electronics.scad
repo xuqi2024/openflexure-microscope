@@ -1011,6 +1011,26 @@ module c270_components(){
     chip(5.5, -29, 4.6, 3.6, 1.5, "black");
     chip(3, 11, 1, 2, 0.5);
     chip(-8, -22, 2, 1.5, 0.5);
+    // microphone pads
+    translate([0.75,-12,0]){
+        color("gold"){
+            cube([1,1,tiny()], center=true);
+        }
+    }
+    translate([-0.75,-12,0]){
+        color("gold"){
+            cylinder(d=1, h=tiny(), center=true);
+        }
+    }
+    // microphone screenprint
+    translate([0,-13,0]){
+        color("white"){
+            difference(){
+                cylinder(d=5, h=tiny()/2, center=true, $fn=16);
+                cylinder(d=4.9, h=tiny(), center=true, $fn=16);
+            }
+        }
+    }
 }
 
 module c270_board(){
@@ -1019,7 +1039,15 @@ module c270_board(){
         rotate_z(225){
             at_c270_hole_pattern(){
                 color("black"){
-                    // No1 self tap
+                    // No1 self tap clearance
+                    cylinder(d=1.8, h=5, center=true, $fn=16);
+                }
+            }
+        }
+        rotate(180){
+            translate(c270_far_third_hole_pos()){
+                color("black"){
+                    // No1 self tap clearance
                     cylinder(d=1.8, h=5, center=true, $fn=16);
                 }
             }
