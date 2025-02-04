@@ -147,6 +147,25 @@ def register_low_cost_optics_assembly(rendersystem):
                 ribbon_png_files
             )
 
+def register_extra_low_cost_optics_assembly(rendersystem):
+    input_file = "rendering/low_cost_optics_assembly.scad"
+    for camera_type in ["pi_camera", "c270"]:
+        lens_type = "c270_lens" if camera_type=="c270" else "pi_lens"
+        camera = Camera(position=[29, 0, 59], angle=[69, 0, 90], distance=290)
+        imgsize = [1000, 2000]
+
+        for frame in [1, 2, 3]:
+            output_file = f'rendering/annotations/low_cost_optics_assembly_lens_spacer_{lens_type}{frame}.png'
+            scad = f'render_low_cost_assembly({frame}, camera_type = "{camera_type}");'
+            render = ScadRender(output_file, input_file, scad, imgsize, camera)
+            rendersystem.register_scad_render(render)
+
+        rendersystem.register_inkscape_annotation(
+            f'docs/renders/low_cost_optics_assembly_lens_click_{lens_type}2.png',
+            f'rendering/annotations/annotate_optics_assembly_{lens_type}_small.svg'
+        )
+
+
 def register_condenser_assembly(rendersystem):
     input_file = "rendering/condenser_assembly.scad"
     camera = Camera(position=[29, 0, 59], angle=[69, 0, 90], distance=290)
@@ -694,6 +713,7 @@ def main():
         #Register all openscad renders (and associated post processing)
         register_rms_optics_assembly(rendersystem)
         register_low_cost_optics_assembly(rendersystem)
+        register_extra_low_cost_optics_assembly(rendersystem)
         register_condenser_assembly(rendersystem)
         register_upright_condenser_assembly(rendersystem)
         register_workaround_5mm_led(rendersystem)
