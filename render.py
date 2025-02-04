@@ -155,13 +155,14 @@ def register_extra_low_cost_optics_assembly(rendersystem):
         imgsize = [1000, 2000]
 
         for frame in [1, 2, 3]:
-            output_file = f'rendering/annotations/low_cost_optics_assembly_lens_spacer_{lens_type}{frame}.png'
+            png_directory = "rendering/annotations" if frame==2 else "docs/renders"
+            output_file = f'{png_directory}/low_cost_optics_assembly_lens_spacer_{lens_type}{frame}.png'
             scad = f'render_low_cost_assembly({frame}, camera_type = "{camera_type}");'
             render = ScadRender(output_file, input_file, scad, imgsize, camera)
             rendersystem.register_scad_render(render)
 
         rendersystem.register_inkscape_annotation(
-            f'docs/renders/low_cost_optics_assembly_lens_click_{lens_type}2.png',
+            f'docs/renders/low_cost_optics_assembly_lens_spacer_{lens_type}2.png',
             f'rendering/annotations/annotate_optics_assembly_{lens_type}_small.svg'
         )
 
