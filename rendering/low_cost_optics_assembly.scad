@@ -14,12 +14,14 @@ use <librender/hardware.scad>
 use <librender/rendered_components.scad>
 
 FRAME = 11;
+// CAMERA_TYPE is either "c270" or "pi_camera"
+CAMERA_TYPE = "pi_camera"; 
 
-render_low_cost_assembly(FRAME);
+render_low_cost_assembly(FRAME, CAMERA_TYPE);
 
-module render_low_cost_assembly(frame){
+module render_low_cost_assembly(frame, camera_type){
     if (frame <= 3){
-        assemble_lens_spacer(frame);
+        assemble_lens_spacer(frame, camera_type);
     }
     else if (frame == 4){
         rendered_low_cost_optics(optics_module_pos(),
@@ -30,7 +32,8 @@ module render_low_cost_assembly(frame){
                                  screw=false,
                                  ribbon_cable=false,
                                  connector_open=true,
-                                 explode="camera");
+                                 explode="camera",
+                                 camera_type=camera_type);
     }
     else if (frame == 5){
         rendered_low_cost_optics(optics_module_pos(),
@@ -40,7 +43,8 @@ module render_low_cost_assembly(frame){
                                  nut=false,
                                  screw=false,
                                  ribbon_cable=false,
-                                 connector_open=true);
+                                 connector_open=true,
+                                 camera_type=camera_type);
     }
     else if (frame == 6){
         rendered_low_cost_optics(optics_module_pos(),
@@ -51,7 +55,8 @@ module render_low_cost_assembly(frame){
                                  screw=false,
                                  ribbon_cable=false,
                                  connector_open=true,
-                                 explode="nut");
+                                 explode="nut",
+                                 camera_type=camera_type);
     }
     else if (frame == 7){
         rendered_low_cost_optics(optics_module_pos(),
@@ -62,7 +67,8 @@ module render_low_cost_assembly(frame){
                                  screw=true,
                                  ribbon_cable=false,
                                  connector_open=true,
-                                 explode="screw");
+                                 explode="screw",
+                                 camera_type=camera_type);
     }
     else if (frame == 8){
         rendered_low_cost_optics(optics_module_pos(),
@@ -73,9 +79,11 @@ module render_low_cost_assembly(frame){
                                  screw=true,
                                  ribbon_cable=false,
                                  screw_tight=false,
-                                 connector_open=true);
+                                 connector_open=true,
+                                 camera_type=camera_type);
     }
     else if (frame == 9){
+        assert(camera_type=="pi_camera","Camera cable insert only for pi Camera")
         rendered_low_cost_optics(optics_module_pos(),
                                  cut=false,
                                  lens=true,
@@ -85,9 +93,11 @@ module render_low_cost_assembly(frame){
                                  ribbon_cable=true,
                                  screw_tight=false,
                                  connector_open=true,
-                                 explode="ribbon_cable");
+                                 explode="ribbon_cable",
+                                 camera_type=camera_type);
     }
     else if (frame == 10){
+        assert(camera_type=="pi_camera","Camera cable insert only for pi Camera")
         rendered_low_cost_optics(optics_module_pos(),
                                  cut=false,
                                  lens=true,
@@ -96,9 +106,11 @@ module render_low_cost_assembly(frame){
                                  screw=true,
                                  ribbon_cable=true,
                                  screw_tight=false,
-                                 connector_open=true);
+                                 connector_open=true,
+                                 camera_type=camera_type);
     }
     else if (frame == 11){
+        assert(camera_type=="pi_camera","Camera cable insert only for pi Camera")
         rendered_low_cost_optics(optics_module_pos(),
                                  cut=false,
                                  lens=true,
@@ -107,13 +119,14 @@ module render_low_cost_assembly(frame){
                                  screw=true,
                                  ribbon_cable=true,
                                  screw_tight=false,
-                                 connector_open=false);
+                                 connector_open=false,
+                                 camera_type=camera_type);
     }
 }
 
-module assemble_lens_spacer(frame){
+module assemble_lens_spacer(frame, camera_type="pi_camera"){
     params = render_params();
-    optics_config = pilens_config();
+    optics_config = (camera_type == "c270") ? c270lens_config() : pilens_config();
     pos = (frame == 1) ?
         lens_spacer_pos_above_tool(params, optics_config):
         lens_spacer_pos_on_tool(params, optics_config);
@@ -124,37 +137,53 @@ module assemble_lens_spacer(frame){
                              camera=false,
                              nut=false,
                              screw=false,
-                             ribbon_cable=false);
-    picamera2_lens();
+                             ribbon_cable=false,
+                             camera_type=camera_type);
+    if (camera_type == "pi_camera"){
+        picamera2_lens();
+    }
+    else if (camera_type == "c270"){
+        c270_lens();
+    }
 }
 
-
-module rendered_camera_platform(){
+module rendered_camera_platform(camera_type="pi_camera"){
     params = render_params();
-    optics_config = pilens_config();
+    optics_config = (camera_type == "c270") ? c270lens_config() : pilens_config();
     coloured_render(optics_module_colour()){
         camera_platform(params, optics_config, 5);
     }
 }
 
-module camera_platform_and_screws(lens_spacer_z, explode=false, connector_open=false){
+module camera_platform_and_screws(lens_spacer_z, explode=false, connector_open=false, camera_type="pi_camera"){
     ex_dist = 13;
     screw_z = - 1 - (explode ? 2*ex_dist : 0);
-    holes = picamera2_holes();
-    camera_pos = create_placement_dict([0, 0, lens_spacer_z], [0, 0, 135]);
+    holes = (camera_type == "c270") ? c270_holes() : picamera2_holes();
+    camera_rot = (camera_type == "c270") ? 0 : 135 ;
+    camera_pos = create_placement_dict([0, 0, lens_spacer_z], [0, 0, camera_rot]);
     camera_pos_ex = translate_pos(camera_pos, [0, 0, -ex_dist]);
 
     render_pos = explode ? camera_pos_ex : camera_pos;
     cover_pos = explode ? picamera_cover_pos(ex_dist=ex_dist) : picamera_cover_pos();
     platform_z_pos = explode ? - 2*ex_dist : 0;
     translate_z(platform_z_pos){
-        rendered_camera_platform();
+        rendered_camera_platform(camera_type=camera_type);
     }
     place_part(render_pos){
-        picamera2(lens=false, connector_open=connector_open);
+        if (camera_type == "pi_camera"){
+            picamera2(lens=false, connector_open=connector_open);
+        }
+        else if (camera_type == "c270"){
+            c270_board();
+        }
         for (hole_pos = holes){
             translate(hole_pos - [0, 0, screw_z]){
-                no2_x6_5_selftap();
+                if (camera_type == "pi_camera"){
+                    no2_x6_5_selftap();
+                }
+                else if (camera_type == "c270"){
+                    no1_x5_0_selftap();
+                }
                 if (explode){
                     construction_line([0, 0, 0], [0, 0, 2*screw_z]);
                 }
@@ -173,12 +202,13 @@ module rendered_low_cost_optics(pos,
                                 explode=undef,
                                 screw_tight=true,
                                 connector_open=false,
-                                cable_positions=undef){
+                                cable_positions=undef,
+                                camera_type="pi_camera"){
     
     
     cut_dir = cut ? "+x" : "none";
     params = render_params();
-    optics_config = pilens_config();
+    optics_config = (camera_type == "c270") ? c270lens_config() : pilens_config();
     ribbon_pos = is_undef(cable_positions) ?
         default_ribbon_pos(low_cost=true, params=params, optics_config=optics_config):
         cable_positions;
@@ -219,7 +249,7 @@ module rendered_low_cost_optics(pos,
         lens_spacer_z = lens_spacer_z(params, optics_config);
         if (camera){
             exploded = (explode == "camera") ? true : false;
-            camera_platform_and_screws(lens_spacer_z, exploded, connector_open=connector_open);
+            camera_platform_and_screws(lens_spacer_z, exploded, connector_open=connector_open, camera_type=camera_type);
         }
         if (ribbon_cable){
             ribbon_start = create_placement_dict([0, 0, lens_spacer_z-1.25], [0, 0, 135], [0, 180, 0], init_translation=[15, 0, 0]);
@@ -238,7 +268,12 @@ module rendered_low_cost_optics(pos,
         if (lens){
             translate_z(pi_lens_z_pos(params, optics_config)){
                 mirror([0, 0, 1]){
-                    picamera2_lens();
+                    if (camera_type == "pi_camera"){
+                        picamera2_lens();
+                    }
+                    else if (camera_type == "c270"){
+                        c270_lens();
+                    }
                 }
             }
         }
