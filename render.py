@@ -614,6 +614,8 @@ def register_mount_sample_clips(rendersystem):
         for optics_version in ["rms", "low_cost", "upright"]:
             # no renders for manual rms or manual upright
             if not (manual == "true" and optics_version in ["rms", "upright"]):
+                # manual "low_cost" uses the c270 camera
+                optics_version = optics_version if manual=="false" else "c270" 
                 for i, camera in enumerate(cameras):
                     output_file = f"docs/renders/mount_sample_clips_{optics_version}{body}{i+1}.png"
                     scad = f'render_mount_sample_clips({i+3}, "{optics_version}", {manual});'
