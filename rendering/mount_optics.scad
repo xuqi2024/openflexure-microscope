@@ -1,4 +1,5 @@
 
+use <../openscad/libs/utilities.scad>
 use <../openscad/libs/main_body_structure.scad>
 use <../openscad/libs/z_axis.scad>
 use <../openscad/libs/optics_configurations.scad>
@@ -12,19 +13,25 @@ use <actuator_assembly.scad>
 use <upright_condenser_assembly.scad>
 
 FRAME = 8;
-OPTICS_VERSION = "rms";
+OPTICS_VERSION = "rms"; // "rms", "low_cost", "c270", "upright"
 MANUAL = false;
 
 render_mount_optics(FRAME, OPTICS_VERSION, MANUAL);
 
 module render_mount_optics(frame, optics_version, manual=false){
-    low_cost = (optics_version == "low_cost")? true : false ;
+    low_cost = (optics_version=="low_cost" || optics_version=="c270")? true : false ;
     if (frame==1){
-        om_pos = translate_pos(optics_module_pos(low_cost), [0, -10, -100]);
+        frame1_translate = optics_version=="c270" ? [0, 10, 15] : [0, -10, -100] ;
+        frame1_rotate = optics_version=="c270" ? 50 : 0 ;
+        om_pos = translate_pos(optics_module_pos(low_cost), frame1_translate);
         line_start = translate_pos(om_pos, [0, 0, 40]);
         line_end = translate_pos(om_pos, [0, 0, 97]);
-        construction_line(line_start, line_end,.3, arrow=true);
-        render_optics(optics_version, om_pos, screw_tight=false);
+        if (optics_version != "c270") {
+            construction_line(line_start, line_end,.3, arrow=true);
+        }
+        rotate_x(frame1_rotate){
+            render_optics(optics_version, om_pos, screw_tight=false);
+        }
         body_with_assembled_actuators(manual=manual);
     }
     else if (frame==2){
@@ -84,6 +91,11 @@ module render_optics(optics_version="rms", om_pos=undef, screw_tight=false,  cab
             curled_ribbon_pos(low_cost=true, params=params, optics_config=optics_config) :
             cable_positions;
         rendered_low_cost_optics(om_pos, screw_tight=screw_tight, cable_positions=cable_pos);
+    }
+    else if (optics_version == "c270"){
+        params = render_params();
+        optics_config = c270lens_config();
+        rendered_low_cost_optics(om_pos, screw_tight=screw_tight, ribbon_cable=false, camera_type="c270");
     }
     else if (optics_version == "rms"){
         cable_pos = is_undef(cable_positions) ? curled_ribbon_pos() : cable_positions;

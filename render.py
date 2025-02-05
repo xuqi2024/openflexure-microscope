@@ -448,21 +448,27 @@ def register_picam(rendersystem):
 
 def register_mount_optics(rendersystem):
     input_file = "rendering/mount_optics.scad"
-    cameras = [
-        Camera(position=[9.6, 7, -14.5], angle=[103.5, 0, 66], distance=495),
-        Camera(position=[7.75, 37, -3], angle=[135.5, 0, 32.5], distance=495),
-        Camera(position=[7.75, 37, -3], angle=[135.5, 0, 32.5], distance=495),
-        Camera(position=[7.75, 37, -3], angle=[135.5, 0, 32.5], distance=495),
-        Camera(position=[-18.5, 42.75, 23.75], angle=[57, 0, 143], distance=495),
-        Camera(position=[-18.5, 42.75, 23.75], angle=[57, 0, 143], distance=495),
-        Camera(position=[-18.5, 42.75, 23.75], angle=[57, 0, 143], distance=495),
-        Camera(position=[-18.5, 42.75, 23.75], angle=[57, 0, 143], distance=495),
-    ]
     imgsize = [2400, 2000]
     for manual in ["false", "true"]:
         body = "_manual" if manual=="true" else ""
+        camera_1_normal = Camera(position=[9.6, 7, -14.5], angle=[103.5, 0, 66], distance=495)
+        camera_1_c270 = Camera(position=[-24, 43, 13], angle=[61, 0, 43], distance=495)
+        camera_1 = camera_1_normal if manual=="false" else camera_1_c270
+        cameras = [
+            camera_1,
+            Camera(position=[7.75, 37, -3], angle=[135.5, 0, 32.5], distance=495),
+            Camera(position=[7.75, 37, -3], angle=[135.5, 0, 32.5], distance=495),
+            Camera(position=[7.75, 37, -3], angle=[135.5, 0, 32.5], distance=495),
+            Camera(position=[-18.5, 42.75, 23.75], angle=[57, 0, 143], distance=495),
+            Camera(position=[-18.5, 42.75, 23.75], angle=[57, 0, 143], distance=495),
+            Camera(position=[-18.5, 42.75, 23.75], angle=[57, 0, 143], distance=495),
+            Camera(position=[-18.5, 42.75, 23.75], angle=[57, 0, 143], distance=495),
+        ]
         for optics_version in ["rms", "low_cost", "upright"]:
-            if not ((body == "_manual") and (optics_version == "rms")): # no renders for manual rms
+            # no renders for manual rms or manual upright
+            if not (manual == "true" and optics_version in ["rms", "upright"]):
+                # manual "low_cost" uses the c270 camera
+                optics_version = optics_version if manual=="false" else "c270" 
                 for i, camera in enumerate(cameras):
                     frame = i + 1
                     output_file = f"docs/renders/mount_optics_{optics_version}{body}{frame}.png"
