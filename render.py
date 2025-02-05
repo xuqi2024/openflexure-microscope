@@ -452,13 +452,15 @@ def register_mount_optics(rendersystem):
     for manual in ["false", "true"]:
         body = "_manual" if manual=="true" else ""
         camera_1_normal = Camera(position=[9.6, 7, -14.5], angle=[103.5, 0, 66], distance=495)
-        camera_1_c270 = Camera(position=[-24, 43, 13], angle=[61, 0, 43], distance=495)
-        camera_1 = camera_1_normal if manual=="false" else camera_1_c270
+        camera_c270 = Camera(position=[-24, 43, 13], angle=[61, 0, 43], distance=495)
+        camera_1 = camera_1_normal if manual=="false" else camera_c270
+        camera_2_normal = Camera(position=[7.75, 37, -3], angle=[135.5, 0, 32.5], distance=495),
+        camera_2 = camera_2_normal if manual=="false" else camera_c270
         cameras = [
             camera_1,
-            Camera(position=[7.75, 37, -3], angle=[135.5, 0, 32.5], distance=495),
-            Camera(position=[7.75, 37, -3], angle=[135.5, 0, 32.5], distance=495),
-            Camera(position=[7.75, 37, -3], angle=[135.5, 0, 32.5], distance=495),
+            camera_2,
+            camera_2,
+            camera_2,
             Camera(position=[-18.5, 42.75, 23.75], angle=[57, 0, 143], distance=495),
             Camera(position=[-18.5, 42.75, 23.75], angle=[57, 0, 143], distance=495),
             Camera(position=[-18.5, 42.75, 23.75], angle=[57, 0, 143], distance=495),
