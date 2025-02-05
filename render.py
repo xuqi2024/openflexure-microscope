@@ -452,7 +452,7 @@ def register_mount_optics(rendersystem):
     for manual in ["false", "true"]:
         body = "_manual" if manual=="true" else ""
         camera_1_normal = Camera(position=[9.6, 7, -14.5], angle=[103.5, 0, 66], distance=495)
-        camera_c270 = Camera(position=[-24, 43, 13], angle=[61, 0, 43], distance=495)
+        camera_c270 = Camera(position=[-33, 33, 18], angle=[62, 0, 59], distance=495)
         camera_1 = camera_1_normal if manual=="false" else camera_c270
         camera_2_normal = Camera(position=[7.75, 37, -3], angle=[135.5, 0, 32.5], distance=495)
         camera_2 = camera_2_normal if manual=="false" else camera_c270
@@ -508,6 +508,8 @@ def register_mount_microscope(rendersystem):
         body = "_manual" if manual=="true" else ""
         for optics_version in ["rms", "low_cost", "upright"]:
             if not ((body == "_manual") and (optics_version == "rms")): # no renders for manual rms
+                # manual "low_cost" uses the c270 camera
+                optics_version = optics_version if manual=="false" else "c270" 
                 for i, camera in enumerate(cameras):
                     frame = i + 1
                     output_file = f"docs/renders/mount_microscope_{optics_version}{body}{frame}.png"

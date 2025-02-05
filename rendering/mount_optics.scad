@@ -110,7 +110,7 @@ module render_optics(optics_version="rms", om_pos=undef, screw_tight=false,  cab
 }
 
 module body_with_optics(optics_version="rms", manual=false, translucent_body=false){
-    low_cost = (optics_version == "low_cost")? true : false ;
+    low_cost = (optics_version=="low_cost" || optics_version=="c270")? true : false ;
     render_optics(optics_version, optics_module_pos(low_cost), screw_tight=true);
     body_with_assembled_actuators(manual=manual, translucent_body=translucent_body);
 }
