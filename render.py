@@ -551,6 +551,8 @@ def register_mount_illumination(rendersystem):
                 ]
             # no renders for manual rms or manual upright
             if not (manual == "true" and optics_version in ["rms", "upright"]):
+                # manual "low_cost" uses the c270 camera
+                optics_version = optics_version if manual=="false" else "c270" 
                 for i, camera in enumerate(cameras):
                     frame = i + 1
                     output_file = f"docs/renders/mount_illumination_{optics_version}{body}{frame}.png"
