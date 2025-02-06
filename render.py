@@ -671,6 +671,8 @@ def register_complete_microscope(rendersystem):
         for optics_version in ["rms", "low_cost", "upright"]:
             # no renders for manual rms or manual upright
             if not (manual == "true" and optics_version in ["rms", "upright"]):
+                # manual "low_cost" uses the c270 camera
+                optics_version = optics_version if manual=="false" else "c270" 
                 dist = 700 if optics_version != "upright" else 780
                 cameras = [
                     Camera(position=[0, 48, 98], angle=[65, 0, 133], distance=dist),
