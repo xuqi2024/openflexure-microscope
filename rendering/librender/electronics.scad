@@ -2,6 +2,7 @@
 use <../../openscad/libs/utilities.scad>
 use <../../openscad/libs/logo.scad>
 use <../../openscad/libs/lib_microscope_stand.scad>
+use <../../openscad/libs/cameras/logitech_c270.scad>
 use <../electronics/led_board.scad>
 use <render_utils.scad>
 
@@ -337,6 +338,10 @@ module picamera2_back(connector_open=false){
     }
 }
 
+// Build and place a chip component
+// x,y centre of chip
+// w,h size of chip in x,y
+// t thickness of chip
 module chip(x, y, w, h, t, colour="#404040"){
     color(colour){
         translate([x-w/2, y-h/2, 0]){
@@ -926,6 +931,130 @@ module picamera_cable_connector(){
     }
 }
 
+module c270_lens(){
+    translate_z(-1){
+    $fn = 20;
+    color("#404040"){
+        render(){
+            difference(){
+                union(){
+                    cylinder(d=8, h=6.5);
+                    translate_z(4.8){
+                        cylinder(d1=12, d2=12, h=1);
+                    }
+                }
+                translate_z(-.02){
+                    cylinder(d1=6, d2=1, h=6.53);
+                }
+            }
+        }
+    }
+    color("PaleTurquoise", .60){
+        cylinder(d1=6, d2=1, h=6.5);
+    }
+    }
+}
+
+function c270_holes() = let(
+    screw_x = c270_camera_hole_spacing(),
+    third = -c270_near_third_hole_pos()
+) [[screw_x, 0, 0] , [-screw_x, 0, 0] , third] ;
+
+
+module c270_pcb(){
+    x=22;
+    y=60;
+    t=1;
+    //cam_pos_y=-17.75;
+    //Camera to centre in xy, and board top to z=0
+    translate_z(-t){
+        color("blue"){
+            linear_extrude(t){
+                polygon(points= [
+                        [-10.4,3.2],
+                        [-4.85,12.85],
+                        [4.85,12.85],
+                        [10.4,3.2],
+                        [10.4,-34.2],
+                        [4.7,-34.2],
+                        [4.7,-37.7],
+                        [7.8,-37.7],
+                        [7.8,-41.6],
+                        [6.65,-44.2],
+                        [-6.5,-44.2],
+                        [-10.4,-36.6]
+                        ]
+                );
+            }
+        }
+    }
+}
+
+module c270_components(){
+    // camera sensor
+    translate_z(1.5/2){
+        color("black"){
+            difference(){
+                cube([8,7,1.5], center=true);
+                translate_z(1){
+                    cube([7,6,3], center=true);
+                }
+            }
+        }
+        color("darkred", 0.5){
+            translate_z(0.5){
+                cube([7,6,0.5], center=true);
+            }
+        }
+    }
+    chip(-0.5, -24.4, 4, 6, 1);
+    chip(5.5, -29, 4.6, 3.6, 1.5, "black");
+    chip(3, 11, 1, 2, 0.5);
+    chip(-8, -22, 2, 1.5, 0.5);
+    // microphone pads
+    translate([0.75,-12,0]){
+        color("gold"){
+            cube([1,1,tiny()], center=true);
+        }
+    }
+    translate([-0.75,-12,0]){
+        color("gold"){
+            cylinder(d=1, h=tiny(), center=true);
+        }
+    }
+    // microphone screenprint
+    translate([0,-13,0]){
+        color("white"){
+            difference(){
+                cylinder(d=5, h=tiny()/2, center=true, $fn=16);
+                cylinder(d=4.9, h=tiny(), center=true, $fn=16);
+            }
+        }
+    }
+}
+
+module c270_board(){
+    difference(){
+        c270_pcb();
+        rotate_z(225){
+            at_c270_hole_pattern(){
+                color("black"){
+                    // No1 self tap clearance
+                    cylinder(d=1.8, h=5, center=true, $fn=16);
+                }
+            }
+        }
+        rotate(180){
+            translate(c270_far_third_hole_pos()){
+                color("black"){
+                    // No1 self tap clearance
+                    cylinder(d=1.8, h=5, center=true, $fn=16);
+                }
+            }
+        }
+    }
+    c270_components();
+}
 
 // The 7 inch diplay is used in the field dissection microscope
 // It is inculded in the main repo as it might be useful down the line
