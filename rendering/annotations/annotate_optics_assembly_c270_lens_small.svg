@@ -2,11 +2,11 @@
 <svg
    id="svg8"
    version="1.1"
-   viewBox="0 0 793.75006 529.16669"
+   viewBox="0 0 264.58334 529.16669"
    height="529.16669mm"
-   width="793.75006mm"
-   sodipodi:docname="annotate_low_cost_optics_assembly_tube_lens.svg"
-   inkscape:version="1.1 (1:1.1+202105261517+ce6663b3b7)"
+   width="264.58334mm"
+   sodipodi:docname="annotate_optics_assembly_c270_lens_small.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -36,46 +36,29 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <g
-     transform="translate(600.47906,-13.252337)"
+     transform="translate(336.70732,-13.252337)"
      id="g76">
     <image
-       xlink:href="low_cost_optics_assembly_tube_lens_pi_lens1.png"
-       y="13.252337"
-       x="-600.47906"
-       id="image48"
-       preserveAspectRatio="none"
-       height="529.16669"
-       width="264.58334" />
-    <image
-       xlink:href="low_cost_optics_assembly_tube_lens_pi_lens2.png"
+       xlink:href="low_cost_optics_assembly_lens_spacer_c270_lens2.png"
        y="13.252337"
        x="-335.89572"
        id="image59"
        preserveAspectRatio="none"
        height="529.16669"
        width="264.58334" />
-    <image
-       xlink:href="low_cost_optics_assembly_tube_lens_pi_lens3.png"
-       y="13.252337"
-       x="-71.31237"
-       id="image70"
-       preserveAspectRatio="none"
-       height="529.16669"
-       width="264.58334" />
   </g>
   <path
      id="path1785"
-     d="M 389.91354,164.64848 V 286.3571 l 21.6959,-27.51666 h -43.3917 l 21.6958,27.51666"
+     d="M 131.01143,164.64848 V 286.3571 l 21.6959,-27.51666 h -43.3917 l 21.6958,27.51666"
      style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#0149bc;stroke-width:24.5798;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
   <g
      id="text1789"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20.7958px;line-height:1.25;font-family:'Open Sans';-inkscape-font-specification:'Open Sans';letter-spacing:0px;word-spacing:0px;fill:#0149bc;fill-opacity:1;stroke-width:1.11406"
-     transform="rotate(-0.20355684,32470.228,57.677385)"
+     transform="rotate(-0.20355684,6013.2121,104638.75)"
      aria-label="PUSH">
     <path
        id="path36"
@@ -97,7 +80,7 @@
   <g
      id="text1789-3"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.6593px;line-height:1.25;font-family:'Open Sans';-inkscape-font-specification:'Open Sans';letter-spacing:0px;word-spacing:0px;stroke-width:0.678175"
-     transform="rotate(-45.008144,45.762577,15.966294)"
+     transform="rotate(-45.008144,-54.98943,364.41592)"
      aria-label="click!">
     <path
        id="path23"

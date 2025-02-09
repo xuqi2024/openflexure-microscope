@@ -58,7 +58,7 @@ Take the [lens spacer][Lens spacer](fromstep){qty:1, cat:printedpart} and confir
 * Use four [No 2 6.5mm self tapping screws]{qty:4, cat:mech} to secure the three parts together using a [#1 pozidrive screwdriver]{qty:1, cat:tool}
 * Take care to not over torque the screws.
 
-![](renders/low_cost_optics_assembly_camera.png)
+![](renders/low_cost_optics_assembly_camera_pi_lens.png)
 
 ## Attach the mounting screw {pagestep}
 
@@ -66,7 +66,7 @@ Take the [lens spacer][Lens spacer](fromstep){qty:1, cat:printedpart} and confir
 * Take an [M3x10 cap head screws](parts/mechanical.yml#CapScrew_M3x10mm_SS){qty: 1, cat:mech} and screw it into the nut.
 * Only screw it in a couple of turns. About 5 mm of thread should still be visible
 
-![](renders/low_cost_optics_assembly_screw.png)
+![](renders/low_cost_optics_assembly_screw_pi_lens.png)
 
 ## Connect ribbon cable {pagestep}
 
@@ -76,7 +76,7 @@ Take the [lens spacer][Lens spacer](fromstep){qty:1, cat:printedpart} and confir
 * Close the catch on the connector
 
 
-![](renders/low_cost_optics_assembly_ribbon.png)
+![](renders/low_cost_optics_assembly_ribbon_pi_lens.png)
 
 Set the [complete optics module]{output, qty:1} aside in a safe place.
 
