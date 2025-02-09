@@ -9,6 +9,8 @@ This section describes how to disassemble a Logitech C270 HD webcam and prepare 
 [side cutters]: ../parts/tools/precision-wire-cutters.md "{cat:tool}"
 [pliers]: ../parts/tools/pliers.md "{cat:tool}"
 
+[Logitech C270 HD webcam]: ../parts/electronics.yml#Logitech_C270 "{cat:electronic}"
+
 >! **Warning**
 >! 
 >! You will need to break the case of the camera, and you will need to take care not to damage the camera board and sensor.   
@@ -22,7 +24,7 @@ This section describes how to disassemble a Logitech C270 HD webcam and prepare 
 ![](images/c270/IMG_4040.JPG)
 
 
-* Take the Logitech C270 web cam and place it on a clean surface
+* Take the [Logitech C270 webcam][Logitech C270 HD webcam]{qty: 1} and place it on a clean surface
 * Release the outer bezel with a [flat blade screwdriver]{qty:1}
 * Remove the bezel and discard it
 * Unscrew three screws holding the inner front cover, using a [#0 Phillips screwdriver]{qty:1}
@@ -97,3 +99,5 @@ This section describes how to disassemble a Logitech C270 HD webcam and prepare 
 * Unscrew the lens from the mount. There is some force required to start to unscrew the lens as it is held in place with a little glue.
 
 The [prepared Logitech C270 camera]{output, qty:1} and lens are now ready to attach to your optics module or lens spacer
+
+[No 1 self tapping screws]{output, qty:5, hidden}

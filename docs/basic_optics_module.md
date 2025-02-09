@@ -48,17 +48,17 @@ Take the [lens spacer][Lens spacer](fromstep){qty:1, cat:printedpart} and confir
 
 ## Push-fit the lens {pagestep}
 
-* Work out which side of the pi camera lens used to be facing the camera sensor (This is the side with more lens visible).
-* Place the pi camera lens on a clean surface with the side that was next to the camera sensor on the bottom.
+* Work out which side of the {{includetext:"Pi", if: var_lens is pi_lens}}{{includetext:"Logitech C270", if: var_lens is c270_lens}} Camera lens used to be facing the camera sensor (This is the side with more lens visible).
+* Place the lens on a clean surface with the side that was next to the camera sensor on the bottom.
 * Push the lens spacer down onto the lens until it clicks into place.
 
 ![](renders/low_cost_optics_assembly_{{var_lens}}.png)
 
-## Attach the Pi Camera {pagestep}
+## Attach the {{includetext:"Pi", if: var_lens is pi_lens}}{{includetext:"Logitech C270", if: var_lens is c270_lens}} Camera {pagestep}
 
-* Take the Pi Camera and place it ontop of the [pi camera platform](fromstep){qty:1, cat:printedpart}.
-* Place the lens spacer over the picamera
-* Use four [No 2 6.5mm self tapping screws]{qty:4, cat:mech} to secure the three parts together using a [#1 pozidrive screwdriver]{qty:1, cat:tool}
+* Take the {{includetext:"Pi", if: var_lens is pi_lens}}{{includetext:"Logitech C270", if: var_lens is c270_lens}} Camera and place it on top of the [camera platform][Camera platform](fromstep){qty:1, cat:printedpart}.
+* Place the lens spacer over the camera
+{{includetext:"* Use four [No 2 6.5mm self tapping screws]{qty:4, cat:mech} to secure the three parts together using a [#1 pozidrive screwdriver]{qty:1, cat:tool}", if: var_lens is pi_lens}}{{includetext:"* Use three [No 1 self tapping screws](fromstep){qty:3, cat:mech, note: 'Recovered from C270 camera dissassembly'} to secure the three parts together using a [#1 pozidrive screwdriver]{qty:1, cat:tool}", if: var_lens is c270_lens}}
 * Take care to not over torque the screws.
 
 ![](renders/low_cost_optics_assembly_camera_{{var_lens}}.png)
