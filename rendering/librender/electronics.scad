@@ -961,31 +961,29 @@ function c270_holes() = let(
 ) [[screw_x, 0, 0] , [-screw_x, 0, 0] , third] ;
 
 
-module c270_pcb(){
+module c270_pcb_outer_shape(){
     x=22;
     y=60;
     t=1;
     //cam_pos_y=-17.75;
     //Camera to centre in xy, and board top to z=0
     translate_z(-t){
-        color("blue"){
-            linear_extrude(t){
-                polygon(points= [
-                        [-10.4,3.2],
-                        [-4.85,12.85],
-                        [4.85,12.85],
-                        [10.4,3.2],
-                        [10.4,-34.2],
-                        [4.7,-34.2],
-                        [4.7,-37.7],
-                        [7.8,-37.7],
-                        [7.8,-41.6],
-                        [6.65,-44.2],
-                        [-6.5,-44.2],
-                        [-10.4,-36.6]
-                        ]
-                );
-            }
+        linear_extrude(t){
+            polygon(points= [
+                    [-10.4,3.2],
+                    [-4.85,12.85],
+                    [4.85,12.85],
+                    [10.4,3.2],
+                    [10.4,-34.2],
+                    [4.7,-34.2],
+                    [4.7,-37.7],
+                    [7.8,-37.7],
+                    [7.8,-41.6],
+                    [6.65,-44.2],
+                    [-6.5,-44.2],
+                    [-10.4,-36.6]
+                    ]
+            );
         }
     }
 }
@@ -993,7 +991,7 @@ module c270_pcb(){
 module c270_components(){
     // camera sensor
     translate_z(1.5/2){
-        color("black"){
+        color("DimGray"){
             difference(){
                 cube([8,7,1.5], center=true);
                 translate_z(1){
@@ -1008,23 +1006,23 @@ module c270_components(){
         }
     }
     chip(-0.5, -24.4, 4, 6, 1);
-    chip(5.5, -29, 4.6, 3.6, 1.5, "black");
+    chip(5.5, -29, 4.6, 3.6, 1.5, "DimGray");
     chip(3, 11, 1, 2, 0.5);
     chip(-8, -22, 2, 1.5, 0.5);
     // microphone pads
     translate([0.75,-12,0]){
-        color("gold"){
+        coloured_render("gold"){
             cube([1,1,tiny()], center=true);
         }
     }
     translate([-0.75,-12,0]){
-        color("gold"){
+        coloured_render("gold"){
             cylinder(d=1, h=tiny(), center=true);
         }
     }
     // microphone screenprint
     translate([0,-13,0]){
-        color("white"){
+        coloured_render("white"){
             difference(){
                 cylinder(d=5, h=tiny()/2, center=true, $fn=16);
                 cylinder(d=4.9, h=tiny(), center=true, $fn=16);
@@ -1034,19 +1032,17 @@ module c270_components(){
 }
 
 module c270_board(){
-    difference(){
-        c270_pcb();
-        rotate_z(225){
-            at_c270_hole_pattern(){
-                color("black"){
+    coloured_render("SteelBlue"){
+        difference(){
+            c270_pcb_outer_shape();
+            rotate_z(225){
+                at_c270_hole_pattern(){
                     // No1 self tap clearance
                     cylinder(d=1.8, h=5, center=true, $fn=16);
                 }
             }
-        }
-        rotate(180){
-            translate(c270_far_third_hole_pos()){
-                color("black"){
+            rotate(180){
+                translate(c270_far_third_hole_pos()){
                     // No1 self tap clearance
                     cylinder(d=1.8, h=5, center=true, $fn=16);
                 }
