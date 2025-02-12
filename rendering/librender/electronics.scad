@@ -969,26 +969,46 @@ module c270_pcb_outer_shape(){
     //Camera to centre in xy, and board top to z=0
     translate_z(-t){
         linear_extrude(t){
-            polygon(points= [
-                    [-10.4,3.2],
-                    [-4.85,12.85],
-                    [4.85,12.85],
-                    [10.4,3.2],
-                    [10.4,-34.2],
-                    [4.7,-34.2],
-                    [4.7,-37.7],
-                    [7.8,-37.7],
-                    [7.8,-41.6],
-                    [6.65,-44.2],
-                    [-6.5,-44.2],
-                    [-10.4,-36.6]
-                    ]
-            );
+            difference(){
+                polygon(points= [
+                        [-10.5, 3.2],
+                        [-4.85, 13.55],
+                        [4.85, 13.55],
+                        [10.5, 3.2],
+                        [10.5, -34.2],
+                        [4.7, -34.2],
+                        [4.7, -37.7],
+                        [7.8, -37.7],
+                        [7.8, -41.6],
+                        [6.65, -44.35],
+                        [-6.5, -44.35],
+                        [-10.5, -36.6]
+                        ]
+                );
+                translate([4.7, -35.95]){
+                    circle(d=3.5);
+                }
+                reflect_x(){
+                    translate([10.4, -6]){
+                        hull(){
+                            circle(d=2);
+                            translate_y(-2.5){
+                                circle(d=2);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
 
 module c270_components(){
+    c270_front_components();
+    c270_back_components();
+}
+
+module c270_front_components(){
     // camera sensor
     translate_z(1.5/2){
         color("DimGray"){
@@ -1008,7 +1028,15 @@ module c270_components(){
     chip(-0.5, -24.4, 4, 6, 1);
     chip(5.5, -29, 4.6, 3.6, 1.5, "DimGray");
     chip(3, 11, 1, 2, 0.5);
+    chip(0, 11.5, 2, 1, 0.5, "Silver");
+    chip(4, -10, 2, 1, 0.5);
+    chip(7, -14, 1, 1, 0.5);
     chip(-8, -22, 2, 1.5, 0.5);
+    chip(0, -36, 1, 1, 0.5);
+    chip(-2, -40, 1, 1, 0.5);
+    chip(-4, -38, 1, 1, 0.5);
+    chip(-2, -32, 1, 1, 0.5);
+    chip(-7, -32, 1, 1, 0.5);
     // microphone pads
     translate([0.75,-12,0]){
         coloured_render("gold"){
@@ -1018,6 +1046,11 @@ module c270_components(){
     translate([-0.75,-12,0]){
         coloured_render("gold"){
             cylinder(d=1, h=tiny(), center=true);
+        }
+    }
+    translate([2,-40.5,0]){
+        coloured_render("gold"){
+            cylinder(d=2, h=tiny(), center=true);
         }
     }
     // microphone screenprint
@@ -1031,6 +1064,71 @@ module c270_components(){
     }
 }
 
+module c270_back_components(){
+    translate_z(-1){
+        mirror([0,0,1]){
+            chip(3, -4, 4, 4, 1);
+            chip(6, 3, 1, 1, 1);
+            chip(4.5, 7, 1, 2, 1);
+            chip(1, 7, 1, 2, 1);
+            chip(-2.5, 6, 1, 1, 1);
+            chip(-6, 3.5, 2, 1, 1);
+            chip(-7, -4.5, 2, 1, 1);
+            chip(-7, -12.5, 2, 1, 1);
+            chip(-7, -16, 2, 2, 1.5);
+            chip(-7, -21, 2, 2, 1.5);
+            chip(7, -11, 1, 1, 1);
+            chip(7, -16.5, 2, 1, 1);
+
+            //solder blobs
+            coloured_render("silver"){
+                translate([2,-40.5,0]){
+                    cylinder(d1=2, d2=.8, h=.8);
+                    cylinder(d=.8, h=1.6);
+                }
+            }
+            coloured_render("silver"){
+                translate([.75,-12,0]){
+                    cylinder(d1=1, d2=.4, h=.4);
+                    cylinder(d=.4, h=.8);
+                }
+                translate([-.75,-12,0]){
+                    cylinder(d1=1, d2=.4, h=.4);
+                    cylinder(d=.4, h=.8);
+                }
+            }
+            translate([-6,-34,0]){
+                camera_jst_socket();
+            }
+        }
+    }
+}
+
+module camera_jst_socket(){
+    //ZHR-4 male
+    coloured_render("Beige"){
+        difference(){
+            translate_z(2.5/2){
+                cube([6.1, 4.3, 2.5], center=true);
+            }
+            translate_z(2.5/2){
+                translate_y(-1){
+                cube([6.1-1, 4.3, 2.5-1], center=true);
+                }
+            }
+        }
+    }
+    coloured_render("Silver"){
+        for (pin_num = [-1.5:1.5]){
+            x_tr = pin_num*1.5;
+            translate([x_tr, 0, 1.5]){
+                cube([0.2, 3, .2], center=true);
+            }
+        }
+    }
+}
+
+c270_board();
 module c270_board(){
     coloured_render("SteelBlue"){
         difference(){
@@ -1046,6 +1144,13 @@ module c270_board(){
                     // No1 self tap clearance
                     cylinder(d=1.8, h=5, center=true, $fn=16);
                 }
+            }
+            //tiny extra holes
+            translate([6, -39.5]){
+                cylinder(d=1, h=5, center=true, $fn=8);
+            }
+            translate([-4, 11]){
+                cylinder(d=1, h=5, center=true, $fn=8);
             }
         }
     }
