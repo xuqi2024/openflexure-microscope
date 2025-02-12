@@ -15,7 +15,7 @@ use <mount_motors.scad>
 use <../openscad/sample_clips.scad>
 
 FRAME = 2;
-OPTICS_VERSION = "rms";
+OPTICS_VERSION = "rms"; // "rms", "low_cost", "c270", "upright"
 MANUAL = false;
 render_mount_sample_clips(FRAME, OPTICS_VERSION, MANUAL);
 

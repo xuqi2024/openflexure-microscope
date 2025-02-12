@@ -16,8 +16,9 @@ use <../openscad/libs/z_axis.scad>
 use <../openscad/libs/upright_z_axis.scad>
 
 FRAME = 5;
-OPTICS_VERSION = "rms";
+OPTICS_VERSION = "rms"; // "rms", "low_cost", "c270", "upright"
 MANUAL = false;
+
 mount_illumination(FRAME, OPTICS_VERSION, MANUAL);
 
 module mount_illumination(frame, optics_version="rms", manual=false){
