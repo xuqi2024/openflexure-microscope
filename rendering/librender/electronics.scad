@@ -932,26 +932,50 @@ module picamera_cable_connector(){
 }
 
 module c270_lens(){
+    h=6;
     translate_z(-1){
-    $fn = 20;
-    color("#404040"){
-        render(){
-            difference(){
-                union(){
-                    cylinder(d=8, h=6.5);
-                    translate_z(4.8){
-                        cylinder(d1=12, d2=12, h=1);
+        $fn = 20;
+        color("#404040"){
+            render(){
+                difference(){
+                    union(){
+                        cylinder(d=8, h=h-.5);
+                        translate_z(h-1){
+                            cylinder(d=12, h=1);
+                        }
                     }
-                }
-                translate_z(-.02){
-                    cylinder(d1=6, d2=1, h=6.53);
+                    translate_z(-tiny()){
+                        cylinder(d1=6, d2=1, h=h+2*tiny());
+                    }
+
+                    difference(){
+                        translate_z(h-.5){
+                            cylinder(d1=7, d2=7.5, h=.5+tiny());
+                        }
+                        translate_z(h-.5-tiny()){
+                            cylinder(d1=7.5, d2=.6, h=.5+tiny()*2);
+                        }
+                    }
+
+                    for (i = [1:12]){
+                        r_c=11/2;
+                        rotate_z(i*30){
+                            hull(){
+                                translate_x(r_c){
+                                    cylinder(d=1.5, h=2*h);
+                                }
+                                translate_x(r_c+2){
+                                    cylinder(d=1.5, h=2*h);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
-    }
-    color("PaleTurquoise", .60){
-        cylinder(d1=6, d2=1, h=6.5);
-    }
+        color("PaleTurquoise", .60){
+            cylinder(d1=6, d2=1, h=h-.25);
+        }
     }
 }
 
@@ -1128,7 +1152,6 @@ module camera_jst_socket(){
     }
 }
 
-c270_board();
 module c270_board(){
     coloured_render("SteelBlue"){
         difference(){
