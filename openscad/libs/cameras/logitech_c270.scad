@@ -32,11 +32,11 @@ function c270_camera_bottom_z() = -key_lookup("mount_height", c270_camera_dict()
 function c270_camera_hole_spacing() = 8.25;
 // position of camera board hole near the sensor
 function c270_near_third_hole_pos() = [5,-9.5,0];
-// position of camera board hole at the cable end 
+// position of camera board hole at the cable end
 function c270_far_third_hole_pos() = [-6,42.3,0];
 
 
-module c270(beam_r=4.3, beam_h=4.5){
+module c270_cutout(beam_r=4.3, beam_h=4.5){
     //cut-out to fit Logitech C270 webcam
     //optical axis at (0,0)
     //top of PCB at (0,0,0)
@@ -50,25 +50,12 @@ module c270(beam_r=4.3, beam_h=4.5){
             }
         }
 
-        //clearance for PCB
-        hull(){
-            translate([-10/2,-13.5,0]){
-                cube([10,tiny(),8]);
-                }
-            translate([-21.5/2,-4,0]){
-                cube([21.5,41,8]);
-                }
-            translate([-10/2,45,0]){
-                cube([10,tiny(),8]);
-                }
-        }
-
         difference(){
             union(){
                 // component clearance, cable end
                 hull(){
                     translate([0,22.5,0+4]){
-                        cube([20.5,28,15],center=true);
+                        cube([19.5,28,15],center=true);
                     }
                     translate([0,34,0+4]){
                         cube([10,9.5*2,15],center=true);
@@ -77,7 +64,7 @@ module c270(beam_r=4.3, beam_h=4.5){
                 // component clearance, sensor end
                 hull(){
                     translate([0,10,0+4]){
-                        cube([20.5,28,15],center=true);
+                        cube([19.5,28,15],center=true);
                     }
                     translate([0,-4,0+4]){
                         cube([9,9.5*2,15],center=true);
@@ -86,10 +73,8 @@ module c270(beam_r=4.3, beam_h=4.5){
             }
             union(){
                 // add cube at third mounting hole, cable end
-                translate([-3.5,36,-10]){
-                    mirror([1,0,0]){
-                        cube([10,10,10]);
-                    }
+                translate(c270_far_third_hole_pos()-[0,0,10]){
+                    cylinder(d=5, h=10);
                 }
                 // add a pillar at the 'near third hole' place
                 translate(c270_near_third_hole_pos()){
@@ -103,36 +88,56 @@ module c270(beam_r=4.3, beam_h=4.5){
                 cube([21,5,99], center = true);
             }
         }
-
-
-        //exit for cable
-        translate([4,20,0]){
-            rotate_x(-90){
-                cylinder(r=3,h=99);
-            }
-        }
     }
 }
 
-//c270_camera_mount();
-c270();
+function c270_dims() = [21, 58];
+function c270_y_offset() = -13;
+//extra room for cable
+function c270_mount_y_excess() = 12;
+
+function c270_backshell_screw_positions(flip_x=false) = let(
+    h = c270_dims().y,
+    w = c270_dims().x,
+    y_offset = c270_y_offset(),
+    y_excess = c270_mount_y_excess(),
+    sign = flip_x ? 1 : -1
+) [[sign*(-w/2+4), h+y_offset+y_excess-4, 3], [sign*(w-4), h+y_offset-4, 3]];
 
 module c270_camera_mount(screwhole=true){
     // A mount for the Logitech C270 webcam
     // This should finish at z=0+tiny(), with a surface that can be
     // hull-ed onto the lens assembly.
-    h = 58;
-    w = 23.5;
+
+    // camera dims
+    h = c270_dims().y;
+    w = c270_dims().x;
+    //wider_ section around lens
+    h_w = 26;
+    w_w = 23.5;
+
+    y_offset = c270_y_offset();
+    //extra room for cable
+    y_excess = c270_mount_y_excess();
+
     mounting_hole_x = c270_camera_hole_spacing();
 
     mount_height = key_lookup("mount_height", c270_camera_dict());
     rotate(-45){
         difference(){
-            translate([-w/2, -13, -mount_height]){
-                cube([w, h, mount_height]);
+            union(){
+                translate([-w_w/2, y_offset, -mount_height]){
+                    cube([w_w, h_w, mount_height]);
+                }
+                translate([-w/2, y_offset+y_excess, -mount_height]){
+                    cube([w, h, mount_height-2*tiny()]);
+                }
+                translate([-w, y_offset+h-10, -mount_height]){
+                    cube([w*1.5, y_excess+10, mount_height-2*tiny()]);
+                }
             }
             translate_z(-mount_height){
-                c270();
+                c270_cutout();
                 if(screwhole){
                     // mounting holes
                     reflect_x(){
@@ -154,8 +159,85 @@ module c270_camera_mount(screwhole=true){
                     }
                 }
             }
+            translate(c270_far_third_hole_pos()-[0,0,mount_height+1]){
+                no1_selftap_hole(h=mount_height);
+            }
+            translate([-w, h+y_offset+y_excess/2, -mount_height]){
+                c270_cable_exit();
+            }
+            translate(c270_backshell_screw_positions()[0]){
+                translate_z(-mount_height-5.5){
+                    no2_selftap_hole(h=6);
+                }
+            }
+            translate(c270_backshell_screw_positions()[1]){
+                translate_z(-mount_height-5.5){
+                    no2_selftap_hole(h=6);
+                }
+            }
         }
     }
+}
+
+module c270_backshell(){
+    height = 6;
+    h = c270_dims().y;
+    w = c270_dims().x;
+
+    y_offset = c270_y_offset();
+    //extra room for cable
+    y_excess = c270_mount_y_excess();
+
+    difference(){
+        union(){
+            translate([-w/2, -y_offset]){
+                cube([w, h+2*y_offset+y_excess, height]);
+            }
+            translate([-w/2, y_offset+h-10]){
+                cube([w*1.5, y_excess+10, height]);
+            }
+        }
+        translate([-(w+1)/2, y_offset, -tiny()]){
+            cube([w+1, h, 1+tiny()]);
+        }
+        translate([w, h+y_offset+y_excess/2, 0]){
+            mirror([1,0,0]){
+                c270_cable_exit();
+            }
+        }
+        difference(){
+            translate([-(w-3)/2, -y_offset-tiny(), -1.5]){
+                cube([w-3, h+2*y_offset+y_excess-2, height]);
+            }
+            translate([-w/2, h+y_offset+y_excess-8, -2.5]){
+                cube([8, 8, 2*height]);
+            }
+        }
+        translate(c270_backshell_screw_positions(flip_x=true)[0]){
+            mirror([0,0,1]){
+                no2_selftap_counterbore(flip_z=true);
+            }
+        }
+        translate(c270_backshell_screw_positions(flip_x=true)[1]){
+            mirror([0,0,1]){
+                no2_selftap_counterbore(flip_z=true);
+            }
+        }
+    }
+}
+
+
+module c270_cable_exit(){
+    translate_y(-5/2){
+        cube([14, 5, 6.5], center=true);
+    }
+    rotate_y(90){
+        cylinder(d=6.5, h=14, center=true);
+    }
+    translate_x(3){
+        cube([1, 10, 10], center=true);
+    }
+    cube([25, 4, 4], center=true);
 }
 
 module c270_counterbore(){
@@ -215,7 +297,7 @@ module at_c270_hole_pattern(){
             }
         }
         translate(c270_near_third_hole_pos()){
-                children();
+            children();
         }
     }
 }
