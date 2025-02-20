@@ -91,7 +91,7 @@ module picam3_cutout( beam_length=15){
     //width camera box (NOTE: this is deliberately loose fitting)
     camera_width = 11.5 + 1.0;
     //height of camera box (including foam support)
-    camera_height=5.1;
+    camera_height=5.1 + 1.0;
 
     //size of camera aperture
     hole_r = 4.3;
