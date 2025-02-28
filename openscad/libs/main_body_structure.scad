@@ -556,7 +556,7 @@ module body_logos(params, message){
                         [9,actuator_wall_h()-2-15*size,-0.5] :
                         [9.5,actuator_wall_h()-0-15*size,-0.5] ;
     oshwa_logo_position = xy_cable_tidies?
-                        [-34, actuator_wall_h()-2-15*size, -0.5] :
+                        [-24.5, actuator_wall_h()-15*size, -0.5] :
                         [-27, actuator_wall_h()-3-15*size, -0.5] ;
 
     place_on_wall(params, is_y=false, housing=xy_cable_tidies){
