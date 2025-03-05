@@ -4,6 +4,7 @@ use <../openscad/libs/z_axis.scad>
 use <../openscad/lens_tool.scad>
 use <../openscad/libs/lib_optics.scad>
 use <../openscad/libs/optics_configurations.scad>
+use <../openscad/libs/cameras/logitech_c270.scad>
 
 use <librender/assembly_parameters.scad>
 use <librender/render_utils.scad>
@@ -45,6 +46,9 @@ module render_low_cost_assembly(frame, camera_type){
                                  ribbon_cable=false,
                                  connector_open=true,
                                  camera_type=camera_type);
+        if (camera_type == "c270"){
+            rendered_backshell();
+        }
     }
     else if (frame == 6){
         rendered_low_cost_optics(optics_module_pos(),
@@ -121,6 +125,19 @@ module render_low_cost_assembly(frame, camera_type){
                                  screw_tight=false,
                                  connector_open=false,
                                  camera_type=camera_type);
+    }
+}
+
+
+module rendered_backshell(){
+    params = render_params();
+    optics_config = c270lens_config();
+    coloured_render(optics_module_colour()){
+        translate_z(lens_spacer_z(params, optics_config)){
+            rotate_x(180){
+                c270_backshell();
+            }
+        }
     }
 }
 
