@@ -233,10 +233,40 @@ module electronics_drawer_frame_xy(params, for_base_section=false, slide_dist=0)
     }
 }
 
+// Module: microscope_stand_base_section()
+// Usage: microscope_stand_base_section(params, ex_rad=3, h=undef)
+// Description:
+//   Create a "thick section" (a thin 2d prism) of the microscope stand base.
+// Arguments:
+//   params = the microscope parameter dictionary
+//   ex_rad = the external radius of the corners. Default is 3mm,
+//      this is called with `stand_inner_offset_r()` to be the interior base
+//      of the stand and with `stand_outer_offset_r()` to be the external
+//      base.
+//   h = The height of the section. If left undef this will default to `2*tiny()`.
+//      This is a legacy from when this was calculated by a 3D minkowski product of
+//      two objects of height `tiny()`.
+module microscope_stand_base_section(params, ex_rad=3, h=undef){
+    height = is_undef(h) ? 2*tiny() : h;
+    linear_extrude(height){
+        microscope_stand_base_projection(params, ex_rad=ex_rad);
+    }
+}
 
-module microscope_stand_base_section(params, ex_rad=3){
+
+// Module: microscope_stand_base_projection()
+// Usage: microscope_stand_base_projection(params, ex_rad=3)
+// Description:
+//   Create a 2d polygon of the microscope stand base.
+// Arguments:
+//   params = the microscope parameter dictionary
+//   ex_rad = the external radius of the corners. Default is 3mm,
+//      this is called with `stand_inner_offset_r()` to be the interior base
+//      of the stand and with `stand_outer_offset_r()` to be the external
+//      base.
+module microscope_stand_base_projection(params, ex_rad=3){
     pi_base_size = electronics_drawer_base_size();
-    pi_block_size = [pi_base_size.x, electronics_drawer_front_width(), tiny()];
+    pi_block_size = [pi_base_size.x, electronics_drawer_front_width()];
     extra_front_space = 2;
     extra_back_space = 6;
     extra_x_space = extra_front_space + extra_back_space;
@@ -246,12 +276,12 @@ module microscope_stand_base_section(params, ex_rad=3){
             reflect_x(){
                 electronics_drawer_frame_xy(params, for_base_section=true){
                     translate_x(-extra_back_space){
-                        cube(block_size);
+                        square(block_size);
                     }
                 }
             }
         }
-        cylinder(r=ex_rad, h=tiny());
+        circle(r=ex_rad);
     }
 }
 
