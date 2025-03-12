@@ -1,6 +1,6 @@
 # Print settings
 
-To avoid a brim damaging the mechanism the main body has a custom build in brim. The brim is a separate structure printed parallel to the edge of the main body. Sometimes slicers automatically combine the brim and the part, this makes the brim hard to remove. The same optimisation can also lead to problems in the optics module and condenser, where two parts of the lens gripper are fused together incorrectly.
+To avoid a brim damaging the mechanism the main body has a custom built in brim. The brim is a separate structure printed parallel to the edge of the main body. Sometimes slicers automatically combine the brim and the part, this makes the brim hard to remove. The same optimisation can also lead to problems in the optics module and condenser, where two parts of the lens gripper are fused together incorrectly.
 
 ## Correct print settings
 
@@ -10,7 +10,7 @@ In order to print these parts correctly, we recommend you adjust your print sett
 
 Cura (v4.4) automatically slices the smart brim suitably for printing.
 
-### PrusaSlicer (or Slic3r)
+### PrusaSlicer (and other slicers based on Slic3r)
 
 By default in PrusaSlicer (v2.1.1) the smart brim is incorrectly printed as an extension of the microscope base.
 
