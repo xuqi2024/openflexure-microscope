@@ -194,7 +194,7 @@ def generate_stand_with_pi_manual(writer):
     for pi in [3,4]:
         output = f"microscope_stand_manual_with_pi{pi}.stl"
         parameters = {"PI_VERSION": pi}
-        writer.openscad(output, "microscope_stand_manual_with_pi", parameters)
+        writer.openscad(output, "microscope_stand_manual_with_pi.scad", parameters)
 
 def generate_nano_converter_plate(writer):
     """
