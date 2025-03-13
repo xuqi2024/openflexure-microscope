@@ -52,6 +52,7 @@ def write_ninja_file(build_dir):
         # Bases and electronics adapters
         generate_stand_with_pi(writer)
         writer.openscad("microscope_stand_no_pi.stl", "microscope_stand_no_pi.scad")
+        generate_stand_with_pi_manual(writer)
         generate_nano_converter_plate(writer)
         writer.openscad("nano_converter_plate_gripper.stl", "nano_converter_plate_gripper.scad")
         writer.openscad("simple_post_stand.stl","simple_post_stand.scad")
@@ -185,6 +186,15 @@ def generate_stand_with_pi(writer):
                           "SANGA_VERSION": sanga}
 
             writer.openscad(output, "electronics_drawer.scad", parameters)
+
+def generate_stand_with_pi_manual(writer):
+    """
+    Add stand with Pi but no Sangaboard to the ninja build
+    """
+    for pi in [3,4]:
+        output = f"microscope_stand_manual_with_pi{pi}.stl"
+        parameters = {"PI_VERSION": pi}
+        writer.openscad(output, "microscope_stand_manual_with_pi.scad", parameters)
 
 def generate_nano_converter_plate(writer):
     """

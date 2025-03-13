@@ -8,11 +8,14 @@ use <./wall.scad>
 use <./z_axis.scad>
 use <./libdict.scad>
 
-
-function stand_wall_thickness() = 2.5;
-function stand_base_thickness() = 2;
+function stand_wall_thickness(stand_params) = let(
+    thin = key_lookup("thin_wall", stand_params)
+) thin ? 1.5 : 2.5;
+function stand_base_thickness(stand_params) = let(
+    thin = key_lookup("thin_wall", stand_params)
+) thin ? 1 : 2;
 function stand_inner_offset_r() = 1.5;
-function stand_outer_offset_r() = stand_inner_offset_r() + stand_wall_thickness();
+function stand_outer_offset_r(stand_params) = stand_inner_offset_r() + stand_wall_thickness(stand_params);
 function microscope_depth() = 3;
 function microscope_stand_height(stand_params) = microscope_stand_vert_height(stand_params) + 31;
 function microscope_stand_vert_height(stand_params) = let(
@@ -21,10 +24,11 @@ function microscope_stand_vert_height(stand_params) = let(
     extra_h = key_lookup("extra_height", stand_params)
 ) drawer_h + extra_h;
 
-function default_stand_params(tall=false, no_pi=false, pi_version=4, sanga_version="stack_8.5mm") =
+function default_stand_params(tall=false, no_pi=false, pi_version=4, sanga_version="stack_8.5mm", thin_wall=false) =
     assert(pi_version==3 || pi_version==4, "pi_version must be 3 or 4")
     assert(sanga_version=="v0.3" || sanga_version=="stack_8.5mm" || sanga_version=="stack_11mm", "sanga_version must be \"v0.3\", \"stack_8.5mm\" or \"stack_11mm\"")
-    [["electronics_drawer_h", 47], //The height of the tray the pi sits in.
+    [["thin_wall", thin_wall], //Whether the stand has a thinned wall and base
+     ["electronics_drawer_h", 47], //The height of the tray the pi sits in.
      ["include_pi_tray_hole", !no_pi], //Whether the stand has a hole for the raspberry pi tray
      ["extra_height", tall ? 17 : 0], //extra height above the raspberry pi_tray
      ["block_usb", true],
@@ -183,7 +187,7 @@ module stand_lugs(params, stand_params){
 }
 
 module footprint(params){
-    microscope_stand_base_section(params, stand_outer_offset_r());
+    microscope_stand_base_section(params, stand_outer_offset_r(default_stand_params()));
 }
 
 //The outer shell of the microscope stand
@@ -195,18 +199,18 @@ module microscope_stand_shell(params, stand_params){
 
     difference(){
         sequential_hull(){
-            microscope_stand_base_section(params, stand_outer_offset_r());
+            microscope_stand_base_section(params, stand_outer_offset_r(stand_params));
 
             translate_z(vert_h+5){
-                microscope_stand_base_section(params, stand_outer_offset_r());
+                microscope_stand_base_section(params, stand_outer_offset_r(stand_params));
             }
             translate_z(vert_h+10){
-                thick_bottom_section(params, h-vert_h-10, stand_outer_offset_r());
+                thick_bottom_section(params, h-vert_h-10, stand_outer_offset_r(stand_params));
             }
         }
 
         sequential_hull(){
-            translate_z(stand_base_thickness()){
+            translate_z(stand_base_thickness(stand_params)){
                 microscope_stand_base_section(params, stand_inner_offset_r());
             }
 
@@ -288,6 +292,49 @@ module microscope_stand(params, stand_params, supports=true){
     else{
         base_microscope_stand(params, stand_params);
     }
+}
+
+module microscope_stand_manual_with_pi(params=default_params(), stand_params=default_stand_params()){
+        inset = 4;
+        pi_version = key_lookup("pi_version", stand_params);
+        thin_wall = true;
+        no_pi = true;
+        replacements = [["thin_wall", thin_wall], //Thinned wall and base for minimum print time and plastic used
+                        ["include_pi_tray_hole", !no_pi], //No hole for the raspberry pi tray
+                        ["extra_height", 9] //a little taller than the no-pi base
+                       ];
+        no_tray_stand_params = replace_multiple_values(replacements, stand_params);
+        difference(){
+            microscope_stand(params, no_tray_stand_params);;
+            electronics_drawer_frame_xy(params){
+                translate([0,-inset,-2]){
+                    intersection(){
+                        union(){
+                            pi_connector_holes(pi_version);
+                            // mounting holes for the Pi go into the base, but stop one print layer (0.2mm) before the bottom
+                            translate_z(99/2+0.2){
+                                pi_tap_holes(connector_side=true);
+                            }
+                        }
+                        cube([200,150,60], center=true);
+                    }
+                }
+            }
+        }
+        hole_pos = pi_hole_pos(inset_for_stand=true);
+        standoff_h = electronics_drawer_standoff_h();
+        electronics_drawer_frame_xy(params){
+            translate([0,-inset,-2]){
+                difference(){
+                    for (hole = hole_pos){
+                        translate(hole){
+                            cylinder(d=5.5, h=standoff_h, $fn=12);
+                        }
+                    }
+                    pi_tap_holes(connector_side=true);
+                }
+            }
+        }
 }
 
 function side_connector_cutout_pos() = [5, -50, 2];
