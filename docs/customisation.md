@@ -49,7 +49,11 @@ If using tall optics such as an infinity corrected objective you need a taller v
 
 [microscope_stand_tall.stl](models/microscope_stand_tall.stl){previewpage}
 
-If you have built a custom microscope without a rasberry Raspberry Pi, you can print a smaller stand to just hold the microscope.
+If you have built a custom microscope without a rasberry Raspberry Pi, you can print a smaller stand to  hold only the microscope.
 
 [microscope_stand_no_pi.stl](models/microscope_stand_no_pi.stl){previewpage}
 
+If you have built a manual microscope but you still want a Pi (for example for a Pi Camera) you can print a stand without an electronics drawer to hold a Pi without a Sangaboard motor controller. This stand has thin walls and is less strong, but uses less material and prints more quickly.
+
+[microscope_stand_manual_with_pi3.stl](models/microscope_stand_manual_with_pi3.stl){previewpage}  
+[microscope_stand_manual_with_pi4.stl](models/microscope_stand_manual_with_pi4.stl){previewpage}
