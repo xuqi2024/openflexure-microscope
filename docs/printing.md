@@ -11,11 +11,11 @@
 
 ## Check your printer settings {pagestep}
 
-Check your printer is configured as suggested in the [Test your printer] page.
+Check your printer is configured as suggested in the [Configure and test your printer] page.
 
->i The recommended printer settings are given in the [Test your printer] page. It's also a good idea to try the test print if you have not printed the microscope before.
+>i The recommended printer settings are given in the [Configure and test your printer] page. It's also a good idea to try the test print if you have not printed the microscope before.
 
-[Test your printer]: test_your_printer.md#set-your-printer-settings-pagestep
+[Configure and test your printer]: test_your_printer.md#set-your-printer-settings-pagestep
 
 ## Printing {pagestep}
 
