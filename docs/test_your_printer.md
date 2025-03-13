@@ -8,7 +8,7 @@ Details:
 ---
 
 
-# Test your printer
+# Configure and test your printer
 
 >i If you have bought the plastic parts you can skip this step!
 
