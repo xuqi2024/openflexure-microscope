@@ -33,19 +33,21 @@ Take the lens spacer and confirm that:
 
 
 ## Push-fit the lens {pagestep}
-![](images/c270/IMG_4052.JPG)
 
 * Work out which side of the [Logitech C270 camera][prepared Logitech C270 camera](fromstep){qty:1} lens used to be facing the camera sensor (This is the side with more lens visible).
 * Place the lens on a clean surface with the side that was next to the camera sensor on the bottom, and the wider knurled ring towards the top.
-* Push the lens spacer down onto the lens until the lens clicks into place. The lens should be flat in the holder and sticking out a little.
+* Push the printed lens spacer down onto the lens until the lens clicks into place. The lens should be flat in the holder and sticking out a little.
 
+![](../renders/low_cost_optics_assembly_c270_lens.png)
 
-## Attach the Logitech camera {pagestep}
+## Attach the Logitech C270 camera {pagestep}
 
 * Take the Logitech C270 camera circuit board and place the assembled lens spacer over the camera sensor at one end of the board. The lens spacer does not cover all of the circuit board.
 * Place the camera circuit board and lens spacer together onto the camera platform. Line up the mounting holes in the lens spacer with the posts on the camera platform.
 * Use three screws saved from preparing the web cam to secure the three parts together using a [#0 Phillips screwdriver]{qty:1, cat:tool}
 * Take care to not over torque the screws.
+
+![](../renders/low_cost_optics_assembly_camera_c270_lens.png)
 
 ## Attach the mounting screw {pagestep}
 
@@ -53,9 +55,11 @@ Take the lens spacer and confirm that:
 * Take an [M3x10 cap head screws](../parts/mechanical.yml#CapScrew_M3x10mm_SS){qty: 1, cat:mech} and screw it into the nut.
 * Only screw it in a couple of turns. About 5 mm of thread should still be visible.
 
+![](../renders/low_cost_optics_assembly_screw_c270_lens.png)
+
 ## Mount the optics module in the microscope {pagestep}
 
-(see <a href="low_cost_microscope/mount_optics_and_microscope.html">mounting the basic optics module</a> for more details of this method) 
+(see <a href="../manual_microscope/mount_optics_and_microscope.html">mounting the basic optics module</a> for more details of this method) 
 
 * Insert the complete optics module into the microscope body between the microscope stage legs opposite the illumination platform.
 * Fit the M3 screw head into the keyhole slot in the z-actuator .

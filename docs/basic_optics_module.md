@@ -49,7 +49,7 @@ Take the [lens spacer][Lens spacer](fromstep){qty:1, cat:printedpart} and confir
 ## Push-fit the lens {pagestep}
 
 * Work out which side of the {{includetext:"Pi", if: var_lens is pi_lens}}{{includetext:"Logitech C270", if: var_lens is c270_lens}} Camera lens used to be facing the camera sensor (This is the side with more lens visible).
-* Place the lens on a clean surface with the side that was next to the camera sensor on the bottom.
+* Place the lens on a clean surface with the side that was next to the camera sensor on the bottom{{includetext:", and the wider knurled ring towards the top", if: var_lens is c270_lens}}.
 * Push the lens spacer down onto the lens until it clicks into place.
 
 ![](renders/low_cost_optics_assembly_{{var_lens}}.png)
