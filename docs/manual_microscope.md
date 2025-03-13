@@ -16,7 +16,7 @@ The assembly is broken up into several steps:
 1. [.](prepare_main_body.md){step, var_body: _manual}
 1. [.](prepare_stand.md){step, var_body: _manual}
 1. [.](actuator_assembly.md){step, var_body: _manual, var_n_actuators:3}
-1. [.](usb_cameras/c270_preparation.md){step}
+1. [.](usb_cameras/c270_preparation.md){step, var_body: _manual}
 1. [.](basic_optics_module.md){step, var_body: _manual, var_lens: c270_lens}
 1. [.](mount_optics_and_microscope.md){step, var_optics: c270, var_body: _manual}
 1. [.](illumination.md){step, var_optics: c270, var_body: _manual}
