@@ -16,7 +16,7 @@ The assembly is broken up into several steps:
 1. [.](prepare_upright_z-axis.md){step}
 1. [.](prepare_stand.md){step}
 1. [.](actuator_assembly.md){step, var_type: upright, var_n_actuators:4, var_n_washers:8}
-1. [.](basic_optics_module.md){step, var_ribbon_len: 300mm, var_body: upright}
+1. [.](basic_optics_module.md){step, var_ribbon_len: 300mm, var_body: upright, var_lens: pi_lens}
 1. [.](illumination.md){step, var_type: upright}
 1. [.](upright_mount_illumination_and_microscope.md){step, var_optics: upright}
 1. [.](upright_mount_optics.md){step, var_optics: upright}
