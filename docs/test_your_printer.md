@@ -32,8 +32,8 @@ Details:
 |Layer height   |0.2mm or less  |
 |Supports       |None           |
 |Infill         |Printer default|
-|Brim           |Recommended for all parts except main body|
-|[Slice gap closing radius] |0.001mm |
+|Brim           |Recommended for all parts without built in brim|
+|Slice gap closing radius |0.001mm Slicer dependent - [see note][slice gap closing radius]|
 
 >! **Do not print with supports**.
 >!
