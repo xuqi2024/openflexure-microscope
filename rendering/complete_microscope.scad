@@ -1,8 +1,8 @@
 use <./mount_electronics.scad>
 
-OPTICS_VERSION = "c270";
-MANUAL = true;
-POST = true;
+OPTICS_VERSION = "rms"; // "rms", "low_cost", "c270", "upright"
+MANUAL = false;
+POST = false;
 
 render_complete_microscope(OPTICS_VERSION, MANUAL, POST);
 
