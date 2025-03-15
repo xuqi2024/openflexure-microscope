@@ -685,6 +685,11 @@ def register_complete_microscope(rendersystem):
                     scad = f'render_complete_microscope("{optics_version}", {manual});'
                     render = ScadRender(output_file, input_file, scad, imgsize, camera)
                     rendersystem.register_scad_render(render)
+    camera = Camera(position=[0, 48, 98], angle=[90, 0, 0], distance=dist)
+    output_file = "docs/renders/complete_microscope_manual_simple_post.png"
+    scad = 'render_complete_microscope("c270", manual=true, post=true);'
+    render = ScadRender(output_file, input_file, scad, imgsize, camera)
+    rendersystem.register_scad_render(render)
 
 def register_rendered_microscope_stl(rendersystem, force_clean):
     input_file = "rendering/librender/rendered_main_body.scad"
