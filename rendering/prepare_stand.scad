@@ -10,12 +10,14 @@ use <../openscad/libs/simple_post_stand_lib.scad>
 
 FRAME = 1;
 MANUAL = false;
+POST = false; // render manual microscope with simple post stand
 
-render_prepare_stand(FRAME, MANUAL);
+render_prepare_stand(FRAME, MANUAL, POST);
 
-module render_prepare_stand(frame, manual=false){
+module render_prepare_stand(frame, manual=false, post=false){
+    assert(!(post && !manual), "Post stand only for manual microscope");
     params = render_params();
-    stand_params = render_stand_params(manual=manual);
+    stand_params = render_stand_params(manual=manual, post=post);
     if (frame==1){
         assert(!manual, "There are no stand supports to remove for the manual stand");
         render_stand(params, stand_params);
@@ -23,31 +25,31 @@ module render_prepare_stand(frame, manual=false){
             stand_supports(params, stand_params);
         }
     }else if (frame==2){
-        render_stand(params, stand_params, manual=manual);
+        render_stand(params, stand_params, manual=manual, post=post);
         stand_nut(params, stand_params, exploded=true);
     }else if (frame==3){
-        render_stand(params, stand_params, manual=manual);
+        render_stand(params, stand_params, manual=manual, post=post);
         stand_nut(params, stand_params, low=true);
         stand_nut_temp_screw(params, stand_params, exploded=true);
     }else if (frame==4){
-        render_stand(params, stand_params, manual=manual);
+        render_stand(params, stand_params, manual=manual, post=post);
         stand_nut(params, stand_params);
         stand_nut_temp_screw(params, stand_params, turn=true);
     }else if (frame==5){
-        render_stand(params, stand_params, manual=manual);
+        render_stand(params, stand_params, manual=manual, post=post);
         stand_nut(params, stand_params);
         stand_nut(params, stand_params, nut_num=1, exploded=true);
-        if (!manual){
+        if (!(manual && post)){
             stand_nut(params, stand_params, nut_num=2, exploded=true);
             stand_nut(params, stand_params, nut_num=3, exploded=true);
         }
     }
     else if (frame==6){
-        render_stand(params, stand_params, manual=manual);
+        render_stand(params, stand_params, manual=manual, post=post);
         stand_nut(params, stand_params);
         stand_nut(params, stand_params, nut_num=1);
         stand_nut_temp_screw(params, stand_params, nut_num=1, turn=true);
-        if (!manual){
+        if (!(manual && post)){
             stand_nut(params, stand_params, nut_num=2);
             stand_nut_temp_screw(params, stand_params, nut_num=2, turn=true);
             stand_nut(params, stand_params, nut_num=3);
@@ -55,7 +57,7 @@ module render_prepare_stand(frame, manual=false){
         }
     }
     else if (frame==7){
-        stand_prepared(params, stand_params, manual=manual);
+        stand_prepared(params, stand_params, manual=manual, post=post);
     }
     // last frames used when putting in the nut for fitting
     // the electronics drawer, wiring.md
@@ -71,27 +73,27 @@ module render_prepare_stand(frame, manual=false){
     }
 }
 
-function render_stand_params(manual=false) = let(
-        params_dummy = default_stand_params(tall=false, no_pi=true),
-        z_nominal = microscope_stand_height(params_dummy)-microscope_depth(),
+function render_stand_params(manual=false, post=false) = let(
+        params_no_pi = default_stand_params(tall=false, no_pi=true),
+        z_nominal = microscope_stand_height(params_no_pi)-microscope_depth(),
         post_mount_height = key_lookup("foot_height", default_params()),
-        st_params_manual = replace_value("extra_height", post_mount_height-z_nominal, params_dummy),
+        st_params_post = replace_value("extra_height", post_mount_height-z_nominal, params_no_pi),
         st_params_normal = default_stand_params(tall=false, no_pi=false)
-    ) manual? st_params_manual : st_params_normal;
+    ) !manual? st_params_normal : post? st_params_post : params_no_pi;
 
-module stand_prepared(params, stand_params, manual=false){
-    render_stand(params, stand_params, manual=manual);
+module stand_prepared(params, stand_params, manual=false, post=false){
+    render_stand(params, stand_params, manual=manual, post=post);
     stand_nut(params, stand_params);
     stand_nut(params, stand_params, nut_num=1);
-    if (!manual){
+    if (!(manual && post)){
         stand_nut(params, stand_params, nut_num=2);
         stand_nut(params, stand_params, nut_num=3);
     }
 }
 
-module render_stand(params, stand_params, manual=false){
+module render_stand(params, stand_params, manual=false, post=false){
     coloured_render(stand_colour()){
-        if (manual){
+        if (manual && post){
             simple_post_stand(params);
         }
         else{
