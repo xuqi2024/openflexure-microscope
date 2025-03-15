@@ -17,7 +17,7 @@ use <../openscad/libs/upright_z_axis.scad>
 
 FRAME = 5;
 OPTICS_VERSION = "rms"; // "rms", "low_cost", "c270", "upright"
-MANUAL = false;
+MANUAL = true;
 
 mount_illumination(FRAME, OPTICS_VERSION, MANUAL);
 
@@ -100,8 +100,8 @@ module mount_illumination(frame, optics_version="rms", manual=false){
     }
 }
 
-module mounted_microscope_with_illumination(stand_params=default_stand_params(), optics_version="rms", manual=false){
-    mounted_microscope_frame(manual=manual){
+module mounted_microscope_with_illumination(stand_params=default_stand_params(), optics_version="rms", manual=false, post=false){
+    mounted_microscope_frame(manual=manual, post=post){
         if (optics_version=="upright"){
             rendered_upright_z_spacer_assembly();
             rendered_upright_z_axis(manual=manual);
@@ -112,7 +112,7 @@ module mounted_microscope_with_illumination(stand_params=default_stand_params(),
             illumination_wiring(manual=manual);
         }
     }
-    mounted_microscope(stand_params, optics_version=optics_version, manual=manual);
+    mounted_microscope(stand_params, optics_version=optics_version, manual=manual, post=post);
 }
 
 module rendered_upright_z_spacer_assembly(exploded=false){
