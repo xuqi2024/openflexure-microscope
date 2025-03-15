@@ -361,7 +361,7 @@ def register_prepare_stand(rendersystem):
     for manual in ["false", "true"]:
         body = "_manual" if manual=="true" else ""
         if manual == "true":
-            camera = Camera(position=[-17, 13, 25], angle=[70, 0, 215], distance=195)
+            camera = Camera(position=[-9, 20, 7.5], angle=[34, 0, 235], distance=400)
         else:
             camera = Camera(position=[-9, 20, 37.5], angle=[34, 0, 235], distance=450)
         for frame in [2, 3, 4, 5, 6, 7]:
@@ -529,9 +529,9 @@ def register_mount_illumination(rendersystem):
                     Camera(position=[-6, 49, 118], angle=[68, 0, 133], distance=360),
                     Camera(position=[-6, 49, 118], angle=[68, 0, 133], distance=360),
                     Camera(position=[-6, 49, 118], angle=[60, 0, 308], distance=460),
-                    Camera(position=[-6, 49, 118], angle=[82, 0, 308], distance=360),
-                    Camera(position=[-6, 49, 118], angle=[82, 0, 308], distance=360),
-                    Camera(position=[-6, 49, 118], angle=[82, 0, 308], distance=360)
+                    Camera(position=[-6, 49, 138], angle=[82, 0, 308], distance=360),
+                    Camera(position=[-6, 49, 138], angle=[82, 0, 308], distance=360),
+                    Camera(position=[-6, 49, 138], angle=[82, 0, 308], distance=360)
                 ]
             elif optics_version == "upright":
                 cameras = [
@@ -605,7 +605,7 @@ def register_mount_sample_clips(rendersystem):
     # Final 3 images
     for manual in ["false", "true"]:
         body = "_manual" if manual=="true" else ""
-        cam_z = 118 if manual == "true" else 178
+        cam_z = 138 if manual == "true" else 178
         cameras = [
             Camera(position=[-10, 33, cam_z], angle=[53, 0, 296], distance=495),
             Camera(position=[-10, 33, cam_z], angle=[53, 0, 296], distance=495),
@@ -685,6 +685,11 @@ def register_complete_microscope(rendersystem):
                     scad = f'render_complete_microscope("{optics_version}", {manual});'
                     render = ScadRender(output_file, input_file, scad, imgsize, camera)
                     rendersystem.register_scad_render(render)
+    camera = Camera(position=[0, 48, 98], angle=[65, 0, 133], distance=700)
+    output_file = "docs/renders/complete_microscope_manual_simple_post.png"
+    scad = 'render_complete_microscope("c270", manual=true, post=true);'
+    render = ScadRender(output_file, input_file, scad, imgsize, camera)
+    rendersystem.register_scad_render(render)
 
 def register_rendered_microscope_stl(rendersystem, force_clean):
     input_file = "rendering/librender/rendered_main_body.scad"
