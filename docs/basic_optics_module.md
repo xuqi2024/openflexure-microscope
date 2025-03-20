@@ -1,6 +1,8 @@
 # Assemble the basic optics module
 
-The imaging optics for this version of the microscope consist of a Raspberry pi camera and the lens from the camera. To create a microscope, the wide angle lens is reversed and separated from the camera. This makes quite a good microscope objective with a field of view about 400μm across and a resolution of around 2μm.
+{{includetext: "The imaging optics for this version of the microscope consist of a Raspberry pi camera and the lens from the camera. To create a microscope, the wide angle lens is reversed and separated from the camera. This makes quite a good microscope objective with a field of view about 400μm across and a resolution of around 2μm.", if: var_lens is pi_lens}}
+{{includetext: "The imaging optics for this version of the microscope consist of a Logitech c270 webcam and the lens from the camera. To create a microscope, the wide angle lens is reversed and separated from the camera. This makes quite a good microscope objective with a field of view about 400μm across and a resolution of around 2μm.", if: var_lens is c270_lens}}
+
 
 {{BOM}}
 
@@ -24,7 +26,7 @@ Take the [lens spacer][Lens spacer](fromstep){qty:1, cat:printedpart} and confir
 * The central shaft is not obstructed by strings of plastic.
 
 
-
+{{includetext: "
 ## Remove Pi Camera Lens {pagestep}
 
 >! **Caution!**
@@ -41,24 +43,25 @@ Take the [lens spacer][Lens spacer](fromstep){qty:1, cat:printedpart} and confir
 
 ![](renders/picam1.png)
 ![](renders/picam2.png)
-![](renders/picam3.png)
+![](renders/picam3.png)", if: var_lens is pi_lens}}
 
-## Push-fit the lens
 
-* Work out which side of the pi camera lens used to be facing the camera sensor (This is the side with more lens visible).
-* Place the pi camera lens on a clean surface with the side that was next to the camera sensor on the bottom.
+## Push-fit the lens {pagestep}
+
+* Work out which side of the {{includetext:"Pi", if: var_lens is pi_lens}}{{includetext:"Logitech C270", if: var_lens is c270_lens}} Camera lens used to be facing the camera sensor (This is the side with more lens visible).
+* Place the lens on a clean surface with the side that was next to the camera sensor on the bottom{{includetext:", and the wider knurled ring towards the top", if: var_lens is c270_lens}}.
 * Push the lens spacer down onto the lens until it clicks into place.
 
-![](renders/low_cost_optics_assembly_pi_lens.png)
+![](renders/low_cost_optics_assembly_{{var_lens}}.png)
 
-## Attach the Pi Camera {pagestep}
+## Attach the {{includetext:"Pi", if: var_lens is pi_lens}}{{includetext:"Logitech C270", if: var_lens is c270_lens}} Camera {pagestep}
 
-* Take the Pi Camera and place it ontop of the [pi camera platform](fromstep){qty:1, cat:printedpart}.
-* Place the lens spacer over the picamera
-* Use four [No 2 6.5mm self tapping screws]{qty:4, cat:mech} to secure the three parts together using a [#1 pozidrive screwdriver]{qty:1, cat:tool}
+* Take the {{includetext:"Pi", if: var_lens is pi_lens}}{{includetext:"Logitech C270", if: var_lens is c270_lens}} Camera and place it on top of the [camera platform][Camera platform](fromstep){qty:1, cat:printedpart}.
+* Place the lens spacer over the camera
+{{includetext:"* Use four [No 2 6.5mm self tapping screws]{qty:4, cat:mech} to secure the three parts together using a [#1 pozidrive screwdriver]{qty:1, cat:tool}", if: var_lens is pi_lens}}{{includetext:"* Use three [No 1 self tapping screws](fromstep){qty:3, cat:mech, note: 'Recovered from C270 camera dissassembly'} to secure the three parts together using a [#1 pozidrive screwdriver]{qty:1, cat:tool}", if: var_lens is c270_lens}}
 * Take care to not over torque the screws.
 
-![](renders/low_cost_optics_assembly_camera.png)
+![](renders/low_cost_optics_assembly_camera_{{var_lens}}.png)
 
 ## Attach the mounting screw {pagestep}
 
@@ -66,8 +69,9 @@ Take the [lens spacer][Lens spacer](fromstep){qty:1, cat:printedpart} and confir
 * Take an [M3x10 cap head screws](parts/mechanical.yml#CapScrew_M3x10mm_SS){qty: 1, cat:mech} and screw it into the nut.
 * Only screw it in a couple of turns. About 5 mm of thread should still be visible
 
-![](renders/low_cost_optics_assembly_screw.png)
+![](renders/low_cost_optics_assembly_screw_{{var_lens}}.png)
 
+{{includetext: "
 ## Connect ribbon cable {pagestep}
 
 * Take the [{{var_ribbon_len, default:200mm}} Pi Camera ribbon cable]{qty:1, cat:electronic}
@@ -76,7 +80,7 @@ Take the [lens spacer][Lens spacer](fromstep){qty:1, cat:printedpart} and confir
 * Close the catch on the connector
 
 
-![](renders/low_cost_optics_assembly_ribbon.png)
+![](renders/low_cost_optics_assembly_ribbon_pi_lens.png)", if: var_lens is pi_lens}}
 
 Set the [complete optics module]{output, qty:1} aside in a safe place.
 

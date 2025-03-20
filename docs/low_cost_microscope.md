@@ -16,7 +16,7 @@ The assembly is broken up into several steps:
 1. [.](prepare_main_body.md){step}
 1. [.](prepare_stand.md){step}
 1. [.](actuator_assembly.md){step, var_n_actuators:3}
-1. [.](basic_optics_module.md){step}
+1. [.](basic_optics_module.md){step, var_lens: pi_lens}
 1. [.](mount_optics_and_microscope.md){step, var_optics: low_cost}
 1. [.](illumination.md){step, var_type: low_cost}
 1. [.](mount_illumination.md){step, var_optics: low_cost}

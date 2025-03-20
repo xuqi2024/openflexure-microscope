@@ -10,7 +10,7 @@ use <prepare_stand.scad>
 
 
 FRAME = 1;
-OPTICS_VERSION = "rms";
+OPTICS_VERSION = "rms"; // "rms", "low_cost", "c270", "upright"
 MANUAL = false;
 render_mount_microscope(FRAME, OPTICS_VERSION, MANUAL);
 
