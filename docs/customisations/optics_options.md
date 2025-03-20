@@ -36,16 +36,10 @@ ___
 
 The recommended camera is the Raspberry Pi camera. The 3D printed parts work with both v1 and v2, but **only v2 is supported by the standard software.** 
 
-For the RMS objective optics we also generate optics modules for an M12 camera, or a Logitech C270 webcam, both of which connect to a computer via USB. The available parts are listed below. These optics modules are not extensively tested. **USB cameras are not supported in the standard software**. 
+We have some limited support for USB cameras such as the M12 camera, Logitech C270 webcam, or the Arducam B0196 USB webcam. Using a USB camera often requires a teardown process that will void any warranty that came with your camera. Also, please note that the **USB cameras are not supported in the standard software**.
 
-For the basic optics module we also generate lens spacers and camera platforms for a Logitech C270 webcam or an Arducam B0196 USB webcam (which is based on the same Sony IMX219 camera module as the Raspberry Pi camera v2). The available parts are listed below. These camera configurations are not extensively tested. **USB cameras are not supported in the standard software**.
+To use other cameras check the list of RMS optics modules and basic optics modules below. Full documentation isn't available for all custom configurations.
 
-**The Logitech C270 or Arducam B0196 will need to be prepared for mounting to RMS optics modules or for making basic optics modules.**  
-[Follow this guide for preparing the Logitech C270][c270 preparation]  
-[Follow this guide for preparing the Arducam B0196][b0196 preparation]  
-
-[c270 preparation]: ../usb_cameras/c270_preparation.md
-[b0196 preparation]: ../usb_cameras/b0196_preparation.md
 ___
 
 ## RMS optics modules
@@ -73,13 +67,14 @@ You can use our **[interactive optics module chooser](interactive_optics_module_
 * [optics_m12_rms_f50d13.stl](../models/optics_m12_rms_f50d13.stl){previewpage} 
 * [optics_m12_rms_infinity_f50d13_beamsplitter.stl](../models/optics_m12_rms_infinity_f50d13_beamsplitter.stl){previewpage}
 * [optics_m12_rms_infinity_f50d13.stl](../models/optics_m12_rms_infinity_f50d13.stl){previewpage}
-* [optics_logitech_c270_rms_f50d13_beamsplitter.stl](../models/optics_logitech_c270_rms_f50d13_beamsplitter.stl){previewpage}
-* [optics_logitech_c270_rms_f50d13.stl](../models/optics_logitech_c270_rms_f50d13.stl){previewpage}
-* [optics_logitech_c270_rms_infinity_f50d13_beamsplitter.stl](../models/optics_logitech_c270_rms_infinity_f50d13_beamsplitter.stl){previewpage}
-* [optics_logitech_c270_rms_infinity_f50d13.stl](../models/optics_logitech_c270_rms_infinity_f50d13.stl){previewpage}
+* [optics_logitech_c270_rms_f50d13_beamsplitter.stl](../models/optics_logitech_c270_rms_f50d13_beamsplitter.stl){previewpage}*
+* [optics_logitech_c270_rms_f50d13.stl](../models/optics_logitech_c270_rms_f50d13.stl){previewpage}*
+* [optics_logitech_c270_rms_infinity_f50d13_beamsplitter.stl](../models/optics_logitech_c270_rms_infinity_f50d13_beamsplitter.stl){previewpage}*
+* [optics_logitech_c270_rms_infinity_f50d13.stl](../models/optics_logitech_c270_rms_infinity_f50d13.stl){previewpage}*
 
 >i The infinity corrected optics modules are taller, and require a tall microscope stand [(see "stands" section of customisation page)](../customisation.md).
 
+**The C270 webcam needs to be dissembled before use. More details are provided on this procedure in the Assembly guide for the C270 basic optics module provided in the next section.*
 ___
 
 ## List of basic optics modules
@@ -91,6 +86,6 @@ The basic optics modules contain two printed parts; a lens spacer (printed in bl
 * **Arducam B0196**: [Assembly Guide][basic optics b0196] - [lens spacer STL](../models/lens_spacer_arducam_b0196.stl){previewpage} & [camera platform STL](../models/camera_platform_arducam_b0196.stl){previewpage}
 * **Logitech C270**: [Assembly Guide][basic optics c270] - [lens spacer STL](../models/lens_spacer_c270.stl){previewpage} & [camera platform STL](../models/camera_platform_c270.stl){previewpage}
 
-[basic optics pi]: ../basic_optics_module.md
+[basic optics pi]: ../only_pi_basic_optics.md
 [basic optics c270]: ../usb_cameras/basic_optics_c270_index.md
 [basic optics b0196]: ../usb_cameras/basic_optics_b0196_index.md
