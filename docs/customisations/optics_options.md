@@ -36,7 +36,7 @@ ___
 
 The recommended camera is the Raspberry Pi camera. The 3D printed parts work with both v1 and v2, but **only v2 is supported by the standard software.** 
 
-We have some limited support for USB cameras such as the M12 camera, Logitech C270 webcam, or the Arducam B0196 USB webcam. Using a USB camera often required a teardown process that would void any warranty that came with tour camera. Also, please note that the **USB cameras are not supported in the standard software**.
+We have some limited support for USB cameras such as the M12 camera, Logitech C270 webcam, or the Arducam B0196 USB webcam. Using a USB camera often requires a teardown process that will void any warranty that came with your camera. Also, please note that the **USB cameras are not supported in the standard software**.
 
 To use other cameras check the list of RMS optics modules and basic optics modules below. Full documentation isn't available for all custom configurations.
 
