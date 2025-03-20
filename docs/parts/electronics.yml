@@ -155,3 +155,25 @@ ArduinoNano:
     RS Components:
       Link: https://uk.rs-online.com/web/p/arduino/6961667/
       PartNo: 696-1667
+Logitech_C270:
+  Name: Logitech C270 HD Webcam
+  Description: Logitech C270 HD Webcam for use with standard camera software. This camera is not supported in the OpenFlexure Microscope software, so it will not allow colour correction, autofocus or scanning modes.
+  Specs:
+    MPN: 960-001063
+  Suppliers:
+    CPC:
+      Link: https://cpc.farnell.com/logitech/960-001063/webcam-3mp-hd-c270-logitech/dp/CS30061
+      PartNo: CS30061
+    Newark:
+      Link: https://www.newark.com/logitech/960-001063/hd-pro-webcam-3mp-720p/dp/03AC4947
+      PartNo: 03AC4947
+Arducam_B0196:
+  Name: Arducam B0196 
+  Description: Arducam 8MP 1080P USB Camera Module, 1/4″ CMOS IMX219 Mini UVC USB2.0 Webcam. This camera is not supported in the OpenFlexure Microscope software, so it will not allow colour correction, autofocus or scanning modes.
+  Specs:
+    SKU: B0196
+    Sensor: Sony IMX219
+  Suppliers:
+    Arducam:
+      Link: https://www.arducam.com/product/b0196arducam-8mp-1080p-usb-camera-module-1-4-cmos-imx219-mini-uvc-usb2-0-webcam-board-with-1-64ft-0-5m-usb-cable-for-windows-linux-android-and-mac-os/
+      PartNo: B0196

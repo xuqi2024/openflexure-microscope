@@ -84,61 +84,88 @@ def register_rms_optics_assembly(rendersystem):
 
 def register_low_cost_optics_assembly(rendersystem):
     input_file = "rendering/low_cost_optics_assembly.scad"
-    cameras = []
-    imgsizes = []
-    scad_lines = []
-    output_files = []
+    for camera_type in ["pi_camera", "c270"]:
+        lens_type = "c270_lens" if camera_type=="c270" else "pi_lens"
+        cameras = []
+        imgsizes = []
+        scad_lines = []
+        output_files = []
 
-    for frame in [1, 2, 3]:
-        cameras.append(Camera(position=[29, 0, 59], angle=[69, 0, 90], distance=290))
-        imgsizes.append([1000, 2000])
-        output_files.append(f"rendering/annotations/low_cost_optics_assembly_tube_lens{frame}.png")
-        scad_lines.append(f"render_low_cost_assembly({frame});")
+        for frame in [1, 2, 3]:
+            cameras.append(Camera(position=[29, 0, 59], angle=[69, 0, 90], distance=290))
+            imgsizes.append([1000, 2000])
+            output_files.append(f'rendering/annotations/low_cost_optics_assembly_tube_lens_{lens_type}{frame}.png')
+            scad_lines.append(f'render_low_cost_assembly({frame}, camera_type = "{camera_type}");')
 
-    camera_png_files = []
-    for frame in [1, 2]:
-        cameras.append(Camera(position=[-5, 7, 25], angle=[71, 0, 98], distance=292))
-        imgsizes.append([1200, 2000])
-        output_files.append(f"docs/renders/low_cost_optics_assembly_camera{frame}.png")
-        camera_png_files.append(output_files[-1])
-        scad_lines.append(f"render_low_cost_assembly({frame+3});")
+        camera_png_files = []
+        # frame 4,5
+        for frame in [1, 2]:
+            cameras.append(Camera(position=[-5, 7, 25], angle=[71, 0, 98], distance=292))
+            imgsizes.append([1200, 2000])
+            output_files.append(f'docs/renders/low_cost_optics_assembly_camera_{lens_type}{frame}.png')
+            camera_png_files.append(output_files[-1])
+            scad_lines.append(f'render_low_cost_assembly({frame+3}, camera_type = "{camera_type}");')
 
-    screw_png_files = []
-    for frame in [1, 2, 3]:
-        cameras.append(Camera(position=[-11, 19, 33], angle=[71, 0, 106], distance=192))
-        imgsizes.append([1000, 2000])
-        output_files.append(f"docs/renders/low_cost_optics_assembly_screw{frame}.png")
-        screw_png_files.append(output_files[-1])
-        scad_lines.append(f"render_low_cost_assembly({frame+5});")
+        screw_png_files = []
+        # frame 6,7,8
+        for frame in [1, 2, 3]:
+            cameras.append(Camera(position=[-11, 19, 33], angle=[71, 0, 106], distance=192))
+            imgsizes.append([1000, 2000])
+            output_files.append(f'docs/renders/low_cost_optics_assembly_screw_{lens_type}{frame}.png')
+            screw_png_files.append(output_files[-1])
+            scad_lines.append(f'render_low_cost_assembly({frame+5}, camera_type = "{camera_type}");')
 
-    ribbon_png_files = []
-    for frame in [1, 2, 3]:
-        cameras.append(Camera(position=[-7, -7, 40.5], angle=[54, 0, 90], distance=237))
-        imgsizes.append([1200, 2000])
-        output_files.append(f"docs/renders/low_cost_optics_assembly_ribbon{frame}.png")
-        ribbon_png_files.append(output_files[-1])
-        scad_lines.append(f"render_low_cost_assembly({frame+8});")
+        ribbon_png_files = []
+        # frame 9,10,11
+        if camera_type == "pi_camera":
+            for frame in [1, 2, 3]:
+                cameras.append(Camera(position=[-7, -7, 40.5], angle=[54, 0, 90], distance=237))
+                imgsizes.append([1200, 2000])
+                output_files.append(f'docs/renders/low_cost_optics_assembly_ribbon_{lens_type}{frame}.png')
+                ribbon_png_files.append(output_files[-1])
+                scad_lines.append(f'render_low_cost_assembly({frame+8}, camera_type = "{camera_type}");')
 
-    for i, output_file in enumerate(output_files):
-        render = ScadRender(output_file, input_file, scad_lines[i], imgsizes[i], cameras[i])
-        rendersystem.register_scad_render(render)
+        for i, output_file in enumerate(output_files):
+            render = ScadRender(output_file, input_file, scad_lines[i], imgsizes[i], cameras[i])
+            rendersystem.register_scad_render(render)
 
-    rendersystem.register_imagemagick_sequence(
-        "docs/renders/low_cost_optics_assembly_camera.png",
-        camera_png_files
-    )
-    rendersystem.register_imagemagick_sequence(
-        "docs/renders/low_cost_optics_assembly_screw.png",
-        screw_png_files
-    )
-    rendersystem.register_imagemagick_sequence(
-        "docs/renders/low_cost_optics_assembly_ribbon.png",
-        ribbon_png_files
-    )
-    rendersystem.register_inkscape_annotation(
-        "docs/renders/low_cost_optics_assembly_pi_lens.png",
-        "rendering/annotations/annotate_optics_assembly_pi_lens.svg"
-    )
+        rendersystem.register_inkscape_annotation(
+            f'docs/renders/low_cost_optics_assembly_{lens_type}.png',
+            f'rendering/annotations/annotate_optics_assembly_{lens_type}.svg'
+        )
+        rendersystem.register_imagemagick_sequence(
+            f'docs/renders/low_cost_optics_assembly_camera_{lens_type}.png',
+            camera_png_files
+        )
+        rendersystem.register_imagemagick_sequence(
+            f'docs/renders/low_cost_optics_assembly_screw_{lens_type}.png',
+            screw_png_files
+        )
+        if camera_type == "pi_camera":
+            rendersystem.register_imagemagick_sequence(
+                "docs/renders/low_cost_optics_assembly_ribbon_pi_lens.png",
+                ribbon_png_files
+            )
+
+def register_extra_low_cost_optics_assembly(rendersystem):
+    input_file = "rendering/low_cost_optics_assembly.scad"
+    for camera_type in ["pi_camera", "c270"]:
+        lens_type = "c270_lens" if camera_type=="c270" else "pi_lens"
+        camera = Camera(position=[29, 0, 59], angle=[69, 0, 90], distance=290)
+        imgsize = [1000, 2000]
+
+        for frame in [1, 2, 3]:
+            png_directory = "rendering/annotations" if frame==2 else "docs/renders"
+            output_file = f'{png_directory}/low_cost_optics_assembly_lens_spacer_{lens_type}{frame}.png'
+            scad = f'render_low_cost_assembly({frame}, camera_type = "{camera_type}");'
+            render = ScadRender(output_file, input_file, scad, imgsize, camera)
+            rendersystem.register_scad_render(render)
+
+        rendersystem.register_inkscape_annotation(
+            f'docs/renders/low_cost_optics_assembly_lens_spacer_{lens_type}2.png',
+            f'rendering/annotations/annotate_optics_assembly_{lens_type}_small.svg'
+        )
+
 
 def register_condenser_assembly(rendersystem):
     input_file = "rendering/condenser_assembly.scad"
@@ -421,22 +448,29 @@ def register_picam(rendersystem):
 
 def register_mount_optics(rendersystem):
     input_file = "rendering/mount_optics.scad"
-    cameras = [
-        Camera(position=[9.6, 7, -14.5], angle=[103.5, 0, 66], distance=495),
-        Camera(position=[7.75, 37, -3], angle=[135.5, 0, 32.5], distance=495),
-        Camera(position=[7.75, 37, -3], angle=[135.5, 0, 32.5], distance=495),
-        Camera(position=[7.75, 37, -3], angle=[135.5, 0, 32.5], distance=495),
-        Camera(position=[-18.5, 42.75, 23.75], angle=[57, 0, 143], distance=495),
-        Camera(position=[-18.5, 42.75, 23.75], angle=[57, 0, 143], distance=495),
-        Camera(position=[-18.5, 42.75, 23.75], angle=[57, 0, 143], distance=495),
-        Camera(position=[-18.5, 42.75, 23.75], angle=[57, 0, 143], distance=495),
-    ]
     imgsize = [2400, 2000]
     for manual in ["false", "true"]:
         body = "_manual" if manual=="true" else ""
+        camera_1_normal = Camera(position=[9.6, 7, -14.5], angle=[103.5, 0, 66], distance=495)
+        camera_c270 = Camera(position=[-33, 33, 18], angle=[62, 0, 59], distance=495)
+        camera_1 = camera_1_normal if manual=="false" else camera_c270
+        camera_2_normal = Camera(position=[7.75, 37, -3], angle=[135.5, 0, 32.5], distance=495)
+        camera_2 = camera_2_normal if manual=="false" else camera_c270
+        cameras = [
+            camera_1,
+            camera_2,
+            camera_2,
+            camera_2,
+            Camera(position=[-18.5, 42.75, 23.75], angle=[57, 0, 143], distance=495),
+            Camera(position=[-18.5, 42.75, 23.75], angle=[57, 0, 143], distance=495),
+            Camera(position=[-18.5, 42.75, 23.75], angle=[57, 0, 143], distance=495),
+            Camera(position=[-18.5, 42.75, 23.75], angle=[57, 0, 143], distance=495),
+        ]
         for optics_version in ["rms", "low_cost", "upright"]:
             # no renders for manual rms or manual upright
             if not (manual == "true" and optics_version in ["rms", "upright"]):
+                # manual "low_cost" uses the c270 camera
+                optics_version = optics_version if manual=="false" else "c270" 
                 for i, camera in enumerate(cameras):
                     frame = i + 1
                     output_file = f"docs/renders/mount_optics_{optics_version}{body}{frame}.png"
@@ -475,6 +509,8 @@ def register_mount_microscope(rendersystem):
         for optics_version in ["rms", "low_cost", "upright"]:
             # no renders for manual rms or manual upright
             if not (manual == "true" and optics_version in ["rms", "upright"]):
+                # manual "low_cost" uses the c270 camera
+                optics_version = optics_version if manual=="false" else "c270" 
                 for i, camera in enumerate(cameras):
                     frame = i + 1
                     output_file = f"docs/renders/mount_microscope_{optics_version}{body}{frame}.png"
@@ -515,6 +551,8 @@ def register_mount_illumination(rendersystem):
                 ]
             # no renders for manual rms or manual upright
             if not (manual == "true" and optics_version in ["rms", "upright"]):
+                # manual "low_cost" uses the c270 camera
+                optics_version = optics_version if manual=="false" else "c270" 
                 for i, camera in enumerate(cameras):
                     frame = i + 1
                     output_file = f"docs/renders/mount_illumination_{optics_version}{body}{frame}.png"
@@ -576,6 +614,8 @@ def register_mount_sample_clips(rendersystem):
         for optics_version in ["rms", "low_cost", "upright"]:
             # no renders for manual rms or manual upright
             if not (manual == "true" and optics_version in ["rms", "upright"]):
+                # manual "low_cost" uses the c270 camera
+                optics_version = optics_version if manual=="false" else "c270" 
                 for i, camera in enumerate(cameras):
                     output_file = f"docs/renders/mount_sample_clips_{optics_version}{body}{i+1}.png"
                     scad = f'render_mount_sample_clips({i+3}, "{optics_version}", {manual});'
@@ -631,6 +671,8 @@ def register_complete_microscope(rendersystem):
         for optics_version in ["rms", "low_cost", "upright"]:
             # no renders for manual rms or manual upright
             if not (manual == "true" and optics_version in ["rms", "upright"]):
+                # manual "low_cost" uses the c270 camera
+                optics_version = optics_version if manual=="false" else "c270" 
                 dist = 700 if optics_version != "upright" else 780
                 cameras = [
                     Camera(position=[0, 48, 98], angle=[65, 0, 133], distance=dist),
@@ -703,6 +745,7 @@ def main():
         #Register all openscad renders (and associated post processing)
         register_rms_optics_assembly(rendersystem)
         register_low_cost_optics_assembly(rendersystem)
+        register_extra_low_cost_optics_assembly(rendersystem)
         register_condenser_assembly(rendersystem)
         register_upright_condenser_assembly(rendersystem)
         register_workaround_5mm_led(rendersystem)
