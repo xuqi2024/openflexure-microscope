@@ -5,11 +5,13 @@ Congratulations, you have now assembled your OpenFlexure Microscope.
 ## The completed microscope {pagestep}
 
 ![A render of the completed microscope](renders/complete_microscope_{{var_optics, default:rms}}{{var_body, default:}}0.png)
-![A render of the completed microscope](renders/complete_microscope_{{var_optics, default:rms}}{{var_body, default:}}2.png)
-![A render of the completed microscope](renders/complete_microscope_{{var_optics, default:rms}}{{var_body, default:}}3.png)
+![A render of the completed microscope](renders/complete_microscope_{{var_optics, default:rms}}{{var_body, default:}}2.png) {{includetext: "
+![A render of the completed microscope](renders/complete_microscope_{{var_optics, default:rms}}{{var_body, default:}}3.png)", if: var_body is not _manual}}
 ![A render of the completed microscope](renders/complete_microscope_{{var_optics, default:rms}}{{var_body, default:}}1.png)
+{{includetext: "![A render of the completed microscope](renders/complete_microscope_manual_simple_post.png)", if: var_body is _manual}}
 
-Your completed microscope should now look like these pictures.  
+
+Your completed microscope should now look like these pictures{{includetext: ", with either the full stand or the simple post stand", if: var_body is _manual}}.  
 There is also an [interactive 3D view](interactive_3d_view_{{var_optics, default:rms}}{{var_body, default:}}.md) of the finished microscope.
 
 {{includetext: "
