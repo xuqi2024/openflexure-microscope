@@ -33,7 +33,6 @@ module nut_spinner(){
 
 module gear_holder(){
     dims = [40, 14, 10];
-    corner_r = 3;
     difference(){
         holding_block(dims);
         translate_z(dims.z/2){
