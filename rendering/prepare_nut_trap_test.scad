@@ -36,19 +36,17 @@ module trap_nut_temp_screw(turn=false, exploded=false){
     explode = 15;
     screw_height = 10;
     screw_pos = exploded ? [0, 0 , screw_height+explode] : [0, 0, screw_height];
-//    rotate_z(0){
-        if (exploded){
-            construction_line([0, 0, 2], [0, 0, 2+explode]);
-        }
-        place_part(screw_pos){
-            m3_cap_x10();
-            if (turn){
-                translate_z(4){
-                    turn_clockwise(5);
-                }
+    if (exploded){
+        construction_line([0, 0, 2], [0, 0, 2+explode]);
+    }
+    place_part(screw_pos){
+        m3_cap_x10();
+        if (turn){
+            translate_z(4){
+                turn_clockwise(5);
             }
         }
-//    }
+    }
 }
 
 module trap_nut(nut_num=0, low=false, exploded=false){
