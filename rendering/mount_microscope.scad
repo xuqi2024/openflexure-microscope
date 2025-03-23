@@ -12,32 +12,36 @@ use <prepare_stand.scad>
 FRAME = 1;
 OPTICS_VERSION = "rms"; // "rms", "low_cost", "c270", "upright"
 MANUAL = false;
-render_mount_microscope(FRAME, OPTICS_VERSION, MANUAL);
+POST = false; // use simple post stand for manual?
 
-module render_mount_microscope(frame, optics_version, manual){
+render_mount_microscope(FRAME, OPTICS_VERSION, MANUAL, POST);
+
+module render_mount_microscope(frame, optics_version, manual=false, post=false){
+    assert(!(post && !manual), "Post stand only for manual microscope");
     if (frame==1){
-        mounted_microscope(optics_version=optics_version, manual=manual, exploded=true);
+        mounted_microscope(optics_version=optics_version, manual=manual, post=post, exploded=true);
     }
     else if (frame==2){
-        mounted_microscope(optics_version=optics_version, manual=manual);
+        mounted_microscope(optics_version=optics_version, manual=manual, post=post);
     }
 }
 
-module mounted_microscope(stand_params=default_stand_params(), optics_version="rms", manual=false, exploded=false){
+module mounted_microscope(stand_params=default_stand_params(), optics_version="rms", manual=false, post=false, exploded=false){
+    assert(!(post && !manual), "Post stand only for manual microscope");
     params = render_params();
-    stand_params = render_stand_params(manual=manual);
-    stand_prepared(params, stand_params, manual=manual);
-    screws = (manual) ? [0, 1] : [0, 1, 2, 3] ;
+    stand_params = render_stand_params(manual=manual, post=post);
+    stand_prepared(params, stand_params, manual=manual, post=post);
+    screws = (manual && post) ? [0, 1] : [0, 1, 2, 3] ;
     for (i = screws){
         stand_lug_screw(params, stand_params, i, exploded=exploded);
     }
-    mounted_microscope_frame(manual=manual, exploded=exploded){
+    mounted_microscope_frame(manual=manual, post=post, exploded=exploded){
         body_with_optics(optics_version=optics_version, manual=manual);
     }
 }
 
-module mounted_microscope_frame(manual=false, exploded=false){
-    stand_params = render_stand_params(manual=manual);
+module mounted_microscope_frame(manual=false, post=false, exploded=false){
+    stand_params = render_stand_params(manual=manual, post=post);
     place_part(microscope_on_stand_pos(stand_params, exploded=exploded)){
         children();
     }
