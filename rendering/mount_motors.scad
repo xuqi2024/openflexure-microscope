@@ -52,6 +52,7 @@ assembled_microscope_without_electronics(optics_version="upright",
 // This module will add motors for a motorised version, but will pass through a manual version unchanged 
 module assembled_microscope_without_electronics(optics_version="rms",
                                                 manual=false,
+                                                post=false,
                                                 xy_motor=true,
                                                 z_motor=true,
                                                 explode=undef,
@@ -100,7 +101,7 @@ module assembled_microscope_without_electronics(optics_version="rms",
         mounted_microscope_upright_with_optics(optics_version=optics_version, manual=manual);
     }
     else{
-        mounted_microscope_with_illumination(optics_version=optics_version, manual=manual);
+        mounted_microscope_with_illumination(optics_version=optics_version, manual=manual, post=post);
     }
 }
 
