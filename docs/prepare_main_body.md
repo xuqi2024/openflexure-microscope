@@ -26,7 +26,7 @@ The [main body][{{includetext: "manual ", if: var_body is _manual}}main body](fr
 ![](renders/prepare_main_body{{var_body, default:}}3.png)
 
 
-* Place an [M3 nut]{qty:4} one of the slots at the side of the stage
+* Place an [M3 nut]{qty:4} into one of the slots at the side of the stage
 * Put an [M3x10 cap head screw][extra M3x10 cap screw](parts/mechanical.yml#CapScrew_M3x10mm_SS){qty: 1, cat:tool, note:"For mounting trapped nuts"} into the hole above the nut
 * Tighten with a [2.5mm Ball-end Allen key]{qty:1, cat:tool} until you feel reasonable resistance.
 * Unscrew and remove the screw. The nut should stay mounted.
