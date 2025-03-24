@@ -296,7 +296,10 @@ module microscope_stand(params, stand_params, supports=true){
     }
     else if (removable_plate){
         difference(){
-            base_microscope_stand(params, stand_params);
+            union(){
+                base_microscope_stand(params, stand_params);
+                stand_plate_lugs(params, reduced=false, reverse=true);
+            }
             stand_plate_cutout(params, stand_params);
         }
     }
@@ -365,21 +368,30 @@ module stand_plate_cutout(params, stand_params, reduced=false, screw_holes=true)
         translate(stand_plate_cutout_pos(reduced=reduced)){
             cube(stand_plate_cutout_dims(reduced=reduced));
         }
-        hull(){
-            for (pos = stand_plate_lug_pos(d=stand_plate_lug_d())){
-                translate(pos){
-                    rotate_x(90){
-                        d_r = stand_plate_lug_d() - (reduced ? 1 : 0);
-                        cylinder(d=d_r, h=10, $fn=16);
-                    }
-                }
-            }
-        }
         if (screw_holes){
             for (pos = stand_plate_lug_pos(d=stand_plate_lug_d())){
                 translate(pos){
                     rotate_x(90){
-                        no2_selftap_hole(h=10, center=true);
+                        no2_selftap_hole(h=20, center=true);
+                    }
+                }
+            }
+        }
+    }
+    stand_plate_lugs(params, reduced=reduced);
+}
+
+
+module stand_plate_lugs(params, reduced=false, reverse=false){
+    electronics_drawer_frame_xy(params){
+        h=6;
+        hull(){
+            for (lug_pos = stand_plate_lug_pos(d=stand_plate_lug_d())){
+                tr = lug_pos + (reverse ? [0, h, 0] : [0, 0, 0]);
+                translate(tr){
+                    rotate_x(90){
+                        d_r = stand_plate_lug_d() - (reduced ? 1 : 0);
+                        cylinder(d=d_r, h=h, $fn=16);
                     }
                 }
             }
