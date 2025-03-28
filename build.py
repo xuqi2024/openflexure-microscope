@@ -111,6 +111,7 @@ def write_ninja_file(build_dir):
         # Misc components
         writer.openscad("thumbwheels.stl", "thumbwheels.scad")
         writer.openscad("slide_riser.stl", "slide_riser.scad")
+        writer.openscad("c-chip_holder.stl", "c-chip_holder.scad")
         writer.openscad(
             "accessories/actuator_tension_band.stl",
             "accessories/actuator_tension_band.scad"
