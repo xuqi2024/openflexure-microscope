@@ -33,7 +33,7 @@ use <./libdict.scad>
 * These parameters define the default size for the structural elements of the micoroscope, optics parameters are set separately.
 */
 function default_params() = [["leg_r", 30],     // radius on which the innermost part of legs sit. (This sets the stage size)
-                             ["sample_z", 75 ], // z position of sample
+                             ["sample_z", 96 ], // z position of sample
                              ["stage_t", 15],   //thickness of the XY stage (at thickest point, most is 1mm less)
                              ["leg_block_t", 5], // Thickness of the block at the top and bottom of the leg
                              ["stage_hole_r", 20], // size of hole in the stage
