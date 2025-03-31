@@ -8,6 +8,7 @@ use <librender/render_utils.scad>
 use <librender/render_settings.scad>
 use <librender/hardware.scad>
 use <librender/tools.scad>
+use <librender/gltf_annotations.scad>
 use <mount_illumination.scad>
 use <mount_microscope.scad>
 use <motor_assembly.scad>
@@ -54,6 +55,7 @@ module render_mount_sample_clips(frame, optics_version="rms", manual=false){
 
 
 module render_sample_clips(clip="both", exploded=false, screws_exploded=false, allen_key=false, arrow="none"){
+    gltf_name("sample clips");
     if (clip=="right" || clip=="both"){
         rev_arrow = (arrow == "none") ?
             "none" : (arrow == "clock") ?
