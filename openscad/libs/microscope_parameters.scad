@@ -199,7 +199,7 @@ function lower_z_flex_z() = 8;
 /**
 * height of the upper flexure on z actuator
 */
-function upper_z_flex_z(params) = min(leg_height(params) - 12, 35);
+function upper_z_flex_z(params) = min(leg_height(params) - 12, 46);
 
 /**
 * y position of the back of the objective mount
