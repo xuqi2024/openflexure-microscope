@@ -240,12 +240,12 @@ gltf:
 
     script:
       - mkdir -p docs/gltf
-      - pip install scad2gltf
+      - pip install scad2gltf==0.1.0b1
       - cd rendering
-      - scad2gltf complete_microscope_rms.scad
-      - scad2gltf complete_microscope_low_cost.scad
-      - scad2gltf complete_microscope_upright.scad
-      - scad2gltf complete_microscope_manual.scad
+      - scad2gltf --markers complete_microscope_rms.scad
+      - scad2gltf --markers  complete_microscope_low_cost.scad
+      - scad2gltf --markers  complete_microscope_upright.scad
+      - scad2gltf --markers  complete_microscope_manual.scad
       - cp complete_microscope_*.glb ../docs/gltf/
 
     artifacts:

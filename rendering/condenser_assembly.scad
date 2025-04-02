@@ -127,7 +127,8 @@ module mount_condenser_lid(frame){
 
 // The white acrylic diffuser
 module rendered_diffuser(explode=false){
-    gltf_name("diffuser");
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("diffuser");
     coloured_render("WhiteSmoke"){
         rotate_y(180){
             translate_z(explode?5:0){
@@ -139,7 +140,8 @@ module rendered_diffuser(explode=false){
 
 // The printed spacer between the diffuser and the PCB
 module rendered_spacer(explode=false){
-    gltf_name("diffuser_spacer");
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("diffuser_spacer");
     z_pos = diffuser_thickness();
     coloured_render(extras_colour()){
         rotate_z(180){
@@ -159,7 +161,8 @@ module rendered_spacer(explode=false){
 // The illumination PCB
 function illumination_pcb_thickness()=1.6;
 module rendered_illumination_pcb(explode=false){
-    gltf_name("illumination_pcb");
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("illumination_pcb");
     // NB z=0 is the top of the board
     z_pos = diffuser_thickness() + condenser_board_spacer_thickness() + illumination_pcb_thickness();
     rotate_y(180){
@@ -171,7 +174,8 @@ module rendered_illumination_pcb(explode=false){
 
 // connector for the illumination power wires
 module rendered_illumination_connector(explode=false, straight_cable=false){
-    gltf_name("illumination_connector");
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("illumination_connector");
     offset = illumination_board_connector_offset();
     z_pos = diffuser_thickness() + condenser_board_spacer_thickness() + illumination_pcb_thickness() + offset.z;
     rotate_y(180){
@@ -190,7 +194,8 @@ module rendered_illumination_connector(explode=false, straight_cable=false){
 
 // Straight red and black wires, up along the Z axis
 module illumination_wires(){
-    gltf_name("illumination_wires");
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("illumination_wires");
     coloured_render("DimGray"){
         wire(d=1, points=[[2.54/2,0,8], [1/2,0,15], [1/2,0,99]]);
     }
@@ -201,7 +206,8 @@ module illumination_wires(){
 
 // PCB mounting screws
 module rendered_illumination_pcb_screws(explode=false){
-    gltf_name("illumination_pcb_screws");
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("illumination_pcb_screws");
     z_pos = diffuser_thickness() + condenser_board_spacer_thickness() + illumination_pcb_thickness();
     rotate_y(180){
         reflect_x(){
@@ -219,7 +225,8 @@ module rendered_illumination_pcb_screws(explode=false){
 
 // Lid of the condenser
 module rendered_condenser_lid(explode=false){
-    gltf_name("condenser");
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("condenser");
     coloured_render(extras_colour()){
         // NB both the lid and the condenser render upside down, so
         // we must move the lid down so that it matches up with
@@ -235,7 +242,8 @@ module rendered_condenser_lid(explode=false){
 }
 
 module rendered_led_holder(explode=false){
-    gltf_name("led_holder");
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("led_holder");
     coloured_render(extras_colour()){
         translate_z(-condenser_lid_h() + 5 + (explode ? 20 : 0)){
             if (USE_BUILT_STL){
@@ -248,7 +256,8 @@ module rendered_led_holder(explode=false){
 }
 
 module rendered_led(explode=false){
-    gltf_name("led");
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("led");
     translate_z(-condenser_lid_h() + 5 + (explode ? 20 : 0)){
         translate_z(-0.5){
             led();
@@ -272,7 +281,8 @@ module rendered_led(explode=false){
 
 // Screws attaching the LED holder to the lid
 module rendered_led_screws(explode=false){
-    gltf_name("led_screws");
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("led_screws");
     z_pos = -condenser_lid_h() + 7;
     exploded_z_pos = z_pos + 25;
     base_r = condenser_base_r(condenser_lens_diameter());
@@ -290,7 +300,8 @@ module rendered_led_screws(explode=false){
 
 // Screws attaching the lid to the condenser
 module rendered_condenser_lid_screws(explode=false){
-    gltf_name("condenser_lid_screws");
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("condenser_lid_screws");
     z_pos = 2;
     exploded_z_pos = 25;
     base_r = condenser_base_r(condenser_lens_diameter());
@@ -309,7 +320,8 @@ module rendered_condenser_lid_screws(explode=false){
 }
 
 module rendered_condenser(pos, cut=false){
-    gltf_name("condenser");
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("condenser");
     if (cut){
         cutaway("+x", extras_colour()){
             place_part(pos){
@@ -351,7 +363,8 @@ module rendered_condenser_assembly(pos=undef,
                                    cut=false,
                                    explode=undef,
                                    tighten_arrow=false){
-    gltf_name("condenser_assembly");
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("condenser_assembly");
     cond_pos = is_undef(pos) ? condenser_pos() : pos;
     rendered_condenser(cond_pos, cut=cut);
     place_part(cond_pos){
@@ -417,7 +430,8 @@ module rendered_condenser_assembly(pos=undef,
 }
 
 module rendered_illumination_thumbscrew(){
-    gltf_name("illumination_thumbscrew");
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("illumination_thumbscrew");
     coloured_render(extras_colour()){
         rotate_x(90){
             illumination_thumbscrew();
@@ -426,7 +440,8 @@ module rendered_illumination_thumbscrew(){
 }
 
 module condenser_m3x25(){
-    gltf_name("condenser_m3x25");
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("condenser_m3x25");
     rotate_x(90){
         translate_z(25){
             m3_hex_x25();
@@ -435,7 +450,8 @@ module condenser_m3x25(){
 }
 
 module condenser_nut(){
-    gltf_name("condenser_nut");
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("condenser_nut");
     rotate_x(90){
         rotate_z(30){
             m3_nut();

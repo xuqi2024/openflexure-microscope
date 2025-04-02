@@ -55,7 +55,8 @@ module render_mount_sample_clips(frame, optics_version="rms", manual=false){
 
 
 module render_sample_clips(clip="both", exploded=false, screws_exploded=false, allen_key=false, arrow="none"){
-    gltf_name("sample clips");
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("sample clips");
     if (clip=="right" || clip=="both"){
         rev_arrow = (arrow == "none") ?
             "none" : (arrow == "clock") ?
