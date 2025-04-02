@@ -317,8 +317,8 @@ function lug_back_offset() = [-5, -8, 0];
 */
 function back_lug_x_pos(params) = let(
     leg_r = key_lookup("leg_r", params),
-    tenth_of_height = max(5,leg_dims(params).z*0.1)
-) (leg_r-flex_dims().y-tenth_of_height)*sqrt(2);
+    fifth_of_radius = max(5,leg_r*0.2)
+) (leg_r-flex_dims().y-fifth_of_radius)*sqrt(2);
 
 /**
 * The angle which the four lugs face in the order that the hole positions
