@@ -317,8 +317,13 @@ function lug_back_offset() = [-5, -8, 0];
 */
 function back_lug_x_pos(params) = let(
     leg_r = key_lookup("leg_r", params),
-    fifth_of_radius = max(5,leg_r*0.2)
-) (leg_r-flex_dims().y-fifth_of_radius)*sqrt(2);
+    fifth_of_radius = max(5,leg_r*0.2),
+    // Compatibility factor added as earlier versions were calculated
+    // from an errant calculation that included 1/10th of flex_dims().z
+    // this factor ensures perfect compatibility with v7-beta versions
+    // already in the field.
+    compatibility_factor = .075
+) (leg_r-flex_dims().y-fifth_of_radius-compatibility_factor)*sqrt(2);
 
 /**
 * The angle which the four lugs face in the order that the hole positions
