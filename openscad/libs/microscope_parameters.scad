@@ -38,7 +38,7 @@ use <./libdict.scad>
 rom = 20;  //Range of motion of the stage. This is used to determine some of the default params.
 
 function default_params() = [["leg_r", 30],     // radius on which the innermost part of legs sit. (This sets the stage size)
-                             ["sample_z", rom/2/sin(6)], // z position of sample
+                             ["sample_z", (rom/2/sin(6)) + 15], // z position of sample
                              ["stage_t", 15],   //thickness of the XY stage (at thickest point, most is 1mm less)
                              ["leg_block_t", 5], // Thickness of the block at the top and bottom of the leg
                              ["stage_hole_r", 20], // size of hole in the stage
