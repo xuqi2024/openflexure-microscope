@@ -42,7 +42,7 @@ function default_params() = [["leg_r", 30],     // radius on which the innermost
                              ["stage_t", 15],   //thickness of the XY stage (at thickest point, most is 1mm less)
                              ["leg_block_t", 5], // Thickness of the block at the top and bottom of the leg
                              ["stage_hole_r", 20], // size of hole in the stage
-                             ["xy_lever_ratio", 4.0/7.0/((rom/2/sin(6))/(72.4-15))], // mechanical advantage of actuator over xy-stage - can be used to trade speed and precision
+                             ["xy_lever_ratio", 4.0/7.0/((rom/2/sin(6))/(75-15))], // mechanical advantage of actuator over xy-stage - can be used to trade speed and precision
                              ["z_lever_ratio", 1.0], //  mechanical advantage of actuator over objective mount (must be >1)
                              ["print_ties", true], //sets whether the ties that support printing are on. It is usefull to be able to turn these off for rendering
                              ["smart_brim_r", 5], // The radius of the smart brim on the main body
