@@ -7,25 +7,25 @@ These instructions will take you through how to assemble various configurations.
 
 ## Microscope Configurations:
 
-#### [High-resolution motorised microscope](high_res_microscope.md)
+### [High-resolution motorised microscope](high_res_microscope.md)
 [![A render of the completed high resolution microscope.](renders/complete_microscope_rms1.png)](high_res_microscope.md)  
 [Interactive 3D view of the finished microscope.](interactive_3d_view_rms.md)  
 This configuration of the microscope uses a traditional microscope objective for highest image quality.  
 It is motorised for autofocus and automatic scanning.
 
-#### [Motorised microscope with low-cost optics](low_cost_microscope.md)
+### [Motorised microscope with low-cost optics](low_cost_microscope.md)
 [![A render of the completed microscope using the Raspberry Pi camera module's lens.](renders/complete_microscope_low_cost1.png)](low_cost_microscope.md)  
 [Interactive 3D view of the finished microscope.](interactive_3d_view_low_cost.md)  
 This configuration of the microscope uses the original lens from a Raspberry Pi camera module.  The field of view and resolution are similar to a conventional 20x microscope objective.  
 It is motorised for autofocus and automatic scanning.
 
-#### [Upright microscope](upright_microscope.md)
+### [Upright microscope](upright_microscope.md)
 [![A render of the completed upright microscope.](renders/complete_microscope_upright1.png)](upright_microscope.md)  
 [Interactive 3D view of the finished microscope.](interactive_3d_view_upright.md)  
 This configuration of the microscope has the objective above the sample rather than below.  
 It is motorised for autofocus and automatic scanning.
 
-#### [Manual microscope](manual_microscope.md)
+### [Manual microscope](manual_microscope.md)
 [![A render of the completed manual microscope, using a Logitech C270 camera.](renders/complete_microscope_c270_manual1.png)](manual_microscope.md)  
 [Interactive 3D view of the finished microscope.](interactive_3d_view_c270_manual.md)  
 This configuration of the microscope has thumbwheels for manual motion control, instead of using motors. It does not give access to robotic microscopy, so does not take advantage of many of the key features of the motorised microscope like autofocus. However when built with a USB camera (see the [optics options](customisations/optics_options.md)) it is a compact and very low-cost digital manual microscope.
