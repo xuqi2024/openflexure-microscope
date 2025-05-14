@@ -13,6 +13,8 @@ These instructions will take you through how to assemble various configurations.
 This configuration of the microscope uses a traditional microscope objective for highest image quality.  
 It is motorised for autofocus and automatic scanning.
 
+**Choose this microscope** if you want the most tested and highest performance OpenFlexure Microscope.
+
 ### [Motorised microscope with low-cost optics](low_cost_microscope.md)
 [![A render of the completed microscope using the Raspberry Pi camera module's lens.](renders/complete_microscope_low_cost1.png)](low_cost_microscope.md)  
 [Interactive 3D view of the finished microscope.](interactive_3d_view_low_cost.md)  
@@ -24,6 +26,8 @@ It is motorised for autofocus and automatic scanning.
 [Interactive 3D view of the finished microscope.](interactive_3d_view_upright.md)  
 This configuration of the microscope has the objective above the sample rather than below.  
 It is motorised for autofocus and automatic scanning.
+
+**Choose this microscope** if you want to look at a sample that cannot be turned upside-down. 
 
 ### [Manual microscope](manual_microscope.md)
 [![A render of the completed manual microscope, using a Logitech C270 camera.](renders/complete_microscope_c270_manual1.png)](manual_microscope.md)  
