@@ -25,6 +25,6 @@ The assembly is broken up into several steps:
 1. [.](wiring_manual.md){step, var_optics: c270, var_body: _manual}
 1. [.](finished.md){step, var_optics: c270, var_body: _manual}
 
-![A render of the completed microscope using the Raspberry Pi camera module's lens.](renders/complete_microscope_c270_manual1.png)
+![A render of the completed manual microscope, using a Logitech C270 camera.](renders/complete_microscope_c270_manual1.png)
 
 There is also an [interactive 3D view](interactive_3d_view_c270_manual.md) of the finished microscope.
