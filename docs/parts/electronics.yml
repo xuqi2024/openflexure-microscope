@@ -94,21 +94,6 @@ PiCamera_2:
     RS Components:
       Link: https://uk.rs-online.com/web/p/raspberry-pi-cameras/9132664/
       PartNo: 913-2664
-PiCamera_RibbonCable:
-  Name: Raspberry Pi Camera Ribbon Cable (15cm)
-  Description: 15 cm Ribbon cable for Raspberry Pi Camera Module V2.1. This is a 15 pin FPC/FFC cable with 1mm pitch. The Pi Camera should be sold with this length.
-  Specs:
-    Length: 15cm
-    Pitch: 1mm
-    Pins: 15
-
-PiCamera_RibbonCable_300mm:
-  Name: Raspberry Pi Camera Ribbon Cable (30cm)
-  Description: 30 cm Ribbon cable for Raspberry Pi Camera Module V2.1. This is a 15 pin FPC/FFC cable with 1mm pitch. This is longer than the standard ribbon cable the Pi Camera is sold with!
-  Specs:
-    Length: 30cm
-    Pitch: 1mm
-    Pins: 15
 RaspberryPi:
   Name: Raspberry Pi 4B
   Description: Raspberry Pi 4B. The microscope software supports Versions 3B, 3B+, and 4B. 4B is recommended.
