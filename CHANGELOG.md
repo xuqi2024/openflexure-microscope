@@ -1,3 +1,39 @@
+## [v7.0.0-beta4/](https://gitlab.com/openflexure/openflexure-microscope/compare/v7.0.0-beta3..v7.0.0-beta4/) (2025-05-16)
+
+* [!431](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/431): Clarify FFC cable type as wrong type damages cameras
+* [!432](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/432): Docs tweaks prior to v7.0.0-beta4
+* [!429](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/429): Calculate back lug position from leg_r radius not the stage height
+* [!413](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/413): Nut trap test
+* [!424](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/424): Change the default stand for the Manual microscope to the no_pi stand
+* [!311](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/311): Improving instructions for using C270 optics options
+* [!402](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/402): Add smart brim to leg test object and update test instructions
+* [!422](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/422): Centre commit hash on main body.
+* [!418](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/418): Clarify objective specs with inclusion of conjugate distance.
+* [!417](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/417): Fix C270 colours so compatible with SCAD2GLTF (not subtracting a coloured object)
+* [!415](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/415): Add extra render for sample clips rather than have 2 allen keys at once
+* [!414](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/414): Not rendering upright manual renders
+* [!333](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/333): Version of the main body with no cable housing - for manual operation
+* [!412](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/412): Tweaks to simple post stand
+* [!410](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/410): Use container registry for SCAD jobs in CI
+* [!372](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/372): Low backlash large gear
+* [!342](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/342): Add assembly renders to Upright microscope instructions
+* [!409](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/409): Make the render window for band tool assembly tighter on the tool
+* [!407](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/407): Improve illumination wiring channel by widening and moving base
+* [!406](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/406): Reinstate counterbore for locking dovetail if not tapered
+* [!405](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/405): Correct spelling in the position of label on Upright z-axis mount
+* [!403](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/403): Version numbering updates
+* [!401](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/401): Add experimental base supports
+* [!404](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/404): Move version string checking to own job
+* [!398](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/398): Add extra bore depth to nut traps, add chamfer option to nut traps
+* [!400](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/400): Fix bridge over captive nut trap
+* [!392](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/392): Assorted doc fixes.
+* [!396](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/396): Instructions typos and small gear instructions
+* [!395](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/395): Electronics drawer, software and wiring instructions
+* [!397](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/397): Add micro SD to rendering library.
+* [!391](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/391): Update Broken README image and very old info
+* [!390](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/390): Update inkscape renders to replace deprecated CLI arguments
+* [!387](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/387): Prototype slide box.
+
 ## [v7.0.0-beta3](https://gitlab.com/openflexure/openflexure-microscope/compare/v7.0.0-beta2..v7.0.0-beta3/) (2024-11-25)
 
 * [!388](https://gitlab.com/openflexure/openflexure-microscope/-/merge_requests/388): Block Pi 3 USB connector in electronics drawer
