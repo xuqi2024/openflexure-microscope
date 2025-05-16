@@ -13,7 +13,7 @@ The imaging optics for this version of the microscope consist of an RMS objectiv
 [Pi Camera lens tool]: parts/tools/pi_camera_lens_tool.md "{cat:tool, note: 'This should come with the [Raspberry Pi Camera Module v2](parts/electronics.yml#PiCamera_2).  If it is missing, you can 3D print a [workaround lens remover](workaround_lens_remover.md).'}"
 
 [Raspberry Pi Camera Module v2]: parts/electronics.yml#PiCamera_2 "{cat:electronic}"
-[200mm Pi Camera ribbon cable]: parts/electronics.yml#PiCamera_RibbonCable_200mm "{cat:electronic, note: 'This is longer than the standard ribbon cable the Pi Camera is sold with!'}"
+[{{var_ribbon_len, default:200mm}} Pi Camera ribbon cable]: parts/electronics/camera_cable_{{var_ribbon_len, default:200mm}}.md "{cat:electronic, note: 'Make sure that the cable is Type B, as identified in the part page'}"
 
 ## Visually inspect the optics module {pagestep}
 
@@ -81,9 +81,19 @@ Take the [optics module][Optics module](fromstep){qty:1, cat:printedpart} and co
 
 ![Attach mounting screw](renders/optics_assembly_screw.png)
 
-## Connect ribbon cable {pagestep}
+## Check the ribbon cable {pagestep}
 
-* Take the [200mm Pi Camera ribbon cable]{qty:1}
+![Diagram of TypeA and TypeB FFC ribbon cables](diagrams/TypeA-TypeB_FFC.png)  
+
+* Place the [200mm Pi Camera ribbon cable]{qty:1} flat on a table
+* Check that the connections are on opposite sides of the cable at the two ends. 
+
+>! **Warning**  
+>!  
+>! Using a cable of the wrong type will cause the camera to burn out in a few seconds.
+
+## Connect the ribbon cable {pagestep}
+
 * Pull the catch forward on the exposed Pi Camera connector
 * Insert the ribbon cable with the contacts towards the board
 * Close the catch on the connector
