@@ -13,13 +13,14 @@ use <./libs/optics_configurations.scad>
 
 //These parameters can be overwritten here or from command line with -D
 OPTICS = "rms_f50d13";
-BEAMSPLITTER = false;
+BEAMSPLITTER = true;
 CAMERA = "picamera_2";
 PARFOCAL_DISTANCE = 45;
+MAGNETS = true;
 
-configurable_optics_module(OPTICS, CAMERA, BEAMSPLITTER, PARFOCAL_DISTANCE);
+configurable_optics_module(OPTICS, CAMERA, BEAMSPLITTER, PARFOCAL_DISTANCE, MAGNETS);
 
-module configurable_optics_module(optics, camera_type, beamsplitter, parfocal_distance){
+module configurable_optics_module(optics, camera_type, beamsplitter, parfocal_distance, magnets){
     params = default_params();
     // 45mm is the default parfocal distance.
     // If this setting is changed, it would normally be to 35mm.
@@ -39,7 +40,8 @@ module configurable_optics_module(optics, camera_type, beamsplitter, parfocal_di
         optics_config = rms_f50d13_config(
             camera_type=camera_type, 
             beamsplitter=beamsplitter, 
-            parfocal_distance=parfocal_distance
+            parfocal_distance=parfocal_distance,
+            magnets=magnets
         );
         optics_module_rms(params, optics_config);
     }
@@ -47,7 +49,8 @@ module configurable_optics_module(optics, camera_type, beamsplitter, parfocal_di
         optics_config = rms_infinity_f50d13_config(
             camera_type=camera_type, 
             beamsplitter=beamsplitter, 
-            parfocal_distance=parfocal_distance
+            parfocal_distance=parfocal_distance,
+            magnets=magnets
         );
         optics_module_rms(params, optics_config);
     }

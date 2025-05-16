@@ -275,6 +275,12 @@ module fl_cube(){
                 cylinder(r=5,h=999, center=true, $fn=32);
             }
         }
+        //hole for the magnet
+        translate([0, fl_cube_width()/2+1, 2.5]) {
+            rotate_x(180) {
+                cylinder(d=6.5, h=20, $fn=32);
+            }
+        }
         // hole for the emission filter
         translate([-emission_filter.x/2, bottom - roc*1.5, beamsplit.z-emission_filter.y/2]){
             cube([emission_filter.x, emission_filter.z, 999]);
