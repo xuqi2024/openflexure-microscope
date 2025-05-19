@@ -13,7 +13,7 @@ use <./libs/optics_configurations.scad>
 
 //These parameters can be overwritten here or from command line with -D
 OPTICS = "rms_f50d13";
-BEAMSPLITTER = true;
+BEAMSPLITTER = false;
 CAMERA = "picamera_2";
 PARFOCAL_DISTANCE = 45;
 MAGNETS = true;
