@@ -156,12 +156,15 @@ module optics_module_body_outer(params, optics_config, body_r, body_top, rms_mou
 
 module extra_optics_body_for_beamsplitter(params, optics_config){
     bs_rotation = key_lookup("beamsplitter_rotation", optics_config);
+    magnets = key_lookup("magnets", optics_config);
     rotate(bs_rotation){
         hull(){
             //the box to fit the fl cube in
             fl_cube_casing(params, optics_config);
             //the mounts for the fl cube screw holes
-            fl_screw_holes(params, optics_config, d = 4, h =8);
+            if (!magnets) {
+                fl_screw_holes(params, optics_config, d = 4, h = 8);
+            }
         }
     }
 }
@@ -179,13 +182,22 @@ module fl_cube_casing_bottom(params, optics_config){
 
 module optics_module_beamsplitter_cutout(params, optics_config){
     bs_rotation = key_lookup("beamsplitter_rotation", optics_config);
+    magnets = key_lookup("magnets", optics_config);
 
     cube_dim = [1, 1, 1] * fl_cube_w();
     cube_centre_z = fl_cube_bottom(params, optics_config)+fl_cube_w()/2;
 
     rotate(bs_rotation){
-        translate_y(-2.5){
-            fl_screw_holes(params, optics_config, d = 2.5, h = 6);
+        if (magnets) {
+            rotate_x(-90){
+                translate_y(2) {
+                    cylinder(h = 15, d = 6.5);
+                }
+            }
+        } else {
+            translate_y(-2.5){
+                fl_screw_holes(params, optics_config, d = 2.5, h = 6);
+            }
         }
         hull(){
             translate([0, -fl_cube_w(), cube_centre_z+3.5]){

@@ -3,6 +3,7 @@ use <./libs/lib_fl_cube.scad>
 use <./libs/static_dovetail.scad>
 
 $fn=32;
+magnets = true;
 
 /**
 * The width of illuminator holder
@@ -295,7 +296,9 @@ module reflection_illumintor_mount(){
 module mounted_illumintor_slip_plate(){
     difference(){
         union(){
-            reflection_illumintor_mount();
+            if (!magnets) {
+                reflection_illumintor_mount();
+            }
             illumintor_slip_plate();
         }
         //chamfer the front

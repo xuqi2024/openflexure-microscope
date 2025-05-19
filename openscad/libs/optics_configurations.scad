@@ -9,7 +9,7 @@ use <./libdict.scad>
 //                        at 180 degree from the mount and -60 for the fl cube exiting at 120
 //                        from the mount)
 
-function rms_f50d13_config(camera_type = "picamera_2", beamsplitter=false, parfocal_distance=45) = let(
+function rms_f50d13_config(camera_type = "picamera_2", beamsplitter=false, parfocal_distance=45, magnets=true) = let(
     // if the parfocal distance is undefined, use the default.
     parfocal_distance_validated = (parfocal_distance == undef) ? 45 : parfocal_distance,
     // if parfocal distance is the default 45mm, the lens is 8.5mm below the objective.
@@ -28,11 +28,12 @@ function rms_f50d13_config(camera_type = "picamera_2", beamsplitter=false, parfo
                    ["objective_mechanical_tube_length", 160],
                    ["lens_objective_distance", lens_objective_distance],
                    ["camera_rotation", 0],
+                   ["magnets", magnets],
                    ["beamsplitter_rotation", 0]]
 ) config_dict;
 
-function rms_infinity_f50d13_config(camera_type = "picamera_2", beamsplitter=false, parfocal_distance=undef) = let(
-    finite_config = rms_f50d13_config(camera_type, beamsplitter, parfocal_distance=parfocal_distance),
+function rms_infinity_f50d13_config(camera_type = "picamera_2", beamsplitter=false, parfocal_distance=undef, magnets=true) = let(
+    finite_config = rms_f50d13_config(camera_type, beamsplitter, parfocal_distance=parfocal_distance, magnets=magnets),
     replacements = [["is_finite_conjugate", false]]
 ) replace_multiple_values(replacements, finite_config);
 
