@@ -9,7 +9,12 @@ use <./libdict.scad>
 //                        at 180 degree from the mount and -60 for the fl cube exiting at 120
 //                        from the mount)
 
-function rms_f50d13_config(camera_type = "picamera_2", beamsplitter=false, parfocal_distance=45) = let(
+function rms_f50d13_config(
+    camera_type = "picamera_2",
+    beamsplitter=false,
+    parfocal_distance=45,
+    upright=false
+) = let(
     // if the parfocal distance is undefined, use the default.
     parfocal_distance_validated = (parfocal_distance == undef) ? 45 : parfocal_distance,
     // if parfocal distance is the default 45mm, the lens is 8.5mm below the objective.
@@ -28,15 +33,21 @@ function rms_f50d13_config(camera_type = "picamera_2", beamsplitter=false, parfo
                    ["objective_mechanical_tube_length", 160],
                    ["lens_objective_distance", lens_objective_distance],
                    ["camera_rotation", 0],
-                   ["beamsplitter_rotation", 0]]
+                   ["beamsplitter_rotation", 0],
+                   ["upright", upright]]
 ) config_dict;
 
-function rms_infinity_f50d13_config(camera_type = "picamera_2", beamsplitter=false, parfocal_distance=undef) = let(
+function rms_infinity_f50d13_config(
+    camera_type = "picamera_2",
+    beamsplitter=false,
+    parfocal_distance=undef,
+    upright=false
+) = let(
     finite_config = rms_f50d13_config(camera_type, beamsplitter, parfocal_distance=parfocal_distance),
     replacements = [["is_finite_conjugate", false]]
 ) replace_multiple_values(replacements, finite_config);
 
-function pilens_config(camera_type = "picamera_2") = let(
+function pilens_config(camera_type = "picamera_2", upright=false) = let(
     config_dict = [["optics_type", "spacer"],
                    ["camera_type", camera_type],
                    ["lens_r", 3],
@@ -44,10 +55,11 @@ function pilens_config(camera_type = "picamera_2") = let(
                    ["lens_h", 2.5], // For a lens spacer this is the lens thickness to be gripped
                    ["lens_spacing", 17], // Minimum 17 for spacer to build correctly
                    ["mounting_post_height",4],
-                   ["board_thickness",1]]
+                   ["board_thickness",1],
+                   ["upright", upright]]
 ) config_dict;
 
-function c270lens_config(camera_type = "logitech_c270") = let(
+function c270lens_config(camera_type = "logitech_c270", upright=false) = let(
     config_dict = [["optics_type", "spacer"],
                    ["camera_type", camera_type],
                    ["lens_r", (11.6/2)],
@@ -55,10 +67,11 @@ function c270lens_config(camera_type = "logitech_c270") = let(
                    ["lens_h", 4], // For a lens spacer this is the lens thickness to be gripped
                    ["lens_spacing", 17], // Minimum 13 for spacer to build correctly
                    ["mounting_post_height",4],
-                   ["board_thickness",1]]
+                   ["board_thickness",1],
+                   ["upright", upright]]
 ) config_dict;
 
-function b0196lens_config(camera_type = "arducam_b0196") = let(
+function b0196lens_config(camera_type = "arducam_b0196", upright=false) = let(
     config_dict = [["optics_type", "spacer"],
                    ["camera_type", camera_type],
                    ["lens_r", 3],
@@ -66,5 +79,6 @@ function b0196lens_config(camera_type = "arducam_b0196") = let(
                    ["lens_h", 2.5], // For a lens spacer this is the lens thickness to be gripped
                    ["lens_spacing", 17], // Minimum 17 for spacer to build correctly
                    ["mounting_post_height",4],
-                   ["board_thickness",1]]
+                   ["board_thickness",1],
+                   ["upright", upright]]
 ) config_dict;

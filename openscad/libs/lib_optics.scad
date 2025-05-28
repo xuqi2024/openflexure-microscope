@@ -455,7 +455,11 @@ module camera_platform(params, optics_config, base_r){
     platform_h = lens_spacer_z(params, optics_config) - camera_mounting_post_height(optics_config) - camera_board_thickness(optics_config);
     assert(platform_h > upper_z_flex_z(params), "Platform height too low for z-axis mounting");
 
-    camera_mounting_posts_rotate  = is_c270_spacer(optics_config)? -135: 0;
+    upright = key_lookup("upright", optics_config);
+
+    upright_rotation = upright ? 180 : 0;
+    c270_rotation = is_c270_spacer(optics_config)? -135: 0;
+    camera_mounting_posts_rotate  = upright_rotation+c270_rotation;
 
     // Make a camera platform with a fitting wedge on the side and a platform on the top
     difference(){
@@ -481,6 +485,18 @@ module camera_platform(params, optics_config, base_r){
             translate_z(platform_h){
                 rotate_z(camera_mounting_posts_rotate){
                     camera_bottom_mounting_posts(optics_config, cutouts=false);
+                }
+            }
+        }
+        
+        if (upright){
+            translate([-1,-2,-tiny()]){
+                linear_extrude(2){
+                    rotate_z(-90){
+                        mirror([1,0,0]){
+                            text("Upright", size=4);
+                        }
+                    }
                 }
             }
         }
