@@ -98,7 +98,6 @@ def write_ninja_file(build_dir):
         writer.openscad("separate_z_actuator_manual.stl", "separate_z_actuator_manual.scad")
         writer.openscad("upright_condenser.stl", "upright_condenser.scad")
         writer.openscad("upright_condenser_platform.stl", "upright_condenser_platform.scad")
-        writer.openscad("upright_large_gears.stl", "upright_large_gears.scad")
         writer.openscad("upright_feet.stl", "upright_feet.scad")
         writer.openscad("foot_cap.stl", "foot_cap.scad")
         writer.openscad("upright_z_actuator_mount.stl", "upright_z_actuator_mount.scad")
@@ -106,6 +105,7 @@ def write_ninja_file(build_dir):
                         "accessories/upright_z_actuator_mount_5mm_sample.scad")
         writer.openscad("accessories/upright_z_actuator_mount_10mm_sample.stl",
                         "accessories/upright_z_actuator_mount_10mm_sample.scad")
+        # upright_large_gears are built by generate_gears()
 
         # Misc components
         writer.openscad("thumbwheels.stl", "thumbwheels.scad")
@@ -201,12 +201,15 @@ def generate_gears(writer):
         if (ratio == 2):
             output_small = "small_gears.stl"
             output_large = "large_gears.stl"
+            output_upright = "upright_large_gears.stl"
         else:
             output_small = f"small_gears_ratio_{ratio:.2f}.stl"
             output_large = f"large_gears_ratio_{ratio:.2f}.stl"
+            output_upright = f"upright_large_gears_ratio_{ratio:.2f}.stl"
            
         writer.openscad(output_small, "small_gears.scad", {"RATIO": ratio})
         writer.openscad(output_large, "large_gears.scad", {"RATIO": ratio})
+        writer.openscad(output_upright, "upright_large_gears.scad", {"RATIO": ratio})
 
 def copy_extra_stls(build_dir, extras_dir):
     """
