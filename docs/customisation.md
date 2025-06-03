@@ -63,9 +63,9 @@ Print the alternative gear sets for standard or upright microscope, together wit
 
 ###Ratio 0.8:1 (best for all versions except 100x objectives)
 
-[small_gears_ratio_0.80.stl](models/accessories/small_gears_ratio_1.00.stl){previewpage}  
-[large_gears_ratio_0.80.stl](models/accessories/large_gears_ratio_1.00.stl){previewpage}  
-[upright_large_gears_ratio_0.80.stl](models/accessories/upright_large_gears_ratio_1.00.stl){previewpage}  
+[small_gears_ratio_0.80.stl](models/accessories/small_gears_ratio_0.80.stl){previewpage}  
+[large_gears_ratio_0.80.stl](models/accessories/large_gears_ratio_0.80.stl){previewpage}  
+[upright_large_gears_ratio_0.80.stl](models/accessories/upright_large_gears_ratio_0.80.stl){previewpage}  
 [gear_tools_ratios.stl](models/accessories/gear_tools_ratios.stl){previewpage}
 
 ###Ratio 1:1
