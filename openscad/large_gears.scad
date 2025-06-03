@@ -16,7 +16,13 @@
 use <./libs/gears.scad>
 use <./libs/utilities.scad>
 
-RATIO = 2;
+// The ratio is the ratio between the 'large' gear on the actuator and the 'small' gear on the motor.
+// This means that it is a gearing down ratio.
+// The standard ratio is 2. The total number of teeth on both gears is 36, which is defined by the distance between the rotation axes.
+// For an integer number of teeth, allowed ratios are of the form n/(36-n). Ratios from 0.8 (16/20, 1:1.25) to 2 (24/12, 1:0.5) are expected to fit in the body
+
+// Gearing ratio for x and y axes. Ratio for z axis fixed at 2
+RATIO = 2; 
 
 printable_large_gears(ratio=RATIO);
 
@@ -25,8 +31,11 @@ module printable_large_gears(ratio=2){
     assert(floor(n_teeth_large_gear(ratio))==n_teeth_large_gear(ratio),"The number of teeth on the large gear is not integer");
     // Calculate the spacing from the gear pitch radius.
     // Add 4mm of clearance
-    spacing = 2*large_gear_pitch_radius(ratio) + 4;
-    repeat([0,spacing,0],3,center=true){
+    spacing = large_gear_pitch_radius(ratio) + large_gear_pitch_radius(ratio=2) + 4;
+    // x and y gears
+    repeat([0,2*spacing,0],2,center=true){
         large_gear(ratio);
     }
+    // z gear
+    large_gear(ratio=2);
 }

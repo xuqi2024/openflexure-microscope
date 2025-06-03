@@ -21,6 +21,7 @@ use <./libs/utilities.scad>
 // The standard ratio is 2. The total number of teeth on both gears is 36, which is defined by the distance between the rotation axes.
 // For an integer number of teeth, allowed ratios are of the form n/(36-n). Ratios from 0.8 (16/20, 1:1.25) to 2 (24/12, 1:0.5) are expected to fit in the body
 
+// Gearing ratio for x and y axes. Ratio for z axis fixed at 2
 RATIO = 2;
 
 printable_small_gears(ratio=RATIO);
@@ -30,12 +31,15 @@ module printable_small_gears(ratio=2){
     assert(floor(n_teeth_small_gear(ratio))==n_teeth_small_gear(ratio),"The number of teeth on the small gear is not integer");
     // Calculate the spacing from the gear pitch radius.
     // Add 4mm of clearance
-    spacing = 2*small_gear_pitch_radius(ratio) + 4;
-    repeat([0, spacing, 0], 3, center=true){
+    spacing = small_gear_pitch_radius(ratio) + small_gear_pitch_radius(ratio=2) + 4;
+    // x and y gears
+    repeat([0, 2*spacing, 0], 2, center=true){
         // 3.15 is a trade off. Firm to push on some printers that print
         // the gears loose. Should be press fit with a small clamp/vice
         // if the printer prints tight. All are then locked with two screws
         // Can be adjusted for printers outside this range.
         small_gear(flat_shaft_w=3.15, ratio=ratio);
     }
+    // z gear
+    small_gear(flat_shaft_w=3.15, ratio=2);
 }
