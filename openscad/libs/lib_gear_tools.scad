@@ -45,3 +45,15 @@ module gear_holder(ratio=2){
         }
     }
 }
+
+module labelled_gear_holder(ratio=2){
+    r_text = str(ratio,":1");
+    difference(){
+        gear_holder(ratio=ratio);
+        translate_z(4.5){
+            linear_extrude(10){
+                text(r_text, valign="center", halign="center", size=4);
+            }
+        }
+    }
+}
