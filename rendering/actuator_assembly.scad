@@ -5,7 +5,7 @@ use <../openscad/libs/utilities.scad>
 use <../openscad/libs/lib_actuator_assembly_tools.scad>
 use <../openscad/libs/libfeet.scad>
 use <../openscad/libs/upright_z_axis.scad>
-use <../openscad/gear_tools.scad>
+use <../openscad/libs/lib_gear_tools.scad>
 use <librender/hardware.scad>
 use <librender/tools.scad>
 use <librender/render_utils.scad>
@@ -17,7 +17,7 @@ use <librender/rendered_separate_z_actuator.scad>
 
 FRAME = 2;
 OPTICS_VERSION = "rms";
-MANUAL = true;
+MANUAL = false;
 
 render_actuator_assembly(FRAME, MANUAL, OPTICS_VERSION);
 

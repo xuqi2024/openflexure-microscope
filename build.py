@@ -81,7 +81,7 @@ def write_ninja_file(build_dir):
         writer.openscad("picamera_2_gripper.stl", "accessories/picamera_2_gripper.scad")
         writer.openscad("picamera_2_lens_gripper.stl", "accessories/picamera_2_lens_gripper.scad")
         writer.openscad("gear_tools.stl", "gear_tools.scad")
-        writer.openscad("gear_tools_ratios.stl", "gear_tools_ratios.scad")
+        writer.openscad("accessories/gear_tools_ratios.stl", "gear_tools_ratios.scad")
 
         # Test pieces
         writer.openscad("nut_trap_test.stl", "test_pieces/nut_trap_test.scad")
@@ -204,9 +204,9 @@ def generate_gears(writer):
             output_large = "large_gears.stl"
             output_upright = "upright_large_gears.stl"
         else:
-            output_small = f"small_gears_ratio_{ratio:.2f}.stl"
-            output_large = f"large_gears_ratio_{ratio:.2f}.stl"
-            output_upright = f"upright_large_gears_ratio_{ratio:.2f}.stl"
+            output_small = f"accessories/small_gears_ratio_{ratio:.2f}.stl"
+            output_large = f"accessories/large_gears_ratio_{ratio:.2f}.stl"
+            output_upright = f"accessories/upright_large_gears_ratio_{ratio:.2f}.stl"
            
         writer.openscad(output_small, "small_gears.scad", {"RATIO": ratio})
         writer.openscad(output_large, "large_gears.scad", {"RATIO": ratio})
