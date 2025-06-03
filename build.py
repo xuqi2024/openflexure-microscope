@@ -60,8 +60,7 @@ def write_ninja_file(build_dir):
         writer.openscad("feet.stl", "feet.scad")
         writer.openscad("sample_clips.stl", "sample_clips.scad")
         writer.openscad("cable_tidies.stl", "cable_tidies.scad")
-        writer.openscad("small_gears.stl", "small_gears.scad")
-        writer.openscad("large_gears.stl", "large_gears.scad")
+        generate_gears(writer)
 
         # Optics modules and associated components
         generate_rms_optics_modules(writer)
@@ -82,6 +81,7 @@ def write_ninja_file(build_dir):
         writer.openscad("picamera_2_gripper.stl", "accessories/picamera_2_gripper.scad")
         writer.openscad("picamera_2_lens_gripper.stl", "accessories/picamera_2_lens_gripper.scad")
         writer.openscad("gear_tools.stl", "gear_tools.scad")
+        writer.openscad("accessories/gear_tools_ratios.stl", "gear_tools_ratios.scad")
 
         # Test pieces
         writer.openscad("nut_trap_test.stl", "test_pieces/nut_trap_test.scad")
@@ -99,7 +99,6 @@ def write_ninja_file(build_dir):
         writer.openscad("separate_z_actuator_manual.stl", "separate_z_actuator_manual.scad")
         writer.openscad("upright_condenser.stl", "upright_condenser.scad")
         writer.openscad("upright_condenser_platform.stl", "upright_condenser_platform.scad")
-        writer.openscad("upright_large_gears.stl", "upright_large_gears.scad")
         writer.openscad("upright_feet.stl", "upright_feet.scad")
         writer.openscad("foot_cap.stl", "foot_cap.scad")
         writer.openscad("upright_z_actuator_mount.stl", "upright_z_actuator_mount.scad")
@@ -107,6 +106,7 @@ def write_ninja_file(build_dir):
                         "accessories/upright_z_actuator_mount_5mm_sample.scad")
         writer.openscad("accessories/upright_z_actuator_mount_10mm_sample.stl",
                         "accessories/upright_z_actuator_mount_10mm_sample.scad")
+        # upright_large_gears are built by generate_gears()
 
         # Misc components
         writer.openscad("thumbwheels.stl", "thumbwheels.scad")
@@ -196,6 +196,21 @@ def generate_nano_converter_plate(writer):
         parameters = {"PI_VERSION": pi}
 
         writer.openscad(output, "nano_converter_plate.scad", parameters)
+
+def generate_gears(writer):
+    for ratio in [16/20, 18/18, 2]:
+        if (ratio == 2):
+            output_small = "small_gears.stl"
+            output_large = "large_gears.stl"
+            output_upright = "upright_large_gears.stl"
+        else:
+            output_small = f"accessories/small_gears_ratio_{ratio:.2f}.stl"
+            output_large = f"accessories/large_gears_ratio_{ratio:.2f}.stl"
+            output_upright = f"accessories/upright_large_gears_ratio_{ratio:.2f}.stl"
+           
+        writer.openscad(output_small, "small_gears.scad", {"RATIO": ratio})
+        writer.openscad(output_large, "large_gears.scad", {"RATIO": ratio})
+        writer.openscad(output_upright, "upright_large_gears.scad", {"RATIO": ratio})
 
 def copy_extra_stls(build_dir, extras_dir):
     """

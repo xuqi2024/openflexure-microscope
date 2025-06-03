@@ -53,3 +53,24 @@ If you have built a custom microscope without a rasberry Raspberry Pi, you can p
 
 [microscope_stand_no_pi.stl](models/microscope_stand_no_pi.stl){previewpage}
 
+___
+
+## Alternative Motor Gearing
+
+The standard gear ratio of 2:1 is good for high resolution optics with a 100x RMS objective lens, but the xy stage motion can feel slow with lower magnification objectives or with the low-cost optics.   There are alternative gear ratios available for the xy actuators. The z-actuator should retain the 2:1 ratio for precise focusing for all optics versions.
+
+Print the alternative gear sets for standard or upright microscope, together with the gear tools.
+
+###Ratio 0.8:1 (best for all versions except 100x objectives)
+
+[small_gears_ratio_0.80.stl](models/accessories/small_gears_ratio_1.00.stl){previewpage}  
+[large_gears_ratio_0.80.stl](models/accessories/large_gears_ratio_1.00.stl){previewpage}  
+[upright_large_gears_ratio_0.80.stl](models/accessories/upright_large_gears_ratio_1.00.stl){previewpage}  
+[gear_tools_ratios.stl](models/accessories/gear_tools_ratios.stl){previewpage}
+
+###Ratio 1:1
+
+[small_gears_ratio_1.00.stl](models/accessories/small_gears_ratio_1.00.stl){previewpage}  
+[large_gears_ratio_1.00.stl](models/accessories/large_gears_ratio_1.00.stl){previewpage}  
+[upright_large_gears_ratio_1.00.stl](models/accessories/upright_large_gears_ratio_1.00.stl){previewpage}  
+[gear_tools_ratios.stl](models/accessories/gear_tools_ratios.stl){previewpage}
