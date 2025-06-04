@@ -32,8 +32,8 @@ use <./compact_nut_seat.scad>
 * For an integer number of teeth, allowed ratios are of the form  *
 *                      n/(36-n).                                  *
 *                                                                 *
-* Ratios from 0.8 (16/20, 1:1.25) to 2 (24/12, 1:0.5) are         *
-* expected to fit in the body for x and y.                        *
+* Ratios from 0.8 (16/20, 1:1.25) to 2 (24/12, 1:0.5)             *
+* fit in the body for x and y.                                    *
 *******************************************************************/
 
 /**
@@ -58,7 +58,7 @@ function n_teeth_large_gear(ratio=2) = n_teeth_small_gear(ratio) * ratio;
 function gear_c2c_distance() = 20;
 
 /**
-* The MCAD cirular pitch used for both the small and large gears.
+* The MCAD circular pitch used for both the small and large gears.
 * Note that MCAD uses its own definition of circular pitch. To get the true
 * circular pitch (the distance between teeth along the pitch circle) you
 * must muliply by pi/180.
@@ -113,12 +113,11 @@ function small_gear_flange_radius(ratio=2) = let(
 ) outer_r + additional_r;
 
 /**
-* Large gears that are attached to the actuator lead screw and sit ontop
+* Profile of the large gears that are attached to the actuator lead screw and sit ontop
 * of the actuator housing. These are driven by the small gear (see `small_gear()`).
 */
-
-module large_gear_profile(height, ratio=2, tweak_pitch=false){
-    pitch = tweak_pitch ? gear_pitch()*1.03 : gear_pitch();
+module large_gear_profile(height, ratio=2){
+    pitch = gear_pitch();
     gear(number_of_teeth=n_teeth_large_gear(ratio),
          circular_pitch=pitch,
          circles=0,
@@ -129,6 +128,27 @@ module large_gear_profile(height, ratio=2, tweak_pitch=false){
          bore_diameter=0);
 }
 
+/**
+* A version of the large gear profile that has a slight offest enlargement.
+* Used with difference() to make a loose fit over the gear.
+*/
+module loose_large_gear_profile(height, ratio=2){
+    gap = 0.2;
+    linear_extrude(height){
+        offset(gap){
+            projection(cut=true){
+                translate_z(-tiny()){
+                    large_gear_profile(height=1, ratio=ratio);
+                }
+            }
+        }
+    }
+}
+
+/**
+* Large gears that are attached to the actuator lead screw and sit ontop
+* of the actuator housing. These are driven by the small gear (see `small_gear()`).
+*/
 module large_gear(ratio=2){
     $fn=32;
 

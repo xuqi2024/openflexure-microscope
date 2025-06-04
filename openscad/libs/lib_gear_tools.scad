@@ -32,7 +32,7 @@ module gear_holder(ratio=2){
     difference(){
         holding_block(dims);
         translate_z(dims.z/2){
-            large_gear_profile(height=10, ratio=ratio, tweak_pitch=true);
+            loose_large_gear_profile(height=10, ratio=ratio);
         }
         // Cut out sides for low ratios, to avoid small pillars
         if (ratio < 1.4){
