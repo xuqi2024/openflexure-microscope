@@ -232,7 +232,7 @@ module central_optics_cut_out_projection(params) {
     // a larger inset elsewhere for strength
     inset_sides = inset_zero + 4;
     // even larger at the reflection optics cut-out
-    inset_opposite = inser_zero + 5;
+    inset_opposite = inset_zero + 5;
     hull(){
         reflect_x(){
             inner_wall_base_corner(params, 45, leg_outer_w(params)/2+microscope_wall_t()/2, y_inset=inset_at_z);
