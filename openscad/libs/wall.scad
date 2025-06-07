@@ -82,6 +82,25 @@ module inner_wall_vertex(params, leg_angle, x, h, thick=false){
     }
 }
 
+module inner_wall_base_corner(params, leg_angle, x, y_inset){
+    // This is a 2D circle at the base of the angled cylinders that 
+    // are defined by inner_wall_vertex().
+    // It is used to define the central optics cut-out under the stage.
+
+    // leg_angle specifies which leg the wall is for
+    // (the legs are at +/-45 and +/-150 deg)
+    // x is the X position before rotation through leg_angle
+    // h is the wall height.
+    // If thick = true then the wall is double thickness.
+    r = microscope_wall_t()/2;
+    leg_r = key_lookup("leg_r", params);
+    rotate_z(leg_angle){
+        translate([x, leg_r-y_inset, 0]){
+            circle(r=r, $fn=6);
+        }
+    }
+}
+
 module z_bridge_wall_vertex(params){
     // This is the vertex of the "inner wall" nearest the
     // new (cantilevered) Z axis.
@@ -198,14 +217,45 @@ module wall_between_actuators(params, y_actuator=true){
 }
 
 module central_optics_cut_out_projection(params) {
-    // Central cut-out for optics of main body
+    // A 2D shape for the central cut-ou for the optics. 
+    // The form is based on wall_inside_xy_stage(), stepped in to leave a strengthening flange
+
+    // First, go around the inside of the legs, under the stage.
+    // This starts at the Z nut seat. 
+
+    // A base inset is needed to get from the position of the inner corners of the legs to just inside the walls.
+    inset_zero = flex_dims().y + microscope_wall_t()*2;
+    // a small inset from the wall by the z-axis, to make it clear the optics dovetail
+    inset_at_z = inset_zero + 1;
+    // a larger inset at the sides for strength
+    flange_side = 5;
+    inset_sides = inset_zero + flange_side;
+    // even larger at the reflection optics cut-out
+    inset_opposite = inset_zero + 6;
     hull(){
-        translate_y(back_lug_x_pos(params)+1.5-14/2){
-            square([14,2*tiny()],center=true);
-        }
-        square([2*(back_lug_x_pos(params)-flex_dims().x),1],center=true);
-        translate_y(8-(back_lug_x_pos(params)-flex_dims().x-tiny())){
-            square([16,2*tiny()],center=true);
+        reflect_x(){
+            // A small correction translation to match the shape by the z-dovetail in versions up to v7.0.0-beta4
+            // This is needed because the central optics cutout determines the shape of the z-dovetail body on teh actuator side
+            correction_1 = [1.175, -0.157, 0];
+            translate(correction_1){
+                inner_wall_base_corner(params, 45, leg_outer_w(params)/2+microscope_wall_t()/2, y_inset=inset_at_z);
+            }
+            //radius on which wall sits.
+            wall_rad = leg_outer_w(params)/2;
+            wall_rad_thick = leg_outer_w(params)/2-microscope_wall_t()/2;
+            inner_wall_base_corner(params, 45, x=-wall_rad, y_inset=inset_sides);
+            // mounting_lug_wall_vertex_position(params) is negative
+            mounting_lug_cutout_vertex_position = (-mounting_lug_wall_vertex_position(params).x) - microscope_wall_t()/2 - flange_side;
+            translate_x(mounting_lug_cutout_vertex_position){
+                circle(r=microscope_wall_t()/2, $fn=6);
+            }
+            inner_wall_base_corner(params, 135, x=wall_rad, y_inset=inset_sides);
+            // A small correction translation to match the shape by the reflection optics cutout in versions up to v7.0.0-beta4, for compatibility
+            correction_2 = [-2.05, 1.76, 0];
+            translate(correction_2){
+                //More offset near the reflection optics cut out to improve stiffness
+                inner_wall_base_corner(params, 135, x=-wall_rad_thick, y_inset=inset_opposite);
+            }
         }
     }
 }
