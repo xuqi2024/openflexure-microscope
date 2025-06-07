@@ -217,25 +217,25 @@ module wall_between_actuators(params, y_actuator=true){
 }
 
 module central_optics_cut_out_projection(params) {
-    // A 2D shape for the central cut-ou for the optics. 
+    // A 2D shape for the central cut-out for the optics. 
     // The form is based on wall_inside_xy_stage(), stepped in to leave a strengthening flange
 
     // First, go around the inside of the legs, under the stage.
     // This starts at the Z nut seat. 
 
-    // A base inset is needed to get from the position of the inner corners of the legs to just inside the walls.
+    // A 'zero' inset is needed to get from the position of the inner corners of the legs to just inside the walls.
     inset_zero = flex_dims().y + microscope_wall_t()*2;
-    // a small inset from the wall by the z-axis, to make it clear the optics dovetail
+    // a small flange inset from the wall by the z-axis, to make it clear the optics dovetail
     inset_at_z = inset_zero + 1;
-    // a larger inset at the sides for strength
+    // a larger flange inset at the sides for strength
     flange_side = 5;
     inset_sides = inset_zero + flange_side;
-    // even larger at the reflection optics cut-out
+    // even larger flange at the reflection optics cut-out
     inset_opposite = inset_zero + 6;
     hull(){
         reflect_x(){
             // A small correction translation to match the shape by the z-dovetail in versions up to v7.0.0-beta4
-            // This is needed because the central optics cutout determines the shape of the z-dovetail body on teh actuator side
+            // This is needed because the central optics cutout determines the shape of the z-dovetail body on the actuator side
             correction_1 = [1.175, -0.157, 0];
             translate(correction_1){
                 inner_wall_base_corner(params, 45, leg_outer_w(params)/2+microscope_wall_t()/2, y_inset=inset_at_z);
