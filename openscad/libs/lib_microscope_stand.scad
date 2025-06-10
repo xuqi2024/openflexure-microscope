@@ -21,15 +21,23 @@ function microscope_stand_vert_height(stand_params) = let(
     extra_h = key_lookup("extra_height", stand_params)
 ) drawer_h + extra_h;
 
-function default_stand_params(tall=false, no_pi=false, pi_version=4, sanga_version="stack_8.5mm") =
+function default_stand_params(
+    tall=false,
+    no_pi=false,
+    pi_version=4,
+    sanga_version="stack_8.5mm",
+    removable_plate=false
+) =
     assert(pi_version==3 || pi_version==4, "pi_version must be 3 or 4")
     assert(sanga_version=="v0.3" || sanga_version=="stack_8.5mm" || sanga_version=="stack_11mm", "sanga_version must be \"v0.3\", \"stack_8.5mm\" or \"stack_11mm\"")
+    assert(!(!no_pi && removable_plate), "Cannot have pi tray hole and removeable plate on stand")
     [["electronics_drawer_h", 47], //The height of the tray the pi sits in.
      ["include_pi_tray_hole", !no_pi], //Whether the stand has a hole for the raspberry pi tray
      ["extra_height", tall ? 17 : 0], //extra height above the raspberry pi_tray
      ["block_usb", true],
      ["sanga_version", sanga_version],
      ["pi_version", pi_version],
+     ["removable_plate", removable_plate]
     ];
 
 module foot_footprint(tilt=0){
@@ -274,6 +282,7 @@ module base_microscope_stand(params, stand_params){
 // cutouts for accessing the electronics drawer.
 module microscope_stand(params, stand_params, supports=true){
     inc_drawer = key_lookup("include_pi_tray_hole", stand_params);
+    removable_plate = key_lookup("removable_plate", stand_params);
     if (inc_drawer){
         difference(){
             base_microscope_stand(params, stand_params);
@@ -283,6 +292,15 @@ module microscope_stand(params, stand_params, supports=true){
         pi_drawer_runner_and_mount(params);
         if (supports){
             stand_supports(params, stand_params);
+        }
+    }
+    else if (removable_plate){
+        difference(){
+            union(){
+                base_microscope_stand(params, stand_params);
+                stand_plate_lugs(params, reduced=false, reverse=true);
+            }
+            stand_plate_cutout(params, stand_params);
         }
     }
     else{
@@ -317,6 +335,94 @@ module pi_drawer_cutout(params, stand_params){
         translate(electronics_drawer_side_screw_pos()){
             rotate_x(90){
                 m3_cap_counterbore(10, 10);
+            }
+        }
+    }
+}
+
+function stand_plate_cutout_pos(reduced=false) = let(
+    shift = reduced ? .5 : 0
+) [30+shift, -50, shift];
+function stand_plate_cutout_dims(reduced=false) = let(
+    shrink = reduced ? 1 : 0
+) [30-shrink, 100, 20-shrink];
+
+function stand_plate_lug_pos(d=6) = let(
+    // Always false so lugs aren't shifted
+    cut_shift = stand_plate_cutout_pos(reduced=false).x,
+    plate_width = stand_plate_cutout_dims(reduced=false).x,
+    y = -2.5
+) [[cut_shift-d/2, y, d/2], [cut_shift+plate_width+d/2, y, d/2]];
+
+function stand_plate_lug_d() = 6;
+
+function stand_plate_cable_hole_pos(d) = let(
+    // Always false so lugs aren't shifted
+    cut_shift = stand_plate_cutout_pos(reduced=false).x,
+    plate_width = stand_plate_cutout_dims(reduced=false).x
+) [cut_shift+plate_width/2, 0, d/2];
+
+module stand_plate_cutout(params, stand_params, reduced=false, screw_holes=true){
+    electronics_drawer_frame_xy(params){
+        //Cutout for the side connectors
+        translate(stand_plate_cutout_pos(reduced=reduced)){
+            cube(stand_plate_cutout_dims(reduced=reduced));
+        }
+        if (screw_holes){
+            for (pos = stand_plate_lug_pos(d=stand_plate_lug_d())){
+                translate(pos){
+                    rotate_x(90){
+                        no2_selftap_hole(h=20, center=true);
+                    }
+                }
+            }
+        }
+    }
+    stand_plate_lugs(params, reduced=reduced);
+}
+
+
+module stand_plate_lugs(params, reduced=false, reverse=false){
+    electronics_drawer_frame_xy(params){
+        h=6;
+        hull(){
+            for (lug_pos = stand_plate_lug_pos(d=stand_plate_lug_d())){
+                tr = lug_pos + (reverse ? [0, h, 0] : [0, 0, 0]);
+                translate(tr){
+                    rotate_x(90){
+                        d_r = stand_plate_lug_d() - (reduced ? 1 : 0);
+                        cylinder(d=d_r, h=h, $fn=16);
+                    }
+                }
+            }
+        }
+    }
+}
+
+module microscope_stand_removable_plate(params, stand_params){
+    difference(){
+        intersection(){
+            base_microscope_stand(params, stand_params);
+            stand_plate_cutout(params, stand_params, reduced=true, screw_holes=false);
+        }
+        electronics_drawer_frame_xy(params){
+            for (pos = stand_plate_lug_pos(d=stand_plate_lug_d())){
+                translate(pos){
+                    rotate_x(90){
+                        no2_selftap_clearancehole(center=true, $fn=12);
+                    }
+                }
+            }
+            cable_hole_d = 5;
+            translate(stand_plate_cable_hole_pos(cable_hole_d)){
+                rotate_x(90){
+                    hull(){
+                        cylinder(d=cable_hole_d, h=10, center=true, $fn=12);
+                        translate_y(-10){
+                            cylinder(d=cable_hole_d, h=10, center=true, $fn=12);
+                        }
+                    }
+                }
             }
         }
     }
