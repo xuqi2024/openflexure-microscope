@@ -26,7 +26,8 @@ function default_stand_params(
     no_pi=false,
     pi_version=4,
     sanga_version="stack_8.5mm",
-    removable_plate=false
+    removable_plate=false,
+    cable_tie_points=false
 ) =
     assert(pi_version==3 || pi_version==4, "pi_version must be 3 or 4")
     assert(sanga_version=="v0.3" || sanga_version=="stack_8.5mm" || sanga_version=="stack_11mm", "sanga_version must be \"v0.3\", \"stack_8.5mm\" or \"stack_11mm\"")
@@ -37,7 +38,8 @@ function default_stand_params(
      ["block_usb", true],
      ["sanga_version", sanga_version],
      ["pi_version", pi_version],
-     ["removable_plate", removable_plate]
+     ["removable_plate", removable_plate],
+     ["cable_tie_points", cable_tie_points]
     ];
 
 module foot_footprint(tilt=0){
@@ -283,6 +285,7 @@ module base_microscope_stand(params, stand_params){
 module microscope_stand(params, stand_params, supports=true){
     inc_drawer = key_lookup("include_pi_tray_hole", stand_params);
     removable_plate = key_lookup("removable_plate", stand_params);
+    cable_tie_points = key_lookup("cable_tie_points", stand_params);
     if (inc_drawer){
         difference(){
             base_microscope_stand(params, stand_params);
@@ -306,7 +309,56 @@ module microscope_stand(params, stand_params, supports=true){
     else{
         base_microscope_stand(params, stand_params);
     }
+    if (cable_tie_points){
+        stand_cable_tie_points(params);
+    }
 }
+
+module stand_cable_tie_points(params){
+    leg_r = key_lookup("leg_r", params);
+    block_w = 8;
+    block_h = 9;
+    for (i = [1.6, -1]){
+        translate_y(i*leg_r){
+            angle = i<0 ? 0 : 180;
+            rotate(angle){
+                cable_tie_block(block_w, block_h, 4);
+            }
+        }
+    }
+}
+
+// Module: cable_tie_block()
+// Usage: cable_tie_block(block_w, block_h, tie_cut_w, tie_cut_h=2, center_xy=true)
+// Arguments:
+//   block_w = Width (and depth) of the block
+//   block_h = Height of the block
+//   tie_cut_w = Width of the cable tie channel
+//   tie_cut_h = Height of the cable tie channel
+//   center_xy = Boolean, whether to center in the xy, plane (Default true)
+// Description:
+//   A cuboid with a 1/4 annular hole for a cable tie pass through from the top
+module cable_tie_block(block_w, block_h, tie_cut_w, tie_cut_h=2, center_xy=true){
+    $fn=16;
+    xy_tr = center_xy ? [-block_w/2, -block_w/2] : [0, 0];
+    translate(xy_tr){
+        difference(){
+            cube([block_w, block_w, block_h]);
+            translate([block_w/2, block_w, block_h]){
+                rotate_y(90){
+                    difference(){
+                        r_max = 3/4*block_w;
+                        cylinder(r=r_max, h=1*tie_cut_w, center=true);
+                        cylinder(r=r_max-tie_cut_h, h=1.1*tie_cut_w, center=true);
+                    }
+                }
+            }
+        }
+    }
+    
+}
+
+
 
 function side_connector_cutout_pos() = [5, -50, 2];
 function side_connector_cutout_dims() = [60, 100, 40];
