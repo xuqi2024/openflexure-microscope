@@ -14,7 +14,7 @@ function holder_height() = 20;
 * actuator height plus the diameter of the band cord.
 */
 function height_over_actuator(params) = let(
-    actuator_h = key_lookup("actuator_h", params)
+    actuator_h = max(key_lookup("actuator_h", params), 30)
 ) actuator_h +2;
 
 
