@@ -22,7 +22,7 @@ use <./libs/utilities.scad>
 // For an integer number of teeth, allowed ratios are of the form n/(36-n). Ratios from 0.8 (16/20, 1:1.25) to 2 (24/12, 1:0.5) are expected to fit in the body
 
 // Gearing ratio for x and y axes. Ratio for z axis fixed at 2
-RATIO = 2; 
+RATIO = 2;
 
 printable_large_gears(ratio=RATIO);
 

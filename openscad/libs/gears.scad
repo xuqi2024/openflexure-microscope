@@ -29,8 +29,9 @@ use <./compact_nut_seat.scad>
 * The standard ratio is 2. The standard total number of teeth on  *
 * both gears is 36, which is defined by the distance between the  *
 * rotation axes.                                                  *
-* For an integer number of teeth, allowed ratios are of the form  *
-*                      n/(36-n).                                  *
+* For an integer number of teeth on the small gear, allowed       *
+* ratios are of the form                                          *
+*                      (36-n)/n.                                  *
 *                                                                 *
 * Ratios from 0.8 (16/20, 1:1.25) to 2 (24/12, 1:0.5)             *
 * fit in the body for x and y.                                    *
