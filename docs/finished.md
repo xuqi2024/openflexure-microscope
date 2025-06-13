@@ -12,14 +12,20 @@ Congratulations, you have now assembled your OpenFlexure Microscope.
 Your completed microscope should now look like these pictures.  
 There is also an [interactive 3D view](interactive_3d_view_{{var_optics, default:rms}}.md) of the finished microscope.
 
-<form class="qaqc">
-<h3>QA/QC check</h3>
+```qaqc
+- id: final-pic
+  title: Upload an image of your finished microscope.
+  type: photo
+- id: feedback
+  title: (Optional) Please provide any final feedback or comments on the microscope assembly.
+  type: text
+```
+
 <label for="final-pic">Upload an image of your finished microscope.</label><br>
 <input type="file" id="final-pic" accept="image/*" ><br><br>
 <label for="wiring-comment">(Optional) Please provide any final feedback or comments on the microscope assembly.</label><br><br>
 <textarea id="wiring-comment" name="wiring-comment" rows="4" cols="50"></textarea><br>
 <button class="qaqc-complete">Checks complete</button>
-</form>
 
 ## Software set-up {pagestep}
 

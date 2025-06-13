@@ -28,9 +28,8 @@
 {{include: mount_microscope.md}}
 
 
-<form class="qaqc">
-<h3>QA/QC check</h3>
-<label for="mount-optics-and-microscope-comment">(Optional) Please provide any extra feedback on mounting the optics and microscope.</label><br><br>
-<textarea id="mount-optics-and-microscope-comment" name="mount-optics-and-microscope-comment" rows="4" cols="50"></textarea><br>
-<button class="qaqc-complete">Checks complete</button>
-</form>
+```qaqc
+- id: feedback
+  title: (Optional) Please provide any extra feedback on mounting the optics and microscope.
+  type: text
+```

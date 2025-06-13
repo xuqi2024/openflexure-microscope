@@ -201,9 +201,7 @@ build-docs:
 
     before_script:
       - python --version
-      #This can be removed onece we update to GitBuilding 0.15
-      - pip install setuptools
-      - pip install "gitbuilding>=0.14.0"
+      - pip install git+https://gitlab.com/gitbuilding/gitbuilding.git@qaqc
 
     script:
       - cd docs

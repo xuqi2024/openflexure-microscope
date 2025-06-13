@@ -39,13 +39,12 @@
 * Secure the Raspberry Pi in place with two [self tapping screws][No 2 6.5mm self tapping screws]{qty:2}
 * Insert the ribbon cable from the optics module into the camera port of the Rasberry Pi, ensuring the contacts are on the opposite side from the clasp. There are [detailed instructions on the Rasbperry Pi website](https://projects.raspberrypi.org/en/projects/getting-started-with-picamera/2).
 
-<form class="qaqc">
-<h3>QA/QC check</h3>
-<label for="sanga-version">Enter version number of your raspberry Pi.</label>
-<p>For example "4B+"</p>
-<input type="text" id="sanga-version" name="sanga-version"><br>
-<button class="qaqc-complete">Checks complete</button>
-</form>
+```qaqc
+- id: pi-version
+  title: Enter version number of your raspberry Pi.
+  description: For example "4B+"
+  type: text
+```
 
 ## Connect the Sangaboard {pagestep}
 
@@ -55,13 +54,12 @@
 * Secure the Sangaboard in place with two [self tapping screws][No 2 6.5mm self tapping screws]{qty:2}
 * Push the motor cables into their labelled connectors. Make sure the motor from the correct axis on the microscope goes to the correct port.
 
-<form class="qaqc">
-<h3>QA/QC check</h3>
-<label for="sanga-version">Enter version number written on the Sangaboard.</label><br>
-<p>For example "v0.5.3"</p>
-<input type="text" id="sanga-version" name="sanga-version"><br>
-<button class="qaqc-complete">Checks complete</button>
-</form>
+```qaqc
+- id: sanga-version
+  title: Enter version number written on the Sangaboard.
+  description: For example "v0.5.3
+  type: text
+```
 
 ## Connect the LED to the Sangaboard {pagestep}
 
@@ -83,9 +81,8 @@ Connect the wires to the Sangaboard v0.5
 
 To power up your microscope you will need a [power supply][Raspberry Pi Power Supply](parts/electronics.yml#RaspberryPi_PowerSupply){qty:1, cat:electronic}. The microscope is powered through the Sangaboard v0.5 UCB-C socket.
 
-<form class="qaqc">
-<h3>QA/QC check</h3>
-<label for="wiring-comment">(Optional) Please provide any extra feedback on wiring the microscope.</label><br><br>
-<textarea id="wiring-comment" name="wiring-comment" rows="4" cols="50"></textarea><br>
-<button class="qaqc-complete">Checks complete</button>
-</form>
+```qaqc
+- id: feedback
+  title: Please provide any extra feedback on wiring the microscope.
+  type: text
+```

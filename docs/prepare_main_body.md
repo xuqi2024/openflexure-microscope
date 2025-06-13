@@ -19,16 +19,18 @@ The [main body][Main body](fromstep){cat: PrintedPart, qty:1} has some custom su
 * Cut the ties inside actuator columns (6 total) with the [precision wire cutters]{qty:1}
 * Cut the ties for the rear legs (4 total) with the [precision wire cutters]{qty:1}
 
-<form class="qaqc">
-<h3>QA/QC check</h3>
-<label for="hash">Enter the tag or hash written under the gear logo.</label><br>
-<input type="text" id="hash" name="hash"><br><br>
-<label for="body-stringing-check">Confirm that there isn't excessive stringing under the main stage.</label><br>
-<input type="checkbox" class="checkbox" id="body-stringing-check" name="body-stringing-check"><br><br>
-<label for="body-stringing-pic">Take a photo of the microscope side to show there isn't excessive stringing.</label>
-<input type="file" id="body-stringing-pic" accept="image/*" ><br>
-<button class="qaqc-complete">Checks complete</button>
-</form>
+
+```qaqc
+- id: hash
+  title: Enter the tag or hash written under the gear logo.
+  type: text
+- id: body-stringing-check
+  title: Confirm that there isn't excessive stringing under the main stage.
+  type: checkbox
+- id: body-stringing-pic
+  title: Take a photo of the microscope side to show there isn't excessive stringing.
+  type: photo
+```
 
 ## Embed mounting nuts in the stage {pagestep}
 
@@ -58,11 +60,11 @@ The [main body][Main body](fromstep){cat: PrintedPart, qty:1} has some custom su
 The [prepared main body]{output, qty:1} is now ready for assembly.
 
 
-<form class="qaqc">
-<h3>QA/QC check</h3>
-<label for="body-nut-check">Using the Allen key tap the plastic lightly above all nuts. Confirm that no nuts come loose.</label><br>
-<input type="checkbox" class="checkbox" id="body-nut-check" name="body-nut-check"><br><br>
-<label for="body-nut-check2">Inspect the plastic around the nut trap for any signs of cracking. Confirm there is no cracking.</label><br>
-<input type="checkbox" class="checkbox" id="body-nut-check2" name="body-nut-check2"><br><br>
-<button class="qaqc-complete">Checks complete</button>
-</form>
+```qaqc
+- id: body-nut-check
+  title: Using the Allen key tap the plastic lightly above all nuts. Confirm that no nuts come loose.
+  type: checkbox
+- id: body-nut-check2
+  title: Inspect the plastic around the nut trap for any signs of cracking. Confirm there is no cracking.
+  type: checkbox
+```

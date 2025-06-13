@@ -35,12 +35,11 @@ Take the [optics module][Optics module](fromstep){qty:1, cat:printedpart} and co
 
 ![Insert tube lens](renders/optics_assembly_tube_lens.png)
 
-<form class="qaqc">
-<h3>QA/QC check</h3>
-<label for="tube-lens-pic">Take a photo showing the seated lens.</label><br>
-<input type="file" id="tube-lens-pic" accept="image/*" ><br>
-<button class="qaqc-complete">Checks complete</button>
-</form>
+```qaqc
+- id: tube-lens-pic
+  title: Take a photo showing the seated lens.
+  type: photo
+```
 
 ## Remove Pi Camera Lens {pagestep}
 
