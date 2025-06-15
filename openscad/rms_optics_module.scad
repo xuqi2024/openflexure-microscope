@@ -15,4 +15,4 @@ BEAMSPLITTER = false;
 CAMERA = "picamera_2";
 PARFOCAL_DISTANCE = 45;
 
-configurable_optics_module(OPTICS, CAMERA, BEAMSPLITTER, PARFOCAL_DISTANCE);
+configurable_optics_module(OPTICS, CAMERA, BEAMSPLITTER, PARFOCAL_DISTANCE, 0, 0);
