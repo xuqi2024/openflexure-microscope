@@ -552,7 +552,7 @@ module undercut_objective_fitting_wedge(wedge_width_plus=20, undercut_height = 1
     }
 }
 
-module configurable_optics_module(optics, camera_type, beamsplitter, parfocal_distance){
+module configurable_optics_module(optics, camera_type, beamsplitter, parfocal_distance, overwrite_options=[]){
     params = default_params();
     // 45mm is the default parfocal distance.
     // If this setting is changed, it would normally be to 35mm.
@@ -572,7 +572,8 @@ module configurable_optics_module(optics, camera_type, beamsplitter, parfocal_di
         optics_config = rms_f50d13_config(
             camera_type=camera_type, 
             beamsplitter=beamsplitter, 
-            parfocal_distance=parfocal_distance
+            parfocal_distance=parfocal_distance,
+            overwrite_options=overwrite_options
         );
         optics_module_rms(params, optics_config);
     }
@@ -580,7 +581,8 @@ module configurable_optics_module(optics, camera_type, beamsplitter, parfocal_di
         optics_config = rms_infinity_f50d13_config(
             camera_type=camera_type, 
             beamsplitter=beamsplitter, 
-            parfocal_distance=parfocal_distance
+            parfocal_distance=parfocal_distance,
+            overwrite_options=overwrite_options
         );
         optics_module_rms(params, optics_config);
     }
