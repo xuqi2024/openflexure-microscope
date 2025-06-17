@@ -83,8 +83,7 @@ function is_unique(list) =
 // No error checking, for use by valid_dict only!
 function _is_pairs(list) =
     !is_list(list) ? false :
-        len(list)==0 ? false :
-            !is_in(0, [for (pair = list) is_list(pair) && len(pair)==2 ? 1: 0]);
+        !is_in(0, [for (pair = list) is_list(pair) && len(pair)==2 ? 1: 0]);
 
 // Private function:
 // Checks all elements in the list are strings

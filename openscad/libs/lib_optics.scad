@@ -5,6 +5,7 @@
 use <./utilities.scad>
 use <./z_axis.scad>
 use <./microscope_parameters.scad>
+use <./optics_configurations.scad>
 use <./lighttrap.scad>
 use <./libdict.scad>
 use <./lib_fl_cube.scad>
@@ -549,4 +550,44 @@ module undercut_objective_fitting_wedge(wedge_width_plus=20, undercut_height = 1
             }
         }
     }
+}
+
+module configurable_optics_module(optics, camera_type, beamsplitter, parfocal_distance, overwrite_options=[]){
+    params = default_params();
+    // 45mm is the default parfocal distance.
+    // If this setting is changed, it would normally be to 35mm.
+    // The code below will print a warning if it is changed.
+    if (parfocal_distance!=45){
+        if (parfocal_distance==35){
+            echo("Generating an optics module for older, 35mm parfocal, objectives.  Please check carefully, this option is not tested.");
+        }
+        else {
+            echo("WARNING: parfocal_distance is neither 35mm nor 45mm, this may be an error.");
+        }
+    }
+
+    // Note calling the optics module rms inside each if statment
+    // to avoid nested ternaries
+    if (optics=="rms_f50d13"){
+        optics_config = rms_f50d13_config(
+            camera_type=camera_type, 
+            beamsplitter=beamsplitter, 
+            parfocal_distance=parfocal_distance,
+            overwrite_options=overwrite_options
+        );
+        optics_module_rms(params, optics_config);
+    }
+    else if(optics=="rms_infinity_f50d13"){
+        optics_config = rms_infinity_f50d13_config(
+            camera_type=camera_type, 
+            beamsplitter=beamsplitter, 
+            parfocal_distance=parfocal_distance,
+            overwrite_options=overwrite_options
+        );
+        optics_module_rms(params, optics_config);
+    }
+    else{
+        assert(false, "Unknown optics configuration specified");
+    }
+
 }
