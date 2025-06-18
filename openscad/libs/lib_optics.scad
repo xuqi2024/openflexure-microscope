@@ -78,7 +78,7 @@ module camera_mount_top_slice(optics_config){
     }
 }
 
-module optics_module_body_outer(params, optics_config, body_r, body_top, rms_mount_h, wedge_top, bottom_r, include_wedge){
+module optics_module_body_outer(params, optics_config, body_r, body_top, rms_mount_h, wedge_top, bottom_r, include_wedge, extra_hole=undef){
     // The outer shape of the optics module body. Including the camera mount.
 
     beamsplitter = key_lookup("beamsplitter", optics_config);
@@ -207,7 +207,8 @@ module optics_module_body(
     rms_mount_h, // height of the rms mount
     wedge_top, //z position of the top of the fitting_wedge
     bottom_r=8, //radius of the bottom of the mount
-    include_wedge=true //set this to false to remove the attachment point
+    include_wedge=true, //set this to false to remove the attachment point
+    extra_hole=undef // set to offset fro second mounting hole (e.g. -10 for 35mm parfocal for 45mm module
 ){
     // Make the main body of the optics module: A camera mount, a cylindrical body and a wedge for mounting.
     // Just add a lens mount on top for a complete optics module!
@@ -220,7 +221,7 @@ module optics_module_body(
         // Mount for the nut that holds it on
         if (include_wedge){
             translate_z(-1){
-                objective_fitting_cutout(params);
+                objective_fitting_cutout(params, extra_hole=extra_hole);
             }
         }
         // screw holes  and faceplate for fl module
@@ -286,6 +287,8 @@ module optics_module_rms(params, optics_config, include_wedge=true){
     rms_optics_mount_base_r = rms_thread_nominal_d()/2+1;
     rms_optics_mount_h = objective_shoulder_z(params, optics_config)-rms_optics_mount_z;
 
+    extra_hole = (key_lookup("objective_parfocal_distance", optics_config) == 45) ? -10 : undef;
+
     camera_mount_top_z = rms_camera_mount_top_z(params, optics_config);
     difference(){
         union(){
@@ -299,7 +302,8 @@ module optics_module_rms(params, optics_config, include_wedge=true){
                                    body_top=rms_optics_mount_z,
                                    rms_mount_h=rms_optics_mount_h,
                                    wedge_top=wedge_top,
-                                   include_wedge=include_wedge);
+                                   include_wedge=include_wedge,
+                                   extra_hole=extra_hole);
                 // cut a hole for the rms thread and tube lens gripper
                 translate_z(rms_optics_mount_z){
                     rms_thread_and_cutout_for_tube_lens(rms_optics_mount_h);

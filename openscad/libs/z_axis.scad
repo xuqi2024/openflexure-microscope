@@ -137,7 +137,7 @@ module objective_fitting_wedge(h, nose_shift=0.2, center=false){
 }
 
 
-module objective_fitting_cutout(params, y_stop=false, face_stops=false, nose_shift=0.2, max_screw=10){
+module objective_fitting_cutout(params, y_stop=false, face_stops=false, nose_shift=0.2, max_screw=10, extra_hole=undef){
     // Subtract this from the optics module, to cut out a hole for the nut
     // that anchors it to the objective mount.
     // y_stop if set true will also cut flush the faces of the mount in case something is
@@ -147,7 +147,7 @@ module objective_fitting_cutout(params, y_stop=false, face_stops=false, nose_shi
     z_pos = objective_mount_screw_pos(params).z;
     nose_width = objective_mount_nose_w();
     translate_y(objective_mount_y()){
-        fitting_wedge_cutout(z_pos, y_stop=y_stop, face_stops=face_stops, nose_shift=nose_shift, max_screw=max_screw, nose_width=nose_width);
+        fitting_wedge_cutout(z_pos, y_stop=y_stop, face_stops=face_stops, nose_shift=nose_shift, max_screw=max_screw, nose_width=nose_width, extra_hole=extra_hole);
     }
 }
 
