@@ -60,6 +60,7 @@ class MicroscopeBuildWriter(NinjaWriter):
 
     def _create_rules(self):
         executable = get_openscad_exe()
+        python_path = os.path.dirname(os.path.dirname(__file__))
         self.rule(
             "openscad",
             command=f"{executable} --hardwarnings $parameters $in -o $out -d $out.d",
@@ -67,13 +68,13 @@ class MicroscopeBuildWriter(NinjaWriter):
         )
         self.rule(
             "fix_csg",
-            command="python -m build_system.fix_csg $in $out",
+            command=f"PYTHONPATH={python_path} python -m build_system.fix_csg $in $out",
             depfile="$out.d",
         )
         self.rule(
             "cached_csg_compile",
             command=(
-                "python -m build_system.cached_csg_compiler $in $out "
+                f"PYTHONPATH={python_path} python -m build_system.cached_csg_compiler $in $out "
                 "--hash_file docs/models/dependency_hashes.yaml"
             ),
             depfile="$out.d"
