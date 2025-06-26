@@ -97,7 +97,7 @@ class MicroscopeBuildWriter(NinjaWriter):
         if parameters is None:
             parameters = {}
 
-        if output.endswith(".stl"):
+        if output.endswith((".stl", ".svg")):
             output_csg = output[:-4] + ".csg"
             fixed_csg = output[:-4] + ".fixed.csg"
         else:
