@@ -11,8 +11,9 @@ import re
 def fix_csg(input_fname, output_fname):
     """Fix a CSG file so it will compile in OpenSCAD without warnings.
 
-    Currently this performs only one operation:
+    This performs only two operations:
     * Strip `timestamp` arguments (which occur in `import` module calls)
+    * Create a `.d` dependency file for the `.fixed.csg` for `ninja` to use. This file the depends only on the `.csg` file.
     """
     with open(input_fname, "r", encoding='utf-8') as infile, open(output_fname, "w", encoding='utf-8') as outfile:
         for line in infile:
