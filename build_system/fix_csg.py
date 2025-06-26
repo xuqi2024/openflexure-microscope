@@ -20,6 +20,10 @@ def fix_csg(input_fname, output_fname):
                 re.sub(r", timestamp = [\d]+", "", line)
             )
 
+    with open(output_fname + ".d", "w", encoding='utf-8') as outfile:
+        outfile.write(f"{output_fname}: \\\n")
+        outfile.write(f"\t{input_fname}\n")
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Process a CSG file so it builds without warnings in OpenSCAD."
