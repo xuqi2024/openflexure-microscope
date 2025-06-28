@@ -124,11 +124,6 @@ def write_ninja_file(build_dir):
             "accessories/slide_box.scad",
             {"N_SLIDES": 16}
         )
-        writer.openscad(
-            "accessories/slide_box_24.stl",
-            "accessories/slide_box.scad",
-            {"N_SLIDES": 24}
-        )
 
         # extra platform optics **TODO make this build automatically with the
         # generate_platform_optics_modules below
