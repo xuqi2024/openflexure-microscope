@@ -419,6 +419,7 @@ module screw_seat_shell(h=1, tilt=0){
 
 module motor_lugs(h, tilt=0, angle=0){
     screw_pos = motor_screw_pos(h);
+    extra_h = 2;
     // lugs to mount a micro geared stepper motor on a screw_seat.
     screw_r = sqrt(pow(screw_pos.x,2)+pow(screw_pos.y,2));
     rotate_x(tilt){
@@ -427,11 +428,11 @@ module motor_lugs(h, tilt=0, angle=0){
                 difference(){
                     union(){
                         hull(){
-                            translate(screw_pos-[0,0,motor_lug_h()]){
-                                cylinder(r=4,h=motor_lug_h());
+                            translate(screw_pos-[0,0,motor_lug_h() + extra_h]){
+                                cylinder(r=4,h=motor_lug_h() + extra_h);
                             }
-                            translate_z(screw_pos.z-screw_r-motor_lug_h()){
-                                cylinder(r=5,h=screw_r-5);
+                            translate_z(screw_pos.z-screw_r-motor_lug_h()-extra_h){
+                                cylinder(r=5,h=screw_r-5+extra_h);
                             }
                         }
                     }
