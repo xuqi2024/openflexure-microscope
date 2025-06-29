@@ -210,14 +210,9 @@ module thumbwheel(){
                 }
             }
         }
-        translate_z(height+1-tiny()){
-            rotate_z(30){
-                m3_nut_hole(h=99, shaft=false, tight=false);
-            }
-        }
         translate([0,0,height+1.5]){
             mirror([0,0,1]){
-                nut_trap_and_slot(actuator_nut_size(), actuator_nut_slot_size(), slot_length=0, include_bridged_top=false);
+                nut_trap_and_slot(actuator_nut_size(), actuator_nut_slot_size(), slot_length=0, include_bridged_top=false, bottom_hole=99);
             }
             cylinder(r=actuator_shaft_radius(), h=99, center=true, $fn=16);
         }
