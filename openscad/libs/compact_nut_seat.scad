@@ -84,7 +84,7 @@ function actuator_entry_width() = 2*column_base_radius()+3;
 // nominal diamter of the nut?
 
 // Module: nut_trap_and_slot()
-// Usage: nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=undef, slot_length=999, include_bridged_top=true)
+// Usage: nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=undef, slot_length=999, include_bridged_top=true, bottom_hole=0)
 // Arguments:
 //   r = Nominal screw diameter size, 3 is for an m3 nut
 //   slot = Size of the slot. vector of nut dimensions (plus clearance) [flat-to-flat, corner-to-corner, height]. The
@@ -95,11 +95,12 @@ function actuator_entry_width() = 2*column_base_radius()+3;
 //   include_bridged_top = Boolean property, sets whether to include briding on top of the trap.
 //     The bridging is needed if printing vertically (i.e. nut starts below trap and is pulled
 //     up). The bridging stops the top of the trap sagging. Default=True
+//   bottom_hole = height of a hex hole to insert nut from the bottom. Alternative to the slot.
 // Description:
 //   A cut-out that will hold a nut.  The nut slots in horizontally
 //   along the +y axis, and is pulled up and into the tight part of the
 //   nut seat when a screw is inserted.
-module nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=undef, slot_length=999, include_bridged_top=true){
+module nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=undef, slot_length=999, include_bridged_top=true, bottom_hole=0){
     hole_r = r*1.15/2;
     trap_height = if_undefined_set_default(trap_h, r);
     w = slot.x; //width of the nut entry slot (should be slightly larger than the nut)
@@ -120,7 +121,9 @@ module nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=undef, slot_length=999, in
                 }
             }
             rotate(30){
-                cylinder(d=w/sin(60), h=h, $fn=6);
+                translate_z(-bottom_hole){
+                    cylinder(d=w/sin(60), h=h+bottom_hole, $fn=6);
+                }
             }
         }
         a = 1/trap_height;
