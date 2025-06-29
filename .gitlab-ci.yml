@@ -186,6 +186,42 @@ check_stls:
       reports:
         junit: admesh_report.xml
 
+compare_dependency_hashes:
+  stage: analyse
+  image: python:3.12
+  needs: ["build"]
+  dependencies: ["build"]
+  rules:
+    - if: '$CI_MERGE_REQUEST_IID'
+  variables:
+    # prevents config waiting for user input, e.g. for tzdata
+    DEBIAN_FRONTEND: noninteractive
+    DEBCONF_NONINTERACTIVE_SEEN: "true"
+  before_script:
+    - apt-get update -qq
+    - apt-get -o DPkg::Options::=--force-confdef -y -qq install jq
+    - pip install pyyaml
+  script:
+    # Use -| syntax as YAML kept interpreting certain lines
+    - |
+      # Fetch latest successful pipeline on master
+      MASTER_PIPELINES=$(curl --silent --header "PRIVATE-TOKEN: $CI_JOB_TOKEN" "$CI_API_V4_URL/projects/$CI_PROJECT_ID/pipelines?ref=master&status=success")
+      MASTER_PIPELINE_ID=$(echo "$MASTER_PIPELINES" | jq '.[0].id')
+
+      # Get build job ID from that pipeline
+      MASTER_JOBS=$(curl --silent --header "PRIVATE-TOKEN: $CI_JOB_TOKEN" "$CI_API_V4_URL/projects/$CI_PROJECT_ID/pipelines/$MASTER_PIPELINE_ID/jobs")
+      MASTER_JOB_ID=$(echo "$MASTER_JOBS" | jq '.[] | select(.name=="build") | .id')
+
+      # Download and unzip master artifacts (--location follows redirects)
+      curl --silent --header "PRIVATE-TOKEN: $CI_JOB_TOKEN" "$CI_API_V4_URL/projects/$CI_PROJECT_ID/jobs/$MASTER_JOB_ID/artifacts" --location --output master_artifacts.zip
+      unzip -o master_artifacts.zip -d master_artifacts
+
+      ./compare_hashes.py docs/models/dependency_hashes.yaml master_artifacts/docs/models/dependency_hashes.yaml
+  artifacts:
+    reports:
+      metrics: stl_changes.txt
+    when: always
+
 prebuild-for-render:
     extends: .scad-job
     stage: build
