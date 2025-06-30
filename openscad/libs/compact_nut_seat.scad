@@ -429,12 +429,20 @@ module motor_lugs(h, tilt=0, angle=0){
             reflect_x(){
                 difference(){
                     union(){
+                        translate(screw_pos-[0,0,motor_lug_h()]){
+                            cylinder(r=4,h=motor_lug_h());
+                        }
                         hull(){
                             translate(screw_pos-[0,0,motor_lug_h()]){
-                                cylinder(r=4,h=motor_lug_h());
+                                difference(){
+                                    sphere(r=4);
+                                    translate_z(99/2){
+                                        cube(99,center=true);
+                                    }
+                                }
                             }
                             translate_z(screw_pos.z-screw_r-motor_lug_h()){
-                                cylinder(r=5,h=screw_r-5);
+                                cylinder(r=4,h=screw_r-5);
                             }
                         }
                     }
