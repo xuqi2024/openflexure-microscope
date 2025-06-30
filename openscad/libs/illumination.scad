@@ -96,7 +96,9 @@ module illumination_dovetail_branding(params, h, bottom_z){
 
     translate([-11,logo_y,logo_z]){
         rotate_x(90-back_angle){
-            openflexure_emblem(scale_factor=.1);
+            translate_y(-10){
+                openflexure_emblem(scale_factor=.1);
+            }
         }
     }
 }
@@ -118,9 +120,7 @@ module illumination_dovetail_structure(params, dt_z, dt_h){
                 cyl_slot(r=4, h=3+tiny(), dy=3);
             }
             translate(illumination_back_corner_pos(params)){
-                scale([1,0.5,1]){
-                    cylinder(r=4, h=tiny());
-                }
+                cylinder(r=4, h=tiny());
             }
         }
     }
@@ -128,7 +128,7 @@ module illumination_dovetail_structure(params, dt_z, dt_h){
 
 // The position in X,Y of the cable channel
 function illumination_cable_channel_xypos() = let(
-    x_tr = -.6*illumination_dovetail_w()/2,
+    x_tr = min(-.6*illumination_dovetail_w()/2, -7-3.5), // don't collide with screw hole
     dt_y = illumination_dovetail_y(),
     dt_depth = key_lookup("depth", illumination_dt_params())
 ) [x_tr, dt_y+dt_depth+2, 0];
@@ -152,14 +152,34 @@ module illumination_dovetail(params, h=50){
     difference(){
         illumination_dovetail_structure(params, dt_z, dt_h);
         // slots for the mounting screws (to allow adjustment of position)
+        // wider than normal M3 clearance hole to ease adjustment of illumination
+        m3_clear_loose = 3/2*1.33;
         each_front_illumination_screw(params){
-            // wider than normal M3 clearance hole to ease adjustment of illumination
-            m3_clear_loose = 3/2*1.33;
             cyl_slot(r=m3_clear_loose, h=999, dy=3, center=true, $fn=12);
             translate_z(lug_h){
                 cyl_slot(r=6, h=999, dy=3, $fn=24);
             }
         }
+        // front mounting hole
+        tilt = -15; // angle of the access cutout
+        translate(illumination_back_corner_pos(params)) {
+            translate_y(-5){
+                cyl_slot(r=m3_clear_loose, h=10, dy=10, center=true, $fn=24);
+            }
+            hull(){
+                translate([0, -1, lug_h]){
+                    cyl_slot(r=6, h=6.5, dy=2, $fn=6);
+                }
+                translate([0, 0.1, lug_h+2]){
+                    rotate_x(tilt){
+                        rotate_z(360/12){
+                            cylinder(h=50, r1=3, r2=2, $fn=6);
+                        }
+                    }
+                }
+            }
+        }
+
         // alpha is the rotation angle for the slices that make up the bottom of the
         // channel. The number is picked to give a flat bridge that prints well.
         alpha=-11.5;
@@ -188,10 +208,14 @@ module illumination_dovetail(params, h=50){
                 }
             }
         }
-        // cutout to make the dovetail
         translate([0,dt_y,dt_z]){
+            // cutout to make the dovetail
             mirror([0,1,0]){
                 dovetail_f_cutout(dt_params, height=99);
+            }
+            // cutout over front screw hole
+            translate([-6, 0, -(14-lug_h)]){
+                cube([12, 4.7, 14]);
             }
         }
         // clearance for the motor
