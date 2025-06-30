@@ -430,12 +430,12 @@ module motor_lugs(h, tilt=0, angle=0){
                 difference(){
                     union(){
                         translate(screw_pos-[0,0,motor_lug_h()]){
-                            cylinder(r=4,h=motor_lug_h());
+                            cylinder(r=5,h=motor_lug_h()+0.6);
                         }
                         hull(){
                             translate(screw_pos-[0,0,motor_lug_h()]){
                                 difference(){
-                                    sphere(r=4);
+                                    sphere(r=5);
                                     translate_z(99/2){
                                         cube(99,center=true);
                                     }
@@ -459,7 +459,15 @@ module motor_lugs(h, tilt=0, angle=0){
                     }
                     //mounting screws
                     translate(screw_pos){
-                        m4_selftap_hole(h=40,center=true);
+                        // imprint for motor
+                        rotate_z(90){
+                            translate_y(5){
+                                cyl_slot(r=7.1/2, h=100, dy=10, $fn=24);
+                            }
+                        }
+                        translate_z(-9){
+                            m3_nut_trap_with_shaft(slot_angle=90,deep_shaft=3,chamfer_offset=1);
+                        }
                     }
                 }
             }

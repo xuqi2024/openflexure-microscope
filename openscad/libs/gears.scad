@@ -271,9 +271,8 @@ module motor_clearance(h=15){
     }
     reflect_x(){
         translate_x(motor_screw_separation()/2){
-            rotate(180){
-                m4_selftap_hole(h=20,center=true);
-            }
+            translate_z(-8){
+                m3_nut_trap_with_shaft(slot_angle=90,deep_shaft=3,slot_length=20,chamfer_offset=1);        }
         }
     }
 }
