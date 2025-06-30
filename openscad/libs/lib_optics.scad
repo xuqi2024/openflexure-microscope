@@ -448,7 +448,7 @@ function camera_board_thickness(optics_config) = key_lookup("board_thickness", o
 * * optics_config - optics configuration dictionary
 * * base_r - radius of mount body
 */
-module camera_platform(params, optics_config, base_r){
+module camera_platform(params, optics_config, base_r, camera_rotation=0){
 
     assert(key_lookup("optics_type", optics_config)=="spacer", "Use spacer optics configuration to create a camera_platform.");
 
@@ -456,7 +456,8 @@ module camera_platform(params, optics_config, base_r){
     platform_h = lens_spacer_z(params, optics_config) - camera_mounting_post_height(optics_config) - camera_board_thickness(optics_config);
     assert(platform_h > upper_z_flex_z(params), "Platform height too low for z-axis mounting");
 
-    camera_mounting_posts_rotate  = is_c270_spacer(optics_config)? -135: 0;
+    camera_extra_rotation = is_c270_spacer(optics_config)? -135: 0;
+    camera_mounting_posts_rotate  = camera_rotation + camera_extra_rotation;
 
     // Make a camera platform with a fitting wedge on the side and a platform on the top
     difference(){
