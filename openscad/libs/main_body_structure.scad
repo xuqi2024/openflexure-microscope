@@ -607,7 +607,11 @@ module main_body(params, version_string){
     }
 
     //z axis - Only the actuator column is housed at this point
-    complete_z_actuator(params);
+    difference(){
+        complete_z_actuator(params);
+        objective_mounting_screw_access(params);
+    }
+
 
     difference(){
         actuator_walls_and_z_casing(params, z_axis=true);
