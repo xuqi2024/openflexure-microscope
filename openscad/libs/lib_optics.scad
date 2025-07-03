@@ -442,11 +442,12 @@ function camera_board_thickness(optics_config) = key_lookup("board_thickness", o
 
 
 /**
-* camera_platform(params, base_r, h)
+* camera_platform(params, optics_config, base_r, camera_rotation=0)
 *
 * * params - the microscope parameter dictionary
 * * optics_config - optics configuration dictionary
 * * base_r - radius of mount body
+* * camera_rotation - orientation of the camera compared the the OFM std
 */
 module camera_platform(params, optics_config, base_r, camera_rotation=0){
 
