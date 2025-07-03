@@ -1,6 +1,7 @@
 /*
- * This is a platform to support the Logitech C270 camera and
- * a lens spacer holding a its lens.
+ * This is a optic module holding a c270 camera and its lens.
+ *
+ * This is the variant for the upright microscope.
  */
 
 use <./libs/microscope_parameters.scad>
@@ -12,5 +13,5 @@ camera_platform_stl();
 module camera_platform_stl(){
     params = default_params();
     optics_config = c270lens_config();
-    camera_platform(params, optics_config, base_r=5, camera_rotation=-135);
+    camera_platform(params, optics_config, base_r=5, camera_rotation=270);
 }
