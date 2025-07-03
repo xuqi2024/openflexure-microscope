@@ -508,7 +508,7 @@ module camera_platform(params, optics_config, base_r, camera_rotation=0){
         }
         // cut-out for Arducam b0196 cable
         if(is_b0196_spacer(optics_config)){
-            rotate_z(45){
+            rotate_z(45 + camera_mounting_posts_rotate){
                 translate([9,-11.5,10]){
                  cube([7,12,99]);
                 }
