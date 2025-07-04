@@ -13,6 +13,7 @@ use <./rms_thread.scad>
 // camera.scad has generic camera modules forward the correct
 // camera module depending on the optics configuration
 use <./cameras/camera.scad>
+use <./cameras/logitech_c270.scad>
 
 $fn=24;
 
@@ -488,6 +489,14 @@ module camera_platform(params, optics_config, base_r){
             rotate_z(45){
                 translate([9,-11.5,10]){
                  cube([7,12,99]);
+                }
+            }
+        }
+        // cut ledge for the backshell, with a little clearance
+        if(is_c270_spacer(optics_config)){
+            translate_z(lens_spacer_z(params, optics_config)-0.1){
+                rotate([180,0,0]){
+                    c270_backshell();
                 }
             }
         }

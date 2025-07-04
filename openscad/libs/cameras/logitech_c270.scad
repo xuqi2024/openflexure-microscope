@@ -53,23 +53,15 @@ module c270_cutout(beam_r=4.3, beam_h=4.5){
         difference(){
             union(){
                 // component clearance, cable end
-                hull(){
-                    translate([0, 22.5, 4]){
-                        cube([19.5, 28, 15],center=true);
+                translate([0, 27, 15-3.5]){
+                    rotate_y(180){
+                        round_top_cube([19.5, 37, 15],1.5,center=true);
                     }
-                    //thined area at the back
-                    translate([0, 34, 4]){
-                        cube([10, 9.5*2, 15],center=true);
-                    }
-                }
-                //route for cable
-                translate([-4, 41, 4]){
-                    cube([20, 9, 15],center=true);
                 }
                 // component clearance, sensor end
                 hull(){
-                    translate([0, 10, 4]){
-                        cube([19.5, 28, 15],center=true);
+                    translate([0, 5, 4]){
+                        cube([19.5, 18, 15],center=true);
                     }
                     translate([0, -4, 4]){
                         cube([9, 9.5*2, 15],center=true);
@@ -97,10 +89,9 @@ module c270_cutout(beam_r=4.3, beam_h=4.5){
 }
 
 function c270_dims() = [21, 58];
-function c270_y_offset() = -13;
+function c270_y_offset() = -13; // position of the edge of the main body of lens spacer
 //extra room for cable
 function c270_mount_y_excess() = 8;
-function c270_mount_x_excess() = 6;
 function c270_mount_excess_y_setback() = 10;
 
 function c270_backshell_screw_positions(flip_x=false) = let(
@@ -108,10 +99,9 @@ function c270_backshell_screw_positions(flip_x=false) = let(
     w = c270_dims().x,
     y_offset = c270_y_offset(),
     y_excess = c270_mount_y_excess(),
-    x_excess = c270_mount_x_excess(),
     y_pos = h+y_offset+y_excess-4,
     sign = flip_x ? 1 : -1
-) [[sign*(-w/2+4), y_pos, 3], [sign*(w/2+x_excess/2), y_pos, 3]];
+) [[sign*(-w/2+4), y_pos, 3], [sign*(w/2-4), y_pos, 3]];
 
 module c270_camera_mount(screwhole=true){
     // A mount for the Logitech C270 webcam
@@ -128,7 +118,6 @@ module c270_camera_mount(screwhole=true){
     y_offset = c270_y_offset();
     //extra room for cable
     y_excess = c270_mount_y_excess();
-    x_excess = c270_mount_x_excess();
     block_setback = c270_mount_excess_y_setback();
 
     mounting_hole_x = c270_camera_hole_spacing();
@@ -137,14 +126,23 @@ module c270_camera_mount(screwhole=true){
     rotate(-45){
         difference(){
             union(){
+                // Cube over sensor for hulling to the lens mount
                 translate([-w_w/2, y_offset, -mount_height]){
                     cube([w_w, h_w, mount_height]);
                 }
+                // Cube over the rest of the board, slightly lower down so that it
+                // is not used for the lens mount.
                 translate([-w/2, y_offset+y_excess, -mount_height]){
-                    cube([w, h, mount_height-2*tiny()]);
+                    round_top_cube([w, h, mount_height-2*tiny()],2);
                 }
-                translate([-x_excess-w/2, y_offset+h-block_setback, -mount_height]){
-                    cube([w+x_excess, y_excess+block_setback, mount_height-2*tiny()]);
+                // Joining part
+                hull(){
+                    translate([-w_w/2, y_offset+h_w, -mount_height]){
+                        cube([w_w, tiny(), mount_height-2*tiny()]);
+                    }
+                    translate([-w/2, y_offset+h_w, -mount_height]){
+                        round_top_cube([w, 4, mount_height-2*tiny()],2);
+                    }
                 }
             }
             translate_z(-mount_height){
@@ -185,41 +183,43 @@ module c270_camera_mount(screwhole=true){
 }
 
 module c270_backshell(){
+    // This whole element is rotated 180 degrees about x when in place
+    // y here becomes -y
+    // z here becomes -z 
+
     height = 6;
     h = c270_dims().y;
     w = c270_dims().x;
 
-    y_offset = c270_y_offset();
+    y_offset = c270_y_offset(); // y offset is -ve
+
     //extra room for cable
     y_excess = c270_mount_y_excess();
-    x_excess = c270_mount_x_excess();
     block_setback = c270_mount_excess_y_setback();
 
     difference(){
         //The main block
-        union(){
-            translate([-w/2, -y_offset]){
-                cube([w, h+2*y_offset+y_excess, height]);
+        end_from_centre = 3; // distance from axis of end of the cover
+        cover_length = h + y_offset + y_excess - end_from_centre;
+        difference(){
+            translate([-w/2, 0, 0]){
+                round_top_cube([w, cover_length+end_from_centre, height],2);
             }
-            translate([-w/2, y_offset+h-block_setback]){
-                cube([w+x_excess, y_excess+block_setback, height]);
-            }
+            cube([2*w, 2*end_from_centre, 99], center=true);
         }
 
         // cut out space for PCB
         translate([-(w+1)/2, y_offset, -tiny()]){
             cube([w+1, h, 1+tiny()]);
         }
+
         difference(){
             //Hollow out main block
             union(){
-                translate([-(w-3)/2, -y_offset-tiny(), -1.5]){
-                    cube([w-3, h+2*y_offset+y_excess-2, height]);
+                translate([-(w-3)/2, -tiny(), -1.5]){
+                    cube([w-3, h+y_offset+y_excess-2, height]);
                 }
-                translate([w/2-2, y_offset+h-block_setback+2, -1.5]){
-                    cube([x_excess, y_excess+block_setback-4, height]);
-                }
-                //space for connector
+                // A tiny bit more space for cable
                 translate([-w/2+.7, y_offset+h-12, -1.5]){
                     cube([10, 10, height]);
                 }
