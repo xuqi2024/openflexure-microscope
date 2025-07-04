@@ -875,3 +875,32 @@ module cylinder_to_square_column(d=undef, r=undef, h=undef, transition=undef){
         }
     }
 }
+
+// cube that is rounded on top and flat on the bottom
+// base at z=0
+//
+// center = true places at center in xy, but still the base is at z=0
+module round_top_cube(dimensions, rounding_radius, center=false){
+    corner_x = dimensions.x/2 - rounding_radius;
+    corner_y = dimensions.y/2 - rounding_radius;
+    height = dimensions.z - rounding_radius;
+    corners = [
+        [corner_x, corner_y, 0],
+        [-corner_x, corner_y, 0],
+        [corner_x, -corner_y, 0],
+        [-corner_x, -corner_y, 0]
+    ];
+    trans = (center)? [0,0,0] : [dimensions.x/2, dimensions.y/2, 0];
+    translate(trans){ 
+        hull(){
+            for (i = [0:3]){
+                translate(corners[i]){
+                    cylinder(r=rounding_radius, h=height);
+                    translate_z(height){
+                        sphere(r=rounding_radius);
+                    }
+                }
+            }
+        }
+    }
+}
