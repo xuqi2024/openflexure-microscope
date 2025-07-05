@@ -17,7 +17,7 @@ use <mount_microscope.scad>
 use <mount_upright_optics.scad>
 use <motor_assembly.scad>
 
-FRAME = 28;
+FRAME = 2;
 OPTICS_VERSION = "upright";
 render_mount_motors(FRAME, OPTICS_VERSION);
 
@@ -41,13 +41,6 @@ module render_mount_motors(frame, optics_version="rms"){
         assembled_microscope_without_electronics(optics_version=optics_version);
     }
 }
-
-assembled_microscope_without_electronics(optics_version="upright",
-                                                manual=true,
-                                                xy_motor=false,
-                                                z_motor=false,
-                                                explode=false
-                                                );
 
 // This module will add motors for a motorised version, but will pass through a manual version unchanged 
 module assembled_microscope_without_electronics(optics_version="rms",
@@ -78,22 +71,22 @@ module assembled_microscope_without_electronics(optics_version="rms",
 
             if (z_motor){
                 exploded = explode == "z";
-            if (optics_version == "upright"){
-                z_motor_and_cap(params,
-                                optics_version=optics_version,
-                                exploded=exploded,
-                                connector_pos=connector_positions.z,
-                                cable_pos=cable_positions.z,
-                                cap=false);
-            }
-            else{
+                if (optics_version == "upright"){
+                    z_motor_and_cap(params,
+                                    optics_version=optics_version,
+                                    exploded=exploded,
+                                    connector_pos=connector_positions.z,
+                                    cable_pos=cable_positions.z,
+                                    cap=false);
+                }
+                else{
                     z_motor_and_cap(params,
                                 optics_version=optics_version,
                                 exploded=exploded,
                                 connector_pos=connector_positions.z,
                                 cable_pos=cable_positions.z,
                                 cap=true);
-            }
+                }
             }
         }
     }
@@ -133,8 +126,7 @@ module y_motor_and_cap(params, exploded=false, connector_pos=undef, cable_pos=un
         translate_z(side_housing_h(params)+2*explode_unit){
             side_cable_tidy(params);
         }
-    }
-    
+    }   
 }
 
 module z_motor_and_cap(params, optics_version="rms", exploded=false, connector_pos=undef, cable_pos=undef, cap=false){
@@ -158,21 +150,21 @@ module z_motor_and_cap(params, optics_version="rms", exploded=false, connector_p
     }
     motor_placement = (optics_version=="upright") ? locate_on_upright(): create_placement_dict([0,0,0]) ; 
     place_part(motor_placement){
-    z_cable_tidy_frame(params){
-        translate_z(explode_unit){
-            motor_with_gear(z_motor_pos(), z_connector_pos, z_cable_pos);
-        }
-        tight_screw = cap ? 0 : -1.5 ;
-        translate_z(3*explode_unit + tight_screw){
-            reflect_x(){
-                place_part(motor_screw_pos()){
-                    m4_button_x6();
-                    if (exploded){
-                        construction_line([0, 0, 0], [0, 0, -4*explode_unit], 0.2);
+        z_cable_tidy_frame(params){
+            translate_z(explode_unit){
+                motor_with_gear(z_motor_pos(), z_connector_pos, z_cable_pos);
+            }
+            tight_screw = cap ? 0 : -1.5 ;
+            translate_z(3*explode_unit + tight_screw){
+                reflect_x(){
+                    place_part(motor_screw_pos()){
+                        m4_button_x6();
+                        if (exploded){
+                            construction_line([0, 0, 0], [0, 0, -4*explode_unit], 0.2);
+                        }
                     }
                 }
             }
         }
-    }
     }
 }
