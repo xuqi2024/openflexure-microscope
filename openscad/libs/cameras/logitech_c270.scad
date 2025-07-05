@@ -160,7 +160,8 @@ module c270_camera_mount(screwhole=true){
                     }
                     // third mounting hole, cable end
                     translate(c270_far_third_hole_pos()){
-                        no1_selftap_hole(h=6);
+                        // hole depth does not extend through the top of the mount
+                        no1_selftap_hole(h=mount_height-0.6);
                         // chamfer in base to overcome overextrusion
                         translate_z(-0.5){
                             cylinder(r1=2,h=2,r2=0,$fn=12);
@@ -228,7 +229,7 @@ module c270_backshell(){
             // for the backshell.
             for (i = [0, 1]){
                 translate(c270_backshell_screw_positions(flip_x=true)[i]){
-                    cylinder(d=7, 2*height, center=true);
+                    cylinder(d=7, h=2*height, center=true);
                 }
             }
         }
