@@ -9,7 +9,11 @@
 
 use <./libs/lib_optics.scad>
 
-//These parameters can be overwritten here or from command line with -D
+// These parameters can be overwritten here or from command line with -D
+// OPTICS: "rms_f50d13", "rms_infinity_f50d13"
+// BEAMSPLITTER: true, false
+// CAMERA "picamera_2", "m12", "logitech_c270"
+// PARFOCAL_DISTANCE 45, <any custom distance>
 OPTICS = "rms_f50d13";
 BEAMSPLITTER = false;
 CAMERA = "picamera_2";

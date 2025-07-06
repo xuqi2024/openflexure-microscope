@@ -14,6 +14,7 @@ use <./rms_thread.scad>
 // camera.scad has generic camera modules forward the correct
 // camera module depending on the optics configuration
 use <./cameras/camera.scad>
+use <./cameras/logitech_c270.scad>
 
 $fn=24;
 
@@ -383,17 +384,7 @@ module lens_spacer(params, optics_config){
                     // This is the main body of the mount
                     sequential_hull(){
                         translate_z(camera_mount_height){
-                            difference(){
-                                camera_mount_top_slice(optics_config);
-                                // The C270 board is too long, 
-                                // the long hull above the body gets in the way of the spacer getting close to the slide
-                                // This cut will miss the PiCamera 2 and Arducam B0196 lens spacers
-                                rotate_z(45){
-                                    translate_x(99/2+15){
-                                        cube(99, center = true);
-                                    }
-                                }
-                            }
+                            camera_mount_top_slice(optics_config);
                         }
                         translate_z(camera_mount_height+5){
                             cylinder(r=6,h=tiny());
@@ -407,17 +398,7 @@ module lens_spacer(params, optics_config){
 
                     // add the camera mount
                     translate_z(camera_mount_height){
-                        difference(){
-                            camera_mount(optics_config, screwhole=false, counterbore=false);
-                            // The C270 board is too long, 
-                            // the long body gets in the way of the spacer getting close to the slide
-                            // This cut will miss the PiCamera 2 and Arducam B0196 lens spacers
-                            rotate_z(45){
-                                translate_x(99/2+15){
-                                    cube(99, center = true);
-                                }
-                            }
-                        }
+                        camera_mount(optics_config, screwhole=false, counterbore=false);
                     }
                 }
                 union(){
@@ -510,6 +491,14 @@ module camera_platform(params, optics_config, base_r, camera_rotation=0){
             rotate_z(45){
                 translate([9,-11.5,10]){
                  cube([7,12,99]);
+                }
+            }
+        }
+        // cut ledge for the backshell, with a little clearance
+        if(is_c270_spacer(optics_config)){
+            translate_z(lens_spacer_z(params, optics_config)-0.1){
+                rotate([180,0,0]){
+                    c270_backshell();
                 }
             }
         }
