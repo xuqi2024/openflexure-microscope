@@ -11,6 +11,7 @@ use <librender/tools.scad>
 use <librender/render_utils.scad>
 use <librender/assembly_parameters.scad>
 use <librender/render_settings.scad>
+use <librender/gltf_annotations.scad>
 use <prepare_main_body.scad>
 use <librender/rendered_separate_z_actuator.scad>
 
@@ -57,6 +58,8 @@ module render_actuator_assembly(frame, manual=false, optics_version="rms"){
 }
 
 module render_foot(foot, lie_flat=false){
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info(str("foot_",foot));
     color(extras_colour()){
         render(6){
             if ((foot == "X") || (foot == "Y")){
@@ -168,6 +171,8 @@ module what_you_need(manual=false, optics_version="rms"){
 }
 
 module x_nut(exploded=false){
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("x_nut");
     nut_pos = exploded ? x_nut_placement_exp() : x_nut_placement();
     if (exploded){
         construction_line(x_nut_placement(), x_nut_placement_exp());
@@ -178,6 +183,8 @@ module x_nut(exploded=false){
 }
 
 module x_lead_screw_assembly(manual=false, exploded=false){
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("x_lead_screw_assembly");
     lead_assembly_pos = exploded ? x_lead_assembly_placement_exp() : x_lead_assembly_placement();
     place_part(lead_assembly_pos){
         lead_screw_assembly(manual=manual, exploded=exploded, construction_offset=[0, 0, -25]);
@@ -185,6 +192,8 @@ module x_lead_screw_assembly(manual=false, exploded=false){
 }
 
 module x_actuator_assembly(manual=false){
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("x_actuator_assembly");
     x_nut();
     x_lead_screw_assembly(manual=manual);
     place_part(x_foot_placement()){
@@ -194,6 +203,8 @@ module x_actuator_assembly(manual=false){
 }
 
 module y_actuator_assembly(manual=false){
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("y_actuator_assembly");
     place_part(y_nut_placement()){
         m3_nut(brass=true, center=true);
     }
@@ -207,6 +218,8 @@ module y_actuator_assembly(manual=false){
 }
 
 module z_actuator_assembly(manual=false){
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("z_actuator_assembly");
     place_part(z_nut_placement()){
         m3_nut(brass=true, center=true);
     }
@@ -222,11 +235,15 @@ module z_actuator_assembly(manual=false){
 }
 
 module body_with_x_nut(manual=false, exploded=false){
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("body_with_x_nut");
     main_body_prepared(manual=manual);
     x_nut(exploded=exploded);
 }
 
 module body_with_x_gear(manual=false, exploded=false, lifted=false){
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("body_with_x_gear");
     body_with_x_nut(manual=manual);
     z_tr = lifted ? 5 : 0;
     translate_z(z_tr){
@@ -235,6 +252,8 @@ module body_with_x_gear(manual=false, exploded=false, lifted=false){
 }
 
 module body_with_assembled_actuators(manual=false, x_only=false, translucent_body=false){
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("body_with_assembled_actuators");
     x_actuator_assembly(manual=manual);
     if (!x_only){
         y_actuator_assembly(manual=manual);
@@ -244,6 +263,8 @@ module body_with_assembled_actuators(manual=false, x_only=false, translucent_bod
 }
 
 module separate_z_actuator_with_assembled_actuators(manual=false){
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("separate_z_actuator_with_assembled_actuators");
     z_actuator_assembly(manual=manual);
     rendered_separate_z_actuator(manual=manual);
 }
@@ -253,6 +274,8 @@ module lead_screw_assembly(manual=false, exploded=false, construction_offset=[0,
 
     //exploded translations for the parts
 
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("lead_screw_assembly");
     tr_wash1 = exploded ? [0 ,0, -27] : [0, 0, -.5];
     tr_wash2 = exploded ? [0 ,0, -32] : [0, 0, -1];
     //translate everything so the gear is in place at the bottom.
@@ -283,6 +306,8 @@ module lead_screw_assembly(manual=false, exploded=false, construction_offset=[0,
 }
 
 module mount_lead_screw(manual=false, exploded=false, tools=false){
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("mount_lead_screw");
     tr_screw_explode = manual ? 48 : 35 ;
     tr_screw = exploded ? [0 ,0, tr_screw_explode] : large_gear_screw_pos();
     tr_nut_spinner = exploded ? [0 ,0, -7] : [0 ,0, 0];

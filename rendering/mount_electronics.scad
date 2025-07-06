@@ -10,6 +10,7 @@ use <librender/render_utils.scad>
 use <librender/render_settings.scad>
 use <librender/hardware.scad>
 use <librender/electronics.scad>
+use <librender/gltf_annotations.scad>
 use <./electronics/sangaboard.scad>
 use <./mount_motors.scad>
 use <./mount_sample_clips.scad>
@@ -156,6 +157,8 @@ module render_mount_electronics(frame, optics_version="rms"){
 }
 
 module microscope_with_clips(optics_version="rms", manual=false, post=false){
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("microscope_with_clips");
     assembled_microscope_without_electronics(optics_version=optics_version, manual=manual, post=post);
     mounted_microscope_frame(manual=manual, post=post){
         render_sample_clips();
@@ -163,6 +166,8 @@ module microscope_with_clips(optics_version="rms", manual=false, post=false){
 }
 
 module render_electronics_drawer(slide=false){
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("electronics_drawer");
     slide_out = slide? [100,0,0] : [0,0,0] ; 
     electronics_drawer_frame_xy(render_params()){
         translate(slide_out){
@@ -174,6 +179,8 @@ module render_electronics_drawer(slide=false){
 }
 
 module render_drawer_nut(slide=false, exploded=false){
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("drawer_nut");
     slide_out = slide? [100,0,0] : [0,0,0] ; 
     explode = exploded ? [0,6.9,15] : [0,6.9,0] ;
     electronics_drawer_frame_xy(render_params()){
@@ -195,6 +202,8 @@ module render_drawer_nut(slide=false, exploded=false){
 }
 
 module render_rpi_4b(slide=false, exploded=false, pi_rotated=false){
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("rpi_4b");
     slide_out = slide ? [100,0,0] : [0,0,0] ;
     explode = exploded ? [0,0,0.5] : [0,0,0] ;
     place = pi_rotated ? insert_pi_rotation_pos() : create_placement_dict([0,0,0]);
@@ -216,6 +225,8 @@ function insert_pi_rotation_pos() = let(
     )create_placement_dict(translation=[x,y,0], rotation1=[0,0,-angle], init_translation=[-x,-y,0]);
 
 module render_rpi_4b_screws(slide=false, exploded=false){
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("rpi_4b_screws");
     slide_out = slide ? [100,0,0] : [0,0,0] ;
     explode = exploded ? [0,0,15] : [0,0,0] ;
     hole_pos = pi_hole_pos(true);
@@ -236,6 +247,8 @@ module render_rpi_4b_screws(slide=false, exploded=false){
 }
 
 module render_rpi_ribbon(bent=false, slide=false, exploded=false){
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("rpi_ribbon");
     last_pos = bent ? [-20, 11, 38] : [50, 11, 300];
     ribbon_pos = [create_placement_dict([45.7, 11, 12.5], [0, 0, 180], [0, 270, 0]),
                 create_placement_dict([45, 11, 15], [0, 0, 180], [0, 270, 0]),
@@ -264,6 +277,8 @@ module render_motor_wire_placed(motor_number=0, long=false, slide=false, explode
 }
 
 module render_motor_wire(motor_number=0, long=false){
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("motor_wire");
     end_x = long ? -110 : -10 ;
     motor_connector_pos = [[28,11.5,23.5],[35.5,11.5,23.5],[43,11.5,23.5]];
     motor_wire_offset = 1.5;
@@ -287,6 +302,8 @@ module render_motor_wire(motor_number=0, long=false){
 }
 
 module render_sangaboard_v0_5(slide=false, exploded=false){
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("sangaboard_v0_5");
     slide_out = slide ? [100,0,0] : [0,0,0] ;
     explode = exploded ? [0,0,12] : [0,0,0] ;
     hole_pos = pi_hole_pos(true);
@@ -300,6 +317,8 @@ module render_sangaboard_v0_5(slide=false, exploded=false){
 }
 
 module render_sangaboard_screws(slide=false, exploded=false){
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("sangaboard_screws");
     slide_out = slide ? [100,0,0] : [0,0,0] ;
     stack = 11.5 + 5; // stack height 11.5mm, plus two board thicknesses, plus header base thickness
     explode = exploded ? [0,0,25] : [0,0,0] ;
@@ -321,6 +340,8 @@ module render_sangaboard_screws(slide=false, exploded=false){
 }
 
 module render_electronics_drawer_screw(exploded=false){
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("electronics_drawer_screw");
     explode_side = exploded ? [0,-15,0] : [0,0,0] ;
     explode_front = exploded ? [25,0,0] : [0,0,0] ;
     electronics_drawer_frame_xy(render_params()){
@@ -348,6 +369,8 @@ module render_electronics_drawer_screw(exploded=false){
 }
 
 module render_microscope(optics_version="rms", manual=false, post=false){
+        //This gltf_group_info must remain at the start of the module
+        gltf_group_info("complete_microscope");
         microscope_with_clips(optics_version=optics_version, manual=manual, post=post);
         if (!manual){
             render_electronics_drawer(slide=false);

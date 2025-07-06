@@ -12,6 +12,7 @@ use <../openscad/cable_tidies.scad>
 use <librender/assembly_parameters.scad>
 use <librender/render_utils.scad>
 use <librender/hardware.scad>
+use <librender/gltf_annotations.scad>
 use <mount_illumination.scad>
 use <mount_microscope.scad>
 use <mount_upright_optics.scad>
@@ -51,6 +52,8 @@ module assembled_microscope_without_electronics(optics_version="rms",
                                                 explode=undef,
                                                 connector_positions=[undef, undef, undef],
                                                 cable_positions=[undef, undef, undef]){
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("assembled_microscope_without_electronics");
     params = render_params();
     if (!manual){
         mounted_microscope_frame(){
@@ -99,6 +102,8 @@ module assembled_microscope_without_electronics(optics_version="rms",
 }
 
 module y_motor_and_cap(params, exploded=false, connector_pos=undef, cable_pos=undef, mirror_connector=false){
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("y_motor_and_cap");
     y_connector_pos = is_undef(connector_pos) ? y_connector_pos(params) : connector_pos;
     y_cable_pos = is_undef(cable_pos) ? y_cable_verticies() : cable_pos;
     explode_unit = exploded ? 10 : 0;
@@ -130,6 +135,8 @@ module y_motor_and_cap(params, exploded=false, connector_pos=undef, cable_pos=un
 }
 
 module z_motor_and_cap(params, optics_version="rms", exploded=false, connector_pos=undef, cable_pos=undef, cap=false){
+    //This gltf_group_info must remain at the start of the module
+    gltf_group_info("z_motor_and_cap");
     z_connector_pos = is_undef(connector_pos) ? z_connector_pos() : connector_pos;
     z_cable_pos = is_undef(cable_pos) ? z_cable_verticies() : cable_pos;
     explode_unit = exploded ? 10 : 0;
