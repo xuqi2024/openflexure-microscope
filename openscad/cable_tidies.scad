@@ -3,6 +3,7 @@ use <libs/main_body_transforms.scad>
 use <libs/utilities.scad>
 use <libs/wall.scad>
 use <libs/z_axis.scad>
+use <libs/main_body_structure.scad>
 
 
 module cable_tidy_body_back(h, curve_both=false){
@@ -197,6 +198,7 @@ module front_cable_tidy(params, h=6){
                 cube([99, 99, (h - 1.75)*2], center=true);
             }
         }
+	xy_legs_and_actuators(params);
     }
 }
 
