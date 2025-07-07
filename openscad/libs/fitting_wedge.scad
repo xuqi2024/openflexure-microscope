@@ -35,7 +35,7 @@ module fitting_wedge(h, nose_width, nose_shift=0.2, y_depth=5, center=false){
     }
 }
 
-module fitting_wedge_cutout(z_pos, y_stop=false, face_stops=false, nose_shift=0.2, max_screw=11, nose_width=undef, y_depth_max=10){
+module fitting_wedge_cutout(z_pos, y_stop=false, face_stops=false, nose_shift=0.2, max_screw=11, nose_width=undef, y_depth_max=10, extra_hole=undef){
     // Subtract this from a fitting wedge, to cut out a hole for the nut
     // so that it can be anchored to a mount
     // y_stop if set true will also cut flush the faces of the mount in case something is
@@ -53,7 +53,8 @@ module fitting_wedge_cutout(z_pos, y_stop=false, face_stops=false, nose_shift=0.
     translate([0, -3.7, z_pos]){
         fitting_wedge_nut(shaft=true, nut_angle=30);
         sequential_hull(){
-            translate_z(-0.5){ // allow a little extra depth for the nut in the slot 
+            // allow a little extra depth for the nut in the slot
+            translate_z(-0.5){
                 fitting_wedge_nut(nut_angle=30);
             }
             translate_z(7){
@@ -64,6 +65,25 @@ module fitting_wedge_cutout(z_pos, y_stop=false, face_stops=false, nose_shift=0.
                     fitting_wedge_nut(nut_angle=30);
                 }
             }
+        }
+    }
+    if (!is_undef(extra_hole)) {
+        translate([0, -3.7, z_pos+extra_hole]){
+            fitting_wedge_nut(shaft=true, nut_angle=30);
+            sequential_hull(){
+                // allow a little extra depth for the nut in the slot
+                translate_z(0.5){
+                    fitting_wedge_nut(nut_angle=30);
+                }
+                translate_z(-8){
+                    fitting_wedge_nut(nut_angle=30);
+                }
+                translate([0,10,-10-8]){
+                    fitting_wedge_nut(nut_angle=30);
+                }
+            }
+            side = 5.7 / cos(360/16);
+            translate([0, 10, -7])rotate_y(360/16)rotate_x(90)cylinder(20, d=side, center=true, $fn=8);
         }
     }
     if(y_stop){
