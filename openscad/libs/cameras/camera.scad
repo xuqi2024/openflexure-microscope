@@ -22,6 +22,7 @@ use <../libdict.scad>
 use <./logitech_c270.scad>
 use <./picamera_2.scad>
 use <./m12.scad>
+use <./omv_m12.scad>
 use <./6led.scad>
 use <./arducam_b0196.scad>
 
@@ -39,6 +40,8 @@ function get_camera_dictionary(optics_config) = let(
     //create a dictionary of the dictionaries.
     camera_dicts = [["logitech_c270", c270_camera_dict()],
                     ["m12", m12_camera_dict()],
+                    ["omv_m12", omv_m12_camera_dict()],
+                    ["omv_m12_45", omv_m12_camera_dict()],
                     ["6led", 6led_camera_dict()],
                     ["picamera_2", picamera_2_camera_dict()],
                     ["arducam_b0196",arducam_b0196_camera_dict()]
@@ -69,6 +72,14 @@ module camera_mount(optics_config, screwhole=true, counterbore=false){
     else if(camera_type=="m12"){
         m12_camera_mount();
     }
+    else if(camera_type=="omv_m12"){
+        omv_m12_camera_mount();
+    }
+    else if(camera_type=="omv_m12_45"){
+        rotate(45){
+            omv_m12_camera_mount();
+        }
+    }
     else if(camera_type=="6led"){
         6led_camera_mount();
     }
@@ -88,7 +99,7 @@ module camera_bottom_mounting_posts(optics_config, outers=true, cutouts=true, bo
     if(camera_type=="logitech_c270"){
         c270_camera_bottom_mounting_posts(optics_config, outers=outers, cutouts=cutouts, bottom_slice=bottom_slice);
     }
-    else if(camera_type=="m12"){
+    else if(camera_type=="m12" || camera_type=="omv_m12" || camera_type=="omv_m12_45"){
         assert(false, "This camera option does not have mounting posts set.");
     }
     else if(camera_type=="6led"){
