@@ -43,11 +43,19 @@ def write_ninja_file(build_dir):
 
         # The main body
         writer.openscad("main_body.stl", "main_body.scad", {"VERSION_STRING": version_str})
-        writer.openscad("main_body_manual.stl", "main_body_manual.scad", {"VERSION_STRING": version_str})
+        writer.openscad(
+            "main_body_manual.stl",
+            "main_body_manual.scad",
+            {"VERSION_STRING": version_str}
+        )
 
         # Bases and electronics adapters
         generate_stand_with_pi(writer)
         writer.openscad("microscope_stand_no_pi.stl", "microscope_stand_no_pi.scad")
+        writer.openscad(
+            "microscope_stand_removable_plate.stl",
+            "microscope_stand_removable_plate.scad"
+        )
         generate_nano_converter_plate(writer)
         writer.openscad("nano_converter_plate_gripper.stl", "nano_converter_plate_gripper.scad")
         writer.openscad("simple_post_stand.stl","simple_post_stand.scad")
