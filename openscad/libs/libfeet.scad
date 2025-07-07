@@ -182,10 +182,15 @@ module foot(params,
     w = actuator_housing_xy_size().x; //size of the outside of the screw seat column
     l = actuator_housing_xy_size().y;
     cw = column_core_size().x; //size of the inside of the screw seat column
+    cl = column_core_size().y; 
     wall_t = (w-cw)/2; //thickness of the wall
     foot_height = key_lookup("foot_height", params);
     h = foot_height - hover; //defined in parameters.scad, set hover=2 to not touch ground, useful for the middle foot.
     tilt = bottom_tilt - actuator_tilt; //the angle of the ground relative to the axis of the foot
+    //The distance in z to the top of the bridge that holds the band, taking into account
+    //that the actuator travel is tilted with repect to the z axis.
+    bridge_z_disp = (travel+0.5) * cos(actuator_tilt); 
+    
     // The following transforms will either make the foot "in place" (i.e. the top is z=0) or
     // printable (i.e. with the bottom on z=0).
 
@@ -228,7 +233,7 @@ module foot(params,
                             }
                             //we double-subtract the anchor for the bands at the bottom, so that it
                             //doesn't protrude outside the part.
-                            cube([2*column_base_radius()+1.5, 999, 2*(h-travel-0.5)],center=true);
+                            cube([2*column_base_radius()+1.5, 999, 2*(h-bridge_z_disp)],center=true);
                         }
                         //cut out the core again, without tapering, in the middle to make four lugs,
                         //two on either side - rather than a ring around the top. The gap between the lugs allows
@@ -238,7 +243,7 @@ module foot(params,
                                 cube([cw-5*2, 999, 999], center=true);
                                 cube([999,6.5,999], center=true);
                             }
-                            angled_extrude(actuator_tilt, 0, h=99, z=99/2+h-travel-0.5){
+                            angled_extrude(actuator_tilt, 0, h=99, z=99/2+h-bridge_z_disp){
                                 nut_seat_void();
                             }
                         }
@@ -252,7 +257,10 @@ module foot(params,
                                 }
                             }
                             //NOTE: We do not cut all the way through the foot. This is to keep the foot strong.
-                            foot_ground_plane(tilt=0, top=h-travel-0.5);
+                            //This also creates an endstop for the travel. When the actuator lever touches the stop it is at an angle
+                            //so the front needs to be up a little to make the stop. Remember flex_a is sin of the angle.
+                            extra_height = cl * flex_a();
+                            foot_ground_plane(tilt=0, top=h-bridge_z_disp+extra_height);
                         }
 
 
