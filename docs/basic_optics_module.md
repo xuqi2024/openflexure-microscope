@@ -9,6 +9,7 @@
 [M3 nut]: parts/mechanical.yml#Nut_M3_SS
 [No 2 6.5mm self tapping screws]: parts/mechanical.yml#SelfTap_PoziPan_No2x6.5_SS
 [#1 pozidrive screwdriver]: parts/tools/pozidrive_1_screwdriver.md "{cat:tool}"
+[#0 Phillips screwdriver]: ../parts/tools/phillips_0_screwdriver.md "{cat:tool}"
 [Pi Camera lens tool]: parts/tools/pi_camera_lens_tool.md "{cat:tool, note: 'This should come with the [Raspberry Pi Camera Module v2](parts/electronics.yml#PiCamera_2).  If it is missing, you can 3D print a [workaround lens remover](workaround_lens_remover.md).'}"
 
 [Raspberry Pi Camera Module v2]: parts/electronics.yml#PiCamera_2 "{cat:electronic}"
@@ -58,15 +59,15 @@ Take the [lens spacer][Lens spacer](fromstep){qty:1, cat:printedpart} and confir
 
 * Take the {{includetext:"Pi", if: var_lens is pi_lens}}{{includetext:"Logitech C270", if: var_lens is c270_lens}} Camera and place it on top of the [camera platform][Camera platform](fromstep){qty:1, cat:printedpart}.
 * Place the lens spacer over the camera
-{{includetext:"* Use four [No 2 6.5mm self tapping screws]{qty:4, cat:mech} to secure the three parts together using a [#1 pozidrive screwdriver]{qty:1, cat:tool}", if: var_lens is pi_lens}}{{includetext:"* Use three [No 1 self tapping screws](fromstep){qty:3, cat:mech, note: 'Recovered from C270 camera dissassembly'} to secure the three parts together using a [#1 pozidrive screwdriver]{qty:1, cat:tool}", if: var_lens is c270_lens}}
-* Take care to not over torque the screws.
+{{includetext:"* Use four [No 2 6.5mm self tapping screws]{qty:4, cat:mech} to secure the three parts together using a [#1 pozidrive screwdriver]{qty:1, cat:tool}", if: var_lens is pi_lens}}{{includetext:"* Use the three [No 1 self tapping screws](fromstep){qty:3, cat:mech, note: 'Recovered from C270 camera dissassembly'} that you saved from the camera disassembly to secure the three parts together using a [#0 Phillips screwdriver]{qty:1, cat:tool}", if: var_lens is c270_lens}}
+* Take care to not over torque the screws
 
 ![](renders/low_cost_optics_assembly_camera_{{var_lens}}.png)
 
 ## Attach the mounting screw {pagestep}
 
 * Take an [M3 nut]{qty:1, cat:mech} and push it into the nut trap from the top
-* Take an [M3x10 cap head screws](parts/mechanical.yml#CapScrew_M3x10mm_SS){qty: 1, cat:mech} and screw it into the nut.
+* Take an [M3x10 cap head screw][M3x10 cap head screws](parts/mechanical.yml#CapScrew_M3x10mm_SS){qty: 1, cat:mech} and screw it into the nut.
 * Only screw it in a couple of turns. About 5 mm of thread should still be visible
 
 ![](renders/low_cost_optics_assembly_screw_{{var_lens}}.png)

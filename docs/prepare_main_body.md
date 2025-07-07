@@ -29,19 +29,19 @@ The [main body][{{includetext: "manual ", if: var_body is _manual}}main body](fr
 * Place an [M3 nut]{qty:4} into one of the slots at the side of the stage
 * Put an [M3x10 cap head screw][extra M3x10 cap screw](parts/mechanical.yml#CapScrew_M3x10mm_SS){qty: 1, cat:tool, note:"For mounting trapped nuts"} into the hole above the nut
 * Tighten with a [2.5mm Ball-end Allen key]{qty:1, cat:tool} until you feel reasonable resistance.
-* Unscrew and remove the screw. The nut should stay mounted.
+* Remove the screw. The nut should stay mounted.
 * Repeat for the other three holes in the stage.
 
 ![](renders/prepare_main_body{{var_body, default:}}4.png)
 ![](renders/prepare_main_body{{var_body, default:}}5.png)
 ![](renders/prepare_main_body{{var_body, default:}}6.png)
 
-## Embed mounting nuts illumination platform {pagestep}
+## Embed mounting nuts in the illumination platform {pagestep}
 
 ![](renders/prepare_main_body{{var_body, default:}}7.png)
 ![](renders/prepare_main_body{{var_body, default:}}8.png)
 ![](renders/prepare_main_body{{var_body, default:}}9.png)
 
-* Repeat the steps used above to add {{var_illum_nuts_words, default:two}} [M3 nuts][M3 nut]{qty:{{var_illum_nuts, default:2}}, cat:mech} into the platform above the z-axis
+* Repeat the steps used above to add {{var_illum_nuts_words, default:two}} [M3 nuts][M3 nut]{qty:{{var_illum_nuts, default:2}}, cat:mech} into the platform above the z-axis{{includetext:". You do not need to insert a nut in the third hole on the illumination platform", if: var_illum_nuts_words is not three}}
 
 The [prepared main body]{output, qty:1} is now ready for assembly.
