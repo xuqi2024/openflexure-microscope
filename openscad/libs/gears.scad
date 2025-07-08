@@ -264,7 +264,7 @@ module motor_clearance(h=15){
         hull(){
             reflect([1,0]){
                 translate([motor_screw_separation()/2,0]){
-                    circle(r=4.5);
+                    circle(r=5.2);
                 }
             }
         }
