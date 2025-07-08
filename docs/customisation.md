@@ -53,3 +53,12 @@ If you have built a custom microscope without a rasberry Raspberry Pi, you can p
 
 [microscope_stand_no_pi.stl](models/microscope_stand_no_pi.stl){previewpage}
 
+## Alternative sample holders
+
+An experimental slide holder:
+
+[slide_riser.stl](models/slide_riser.stl){previewpage}
+
+A holder for a DHC-N01 C-chip to align the grid over the objective:
+
+[c-chip_holder.stl](models/c-chip_holder.stl){previewpage}
