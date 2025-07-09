@@ -343,6 +343,16 @@ module generous_camera_bits(){
     }
 }
 
+module picamera_2_shim(shim_t){
+    linear_extrude(shim_t){
+        projection(true){
+            translate_z(-picamera_2_bottom_z()-tiny()){
+                picamera_2_camera_mount();
+            }
+        }
+    }
+}
+
 module picamera_2_gripper(){
     // this little bit of plastic grips the plastic camera housing
     // and allows you to safely unscrew the lens
