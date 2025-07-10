@@ -4,6 +4,7 @@ use <../openscad/libs/z_axis.scad>
 use <../openscad/lens_tool.scad>
 use <../openscad/libs/lib_optics.scad>
 use <../openscad/libs/optics_configurations.scad>
+use <../openscad/libs/cameras/logitech_c270.scad>
 
 use <librender/assembly_parameters.scad>
 use <librender/render_utils.scad>
@@ -45,6 +46,9 @@ module render_low_cost_assembly(frame, camera_type){
                                  ribbon_cable=false,
                                  connector_open=true,
                                  camera_type=camera_type);
+        if (camera_type == "c270"){
+            rendered_backshell();
+        }
     }
     else if (frame == 6){
         rendered_low_cost_optics(optics_module_pos(),
@@ -124,6 +128,19 @@ module render_low_cost_assembly(frame, camera_type){
     }
 }
 
+
+module rendered_backshell(){
+    params = render_params();
+    optics_config = c270lens_config();
+    coloured_render(optics_module_colour()){
+        translate_z(lens_spacer_z(params, optics_config)){
+            rotate_x(180){
+                c270_backshell();
+            }
+        }
+    }
+}
+
 module assemble_lens_spacer(frame, camera_type="pi_camera"){
     params = render_params();
     optics_config = (camera_type == "c270") ? c270lens_config() : pilens_config();
@@ -131,14 +148,17 @@ module assemble_lens_spacer(frame, camera_type="pi_camera"){
         lens_spacer_pos_above_tool(params, optics_config):
         lens_spacer_pos_on_tool(params, optics_config);
     cut = (frame == 3)? true : false;
-    rendered_low_cost_optics(pos,
-                             cut=cut,
-                             lens=false,
-                             camera=false,
-                             nut=false,
-                             screw=false,
-                             ribbon_cable=false,
-                             camera_type=camera_type);
+    rotate_in_view = (camera_type == "c270")? 135 : 0;
+    rotate_z(rotate_in_view){
+        rendered_low_cost_optics(pos,
+                                cut=cut,
+                                lens=false,
+                                camera=false,
+                                nut=false,
+                                screw=false,
+                                ribbon_cable=false,
+                                camera_type=camera_type);
+    }
     if (camera_type == "pi_camera"){
         picamera2_lens();
     }
@@ -205,8 +225,8 @@ module rendered_low_cost_optics(pos,
                                 cable_positions=undef,
                                 camera_type="pi_camera"){
     
-    
-    cut_dir = cut ? "+x" : "none";
+    cut_camera = (camera_type == "c270")? "+xy" : "+x";
+    cut_dir = cut ? cut_camera : "none";
     params = render_params();
     optics_config = (camera_type == "c270") ? c270lens_config() : pilens_config();
     ribbon_pos = is_undef(cable_positions) ?
