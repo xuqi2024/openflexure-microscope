@@ -11,7 +11,7 @@ function nano_converter_plate_size() = let(
     thickness = usb_height - sanga_stand_height(sanga_version="stack_11mm") + 2
 ) [pi_board_dims().x, width, thickness];
 
-module nano_converter_plate(pi_version=4){
+module nano_converter_plate(pi_version=4, microcontroller_type="ArdunoNano", stepper_driver_type="inland"){
 
     size = nano_converter_plate_size();
 
@@ -28,7 +28,11 @@ module nano_converter_plate(pi_version=4){
             }
             nano_conv_plate_nano_walls(size);
             translate_z(size.z-tiny()){
-                nano_conv_plate_zc_a0591_mounts("standoff");
+                if(stepper_driver_type == "inland") {
+                  nano_conv_plate_inland_mounts("standoff");
+                } else {
+                  nano_conv_plate_zc_a0591_mounts("standoff");
+                }
             }
         }
         for (hole = mount_hole_positions){
@@ -48,15 +52,35 @@ module nano_converter_plate(pi_version=4){
         }
 
         translate_x(sanga_connector_x(sanga_version="stack_8.5mm")){
-            nano_conv_plate_nano_cutout();
+            if(microcontroller_type == "ArduinoNano") {
+                nano_conv_plate_nano_cutout();
+            }
+            
+            if(microcontroller_type == "PiPico") {
+                nano_conv_plate_pipico_cutout();
+            }
         }
         translate_z(0.5){
-            nano_conv_plate_zc_a0591_mounts();
+            if(stepper_driver_type == "inland") {
+              nano_conv_plate_inland_mounts();
+            } else {
+              nano_conv_plate_zc_a0591_mounts();
+            }
         }
-        translate([45, 10, size.z-0.5]){
-            rotate_z(90){
-                linear_extrude(10){
-                    text(str("Pi ",pi_version,"B"), 5);
+        if(stepper_driver_type == "inland") {
+            translate([size.x-5, 5, size.z-0.5]){
+                rotate_z(90){
+                    linear_extrude(10){
+                        text(str("Pi ",pi_version,"B"), 5);
+                    }
+                }
+            }            
+        } else {            
+            translate([45, 10, size.z-0.5]){
+                rotate_z(90){
+                    linear_extrude(10){
+                        text(str("Pi ",pi_version,"B"), 5);
+                    }
                 }
             }
         }
@@ -82,6 +106,55 @@ module nano_conv_plate_nano_walls(size)
             }
         }
     }
+
+module nano_conv_plate_inland_mounts(type="hole"){
+    assert(is_in(type, ["standoff", "hole"]), "Mount type must be standoff or hole");
+
+    gap = 0;
+    size = nano_converter_plate_size();
+    width = 21.0;
+    start_y = (width + size.y - 3*(width+gap)-gap)/2;
+    
+    union() {
+        translate([40, start_y, 0]) inland_mount(type, "X");
+        translate([40, start_y+1*(width+gap), 0]) inland_mount(type, "Y");
+        translate([40, start_y+2*(width+gap), 0]) inland_mount(type, "Z");
+    }
+}
+
+module inland_mount(type="hole", label=""){
+    size = nano_converter_plate_size();
+    assert(is_in(type, ["standoff", "hole"]), "Mount type must be standoff or hole");
+    if(type == "hole") {
+        union() {
+            translate([0, 0, -10]) no2_selftap_hole(h=99, center=false);
+            translate([30, 0, size.z-1.5]) {
+                rotate_z(90) {
+                    linear_extrude(10) {
+                        text(label, 5);
+                    }
+                }
+            }
+        }
+    } else {
+        union() {
+//            cylinder(2, r = 6/2, center = true);
+            translate([7.5-1.5, 0, (2+tiny())/2]) cube([15+3, 21, 2+tiny()], center = true);
+            translate([1.275, 10.50, (2+1.6+tiny())/2]){
+                difference() {
+                    cylinder($fn = 50, 2+1.6+tiny(), r = 2.5, center = true);
+                    translate([0, 2.5, 0]) cube([10, 5, 5], center = true);
+                }
+            }
+            translate([1.275, -10.5, (2+1.6+tiny())/2]){
+                difference() {
+                    cylinder($fn = 50, 2+1.6+tiny(), r = 2.5, center = true);
+                    translate([0, -2.5, 0]) cube([10, 5, 5], center = true);
+                }
+            }
+        }
+    }
+}
 
 module nano_conv_plate_zc_a0591_mounts(type="hole"){
     assert(is_in(type, ["standoff", "hole"]), "Mount type must be standoff or hole");
@@ -133,6 +206,7 @@ module nano_conv_plate_pi_port_cutout(pi_version=4){
 
 // A cutout for an upside down arduino nano or Raspberry Pi Pico
 module nano_conv_plate_nano_cutout(){
+    size = nano_converter_plate_size();
     difference(){
         union(){
             // USB connector
@@ -153,23 +227,30 @@ module nano_conv_plate_nano_cutout(){
             translate_y(58){
                 no2_selftap_hole(h=99, center=true);
             }
-            // RaspberryPi Pico main board
-            translate([-22/2, -tiny(), 4]){
-                cube([22, 52, 20]);
-            }
-            // Pico programming port 
-            translate_y(47){
-                cube([9, 10, 20], center=true);
-            }
-            // Pico reset button
-            translate([-4,12.5-tiny(),6.5]){
-                cube([6, 7, 10], center=true);
-                cube([4, 5, 20], center=true);
-            }
-            // Pico power components
-            translate([4.5,10-tiny(),7.5]){
-                cube([8, 12, 10], center=true);
-            }
+//            // RaspberryPi Pico main board
+//            translate([-22/2, -tiny(), 4]){
+//                cube([22, 52, 20]);
+//            }
+//            // Pico Soldering Room
+//            translate([-22/2+1, -tiny(), size.z-2]){
+//                cube([2, 52, 2+tiny()], center=false);
+//            }
+//            translate([+22/2-3, -tiny(), size.z-2]){
+//                cube([2, 52, 2+tiny()], center=false);
+//            }
+//            // Pico programming port 
+//            translate_y(47){
+//                cube([9, 10, 20], center=true);
+//            }
+//            // Pico reset button
+//            translate([-4,12.5-tiny(),6.5]){
+//                cube([6, 7, 10], center=true);
+//                cube([4, 5, 20], center=true);
+//            }
+//            // Pico power components
+//            translate([4.5,10-tiny(),7.5]){
+//                cube([8, 12, 10], center=true);
+//            }
         }
         union(){
             // a break-off bit to support back of a nano
@@ -191,7 +272,46 @@ module nano_conv_plate_nano_cutout(){
                 }
                 translate([0, 44.5+6.5/2, 0]){
                     cylinder(d=6.5, h=tiny(), $fn=12);
-                }
+               }
+            }
+        }
+    }
+}
+
+// A cutout for an upside down arduino nano or Raspberry Pi Pico
+module nano_conv_plate_pipico_cutout(){
+    size = nano_converter_plate_size();
+    difference(){
+        union(){
+            // USB connector
+            cube([8,18,20], center=true);
+            // hole for the gripper screw
+            translate_y(58){
+                no2_selftap_hole(h=99, center=true);
+            }
+            // RaspberryPi Pico main board
+            translate([-22/2, -tiny(), 4]){
+                cube([22, 52, 20]);
+            }
+            // Pico Soldering Room
+            translate([-22/2+1, -tiny(), size.z-2]){
+                cube([2, 52, 2+tiny()], center=false);
+            }
+            translate([+22/2-3, -tiny(), size.z-2]){
+                cube([2, 52, 2+tiny()], center=false);
+            }
+            // Pico programming port 
+            translate_y(47){
+                cube([9, 10, 20], center=true);
+            }
+            // Pico reset button
+            translate([-4,12.5-tiny(),6.5]){
+                cube([6, 7, 10], center=true);
+                cube([4, 5, 20], center=true);
+            }
+            // Pico power components
+            translate([4.5,10-tiny(),7.5]){
+                cube([8, 12, 10], center=true);
             }
         }
     }
