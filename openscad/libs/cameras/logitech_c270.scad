@@ -36,7 +36,7 @@ function c270_near_third_hole_pos() = [5,-9.5,0];
 function c270_far_third_hole_pos() = [-6,42.3,0];
 
 
-module c270_cutout(beam_r=4.3, beam_h=4.5){
+module c270_cutout(beam_r=4.3, beam_h=4.5, cover=true){
     //cut-out to fit Logitech C270 webcam
     //optical axis at (0,0)
     //top of PCB at (0,0,0)
@@ -49,11 +49,13 @@ module c270_cutout(beam_r=4.3, beam_h=4.5){
                 cylinder(r=beam_r,h=2*tiny(),center=true);
             }
         }
+        // with a cover below the camera, make the cut-out a bit longer
+        cut_pos = (cover)? 27 : 25;
 
         difference(){
             union(){
                 // component clearance, cable end
-                translate([0, 27, 15-3.5]){
+                translate([0, cut_pos, 15-3.5]){
                     rotate_y(180){
                         round_top_cube([19.5, 37, 15],1.5,center=true);
                     }
@@ -116,8 +118,9 @@ module c270_camera_mount(screwhole=true){
     w_w = 23.5;
 
     y_offset = c270_y_offset();
-    //extra room for cable
-    y_excess = c270_mount_y_excess();
+    // extra room for cable if the mount has a cover below
+    // when the screwholes are present from below
+    y_excess = (screwhole)? 0 : c270_mount_y_excess();
     block_setback = c270_mount_excess_y_setback();
 
     mounting_hole_x = c270_camera_hole_spacing();
@@ -126,27 +129,20 @@ module c270_camera_mount(screwhole=true){
     rotate(-45){
         difference(){
             union(){
-                // Cube over sensor for hulling to the lens mount
-                translate([-w_w/2, y_offset, -mount_height]){
-                    cube([w_w, h_w, mount_height]);
+                // Cube over sensor for hulling to the lens mount, slightly raised
+                // because the spheres making the round top are cut off in the STL representation
+                translate([-w_w/2, y_offset-1, -mount_height]){
+                    round_top_cube([w_w, h_w+3, mount_height+2*tiny()], 2, $fn=16);
                 }
                 // Cube over the rest of the board, slightly lower down so that it
                 // is not used for the lens mount.
                 translate([-w/2, y_offset+y_excess, -mount_height]){
-                    round_top_cube([w, h, mount_height-2*tiny()],2);
-                }
-                // Joining part
-                hull(){
-                    translate([-w_w/2, y_offset+h_w, -mount_height]){
-                        cube([w_w, tiny(), mount_height-2*tiny()]);
-                    }
-                    translate([-w/2, y_offset+h_w, -mount_height]){
-                        round_top_cube([w, 4, mount_height-2*tiny()],2);
-                    }
+                    round_top_cube([w, h, mount_height-2*tiny()], 2, $fn=16);
                 }
             }
             translate_z(-mount_height){
-                c270_cutout();
+                // if there are screwholes from below, there is no cover below
+                c270_cutout(cover=!screwhole);
                 if(screwhole){
                     // mounting holes
                     reflect_x(){
@@ -183,6 +179,14 @@ module c270_camera_mount(screwhole=true){
     }
 }
 
+c270_camera_mount(screwhole=true);
+use <../../../rendering/librender/electronics.scad>
+rotate_z(135){
+    translate_z(-4.5){
+        c270_board();
+    }
+}
+
 module c270_backshell(){
     // This whole element is rotated 180 degrees about x when in place
     // y here becomes -y
@@ -204,7 +208,7 @@ module c270_backshell(){
         cover_length = h + y_offset + y_excess - end_from_centre;
         difference(){
             translate([-w/2, 0, 0]){
-                round_top_cube([w, cover_length+end_from_centre, height],2);
+                round_top_cube([w, cover_length+end_from_centre, height], 2, $fn=16);
             }
             cube([2*w, 2*end_from_centre, 99], center=true);
         }
