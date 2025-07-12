@@ -449,7 +449,7 @@ function camera_board_thickness(optics_config) = key_lookup("board_thickness", o
 * * base_r - radius of mount body
 * * camera_rotation - orientation of the camera compared the the OFM std
 */
-module camera_platform(params, optics_config, base_r, camera_rotation=0){
+module camera_platform(params, optics_config, base_r, camera_rotation=0, text_=""){
 
     assert(key_lookup("optics_type", optics_config)=="spacer", "Use spacer optics configuration to create a camera_platform.");
 
@@ -481,6 +481,17 @@ module camera_platform(params, optics_config, base_r, camera_rotation=0){
             translate_z(platform_h){
                 rotate_z(camera_rotation){
                     camera_bottom_mounting_posts(optics_config, cutouts=false);
+                }
+            }
+        }
+
+        // Text on the bottom
+        translate([-1,-2,-tiny()]){
+            linear_extrude(2){
+                rotate_z(-90){
+                    mirror([1,0,0]){
+                        text(text_, size=4);
+                    }
                 }
             }
         }
