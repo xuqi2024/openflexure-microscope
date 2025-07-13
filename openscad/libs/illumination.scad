@@ -1,14 +1,6 @@
-/******************************************************************
-*                                                                 *
-* OpenFlexure Microscope: Illumination                            *
-*                                                                 *
-* The illumination module includes the condenser lens mounts and  *
-* the dovetail that it attaches to.                               *
-*                                                                 *
-* (c) Richard Bowman, April 2018                                  *
-* Released under the CERN Open Hardware License                   *
-*                                                                 *
-******************************************************************/
+// LibFile: illumination.scad
+//   The illumination module includes the condenser lens mounts and
+//   the dovetail that it attaches to.
 
 
 // Note that no geometry is output in this file. The condenser and the illumination
@@ -34,7 +26,7 @@ function illumination_dt_params() = dovetail_params(
     overall_height = 99
 );
 
-// Note: Front is the side towards the motors, Back is the side towards the stage
+// *Note* Front is the side towards the motors, Back is the side towards the stage
 function illumination_back_corner_y(params) = (key_lookup("leg_r", params)+ leg_outer_w(params))/sqrt(2) + 4;
 function right_illumination_screw_pos(params) = [20, z_nut_y(params), illumination_dovetail_z(params)];
 function left_illumination_screw_pos(params) = vector_mirror_x(right_illumination_screw_pos(params));
@@ -349,6 +341,7 @@ function condenser_lens_diameter()=13;
 function condenser_base_r(lens_d)=lens_d/2+2;
 
 // Module: condenser()
+// Description:
 //   This makes the condenser arm, including the dovetail clamp, condenser
 //   lens holder, and mounting for the illumination PCB.
 module condenser(lens_assembly_z=condenser_lens_assembly_z(), include_mounting=true, basic_condenser = false){

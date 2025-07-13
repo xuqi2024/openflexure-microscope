@@ -1,4 +1,6 @@
-
+// LibFile: main_body_structure.scad
+//   A collection of functions and modules  that define the main structure of
+//   the microscope
 use <./utilities.scad>
 use <./compact_nut_seat.scad>
 use <./logo.scad>

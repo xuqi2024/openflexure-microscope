@@ -1,10 +1,6 @@
-/*
-
-An attempt at an alternative to my ageing "nut_seat_with_flex" design...
-
-(c) 2016 Richard Bowman - released under CERN Open Hardware License
-
-*/
+// LibFile: compact_nut_seat.scad
+//   The library contains the modules that hold the nut in the actuator column
+//   as well as other modules for that define the actuator column.
 
 use <./utilities.scad>
 use <./libdict.scad>
