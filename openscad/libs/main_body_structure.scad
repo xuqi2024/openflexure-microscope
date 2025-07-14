@@ -523,7 +523,7 @@ module actuator_walls_and_z_casing(params, z_axis=true){
             }
             reflect_x(){
                 if (xy_cable_tidies){
-                    side_housing(params);
+                    side_housing(params, screw_hole_type="pilot");
                 }
             }
             //lugs to bolt the microscope down to base

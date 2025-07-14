@@ -153,7 +153,7 @@ module side_cable_tidy(params, h=6){
         y_actuator_frame(params){
             cable_tidy_body_cutouts(h-1);
         }
-        side_housing_cutout(params, h-1.75);
+        side_housing_cutout(params, h=h-1.75, screw_hole_type="counterbore");
     }
 }
 

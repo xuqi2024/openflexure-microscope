@@ -282,7 +282,7 @@ module side_housing_placement(params){
     }
 }
 
-module side_housing(params, h=undef, cavity_h=undef, attach=true){
+module side_housing(params, h=undef, cavity_h=undef, attach=true, screw_hole_type="none"){
     //attach: whether the housing it attached to the wall
     actuator_h = key_lookup("actuator_h", params);
 
@@ -314,18 +314,39 @@ module side_housing(params, h=undef, cavity_h=undef, attach=true){
                 y_actuator_wall_vertex(params, inside=false);
             }
         }
-        side_housing_cutout(params, c_h);
+        side_housing_cutout(params, h=c_h, screw_hole_type=screw_hole_type);
         translate(y_actuator_pos(params) + [0, 0, shaft_z-1.5]){
             cylinder(d=30, h=80);
         }
     }
 }
 
-module side_housing_cutout(params, h){
+module side_housing_cutout(params, h, screw_hole_type="none"){
     housing_cut_size = [motor_connector_size().x+2,motor_connector_size().y+2, h+1];
+    screw_hole_offset = 7.5;
+    screw_hole_depth = 6.5;
+    screw_location = [housing_cut_size.x/2,housing_cut_size.y+screw_hole_offset, 0];
+
     side_housing_placement(params){
-        translate([2, 6, -1]){
-            cube(housing_cut_size);
+        translate([2, 6, 0]){
+            translate_z(-1){
+                cube(housing_cut_size);
+            }
+            // Cut holes for no 2 self tap screws
+            if (screw_hole_type == "pilot"){
+                translate(screw_location){
+                    translate_z(h-screw_hole_depth){
+                        no2_selftap_hole(h=screw_hole_depth+tiny());
+                    }
+                }
+            }
+            else if (screw_hole_type == "counterbore"){
+                translate(screw_location){
+                    translate_z(1.5){
+                        no2_selftap_counterbore(tight=true);
+                    }
+                }
+            }
         }
     }
 }
