@@ -442,22 +442,20 @@ function camera_board_thickness(optics_config) = key_lookup("board_thickness", o
 
 
 /**
-* camera_platform(params, base_r, h)
+* camera_platform(params, optics_config, base_r, camera_rotation=0)
 *
 * * params - the microscope parameter dictionary
 * * optics_config - optics configuration dictionary
 * * base_r - radius of mount body
+* * camera_rotation - orientation of the camera compared the the OFM std
 */
-module camera_platform(params, optics_config, base_r, camera_rotation=0){
+module camera_platform(params, optics_config, base_r, camera_rotation=0, text_=""){
 
     assert(key_lookup("optics_type", optics_config)=="spacer", "Use spacer optics configuration to create a camera_platform.");
 
     // platform height is 5mm below the lens spacer (board is 1mm thick mounting posts are 4mm tall)
     platform_h = lens_spacer_z(params, optics_config) - camera_mounting_post_height(optics_config) - camera_board_thickness(optics_config);
     assert(platform_h > upper_z_flex_z(params), "Platform height too low for z-axis mounting");
-
-    camera_extra_rotation = is_c270_spacer(optics_config)? -135: 0;
-    camera_mounting_posts_rotate  = camera_rotation + camera_extra_rotation;
 
     // Make a camera platform with a fitting wedge on the side and a platform on the top
     difference(){
@@ -472,7 +470,7 @@ module camera_platform(params, optics_config, base_r, camera_rotation=0){
                     hull(){
                         cylinder(r=base_r,h=tiny());
                         objective_fitting_wedge(h=tiny());
-                        rotate_z(camera_mounting_posts_rotate){
+                        rotate_z(camera_rotation){
                             camera_bottom_mounting_posts(optics_config, bottom_slice=true);
                         }
                     }
@@ -481,8 +479,19 @@ module camera_platform(params, optics_config, base_r, camera_rotation=0){
 
             // add the camera mount posts
             translate_z(platform_h){
-                rotate_z(camera_mounting_posts_rotate){
+                rotate_z(camera_rotation){
                     camera_bottom_mounting_posts(optics_config, cutouts=false);
+                }
+            }
+        }
+
+        // Text on the bottom
+        translate([-1,-2,-tiny()]){
+            linear_extrude(2){
+                rotate_z(-90){
+                    mirror([1,0,0]){
+                        text(text_, size=4);
+                    }
                 }
             }
         }
@@ -497,7 +506,7 @@ module camera_platform(params, optics_config, base_r, camera_rotation=0){
         undercut_objective_fitting_wedge(undercut_height = 1.5);
         // add the camera mount holes
         translate_z(platform_h){
-            rotate_z(camera_mounting_posts_rotate){
+            rotate_z(camera_rotation){
                 camera_bottom_mounting_posts(optics_config, outers=false, cutouts=true);
             }
         }
@@ -507,7 +516,7 @@ module camera_platform(params, optics_config, base_r, camera_rotation=0){
         }
         // cut-out for Arducam b0196 cable
         if(is_b0196_spacer(optics_config)){
-            rotate_z(45){
+            rotate_z(45 + camera_rotation){
                 translate([9,-11.5,10]){
                  cube([7,12,99]);
                 }

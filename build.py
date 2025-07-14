@@ -61,6 +61,7 @@ def write_ninja_file(build_dir):
 
         # Optics modules and associated components
         generate_rms_optics_modules(writer)
+        generate_rms_optics_modules(writer, "upright")
         generate_platform_optics_modules(writer)
         writer.openscad("picamera_2_cover.stl", "picamera_2_cover.scad")
 
@@ -128,12 +129,18 @@ def write_ninja_file(build_dir):
 
         # extra platform optics **TODO make this build automatically with the
         # generate_platform_optics_modules below
-        writer.openscad("camera_platform_c270.stl", "camera_platform_c270.scad")
+        writer.openscad("camera_platform_c270.stl",
+                        "camera_platform_c270.scad")
+        writer.openscad("upright_camera_platform_c270.stl",
+                        "upright_camera_platform_c270.scad")
         writer.openscad("lens_spacer_c270.stl", "lens_spacer_c270.scad")
-        writer.openscad("camera_platform_arducam_b0196.stl", "camera_platform_b0196.scad")
+        writer.openscad("camera_platform_arducam_b0196.stl",
+                        "camera_platform_b0196.scad")
+        writer.openscad("upright_camera_platform_arducam_b0196.stl",
+                        "upright_camera_platform_b0196.scad")
         writer.openscad("lens_spacer_arducam_b0196.stl", "lens_spacer_b0196.scad")
 
-def generate_rms_optics_modules(writer):
+def generate_rms_optics_modules(writer, variant=None):
     """
     Add all rms optics modules to the ninja build
     """
@@ -142,12 +149,16 @@ def generate_rms_optics_modules(writer):
             for beamsplitter in [True, False]:
                 bs_text = "_beamsplitter" if beamsplitter else ""
                 output = f"optics_{camera}_{optics}{bs_text}.stl"
+                scadfile = "rms_optics_module.scad"
+                if variant:
+                    output = f"{variant}_{output}"
+                    scadfile = f"{variant}_{scadfile}"
 
                 parameters = {"OPTICS": optics,
                               "CAMERA": camera,
                               "BEAMSPLITTER": beamsplitter}
 
-                writer.openscad(output, "rms_optics_module.scad", parameters)
+                writer.openscad(output, scadfile, parameters)
 
 def generate_platform_optics_modules(writer):
     """
@@ -158,6 +169,7 @@ def generate_platform_optics_modules(writer):
     # be fixed as other options are added.
     for camera, optics in PLATFORM_OPTICS_MODULE_OPTIONS:
         writer.openscad(f"camera_platform_{camera}_{optics}.stl", "camera_platform.scad")
+        writer.openscad(f"upright_camera_platform_{camera}_{optics}.stl", "upright_camera_platform.scad")
         writer.openscad(f"lens_spacer_{camera}_{optics}.stl", "lens_spacer.scad")
 
 def generate_stand_with_pi(writer):

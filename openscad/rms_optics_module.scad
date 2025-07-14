@@ -3,9 +3,8 @@
 * The optics module holds the camera and whatever lens you are
 * using as an objective - current options are either the lens
 * from the Raspberry Pi camera module, or an RMS objective lens
-* and a second "tube length conversion" lens (usually 40mm).
+* and a second "tube length conversion" lens (usually 50mm).
 */
-
 
 use <./libs/lib_optics.scad>
 
