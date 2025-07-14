@@ -321,7 +321,7 @@ module side_housing(params, h=undef, cavity_h=undef, attach=true, screw_hole_typ
     }
 }
 
-module side_housing_cutout(params, h, screw_hole_type="pilot"){
+module side_housing_cutout(params, h, screw_hole_type="none"){
     housing_cut_size = [motor_connector_size().x+2,motor_connector_size().y+2, h+1];
     screw_hole_offset = 7.5;
     screw_hole_depth = 6.5;
