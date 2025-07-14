@@ -54,7 +54,7 @@ def parse_args() -> Namespace:
 
 def main(branch_hash_file: str, master_hash_file: str) -> None:
     """
-    Compare the hashes, print changes to terminal and make a summart for GitLab
+    Compare the hashes, print changes to terminal and make a summary for GitLab
     MR
     """
     with open(branch_hash_file, "r", encoding="utf-8") as f_obj:
