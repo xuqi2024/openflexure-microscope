@@ -4,17 +4,20 @@ import argparse
 import logging
 import os
 import subprocess
-
+import shutil
 import yaml
 
 from .hash_csg_files import generate_hash, normalise_path
 
 def load_hash_file(hash_file_path):
     """Load the hash file and return a dictionary"""
-    with open(hash_file_path, "r", encoding='utf-8') as hashfile:
-        return yaml.safe_load(hashfile)
+    try:
+        with open(hash_file_path, "r", encoding='utf-8') as hashfile:
+            return yaml.safe_load(hashfile)
+    except FileNotFoundError:
+        return None
 
-def needs_recompile(output_path, hashes, ignore_unchanged=False):
+def needs_recompile(input_path, output_path, hashes, ignore_unchanged=False):
     """Check if a file needs to be recompiled.
 
     NB at the moment, to save on needless hashing of input SCAD files,
@@ -25,6 +28,18 @@ def needs_recompile(output_path, hashes, ignore_unchanged=False):
     # hashes in these cases.
     if output_path.endswith(".csg"):
         return True
+    try:
+        with (open(input_path + ".sha1", "r", encoding='utf-8') as input_sha1,
+              open(output_path + ".sha1", "r", encoding='utf-8') as output_sha1):
+            if input_sha1.read() == output_sha1.read():
+                return False
+    except FileNotFoundError:
+        pass
+
+    if not hashes:
+        logging.info("BUILD %s because the hash file is missing", output_path)
+        return True
+
     # Ensure the path is in the same format (relative, forward slashes) as the hash keys
     output_path = normalise_path(output_path)
     if output_path not in hashes:
@@ -61,10 +76,11 @@ def needs_recompile(output_path, hashes, ignore_unchanged=False):
 
 def run_openscad(input_path, output_path):
     """Run OpenSCAD to turn a CSG into an STL"""
-    return subprocess.run(
+    subprocess.run(
         ["openscad", "--hardwarnings", input_path, "-o", output_path, "-d", output_path + ".d"],
         check=True
     )
+    shutil.copyfile(input_path + ".sha1", output_path + ".sha1")
 
 def parse_command_line_args():
     """Process command-line arguments"""
@@ -83,12 +99,8 @@ def parse_command_line_args():
 
 def process_one_file(input_path, output_path, hash_file, ignore_unchanged_outputs=False):
     """Compile one input file into an output file, checking against the hashes"""
-    try:
-        hashes = load_hash_file(hash_file)
-        if needs_recompile(output_path, hashes, ignore_unchanged=ignore_unchanged_outputs):
-            run_openscad(input_path, output_path)
-    except FileNotFoundError:
-        logging.info("BUILD %s because the hash file is missing", output_path)
+    hashes = load_hash_file(hash_file)
+    if needs_recompile(input_path, output_path, hashes, ignore_unchanged=ignore_unchanged_outputs):
         run_openscad(input_path, output_path)
 
 if __name__ == "__main__":

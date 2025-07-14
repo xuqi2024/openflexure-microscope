@@ -7,6 +7,31 @@ building in CI/git-managed files means timestamps are unreliable.
 
 import argparse
 import re
+import os.path
+import hashlib
+
+def get_dependency(deps, fn):
+    bn = os.path.basename(fn)
+    if not bn in deps:
+        raise ValueError()
+    fn_dirs = fn.split("/")
+    # search for longest match
+    match_len = 0
+    match_fn = fn
+    for dep in deps[bn]:
+        dep_dirs = dep.split("/")
+        for n, (f, d) in enumerate(zip(reversed(fn_dirs), reversed(dep_dirs))):
+            if f != d:
+                if n > match_len:
+                    match_len = n
+                    match_fn = dep
+                break
+        else:
+            # All matched
+            match_len = n + 1
+            match_fn = dep
+
+    return match_fn
 
 def fix_csg(input_fname, output_fname):
     """Fix a CSG file so it will compile in OpenSCAD without warnings.
@@ -15,15 +40,34 @@ def fix_csg(input_fname, output_fname):
     * Strip `timestamp` arguments (which occur in `import` module calls)
     * Create a `.d` dependency file for the `.fixed.csg` for `ninja` to use. This file the depends only on the `.csg` file.
     """
+
+    sha1 = hashlib.sha1()
+
+    dependencies = {}
+    with open(input_fname + '.d', "r", encoding='utf-8') as infile:
+        for line in infile:
+            fn = line.strip().split()[0]
+            dependencies.setdefault(os.path.basename(fn), []).append(fn)
+
     with open(input_fname, "r", encoding='utf-8') as infile, open(output_fname, "w", encoding='utf-8') as outfile:
         for line in infile:
-            outfile.write(
-                re.sub(r", timestamp = [\d]+", "", line)
-            )
+            m = re.search(r'import\(file = "([^"]+)"', line)
+            if m:
+                dependency = get_dependency(dependencies, m.group(1))
+                line = line.replace(m.group(1), dependency)
+                line = re.sub(r", timestamp = [\d]+", "", line)
+                with open(dependency, "rb") as dep_file:
+                    sha1.update(dep_file.read())
+
+            sha1.update(line.encode('utf-8'))
+            outfile.write(line)
 
     with open(output_fname + ".d", "w", encoding='utf-8') as outfile:
         outfile.write(f"{output_fname}: \\\n")
         outfile.write(f"\t{input_fname}\n")
+
+    with open(output_fname + ".sha1", "w", encoding='utf-8') as sha1file:
+        sha1file.write(sha1.hexdigest())
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
