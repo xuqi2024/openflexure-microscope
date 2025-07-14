@@ -109,7 +109,7 @@ Nut_M3_SS:
       PartNo: WF1255
 SelfTap_PoziPan_No2x6.5_SS:
   Name: Pozi Pan Self Tapping Screw No.2 x 6.5mm in A2 Stainless
-  Description: Pozi Pan Tapping Screws ISO 7049 (DIN 7981) No.2 in A2 Stainless Steel. Phillips head screws may be more common than Pozidriv in some locations.
+  Description: Pozi Pan Self Tapping Screws ISO 7049 (DIN 7981) No.2 in A2 Stainless Steel. Other drive systems like Phillips head or Torx will also work and may be more common in some locations. Use the right screwdriver for those instead of the PZ1 listed in the bill of materials.
   Specs:
     Length: 6.5mm
     Nominal diameter: 2.2mm
