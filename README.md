@@ -1,5 +1,153 @@
 # OpenFlexure Microscope
-The OpenFlexure Microscope is a  3D printable microscope, including a precise mechanical stage to move the sample and focus the optics.  There are many different options for the optics, ranging from a webcam lens to a 100x, oil immersion objective.
+
+## 项目概述
+The OpenFlexure Microscope is a 3D printable microscope, including a precise mechanical stage to move the sample and foc* *Robotic microscopy for everyone: the OpenFlexure microscope*, [Biomedical Optics Express **11** 2447 (2020)](https://doi.org/10.1364/BOE.385729) (open access).
+* *A one-piece 3D printed flexure translation stage for open-source microscopy*, [Review of Scientific Instruments **87**, 025104 (2016)](http://dx.doi.org/10.1063/1.4941068) (open access).
+
+## Building a microscopecs. There are many different options for the optics, ranging from a webcam lens to a 100x, oil immersion objective.
+
+## 快速开始
+
+### 了解项目
+- 🚀 **[快速开始指南](./QUICK_START.md)** - 5分钟了解项目核心要点
+- 📖 **[项目架构文档](./ARCHITECTURE.md)** - 详细的技术架构和设计说明
+- 🇨🇳 **[中文文档](./docs/_navigation_zh.md)** - 组装指南中文翻译版本
+- 🔧 **构建说明** - 请查看下方的构建指南
+
+## 核心功能
+### 1. 3D打印显微镜机身
+- **柔性机构设计**: 使用塑料柔性机制实现亚微米级精度（~10mm范围内）
+- **模块化设计**: 主体、光学模块、照明系统、载物台等可独立设计制造
+- **高精度运动控制**: 无摩擦、无振动的精密定位，步进精度可达100nm以下
+
+### 2. 多样化光学系统
+- **基础光学**: 使用网络摄像头镜头（如树莓派相机模块）
+- **高分辨率光学**: 支持标准RMS螺纹显微镜物镜（最高100x，油浸）
+- **可互换设计**: 光学模块可快速更换以改变放大倍率和分辨率
+
+### 3. 自动化控制
+- **电机驱动**: 支持步进电机实现XYZ三轴自动控制
+- **远程控制**: 基于树莓派的服务器软件，支持网页端控制
+- **精密定位**: 机械杠杆系统提供精确的运动控制
+
+### 4. 多种照明模式
+- **透射照明**: 标准显微镜底部照明配置
+- **反射照明**: 可选的顶部照明系统
+- **LED照明**: 低功耗、长寿命的LED光源
+
+## 项目架构
+
+### 目录结构
+```
+openflexure-microscope/
+├── openscad/                    # OpenSCAD源代码文件
+│   ├── microscope_parameters.scad  # 核心参数配置
+│   ├── main_body.scad              # 显微镜主体设计
+│   ├── optics.scad                 # 光学模块设计
+│   ├── z_axis.scad                 # Z轴设计
+│   ├── illumination.scad           # 照明系统
+│   ├── feet.scad                   # 支脚设计
+│   ├── gears.scad                  # 齿轮系统
+│   ├── compact_nut_seat.scad       # 致动器座设计
+│   ├── cameras/                    # 各种相机模块适配
+│   ├── accessories/                # 附件设计
+│   └── utilities.scad              # 实用函数库
+├── build_system/                # 构建系统
+│   ├── json_generator.py           # STL配置生成器
+│   └── util.py                     # 构建工具
+├── docs/                        # 组装文档
+│   ├── 0_printing.md               # 3D打印指南
+│   ├── 1_actuator_assembly.md      # 致动器组装
+│   ├── 2a_basic_optics_module.md   # 基础光学模块
+│   ├── 2b_high_resolution_optics_module.md # 高分辨率光学模块
+│   ├── 3_illumination.md           # 照明系统组装
+│   ├── 4_clips_and_wiring.md       # 夹具和布线
+│   ├── 5_motors.md                 # 电机安装
+│   └── 6_motor_controllers.md      # 电机控制板
+├── design_files/                # 设计参考文件
+├── build.py                     # 主构建脚本
+├── build_docs.py               # 文档构建脚本
+└── requirements.txt            # Python依赖
+```
+
+### 技术架构
+
+#### 1. 设计系统 (OpenSCAD)
+- **参数化设计**: `microscope_parameters.scad`作为核心配置文件
+- **模块化架构**: 每个组件独立设计，通过标准接口连接
+- **柔性机制**: 基于塑料弹性变形的无摩擦运动机制
+
+#### 2. 构建系统 (Python + Ninja)
+- **自动化构建**: `build.py`脚本使用Ninja构建系统
+- **多配置支持**: 支持不同硬件配置的STL文件生成
+- **Web配置器**: 通过JSON配置文件支持在线STL选择
+
+#### 3. 核心组件设计
+- **主体结构**: 集成XY载物台和Z轴系统的一体化设计
+- **致动器系统**: 基于螺杆-螺母机制的精密致动器
+- **光学系统**: 可适配多种相机和镜头的模块化光学设计
+- **照明系统**: 可调节的LED照明和聚光镜系统
+
+#### 4. 电子控制系统
+- **硬件平台**: 树莓派作为主控制器
+- **电机控制**: Sangaboard等专用电机驱动板
+- **通信接口**: 网络接口用于远程控制
+
+### 预设配置
+项目提供了三种标准配置：
+
+1. **高分辨率配置** (`high_resolution_raspberry_pi`)
+   - 树莓派相机 + RMS物镜
+   - 电机化控制
+   - 适用于医学应用
+
+2. **基础配置** (`basic_raspberry_pi`)
+   - 树莓派相机 + 简单光学
+   - 手动控制
+   - 适用于教育和低分辨率应用
+
+3. **低成本配置** (`low_cost_webcam`)
+   - USB网络摄像头
+   - 最经济的选择
+
+## 相关项目生态
+
+### 软件组件
+- **[OpenFlexure Microscope Server](https://gitlab.com/openflexure/openflexure-microscope-server)**: 显微镜控制软件
+- **[OpenFlexure Connect](https://gitlab.com/openflexure/openflexure-connect)**: 客户端控制软件
+- **[Python Client](https://gitlab.com/openflexure/openflexure-microscope-pyclient)**: Python脚本控制接口
+
+### 硬件组件
+- **[Sangaboard](https://gitlab.com/bath_open_instrumentation_group/sangaboard)**: 标准电机控制板
+- **[Delta Stage](https://gitlab.com/openflexure/openflexure-delta-stage)**: 三轴载物台替代方案
+- **[Block Stage](https://gitlab.com/openflexure/openflexure-block-stage)**: 高精度小行程载物台
+
+### 支持工具
+- **[micat](https://gitlab.com/bath_open_instrumentation_group/micat)**: 显微镜校准工具
+- **[相机校准](https://gitlab.com/bath_open_instrumentation_group/picamera_cra_compensation/)**: 树莓派相机颜色校准
+- **[分辨率分析](https://github.com/rwb27/usaf_analysis/)**: USAF分辨率测试目标分析脚本
+
+## 开发和定制
+
+### 开发环境
+- **OpenSCAD**: 用于3D模型设计和修改
+- **VSCode**: 推荐的代码编辑器
+- **Python**: 构建系统需要Python 3.x
+- **Git LFS**: 用于管理文档中的图片文件
+
+### 构建流程
+1. 安装依赖: `pip3 install -r requirements.txt`
+2. 运行构建: `python ./build.py`
+3. 生成STL文件到`builds/`目录
+
+### 自定义参数
+主要的自定义参数在`openscad/microscope_parameters.scad`中：
+- `big_stage`: 载物台尺寸（必须为true）
+- `motor_lugs`: 是否包含电机安装座
+- `camera`: 相机类型选择
+- `optics`: 光学系统选择
+- `sample_z`: 载物台高度
+- `leg_r`: 支腿半径（影响载物台尺寸）
 
 ![A trio of microscopes](https://openflexure.org/assets/MicroscopeBlenderTrio.png)
 
@@ -9,6 +157,13 @@ If you use the OpenFlexure microscope in you work please consider citing one of 
 
 * *Robotic microscopy for everyone: the OpenFlexure microscope*, [Biomedical Optics Express **11** 2447 (2020)](https://doi.org/10.1364/BOE.385729) (open access).
 * *A one-piece 3D printed flexure translation stage for open-source microscopy*, [Review of Scientific Instruments **87**, 025104 (2016)](http://dx.doi.org/10.1063/1.4941068) (open access).
+
+## 快速开始
+
+### 了解项目
+- � **[快速开始指南](./QUICK_START.md)** - 5分钟了解项目核心要点
+- �📖 **[项目架构文档](./ARCHITECTURE.md)** - 详细的技术架构和设计说明
+- 🔧 **构建说明** - 请查看下方的构建指南
 
 ## Building a microscope
 For up-to-date build instructions, STL files, and pre-built Raspberry Pi SD images, please head to the [build a microscope page].
