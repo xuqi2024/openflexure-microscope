@@ -1,6 +1,3 @@
-
-
-
 use <../openscad/libs/microscope_parameters.scad>
 use <../openscad/libs/utilities.scad>
 use <../openscad/libs/gears.scad>
@@ -13,6 +10,7 @@ use <librender/assembly_parameters.scad>
 use <librender/render_utils.scad>
 use <librender/hardware.scad>
 use <mount_illumination.scad>
+use <mount_motor_nuts.scad>
 use <mount_microscope.scad>
 use <mount_upright_optics.scad>
 use <motor_assembly.scad>
@@ -90,12 +88,7 @@ module assembled_microscope_without_electronics(optics_version="rms",
             }
         }
     }
-    if (optics_version == "upright"){
-        mounted_microscope_upright_with_optics(optics_version=optics_version, manual=manual);
-    }
-    else{
-        mounted_microscope_with_illumination(optics_version=optics_version, manual=manual, post=post);
-    }
+    assembled_microscope_without_motors(optics_version=optics_version, manual=manual);
 }
 
 module y_motor_and_cap(params, exploded=false, connector_pos=undef, cable_pos=undef, mirror_connector=false){
@@ -113,7 +106,7 @@ module y_motor_and_cap(params, exploded=false, connector_pos=undef, cable_pos=un
         translate_z(y_motor_z_pos(params) + 3*explode_unit){
             reflect_x(){
                 place_part(motor_screw_pos()){
-                    m4_button_x6();
+                    m3_cap_x10();
                     if (exploded){
                         construction_line([0, 0, 0], [0, 0, -4*explode_unit], 0.2);
                     }
@@ -158,7 +151,7 @@ module z_motor_and_cap(params, optics_version="rms", exploded=false, connector_p
             translate_z(3*explode_unit + tight_screw){
                 reflect_x(){
                     place_part(motor_screw_pos()){
-                        m4_button_x6();
+                        m3_cap_x10();
                         if (exploded){
                             construction_line([0, 0, 0], [0, 0, -4*explode_unit], 0.2);
                         }

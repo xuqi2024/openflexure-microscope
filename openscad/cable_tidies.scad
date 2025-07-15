@@ -3,6 +3,7 @@ use <libs/main_body_transforms.scad>
 use <libs/utilities.scad>
 use <libs/wall.scad>
 use <libs/z_axis.scad>
+use <libs/main_body_structure.scad>
 
 
 module cable_tidy_body_back(h, curve_both=false){
@@ -31,7 +32,7 @@ module cable_tidy_body(h, curve_both=false){
     hull(){
         for(x_tr = [-.5, .5]*motor_screw_separation()){
             translate([x_tr,12,0]){
-                cylinder(d=8, h=h);
+                cylinder(d=10, h=h);
             }
         }
         cable_tidy_body_back(h, curve_both);
@@ -43,8 +44,8 @@ module cable_tidy_body(h, curve_both=false){
 // should be less than the overall height.
 // The cable cut-out will be either h or h-0.75 tall.
 module cable_tidy_body_cutouts(h, front=false){
-    translate([-22,3.7,1.5]){
-        cube([44,100,100]);    // The motor lugs
+    translate([-23,12-3,1.5]){
+        cube([46,100,100]);    // The motor lugs
     }
     translate([0,12,-1]){
         cylinder(d=29, h=21);  // The motor body
@@ -105,7 +106,10 @@ module cable_tidy_body_cutouts(h, front=false){
 
     for(x_tr = [-.5, .5]*motor_screw_separation()){
         translate([x_tr,12,0]){
-            cylinder(d=4.5, h=h, center=true);
+            cylinder(d=3.5, h=h, center=true);
+            translate_z(1.5){
+                cylinder(r=5.1, h=99);
+            }
         }
     }
 }
@@ -197,6 +201,7 @@ module front_cable_tidy(params, h=6){
                 cube([99, 99, (h - 1.75)*2], center=true);
             }
         }
+	xy_legs_and_actuators(params);
     }
 }
 

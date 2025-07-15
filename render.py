@@ -587,6 +587,19 @@ def register_motor_assembly(rendersystem):
     render = ScadRender(output_file, input_file, scad, imgsize, camera)
     rendersystem.register_scad_render(render)
 
+def register_mount_motor_nuts(rendersystem):
+    input_file = "rendering/mount_motor_nuts.scad"
+    camera = Camera(position=[22, 35, 98], angle=[53, 0, 115], distance=360)
+    imgsize = [2400, 2000]
+    for optics_version in ["rms", "low_cost", "upright"]:
+        for i in [1, 2]:
+            if optics_version == "upright":
+                camera = Camera(position=[-30, -35, 185], angle=[105, 0, 155], distance=560)
+            output_file = f"docs/renders/mount_motor_nuts_{optics_version}{i}.png"
+            scad = f'render_mount_motor_nuts({i}, "{optics_version}");'
+            render = ScadRender(output_file, input_file, scad, imgsize, camera)
+            rendersystem.register_scad_render(render)
+
 def register_mount_motors(rendersystem):
     input_file = "rendering/mount_motors.scad"
     camera = Camera(position=[22, 35, 98], angle=[53, 0, 115], distance=360)
@@ -780,6 +793,7 @@ def main():
         register_mount_illumination(rendersystem)
         register_motor_assembly(rendersystem)
         register_mount_motors(rendersystem)
+        register_mount_motor_nuts(rendersystem)
         register_mount_sample_clips(rendersystem)
         register_prepare_pi_and_sangaboard(rendersystem)
         register_mount_electronics(rendersystem)
