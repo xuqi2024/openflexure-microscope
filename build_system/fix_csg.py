@@ -14,32 +14,6 @@ import argparse
 import re
 import os.path
 
-def get_dependency(deps, fname):
-    """Find dependency best matching fname.
-    Basenames and as many surrounding directories as possible should match.
-    This allows imports of different files with the same basename without
-    mixups.
-    """
-    fname_dirs = fname.split("/")
-    # search for longest match
-    match_len = 0
-    match_fname = fname
-    for dep in deps[os.path.basename(fname)]:
-        dep_dirs = dep.split("/")
-        # Compare sub dirs from bottom up
-        for n, (file_dir, dep_dir) in enumerate(
-                zip(reversed(fname_dirs), reversed(dep_dirs))):
-            if file_dir != dep_dir:
-                if n > match_len:
-                    match_len = n
-                    match_fname = dep
-                break
-        else:
-            # All matched
-            match_len = n + 1
-            match_fname = dep
-
-    return match_fname
 
 def fix_csg(input_fname, output_fname):
     """Fix a CSG file so it will compile in OpenSCAD without warnings.
@@ -52,18 +26,29 @@ def fix_csg(input_fname, output_fname):
       dependency file of the original.
     """
 
+    # Create a dictionary of the dependencies.
     dependencies = {}
     with open(input_fname + '.d', "r", encoding='utf-8') as infile:
         for line in infile:
-            fn = line.strip().split()[0]
-            dependencies.setdefault(os.path.basename(fn), []).append(fn)
+            # strip whitespace and split to get the dependency file name.
+            dep_path = line.strip().split()[0]
+            dep_name = os.path.basename(dep_path)
+            if dep_name in dependencies:
+                if dependencies[dep_name] != dep_path:
+                    raise RuntimeError(
+                        f"{input_fname} imports two files with the basename {dep_name}. "
+                        "These cannot be reliably distinguished in the build system."
+                    )
+            else:
+                dependencies[dep_name] = dep_path
 
     with (open(input_fname, "r", encoding='utf-8') as infile,
           open(output_fname, "w", encoding='utf-8') as outfile):
         for line in infile:
-            m = re.search(r'import\(file = "([^"]+)"', line)
-            if m:
-                line = line.replace(m.group(1), get_dependency(dependencies, m.group(1)))
+            import_match = re.search(r'import\(file = "([^"]+)"', line)
+            if import_match:
+                matched_dependency = get_dependency(dependencies, import_match.group(1))
+                line = line.replace(import_match.group(1), matched_dependency)
                 line = re.sub(r", timestamp = [\d]+", "", line)
 
             outfile.write(line)
